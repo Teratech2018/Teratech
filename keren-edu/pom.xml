@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.megatimgroup</groupId>
+  <artifactId>keren-edu</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>keren-edu</name>
+  <modules>
+    <module>keren-edu-packaging</module>
+    <module>keren-edu-dao-impl</module>
+    <module>keren-edu-core-impl</module>
+    <module>keren-edu-model</module>
+    <module>keren-edu-core-ifaces</module>
+    <module>keren-edu-dao-ifaces</module>
+    <module>keren-edu-service</module>
+  </modules>
+    <properties>
+  
+  	<!-- Mysql Java Connector Version -->
+		<mysql.version>5.1.18</mysql.version> 
+		
+   </properties>
+</project>

@@ -1,0 +1,475 @@
+/**
+ * 
+ */
+package com.kerenedu.school;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+
+import com.core.base.BaseElement;
+import com.core.base.State;
+import com.megatim.common.annotations.Predicate;
+
+/**
+ * @author ntchuente
+ *
+ */
+@Table
+@Entity(name = "e_eleve")
+public class Eleve extends BaseElement implements Serializable, Comparable<Eleve> {
+
+	@Column(name = "PHOTO" )	
+	@Predicate(label = "PHOTO",target = "image"  , sequence=1)
+	private String image ;
+	  
+	@Column(name = "MATRICULE")	
+	@Predicate(label="MATRICULE",optional=false,updatable=false,search=true, sequence=3, colsequence=1)
+	protected String matricule;
+	
+	@Column(name = "DATENAIS")
+	@Temporal(javax.persistence.TemporalType.DATE)
+	@Predicate(label="DATE NAISS.",optional=false,updatable=true,search=true, type=Date.class, target="date", sequence=6, colsequence=4)
+	protected Date dateNais ;
+	
+	@Column(name = "L_NAIS")
+	@Predicate(label="LIEU NAISSANCE",optional=false,updatable=true,search=true, sequence=7, colsequence=5)
+	protected String lNais;
+	
+	@Column(name = "NOM")
+	@Predicate(label="NOM",optional=false,updatable=true,search=true, sequence=4, colsequence=2)
+	protected String nom;
+
+	@Column(name = "EMAIL")
+	@Predicate(label="EMAIL",optional=true,updatable=true,search=false , target="email", sequence=8)
+	protected String email;
+	
+	@Column(name = "PRENOM")
+	@Predicate(label="PRENOM",optional=false,updatable=true,search=true , sequence=5, colsequence=3)
+	protected String prenon;
+	
+	@Column(name = "SEXE")
+	@Predicate(label="SEXE",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=9)
+	protected String sexe="0";
+
+	@Column(name = "SITFAMILIALE")
+	@Predicate(label="SITUATION FAMILIALE",optional=false,updatable=true,search=false, target="combobox", values="Celibataire;Marié(é)" , sequence=10)
+	protected String sitFamiliale="0";
+	
+	@Column(name = "TEL_PERE")
+	@Predicate(label="TEL. PERE",optional=true,updatable=true,search=false ,target="tel", group=true, 
+			groupLabel="Tuteur", groupName="tab1")
+	protected String telPere;
+	
+	@Column(name = "EMAIL_PERE")
+	@Predicate(label="EMAIL PERE",optional=true,updatable=true,search=false , target="email" , group=true, 
+			groupLabel="Tuteur", groupName="tab1")
+	protected String emailPere;
+	
+	@Column(name = "TEL_MERE")
+	@Predicate(label="TEL. MERE",optional=true,updatable=true,search=false ,target="tel", group=true, 
+			groupLabel="Tuteur", groupName="tab1")
+	protected String telMere;
+	
+	
+	@Column(name = "EMAIL_MERE")
+	@Predicate(label="EMAIL MERE",optional=true,updatable=true,search=false, group=true, 
+			groupLabel="Tuteur", groupName="tab1" )
+	protected String emailMere;
+	
+	
+	@ManyToOne
+    @JoinColumn(name = "NATIONALITE_ID")
+	@Predicate(label="NATIONALITE",updatable=true,type=Nationalite.class , target="many-to-one",search=false,  group=true, 
+	groupLabel="Informations Genérales", groupName="tab2")
+    protected Nationalite nationalite;
+	
+	@ManyToOne
+    @JoinColumn(name = "NIVEAU_ID")
+	@Predicate(label="NIVEAU SCOLAIRE",updatable=true,type=NiveauScolaire.class , target="many-to-one",search=false,  group=true, 
+	groupLabel="Informations Genérales", groupName="tab2")
+    protected NiveauScolaire niveauScolaire;
+	
+	@ManyToOne // eleve ,etudiant..
+    @JoinColumn(name = "PREFESSION_ID")
+	@Predicate(label="PROFESSION",updatable=true,type=Profession.class , target="many-to-one",search=false,  group=true, 
+	groupLabel="Informations Genérales", groupName="tab2")
+    protected Profession profession;
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "DOSSIER_MEDICALE_ID")
+	@Predicate(label = "Dossier Médical",group = true,groupName = "tab3",groupLabel = "Dossier Médical",target = "one-to-many",type = DossierMedical.class,search = false)
+	private List<DossierMedical> dossierMedical = new ArrayList<DossierMedical>();
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name ="CONTACTS_ID")
+	@Predicate(label = "Contacts",group = true,groupName = "tab4",groupLabel = "Contacts",target = "one-to-many",type = Contacts.class,search = false)
+	private List<Contacts> contact = new ArrayList<Contacts>();
+	
+	  private String state ="initial";
+	
+	// ajout tab inscription 
+	// ajout tab absence
+	
+	public Eleve() {
+		
+	}
+	
+	
+	public Eleve(String image, String matricule, Date dateNais, String lNais, String nom, String email, String prenon,
+			String sexe, String sitFamiliale, String telPere, String emailPere, String telMere, String emailMere,
+			Nationalite nationalite, NiveauScolaire niveauScolaire, Profession profession,
+			List<DossierMedical> dossierMedical, List<Contacts> contact) {
+		super();
+		this.image = image;
+		this.matricule = matricule;
+		this.dateNais = dateNais;
+		this.lNais = lNais;
+		this.nom = nom;
+		this.email = email;
+		this.prenon = prenon;
+		this.sexe = sexe;
+		this.sitFamiliale = sitFamiliale;
+		this.telPere = telPere;
+		this.emailPere = emailPere;
+		this.telMere = telMere;
+		this.emailMere = emailMere;
+		this.nationalite = nationalite;
+		this.niveauScolaire = niveauScolaire;
+		this.profession = profession;
+		this.dossierMedical= dossierMedical;
+		this.contact=contact;
+	}
+
+
+	public Eleve(Eleve eleve) {
+		super(eleve.id, eleve.designation, eleve.moduleName);
+		this.image = eleve.image;
+		this.matricule =eleve. matricule;
+		this.dateNais = eleve.dateNais;
+		this.lNais = eleve.lNais;
+		this.nom = eleve.nom;
+		this.email = eleve.email;
+		this.prenon =eleve. prenon;
+		this.sexe = eleve.sexe;
+		this.sitFamiliale = eleve.sitFamiliale;
+		this.telPere = eleve.telPere;
+		this.emailPere = eleve.emailPere;
+		this.telMere = eleve.telMere;
+		this.emailMere = eleve.emailMere;
+		this.nationalite = eleve.nationalite;
+		this.niveauScolaire = eleve.niveauScolaire;
+		this.profession = eleve.profession;
+		this.dossierMedical= new ArrayList<DossierMedical>();
+		this.contact=new ArrayList<Contacts>();
+	
+		
+		/*for(DossierMedical dos:eleve.dossierMedical){
+			dossierMedical.add(new DossierMedical(dos));
+	    }
+		
+		for(Contacts con:eleve.contact){
+			contact.add(new Contacts(con));
+	    }*/
+		//this.dossierMedical = dossierMedical;
+		//Tthis.contact = contact;
+	}
+
+	@Override
+	public String getEditTitle() {
+		// TODO Auto-generated method stub
+		return "Gestion Etudiants";
+	}
+
+	@Override
+	public String getListTitle() {
+		// TODO Auto-generated method stub
+		return "Liste des Etudiants";
+	}
+
+	@Override
+	public String getModuleName() {
+		// TODO Auto-generated method stub
+		return "kereneducation";
+	}
+
+	@Override
+	public String getDesignation() {
+		// TODO Auto-generated method stub
+		return matricule+"-"+nom;
+	}
+
+
+	
+	public String getMatricule() {
+		return matricule;
+	}
+
+
+
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
+	}
+
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
+	public String getlNais() {
+		return lNais;
+	}
+
+
+
+	public void setlNais(String lNais) {
+		this.lNais = lNais;
+	}
+
+
+
+	public String getNom() {
+		return nom;
+	}
+
+
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+
+
+	public String getPrenon() {
+		return prenon;
+	}
+
+
+
+
+	public void setPrenon(String prenon) {
+		this.prenon = prenon;
+	}
+
+
+
+	public String getSexe() {
+		return sexe;
+	}
+
+
+
+	public void setSexe(String sexe) {
+		this.sexe = sexe;
+	}
+
+
+
+	public Nationalite getNationalite() {
+		return nationalite;
+	}
+
+
+
+	public void setNationalite(Nationalite nationalite) {
+		this.nationalite = nationalite;
+	}
+
+
+
+	public NiveauScolaire getNiveauScolaire() {
+		return niveauScolaire;
+	}
+
+
+
+	public void setNiveauScolaire(NiveauScolaire niveauScolaire) {
+		this.niveauScolaire = niveauScolaire;
+	}
+
+
+
+	public Profession getProfession() {
+		return profession;
+	}
+
+
+
+	public void setProfession(Profession profession) {
+		this.profession = profession;
+	}
+
+
+
+	public String getEmailPere() {
+		return emailPere;
+	}
+
+
+
+	public void setEmailPere(String emailPere) {
+		this.emailPere = emailPere;
+	}
+
+
+
+	public String getTelPere() {
+		return telPere;
+	}
+
+
+
+	public void setTelPere(String telPere) {
+		this.telPere = telPere;
+	}
+
+
+
+	public String getEmailMere() {
+		return emailMere;
+	}
+
+
+
+	public void setEmailMere(String emailMere) {
+		this.emailMere = emailMere;
+	}
+
+
+
+	public String getTelMere() {
+		return telMere;
+	}
+
+
+
+	public void setTelMere(String telMere) {
+		this.telMere = telMere;
+	}
+
+
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+//	public Date getDateNais() {
+//		return dateNais;
+//	}
+//
+//	public void setDateNais(Date dateNais) {
+//		this.dateNais = dateNais;
+//	}
+
+	public String getSitFamiliale() {
+		return sitFamiliale;
+	}
+
+	public void setSitFamiliale(String sitFamiliale) {
+		this.sitFamiliale = sitFamiliale;
+	}
+
+	
+	public List<DossierMedical> getDossierMedical() {
+		return dossierMedical;
+	}
+
+	public void setDossierMedical(List<DossierMedical> dossierMedical) {
+		this.dossierMedical = dossierMedical;
+	}
+
+	public List<Contacts> getContact() {
+		return contact;
+	}
+
+
+	public void setContact(List<Contacts> contact) {
+		this.contact = contact;
+	}
+	
+
+	public Date getDateNais() {
+		return dateNais;
+	}
+
+	public void setDateNais(Date dateNais) {
+		this.dateNais = dateNais;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 79 * hash + Objects.hashCode(this.matricule);
+		return hash;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Eleve other = (Eleve) obj;
+		if (!Objects.equals(this.matricule, other.matricule)) {
+			return false;
+		}
+		return true;
+	}
+
+
+	public int compareTo(Eleve o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public List<State> getStates() {
+		  //To change body of generated methods, choose Tools | Templates.
+        List<State> etats = new ArrayList<State>();
+        State etat = new State("etabli", "Inscrit(e)");
+        etats.add(etat);
+        etat = new State("confirme", "Scolarité ok");
+        etats.add(etat);
+        return etats; 
+	
+	}
+	
+
+}
