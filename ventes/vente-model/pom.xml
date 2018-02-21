@@ -73,11 +73,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-dao\src\main\java</outputDirectory>
+                            <outputDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-dao\src\main\java</outputDirectory>
                             <layer>dao</layer>
                             <sublayer>interface</sublayer>
-                            <sourcesDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\java</sourcesDirectory>
-                            <xmlfile>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\resources\model.xml</xmlfile>                       
+                            <sourcesDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\java</sourcesDirectory>
+                            <xmlfile>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\resources\model.xml</xmlfile>                       
                             <specification>ejb</specification>                                   
                         </configuration>  
                         <id>dao-ifaces-generate</id>                                           
@@ -87,11 +87,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-dao\src\main\java</outputDirectory>
+                            <outputDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-dao\src\main\java</outputDirectory>
                             <layer>dao</layer>
                             <sublayer>implementation</sublayer>
-                            <sourcesDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\java</sourcesDirectory>
-                            <xmlfile>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\resources\model.xml</xmlfile>      
+                            <sourcesDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\java</sourcesDirectory>
+                            <xmlfile>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\resources\model.xml</xmlfile>      
                             <persistanceunitname>teratechvente</persistanceunitname>   
                             <specification>ejb</specification>
                             <session>stateless</session>                           
@@ -105,11 +105,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-core\src\main\java</outputDirectory>
+                            <outputDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-core\src\main\java</outputDirectory>
                             <layer>manager</layer>
                             <sublayer>interface</sublayer>
-                            <sourcesDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\java</sourcesDirectory>
-                            <xmlfile>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\resources\model.xml</xmlfile>          
+                            <sourcesDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\java</sourcesDirectory>
+                            <xmlfile>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\resources\model.xml</xmlfile>          
                             <specification>ejb</specification>                              
                         </configuration>   
                         <id>manager-ifaces-generate</id>                     
@@ -119,11 +119,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-core\src\main\java</outputDirectory>
+                            <outputDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-core\src\main\java</outputDirectory>
                             <layer>manager</layer>
                             <sublayer>implementation</sublayer>
-                            <sourcesDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\java</sourcesDirectory>
-                            <xmlfile>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\resources\model.xml</xmlfile>      
+                            <sourcesDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\java</sourcesDirectory>
+                            <xmlfile>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\resources\model.xml</xmlfile>      
                             <persistanceunitname>teratechvente</persistanceunitname>     
                             <specification>ejb</specification>
                             <session>stateless</session>                            
@@ -137,11 +137,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-rest\src\main\java</outputDirectory>
+                            <outputDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-rest\src\main\java</outputDirectory>
                             <layer>jax-rs</layer>
                             <sublayer>interface</sublayer>
-                            <sourcesDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\java</sourcesDirectory>
-                            <xmlfile>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\resources\model.xml</xmlfile>      
+                            <sourcesDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\java</sourcesDirectory>
+                            <xmlfile>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\resources\model.xml</xmlfile>      
                             <specification>jax-rs</specification>                              
                         </configuration>   
                         <id>services-ifaces-generate</id>                     
@@ -151,11 +151,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-rest\src\main\java</outputDirectory>
+                            <outputDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-rest\src\main\java</outputDirectory>
                             <layer>jax-rs</layer>
                             <sublayer>implementation</sublayer>
-                            <sourcesDirectory>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\java</sourcesDirectory>
-                            <xmlfile>E:\ProjetsPersonels\keren\src\dev\ventes\vente-model\src\main\resources\model.xml</xmlfile>         
+                            <sourcesDirectory>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\java</sourcesDirectory>
+                            <xmlfile>E:\ProjetsPersonels\keren\Teratech\ventes\vente-model\src\main\resources\model.xml</xmlfile>         
                             <specification>jax-rs</specification>   
                             <application>teratechvente</application>     
                             <module></module>                      

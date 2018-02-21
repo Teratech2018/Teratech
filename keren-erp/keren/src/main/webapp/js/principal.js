@@ -7124,7 +7124,59 @@ angular.module("mainApp")
                      }else{
                          $scope.notifyWindow("Erreur" ,"Aucun état n'est programmé","danger");
                      }
-                   }
+                  }else if(type=='report'){
+                      if(data.model&&data.entity&&data.method){
+//                           var template = $scope.templateDataBuilder(data['template']);
+                           commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                           var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;                        
+                            $http.put(url,$scope.temporalData, {responseType: 'arraybuffer'})
+                              .then(function(response){
+                                    var contentElem = $scope.viewSelector("report");
+//                               console.log(angular.toJson("$scope.addDialogAction ====== "+angular.toJson(response)));
+                                    var viewer = document.createElement("iframe");
+                                    viewer.setAttribute("id","iframe0001");
+                                    viewer.setAttribute("src",url);
+                                    viewer.setAttribute("alt","pdf");
+                                    viewer.setAttribute("width","100%");
+                                    viewer.setAttribute("height","700px");
+     //                               viewer.setAttribute("pluginspage","http://www.adobe.com/products/acrobat/readstep2.html");
+     //                               viewer.setAttribute("class","ng-isolate-scope");
+                                    var divElem = document.createElement("div");
+                                    divElem.setAttribute("id","report");
+                                    divElem.setAttribute("width","100%");
+                                    divElem.setAttribute("height","100%");
+                                    divElem.appendChild(viewer);
+                                    var items = contentElem.find('div');
+                                     for(var i=0; i<items.length;i++){
+                                        if(items.eq(i).attr("id")=="report"){
+                                              items.eq(i).replaceWith(divElem);                               
+                                        }  
+                                    }//enn$d for(var i=0; i<items.length;i++){                               
+                                    // ///Remplacement dans la vue
+                                   var items = $element.find("div");
+                                   for(var i=0; i<items.length;i++){
+                                        if(items.eq(i).attr("id")=="innerpanel"){
+                                              items.eq(i).replaceWith(contentElem);
+                                               //console.log(" ======================= on a trouve report  innerpanel");
+                                        }//end if(items.eq(i).attr("id")=="innerpanel")  
+                                   }//end for(var i=0; i<items.length;i++)
+                                    var compileFn = $compile(contentElem);
+                                    compileFn($scope);                              
+                                     var arrayBufferView = new Uint8Array(response.data );
+                                     var blob = new Blob( [ arrayBufferView ], { type: "application/pdf" } );
+                                     var urlCreator = window.URL || window.webkitURL;
+                                     var pdfUrl = urlCreator.createObjectURL( blob );
+                                     var pdf = document.querySelector( "#iframe0001");
+                                     pdf.src = pdfUrl;
+     //                               console.log($scope.temporalData);                      
+                                     commonsTools.hideDialogLoading();
+                                },function(error){
+                                    commonsTools.hideDialogLoading();
+                                    commonsTools.showMessageDialog(error.data);
+                                });
+                           //alert("Vous voulez executer la methode::: "+data.method+" de l'entite :: "+data.entity+" disponible sur la resource :: "+data.model+" data template : "+angular.toJson(template));
+                       }//end if(data.model&&data.entity&&data.method)            
+                  }
                     
                 }                                  
              }catch(ex){
