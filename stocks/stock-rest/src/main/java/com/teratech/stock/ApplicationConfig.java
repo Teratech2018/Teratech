@@ -6,12 +6,6 @@
 package com.teratech.stock;
 
 
-import com.teratech.stock.jaxrs.impl.base.ArticleRSImpl;
-import com.teratech.stock.jaxrs.impl.base.CategorieProduitRSImpl;
-import com.teratech.stock.jaxrs.impl.base.FamilleArticleRSImpl;
-import com.teratech.stock.jaxrs.impl.base.PaysRSImpl;
-import com.teratech.stock.jaxrs.impl.base.UniteAchatRSImpl;
-import com.teratech.stock.jaxrs.impl.base.UniteGestionRSImpl;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -43,6 +37,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.teratech.stock.jaxrs.impl.base.CiviliteRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.ContactRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.DeviseRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.base.EmplacementRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.EntrepotRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.FamilleArticleRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.PaysRSImpl.class);
@@ -57,6 +52,16 @@ public class ApplicationConfig extends Application {
         resources.add(com.teratech.stock.jaxrs.impl.comptabilite.NiveauAnalyseRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.comptabilite.SectionAnalytiqueRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.comptabilite.TaxeRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.invetaire.BaseInventaireRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.invetaire.FicheInventaireRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.invetaire.LigneInventaireRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.invetaire.RegulInventaireRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.operations.DocumentStockRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.operations.EntreeRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.operations.LigneDocumentStockRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.operations.LotRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.operations.SortieRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.operations.TransfertRSImpl.class);
     }
     
 }

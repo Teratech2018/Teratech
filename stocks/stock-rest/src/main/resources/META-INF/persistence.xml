@@ -8,7 +8,6 @@
     <class>com.teratech.stock.model.base.FamilleArticle</class>
     <class>com.teratech.stock.model.base.UniteAchat</class>
     <class>com.teratech.stock.model.base.UniteGestion</class>
-    <class>com.teratech.stock.model.base.Pays</class>
     <class>com.teratech.stock.model.banques.Banque</class>
     <class>com.teratech.stock.model.banques.CompteBancaire</class>
     <class>com.teratech.stock.model.base.Civilite</class>
@@ -26,6 +25,19 @@
     <class>com.teratech.stock.model.base.Region</class>
     <class>com.teratech.stock.model.base.Devise</class>
     <class>com.teratech.stock.model.base.Societe</class>
+    <class>com.teratech.stock.model.base.Emplacement</class>
+    <class>com.teratech.stock.model.operations.DocumentStock</class>
+    <class>com.teratech.stock.model.operations.Entree</class>
+    <class>com.teratech.stock.model.operations.LigneDocumentStock</class>
+    <class>com.teratech.stock.model.operations.Lot</class>
+    <class>com.teratech.stock.model.operations.Sortie</class>
+    <class>com.teratech.stock.model.operations.Transfert</class>
+    <class>com.teratech.stock.model.invetaire.BaseInventaire</class>
+    <class>com.teratech.stock.model.invetaire.FicheInventaire</class>
+    <class>com.teratech.stock.model.invetaire.LigneInventaire</class>
+    <class>com.teratech.stock.model.invetaire.RegulInventaire</class>
+    <class>com.teratech.stock.model.base.LienEmplacement</class>
+    <class>com.teratech.stock.model.base.Pays</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

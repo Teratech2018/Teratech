@@ -26,13 +26,13 @@ import javax.persistence.Table;
 @Table(name = "T_ENTR")
 public class Entrepot extends BaseElement implements Serializable,Comparable<Entrepot>{
     
-    @Predicate(label = "Code dépôt",optional = false,unique = true)
+    @Predicate(label = "Code dépôt",optional = false,unique = true,search = true,colsequence = 1)
     private String code ;
     
-    @Predicate(label = "Magasin principal?" ,type = Boolean.class)
+    @Predicate(label = "Magasin principal?" ,type = Boolean.class,search = true,colsequence = 3)
     private Boolean principal = Boolean.FALSE;
     
-    @Predicate(label = "Intitulé")
+    @Predicate(label = "Intitulé",search = true,colsequence = 2)
     private String intitule ;
     
     @Predicate(label = "Adresse",group = true,groupName = "group1",groupLabel = "Complement")
@@ -146,6 +146,26 @@ public class Entrepot extends BaseElement implements Serializable,Comparable<Ent
         this.mobile = mobile;
         this.email = email;
         this.commentaire = commentaire;
+    }
+    
+    public Entrepot(Entrepot entr) {
+        super(entr.id, entr.designation, entr.moduleName);
+        this.code = entr.code;
+        this.principal = entr.principal;
+        this.intitule = entr.intitule;
+        this.adresse1 = entr.adresse1;
+        this.adresse2 = entr.adresse2;
+        this.cp = entr.cp;
+        this.ville = entr.ville;
+        this.region = entr.region;
+        this.pays = entr.pays;
+        if(entr.responsable!=null){
+            this.responsable = new Tier(entr.responsable);
+        }//responsable;
+        this.tel = entr.tel;
+        this.mobile = entr.mobile;
+        this.email = entr.email;
+        this.commentaire = entr.commentaire;
     }
 
     public Entrepot() {

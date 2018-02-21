@@ -576,54 +576,58 @@ angular.module('keren.core.commons')
              */
             showMessageDialog:function(error){
 //                    var errorobj = angular.fromJson(angular.toJson(error));
-//                    console.log(angular.toJson(errorobj.headers));
-                    var viewElem =  document.createElement('div'); //;
-                    viewElem.setAttribute('id' , 'gmodalbody');
-                    var content =  document.createElement('div');
-                    content.setAttribute('style','height:300px;overflow:auto;');
-                    //console.log(angular.toJson(error.data));
-                    if(error.data){
-                        content.innerHTML = error.data;
+//                    console.log(angular.toJson(error));
+                    if(error.status==412){
+                        this.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+error.data,"danger");
                     }else{
-                        content.innerHTML = error;
-                    }
-                    viewElem.appendChild(content);
-                    //Construction du footer
-                    var footerDiv = document.createElement('div');
-                    footerDiv.setAttribute('class' , 'modal-footer');
-                    footerDiv.setAttribute('id' , 'gmodalfooter');
-                    //Button annuler
-                    buttonElem = document.createElement('button');
-                    footerDiv.appendChild(buttonElem);
-                    buttonElem.setAttribute('class' , 'btn btn-default');
-                    buttonElem.setAttribute('data-dismiss' , "modal");
-                    buttonElem.setAttribute('type' , 'button');
-                    buttonElem.appendChild(document.createTextNode('Annuler'));
-                    //Entete modal
-                    var titleheader = document.createElement('h4');
-                    titleheader.setAttribute('class','modal-title');
-                    titleheader.setAttribute('id','gmodaltitle');
-                    titleheader.appendChild(document.createTextNode("Erreur Serveur : "+error.status));                    
-                    var items = $(document).find("div");
-                    for(var i=0; i<items.length;i++){               
-                        if(items.eq(i).attr("id")=="gmodalbody"){
-                              items.eq(i).replaceWith(viewElem);                              
+                        var viewElem =  document.createElement('div'); //;
+                        viewElem.setAttribute('id' , 'gmodalbody');
+                        var content =  document.createElement('div');
+                        content.setAttribute('style','height:300px;overflow:auto;');
+                        //console.log(angular.toJson(error.data));
+                        if(error.data){
+                            content.innerHTML = error.data;
+                        }else{
+                            content.innerHTML = error;
+                        }
+                        viewElem.appendChild(content);
+                        //Construction du footer
+                        var footerDiv = document.createElement('div');
+                        footerDiv.setAttribute('class' , 'modal-footer');
+                        footerDiv.setAttribute('id' , 'gmodalfooter');
+                        //Button annuler
+                        buttonElem = document.createElement('button');
+                        footerDiv.appendChild(buttonElem);
+                        buttonElem.setAttribute('class' , 'btn btn-default');
+                        buttonElem.setAttribute('data-dismiss' , "modal");
+                        buttonElem.setAttribute('type' , 'button');
+                        buttonElem.appendChild(document.createTextNode('Annuler'));
+                        //Entete modal
+                        var titleheader = document.createElement('h4');
+                        titleheader.setAttribute('class','modal-title');
+                        titleheader.setAttribute('id','gmodaltitle');
+                        titleheader.appendChild(document.createTextNode("Erreur Serveur : "+error.status));                    
+                        var items = $(document).find("div");
+                        for(var i=0; i<items.length;i++){               
+                            if(items.eq(i).attr("id")=="gmodalbody"){
+                                  items.eq(i).replaceWith(viewElem);                              
 
-                        } else if(items.eq(i).attr("id")=="gmodalfooter"){
-                            items.eq(i).replaceWith(footerDiv);
+                            } else if(items.eq(i).attr("id")=="gmodalfooter"){
+                                items.eq(i).replaceWith(footerDiv);
+                            } 
                         } 
-                    } 
 
 
-                    items = $(document).find("h4");
-                    for(var i=0; i<items.length;i++){               
-                        if(items.eq(i).attr("id")=="gmodaltitle"){
-                              items.eq(i).replaceWith(titleheader);                                     
+                        items = $(document).find("h4");
+                        for(var i=0; i<items.length;i++){               
+                            if(items.eq(i).attr("id")=="gmodaltitle"){
+                                  items.eq(i).replaceWith(titleheader);                                     
+                            } 
                         } 
-                    } 
-                    //Appele de la fenetre modale
-                    $("#globalModal").modal("toggle");
-                    $("#globalModal").modal("show");
+                        //Appele de la fenetre modale
+                        $("#globalModal").modal("toggle");
+                        $("#globalModal").modal("show");
+                    }//end if(error.status==412)
                    
             },
             /**

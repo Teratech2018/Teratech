@@ -7,7 +7,6 @@
   <packaging>pom</packaging>
   <name>keren-edu</name>
   <modules>
-    <module>keren-edu-packaging</module>
     <module>keren-edu-dao-impl</module>
     <module>keren-edu-core-impl</module>
     <module>keren-edu-model</module>
