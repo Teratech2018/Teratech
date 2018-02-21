@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.Matiere;
@@ -22,23 +23,20 @@ import com.megatim.common.annotations.Predicate;
 
 @Table
 @Entity(name = "e_zview_bul")
-public class ViewBulletin implements Serializable, Comparable<ViewBulletin> {
+public class ViewBulletin  extends BaseElement implements Serializable, Comparable<ViewBulletin> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Predicate(label = "Matricule:", type = String.class, search = true)
+	@Predicate(label = "Matricule", type = String.class, sequence=1)
 	@Transient
 	private String matricule;
 
-	@Column(name = "ID", unique = true)
-	@Id
-	protected String id;
-
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
+	@Predicate(label="CLASSE",updatable=false,type=Classe.class , target="many-to-one", sequence=2 )
 	protected Classe classe;
 
 	@ManyToOne
@@ -47,6 +45,7 @@ public class ViewBulletin implements Serializable, Comparable<ViewBulletin> {
 	
 	@ManyToOne
 	@JoinColumn(name = "BULLETIN_ID")
+	@Predicate(label="TYPE BULLETIN",updatable=false,type=Bulletin.class , target="many-to-one", sequence=3)
 	protected Bulletin bulletin;
 
 	@ManyToOne
@@ -68,11 +67,14 @@ public class ViewBulletin implements Serializable, Comparable<ViewBulletin> {
 	@ManyToOne
 	@JoinColumn(name = "NOTE_ID")
 	protected NoteDetail note;
+	
+	@Column(name = "MOY_CLA_MAT")
+	protected Double moyClsMat;
+	
 
-	public ViewBulletin(String id, Classe classe, Examen examen, Matiere matiere, Inscription inscription,
+	public ViewBulletin(String code, Classe classe, Examen examen, Matiere matiere, Inscription inscription,
 			CoefMatiereDetail coefficient) {
 		super();
-		this.id = id;
 		this.classe = classe;
 		this.examen = examen;
 		this.matiere = matiere;
@@ -90,6 +92,7 @@ public class ViewBulletin implements Serializable, Comparable<ViewBulletin> {
 		this.module=new GroupeCours(view.module);
 		this.note= new NoteDetail(view.note);
 		this.bulletin= new Bulletin(view.bulletin);
+		this.moyClsMat=view.moyClsMat;
 	}
 
 	public ViewBulletin() {
@@ -117,21 +120,7 @@ public class ViewBulletin implements Serializable, Comparable<ViewBulletin> {
 		this.matricule = matricule;
 	}
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
 	/**
 	 * @return the classe
 	 */
@@ -242,6 +231,38 @@ public class ViewBulletin implements Serializable, Comparable<ViewBulletin> {
 	 */
 	public void setCoefficient(CoefMatiereDetail coefficient) {
 		this.coefficient = coefficient;
+	}
+	
+	public Double getMoyClsMat() {
+		return moyClsMat;
+	}
+
+	public void setMoyClsMat(Double moyClsMat) {
+		this.moyClsMat = moyClsMat;
+	}
+
+	@Override
+	public String getEditTitle() {
+		// TODO Auto-generated method stub
+		return "Gestion des Inscriptions";
+	}
+
+	@Override
+	public String getListTitle() {
+		// TODO Auto-generated method stub
+		return "Liste des Inscrists";
+	}
+
+	@Override
+	public String getModuleName() {
+		// TODO Auto-generated method stub
+		return "kereneducation";
+	}
+
+	@Override
+	public String getDesignation() {
+		// TODO Auto-generated method stub
+		return "Critère de recherche";
 	}
 
 }

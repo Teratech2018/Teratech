@@ -4,6 +4,7 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -27,11 +28,11 @@ public class PeriodeScolaire extends BaseElement implements Serializable, Compar
 	protected String libelle;
 	
 	@Column(name = "D_DEBUT" )	
-	@Predicate(label="DEBUT",optional=false,updatable=false,search=true, target="date", sequence=2)
+	@Predicate(label="DEBUT",optional=false,updatable=false,search=true, type=Date.class, target="date", sequence=2)
 	protected String dDeb;
 	
 	@Column(name = "D_FIN" )	
-	@Predicate(label="FIN",optional=false,updatable=false,search=true, target="date", sequence=3)
+	@Predicate(label="FIN",optional=false,updatable=false,search=true, target="date", type=Date.class, sequence=3)
 	protected String dFin;
 	
 	@Column(name = "D_DEBUT_SAI_NOTE")	

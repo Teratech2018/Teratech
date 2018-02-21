@@ -27,19 +27,19 @@
         <dependent-module archiveName="keren-edu-client-1.0-SNAPSHOT.war" deploy-path="/" handle="module:/classpath/var/M2_REPO/com/megatimgroup/keren-edu-client/1.0-SNAPSHOT/keren-edu-client-1.0-SNAPSHOT.war">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="genericDAOLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/bekosoftware/genericDAOLayer/1.0-SNAPSHOT/genericDAOLayer-1.0-SNAPSHOT.jar">
+        <dependent-module archiveName="genericDAOLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/genericDAOLayer/genericDAOLayer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="genericManagerLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/bekosoftware/genericManagerLayer/1.0-SNAPSHOT/genericManagerLayer-1.0-SNAPSHOT.jar">
+        <dependent-module archiveName="genericManagerLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/genericManagerLayer/genericManagerLayer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-model-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/keren-edu-model/keren-edu-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="megatim-tools-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/megatim-tools/0.0.1-SNAPSHOT/megatim-tools-0.0.1-SNAPSHOT.jar">
+        <dependent-module archiveName="megatim-tools-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/megatim-tools/megatim-tools">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="generic-jax-rs-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/generic-jax-rs-layer/1.0-SNAPSHOT/generic-jax-rs-layer-1.0-SNAPSHOT.jar">
+        <dependent-module archiveName="generic-jax-rs-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/generic-jax-rs-layer/generic-jax-rs-layer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="gson-2.8.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar">
@@ -72,10 +72,10 @@
         <dependent-module archiveName="swing-layout-1.0.3.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/swinglabs/swing-layout/1.0.3/swing-layout-1.0.3.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="generic-jsf-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/generic-jsf-layer/1.0-SNAPSHOT/generic-jsf-layer-1.0-SNAPSHOT.jar">
+        <dependent-module archiveName="generic-jsf-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/generic-jsf-layer/generic-jsf-layer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="mgt-commons-tools-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/mgt-commons-tools/1.0-SNAPSHOT/mgt-commons-tools-1.0-SNAPSHOT.jar">
+        <dependent-module archiveName="mgt-commons-tools-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/mgt-commons-tools/mgt-commons-tools">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="commons-codec-1.9.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-codec/commons-codec/1.9/commons-codec-1.9.jar">

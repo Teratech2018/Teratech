@@ -72,11 +72,11 @@ public class ViewBulletinRSImpl
     public MetaData getMetaData() {
         try {
             //To change body of generated methods, choose Tools | Templates.
-            return MetaDataUtil.getMetaData(new EleveSearch(), new HashMap<String, MetaData>(),new ArrayList<String>());
+            return MetaDataUtil.getMetaData(new ViewBulletin(), new HashMap<String, MetaData>(),new ArrayList<String>());
         } catch (InstantiationException ex) {
-            Logger.getLogger(EleveSearchRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(EleveSearchRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

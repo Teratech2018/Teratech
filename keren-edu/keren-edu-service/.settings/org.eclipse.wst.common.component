@@ -11,16 +11,28 @@
         <dependent-module archiveName="core-tools-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/core-tools/core-tools">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="generic-jax-rs-layer-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/generic-jax-rs-layer/generic-jax-rs-layer">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mgt-commons-tools-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mgt-commons-tools/mgt-commons-tools">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="keren-edu-model-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-model/keren-edu-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-dao-impl-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-dao-impl/keren-edu-dao-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="genericDAOLayer-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/genericDAOLayer/genericDAOLayer">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="keren-edu-dao-ifaces-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-dao-ifaces/keren-edu-dao-ifaces">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-core-impl-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-core-impl/keren-edu-core-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="genericManagerLayer-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/genericManagerLayer/genericManagerLayer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-core-ifaces-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-core-ifaces/keren-edu-core-ifaces">
