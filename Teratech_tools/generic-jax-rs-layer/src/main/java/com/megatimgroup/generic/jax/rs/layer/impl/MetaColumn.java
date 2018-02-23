@@ -54,6 +54,8 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     private boolean customfooter = false ;
     
      private String footerScript = null ;
+     
+     private String filter;
     
     private MetaData metaData ;
 
@@ -103,6 +105,7 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.searchfields = column.searchfields;
         this.customfooter = column.customfooter;
         this.footerScript = column.footerScript;
+        this.filter = filter;
     }
 
     public short getSequence() {
@@ -279,6 +282,14 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
 
     public void setFooterScript(String footerScript) {
         this.footerScript = footerScript;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     
