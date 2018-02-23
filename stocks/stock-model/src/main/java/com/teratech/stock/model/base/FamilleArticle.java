@@ -6,6 +6,7 @@
 package com.teratech.stock.model.base;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -27,12 +28,13 @@ public class FamilleArticle extends BaseElement implements Serializable,Comparab
     @Predicate(label = "Intitulé",search = true)
     private String intitule ;
     
-     @Predicate(label = "Type de Famille",target = "combobox",values = "Détail;Total;Centralisateur",search = true)
+    @Predicate(label = "Type de Famille",target = "combobox",values = "Détail;Total;Centralisateur",search = true)
     private String type ="0";
      
      @ManyToOne
     @JoinColumn(name = "FAAR_ID")
     @Predicate(label = "Centralisation",type = FamilleArticle.class,target = "many-to-one",search = true)
+    @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"1\"}]")
     private FamilleArticle centralisateur ;    
    
     

@@ -10,7 +10,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.stock.core.ifaces.base.ArticleManagerRemote;
 import com.teratech.stock.jaxrs.ifaces.base.ArticleRS;
 import com.teratech.stock.model.base.Article;
-import com.teratech.stock.model.base.CategorieProduit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.ws.rs.WebApplicationException;

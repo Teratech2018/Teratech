@@ -57,7 +57,10 @@ public class TaxeManagerImpl
 
     @Override
     public Taxe find(String propertyName, Long entityID) {
-        return super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
+        Taxe data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
+        Taxe result = new Taxe(data);
+        
+        return result;
     }
 
     @Override
@@ -67,7 +70,8 @@ public class TaxeManagerImpl
 
     @Override
     public Taxe save(Taxe entity) {
-        return super.save(entity); //To change body of generated methods, choose Tools | Templates.
+        Taxe data = super.save(entity); //To change body of generated methods, choose Tools | Templates.
+        return new Taxe(data);
     }
     
     

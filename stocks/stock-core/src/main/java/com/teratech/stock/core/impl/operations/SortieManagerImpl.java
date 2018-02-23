@@ -10,8 +10,14 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 import com.teratech.stock.core.ifaces.operations.SortieManagerLocal;
 import com.teratech.stock.core.ifaces.operations.SortieManagerRemote;
+import com.teratech.stock.dao.ifaces.base.ArticleDAOLocal;
+import com.teratech.stock.dao.ifaces.operations.LotDAOLocal;
 import com.teratech.stock.dao.ifaces.operations.SortieDAOLocal;
+import com.teratech.stock.model.base.Article;
+import com.teratech.stock.model.base.Emplacement;
+import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.operations.LigneDocumentStock;
+import com.teratech.stock.model.operations.Lot;
 import com.teratech.stock.model.operations.Sortie;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +33,13 @@ public class SortieManagerImpl
 
     @EJB(name = "SortieDAO")
     protected SortieDAOLocal dao;
+    
+    @EJB(name = "ArticleDAO")
+    protected ArticleDAOLocal articledao;
+    
+    @EJB(name = "LotDAO")
+    protected LotDAOLocal lotdao;
+    
 
     public SortieManagerImpl() {
     }
@@ -77,6 +90,43 @@ public class SortieManagerImpl
         return new Sortie(data);
     }
     
+    @Override
+    public Sortie confirmer(Sortie object){
+        object.setState("valider");
+        for(LigneDocumentStock ligne:object.getLignes()){
+            computeLigne(ligne, object.getEmplacement());
+        }//end for(LigneDocumentStock ligne:object.getLignes())
+        //Mise a jour
+        dao.update(object.getId(), object);
+        return object;
+    }
     
+    /**
+     * 
+     * @param ligne
+     * @param empl 
+     */
+    private void computeLigne(LigneDocumentStock ligne , Emplacement empl){
+        Article article = articledao.findByPrimaryKey("id", ligne.getArticle().getId());
+        for(LienEmplacement lien : article.getStockages()){
+            if(lien.getEmplacement().compareTo(empl)==0){
+                if(article.getPolitiquestock()==null||article.getPolitiquestock().equalsIgnoreCase("0")){
+                    //Nothing to do
+                }else if(article.getPolitiquestock().equalsIgnoreCase("1")||article.getPolitiquestock().equalsIgnoreCase("5")){
+                    StringBuilder builder = new StringBuilder(ligne.getCode());
+                    builder.append(empl.getCode());
+                    Lot lot = lotdao.findByPrimaryKey("reference", builder.toString());
+                    lot.addSortie(ligne.getQuantite());
+                    if(lot.disponible()>=0){
+                        lotdao.update(lot.getId(),lot);
+                    }else{
+                        lotdao.delete(lot.getId());
+                    }//end if(lot.disponible()>=0)                        
+                }//end if(article.getPolitiquestock()==null||article.getPolitiquestock().equalsIgnoreCase("0"))
+                lien.addStock(-ligne.getQuantite());
+            }//end if(lien.getEmplacement().compareTo(empl)==0){
+        }//end for(LienEmplacement lien : article.getStockages()){
+        articledao.update(article.getId(), article);
+    }//end private void computeLigne(LigneDocumentStock ligne , Emplacement empl){
 
 }

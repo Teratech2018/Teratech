@@ -5,3 +5,7 @@
 /stocks/stock-model/target/
 /stocks/stock-core/target/
 /stocks/stock-dao/target/
+/baseaccount/basaccount-model/target/
+/baseaccount/baseaccount-dao/target/
+/baseaccount/baseaccount-core/target/
+/baseaccount/baseaccount-service/target/

@@ -122,6 +122,7 @@ angular.module("mainApp")
 
     $scope.dataSelects = [] ;
 
+    $scope.filtertemplate = new Object();
      
      /**
       * 
@@ -1773,9 +1774,13 @@ angular.module("mainApp")
             entityName : name of the entity,
             metaData : MetaData which describe de object
         **/
-        $scope.manyToOneComponent = function(model , labelText , entityName,metaData,field,index,modelpath){               
+        $scope.manyToOneComponent = function(model , labelText , entityName,metaData,field,index,modelpath){  
+//            console.log("$scope.manyToOneComponent = ======= "+field.fieldName+" ====== "+field.filter);
 //               $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);
                //Creation de l'entree
+               //Filter criteria
+               var key = commonsTools.keygenerator(model);
+               $scope.filtertemplate[""+key+""] = field.filter ;
                var exprFn = $parse(model); 
                 var data = exprFn($scope);
                 var parts = model.split(".");
@@ -1791,7 +1796,7 @@ angular.module("mainApp")
 //                    }
                     $scope.dataCache[""+key+""].push(obj);
                 }
-//                console.log("$scope.manyToOneComponent ============== "+index+" ==== model : "+model+" :::: key:"+key+" == "+angular.toJson($scope.dataCache[""+key+""]));
+//                console.log("$scope.manyToOneComponent ============== filter : "+field.filter+" fieldName :"+field.fieldName+" index : "+index+" ==== model : "+model+" :::: key:"+key+" == "+angular.toJson($scope.dataCache[""+key+""]+" === teplatefilter:"+$scope.filtertemplate[key]));
                //console.log("$scope.manyToOneComponent    ===      "+model+" :::::::  !!!!!!!! "+metaData.entityName);
                var divElem = document.createElement('div');
                divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12');
@@ -1813,7 +1818,7 @@ angular.module("mainApp")
               var optionElem = document.createElement('option');
               optionElem.setAttribute('value' , '');
               optionElem.appendChild(document.createTextNode('Please select option'));
-              selectElem.appendChild(optionElem);
+              selectElem.appendChild(optionElem);             
 //              if($scope.windowType=="view"||(field.updatable==false&&$scope.windowType!='new')){
 //                  selectElem.setAttribute('disabled' , 'disabled');
 //              }
@@ -1851,7 +1856,7 @@ angular.module("mainApp")
 
             if(($scope.windowType=="view")||(metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                 buttonElem.setAttribute('disabled' , 'disabled');
-            }
+            }             
               return divElem;
         };
 
@@ -1910,6 +1915,8 @@ angular.module("mainApp")
                         ((angular.isDefined(field) &&angular.isDefined(field.updatable) && field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                     selectElem.setAttribute('disabled' , 'true');                    
                 }
+               var key = commonsTools.keygenerator(model);
+               $scope.filtertemplate[key] = field.filter ;
               selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+key);
               var optionElem = document.createElement('option');
               optionElem.setAttribute('value' , '');
@@ -2421,6 +2428,9 @@ angular.module("mainApp")
                      aElem.setAttribute('disabled' , 'disabled');                  
                  }            
             }
+            //Filter criteria
+            var key = commonsTools.keygenerator(model);
+            $scope.filtertemplate[key] = field.filter ;
 //             alert($scope.currentObject.actions);
 //             var divElem0 = document.createElement('div');
 //             divElem0.appendChild(divElem);
@@ -2519,6 +2529,7 @@ angular.module("mainApp")
         */
         $scope.editPanelComponent = function(model , metaData , windowType,index,modelpath){   
 //            console.log("$scope.editPanelComponent ==== "+index);
+                $scope.filtertemplate = new Object();            
               var divElem = null ;
              if(angular.isDefined(metaData)){
                   divElem = document.createElement('div');
@@ -4275,7 +4286,7 @@ angular.module("mainApp")
                      if(part[0]=='temporalData'){
                         metaData = $scope.temporalMetaData;
                      }//end if(part[0]=='temporalData')
-//                     console.log("$scope.getCurrentMetaData = ========================= "+model+" ============== "+angular.toJson(metaData));
+                     console.log("$scope.getCurrentMetaData = ========================= "+model+" ============== "+angular.toJson(metaData));
                 
                      if(part.length==1){
                          return metaData;
@@ -4704,7 +4715,7 @@ angular.module("mainApp")
                 return ;
             }
            //Chargement des donn�es
-           console.log("$scope.listDialogBuilder ===== "+index);     
+//           console.log("$scope.listDialogBuilder ===== "+index);     
            $scope.temporalPagination.beginIndex=0;
            $scope.temporalPagination.currentPage=1;
            $scope.temporalPagination.module = metaData.moduleName;
@@ -5024,7 +5035,8 @@ angular.module("mainApp")
         **/
         $scope.editDialogBuilderExtern = function(metaData,index){           
 //           $scope.innerWindowType = true;
-           $scope.innerWindowType = 'new';
+           $scope.innerWindowType = 'new';           
+           $scope.temporalMetaData = metaData;
            var viewElem =  document.createElement('div'); //;
            var bodyID = "";
            var endIndex = index;
@@ -5293,6 +5305,8 @@ angular.module("mainApp")
                     var templateModel = $scope.getCurrentModel(model);
                     if(parts[0]=='currentObject'){
                         templateModel = $scope.currentObject;
+                    }else if(parts[0]=='temporalData'){
+                        templateModel = $scope.temporalData;
                     }//end if(parts[0]=='currentObject')
 //                    console.log("$scope.addDialogAction =list ===== model: "+model+"===== "+items.length+" === "+parts[0]+" === "+parts[1]+" == modelpath:"+modelpath+"  template:"+angular.toJson(templateModel));
                     if(angular.isArray(templateModel[parts[col]])){
@@ -5855,6 +5869,60 @@ angular.module("mainApp")
            //console.log("$scope.getData ===      "+model+" === "+entityName+" ==== "+moduleName+" === "+item);
        };
         /**
+        * 
+        * @returns {undefined}
+        */
+       $scope.buildFilter = function(model){
+         try{
+           var key = commonsTools.keygenerator(model);              
+//            console.log("$scope.buildFilter ======================= "+key+" ==== "+$scope.filtertemplate[key]+" === "+model);
+           if($scope.filtertemplate[key]){
+               var filtres = angular.fromJson($scope.filtertemplate[key]);
+               var predicats = new Array();
+               for(var i=0;i<filtres.length;i++){
+                   var predicat = new Object();
+                   predicat["fieldName"] = filtres[i].fieldName;
+                   predicat["fieldLabel"] = null ;
+                   predicat["type"]="EQUAL";
+                   predicat["searchfields"]=null;
+                   if(filtres[i].searchfield){
+                       predicat["searchfields"]=[filtres[i].searchfield];
+                   }
+                   //Traitement de la valeur
+                   var part = filtres[i].value.split('.');
+                   var par = model.split('.');
+                   var value = null
+                   if(part.length<=1&&part.length>0){
+                       value=part[0];
+                   }else if(part[0]=="object"){
+                    if(par[0]=="currentObject"){
+                       var obj =$scope.currentObject[part[1]];                          
+                        value=obj[filtres[i].searchfield];
+                    }else if(par[0]=="temporalData"){
+                         var obj =$scope.temporalData[part[1]];
+                         value=obj[filtres[i].searchfield];
+                     }else if(par[0]=="dataCache"){
+                          var key = commonsTools.keyparentgenerator(model);
+//                           console.log("$scope.buildFilter ======  "+model+" === "+key);
+                          var obj =$scope.temporalData[key];
+                          value=obj[filtres[i].searchfield];
+                     }//end if(part[0]=="object")
+                 }else if(part[0]=="user"){
+                     var obj = $scope.currentUser[part[1]];
+                     value = obj[filtres[i].searchfield];
+                 }//end else if(part[0]=="object")
+                   predicat["fieldValue"]=value;
+                   predicats.push(predicat);
+               }//end for(var i=0;i<filtres.length;i++)
+               $http.defaults.headers.common['predicats']= angular.toJson(predicats); 
+                              
+           }//end if($scope.filtertemplate)
+         }catch (ex){
+             //commonsTools.showMessageDialog(ex);
+             console.error(ex);
+         }
+       };
+        /**
          * 
          * @param {type} model
          * @param {type} item
@@ -5863,7 +5931,8 @@ angular.module("mainApp")
          * @returns {undefined}
          */
         $scope.getData = function(model ,item ,entityName,moduleName,index){
-//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+index);
+//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+index+" == "+$scope.filtertemplate);
+            $scope.buildFilter(model);            
             var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/count";
             $http.get(url)
                     .then(function(response){
@@ -7085,7 +7154,7 @@ angular.module("mainApp")
                                       
                                   },function(error){
 //                                      commonsTools.hideDialogLoading();
-                                      commonsTools.showMessageDialog(error.data);
+                                      commonsTools.showMessageDialog(error);
                                   });
                       }   
                    }else if(type=='object'){//Traitement des objects message en background
@@ -7099,7 +7168,7 @@ angular.module("mainApp")
                                        commonsTools.hideDialogLoading();
                                    },function(error){
                                        commonsTools.hideDialogLoading();
-                                       commonsTools.showMessageDialog(error.data);
+                                       commonsTools.showMessageDialog(error);
                                    });
                            //alert("Vous voulez executer la methode::: "+data.method+" de l'entite :: "+data.entity+" disponible sur la resource :: "+data.model+" data template : "+angular.toJson(template));
                        }                          
@@ -7118,7 +7187,7 @@ angular.module("mainApp")
                                        commonsTools.hideDialogLoading();
                                    },function(error){
                                        commonsTools.hideDialogLoading();
-                                       commonsTools.showMessageDialog(error.data);
+                                       commonsTools.showMessageDialog(error);
                                    });
                        }//end if(data.model&&data.entity&&data.method)
                      }else{
@@ -7172,7 +7241,7 @@ angular.module("mainApp")
                                      commonsTools.hideDialogLoading();
                                 },function(error){
                                     commonsTools.hideDialogLoading();
-                                    commonsTools.showMessageDialog(error.data);
+                                    commonsTools.showMessageDialog(error);
                                 });
                            //alert("Vous voulez executer la methode::: "+data.method+" de l'entite :: "+data.entity+" disponible sur la resource :: "+data.model+" data template : "+angular.toJson(template));
                        }//end if(data.model&&data.entity&&data.method)            

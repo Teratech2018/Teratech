@@ -9,7 +9,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.stock.core.ifaces.base.TierManagerRemote;
 import com.teratech.stock.jaxrs.ifaces.base.TierRS;
-import com.teratech.stock.model.base.Entrepot;
 import com.teratech.stock.model.base.Tier;
 import java.util.ArrayList;
 import java.util.HashMap;

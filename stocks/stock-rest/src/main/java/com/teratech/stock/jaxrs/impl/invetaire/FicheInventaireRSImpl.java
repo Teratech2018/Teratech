@@ -60,7 +60,7 @@ public class FicheInventaireRSImpl
     public MetaData getMetaData(HttpHeaders headers) {
         try {
             MetaData meta = MetaDataUtil.getMetaData(new FicheInventaire(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Confirmer", false, "workflow", null);
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Démarrer l'inventaire", false, "workflow", null);
             workbtn.setValue("{'model':'teratechstock','entity':'ficheinventaire','method':'confirme'}");
             workbtn.setStates(new String[]{"etabli"});
             meta.getHeader().add(workbtn);

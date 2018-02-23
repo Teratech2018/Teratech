@@ -29,6 +29,7 @@ public class Entree extends DocumentStock implements Serializable{
      */
     public Entree(String code, Date date, Emplacement depot, String reference, String commentaire) {
         super(code, date, depot, reference, commentaire);
+        this.state = "etabli";
     }
 
     /**
@@ -44,11 +45,23 @@ public class Entree extends DocumentStock implements Serializable{
      */
     public Entree(String code, Date date, Emplacement depot, String reference, String commentaire, long id, String designation, String moduleName) {
         super(code, date, depot, reference, commentaire, id, designation, moduleName);
+        this.state = "etabli";
     }
 
     public Entree(Entree doc) {
         super(doc);
+        this.state = doc.state;
     }
+
+    @Override
+    public boolean isDesabledelete() {
+        if(state.equalsIgnoreCase("valider")){
+            return true;
+        }
+        return super.isDesabledelete(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
     
     
 
@@ -56,6 +69,7 @@ public class Entree extends DocumentStock implements Serializable{
      * 
      */
     public Entree() {
+        this.state = "etabli";
     }
     
     

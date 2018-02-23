@@ -7,9 +7,13 @@ package com.teratech.stock.model.operations;
 
 import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
+import com.teratech.stock.model.base.LienEmplacement;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +32,10 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
     @Predicate(label = "Quantite",type = Double.class,optional = false,search = true)
     private Double quantite ;
     
+    private Double sorties = 0.0;
+    
+    private Double encours = 0.0;
+    
     @Predicate(label = "Péremption",type = Date.class,target = "date",search = true)
     @Temporal(TemporalType.DATE)
     private Date peremption ;
@@ -35,7 +43,14 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
     @Predicate(label = "Fabrication",type = Date.class,target = "date",search = true)
     @Temporal(TemporalType.DATE)
     private Date fabrication ;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "LIEM_ID")
+    private LienEmplacement lien ;
+    
+    @Column(unique = true)    
+    private String reference ;
+    
     /**
      * 
      * @param code
@@ -106,6 +121,70 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
         this.fabrication = fabrication;
     }
 
+    public LienEmplacement getLien() {
+        return lien;
+    }
+
+    public void setLien(LienEmplacement lien) {
+        this.lien = lien;
+    }
+
+    public Double getSorties() {
+        return sorties;
+    }
+
+    public void setSorties(Double sorties) {
+        this.sorties = sorties;
+    }
+
+    public Double disponible() {
+        return (quantite==null ? 0.0 : quantite)-(sorties==null? 0.0:sorties)-(encours==null ? 0.0:encours);
+    }//end public Double disponible()  
+
+    public Double getEncours() {
+        return encours;
+    }
+
+    public void setEncours(Double encours) {
+        this.encours = encours;
+    }
+
+    
+    /**
+     * 
+     * @param quantite
+     * @return 
+     */
+    public void addSortie(Double quantite){
+        if(sorties==null){
+            sorties = 0.0;
+        }
+        sorties = sorties+quantite;
+    }
+    
+    /**
+     * 
+     * @param qte 
+     */
+    public void addEntree(Double qte){
+        if(quantite==null){
+            quantite = 0.0;
+        }
+        quantite = quantite+qte;
+    }
+
+    public String getReference() {
+        StringBuilder builder = new StringBuilder(code);
+        builder.append(lien.getEmplacement().getCode());
+        reference = builder.toString();
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+    
+    
     @Override
     public String getDesignation() {
         return code; //To change body of generated methods, choose Tools | Templates.

@@ -45,7 +45,7 @@ public class FicheInventaire extends BaseInventaire implements Serializable{
         List<State> states = new ArrayList<State>();
         State state = new State("etabli", "Brouillon");
         states.add(state);
-        state = new State("confirme", "A régularisé");
+        state = new State("confirme", "En cours");
         states.add(state);
         return states; //To change body of generated methods, choose Tools | Templates.
     }

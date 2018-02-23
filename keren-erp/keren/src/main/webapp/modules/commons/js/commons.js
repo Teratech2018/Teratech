@@ -1145,6 +1145,24 @@ angular.module('keren.core.commons')
                     }
                 }
                 return key;
+            },
+            /**
+             * 
+             * @param {type} model
+             * @returns {String}
+             */
+             keyparentgenerator:function(model){
+                var parts= model.split(".");
+                var key = "";
+                var endIndex = parts.length-1;
+                for(var i=1 ; i<endIndex;i++){
+                    if(i==1){
+                        key = parts[i];
+                    }else{
+                        key+=parts[i];
+                    }
+                }
+                return key;
             }
                 //end  Fields validations
             };
