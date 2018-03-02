@@ -189,21 +189,21 @@ public class MetaDataUtil {
                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
                           column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());column.setEditable(annot.editable());
                           column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setPattern(annot.pattern());
-                          column.setHide(annot.hide());column.setCustomfooter(annot.customfooter());
+                          column.setHide(annot.hide());column.setCustomfooter(annot.customfooter());column.setCompute(annot.compute());
                           metaData.getColumns().add(column);        
                        }else{
                            MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
                           column.setOptional(annot.optional());column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                           column.setUnique(annot.unique());column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
-                          metaData.getColumns().add(column);        
+                          column.setCompute(annot.compute());metaData.getColumns().add(column);        
                        }                               
                 }else if(field.getType().equals(Date.class)){
                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
                           column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());
                           column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
-                          metaData.getColumns().add(column);
+                          column.setCompute(annot.compute());metaData.getColumns().add(column);
                 }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
                         ||annot.type().equals(BigDecimal.class)||annot.type().equals(Integer.class)||
                         annot.type().equals(Long.class)){
@@ -211,13 +211,13 @@ public class MetaDataUtil {
                     column.setOptional(annot.optional());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
-                    metaData.getColumns().add(column);
+                    column.setCompute(annot.compute());column.setValue(annot.values());metaData.getColumns().add(column);
                 }else if(field.getType().equals(Boolean.class)){
                     MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
                     column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
-                    metaData.getColumns().add(column);
+                    column.setCompute(annot.compute());metaData.getColumns().add(column);
                 }else if(field.getType().equals(List.class)){
                     MetaData meta = null;
 //                    boolean doulons = false ;
@@ -358,7 +358,8 @@ public class MetaDataUtil {
                             MetaColumn column = new MetaColumn("number", field.getName(), annot.label(),annot.search(), null, null);
                             column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());
-                            column.setCustomfooter(annot.customfooter());column.setColsequence(annot.colsequence());metaGroup.getColumns().add(column);
+                            column.setCustomfooter(annot.customfooter());column.setColsequence(annot.colsequence());
+                            column.setCompute(annot.compute());column.setValue(annot.values());metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(Boolean.class)){
                             MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
                             column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
@@ -573,8 +574,8 @@ public class MetaDataUtil {
                     MetaColumn column = new MetaColumn("number", field.getName(), annot.label(),annot.search(), null, null);
                     column.setOptional(annot.optional());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
-                    column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
-                    metaData.getColumns().add(column);
+                    column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());column.setCompute(annot.compute());
+                    column.setValue(annot.values());metaData.getColumns().add(column);
                 }else if(field.getType().equals(Boolean.class)){
                     MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
                     column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
@@ -720,7 +721,8 @@ public class MetaDataUtil {
                             MetaColumn column = new MetaColumn("number", field.getName(), annot.label(),annot.search(), null, null);
                             column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());
-                            column.setCustomfooter(annot.customfooter());column.setColsequence(annot.colsequence());metaGroup.getColumns().add(column);
+                            column.setCustomfooter(annot.customfooter());column.setColsequence(annot.colsequence());
+                            column.setCompute(annot.compute());column.setValue(annot.values());metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(Boolean.class)){
                             MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
                             column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());

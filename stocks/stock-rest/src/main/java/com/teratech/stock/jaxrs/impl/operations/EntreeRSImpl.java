@@ -17,7 +17,6 @@ import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.Emplacement;
 import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.operations.Entree;
-import com.teratech.stock.model.operations.EntreeV;
 import com.teratech.stock.model.operations.LigneDocumentStock;
 import com.teratech.stock.model.operations.Lot;
 import java.util.ArrayList;
@@ -180,7 +179,7 @@ public class EntreeRSImpl
     }
 
     @Override
-    public EntreeV confirmer(HttpHeaders headers, Entree object) {
+    public Entree confirmer(HttpHeaders headers, Entree object) {
          //To change body of generated methods, choose Tools | Templates.
         if(object.getState().equalsIgnoreCase("valider")){
             throw new KerenExecption("Cette Opération est dejà validé");        

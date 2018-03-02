@@ -62,6 +62,14 @@ angular.module('keren.core.commons')
             //Liste des contraintes
             var uniqueContraints = new Array();
             var stopTimer = 0;
+            /**
+             * 
+             * @param {type} idElement
+             * @param {type} logo
+             * @param {type} color
+             * @param {type} opacity
+             * @returns {undefined}
+             */
             var showDialogLoadingFull = function(idElement, logo, color, opacity){
                    $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:5000;text-align:center;background-color:black'></div>");
                     $('#'+idElement).append("<div id='dialogFullWindow' style='width:100%;margin:auto;margin-top:22%;color:white;text-align:center'>"+logo+"</div>");
@@ -134,12 +142,21 @@ angular.module('keren.core.commons')
                             $('#'+idElement+"_Full").remove();
                     });
                },
+               /**
+                * 
+                * @param {type} IdMoteur
+                * @returns {undefined}
+                */
                stopMoteur : function(IdMoteur){
                    clearInterval(IdMoteur);
                },
                /**
-              Affiche la notification en cas d'erreur
-                **/
+                * Affiche la notification en cas d'erreur
+                * @param {type} title
+                * @param {type} message
+                * @param {type} type
+                * @returns {undefined}
+                */
                notifyWindow : function(title , message ,type){
                    $.notify(
                      {
@@ -158,6 +175,10 @@ angular.module('keren.core.commons')
                },
                /**
                 * Affiche fenetre alerte
+                * @param {type} title
+                * @param {type} message
+                * @param {type} type
+                * @returns {undefined}
                 */
                alertWindow : function(title , message ,type){
                    
@@ -228,9 +249,12 @@ angular.module('keren.core.commons')
                   uniqueContraints:function(){
                       return  uniqueContraints;
                   },
-                  /***
-                    Construit les composants 
-                 **/
+                  /**
+                   * Construit les composants 
+                   * @param {type} columns
+                   * @param {type} currentObject
+                   * @returns {undefined}
+                   */
                  createFromFields: function(columns,currentObject){
                        for(var i=0 ; i< columns.length;i++){
                             if(columns[i].type=='object'){
@@ -281,6 +305,36 @@ angular.module('keren.core.commons')
                      } 
                     return currentObject;
                  },
+                 /**
+                  * Compute compute field
+                  * @param {type} obj
+                  * @param {type} currentObject
+                  * @param {type} currentUser
+                  * @param {type} metadata
+                  * @returns {undefined}
+                  */
+             compteField:function(obj,currentObject,currentUser , metadata){
+//                 console.log("commonsTools.expeval  ====== "+angular.toJson(obj)+" ======  "+angular.toJson(metadata));
+                 if(obj && metadata){
+                     //Traitement des columns
+                     for(var i=0 ; i<metadata.columns.length;i++){
+                         if(metadata.columns[i].compute==true&&metadata.columns[i].type=='number'){
+                             obj[metadata.columns[i].fieldName] = this.expeval(obj,currentObject,currentUser,metadata.columns[i].value);
+                         }//end if(metadata[i].compute==true)
+                     }//end for(var i=0 ; i<metadata.length;i++)
+                     //Traitement des groups
+                     for(var i=0;i<metadata.groups.length;i++){
+                         if(metadata.groups[i].columns){
+                             for(var j=0;j<metadata.groups[i].columns.length;j++){
+                                if(metadata.groups[i].columns[j].compute==true&&metadata.groups[i].columns[j].type=='number'){                                
+                                    obj[metadata.groups[i].columns[j].fieldName]=this.expeval(obj,currentObject,currentUser,metadata.groups[i].columns[j].value);
+                                }//end if(metadata.columns[i].compute==true&&metadata.columns[i].type=='number'){  
+                             }//end for(var j=0;j<metadata.groups[i].columns.length;j++)
+                         }//end if(metadata.groups[i].columns){
+                     }//end for(var i=0;i<metadata.groups.length;i++)
+                 }//end if(obj && metadata)
+             },
+            
             /**
              * Calcul la date end fonction de la date et heure
              * @param {type} date
@@ -740,7 +794,7 @@ angular.module('keren.core.commons')
                         return total;
                     }//end if(angular.isNumber(data[fieldName]))
                     
-                }else{return 0;}//end if(datas && datas.length>0)
+                }//else{return 0;}end if(datas && datas.length>0)
                 
             },
             /**
@@ -752,31 +806,126 @@ angular.module('keren.core.commons')
             sumListExpr:function(expr, datas){
                 var exprA = expr.split(','); 
                 if(datas && datas.length>0){
-                     if(exprA.length==1){
+                    /* if(exprA.length==1){
                         var data = datas[0];
-                        if(angular.isNumber(data[exprA[0]])){
+                        var value=this.expeval(datas[0],null,null,exprA);
+                        if(angular.isNumber(value)){
                             var total = 0;
                             for(var i=0;i<datas.length;i++){
                                 var data = datas[i];
-                                 total += data[exprA[0]];
+                                value = this.expeval(data,null,null,exprA);
+                                 total += value;
                             }//end for(var i=0;i<datas.length;i++)   
                             return total;
                         }else{
-                            return exprA[0];
+                            return expr;
                         }
-                    }else{
+                    }else{*/
+                        if(exprA.length==1){
+                            exprA = expr.split(".");
+                            if(exprA.length==1&&!angular.isNumber(expr)){
+                                return expr;
+                            }//end if(exprA.length==1&&!angular.isNumber(expr)){
+                        }//end if(exprA.length==1&&!angular.isNumber(exprA))
+//                        console.log(" expeval:function(obj,currentObject,currentUser  , expr)=="+expr+" ===== "+exprA+" ===== ");                
                         var total = 0;
                         for(var i=0;i<datas.length;i++){
-                            var value=this.sumExpr(exprA,datas[i]);
+                            var value=this.expeval(datas[i],null,null,expr);
                             if(value && angular.isNumber(value)){
-                                total += this.sumExpr(exprA,datas[i]);
+                                total += value;
                             }
                         }//end for(var i=0;i<datas.length;i++)
-                    }//end if(exprA.length==1)
+                   // }//end if(exprA.length==1)
                     
                     
                     return total;
                 }else{return 0;}//end if(datas && datas.length>0)
+            }, /**
+              * Expression evaluation
+              * @param {type} obj
+              * @param {type} currentObject
+              * @param {type} currentUser
+              * @param {type} expr
+              * @returns {undefined}
+              */
+             expeval:function(obj,currentObject,currentUser  , expr){  
+                 expr = ""+expr;
+                 var parts = expr.split(',');
+                 var exp = new String();
+                 for(var i=0;i<parts.length;i++){
+                     if(parts[i]=='('||parts[i]==')'||parts[i]=='*'
+                             ||parts[i]=='+'||parts[i]=='-'||parts[i]=='/'||parts[i]=="%"){
+                         exp+=parts[i];
+                     }else{//value
+                         var ops = parts[i].split('.');
+                         if(ops.length==1){
+                             exp+=parts[i];
+                         }else if(ops[0]=='this'){
+                             var value = obj;
+                             for(var j=1;j<ops.length;j++){
+                                 if(value[ops[j]]){
+                                    value =value[ops[j]];
+                                 }else{
+                                    value= "0";
+                                 }//end if(obj[ops[1]]){    
+                             }//end for(var i=1;i<ops.length;i++)
+                             exp+=value;        
+                         }else if(ops[0]=='object'){
+                             var value = currentObject;
+                             for(var j=1;j<ops.length;j++){
+                                 if(value[ops[j]]){
+                                    value =value[ops[j]];
+                                 }else{
+                                    value= "0";
+                                 }//end if(obj[ops[1]]){    
+                             }//end for(var i=1;i<ops.length;i++)
+                             exp+=value;        
+                         }else if(ops[0]=='user'){
+                             var value = currentUser;
+                             for(var j=1;j<ops.length;j++){
+                                 if(value[ops[j]]){
+                                    value =value[ops[j]];
+                                 }else{
+                                    value= "0";
+                                 }//end if(obj[ops[1]]){    
+                             }//end for(var i=1;i<ops.length;i++)
+                             exp+=value;         
+                         }                         
+                     }//end if(parts[i]=='('||parts[i]==')'||parts[i]=='*'
+                 }//end for(var i=0;i<parts.length;i++)
+//                 console.log("commonsTools.expeval  ====== "+expr+" ************ "+exp+" == "+ops[1]);
+               return eval(exp);               
+             },
+             /**
+              * 
+              * @param {type} expr
+              * @param {type} data
+              * @param {type} currentObject
+              * @param {type} currentUser
+              * @returns {commons_L61.commonsAnonym$3.getValue.data|String}
+              */
+            getValue:function(expr,data,currentObject,currentUser){
+               if(expr){
+                   if(angular.isNumber(expr)){
+                       return expr;
+                   }//end if(angular.isNumber(expr))
+                   console.log("getValue:function(expr,data) === "+expr);
+                   var part = expr.split(".");
+                   if(part.length==1){
+                       if(angular.isNumber(data[expr])){
+                        return data[expr];
+                       }
+                   }else if(part.length>1){
+                       var obj = data[part[0]];
+                       for(var i=1;i<part.length;i++){
+                           obj = obj[part[i]];
+                       }//end for(var i=1;i<part.length;i++){
+                       if(angular.isNumber(obj)){
+                        return obj;
+                       }//end if(angular.isNumber(obj))
+                   }//end if(part.length==1)                   
+               }//end if(exp) 
+               return "0" ;
             },
             sumExpr:function(expr,data){
                 if(data && expr.length>0){
@@ -785,15 +934,11 @@ angular.module('keren.core.commons')
                         if(expr[i]=='*'||expr[i]=='-'||expr[i]=='+'||expr[i]=='/'||expr[i]=='%'||expr[i]=='('||expr[i]==')'){
                             expEval += expr[i];
                         }else{
-                            if(angular.isNumber(data[expr[i]])){
-                                expEval += data[expr[i]];
-                            }else{                                 
-                                    expEval += expr[i];                                
-                            }//end if(data[expr[i]]&&angular.isNumber(data[expr[i]]))
+                            expEval +=this.getValue(expr[i],data);
                         }
                     }//end for(var i+0;i<expr.length;i++){
+                    console.log("sumListExpr:function(expr, datas)) === "+expEval+" === "+result);
                     var result = eval(expEval.toString());
-//                    console.log("sumListExpr:function(expr, datas)) === "+angular.toJson(expr)+" ===  ===  === "+expEval+" === "+result);
                     return result;
                 }//end if(data && expr.length>0)
             },
@@ -816,9 +961,9 @@ angular.module('keren.core.commons')
                         for(var j=0;j<rowNode.childNodes.length;j++){
                             var colNode = rowNode.childNodes[j];
                             if(colNode.tagName=='TD'){
-//                                console.log("tableFooterBuilder ===  ===  ********* "+colNode.tagName+" === "+colNode.textContent);
                                 var value = colNode.textContent;                        
                                 if(value!=null&&value!=""){
+//                                    console.log("tableFooterBuilder ===  ===  ********* "+colNode.tagName+" === "+colNode.textContent);
                                     colNode.textContent = this.sumListExpr(value,datas);
                                 }//end if(value!=null&&value!="")
                             }//end if(colNode.tagName=='TD')
@@ -866,10 +1011,10 @@ angular.module('keren.core.commons')
                                 footerElem.appendChild(thelem);                            
 //                                console.log("commonsTool. sumFooterTableBuilder === "+model+"===="+sources[0]+"===="+angular.toJson(data));
                                 var total = this.sumTableField(fieldnames[i],data[sources[sources.length-1]]);
-                                if(angular.isNumber(total)){
+                                if(angular.isDefined(total)&&angular.isNumber(total)){
                                     thelem.appendChild(document.createTextNode(total));
                                     thelem.setAttribute('class','text-right');
-                                }
+                                }//end if(angular.isNumber(total))
                         }//end for(var i=0 ;  i<fieldnames.length ; i++)
 //                        tableElem.appendChild(footerElem);
                     }//end if(fieldnames.length>0)

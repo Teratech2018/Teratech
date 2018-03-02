@@ -1811,7 +1811,7 @@ angular.module("mainApp")
                selectElem.setAttribute('class','selectpicker form-control');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
-               selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"')");
+               selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+modelpath+"')");
                selectElem.setAttribute('data-live-search','true');
                divElem_1.appendChild(selectElem);
               selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+key);
@@ -4286,7 +4286,7 @@ angular.module("mainApp")
                      if(part[0]=='temporalData'){
                         metaData = $scope.temporalMetaData;
                      }//end if(part[0]=='temporalData')
-                     console.log("$scope.getCurrentMetaData = ========================= "+model+" ============== "+angular.toJson(metaData));
+//                     console.log("$scope.getCurrentMetaData = ========================= "+model+" ============== "+angular.toJson(metaData));
                 
                      if(part.length==1){
                          return metaData;
@@ -4710,12 +4710,12 @@ angular.module("mainApp")
         $scope.listDialogBuilder = function(model,index,modelpath){
 //            $scope.innerWindowType = true;
             //var parts = model.split(".");
-            var metaData = $scope.getCurrentMetaData(model);     
+            var metaData = $scope.getCurrentMetaData(modelpath);     
             if(!metaData){
                 return ;
-            }
+            }//end if(!metaData)
+//            console.log("$scope.listDialogBuilder ===== "+index+" ===== "+model+" ==== "+modelpath+" === "+angular.toJson(metaData));     
            //Chargement des donn�es
-//           console.log("$scope.listDialogBuilder ===== "+index);     
            $scope.temporalPagination.beginIndex=0;
            $scope.temporalPagination.currentPage=1;
            $scope.temporalPagination.module = metaData.moduleName;
@@ -5257,33 +5257,35 @@ angular.module("mainApp")
                  //$scope.displayEditPanel();
                  var part = model.split(".");
                   var key = commonsTools.keygenerator(modelpath);
+                  var metaData = $scope.getCurrentMetaData(modelpath) ;
+//                  console.log("addDialogBuilder  =====  ************* Vous avez cliquez :::: "+model+" ***** ==== "+modelpath+" === "+angular.toJson(metaData));
+                  commonsTools.compteField($scope.dataCache[""+key],$scope.currentObject,$scope.currentUser,metaData);
                   if(part[0]=='currentObject'){                     
                      $scope.temporalModel = $scope.getCurrentModel(model);
                      $scope.temporalModel.unshift($scope.dataCache[""+key]);
-                 }else{
+                  }else{
                      $scope.temporalModel = $scope.getCurrentModel(model);           
                      $scope.temporalModel[part[part.length-1]].unshift($scope.dataCache[""+key]);
-                 }//end  if(part[0]=='currentObject')                 
-//                 console.log("addDialogBuilder  =====  ************* Vous avez cliquez :::: "+model+" ***** "+key+" ==== "+angular.toJson($scope.temporalModel)+" === "+angular.toJson($scope.dataCache[""+key]));
-                 var metaData = $scope.getCurrentMetaData(modelpath) ;
-                 var sources = model.split('.');
+                 }//end  if(part[0]=='currentObject')           
+                var sources = model.split('.');
                 if(!metaData){
                    var exprFn = $parse($scope.currentMetaDataPath);     
                    metaData = exprFn($scope); 
-                }
+                }//end if(!metaData){
                 //Evenement de construction du pied de tableau
                 $rootScope.$broadcast("tablefooter" , {metaData:metaData,model:model,modelpath:modelpath});  
                 
             }else if(type=="update"){
                 var key = commonsTools.keygenerator(modelpath);
 //                $scope.innerWindowType = true;
+                var metaData = $scope.getCurrentMetaData(modelpath) ;
+                commonsTools.compteField($scope.dataCache[""+key],$scope.currentObject,$scope.currentUser,metaData);
                 var item = $scope.temporalDatas.pop(); 
                 angular.extend(item ,$scope.dataCache[""+key]);   //angular.extend(item , $scope.temporalData);   
-                var metaData = $scope.getCurrentMetaData(modelpath) ;
                 if(!metaData){
                    var exprFn = $parse($scope.currentMetaDataPath);     
                    metaData = exprFn($scope); 
-                }
+                }//end if(!metaData)
                  //Evenement de construction du pied de tableau
                 $rootScope.$broadcast("tablefooter" , {metaData:metaData,model:model,modelpath:modelpath});  
 
@@ -5869,7 +5871,8 @@ angular.module("mainApp")
            //console.log("$scope.getData ===      "+model+" === "+entityName+" ==== "+moduleName+" === "+item);
        };
         /**
-        * 
+        * Managed link component
+        * Applied filter on one commponent
         * @returns {undefined}
         */
        $scope.buildFilter = function(model){
@@ -5896,30 +5899,55 @@ angular.module("mainApp")
                        value=part[0];
                    }else if(part[0]=="object"){
                     if(par[0]=="currentObject"){
-                       var obj =$scope.currentObject[part[1]];                          
-                        value=obj[filtres[i].searchfield];
+                       var obj =$scope.currentObject[part[1]];  
+                       if(obj && obj[filtres[i].searchfield]){
+                           value=obj[filtres[i].searchfield];
+                       }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
+                          commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
+                          return false;
+                        }
                     }else if(par[0]=="temporalData"){
                          var obj =$scope.temporalData[part[1]];
-                         value=obj[filtres[i].searchfield];
+                          if(obj && obj[filtres[i].searchfield]){
+                                value=obj[filtres[i].searchfield];
+                            }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
+                               commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
+                               return false;
+                            }
                      }else if(par[0]=="dataCache"){
                           var key = commonsTools.keyparentgenerator(model);
 //                           console.log("$scope.buildFilter ======  "+model+" === "+key);
-                          var obj =$scope.temporalData[key];
-                          value=obj[filtres[i].searchfield];
+                          var obj =$scope.dataCache[key];
+                           if(obj && obj[filtres[i].searchfield]){
+                                value=obj[filtres[i].searchfield];
+                            }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
+                               commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
+                                  return false;
+                            }
                      }//end if(part[0]=="object")
                  }else if(part[0]=="user"){
                      var obj = $scope.currentUser[part[1]];
-                     value = obj[filtres[i].searchfield];
+                      if(obj && obj[filtres[i].searchfield]){
+                           value=obj[filtres[i].searchfield];
+                       }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
+                          commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
+                          return false;
+                       }
                  }//end else if(part[0]=="object")
                    predicat["fieldValue"]=value;
                    predicats.push(predicat);
                }//end for(var i=0;i<filtres.length;i++)
                $http.defaults.headers.common['predicats']= angular.toJson(predicats); 
-                              
+               return true;                  
+           }else{
+               predicats = new Array();
+               $http.defaults.headers.common['predicats']= angular.toJson(predicats); 
+               return true;
            }//end if($scope.filtertemplate)
          }catch (ex){
              //commonsTools.showMessageDialog(ex);
              console.error(ex);
+             return true;
          }
        };
         /**
@@ -5930,9 +5958,12 @@ angular.module("mainApp")
          * @param {type} moduleName
          * @returns {undefined}
          */
-        $scope.getData = function(model ,item ,entityName,moduleName,index){
-//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+index+" == "+$scope.filtertemplate);
-            $scope.buildFilter(model);            
+        $scope.getData = function(model ,item ,entityName,moduleName,index,modelpath){
+            var status = $scope.buildFilter(model);
+            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+index+" == "+status);
+            if(status==false){
+                return ;
+            }//end if(status==false){            
             var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/count";
             $http.get(url)
                     .then(function(response){
@@ -5970,7 +6001,7 @@ angular.module("mainApp")
                                   }//end if(obj.id == "load")
                               }//end if(parts.length>1)
                           }else{         
-                                $scope.listDialogBuilder(model,index);
+                                $scope.listDialogBuilder(model,index,modelpath);
                                  var modalID = "";
                                 var endIndex = index;
                                 if(endIndex==1){
@@ -8138,7 +8169,9 @@ angular.module("mainApp")
                           var model = angular.lowercase($scope.currentAction.model);
                           var entity = angular.lowercase($scope.currentAction.entityName);
                           var method = angular.lowercase($scope.currentAction.method);
-                          var templateID =$scope.currentAction.dashboard.id;
+                          var templateID = null;                         
+                          templateID =$scope.currentAction.dashboard.id;
+                          //end if($scope.currentAction.dashboard)
                           var url = "http://"+$location.host()+":"+$location.port()+"/"+model+"/"+entity+"/"+method+"/"+templateID;
                           $http.get(url)
                                   .then(function(response){

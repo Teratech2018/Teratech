@@ -82,6 +82,18 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
         this.peremption = peremption;
         this.fabrication = fabrication;
     }
+    
+     public Lot(Lot lot) {
+        super(lot.id, lot.designation, lot.moduleName);
+        this.code = lot.code;
+        this.quantite = lot.quantite;
+        this.peremption = lot.peremption;
+        this.fabrication = lot.fabrication;
+        this.reference = lot.reference;
+        if(lot.lien!=null){
+            lien = new LienEmplacement(lot.lien);
+        }
+    }
 
     /**
      * 

@@ -48,7 +48,7 @@ public class ActionItem extends  MenuAction implements Serializable{
      * 
      * @param item 
      */
-    public ActionItem(ActionItem item) {
+    public ActionItem(ActionItem item) {        
         this.id = item.getId();
         this.designation = item.getDesignation();
         this.name = item.name;

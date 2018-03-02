@@ -59,7 +59,7 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
     @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération")
     protected List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
     
-    @Predicate(label = "Commentaire",group = true,groupName = "group2",groupLabel = "Commentaire")
+    @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")
     protected String commentaire ;
     
     protected String state ="etabli";
@@ -237,7 +237,7 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
 
     @Override
     public String toString() {
-        return "DocumentStock{" + "code=" + code + ", date=" + date + ", emplacement=" + emplacement + ", reference=" + reference + ", lignes=" + lignes + ", commentaire=" + commentaire + ", state=" + state + '}';
+        return "DocumentStock{" +id+" ==== "+ "code=" + code + ", date=" + date + ", emplacement=" + emplacement + ", reference=" + reference + ", lignes=" + lignes + ", commentaire=" + commentaire + ", state=" + state + '}';
     }
     
     

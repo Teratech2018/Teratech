@@ -5,7 +5,8 @@ import javax.ejb.Local;
 
 
 /**
- * Interface locale du manager
+ * Interface locale du manager
+
  * @since Tue Feb 20 13:26:04 GMT+01:00 2018
  * 
  */

@@ -2,7 +2,6 @@
 package com.teratech.stock.jaxrs.ifaces.operations;
 
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
-import com.teratech.stock.model.invetaire.FicheInventaire;
 import com.teratech.stock.model.operations.Entree;
 import com.teratech.stock.model.operations.EntreeV;
 import javax.ws.rs.Consumes;
@@ -28,6 +27,6 @@ public interface EntreeRS
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("valider")
-    public EntreeV confirmer(@Context HttpHeaders headers,Entree object);
+    public Entree confirmer(@Context HttpHeaders headers,Entree object);
 
 }

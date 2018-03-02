@@ -7,7 +7,7 @@ import com.teratech.achat.model.base.Article;
 
 /**
  * Interface du service JAX-RS
- * @since Mon Feb 19 13:07:58 GMT+01:00 2018
+ * @since Tue Feb 27 14:29:40 GMT+01:00 2018
  * 
  */
 public interface ArticleRS

@@ -52,7 +52,7 @@ public class BaseInventaire extends BaseElement implements Serializable,Comparab
     @ManyToOne
     @JoinColumn(name = "EMPL_ID")
     @Predicate(label = "Emplacement",type = Emplacement.class,target = "many-to-one",search = true)
-    @Filter(value = "[{\"fieldName\":\"edepot\",\"value\":\"object.fentrepot\",\"searchfield\":\"code\"}]")
+    @Filter(value = "[{\"fieldName\":\"edepot\",\"value\":\"object.fentrepot\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez selectionner l'entrepôt\"}]")
     protected Emplacement femplacement;
     
     protected String state = "etabli";
@@ -103,6 +103,7 @@ public class BaseInventaire extends BaseElement implements Serializable,Comparab
         if(base.femplacement!=null){
             this.femplacement = new Emplacement(base.femplacement);
         }
+        this.state = base.state;
     }
 
     public BaseInventaire() {

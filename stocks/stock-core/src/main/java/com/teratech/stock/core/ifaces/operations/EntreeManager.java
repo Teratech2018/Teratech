@@ -3,7 +3,6 @@ package com.teratech.stock.core.ifaces.operations;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.teratech.stock.model.operations.Entree;
-import com.teratech.stock.model.operations.EntreeV;
 
 
 /**
@@ -18,6 +17,6 @@ public interface EntreeManager
 
     public final static String SERVICE_NAME = "EntreeManager";
     
-    public EntreeV confirmer(Entree entree );
+    public Entree confirmer(Entree entree );
 
 }

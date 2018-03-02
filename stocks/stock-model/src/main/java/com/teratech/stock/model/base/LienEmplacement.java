@@ -36,7 +36,7 @@ public class LienEmplacement extends BaseElement implements Serializable,Compara
     
     @Predicate(label = "Stock sécurité",type = Double.class,optional = false)
     private Double stocksec =0.0;
-    
+     
     @Predicate(label = "Stock d'alerte",type = Double.class,optional = false)
     private Double stockale =0.0;
     

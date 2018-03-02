@@ -12,13 +12,11 @@ import com.teratech.stock.core.ifaces.operations.EntreeManagerLocal;
 import com.teratech.stock.core.ifaces.operations.EntreeManagerRemote;
 import com.teratech.stock.dao.ifaces.base.ArticleDAOLocal;
 import com.teratech.stock.dao.ifaces.operations.EntreeDAOLocal;
-import com.teratech.stock.dao.ifaces.operations.EntreeVDAOLocal;
 import com.teratech.stock.dao.ifaces.operations.LotDAOLocal;
 import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.Emplacement;
 import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.operations.Entree;
-import com.teratech.stock.model.operations.EntreeV;
 import com.teratech.stock.model.operations.LigneDocumentStock;
 import com.teratech.stock.model.operations.Lot;
 import java.util.ArrayList;
@@ -36,8 +34,8 @@ public class EntreeManagerImpl
     @EJB(name = "EntreeDAO")
     protected EntreeDAOLocal dao;
     
-    @EJB(name = "EntreeVDAO")
-    protected EntreeVDAOLocal dao2;
+//    @EJB(name = "EntreeVDAO")
+//    protected EntreeVDAOLocal dao2;
     
     @EJB(name = "ArticleDAO")
     protected ArticleDAOLocal articledao;
@@ -149,23 +147,18 @@ public class EntreeManagerImpl
         articledao.update(article.getId(), article);
     }//end private void computeLigne(LigneDocumentStock ligne , Emplacement empl){
 
-    public EntreeV confirmer(Entree obj) {
+    public Entree confirmer(Entree obj) {
         //To change body of generated methods, choose Tools | Templates.
-        EntreeV entree = new EntreeV(obj);
-        entree.setId(-1);
+//        System.out.println(EntreeManagerImpl.class.toString()+" =================== "+obj.getClass().toString()+" ====== "+obj);
         //Copie des ligne
         for(LigneDocumentStock lign:obj.getLignes()){
-            LigneDocumentStock li = new LigneDocumentStock(lign);
-            li.setId(-1);
-            entree.getLignes().add(li);
             //Mise a jour du stock en BD
-            computeLigne(li, obj.getEmplacement());
+            computeLigne(lign, obj.getEmplacement());
         }//end for(LigneDocumentStock lign:obj.getLignes())
         //Suppression 
-        dao.delete(obj.getId());
-        //Creation de l'entree valide
-        dao2.save(entree);
-        return entree;
+        obj.setState("valider");
+        dao.update(obj.getId(), obj);
+        return obj;
     }
     
 

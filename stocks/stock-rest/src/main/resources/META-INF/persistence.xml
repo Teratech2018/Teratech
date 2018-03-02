@@ -41,6 +41,7 @@
     <class>com.teratech.stock.model.operations.EntreeV</class>
     <class>com.teratech.stock.model.operations.SortieV</class>
     <class>com.teratech.stock.model.operations.TransfertV</class>
+    <class>com.teratech.stock.model.invetaire.LArticleEmplacementLot</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

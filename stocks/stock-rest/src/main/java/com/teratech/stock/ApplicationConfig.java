@@ -54,6 +54,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.teratech.stock.jaxrs.impl.comptabilite.TaxeRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.invetaire.BaseInventaireRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.invetaire.FicheInventaireRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.invetaire.LArticleEmplacementLotRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.invetaire.LigneInventaireRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.invetaire.RegulInventaireRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.operations.DocumentStockRSImpl.class);

@@ -14,106 +14,177 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>        -->
-        <element type="com.teratech.achat.model.base.Article"  idclass="long"  idname="id" deseable="false">
+        <element type="com.teratech.achat.model.base.Article"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-<!--        <element type="com.basaccount.model.comptabilite.Taxe"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.achat.model.base.CategorieProduit"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.comptabilite.SectionAnalytique"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.achat.model.base.Civilite"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.comptabilite.CompteAnalytique"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.achat.model.base.ConditionPaiement"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.comptabilite.NiveauAnalyse"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.achat.model.base.Devise"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.comptabilite.JournalComptable"  idclass="Long"  idname="id"  deseable="true">
+        <element type="com.teratech.achat.model.base.Emplacement"  idclass="Long"  idname="id"  deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.tiers.Tier"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.Entrepot"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.tiers.Civilite"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.FamilleArticle"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.tiers.ConditionPaiement"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.Pays"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.banques.Banque"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.Region"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.banques.CompteBancaire"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.Societe"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.tiers.Contact"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.Tier"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.operations.PieceComptable"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.UniteAchat"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element> 
-        <element type="com.basaccount.model.operations.EcritureComptable"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.base.UniteGestion"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element> 
-       <element type="com.basaccount.model.comptabilite.ExerciceComptable"  idclass="Long"  idname="id"   deseable="true">
+       <element type="com.teratech.achat.model.base.Utilisateur"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element> 
-        <element type="com.basaccount.model.operations.JournalSaisie"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.banques.Banque"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.operations.EcritureAnalytique"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.comptabilite.Compte"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.operations.EcritureTier"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.achat.model.comptabilite.CompteAnalytique"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-         <element type="com.basaccount.model.operations.ClotureExerciceComptable"  idclass="Long"  idname="id"   deseable="true">
+         <element type="com.teratech.achat.model.comptabilite.ExerciceComptable"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-         <element type="com.basaccount.model.operations.ClotureJournal"  idclass="Long"  idname="id"   deseable="true">
+         <element type="com.teratech.achat.model.comptabilite.JournalComptable"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
-        </element>-->
+        </element>
+         <element type="com.teratech.achat.model.comptabilite.NiveauAnalyse"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.achat.model.comptabilite.SectionAnalytique"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.achat.model.comptabilite.Taxe"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.achat.model.operations.AppelOffre"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.achat.model.operations.BonCommande"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.achat.model.operations.DemandePrix"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.achat.model.operations.DocumentAchat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.achat.model.operations.ExprBesion"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.achat.model.operations.BonReception"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.achat.model.operations.Entree"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.achat.model.operations.LigneDocumentStock"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.achat.model.operations.LigneDocumentAchat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.achat.model.operations.Lot"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.achat.model.operations.Facture"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
    </elements>
     
 </model-config>

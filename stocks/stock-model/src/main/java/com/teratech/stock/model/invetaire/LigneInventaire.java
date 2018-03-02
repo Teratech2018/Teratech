@@ -9,11 +9,15 @@ import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.Emplacement;
+import com.teratech.stock.model.operations.Lot;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -25,10 +29,19 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
 
     @ManyToOne
     @JoinColumn(name = "ARTI_ID")
-    @Predicate(label = "Article concerné",type = Article.class,target = "many-to-one",optional = true,nullable = false,search = true)
-    private Article article ;
+    @Predicate(label = "Article concerné",type = Article.class,target = "many-to-one",editable = false,optional = true,nullable = false,search = true)
+    private Article article ;    
     
-    @Predicate(label = "Stock Dispo",type = Double.class,editable = false,search = true)
+    @ManyToOne
+    @JoinColumn(name = "LIIN_ID")
+    @Predicate(label = "N° Lot/Série",type = Lot.class,target = "many-to-one",editable = false,search = true)
+    private Lot lot ;
+    
+    @Temporal(TemporalType.DATE)
+    @Predicate(label = "Peremption",type = Date.class,target = "date",editable = false,search = true)
+    private Date peremption ;
+    
+    @Predicate(label = "Stock Dispo",type = Double.class,editable = false,updatable = false,search = true)
     private Double stockdispo ;
     
     @Predicate(label = "Stock Ajusté",type = Double.class,optional = true,nullable = false,search = true)
@@ -45,8 +58,9 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
     
     @ManyToOne
     @JoinColumn(name = "EMPL_ID")
-    @Predicate(label = "Emplacement concerné",type = Emplacement.class,target = "many-to-one",search = true)
+    @Predicate(label = "Emplacement concerné",type = Emplacement.class,target = "many-to-one",search = true,editable = false)
     private Emplacement localisation ;
+    
 
     /**
      * 
@@ -99,15 +113,36 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
      */
      public LigneInventaire(LigneInventaire ligne) {
         super(ligne.id, ligne.designation, ligne.moduleName);
-        this.article = ligne.article;
+        if(ligne.getArticle()!=null){
+            this.article = new Article(ligne.article);
+        }
         this.stockdispo = ligne.stockdispo;
         this.stockconstate = ligne.stockconstate;
         this.stockecart = ligne.stockecart;
         this.puht = ligne.puht;
         this.puajuste = ligne.puajuste;
+        this.peremption = ligne.peremption;
         if(ligne.localisation!=null){
             this.localisation = new Emplacement(ligne.localisation);
         }
+        if(ligne.getLot()!=null){
+            this.lot = new Lot(ligne.lot);
+        }
+    }
+     
+     /**
+      * 
+      * @param art 
+      */
+     public LigneInventaire(LArticleEmplacementLot art) {
+        super(-1, art.getDesignation(), art.getModuleName());
+        this.article = art.getArticle();
+        this.stockdispo = art.getLien().getStock();
+        this.puht = art.getArticle().getPuvente();
+        if(art.getEmplacement()!=null){
+            this.localisation = new Emplacement(art.getEmplacement());
+        }
+       
     }
 
     public LigneInventaire() {
@@ -168,6 +203,34 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
     public void setLocalisation(Emplacement localisation) {
         this.localisation = localisation;
     }
+
+    public Lot getLot() {
+        return lot;
+    }
+
+    public void setLot(Lot lot) {
+        this.lot = lot;
+    }
+
+    public Date getPeremption() {
+        if(lot!=null){
+            this.peremption = lot.getPeremption();
+        }
+        return peremption;
+    }
+
+    public void setPeremption(Date peremption) {
+        this.peremption = peremption;
+    }
+    
+    
+
+    @Override
+    public String getDesignation() {
+        return article.getDesignation(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
     @Override
     public String getEditTitle() {

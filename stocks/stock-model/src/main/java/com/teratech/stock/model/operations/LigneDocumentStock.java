@@ -58,7 +58,7 @@ public class LigneDocumentStock extends BaseElement implements Serializable,Comp
     @Temporal(TemporalType.DATE)
     private Date fabrication ;
     
-    @Predicate(label = "Total HT",type = Double.class,optional = false,search = true,hide = true)
+    @Predicate(label = "Total HT",type = Double.class,optional = false,search = true,hide = true,compute = true,values ="this.puht,*,this.quantite" )
     private Double totalht ;    
     
     @OneToOne

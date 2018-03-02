@@ -36,6 +36,7 @@ public class FicheInventaire extends BaseInventaire implements Serializable{
 
     public FicheInventaire(FicheInventaire base) {
         super(base);
+        this.state = base.state;
     }
     
     
