@@ -5,25 +5,10 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="core-model-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/core-model/core-model">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="core-tools-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/core-tools/core-tools">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="generic-jax-rs-layer-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/generic-jax-rs-layer/generic-jax-rs-layer">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="mgt-commons-tools-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mgt-commons-tools/mgt-commons-tools">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="keren-edu-model-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-model/keren-edu-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-dao-impl-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-dao-impl/keren-edu-dao-impl">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="genericDAOLayer-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/genericDAOLayer/genericDAOLayer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-dao-ifaces-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-dao-ifaces/keren-edu-dao-ifaces">
@@ -32,13 +17,7 @@
         <dependent-module archiveName="keren-edu-core-impl-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-core-impl/keren-edu-core-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="genericManagerLayer-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/genericManagerLayer/genericManagerLayer">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="keren-edu-core-ifaces-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-core-ifaces/keren-edu-core-ifaces">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="manager-ifaces-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/manager-ifaces/manager-ifaces">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/keren-edu-service/target/classes"/>

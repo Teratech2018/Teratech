@@ -5,16 +5,12 @@ package com.kerenedu.inscription;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,8 +18,8 @@ import javax.persistence.Temporal;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Service;
 import com.kerenedu.school.Eleve;
+
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -40,12 +36,12 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1)
-	protected Classe classe;
+	protected Classe classe = new Classe();
 	
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
 	@Predicate(label="ETUDIANT",updatable=true,type=Eleve.class , target="many-to-one",search=true , sequence=2	)
-	protected Eleve eleve;
+	protected Eleve eleve= new Eleve();
 
 	
 	@Column(name = "STATUT")
@@ -55,7 +51,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Column(name = "DATE_INS")
 	@Predicate(label="DATE INSCRIPTION",optional=false,updatable=true,search=true, type=Date.class,sequence=4, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
-	protected Date datIns;
+	protected Date datIns = new Date();
 	
 	@Column(name = "MNT" )	
 	@Predicate(label="SCOLARITE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true ,sequence=5)
@@ -71,25 +67,25 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Predicate(label="SOLDE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=8)
 	protected BigDecimal zSolde =BigDecimal.ZERO;
 	
-	@ManyToOne
-    @JoinColumn(name ="SERVICE_ID")
-	@Predicate(label = "Services",group = true,groupName = "tab1",groupLabel = "Fras de Scolarité",target = "many-to-one",type = Service.class,search = false)
-	private Service serviceList ;
-	
+//	@ManyToOne
+//    @JoinColumn(name ="SERVICE_ID")
+//	@Predicate(label = "Services",group = true,groupName = "tab1",groupLabel = "Fras de Scolarité",target = "many-to-one",type = Service.class,search = false)
+//	private Service serviceList ;
+//	
 	
 	@ManyToOne
 	@JoinColumn(name = "ANNEE_ID")
-	protected AnneScolaire anneScolaire;
+	protected AnneScolaire anneScolaire ;
 	
-
-	public Service getServiceList() {
-		return serviceList;
-	}
-
-
-	public void setService(Service serviceList) {
-		this.serviceList = serviceList;
-	}
+//
+//	public Service getServiceList() {
+//		return serviceList;
+//	}
+//
+//
+//	public void setService(Service serviceList) {
+//		this.serviceList = serviceList;
+//	}
 
 
 	public Inscription() {
@@ -108,7 +104,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		this.classe = new Classe(ins.classe);
 		this.datIns=ins.datIns;
 		this.anneScolaire=new AnneScolaire(ins.anneScolaire);
-		this.serviceList= new Service(ins.serviceList);
+	//	this.serviceList= new Service(ins.serviceList);
 		this.satut=ins.satut;
 		
 		/*for(Service service:ins.serviceList){
@@ -140,9 +136,9 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	}
 
 
-	public void setServiceList(Service serviceList) {
-		this.serviceList = serviceList;
-	}
+//	public void setServiceList(Service serviceList) {
+//		this.serviceList = serviceList;
+//	}
 
 
 	public Eleve getEleve() {
@@ -217,7 +213,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return "Etudiant  "+eleve.getMatricule()+"-"+eleve.getNom();
+		return eleve.getMatricule()+"-"+eleve.getNom();
 	}
 
 

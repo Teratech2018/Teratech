@@ -36,7 +36,6 @@ public class InscriptionDAOImpl
 		  try{
 			  Inscription inscription = (Inscription) em.createQuery("SELECT a FROM Inscription a "
 			  		+ "WHERE a.eleve.matricule ="+eleve.getMatricule()+" and a.anne.code="+annee.getCode()).getSingleResult();
-
 	            return inscription;
 	        }catch(Exception ex){
 	            return null;

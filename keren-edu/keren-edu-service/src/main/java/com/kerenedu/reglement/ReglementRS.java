@@ -6,7 +6,7 @@ import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
 /**
  * Interface du service JAX-RS
- * @since Mon Jan 22 15:28:57 WAT 2018
+ * @since Tue Mar 06 16:43:59 CET 2018
  * 
  */
 public interface ReglementRS

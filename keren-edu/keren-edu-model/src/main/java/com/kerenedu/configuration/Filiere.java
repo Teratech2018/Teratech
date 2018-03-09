@@ -4,19 +4,12 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.kerenedu.school.Contacts;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -120,11 +113,6 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 	}
 
 
-	@Override
-	public int compareTo(Filiere o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	@Override
 	public String getEditTitle() {
@@ -155,6 +143,12 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 	public boolean isCreateonfield() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	public int compareTo(Filiere o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+
 import com.megatim.common.annotations.Predicate;
 
 /**

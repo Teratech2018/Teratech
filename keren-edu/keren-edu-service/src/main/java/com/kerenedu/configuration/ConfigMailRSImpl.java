@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
@@ -55,14 +57,10 @@ public class ConfigMailRSImpl
   		try {	
 			MetaData meta =  MetaDataUtil.getMetaData(new ConfigMail(), new HashMap<String, MetaData>(),new ArrayList<String>());
   			return meta;
-  		} catch (InstantiationException e) {
-  			// TODO Auto-generated catch block
-  			e.printStackTrace();
-  		} catch (IllegalAccessException e) {
-  			// TODO Auto-generated catch block
-  			e.printStackTrace();
-  		}
-  		return null;
+  		}  catch (Exception e) {
+   			// TODO Auto-generated catch block
+   			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
+   		} 
   	}
 
 }

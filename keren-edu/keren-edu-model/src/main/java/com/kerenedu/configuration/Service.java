@@ -6,21 +6,19 @@ package com.kerenedu.configuration;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.school.DossierMedical;
-import com.kerenedu.school.Nationalite;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -32,24 +30,25 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_service")
 public class Service extends BaseElement implements Serializable, Comparable<Service> {
 	
-
-	@ManyToOne
-    @JoinColumn(name = "FILIERE_ID")
-	@Predicate(label="FILIERE",updatable=true,type=Filiere.class , target="many-to-one",search=true , sequence=1)
-    protected Filiere filiere;
+	
+	@ManyToMany(fetch = FetchType.LAZY )
+    @JoinColumn(name = "FILL_ID")
+	@Predicate(label = "Filiere concernées",target = "many-to-many-list",type = Filiere.class,search = true,sequence=1)
+	private List<Filiere> filiere = new ArrayList<Filiere>();
 	
 	@Column(name = "LIBELLE")	
-	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true, sequence=2)
+	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true, sequence=2,colsequence=1)
 	protected String libelle;
 	
-	@Column(name = "MONTANT")	
-	@Predicate(label="MONTANT",optional=true,updatable=false,search=true, sequence=3,type=BigDecimal.class , editable=false )
+	@Column(name = "MNT" )	
+	@Predicate(label="MONTANT",optional=false,updatable=true,search=true, type=BigDecimal.class, sequence=3,colsequence=3)
 	protected BigDecimal zMnt;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "FRAIS_ID")
-	@Predicate(label = "Liste Frais",target = "one-to-many",type = FraisScolaire.class,search = false, group=true,groupLabel="Frais",groupName="Frais Scolaire")
-	private List<FraisScolaire> fraisScolaire = new ArrayList<FraisScolaire>();
+	@Column(name = "DELAI")
+	@Predicate(label="DELAI PAIEMENT",optional=false,updatable=true,search=true, type=Date.class,sequence=4, target="date" )
+	@Temporal(javax.persistence.TemporalType.DATE)
+	protected Date delai;
+
 	
 
 	public Service() {
@@ -61,34 +60,17 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	public Service(Service service) {
 		super(service.id, service.designation, service.moduleName);
 		this.filiere = service.filiere;
-		this.libelle=service.libelle;
 		this.zMnt=service.zMnt;
-		fraisScolaire= new ArrayList<FraisScolaire>();
+		this.delai=service.delai;
+		filiere= new ArrayList<Filiere>();
+		this.libelle=service.libelle;
 		
 //		for(FraisScolaire frais:service.fraisScolaire){
 //			fraisScolaire.add(new FraisScolaire(frais));
 //	    }
 	}
 
-	
-	/**
-	 * @return the filiere
-	 */
-	public Filiere getFiliere() {
-		return filiere;
-	}
-
-	/**
-	 * @param filiere the filiere to set
-	 */
-	public void setFiliere(Filiere filiere) {
-		this.filiere = filiere;
-	}
-
-	
-
-
-		
+			
 
 	@Override
 	public int hashCode() {
@@ -118,18 +100,12 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
-
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return filiere.libelle;
-	}
-
-
-	public String getLibelle() {
 		return libelle;
 	}
-
+	
 
 	public BigDecimal getzMnt() {
 
@@ -142,20 +118,36 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	}
 
 
+	public Date getDelai() {
+		return delai;
+	}
+
+
+	public void setDelai(Date delai) {
+		this.delai = delai;
+	}
+
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
 
 
-	public List<FraisScolaire> getFraisScolaire() {
-		return fraisScolaire;
+	public List<Filiere> getFiliere() {
+		return filiere;
 	}
 
 
-	public void setFraisScolaire(List<FraisScolaire> fraisScolaire) {
-		this.fraisScolaire = fraisScolaire;
+	public void setFiliere(List<Filiere> filiere) {
+		this.filiere = filiere;
 	}
-	
+
+
 	
 
 }

@@ -4,7 +4,6 @@
 package com.kerenedu.personnel;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -12,12 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.core.tools.EnmHeureCours;
-import com.kerenedu.configuration.AnneScolaire;
-import com.kerenedu.configuration.Matiere;
+import com.kerenedu.notes.CoefMatiereDetail;
+
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -26,7 +24,7 @@ import com.megatim.common.annotations.Predicate;
  */
 
 @Table
-@Entity(name = "e_tranchehoriarecours")
+@Entity(name = "e_th_cours")
 public class TrancheHoraireCours extends BaseElement implements Serializable, Comparable<TrancheHoraireCours> {
 	
 		
@@ -37,22 +35,25 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	
 	@Column(name = "HEURE_FIN")
 	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="HEURE FIN (Ex:7:30)",optional=false,updatable=false,search=true, type=String.class, sequence=4, pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
+	@Predicate(label="HEURE FIN (Ex:7:30)",optional=false,updatable=true,search=true, type=String.class, sequence=4, pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
 	protected String heurefin;
 	
 	@Column(name = "ZNHT")
-	@Predicate(label="HEURE TOTAL",optional=false,updatable=false,search=false, type=Long.class, target="time", sequence=5, hide=true)
+	@Predicate(label="HEURE TOTAL",optional=true,updatable=false,search=false, type=Long.class, target="time", sequence=5, hide=true)
 	protected Long heuretotal;
 
 	@ManyToOne
-	@JoinColumn(name = "MATIERE_ID")
-	@Predicate(label="MATIERE",updatable=true,type=Matiere.class , target="many-to-one",search=true , sequence=1	)
-	protected Matiere matiere;
+	@JoinColumn(name = "MAT_PROF_ID")
+	@Predicate(label="MATIERE",updatable=true,type=CoefMatiereDetail.class , target="many-to-one",search=true , sequence=1, optional=false	)
+	protected CoefMatiereDetail matiere= new CoefMatiereDetail();
 	
-	@ManyToOne
-	@JoinColumn(name = "PROF_ID")
-	@Predicate(label="PROFESSEUR",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=3	)
-	protected Professeur professeur;
+//	@ManyToOne
+//	@JoinColumn(name = "PROF_ID")
+//	//@Predicate(label="MATIERE.",updatable=true,type=Matiere.class , target="many-to-one",search=true , sequence=1	)
+//	protected Professeur prof;
+	
+	
+
 
 //	@ManyToOne
 //	@JoinColumn(name = "ANNEE_ID")
@@ -66,14 +67,13 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	}
 
 
-	public TrancheHoraireCours(Matiere matiere,String heuredebut, String heurefin, Long heuretotal,Professeur professeur) {
+	public TrancheHoraireCours(CoefMatiereDetail matiere,String heuredebut, String heurefin, Long heuretotal) {
 		super();
 		this.heuredebut = heuredebut;
 		this.heuretotal = heuretotal;
 		this.heurefin = heurefin;
 		//this.anneScolaire = anneScolaire;
 		this.matiere=matiere;
-		this.professeur=professeur;
 	}
 
 
@@ -81,20 +81,18 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 		super(ins.id, ins.designation, ins.moduleName);
 		
 	//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
-		this.matiere= new Matiere(ins.matiere);
+		this.matiere= new CoefMatiereDetail(ins.matiere);
 		this.heurefin = ins.heurefin;
 		this.heuredebut = ins.heuredebut;
 		this.heuretotal = ins.heuretotal;
-		this.professeur = new Professeur(ins.professeur);
 	
 	}
 
 	public TrancheHoraireCours(EnmHeureCours ins) {		
 	//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
-		this.matiere= new Matiere();
+		this.matiere= new CoefMatiereDetail();
 		this.heurefin = ins.getHfin();
 		this.heuredebut = ins.getHdeb();
-		this.professeur= new Professeur();
 	
 	}
 
@@ -138,9 +136,6 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	}
 
 
-	
-
-
 	public String getHeuredebut() {
 		return heuredebut;
 	}
@@ -171,22 +166,13 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	}
 
 
-	public Matiere getMatiere() {
+	public CoefMatiereDetail getMatiere() {
 		return matiere;
 	}
 
 
-	public Professeur getProfesseur() {
-		return professeur;
-	}
 
-
-	public void setProfesseur(Professeur professeur) {
-		this.professeur = professeur;
-	}
-
-
-	public void setMatiere(Matiere matiere) {
+	public void setMatiere(CoefMatiereDetail matiere) {
 		this.matiere = matiere;
 	}
 

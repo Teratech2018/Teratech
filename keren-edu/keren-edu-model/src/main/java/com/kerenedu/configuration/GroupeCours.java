@@ -141,7 +141,7 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Module";
+		return "Gestion des Modules";
 	}
 
 	@Override

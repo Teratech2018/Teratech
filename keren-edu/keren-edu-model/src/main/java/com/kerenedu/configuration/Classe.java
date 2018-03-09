@@ -49,13 +49,12 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
     protected Niveau niveau;
 	
 	@Column(name = "TYP_FORMATION")
-	@Predicate(label="TYPE FORMATION ",optional=false,updatable=true,search=true, target="combobox", 
-	values="cours du jours;cours du soir" , sequence=4, colsequence=4)
+	@Predicate(label="TYPE FORMATION ",optional=false,updatable=true,search=false, target="combobox", values="cours du jours;cours du soir" , sequence=4, colsequence=4)
 	protected String typeformation="0";
 	
 	@Column(name = "EFFECTIF" ,unique=true)	
-	@Predicate(label="EFFECTIF",updatable=true,search=false , sequence=4, type=Long.class, editable=false)
-	protected Long effectif;
+	@Predicate(label="EFFECTIF",updatable=true,search=true , sequence=4, type=Long.class, editable=false)
+	protected Long effectif= new Long(0);
 	
 	@ManyToOne
     @JoinColumn(name = "PROF_ID")
