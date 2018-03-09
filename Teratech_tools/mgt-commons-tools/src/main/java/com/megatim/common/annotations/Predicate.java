@@ -62,7 +62,21 @@ public @interface Predicate {
     
     short colsequence() default 0;
     
+    //Champs calculer
+    boolean compute() default false;
+    
     //Si true permet d'activer la construction de pied personalisé
     boolean customfooter() default false;
     
+    /**
+     * contient le regle pour masque un champs
+     * @return 
+     */
+    String hidden() default "";
+    
+    /**
+     * Marquer pour objet observe
+     * @return 
+     */
+    boolean observable() default false;
 }
