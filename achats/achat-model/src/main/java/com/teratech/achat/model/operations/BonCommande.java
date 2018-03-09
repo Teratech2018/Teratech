@@ -46,6 +46,7 @@ public class BonCommande extends DocumentAchat implements Serializable{
     private ConditionPaiement condreglement ;
     
     @OneToMany(mappedBy = "docachat",fetch = FetchType.LAZY)
+//    @Predicate(label = "Factures",type = Facture.class,target = "one-to-many",editable = false,group = true,groupName = "group4",groupLabel = "Factures")
     private List<Facture> factures = new ArrayList<Facture>();
     
     /**

@@ -219,7 +219,7 @@ public class DemandePrixRSImpl
                 throw new KerenExecption("Veuillez fournir le puht");
             }else if(lign.getQuantite()==null||lign.getQuantite()==0){
                 throw new KerenExecption("Veuillez fournir la quantité voulue");
-            }else if(lign.getTaxe()==null){
+            }else if(lign.getTaxes()==null&&lign.getTaxes().isEmpty()){
                 throw new KerenExecption("Veuillez saisir la taxe appliquée");
             }
         }//end for(LigneDocumentAchat lign:entity.getLignes())

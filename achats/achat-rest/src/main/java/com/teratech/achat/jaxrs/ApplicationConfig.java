@@ -46,10 +46,13 @@ public class ApplicationConfig extends Application {
         resources.add(com.teratech.achat.jaxrs.impl.base.UniteAchatRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.base.UniteGestionRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.base.UtilisateurRSImpl.class);
+        resources.add(com.teratech.achat.jaxrs.impl.comptabilite.AcompteRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.comptabilite.CompteAnalytiqueRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.comptabilite.CompteRSImpl.class);
+        resources.add(com.teratech.achat.jaxrs.impl.comptabilite.EcheanceReglementRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.comptabilite.ExerciceComptableRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.comptabilite.JournalComptableRSImpl.class);
+        resources.add(com.teratech.achat.jaxrs.impl.comptabilite.ModeReglementRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.comptabilite.NiveauAnalyseRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.comptabilite.SectionAnalytiqueRSImpl.class);
         resources.add(com.teratech.achat.jaxrs.impl.comptabilite.TaxeRSImpl.class);

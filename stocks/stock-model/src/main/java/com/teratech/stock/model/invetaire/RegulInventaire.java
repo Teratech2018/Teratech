@@ -95,7 +95,7 @@ public class RegulInventaire extends BaseInventaire implements Serializable{
         states.add(state);
         state = new State("confirme", "En cours");
         states.add(state);
-        state = new State("valider", "Terminé");
+        state = new State("termine", "Terminé");
         states.add(state);
         return states; //To change body of generated methods, choose Tools | Templates.
     }

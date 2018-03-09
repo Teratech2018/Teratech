@@ -53,7 +53,7 @@ public interface BonReceptionRS
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("facture")
-    public Facture facture(@Context HttpHeaders headers,BonReception entity);
+    public BonReception facture(@Context HttpHeaders headers,BonReception entity);
     
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})

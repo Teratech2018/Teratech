@@ -58,7 +58,7 @@ angular.module('keren.core.commons')
                 };
 }]);
 angular.module('keren.core.commons')
-        .factory('commonsTools',function(){
+        .factory('commonsTools',function($filter){
             //Liste des contraintes
             var uniqueContraints = new Array();
             var stopTimer = 0;
@@ -739,7 +739,7 @@ angular.module('keren.core.commons')
              * @returns {undefined}
              */
             getMetaField:function(meta,fieldName){
-                console.log("getMetaField === "+fieldName+" == "+angular.toJson(metav));
+//                console.log("getMetaField === "+fieldName+" == "+angular.toJson(metav));
                 if(meta && fieldName){
                     for(var i=0 ; i<meta.columns.length;i++){
                         if(meta.columns[i].fieldName==fieldName){
@@ -791,7 +791,7 @@ angular.module('keren.core.commons')
                             total += data[fieldName];
                         }//end for(var i=0;i<datas.length;i++)
 //                        console.log("$scope.tableListComponent === "+fieldName+" === "+total);
-                        return total;
+                        return $filter('number')(total,0);
                     }//end if(angular.isNumber(data[fieldName]))
                     
                 }//else{return 0;}end if(datas && datas.length>0)
@@ -803,7 +803,7 @@ angular.module('keren.core.commons')
              * @param {type} datas
              * @returns {undefined}
              */
-            sumListExpr:function(expr, datas){
+            sumListExpr:function(expr, datas,object,user){
                 var exprA = expr.split(','); 
                 if(datas && datas.length>0){
                     /* if(exprA.length==1){
@@ -830,7 +830,7 @@ angular.module('keren.core.commons')
 //                        console.log(" expeval:function(obj,currentObject,currentUser  , expr)=="+expr+" ===== "+exprA+" ===== ");                
                         var total = 0;
                         for(var i=0;i<datas.length;i++){
-                            var value=this.expeval(datas[i],null,null,expr);
+                            var value=this.expeval(datas[i],object,user,expr);
                             if(value && angular.isNumber(value)){
                                 total += value;
                             }
@@ -840,7 +840,38 @@ angular.module('keren.core.commons')
                     
                     return total;
                 }else{return 0;}//end if(datas && datas.length>0)
-            }, /**
+            }, 
+            funcEval:function(obj,currentObject,currentUser  , expr){
+                var entity = angular.fromJson(expr);
+                var data = obj;
+                if(entity.source=='this'){
+                    data = obj;
+                }else if(entity.source=='object'){
+                    data = currentObject;
+                }else if(entity.source=='user'){
+                    data = currentUser;
+                }
+                data = data[entity.data];
+                if(entity.op=="sum"){
+                    return this.sum(data,entity.field);
+                }
+                return "0";
+            },
+            /**
+             * 
+             * @param {type} datas
+             * @param {type} field
+             * @returns {Number}
+             */
+            sum:function(datas , field){
+                var result = 0 ;
+                for(var i=0;i<datas.length;i++){
+                    var data =datas[i];
+                    result +=data[field];
+                }
+                return result;
+            },
+            /**
               * Expression evaluation
               * @param {type} obj
               * @param {type} currentObject
@@ -848,9 +879,11 @@ angular.module('keren.core.commons')
               * @param {type} expr
               * @returns {undefined}
               */
-             expeval:function(obj,currentObject,currentUser  , expr){  
+             expeval:function(obj,currentObject,currentUser  , expr){ 
+//                 console.log("commonsTools.expeval:function(obj,currentObject,currentUser  , expr) =============== "+obj+" ::::  === "+currentObject+" === "+expr);
+                
                  expr = ""+expr;
-                 var parts = expr.split(',');
+                 var parts = expr.split(';');
                  var exp = new String();
                  for(var i=0;i<parts.length;i++){
                      if(parts[i]=='('||parts[i]==')'||parts[i]=='*'
@@ -859,7 +892,11 @@ angular.module('keren.core.commons')
                      }else{//value
                          var ops = parts[i].split('.');
                          if(ops.length==1){
-                             exp+=parts[i];
+                             if(!isNaN((parts[i]))){
+                                 exp+=parts[i];
+                             }else{
+                                 exp+=this.funcEval(obj,currentObject,currentUser,parts[i]);
+                             }
                          }else if(ops[0]=='this'){
                              var value = obj;
                              for(var j=1;j<ops.length;j++){
@@ -948,7 +985,7 @@ angular.module('keren.core.commons')
              * @param {type} datas
              * @returns {undefined}
              */
-            tableFooterBuilder:function(script , datas,id){
+            tableFooterBuilder:function(script , datas,id,object,user){
                 var container = document.createElement('tfoot');
                 container.setAttribute("id",id);
                 container.innerHTML = script;
@@ -964,7 +1001,12 @@ angular.module('keren.core.commons')
                                 var value = colNode.textContent;                        
                                 if(value!=null&&value!=""){
 //                                    console.log("tableFooterBuilder ===  ===  ********* "+colNode.tagName+" === "+colNode.textContent);
-                                    colNode.textContent = this.sumListExpr(value,datas);
+                                    var data = this.sumListExpr(value,datas,object,user);
+                                    if(!isNaN(data)){
+                                        colNode.textContent = $filter('number')(data,0);
+                                    }else{ 
+                                       colNode.textContent = data; 
+                                    }//end if(!isNaN(data))
                                 }//end if(value!=null&&value!="")
                             }//end if(colNode.tagName=='TD')
                         }//end for(var j=0;j<rowNode.childNodes.length;j++){
@@ -1486,3 +1528,67 @@ angular.module('keren.core.commons')
 
      };
 });
+//Javascript observer design pattern implementations
+/**
+ * Observable class
+ * declaration de l'observable
+ */
+var Observable = function(){
+    this.observers = new Array();
+};
+
+/**
+ * Fonction de l'object observable
+ */
+Observable.prototype = {
+    
+    //enregistrement un observer a recevoir des notifications
+    register:function(observer){
+        if(angular.isDefined(observer)){
+            this.observers.push(observer);           
+        }//end if(angular.isDefined(observer))
+        return this;
+    },
+    //envoie une notification a tous les observers enregistres
+    notifyObservers:function(event , parameters){
+        for(var i=0;i<this.observers.length;i++){
+            var observer = this.observers[i];
+            observer.notify(event,parameters);
+        }//end for(var i=0;i<this.observers.length;i++)
+    }
+};
+// gestion de l'héritage
+function extend(C, P) {
+  var F = function () {};
+  F = P;
+  F.prototype = $.extend(P.prototype, C.prototype);
+  C.prototype = new F();
+  C.uber = P.prototype;
+  C.prototype.constructor = C;
+}
+/**
+ * Declaration de l'observable
+ */
+var Observer = function(){
+   this.observers = new Array(); 
+} ;
+
+/**
+ * fonctions de l'object observable
+ */
+Observer.prototype = {
+    register:function(observable){
+       this.observable = observable;
+       this.notifyMe();
+       return this;
+    },
+    notifyMe:function(){
+        this.observable.register(this);
+    },
+    notifyObservers:function(event , parameters){
+        this.observable.notifyObservers(event,parameters);
+    },
+    notify:function(event , parameters){
+        return this;
+    }
+};

@@ -28,10 +28,10 @@ public interface BonCommandeRS
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("confirme")
+    @Path("envoye")
     public BonCommande envoyer(@Context HttpHeaders headers,BonCommande entity);
     
-     @PUT
+    @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("confirme")
@@ -52,8 +52,8 @@ public interface BonCommandeRS
      @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("annule")
-    public Facture facture(@Context HttpHeaders headers,BonCommande entity);
+    @Path("facture")
+    public BonCommande facture(@Context HttpHeaders headers,BonCommande entity);
     
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})

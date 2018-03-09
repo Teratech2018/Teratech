@@ -13,9 +13,11 @@ import com.teratech.achat.core.ifaces.operations.BonCommandeManagerLocal;
 import com.teratech.achat.core.ifaces.operations.BonCommandeManagerRemote;
 import com.teratech.achat.dao.ifaces.operations.BonCommandeDAOLocal;
 import com.teratech.achat.dao.ifaces.operations.BonReceptionDAOLocal;
+import com.teratech.achat.dao.ifaces.operations.FactureDAOLocal;
 import com.teratech.achat.model.operations.BonCommande;
 import com.teratech.achat.model.operations.BonReception;
 import com.teratech.achat.model.operations.DocumentAchatState;
+import com.teratech.achat.model.operations.Facture;
 import com.teratech.achat.model.operations.LigneDocumentAchat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,10 @@ public class BonCommandeManagerImpl
     
     @EJB(name = "BonReceptionDAO")
     protected BonReceptionDAOLocal receptiondao;
+    
+    @EJB(name = "FactureDAO")
+    protected FactureDAOLocal facturedao;  
+    
 
     public BonCommandeManagerImpl() {
     }
@@ -79,6 +85,9 @@ public class BonCommandeManagerImpl
         for(LigneDocumentAchat lign:data.getLignes()){
             result.getLignes().add(new LigneDocumentAchat(lign));
         }
+//        for(Facture fac:data.getFactures()){
+//            result.getFactures().add(new Facture(fac));
+//        }
         return result;
     }
 
@@ -101,6 +110,7 @@ public class BonCommandeManagerImpl
             entity.setState("confirme");
         }
         dao.update(entity.getId(), entity);
+//        System.out.println(BonCommandeManagerImpl.class.toString()+" =================== "+entity);
         return entity;
     }
 
@@ -125,6 +135,24 @@ public class BonCommandeManagerImpl
         //To change body of generated methods, choose Tools | Templates.
         entity.setState("annule");
         dao.update(entity.getId(), entity);
+        return entity;
+    }
+
+    @Override
+    public BonCommande facture(BonCommande entity) {
+         //To change body of generated methods, choose Tools | Templates.
+        //To change body of generated methods, choose Tools | Templates.
+        Facture facture = new Facture(entity);
+        facture.setId(-1);
+        for(LigneDocumentAchat lign:entity.getLignes()){
+            LigneDocumentAchat lignefacture = new LigneDocumentAchat(lign);
+            lignefacture.setId(-1);
+            lign.setQtefacturee(lign.getQuantite());
+            facture.getLignes().add(lignefacture);
+        }//end for(LigneDocumentAchat lign:entity.getLignes())
+        dao.update(entity.getId(), entity);
+        //Sauvegarde de la facture
+        facturedao.save(facture);
         return entity;
     }
 

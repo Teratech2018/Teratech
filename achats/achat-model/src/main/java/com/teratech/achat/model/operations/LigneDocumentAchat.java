@@ -6,13 +6,18 @@
 package com.teratech.achat.model.operations;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.achat.model.base.Article;
 import com.teratech.achat.model.comptabilite.Taxe;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,7 +34,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
 
     @ManyToOne
     @JoinColumn(name = "ART_ID")
-    @Predicate(label = "Article",type = Article.class,target = "many-to-one",optional = false,search = true)
+    @Predicate(label = "Article",type = Article.class,target = "many-to-one",optional = false,search = true,observable = true)
     private Article article ;    
     
     @Temporal(TemporalType.DATE)
@@ -51,17 +56,19 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
     private Double quantite ;
     
     @Predicate(label = "Prix HT",type = Double.class,search = true)
+    @Observer(observable = "article",source = "{\"filedname\":\"puachat\"}")
     private Double puht ;
     
-    @ManyToOne
-    @JoinColumn(name = "TAXE_ID")
-    @Predicate(label = "Taxe",type = Taxe.class,target = "many-to-one",optional = false,search = true)
-    private Taxe taxe ;
+    @ManyToMany
+    @JoinTable(name = "T_LIDOAC_TA",joinColumns = @JoinColumn(name = "LIDOAC_ID")
+            ,inverseJoinColumns = @JoinColumn(name = "TAXE_ID"))    
+    @Predicate(label = "Taxes",type = Taxe.class,target = "many-to-many",optional = false,search = false)
+    private List<Taxe> taxes =new ArrayList<Taxe>();
     
     @Predicate(label = "Remise(%)",type = Double.class,search = true)
     private Double remise = 0.0;
     
-    @Predicate(label = "Sous-total",type = Double.class,compute = true,values = "this.quantite,*,this.puht,*,(,100,-,this.remise,),/,100",hide =true ,search = true)
+    @Predicate(label = "Sous-total",type = Double.class,compute = true,values = "this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100",hide =true ,search = true)
     private Double totalht ;
     
     private Double qtefacturee = 0.0;
@@ -69,8 +76,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
     
     private Double stokdispo = 0.0;
     
-    @ManyToOne
-    @JoinColumn(name = "LIDOAC_ID")
+    @Transient
     private LigneDocumentAchat ligneachat ;
 
     /**
@@ -122,8 +128,11 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
         this.quantite = ligne.quantite;
         this.puht = ligne.puht;
         this.totalht = ligne.totalht;
-        if(ligne.taxe!=null){
-            this.taxe = new Taxe(ligne.taxe);
+        if(ligne.taxes!=null){
+            
+            for(Taxe taxe:ligne.taxes){
+                this.taxes.add(new Taxe(taxe));
+            }
         }
         this.remise = ligne.remise;
         this.code = ligne.code;
@@ -178,12 +187,12 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
         this.totalht = totalht;
     }
 
-    public Taxe getTaxe() {
-        return taxe;
+    public List<Taxe> getTaxes() {
+        return taxes;
     }
 
-    public void setTaxe(Taxe taxe) {
-        this.taxe = taxe;
+    public void setTaxes(List<Taxe> taxe) {
+        this.taxes = taxe;
     }
 
     public Double getRemise() {

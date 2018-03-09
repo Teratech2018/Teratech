@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -26,6 +28,10 @@ public class BonReception extends DocumentAchat implements Serializable{
 
     @Predicate(label = "Document d'origine")
     private String origine ;
+    
+    @OneToMany(mappedBy = "docachat",fetch = FetchType.LAZY)
+//    @Predicate(label = "Factures",type = Facture.class,target = "one-to-many",editable = false,group = true,groupName = "group4",groupLabel = "Factures")
+    private List<Facture> factures = new ArrayList<Facture>();
     /**
      * 
      * @param code
@@ -95,7 +101,27 @@ public class BonReception extends DocumentAchat implements Serializable{
         this.origine = origine;
     }
     
+     @Override
+    public boolean isActivatefollower() {
+        return true; //To change body of generated methods, choose Tools | Templates.
+    }
     
+    
+    @Override
+    public boolean isActivefilelien() {
+        return true; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSerial() {
+        return "bc270220181144"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isCreateonfield() {
+        return false; //To change body of generated methods, choose Tools | Templates.
+    }
+
 
      @Override
     public List<State> getStates() {
@@ -123,6 +149,15 @@ public class BonReception extends DocumentAchat implements Serializable{
     public String getEditTitle() {
         return "BON DE RECEPTION"; //To change body of generated methods, choose Tools | Templates.
     }
+
+    public List<Facture> getFactures() {
+        return factures;
+    }
+
+    public void setFactures(List<Facture> factures) {
+        this.factures = factures;
+    }
+    
     
     
 }

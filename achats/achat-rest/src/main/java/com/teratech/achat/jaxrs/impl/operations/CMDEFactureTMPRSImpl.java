@@ -59,7 +59,9 @@ public class CMDEFactureTMPRSImpl
     @Override
     public MetaData getMetaData(HttpHeaders headers) {
         try {
-            return MetaDataUtil.getMetaData(new Facture(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
+            MetaData meta =  MetaDataUtil.getMetaData(new Facture(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
+            meta.setDesablecreate(true);
+            return meta;
         } catch (InstantiationException ex) {
             Logger.getLogger(CMDEFactureTMPRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -122,7 +124,7 @@ public class CMDEFactureTMPRSImpl
                 throw new KerenExecption("Veuillez fournir le puht");
             }else if(lign.getQuantite()==null||lign.getQuantite()==0){
                 throw new KerenExecption("Veuillez fournir la quantité voulue");
-            }else if(lign.getTaxe()==null){
+            }else if(lign.getTaxes()==null&&lign.getTaxes().isEmpty()){
                 throw new KerenExecption("Veuillez saisir la taxe appliquée");
             }else if(lign.getStokdispo()<lign.getQuantite()){
                 throw new KerenExecption("Quantité insuffisante article:"+lign.getDesignation()+" quantité dispo :"+lign.getStokdispo());

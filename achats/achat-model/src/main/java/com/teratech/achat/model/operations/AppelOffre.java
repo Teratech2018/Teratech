@@ -7,6 +7,7 @@ package com.teratech.achat.model.operations;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.achat.model.base.Tier;
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -46,7 +48,7 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
     @Predicate(label = "Date limite de soumission",type = Date.class,target = "date",search = true)
     private Date deadline ;
     
-    @Predicate(label = "Type de sélection",target = "combobox" ,values = "Choisir une seule demande de prix(exclusive);Choisir plusieurs demandes de prix")
+    @Predicate(label = "Type de sélection",target = "combobox" ,updatable = false,values = "Choisir une seule demande de prix(exclusive);Choisir plusieurs demandes de prix")
     private String typeselection = "0";
     
     @Temporal(TemporalType.DATE)
@@ -63,9 +65,17 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
     @Predicate(label = "COND",target = "textarea",group = true,groupName = "group3",groupLabel = "Conditions générales")
     private String commentaire ;
     
+//    @ManyToOne
+//    @JoinColumn(name = "DEPR_ID")
+//    @Predicate(label = "Demande de prix",type = DemandePrix.class,target = "many-to-one",hidden = "currentObject.typeselection=='1' || currentObject.state=='etabli'")
+//    @Filter(value = "[{\"fieldName\":\"state\",\"value\":\"confirme\"}]")
+//    private DemandePrix offre ;
+    
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "appeloffre")
-    @Predicate(label ="AP",type = DemandePrix.class,target = "one-to-many",editable = false,group = true,groupName = "group2",groupLabel = "Offres ")
+    @Predicate(label ="AP",type = DemandePrix.class,target = "many-to-many-list",editable = false,group = true,groupName = "group2",groupLabel = "Offres ",hidden = "currentObject.state=='etabli' || currentObject.state=='' || currentObject.state==null")
+    @Filter(value = "[{\"fieldName\":\"state\",\"value\":\"confirme\"}]")
     private List<DemandePrix> offres = new ArrayList<DemandePrix>();
+    
     
     private String state="etabli";
 
@@ -116,7 +126,10 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
         this.reference = ap.reference;
         if(ap.responsable!=null){
             this.responsable = new Tier(ap.responsable);
-        }
+        }//end if(ap.responsable!=null)
+//        if(ap.offre!=null){
+//            this.offre = new DemandePrix(ap.offre);
+//        }
         this.deadline = ap.deadline;
         this.datecommande = ap.datecommande;
         this.commentaire = ap.commentaire;
@@ -181,6 +194,22 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
     public void setState(String state) {
         this.state = state;
     }
+
+    public List<DemandePrix> getOffres() {
+        return offres;
+    }
+
+    public void setOffres(List<DemandePrix> offres) {
+        this.offres = offres;
+    }
+
+//    public DemandePrix getOffre() {
+//        return offre;
+//    }
+//
+//    public void setOffre(DemandePrix offre) {
+//        this.offre = offre;
+//    }
     
     
 
@@ -221,6 +250,8 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
         state = new State("selection", "Sélection des offres");
         states.add(state);
         state = new State("boncommande", "Bon commande crée");
+        states.add(state);
+        state = new State("annule", "Annuler");
         states.add(state);
         return states; //To change body of generated methods, choose Tools | Templates.
     }

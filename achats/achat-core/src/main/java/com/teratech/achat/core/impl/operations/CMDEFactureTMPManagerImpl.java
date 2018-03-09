@@ -56,6 +56,21 @@ public class CMDEFactureTMPManagerImpl
         return "id";
     }
 
+    /**
+     * 
+     * @param data
+     * @return 
+     */
+    private boolean isValideBC(BonCommande data){
+//       boolean result = false;
+       for(LigneDocumentAchat ligne:data.getLignes()){
+           if(ligne.qtenonfacturee()>0){
+               return true ;
+           }
+       }
+       return false;
+    }
+    
     @Override
     public List<Facture> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
         RestrictionsContainer container = RestrictionsContainer.newInstance();
@@ -65,9 +80,11 @@ public class CMDEFactureTMPManagerImpl
         List<BonCommande> datas = cmdedao.filter(predicats, orders, properties, firstResult, maxResult);
         List<Facture> result = new ArrayList<Facture>();
         for(BonCommande bc:datas){
-            Facture facture = new Facture(bc);
-            facture.setId(bc.getId());
-            result.add(facture);
+            if(isValideBC(bc)){
+                Facture facture = new Facture(bc);
+                facture.setId(bc.getId());
+                result.add(facture);
+            }//end if(isValideBC(bc))
         }
         return result; //To change body of generated methods, choose Tools | Templates.
     }
@@ -104,13 +121,19 @@ public class CMDEFactureTMPManagerImpl
     @Override
     public Facture update(Long id, Facture entity) {
         entity.setId(-1);
-        for(LigneDocumentAchat ligne:entity.getLignes()){
-            ligne.setId(-1);
-            if(ligne.getLigneachat()!=null){
-                ligne.getLigneachat().addQuantitefacturee(ligne.getQuantite());
-            }
-            lignedao.update(ligne.getLigneachat().getId(), ligne.getLigneachat());
-        }//end for(LigneDocumentAchat ligne:entity.getLignes())
+        if(entity.getDocachat()!=null){
+            BonCommande bon = cmdedao.findByPrimaryKey("id", entity.getDocachat().getId());
+            //Construction
+           for(LigneDocumentAchat ligne:entity.getLignes()){
+                ligne.setId(-1);                        
+                for(LigneDocumentAchat lig:bon.getLignes()){
+                    if(lig.getArticle().compareTo(ligne.getArticle())==0 && lig.getQuantite()>=ligne.getQuantite()){
+                        lig.addQuantitefacturee(ligne.getQuantite());                        
+                    }//endif(ligne.getId()==ligne.getLigneachat().getId())
+                }//end for(LigneDocumentAchat lig:bon.getLignes())
+            }//end for(LigneDocumentAchat ligne:entity.getLignes())
+            cmdedao.update(bon.getId(), bon);
+        }//end if(entity.getDocachat()!=null)
         return super.save(entity); //To change body of generated methods, choose Tools | Templates.
     }
     

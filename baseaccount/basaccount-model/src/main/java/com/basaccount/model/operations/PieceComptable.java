@@ -58,7 +58,7 @@ public class PieceComptable extends BaseElement implements Serializable,Comparab
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "PIEC_ID")
     @Predicate(label="Ecritures",group = true,groupLabel = "ECRITURES",groupName = "group1",type = EcritureComptable.class,target = "one-to-many",customfooter = true)
-    @TableFooter(value = "<tr style='border:none;'> <td></td><td></td><td></td><td></td><td>Total Debit</td><td></td> <td>this.debit</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td>Total Credit</td><td></td> <td>this.credit</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td>Solde</td><td></td><td>this.debit,-,this.credit</td> </tr>")
+    @TableFooter(value = "<tr style='border:none;'> <td></td><td></td><td></td><td></td><td>Total Debit</td><td></td> <td>this.debit</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td>Total Credit</td><td></td> <td>this.credit</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td>Solde</td><td></td><td>this.debit;-;this.credit</td> </tr>")
     private List<EcritureComptable> ecritures = new ArrayList<EcritureComptable>();
     
     @ManyToOne

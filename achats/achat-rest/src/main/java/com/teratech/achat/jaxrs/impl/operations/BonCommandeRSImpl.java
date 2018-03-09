@@ -173,10 +173,7 @@ public class BonCommandeRSImpl
         }else if(entity.getState().equalsIgnoreCase("confirme")){
             throw new KerenExecption("Ce bon de commande est déjà confirmé");
         }
-        validateLigneDP(entity);
-        if(entity.getState().equalsIgnoreCase("etabli")){
-            entity.setState("confirme");
-        }
+        validateLigneDP(entity);        
         manager.confirmer(entity);
         return entity;
     }
@@ -237,14 +234,38 @@ public class BonCommandeRSImpl
                 throw new KerenExecption("Veuillez fournir le puht");
             }else if(lign.getQuantite()==null||lign.getQuantite()==0){
                 throw new KerenExecption("Veuillez fournir la quantité voulue");
-            }else if(lign.getTaxe()==null){
-                throw new KerenExecption("Veuillez saisir la taxe appliquée");
             }
         }//end for(LigneDocumentAchat lign:entity.getLignes())
     }
 
     @Override
-    public Facture facture(HttpHeaders headers, BonCommande entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public BonCommande facture(HttpHeaders headers, BonCommande entity) {
+         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("Veuillez saisir la reference");
+        }else if(entity.getDatecommande()==null){   
+           throw new KerenExecption("Veuillez saisir la date de la commande");
+        }else if(entity.getFornisseur()==null){
+            throw new KerenExecption("Veuillez saisir le fournisseur");
+        }else if(entity.getEmplacement()==null){
+            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
+        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+            throw new KerenExecption("Veuillez saisir au moins un article");
+        }
+        validateLigneDP(entity);
+        if(!isValideBC(entity)){
+            throw new KerenExecption("Ce bon de commande a déjà fait l'objet d'un facturation");
+        }//end if(!isValideBC(entity))
+        //To change body of generated methods, choose Tools | Templates.
+        return manager.facture(entity);
+    }
+    
+    private boolean isValideBC(BonCommande data){
+//       boolean result = false;
+       for(LigneDocumentAchat ligne:data.getLignes()){
+           if(ligne.qtenonfacturee()>0){
+               return true ;
+           }
+       }
+       return false;
     }
 }

@@ -11,7 +11,9 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 import com.teratech.achat.core.ifaces.operations.DemandePrixManagerLocal;
 import com.teratech.achat.core.ifaces.operations.DemandePrixManagerRemote;
+import com.teratech.achat.dao.ifaces.operations.AppelOffreDAOLocal;
 import com.teratech.achat.dao.ifaces.operations.DemandePrixDAOLocal;
+import com.teratech.achat.model.operations.AppelOffre;
 import com.teratech.achat.model.operations.DemandePrix;
 import com.teratech.achat.model.operations.DocumentAchatState;
 import com.teratech.achat.model.operations.LigneDocumentAchat;
@@ -29,6 +31,9 @@ public class DemandePrixManagerImpl
 
     @EJB(name = "DemandePrixDAO")
     protected DemandePrixDAOLocal dao;
+    
+    @EJB(name = "AppelOffreDAO")
+    protected AppelOffreDAOLocal offredao;
 
     public DemandePrixManagerImpl() {
     }
@@ -104,6 +109,12 @@ public class DemandePrixManagerImpl
         if(entity.getState().equalsIgnoreCase("confirme")){
             entity.setState("etabli");
             entity.setTypedocument(DocumentAchatState.BONCOMMANDE);
+            if(entity.getAppeloffre()!=null){
+                AppelOffre offre = entity.getAppeloffre();
+                offre = offredao.findByPrimaryKey("id", offre.getId());
+                offre.setState("boncommande");
+                offredao.update(offre.getId(), offre);
+            }//end if(entity.getAppeloffre()!=null)
         }
          dao.update(entity.getId(), entity);
         return entity;

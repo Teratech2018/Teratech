@@ -14,6 +14,7 @@ import com.teratech.achat.core.ifaces.operations.BonReceptionManagerRemote;
 import com.teratech.achat.dao.ifaces.base.ArticleDAOLocal;
 import com.teratech.achat.dao.ifaces.operations.BonReceptionDAOLocal;
 import com.teratech.achat.dao.ifaces.operations.EntreeDAOLocal;
+import com.teratech.achat.dao.ifaces.operations.FactureDAOLocal;
 import com.teratech.achat.dao.ifaces.operations.LotDAOLocal;
 import com.teratech.achat.model.base.Article;
 import com.teratech.achat.model.base.Emplacement;
@@ -21,6 +22,7 @@ import com.teratech.achat.model.base.LienEmplacement;
 import com.teratech.achat.model.operations.BonReception;
 import com.teratech.achat.model.operations.DocumentAchatState;
 import com.teratech.achat.model.operations.Entree;
+import com.teratech.achat.model.operations.Facture;
 import com.teratech.achat.model.operations.LigneDocumentAchat;
 import com.teratech.achat.model.operations.LigneDocumentStock;
 import com.teratech.achat.model.operations.Lot;
@@ -39,8 +41,11 @@ public class BonReceptionManagerImpl
     @EJB(name = "BonReceptionDAO")
     protected BonReceptionDAOLocal dao;
     
-     @EJB(name = "EntreeDAO")
-    protected EntreeDAOLocal entreedao;    
+    @EJB(name = "EntreeDAO")
+    protected EntreeDAOLocal entreedao;  
+     
+    @EJB(name = "FactureDAO")
+    protected FactureDAOLocal facturedao;  
     
     @EJB(name = "ArticleDAO")
     protected ArticleDAOLocal articledao;
@@ -91,6 +96,9 @@ public class BonReceptionManagerImpl
         for(LigneDocumentAchat lign:data.getLignes()){
             result.getLignes().add(new LigneDocumentAchat(lign));
         }
+//        for(Facture fac:data.getFactures()){
+//            result.getFactures().add(new Facture(fac));
+//        }
         return result;
     }
 
@@ -108,7 +116,7 @@ public class BonReceptionManagerImpl
     @Override
     public BonReception confirmer(BonReception entity) {
         //To change body of generated methods, choose Tools | Templates.
-        if(entity.getState().equalsIgnoreCase("etabli")){
+        /*if(entity.getState().equalsIgnoreCase("etabli"))*/{
             entity.setState("confirme");
         }//end if(entity.getState().equalsIgnoreCase("etabli"))
         dao.update(entity.getId(), entity);
@@ -197,6 +205,23 @@ public class BonReceptionManagerImpl
         obj.setState("valider");
         entreedao.update(obj.getId(), obj);
         return obj;
+    }
+
+    @Override
+    public BonReception facturer(BonReception entity) {
+       //To change body of generated methods, choose Tools | Templates.
+        Facture facture = new Facture(entity);
+        facture.setId(-1);
+        for(LigneDocumentAchat lign:entity.getLignes()){
+            LigneDocumentAchat lignefacture = new LigneDocumentAchat(lign);
+            lignefacture.setId(-1);
+            lign.setQtefacturee(lign.getQuantite());
+            facture.getLignes().add(lignefacture);
+        }//end for(LigneDocumentAchat lign:entity.getLignes())
+        dao.update(entity.getId(), entity);
+        //Sauvegarde de la facture
+        facturedao.save(facture);
+        return entity;
     }
 
 }

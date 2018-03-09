@@ -6,7 +6,8 @@ import com.teratech.achat.model.operations.Facture;
 
 
 /**
- * Interface etendue par les interfaces locale et remote du manager
+ * Interface etendue par les interfaces locale et remote du manager
+
  * @since Fri Mar 02 08:22:57 GMT+01:00 2018
  * 
  */
@@ -15,5 +16,11 @@ public interface FactureManager
 {
 
     public final static String SERVICE_NAME = "FactureManager";
+    
+    public Facture confirmer(Facture entity);
+    
+    public Facture transfert(Facture entity);
+    
+    public Facture annule(Facture entity);
 
 }

@@ -28,6 +28,7 @@ public interface BonCommandeManager
     
     public BonCommande annuler(BonCommande entity);
     
-   
+    
+   public BonCommande facture(BonCommande entity);
 
 }

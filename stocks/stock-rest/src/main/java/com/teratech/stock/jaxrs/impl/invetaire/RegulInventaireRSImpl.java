@@ -3,6 +3,7 @@ package com.teratech.stock.jaxrs.impl.invetaire;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -80,9 +81,64 @@ public class RegulInventaireRSImpl
     }
 
     @Override
-    public RegulInventaire confirmer(HttpHeaders headers, RegulInventaire dmde) {
-        //To change body of generated methods, choose Tools | Templates.
-        return dmde;
+    protected void processBeforeUpdate(RegulInventaire entity) {
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("Veuillez renseigner le champs reference");
+        }else if(entity.getDateinventaire()==null){
+            throw new KerenExecption("Veuillez renseigner la date d'inventaire");
+        }else if(entity.getFentrepot()==null&&entity.getFemplacement()==null){
+            throw new KerenExecption("Veuillez renseigner le dépôt et (ou) l'emplacement ");
+        }else if(entity.getState().equalsIgnoreCase("termine")){
+            throw new KerenExecption("Inventaire déjà terminé");
+        }
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processBeforeSave(RegulInventaire entity) {
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("Veuillez renseigner le champs reference");
+        }else if(entity.getDateinventaire()==null){
+            throw new KerenExecption("Veuillez renseigner la date d'inventaire");
+        }else if(entity.getFentrepot()==null&&entity.getFemplacement()==null){
+            throw new KerenExecption("Veuillez renseigner le dépôt et (ou) l'emplacement ");
+        }else if(entity.getState().equalsIgnoreCase("termine")){
+            throw new KerenExecption("Inventaire déjà terminé");
+        }
+        
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processBeforeDelete(Object obj) {
+        RegulInventaire entity = manager.find("id", (Long)obj);
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("Veuillez renseigner le champs reference");
+        }else if(entity.getDateinventaire()==null){
+            throw new KerenExecption("Veuillez renseigner la date d'inventaire");
+        }else if(entity.getFentrepot()==null&&entity.getFemplacement()==null){
+            throw new KerenExecption("Veuillez renseigner le dépôt et (ou) l'emplacement ");
+        }else if(entity.getState().equalsIgnoreCase("termine")){
+            throw new KerenExecption("Inventaire déjà terminé");
+        }
+        super.processBeforeDelete(obj); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
+    @Override
+    public RegulInventaire confirmer(HttpHeaders headers, RegulInventaire entity) {
+         //To change body of generated methods, choose Tools | Templates.
+         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("Veuillez renseigner le champs reference");
+        }else if(entity.getDateinventaire()==null){
+            throw new KerenExecption("Veuillez renseigner la date d'inventaire");
+        }else if(entity.getFentrepot()==null&&entity.getFemplacement()==null){
+            throw new KerenExecption("Veuillez renseigner le dépôt et (ou) l'emplacement ");
+        }else if(entity.getState().equalsIgnoreCase("termine")){
+            throw new KerenExecption("Cette fiche d'inventaire est déjà cloturée");
+        }//end else if(entity.getState().equalsIgnoreCase("confirme"))
+        return manager.confirmer(entity);
     }
 
     @Override

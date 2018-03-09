@@ -257,8 +257,6 @@ public class BonReceptionRSImpl
                 throw new KerenExecption("Veuillez fournir le puht");
             }else if(lign.getQuantite()==null||lign.getQuantite()==0){
                 throw new KerenExecption("Veuillez fournir la quantité voulue");
-            }else if(lign.getTaxe()==null){
-                throw new KerenExecption("Veuillez saisir la taxe appliquée");
             }
             if(strict==true){
                 if(lign.getArticle().getPolitiquestock().equalsIgnoreCase("1")||
@@ -278,7 +276,7 @@ public class BonReceptionRSImpl
      * @return 
      */
     @Override
-    public Facture facture(HttpHeaders headers, BonReception entity) {
+    public BonReception facture(HttpHeaders headers, BonReception entity) {
         //To change body of generated methods, choose Tools | Templates.
         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
             throw new KerenExecption("Veuillez saisir la reference");
@@ -290,15 +288,25 @@ public class BonReceptionRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("transfere")){
-            throw new KerenExecption("ce bon a déja transféré");
         }else if(entity.getState().equalsIgnoreCase("annule")){
-            throw new KerenExecption("Impossible de transférer un bon annulé");
+            throw new KerenExecption("Impossible de facturer un bon annulé");
         }else if(entity.getState().equalsIgnoreCase("rejete")){
             throw new KerenExecption("Impossible de transférer un bon rejeté <br/>Veuillez refaire le contrôle de la qualité");
         }
         validateLigneBR(entity, Boolean.TRUE);
-        throw new UnsupportedOperationException("Not supported yet."); 
+        if(!isValideBC(entity)){
+            throw new KerenExecption("Ce bon de reception a déjà fait l'objet d'une facturation");
+        }//end if(!isValideBC(entity))
+        return manager.facturer(entity); 
     }
 
+     private boolean isValideBC(BonReception data){
+//       boolean result = false;
+       for(LigneDocumentAchat ligne:data.getLignes()){
+           if(ligne.qtenonfacturee()>0){
+               return true ;
+           }
+       }
+       return false;
+    }
 }

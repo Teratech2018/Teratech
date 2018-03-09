@@ -3,6 +3,7 @@ package com.teratech.achat.core.ifaces.operations;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.teratech.achat.model.operations.BonReception;
+import com.teratech.achat.model.operations.Facture;
 
 
 /**
@@ -37,6 +38,13 @@ public interface BonReceptionManager
      * @return 
      */
     public BonReception transferer(BonReception entity);
+    
+    /**
+     * 
+     * @param entity
+     * @return 
+     */
+    public BonReception facturer(BonReception entity);
     
     /**
      * 

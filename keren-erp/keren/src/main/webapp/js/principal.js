@@ -1284,6 +1284,12 @@ angular.module("mainApp")
              var divElem = document.createElement('div'); //name='"+field.fieldName+"'
              divElem.innerHTML="<div text-angular ng-model="+model+"  ta-html-editor-class='border-around'>  </div>";
              //alert(divElem.innerHTML);
+             if(field.hide){
+                divElem.setAttribute('ng-hide',true);
+            }//end if(field.hide)
+            if(field.hidden!=null&&field.hidden.length>0){
+                divElem.setAttribute('ng-hide',field.hidden);
+            }//end if(field.hidden!=null&&field.hidden.length==0)
              return divElem;
          };
          
@@ -1301,6 +1307,12 @@ angular.module("mainApp")
              var divElem = document.createElement('div'); //name='"+field.fieldName+"'
              divElem.innerHTML="<div class='editor' ng-model="+model+"  data-ace=''>  </div>";
              //alert(divElem.innerHTML);
+             if(field.hide){
+                divElem.setAttribute('ng-hide',true);
+             }//end if(field.hide)
+             if(field.hidden!=null&&field.hidden.length>0){
+                divElem.setAttribute('ng-hide',field.hidden);
+             }//end if(field.hidden!=null&&field.hidden.length==0)
              return divElem;
          };
 
@@ -1331,6 +1343,12 @@ angular.module("mainApp")
                    textareaElem.setAttribute('ng-model' , model);
                    $scope.constraintsProvider(field , textareaElem);
                    divElem.appendChild(textareaElem);
+                    if(field.hide){
+                        divElem.setAttribute('ng-hide',true);
+                    }//end if(field.hide)
+                    if(field.hidden!=null&&field.hidden.length>0){
+                        divElem.setAttribute('ng-hide',field.hidden);
+                    }//end if(field.hidden!=null&&field.hidden.length==0)
                    return divElem;
               } 
         
@@ -1389,7 +1407,10 @@ angular.module("mainApp")
                     }
                     if(field.hide){
                         divElem.setAttribute('ng-hide',true);
-                    }
+                    }//end if(field.hide)
+                    if(field.hidden!=null&&field.hidden.length>0){
+                        divElem.setAttribute('ng-hide',field.hidden);
+                    }//end if(field.hidden!=null&&field.hidden.length==0)
                     divElem.appendChild(inputElem);              
                   return divElem;
               };
@@ -1411,7 +1432,13 @@ angular.module("mainApp")
                        inputElem.appendChild(document.createTextNode(value));
                    }else{
                        inputElem.appendChild(document.createTextNode(""));
-                   }              
+                   }
+                   if(field.hide){
+                        divElem.setAttribute('ng-hide',true);
+                    }//end if(field.hide)
+                    if(field.hidden!=null&&field.hidden.length>0){
+                        divElem.setAttribute('ng-hide',field.hidden);
+                    }//end if(field.hidden!=null&&field.hidden.length==0)
                     divElem.appendChild(inputElem);              
                   return divElem;
               };
@@ -1445,7 +1472,13 @@ angular.module("mainApp")
                         inputElem.setAttribute('readonly' , 'readonly');
                     }
                     labelElem.appendChild(inputElem);  
-                    labelElem.appendChild(document.createTextNode(labelText));                                      
+                    labelElem.appendChild(document.createTextNode(labelText)); 
+                    if(field.hide){
+                        divElem.setAttribute('ng-hide',true);
+                    }//end if(field.hide)
+                    if(field.hidden!=null&&field.hidden.length>0){
+                        divElem.setAttribute('ng-hide',field.hidden);
+                    }//end if(field.hidden!=null&&field.hidden.length==0)
 //                    var divElem0 = document.createElement('div');
 //                   divElem0.appendChild(divElem);
 //                  
@@ -1763,7 +1796,12 @@ angular.module("mainApp")
                   selectElem.appendChild(optionElem);
                   //console.log("comboBoxComponent ===== "+i+" ====== "+parts[i]);   
               }             
-             
+              if(field.hide){
+                divElem.setAttribute('ng-hide',true);
+              }//end if(field.hide)
+              if(field.hidden!=null&&field.hidden.length>0){
+                    divElem.setAttribute('ng-hide',field.hidden);
+              }//end if(field.hidden!=null&&field.hidden.length==0)
               return divElem;
         };
 
@@ -1856,7 +1894,13 @@ angular.module("mainApp")
 
             if(($scope.windowType=="view")||(metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                 buttonElem.setAttribute('disabled' , 'disabled');
-            }             
+            }     
+            if(field.hide){
+                divElem.setAttribute('ng-hide',true);
+            }//end if(field.hide)
+            if(field.hidden!=null&&field.hidden.length>0){
+                divElem.setAttribute('ng-hide',field.hidden);
+            }//end if(field.hidden!=null&&field.hidden.length==0)
               return divElem;
         };
 
@@ -1952,8 +1996,14 @@ angular.module("mainApp")
 //                console.log("ManyToMany =================== "+angular.toJson(field));
                 if(($scope.windowType=="view"||metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                     buttonElem.setAttribute('disabled' , 'disabled');
-                }           
-             return divElem;
+                }   
+                if(field.hide){
+                    divElem.setAttribute('ng-hide',true);
+                }//end if(field.hide)
+                if(field.hidden!=null&&field.hidden.length>0){
+                      divElem.setAttribute('ng-hide',field.hidden);
+                }//end if(field.hidden!=null&&field.hidden.length==0)
+                return divElem;
         };
  
         /**
@@ -2197,7 +2247,8 @@ angular.module("mainApp")
                      data = $scope.dataCache[""+key];//data = $scope.temporalData;
                 }//end if(model!='currentObject')
                 if(data){
-                    var piedElem = commonsTools.tableFooterBuilder(field.footerScript,data[field.fieldName],sources[1],key);  
+//                    var piedElem = commonsTools.tableFooterBuilder(field.footerScript,data[field.fieldName],sources[1],key);  
+                    var piedElem = commonsTools.tableFooterBuilder(field.footerScript,data[field.fieldName],sources[1],$scope.currentObject,$scope.currentUser);  
                     tableElem.appendChild(piedElem);
                 }//end if(data)
             }//end if(field.customfooter)
@@ -2217,6 +2268,12 @@ angular.module("mainApp")
                      aElem.setAttribute('disabled' , 'disabled');                  
                  }            
             }
+            if(field.hide){
+               divElem.setAttribute('ng-hide',true);
+            }//end if(field.hide)
+            if(field.hidden!=null&&field.hidden.length>0){
+                   divElem.setAttribute('ng-hide',field.hidden);
+            }//end if(field.hidden!=null&&field.hidden.length==0)
                        
              /*alert($scope.currentObject.actions);
              var divElem0 = document.createElement('div');
@@ -2435,6 +2492,12 @@ angular.module("mainApp")
 //             var divElem0 = document.createElement('div');
 //             divElem0.appendChild(divElem);
 //             alert(divElem0.innerHTML);
+            if(field.hide){
+               divElem.setAttribute('ng-hide',true);
+            }//end if(field.hide)
+            if(field.hidden!=null&&field.hidden.length>0){
+                   divElem.setAttribute('ng-hide',field.hidden);
+            }//end if(field.hidden!=null&&field.hidden.length==0)
              return divElem;
         };
        
@@ -4844,7 +4907,7 @@ angular.module("mainApp")
                //Affeectation du model dans l'object temporaire              
              var viewElem =  document.createElement('div'); //;  
              var bodyID = "";
-             var endIndex = index+1;
+             var endIndex = index;
              if(endIndex==1){
                  bodyID="modalbody";
              }else if(endIndex==2){
@@ -5408,7 +5471,7 @@ angular.module("mainApp")
                 }//end if(sources[0]!="currentObject"){
                 data = data[sources[sources.length-1]];
                 if($scope.dataCache[key+"foot"]){                   
-                    footerElem = commonsTools.tableFooterBuilder($scope.dataCache[key+"foot"],data,key);
+                    footerElem = commonsTools.tableFooterBuilder($scope.dataCache[key+"foot"],data,key,$scope.currentObject,$scope.currentObject);
 //                     console.log("tablefooter  =====  ************* Vous avez cliquez :::: "+args.model+" === "+args.modelpath+" === "+angular.toJson(data));
                 }else{
                     footerElem = commonsTools.sumFooterTableBuilder(args.metaData ,data,args.model,key);
@@ -6652,7 +6715,7 @@ angular.module("mainApp")
                                 .then(function(response){
                                     var datas = response.data;                                    
 //                                    console.log("Vous avez cliquez sur  editPanelAjoutAborne "+datas.length);  
-                                    $scope.listDialogWithDataBuilder("dataCache.follower",metaData,datas);
+                                    $scope.listDialogWithDataBuilder("dataCache.follower",metaData,datas,1);
                                     //Appele de la fenetre modale
                                     $("#myModal").modal("toggle");
                                     $("#myModal").modal("show");
@@ -6800,7 +6863,7 @@ angular.module("mainApp")
                                 .then(function(response){
                                     var datas = response.data;                                    
 //                                    console.log("Vous avez cliquez sur  editPanelAjoutAborne "+datas.length);  
-                                    $scope.listDialogWithDataBuilder("dataCache.follower",metaData,datas);
+                                    $scope.listDialogWithDataBuilder("dataCache.follower",metaData,datas,1);
                                     //Appele de la fenetre modale
                                     $("#myModal").modal("toggle");
                                     $("#myModal").modal("show");
@@ -7213,7 +7276,7 @@ angular.module("mainApp")
                             $http.put(url,$scope.currentObject)
                                    .then(function(response){
                                        $scope.currentObject = response.data;
-                                       $scope.displayEditPanel();
+                                       $scope.displayListPanel();
                                        $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");  
                                        commonsTools.hideDialogLoading();
                                    },function(error){
@@ -8238,7 +8301,7 @@ angular.module("mainApp")
                                             $scope.temporalData = pwduser2;                                                                           
                                         }else{
                                             $scope.temporalData = new Object();
-                                            $scope.createEmptyTemporalObject(metaData,template);                                        
+                                            $scope.createEmptyTemporalObject(metaData,$scope.temporalData);                                        
                                         }
                                         if(index==null||!angular.isDefined(index)){
                                             index = 1;
