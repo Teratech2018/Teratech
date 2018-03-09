@@ -10,15 +10,11 @@ import com.megatim.common.annotations.Predicate;
 import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.UniteGestion;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -62,8 +58,11 @@ public class LigneDocumentStock extends BaseElement implements Serializable,Comp
     @Temporal(TemporalType.DATE)
     private Date fabrication ;
     
-    @Predicate(label = "Total HT",type = Double.class,optional = false,search = true,hide = true)
+    @Predicate(label = "Total HT",type = Double.class,optional = false,search = true,hide = true,compute = true,values ="this.puht,*,this.quantite" )
     private Double totalht ;    
+    
+    @OneToOne
+    private Lot lot ;
 
     public LigneDocumentStock(Article article, UniteGestion unite, Double puht, Double quantite, Double punet, String code, Date peremption, Date fabrication, Double totalht) {
         this.article = article;
@@ -213,6 +212,11 @@ public LigneDocumentStock(LigneDocumentStock ligne) {
     @Override
     public String getEditTitle() {
         return "Ligne Stock"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSerial() {
+        return "lidocst220220180919"; //To change body of generated methods, choose Tools | Templates.
     }
     
     

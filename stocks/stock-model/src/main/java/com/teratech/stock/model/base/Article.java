@@ -6,10 +6,12 @@
 package com.teratech.stock.model.base;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,6 +52,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
     @ManyToOne
     @JoinColumn(name = "FAAR_ID")
     @Predicate(label = "Famille articles",type = FamilleArticle.class,target = "many-to-one",group =true,groupName = "group1",groupLabel = "Informations générales")
+    @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"0\"}]")
     private FamilleArticle famille ;
     
     @Predicate(label = "Code barre EAN13",group =true,groupName = "group1",groupLabel = "Informations générales")
@@ -68,13 +71,13 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
     
     @ManyToOne
     @JoinColumn(name = "UNGE_ID")
-    @Predicate(label = "Unité de vente",type = UniteAchat.class,target = "many-to-one",search = true)
+    @Predicate(label = "Unité de vente",type = UniteGestion.class,target = "many-to-one",search = true)
     private UniteGestion unitevente ;
     
    @Predicate(label = "Réference du fabriquant",group =true,groupName = "group1",groupLabel = "Informations générales")
     private String reference ;  
     
-   @Predicate(label = "Suivi stock",target = "combobox",values = "Aucune;Sérialisé;CMUP;FIFO;LIFO;Par lot",group = true,groupName = "group2",groupLabel = "Complément")
+   @Predicate(label = "Suivi stock",updatable = false,target = "combobox",values = "Aucune;Sérialisé;CMUP;FIFO;LIFO;Par lot",group = true,groupName = "group2",groupLabel = "Complément")
    private String politiquestock = "0" ;
    
    @Predicate(label = "Coût de stockage",type = Double.class,group = true,groupName = "group2",groupLabel = "Complément")
@@ -97,10 +100,10 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
    @Predicate(label = "Poid Brut",type = Double.class,group = true,groupName = "group2",groupLabel = "Complément")
    private Double poidbrut ;
    
-   @Predicate(label = "Délai de livraison",type = Short.class,group = true,groupName = "group2",groupLabel = "Complément")
+   @Predicate(label = "Délai de livraison(jour)",type = Short.class,group = true,groupName = "group2",groupLabel = "Complément")
    private Short delaiL = 0;
    
-   @Predicate(label = "Garantie",type = Short.class,group = true,groupName = "group2",groupLabel = "Complément")
+   @Predicate(label = "Garantie(jour)",type = Short.class,group = true,groupName = "group2",groupLabel = "Complément")
    private Short garantie = 0;
    
    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
@@ -144,7 +147,10 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
     }
 
     
-    
+    /**
+     * 
+     * @param art 
+     */
     public Article(Article art) {
         super(art.id, art.designation, art.moduleName);
         this.image = art.image;
@@ -168,6 +174,8 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
         this.poidbrut = art.poidbrut;
         this.delaiL = art.delaiL;
         this.garantie = art.garantie;
+        this.achete = art.getAchete();
+        this.vendu = art.getVendu();
     }
 
     public String getCode() {
@@ -382,6 +390,28 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
 
     public void setGarantie(Short garantie) {
         this.garantie = garantie;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 73 * hash + Objects.hashCode(this.code);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Article other = (Article) obj;
+        if (!Objects.equals(this.code, other.code)) {
+            return false;
+        }
+        return true;
     }
     
     

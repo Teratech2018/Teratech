@@ -25,7 +25,7 @@ public class UniteAchat extends BaseElement implements Serializable,Comparable<U
     private String code ;    
     
     @Predicate(label = "actif",type = Boolean.class)
-    private Boolean actif ;
+    private Boolean actif = Boolean.TRUE;
     
     @ManyToOne
     @JoinColumn(name = "UNGE_ID")
@@ -61,7 +61,7 @@ public class UniteAchat extends BaseElement implements Serializable,Comparable<U
         this.code = code;
     }
 
-    public Boolean getActif() {
+    public boolean isActif() {
         return actif;
     }
 

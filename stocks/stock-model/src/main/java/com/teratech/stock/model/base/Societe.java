@@ -284,4 +284,6 @@ public class Societe extends BaseElement implements Serializable,Comparable<Soci
         return code.compareTo(o.code);
     }
     
+    
+    
 }

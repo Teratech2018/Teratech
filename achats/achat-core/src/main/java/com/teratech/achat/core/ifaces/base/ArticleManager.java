@@ -7,7 +7,7 @@ import com.teratech.achat.model.base.Article;
 
 /**
  * Interface etendue par les interfaces locale et remote du manager
- * @since Mon Feb 19 13:07:57 GMT+01:00 2018
+ * @since Tue Feb 27 14:29:39 GMT+01:00 2018
  * 
  */
 public interface ArticleManager

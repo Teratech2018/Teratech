@@ -7,6 +7,7 @@ package com.teratech.stock.model.invetaire;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.stock.model.base.Emplacement;
 import com.teratech.stock.model.base.Entrepot;
@@ -51,6 +52,7 @@ public class BaseInventaire extends BaseElement implements Serializable,Comparab
     @ManyToOne
     @JoinColumn(name = "EMPL_ID")
     @Predicate(label = "Emplacement",type = Emplacement.class,target = "many-to-one",search = true)
+    @Filter(value = "[{\"fieldName\":\"edepot\",\"value\":\"object.fentrepot\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez selectionner l'entrepôt\"}]")
     protected Emplacement femplacement;
     
     protected String state = "etabli";
@@ -101,6 +103,7 @@ public class BaseInventaire extends BaseElement implements Serializable,Comparab
         if(base.femplacement!=null){
             this.femplacement = new Emplacement(base.femplacement);
         }
+        this.state = base.state;
     }
 
     public BaseInventaire() {

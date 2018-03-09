@@ -21,6 +21,8 @@ public class UniteGestion extends BaseElement implements Serializable,Comparable
 
     @Predicate(label = "Intitulé",optional = false,unique = true,search = true)
     private String code ;
+    
+    private boolean actif = Boolean.TRUE;
 
     public UniteGestion(String code) {
         this.code = code;
@@ -62,6 +64,14 @@ public class UniteGestion extends BaseElement implements Serializable,Comparable
     @Override
     public String getEditTitle() {
         return "Unité de gestion"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(boolean actif) {
+        this.actif = actif;
     }
     
     

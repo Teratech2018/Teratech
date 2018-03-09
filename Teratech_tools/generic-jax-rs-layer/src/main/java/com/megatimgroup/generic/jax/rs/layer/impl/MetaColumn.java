@@ -38,6 +38,8 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     private boolean editable = true ;
     
     private boolean hide = false ;
+    
+    private boolean compute = false;
         
     private Integer min =null;
     
@@ -53,7 +55,13 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     
     private boolean customfooter = false ;
     
-     private String footerScript = null ;
+    private String footerScript = null ;
+     
+    private String filter;
+     
+    private String hidden =null;
+    
+    private boolean observable =false;
     
     private MetaData metaData ;
 
@@ -103,6 +111,10 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.searchfields = column.searchfields;
         this.customfooter = column.customfooter;
         this.footerScript = column.footerScript;
+        this.filter = column.filter;
+        this.compute = column.compute;
+        this.hidden = column.hidden;
+        this.observable = column.observable;
     }
 
     public short getSequence() {
@@ -279,6 +291,38 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
 
     public void setFooterScript(String footerScript) {
         this.footerScript = footerScript;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
+    public boolean isCompute() {
+        return compute;
+    }
+
+    public void setCompute(boolean compute) {
+        this.compute = compute;
+    }
+
+    public String getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(String hidden) {
+        this.hidden = hidden;
+    }
+
+    public boolean isObservable() {
+        return observable;
+    }
+
+    public void setObservable(boolean observable) {
+        this.observable = observable;
     }
 
     

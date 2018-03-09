@@ -33,6 +33,10 @@ public class MetaArray implements Serializable{
     private String footerScript = null ;
     
     private String[] searchfields = new String[]{};
+    
+    private String filter ;
+    
+     private String hidden =null;
     /**
      * 
      */
@@ -150,6 +154,22 @@ public class MetaArray implements Serializable{
 
     public void setFooterScript(String footerScript) {
         this.footerScript = footerScript;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
+    public String getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(String hidden) {
+        this.hidden = hidden;
     }
     
     

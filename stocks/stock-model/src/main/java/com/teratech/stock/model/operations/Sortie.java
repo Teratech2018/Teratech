@@ -26,7 +26,7 @@ public class Sortie extends DocumentStock implements Serializable{
     @ManyToOne
     @JoinColumn(name = "CIBL_ID")
     @Predicate(label = "Destinataire" ,type = Tier.class,target = "many-to-one")
-    private Tier cible ;
+    protected Tier cible ;
     
     /**
      * 
@@ -38,6 +38,7 @@ public class Sortie extends DocumentStock implements Serializable{
      */
     public Sortie(String code, Date date, Emplacement depot, String reference, String commentaire) {
         super(code, date, depot, reference, commentaire);
+        this.state = "etabli";
     }
 
     /**
@@ -53,6 +54,7 @@ public class Sortie extends DocumentStock implements Serializable{
      */
     public Sortie(String code, Date date, Emplacement depot, String reference, String commentaire, long id, String designation, String moduleName) {
         super(code, date, depot, reference, commentaire, id, designation, moduleName);
+        this.state = "etabli";
     }
 
     /**
@@ -62,6 +64,7 @@ public class Sortie extends DocumentStock implements Serializable{
     public Sortie(Sortie doc) {
         super(doc);
         this.cible = new Tier(doc.cible);
+        this.state = doc.state;
     }
     
     

@@ -3,16 +3,24 @@ package com.teratech.achat.jaxrs.impl.base;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.base.ArticleManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.base.ArticleRS;
 import com.teratech.achat.model.base.Article;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ws.rs.core.HttpHeaders;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
- * @since Mon Feb 19 13:07:58 GMT+01:00 2018
+ * Classe d'implementation du Web Service JAX-RS
+
+ * @since Tue Feb 27 14:29:40 GMT+01:00 2018
  * 
  */
 @Path("/article")
@@ -25,7 +33,7 @@ public class ArticleRSImpl
      * On injecte un Gestionnaire d'entites
      * 
      */
-    @Manager(application = "kerencore", name = "ArticleManagerImpl", interf = ArticleManagerRemote.class)
+    @Manager(application = "teratechachat", name = "ArticleManagerImpl", interf = ArticleManagerRemote.class)
     protected ArticleManagerRemote manager;
 
     public ArticleRSImpl() {
@@ -42,7 +50,21 @@ public class ArticleRSImpl
     }
 
     public String getModuleName() {
-        return ("kerencore");
+        return ("teratechachat");
     }
+
+    @Override
+    public MetaData getMetaData(HttpHeaders headers) {
+        try {
+            return MetaDataUtil.getMetaData(new Article(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
+        } catch (InstantiationException ex) {
+            Logger.getLogger(ArticleRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(ArticleRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
 
 }

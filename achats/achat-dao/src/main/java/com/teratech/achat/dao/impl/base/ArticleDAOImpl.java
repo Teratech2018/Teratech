@@ -15,7 +15,7 @@ public class ArticleDAOImpl
     implements ArticleDAOLocal, ArticleDAORemote
 {
 
-    @PersistenceContext(unitName = "keren")
+    @PersistenceContext(unitName = "teratechachat")
     protected EntityManager em;
 
     public ArticleDAOImpl() {

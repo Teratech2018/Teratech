@@ -251,7 +251,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         if(headers.getRequestHeader("predicats")!=null){
             contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
         }        
-//        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
+        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
         if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){
@@ -292,16 +292,24 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         }
         
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
-        if(contraints!=null&&!contraints.isEmpty()){
+         if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){
                 FilterPredicat filter = (FilterPredicat) obj ;
-                //System.out.println(AbstractGenericService.class.toString()+" === "+filter+" === "+firstResult+" === "+maxResult);   
                 if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
                         &&filter.getFieldValue()!=null&&!filter.getFieldValue().isEmpty()){
-                    container.addEq(filter.getFieldName(), filter.getFieldValue());
-                }
-            }
-        }
+                    if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                        container.addEq(filter.getFieldName(), filter.getFieldValue());
+                    }else{
+                          container.addEq(filter.getFieldName()+"."+filter.getSearchfields()[0], filter.getFieldValue());
+//                        for(String fieldname:filter.getSearchfields()){
+//                            if(fieldname!=null&&!fieldname.trim().isEmpty()){
+//                                container.addEq(filter.getFieldName()+"."+fieldname, filter.getFieldValue());
+//                            }//end if(fieldname!=null&&!fieldname.trim().isEmpty())
+//                        }//end for(String fieldname:filter.getSearchfields())
+                    }
+                }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+            }//end  for(Object obj : contraints)
+        }//end if(contraints!=null&&!contraints.isEmpty())
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
         return number;
     }

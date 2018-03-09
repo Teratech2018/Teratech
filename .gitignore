@@ -5,3 +5,14 @@
 /stocks/stock-model/target/
 /stocks/stock-core/target/
 /stocks/stock-dao/target/
+/baseaccount/basaccount-model/target/
+/baseaccount/baseaccount-dao/target/
+/baseaccount/baseaccount-core/target/
+/baseaccount/baseaccount-service/target/
+/keren-erp/keren/target/
+/stocks/stock-rest/target/
+/achats/achat-model/target/
+/achats/achat-tool/target/
+/achats/achat-dao/target/
+/achats/achat-core/target/
+/achats/achat-rest/target/

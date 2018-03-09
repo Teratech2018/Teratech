@@ -40,27 +40,29 @@ import javax.persistence.TemporalType;
 public class DocumentStock extends BaseElement implements Serializable,Comparable<DocumentStock>{
 
     @Predicate(label = "N° de pièce",optional = false,unique = true,search = true)
-    private String code ;
+    protected String code ;
     
     @Predicate(label = "Date document",type = Date.class,target = "date",search = true)
     @Temporal(TemporalType.DATE)
-    private Date date ;
+    protected Date date ;
     
     @ManyToOne
     @JoinColumn(name = "EN_ID")
     @Predicate(label = "Emplacement ",type = Emplacement.class,target = "many-to-one",optional = false,nullable = false,search = true)
-    private Emplacement emplacement ;
+    protected Emplacement emplacement ;
     
     @Predicate(label = "Référence",search = true)
-    private String reference ;    
+    protected String reference ;    
     
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "DOST_ID")
     @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération")
-    private List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
+    protected List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
     
-    @Predicate(label = "Commentaire",group = true,groupName = "group2",groupLabel = "Commentaire")
-    private String commentaire ;
+    @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")
+    protected String commentaire ;
+    
+    protected String state ="etabli";
 
     /**
      * 
@@ -98,11 +100,17 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         this.commentaire = commentaire;
     }
     
+    /**
+     * 
+     * @param doc 
+     */
     public DocumentStock(DocumentStock doc) {
         super(doc.id, doc.designation, doc.moduleName);
         this.code = doc.code;
         this.date = doc.date;
-        this.emplacement = doc.emplacement;
+        if(doc.getEmplacement()!=null){
+            this.emplacement = new Emplacement(doc.emplacement);
+        }
         this.reference = doc.reference;
         this.commentaire = doc.commentaire;
     }
@@ -160,6 +168,16 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         this.commentaire = commentaire;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    
+    
+
     @Override
     public boolean isActivatefollower() {
         return true; //To change body of generated methods, choose Tools | Templates.
@@ -167,7 +185,12 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
 
     @Override
     public List<State> getStates() {
-        return super.getStates(); //To change body of generated methods, choose Tools | Templates.
+        List<State> states = new ArrayList<State>();
+        State state = new State("etabli", "Broullion");
+        states.add(state);
+        state = new State("valider", "Valider");
+        states.add(state);
+        return states; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -203,8 +226,7 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
     @Override
     public String getEditTitle() {
          return "Entrée "; //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }  
     
     
     @Override
@@ -212,5 +234,12 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         //To change body of generated methods, choose Tools | Templates.
         return code.compareTo(o.code);
     }
+
+    @Override
+    public String toString() {
+        return "DocumentStock{" +id+" ==== "+ "code=" + code + ", date=" + date + ", emplacement=" + emplacement + ", reference=" + reference + ", lignes=" + lignes + ", commentaire=" + commentaire + ", state=" + state + '}';
+    }
+    
+    
     
 }

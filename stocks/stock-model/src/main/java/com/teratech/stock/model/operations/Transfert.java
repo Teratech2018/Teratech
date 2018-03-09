@@ -25,7 +25,7 @@ public class Transfert extends DocumentStock implements Serializable{
     @ManyToOne
     @JoinColumn(name = "EMCI_ID")
     @Predicate(label = "Emplacement cible",type = Emplacement.class,target = "many-to-one",optional = false,nullable = false)
-    private Emplacement emplcible ;
+    private  Emplacement emplcible ;
     /**
      * 
      * @param code
@@ -36,6 +36,7 @@ public class Transfert extends DocumentStock implements Serializable{
      */
     public Transfert(String code, Date date, Emplacement depot, String reference, String commentaire) {
         super(code, date, depot, reference, commentaire);
+        this.state = "etabli";
     }
 
     /**
@@ -51,11 +52,13 @@ public class Transfert extends DocumentStock implements Serializable{
      */
     public Transfert(String code, Date date, Emplacement depot, String reference, String commentaire, long id, String designation, String moduleName) {
         super(code, date, depot, reference, commentaire, id, designation, moduleName);
+        this.state = "etabli";
     }
 
     public Transfert(Transfert doc) {
         super(doc);
         this.emplcible = new Emplacement(doc.emplcible);
+        this.state = doc.getState();
     }
     
     
@@ -64,6 +67,7 @@ public class Transfert extends DocumentStock implements Serializable{
      * 
      */
     public Transfert() {
+        this.state = "etabli";
     }
 
     public Emplacement getEmplcible() {

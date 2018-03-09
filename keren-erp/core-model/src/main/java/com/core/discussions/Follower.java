@@ -64,7 +64,7 @@ public class Follower extends BaseElement implements Serializable,Comparable<Fol
     protected Boolean noteinterne =  false ;
     
     @Predicate(label = "Actif" , type = Boolean.class)
-    protected boolean actif =  true ;
+    protected Boolean actif =  true ;
     
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name = "SMES_ID")
