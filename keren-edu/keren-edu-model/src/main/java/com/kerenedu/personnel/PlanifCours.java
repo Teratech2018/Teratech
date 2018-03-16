@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -20,9 +19,8 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Matiere;
+
 import com.megatim.common.annotations.Predicate;
-import com.megatim.common.annotations.TableFooter;
 
 /**
  * @author ntchuente

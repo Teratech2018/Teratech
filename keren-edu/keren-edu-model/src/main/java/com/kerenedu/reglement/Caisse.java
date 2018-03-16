@@ -43,21 +43,20 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	protected Date datEnc;
 
 	@Column(name = "REVENU" )	
-	@Predicate(label="REVENU",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=false ,sequence=4, colsequence=3)
-	protected BigDecimal zRevenu =BigDecimal.ZERO;
+	@Predicate(label="REVENU",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=4, colsequence=3)
+	protected Long zRevenu = new Long(0);
 	
 	@Column(name = "DEPENSE")	
-	@Predicate(label="DEPENSE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=false ,sequence=4, colsequence=4)
-	protected BigDecimal zDepense =BigDecimal.ZERO;
+	@Predicate(label="DEPENSE",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=4, colsequence=4)
+	protected Long zDepense =new Long(0);
 	
 	@Column(name = "DESCRIPTION")
 	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true , sequence=2 , colsequence=2)
 	protected String description ;
 
 	
-	@ManyToOne
-	@JoinColumn(name = "ANNEE_ID")
-	protected AnneScolaire anneScolaire;
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire ;
 	
 
 
@@ -72,19 +71,19 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 		this.zRevenu = ins.zRevenu;
 		this.zDepense = ins.zDepense;
 		this.datEnc=ins.datEnc;
-		this.anneScolaire=new AnneScolaire(ins.anneScolaire);
+		this.anneScolaire=ins.anneScolaire;
 		this.description=ins.description;
 		
 	
 	
 	}
 	
-	public Caisse(Reglement reglement){
+	public Caisse(Paiement reglement){
 		this.zRevenu = reglement.zMnt;
-		this.zDepense = BigDecimal.ZERO;
+		this.zDepense = new Long(0);
 		this.datEnc=new Date();
-		this.anneScolaire= new AnneScolaire(reglement.anneScolaire);
-		this.description="Paiement Etudiant "+reglement.eleve.getMatricule();
+		this.anneScolaire= reglement.service.anneScolaire;
+		this.description="Paiement Etudiant "+reglement.service.eleve.getEleve().getMatricule();
 	}
 
 	
@@ -130,7 +129,7 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	}
 
 
-	public AnneScolaire getAnneScolaire() {
+	public String getAnneScolaire() {
 		return anneScolaire;
 	}
 
@@ -154,7 +153,7 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	/**
 	 * @return the zRevenu
 	 */
-	public BigDecimal getzRevenu() {
+	public Long getzRevenu() {
 		return zRevenu;
 	}
 
@@ -162,7 +161,7 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	/**
 	 * @param zRevenu the zRevenu to set
 	 */
-	public void setzRevenu(BigDecimal zRevenu) {
+	public void setzRevenu(Long zRevenu) {
 		this.zRevenu = zRevenu;
 	}
 
@@ -170,7 +169,7 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	/**
 	 * @return the zDepense
 	 */
-	public BigDecimal getzDepense() {
+	public Long getzDepense() {
 		return zDepense;
 	}
 
@@ -178,13 +177,13 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	/**
 	 * @param zDepense the zDepense to set
 	 */
-	public void setzDepense(BigDecimal zDepense) {
+	public void setzDepense(Long zDepense) {
 		this.zDepense = zDepense;
 	
 	}
 
 
-	public void setAnneScolaire(AnneScolaire anneScolaire) {
+	public void setAnneScolaire(String anneScolaire) {
 		this.anneScolaire = anneScolaire;
 	}
 

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
@@ -15,8 +16,6 @@ import com.kerenedu.core.ifaces.report.ViewBulletinManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewBulletinManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewBulletinDAOLocal;
 import com.kerenedu.model.report.ViewBulletin;
-import com.kerenedu.model.search.EleveSearch;
-import com.kerenedu.school.Eleve;
 
 @TransactionAttribute
 @Stateless(mappedName = "ViewBulletinManager")
@@ -49,6 +48,14 @@ public class ViewBulletinManagerImpl
    
             if(critere.getMatricule()!=null){
                 container.addEq("inscription.eleve.matricule", critere.getMatricule());
+            }
+            
+            if(critere.getBulletin()!=null){
+                container.addEq("bulletin.libelle", critere.getBulletin().getLibelle());
+            }
+            
+            if(critere.getClasse()!=null){
+                container.addEq("classe.libelle", critere.getClasse().getLibelle());
             }
           
         }

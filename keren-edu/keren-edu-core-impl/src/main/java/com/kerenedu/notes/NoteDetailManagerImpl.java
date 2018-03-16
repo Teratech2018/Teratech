@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.configuration.Appreciation;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -51,7 +52,7 @@ public class NoteDetailManagerImpl
 
    	@Override
    	public NoteDetail find(String propertyName, Long entityID) {
-   		// TODO Auto-generated method stub
+   
    		NoteDetail elev = super.find(propertyName, entityID);
    		NoteDetail data = new NoteDetail(elev);
    		return data;
@@ -59,7 +60,7 @@ public class NoteDetailManagerImpl
 
    	@Override
    	public List<NoteDetail> findAll() {
-   		// TODO Auto-generated method stub
+
    		List<NoteDetail> datas = super.findAll();
    		
    		return datas;
@@ -67,12 +68,20 @@ public class NoteDetailManagerImpl
    	
    	
 
+   	
+   	
    	@Override
    	public NoteDetail delete(Long id) {
-   		// TODO Auto-generated method stub
    		NoteDetail elev = super.delete(id);
    		return new NoteDetail(elev);
    	}
+
+
+
+
+   	
+   	
+   	
 
 
 }

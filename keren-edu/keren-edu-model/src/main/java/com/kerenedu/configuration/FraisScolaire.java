@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
@@ -20,8 +18,8 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 
-@Table
-@Entity(name = "e_frais")
+//@Table
+//@Entity(name = "e_frais")
 public class FraisScolaire extends BaseElement implements Serializable, Comparable<FraisScolaire> {
 	
 	@Column(name = "LIBELLE")	

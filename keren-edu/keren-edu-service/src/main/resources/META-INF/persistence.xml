@@ -37,7 +37,6 @@
 	    <class>com.kerenedu.notes.CoefMatiere</class>  
 	    <class>com.kerenedu.configuration.GroupeCours</class>
 	    <class>com.kerenedu.configuration.UniteEns</class>
-	     <class>com.kerenedu.notes.CoefMatiere</class>
 	    <class>com.kerenedu.notes.CoefMatiereDetail</class>
 	    <class>com.kerenedu.notes.Note</class>
 	    <class>com.kerenedu.notes.NoteDetail</class>
@@ -45,6 +44,37 @@
 	     <class>com.kerenedu.notes.MatiereNote</class>
 	     <class>com.kerenedu.notes.Bulletin</class>
 	     <class>com.kerenedu.model.report.ViewBulletin</class>
+	     <class>com.kerenedu.personnel.EmargementProfDetails</class>
+	     <class>com.kerenedu.personnel.EmargementProf</class>
+	     <class>com.kerenedu.discipline.Presence</class>
+	     <class>com.kerenedu.configuration.Appreciation</class>
+	     <class>com.kerenedu.personnel.Diplome</class>
+	     <class>com.kerenedu.personnel.StatusProf</class>
+	     <class>com.kerenedu.reglement.Retard</class>
+	     <class>com.kerenedu.reglement.Echeancier</class>
+	     <class>com.kerenedu.reglement.EcheancierDlt</class>
+	     <class>com.kerenedu.reglement.FichePaiement</class>
+	     <class>com.kerenedu.reglement.Paiement</class>
+	     <class>com.kerenedu.reglement.PaiementProf</class>
+	     <class>com.kerenedu.reglement.PrimeProf</class>
+	     <class>com.kerenedu.reglement.AvanceProf</class>
+	     <class>com.kerenedu.reglement.FichePaiementProf</class>
+	     <class>com.kerenedu.reglement.ReglementProf</class>
+	     <class>com.kerenedu.reglement.RetenueProf</class>
+	     <class>com.kerenedu.stages.BaseBesionStage</class>
+	     <class>com.kerenedu.stages.LieuStage</class>
+	     <class>com.kerenedu.stages.BesionStage</class>
+	     <class>com.kerenedu.stages.BesionStageV</class>
+	      <class>com.kerenedu.stages.BaseStage</class>
+	      <class>com.kerenedu.stages.Stage</class>
+	      <class>com.kerenedu.stages.StageE</class>
+	      <class>com.kerenedu.stages.StageCL</class>
+	      <class>com.kerenedu.stages.DivisionStage</class>
+	      <class>com.kerenedu.stages.SuiviStage</class>
+	      <class>com.kerenedu.stages.SuiviStageEleve</class>
+	      <class>com.kerenedu.stages.TacheStage</class>
+	      <class>com.kerenedu.stages.EvaluationStage</class>
+	     
 	        
 			  	
     <shared-cache-mode>NONE</shared-cache-mode>

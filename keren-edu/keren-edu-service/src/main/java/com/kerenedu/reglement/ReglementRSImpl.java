@@ -16,7 +16,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 /**
  * Classe d'implementation du Web Service JAX-RS
- * @since Mon Jan 22 15:28:57 WAT 2018
+ * @since Tue Mar 06 16:43:59 CET 2018
  * 
  */
 @Path("/reglement")
@@ -48,7 +48,6 @@ public class ReglementRSImpl
     public String getModuleName() {
         return ("kereneducation");
     }
-    
     @Override
    	public MetaData getMetaData(HttpHeaders headers) {
    		// TODO Auto-generated method stub
@@ -63,5 +62,7 @@ public class ReglementRSImpl
    		}
    		return null;
    	}
+
+  
 
 }

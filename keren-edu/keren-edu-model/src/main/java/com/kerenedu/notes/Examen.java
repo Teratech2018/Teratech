@@ -34,8 +34,8 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	protected String libelle;
 	
 	@Column(name = "SUR")	
-	@Predicate(label="Noter Sur",optional=false,updatable=true,search=true , type=Long.class, sequence=3, colsequence=3)
-	protected long sur;
+	@Predicate(label="POURCENTAGE",optional=false,updatable=true,search=true , type=Long.class, sequence=3, colsequence=3)
+	protected long sur= new Long(100);
 	
 	@Column(name = "STATUT")
 	@Predicate(label="STATUT",optional=false,updatable=true,search=true, target="combobox", values="Optionel;Obligatoire;Bonus" , sequence=4)

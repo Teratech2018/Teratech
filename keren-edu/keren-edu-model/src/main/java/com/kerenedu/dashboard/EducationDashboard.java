@@ -76,12 +76,13 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
         this.editTitle = "Tableau de bord";
         return "Tableau de bord"; //To change body of generated methods, choose Tools | Templates.
     }
+
+	public int compareTo(EducationDashboard o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     
     
     
-    @Override
-    public int compareTo(EducationDashboard o) {
-        //To change body of generated methods, choose Tools | Templates.
-        return 0;
-    }
+ 
 }

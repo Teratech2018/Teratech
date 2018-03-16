@@ -44,10 +44,10 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="EXERCICE COURANT",optional=false,updatable=true,search=true , target="checkbox", sequence=2, type=Boolean.class, colsequence=4)
 	protected Boolean connected = false;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "PERIODE_ID")
 	@Predicate(group = true,groupName = "tab1",groupLabel = "Période Scolaire",target = "one-to-many",type = PeriodeScolaire.class,search = false)
-	private List<PeriodeScolaire> periodeScoalire = new ArrayList<PeriodeScolaire>();
+	private List<PeriodeScolaire> periodeScoalire = new ArrayList<PeriodeScolaire>() ;
 	
 	
 

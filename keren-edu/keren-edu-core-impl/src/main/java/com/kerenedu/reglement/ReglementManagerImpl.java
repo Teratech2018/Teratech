@@ -33,20 +33,11 @@ public class ReglementManagerImpl
     @EJB(name = "ReglementDAO")
     protected ReglementDAOLocal dao;
     
-   
-    
     @EJB(name = "AnneScolaireDAO")
-    protected AnneScolaireDAOLocal annedao;    
-    
-   
+    protected AnneScolaireDAOLocal annedao;  
     
     @EJB(name = "InscriptionDAO")
-    protected InscriptionDAOLocal inscriptionDao;    
-    
-    @EJB(name = "CaisseDAO")
-    protected CaisseDAOLocal caissedao;
-
-    
+    protected InscriptionDAOLocal daoIns;
 
     public ReglementManagerImpl() {
     }
@@ -60,135 +51,133 @@ public class ReglementManagerImpl
     public String getEntityIdName() {
         return "id";
     }
-    
-   
     @Override
- 	public List<Reglement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
- 			int firstResult, int maxResult) {
- 		// TODO Auto-generated method stub
- 		List<Reglement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
- 		List<Reglement> result = new ArrayList<Reglement>();
- 		for(Reglement elev:datas){
- 			result.add(new Reglement(elev));
- 		}
- 		return result;
- 	}
+   	public List<Reglement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+   			int firstResult, int maxResult) {
+   		// TODO Auto-generated method stub
+   		List<Reglement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+   		List<Reglement> result = new ArrayList<Reglement>();
+   		for(Reglement elev:datas){
+   			result.add(new Reglement(elev));
+   		}
+   		return result;
+   	}
 
- 	@Override
- 	public Reglement find(String propertyName, Long entityID) {
- 		// TODO Auto-generated method stub
- 		Reglement elev = super.find(propertyName, entityID);
- 		return new Reglement(elev);
- 	}
- 	
- 	
+   	@Override
+   	public Reglement find(String propertyName, Long entityID) {
+   		// TODO Auto-generated method stub
+   		Reglement data = super.find(propertyName, entityID);
+   		Reglement result = new Reglement(data);
+   			for(FichePaiement fiche : data.getService()){
+   				result.getService().add(new FichePaiement(fiche));
+   			}
+   			
+   			for(Paiement paie : data.getPaiement()){
+   				result.getPaiement().add(new Paiement(paie));
+   			}
+   			
+   			for(Echeancier ech : data.getEcheance()){
+   				result.getEcheance().add(new Echeancier(ech));
+   			}
+   			
+   			for(Retard retard : data.getRetard()){
+   				result.getRetard().add(new Retard(retard));
+   			}
+   			
+   			
+		
+	   	
+ 	return result;
 
- 	@Override
-	public Reglement delete(Long id) {
- 		Reglement elev = super.delete(id);
-		return new Reglement(elev);
-	}
+   	}
+
+   	@Override
+   	public List<Reglement> findAll() {
+   		// TODO Auto-generated method stub
+   		List<Reglement> datas = super.findAll();
+   		List<Reglement> result = new ArrayList<Reglement>();
+   		for(Reglement elev:datas){
+   			result.add(new Reglement(elev));
+   		}
+   		return result;
+   	}
+   	
+   	
+
+   	@Override
+   	public Reglement delete(Long id) {
+   		// TODO Auto-generated method stub
+   		Reglement elev = super.delete(id);
+   		return new Reglement(elev);
+   	}
 
 	@Override
- 	public List<Reglement> findAll() {
- 		// TODO Auto-generated method stub
- 		List<Reglement> datas = super.findAll();
- 		List<Reglement> result = new ArrayList<Reglement>();
- 		for(Reglement elev:datas){
- 			result.add(new Reglement(elev));
- 		}
- 		return result;
- 	}
-    @Override
 	public void processBeforeSave(Reglement entity) {
-		// set annescolaire courante
-    	 RestrictionsContainer container = RestrictionsContainer.newInstance();
-		 container.addEq("connected", true);
-		 //container.addEq("anneScolaire.code", entities.getAnneScolaire().getCode());
-		List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0 , -1);
-		System.out.println("InscriptionManagerImpl.processBeforeSave() année trouvé is "+annee.get(0));
-        if((annee==null||annee.size()==0)){
-            RuntimeException excep = new RuntimeException("Aucune Année Scoalire disponible !!!");
-            throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
-        }
-        entity.setAnneScolaire(annee.get(0));
-             
-		entity.setzMntTmp(entity.getzMnt());
+		entity=this._afterOperation(entity);
 		super.processBeforeSave(entity);
-	}
-    
-    
-
-	@Override
-	public void processAfterSave(Reglement entities) {
-		//update montant payer inscription 
-		 RestrictionsContainer container = RestrictionsContainer.newInstance();
-		 container.addEq("eleve.matricule", entities.eleve.getMatricule());
-		 //container.addEq("anneScolaire.code", entities.getAnneScolaire().getCode());
-		List<Inscription> listins = inscriptionDao.filter(container.getPredicats(), null, null, 0 , -1);
-		Inscription v$entytyInsc= new Inscription() ;
-		if(listins!=null){
-			 v$entytyInsc = listins.get(0);
-			BigDecimal totalPayer= v$entytyInsc.getzMntPaye().add(entities.getzMnt());
-			v$entytyInsc.setzMntPaye(totalPayer);
-			v$entytyInsc.setzSolde(v$entytyInsc.getzMnt().subtract(v$entytyInsc.getzMntPaye()));
-		}
-		inscriptionDao.update(v$entytyInsc.getId(), v$entytyInsc);
-		
-		// mouvement caisse en credit
-		Caisse caisse = new Caisse(entities);
-		caissedao.save(caisse);
-		
-		super.processAfterSave(entities);
-	}
-	
-	
-
-	@Override
-	public void processAfterUpdate(Reglement entity) {
-		//update montant payer inscription 
-		 RestrictionsContainer container = RestrictionsContainer.newInstance();
-		 container.addEq("eleve.matricule", entity.eleve.getMatricule());
-		 //container.addEq("anneScolaire.code", entities.getAnneScolaire().getCode());
-		List<Inscription> listins = inscriptionDao.filter(container.getPredicats(), null, null, 0 , -1);
-		Inscription v$entytyInsc= new Inscription() ;
-		if(listins!=null){
-			 v$entytyInsc = listins.get(0);
-			BigDecimal oldPayer = entity.getzMntTmp();
-			BigDecimal totalPayer= v$entytyInsc.getzMntPaye().add(entity.getzMnt()).subtract(oldPayer);
-			v$entytyInsc.setzMntPaye(totalPayer);
-			v$entytyInsc.setzSolde(v$entytyInsc.getzMnt().subtract(v$entytyInsc.getzMntPaye()));
-		}
-		inscriptionDao.update(v$entytyInsc.getId(), v$entytyInsc);
-		super.processAfterUpdate(entity);
-	}
-
-	@Override
-	public void processBeforeDelete(Reglement entity) {
-		 RestrictionsContainer container = RestrictionsContainer.newInstance();
-		 container.addEq("eleve.matricule", entity.eleve.getMatricule());
-		 //container.addEq("anneScolaire.code", entities.getAnneScolaire().getCode());
-		List<Inscription> listins = inscriptionDao.filter(container.getPredicats(), null, null, 0 , -1);
-		Inscription v$entytyInsc= new Inscription() ;
-		if(listins!=null){
-			 v$entytyInsc = listins.get(0);
-			BigDecimal totalPayer= v$entytyInsc.getzMntPaye().subtract(entity.getzMnt());
-			v$entytyInsc.setzMntPaye(totalPayer);
-			v$entytyInsc.setzSolde(v$entytyInsc.getzMnt().subtract(v$entytyInsc.getzMntPaye()));
-		}
-		inscriptionDao.update(v$entytyInsc.getId(), v$entytyInsc);
-		super.processBeforeDelete(entity);
 	}
 
 	@Override
 	public void processBeforeUpdate(Reglement entity) {
-	    // verifier si l'étudiant a déjà été inscit 
-      /*  Inscription inscit = dao.getInscriptionEtudiantByAnnee(entity.getEleve(), entity.getAnneScolaire());
-        if(inscit!=null){
-            RuntimeException excep = new RuntimeException("Eléve déjà Inscrit !!!");
-            throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
-        }*/
+		entity=this._afterOperation(entity);
+		
 		super.processBeforeUpdate(entity);
 	}
+	
+	private Reglement _afterOperation(Reglement entity){
+		List<FichePaiement>listFp= new ArrayList<FichePaiement>();
+		Long scolarite = new Long(0);
+		Long payer = new Long(0);
+		Long solde = new Long(0);
+		Long total = new Long(0);
+		Double tva = new Double(0);
+		Double remise = new Double(0);
+		 RestrictionsContainer container = RestrictionsContainer.newInstance();
+		 container.addEq("connected", true);
+		List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0 , -1);
+       if(annee==null||annee.size()==0){
+           RuntimeException excep = new RuntimeException("Aucune Année Scolaire disponible !!!");
+           throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
+       }
+       entity.setAnneScolaire(annee.get(0).getCode());
+       
+       
+		for(FichePaiement fp : entity.getService()){
+			total = fp.getzQte()*fp.getzMntHt();
+			System.out.println("ReglementManagerImpl.processBeforeUpdate() tva saisie is "+fp.getZtva());
+			if(fp.getZtva()!=null&&fp.getZtva()!=new Long(0)){
+			tva = (fp.getZtva().doubleValue()/100*total); 
+			System.out.println("ReglementManagerImpl.processBeforeUpdate() tva saisie pourcent "+fp.getZtva().doubleValue()/100);
+			System.out.println("ReglementManagerImpl.processBeforeUpdate() tva is "+tva);
+			}
+			if(fp.getZremise()!=null&&fp.getZremise()!=new Long(0)){
+			remise = (fp.getZremise().doubleValue()/100*total);
+			System.out.println("ReglementManagerImpl.processBeforeUpdate() Remise is "+fp.getZremise().doubleValue()/100);
+			}
+			total=(total+tva.longValue())-remise.longValue();
+			fp.setEleve(entity.getEleve());
+			fp.setZtotal(total);
+			scolarite=scolarite+fp.getZtotal();
+			listFp.add(fp);
+		}
+		for(Paiement p : entity.getPaiement()){
+			payer=payer+p.getzMnt();
+		}
+		solde = scolarite-payer;
+		entity.setScolarite(scolarite);
+		entity.setService(listFp);
+		entity.setPayer(payer);
+		entity.setSolde(solde);
+		Inscription ins=daoIns.findByPrimaryKey("id", entity.getEleve().getId());
+		ins.setzMntPaye(new BigDecimal(entity.getPayer()));
+		ins.setzMnt(new BigDecimal(entity.getScolarite()));
+		ins.setzSolde(new BigDecimal(entity.getSolde()));
+		daoIns.update(ins.getId(), ins);
+		return entity;
+		
+	}
+	
+	
+   	
 
 }

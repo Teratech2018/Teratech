@@ -35,7 +35,7 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	private Long note = new Long(0) ;
 	
 	@Column(name = "APPRECIATION")
-	@Predicate(label = "Appreciation", search = true  , sequence=3, colsequence=3)
+	@Predicate(label = "Appreciation", search = true  , sequence=3, colsequence=3 , hide=true)
 	private String obs  ;
 	
 	

@@ -127,7 +127,7 @@ public class InscriptionManagerImpl
 	//			for(Service service : entity.getServiceList()){
 	//				total= total.add(service.getzMnt());
 	//			}
-			entity.setzMnt(entity.getServiceList().getzMnt());
+		//	entity.setzMnt(entity.getServiceList().getzMnt());
 		//}
     
 		super.processBeforeSave(entity);

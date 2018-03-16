@@ -86,13 +86,11 @@ public class EleveSearch extends BaseElement implements Serializable,Comparable<
         return "Critères de recherche"; //To change body of generated methods, choose Tools | Templates.
     }
 
+	public int compareTo(EleveSearch o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
        
-    
-    
-    @Override
-    public int compareTo(EleveSearch o) {
-         //To change body of generated methods, choose Tools | Templates.
-        return 0;
-    }
-    
+  
 }

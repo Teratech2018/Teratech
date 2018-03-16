@@ -57,8 +57,8 @@ public class ServiceManagerImpl
    		// TODO Auto-generated method stub
    		Service elev = super.find(propertyName, entityID);
    		Service inscrip = new Service(elev);
-   		for(FraisScolaire frais: elev.getFraisScolaire()){
-   			inscrip.getFraisScolaire().add(new FraisScolaire(frais));
+   		for(Filiere frais: elev.getFiliere()){
+   			inscrip.getFiliere().add(new Filiere(frais));
    		}
    		return inscrip;
    	}
@@ -76,13 +76,6 @@ public class ServiceManagerImpl
 
 	@Override
 	public void processBeforeSave(Service entity) {
-		BigDecimal total = BigDecimal.ZERO;
-		if(entity.getFraisScolaire()!=null){
-			for(FraisScolaire service : entity.getFraisScolaire()){
-				total= total.add(service.getzMnt());
-			}
-		}
-		entity.setzMnt(total);
 		super.processBeforeSave(entity);
 	}
 

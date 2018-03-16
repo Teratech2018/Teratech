@@ -4,27 +4,18 @@
 package com.kerenedu.personnel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.school.Contacts;
-import com.kerenedu.school.DossierMedical;
-import com.kerenedu.school.Nationalite;
-import com.kerenedu.school.NiveauScolaire;
-import com.kerenedu.school.Profession;
+
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -61,23 +52,35 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Column(name = "SEXE")
 	@Predicate(label="SEXE",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=7)
 	protected String sexe="0";
-
-	@Column(name = "SITFAMILIALE")
-	@Predicate(label="SITUATION FAMILIALE",optional=false,updatable=true,search=false, target="combobox", values="Celibataire;Marié(é)" , sequence=8)
-	protected String sitFamiliale="0";
-	
-	@Column(name = "DIPLOME")
-	@Predicate(label="DERNIER DIPLOME",optional=false,updatable=true,search=false , sequence=9, colsequence=3)
-	protected String diplome;
 	
 	@ManyToOne
-    @JoinColumn(name = "NATIONALITE_ID")
-	@Predicate(label="NATIONALITE",updatable=true,type=Nationalite.class , target="many-to-one",search=false, sequence=10, optional=false)
-    protected Nationalite nationalite;
+    @JoinColumn(name = "DIP_ID")
+	@Predicate(label="DIPLOME",updatable=true,type=Diplome.class , target="many-to-one",search=false, sequence=10, optional=false)
+    protected Diplome diplome;
+	
+	@ManyToOne
+    @JoinColumn(name = "STATUS_ID")
+	@Predicate(label="STATUS",updatable=true,type=StatusProf.class , target="many-to-one",search=false, sequence=10, optional=false)
+    protected StatusProf status;
 	
 	@Column(name ="TELEPHONE")
-	@Predicate(label = "TELEPHONE",type = String.class,search = false, sequence=11)
+	@Predicate(label = "TELEPHONE",type = String.class,search = false, sequence=11,pattern="[0-9]")
 	private String contact ;
+	
+	@Column(name ="SAL")
+	@Predicate(label = "SALAIRE",type = Long.class,search = false, sequence=11,pattern="[0-9]", group=true,groupLabel="Information Financieres",
+			groupName="tab1")
+	private Long salaire = new Long(0) ;
+	
+	@Column(name ="Tx_H")
+	@Predicate(label = "TAUX HORAIRE",type = Long.class,search = false, sequence=11,pattern="[0-9]", group=true,groupLabel="Information Financieres",
+			groupName="tab1")
+	private Long thoraire = new Long(0) ;
+	
+	@Column(name ="NUM_BAN")
+	@Predicate(label = "NUMERO DE COMPTE BANCAIRE",type = Long.class,search = false, sequence=11,pattern="[0-9]", group=true,groupLabel="Information Financieres",
+			groupName="tab1")
+	private Long numBan = new Long(0) ;
 	
 	
 	// ajout tab inscription 
@@ -89,9 +92,9 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	}
 	
 	
-	public Professeur(String image, String matricule, Date dateNais, String lNais, String nom, String email, String prenon,
-			String sexe, String sitFamiliale, String telPere, String emailPere, String telMere, String emailMere,
-			Nationalite nationalite, String diplome,String contact) {
+	public Professeur(String image, String matricule, Date dateNais, String lNais, String nom,
+			String email, String prenon,String sexe, String sitFamiliale, String telPere, 
+			String emailPere, String telMere, String emailMere,StatusProf status, Diplome diplome,String contact) {
 		super();
 		this.image = image;
 		this.dateNais = dateNais;
@@ -99,8 +102,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.email = email;
 		this.prenon = prenon;
 		this.sexe = sexe;
-		this.sitFamiliale = sitFamiliale;
-		this.nationalite = nationalite;
+		this.status = status;
 		this.contact=contact;
 		this.diplome=diplome ;
 	}
@@ -114,20 +116,17 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.email = eleve.email;
 		this.prenon =eleve. prenon;
 		this.sexe = eleve.sexe;
-		this.sitFamiliale = eleve.sitFamiliale;
-		this.nationalite = new Nationalite(eleve.nationalite) ;
+		if(status!=null){
+		this.status = new StatusProf(eleve.status) ;
+		}
 		this.contact=eleve.contact;
-		this.diplome=eleve.diplome;
-		
-		/*for(DossierMedical dos:eleve.dossierMedical){
-			dossierMedical.add(new DossierMedical(dos));
-	    }
-		
-		for(Contacts con:eleve.contact){
-			contact.add(new Contacts(con));
-	    }*/
-		//this.dossierMedical = dossierMedical;
-		//Tthis.contact = contact;
+		if(diplome!=null){
+		this.diplome= new Diplome(eleve.diplome);
+		}
+		this.salaire= eleve.salaire;
+		this.thoraire=eleve.thoraire;
+		this.numBan=eleve.numBan;
+	
 	}
 
 	@Override
@@ -151,7 +150,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return nom;
+		return nom+" "+prenon;
 	}
 
 	
@@ -202,40 +201,12 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	}
 
 
-
-	public Nationalite getNationalite() {
-		return nationalite;
-	}
-
-
-
-	public void setNationalite(Nationalite nationalite) {
-		this.nationalite = nationalite;
-	}
-
-
 	public String getImage() {
 		return image;
 	}
 
 	public void setImage(String image) {
 		this.image = image;
-	}
-
-//	public Date getDateNais() {
-//		return dateNais;
-//	}
-//
-//	public void setDateNais(Date dateNais) {
-//		this.dateNais = dateNais;
-//	}
-
-	public String getSitFamiliale() {
-		return sitFamiliale;
-	}
-
-	public void setSitFamiliale(String sitFamiliale) {
-		this.sitFamiliale = sitFamiliale;
 	}
 
 	public String getContact() {
@@ -252,17 +223,58 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		return dateNais;
 	}
 
-	public void setDateNais(Date dateNais) {
-		this.dateNais = dateNais;
-	}
-
-	public String getDiplome() {
+	public Diplome getDiplome() {
 		return diplome;
 	}
 
 
-	public void setDiplome(String diplome) {
+	public void setDiplome(Diplome diplome) {
 		this.diplome = diplome;
+	}
+
+
+	public StatusProf getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(StatusProf status) {
+		this.status = status;
+	}
+
+
+	public void setDateNais(Date dateNais) {
+		this.dateNais = dateNais;
+	}
+
+
+	public Long getSalaire() {
+		return salaire;
+	}
+
+
+	public void setSalaire(Long salaire) {
+		this.salaire = salaire;
+	}
+
+
+	public Long getThoraire() {
+		return thoraire;
+	}
+
+
+	public void setThoraire(Long thoraire) {
+		this.thoraire = thoraire;
+	}
+
+
+	public Long getNumBan() {
+		return numBan;
+	}
+
+
+	public void setNumBan(Long numBan) {
+		this.numBan = numBan;
 	}
 
 

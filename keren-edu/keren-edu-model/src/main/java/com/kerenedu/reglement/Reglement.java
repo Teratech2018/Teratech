@@ -4,27 +4,22 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
-import com.kerenedu.configuration.Service;
-import com.kerenedu.school.Eleve;
+import com.kerenedu.inscription.Inscription;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -36,35 +31,51 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_reglement")
 public class Reglement extends BaseElement implements Serializable, Comparable<Reglement> {
 
-	
-	@Column(name = "DATE_REG")
-	@Predicate(label="DATE PAIEMENT",optional=false,updatable=true,search=true, type=Date.class,sequence=1, target="date" )
-	@Temporal(javax.persistence.TemporalType.DATE)
-	protected Date datReg;
-
 	@ManyToOne
-	@JoinColumn(name = "ELEVE_ID")
-	@Predicate(label="ETUDIANT",updatable=true,type=Eleve.class , target="many-to-one",search=true , sequence=3	)
-	protected Eleve eleve;
+	@JoinColumn(name = "EL_ID" )
+	@Predicate(label="ETUDIANT",updatable=true,type=Inscription.class , target="many-to-one",search=true , sequence=1	)
+	protected Inscription eleve = new Inscription();
+	
+	@Column(name = "APAYER" )	
+	@Predicate(label="Scolarite",updatable=false,search=true, type=Long.class ,sequence=2,editable=false )
+	protected Long scolarite;
+	
+	@Column(name = "PAYER" )	
+	@Predicate(label="Payer",updatable=false,search=true, type=Long.class ,sequence=3,editable=false)
+	protected Long payer;
+	
+	@Column(name = "SOLD" )	
+	@Predicate(label="Solde",updatable=false,search=true, type=Long.class ,sequence=4,editable=false)
+	protected Long solde;
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "FICHE_PAIE_ID")
+	@Predicate(updatable=true,type=FichePaiement.class , target="one-to-many",search=true , sequence=2,group=true,
+	groupLabel="Fiche Paiement", groupName="tab1")
+	protected List<FichePaiement> service = new ArrayList<FichePaiement>();
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "PAIE_ID")
+	@Predicate(updatable=true,type=Paiement.class , target="one-to-many",search=true , sequence=2,group=true,
+	groupLabel="Paiements", groupName="tab2")
+	protected List<Paiement> paiement = new ArrayList<Paiement>();
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "Ech_ID")
+	@Predicate(updatable=true,type=Echeancier.class , target="one-to-many",search=true , sequence=2,group=true,
+	groupLabel="Echeancier", groupName="tab3")
+	protected List<Echeancier> echeance = new ArrayList<Echeancier>();
+	
+	@Transient
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "RT_ID")
+	@Predicate(updatable=false,type=Retard.class , target="one-to-many",search=true , sequence=2,group=true,
+	groupLabel="Retards", groupName="tab4" ,editable=false)
+	protected List<Retard> retard = new ArrayList<Retard>();
+	
 
-
-	@Column(name = "MNT_PAI" ,unique=true)	
-	@Predicate(label="MONTANT PAIEMENT",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=false ,sequence=4)
-	protected BigDecimal zMnt =BigDecimal.ZERO;
-	
-	@Column(name = "MNT_PAI_TMP" ,unique=true)	
-	@Predicate(label="MONTANT PAIEMENT",optional=true,updatable=false,search=false, type=BigDecimal.class, hide=true ,sequence=4)
-	protected BigDecimal zMntTmp =BigDecimal.ZERO;
-	
-	@Column(name = "TYP_REG")
-	@Predicate(label="TYPE PAIEMENT",optional=false,updatable=true,search=false, target="combobox", values="Espèce;Virement" , sequence=2 )
-	protected String typePaiment="0";
-	
-	
-	@ManyToOne
-	@JoinColumn(name = "ANNEE_ID")
-	protected AnneScolaire anneScolaire;
-	
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire ;
 
 
 	public Reglement() {
@@ -75,66 +86,107 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 
 	public Reglement(Reglement ins) {
 		super(ins.id, ins.designation, ins.moduleName);
-		this.zMnt = ins.zMnt;
-		this.eleve = new Eleve(ins.eleve);
-		this.zMnt = ins.zMnt;
-		this.datReg=ins.datReg;
-		this.anneScolaire= new AnneScolaire(ins.anneScolaire);
-		this.typePaiment=ins.typePaiment;
-		this.zMntTmp=ins.zMntTmp;
-		
-	
-	
+		this.eleve = new Inscription(ins.eleve);
+		this.service= new ArrayList<FichePaiement>();
+		this.paiement= new ArrayList<Paiement>();
+		this.retard= new ArrayList<Retard>();
+		this.echeance= new ArrayList<Echeancier>();
+		this.scolarite=ins.scolarite;
+		this.payer=ins.payer;
+		this.solde=ins.solde;
+
 	}
 
 	
-
-	/**
-	 * @return the zMnt
-	 */
-	public BigDecimal getzMnt() {
-		
-	
-		return zMnt;
-	}
-
-	/**
-	 * @param zMnt the zMnt to set
-	 */
-	public void setzMnt(BigDecimal zMnt) {
-	
-		this.zMnt = zMnt;
-	}
-
-	
-	public void setDatReg(Date datReg) {
-		this.datReg = datReg;
-	}
-
-
-
-	public Date getDatReg() {
-		return datReg;
-	}
-
-
-	public Eleve getEleve() {
+	public Inscription getEleve() {
 		return eleve;
 	}
 
 
-	public String getTypePaiment() {
-		return typePaiment;
-	}
-
-
-	public void setEleve(Eleve eleve) {
+	
+	public void setEleve(Inscription eleve) {
 		this.eleve = eleve;
 	}
 
 
-	public void setTypePaiment(String typePaiment) {
-		this.typePaiment = typePaiment;
+
+	public List<FichePaiement> getService() {
+		return service;
+	}
+
+
+	public void setService(List<FichePaiement> service) {
+		this.service = service;
+	}
+
+
+	public List<Paiement> getPaiement() {
+		return paiement;
+	}
+
+
+	public List<Echeancier> getEcheance() {
+		return echeance;
+	}
+
+
+	public void setEcheance(List<Echeancier> echeance) {
+		this.echeance = echeance;
+	}
+
+
+	public Long getScolarite() {
+		return scolarite;
+	}
+
+
+	public void setScolarite(Long scolarite) {
+		this.scolarite = scolarite;
+	}
+
+
+	public Long getPayer() {
+		return payer;
+	}
+
+
+	public void setPayer(Long payer) {
+		this.payer = payer;
+	}
+
+
+	public Long getSolde() {
+		return solde;
+	}
+
+
+	public void setSolde(Long solde) {
+		this.solde = solde;
+	}
+
+
+	public List<Retard> getRetard() {
+		return retard;
+	}
+
+
+	public void setRetard(List<Retard> retard) {
+		this.retard = retard;
+	}
+
+
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
+	}
+
+
+	public void setPaiement(List<Paiement> paiement) {
+		this.paiement = paiement;
 	}
 
 
@@ -152,13 +204,13 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Paiements ";
+		return "Gestion des Paiements des étudiants ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Paiements";
+		return "Gestion des Paiements des étudiants";
 	}
 
 	@Override
@@ -167,33 +219,16 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 		return "kereneducation";
 	}
 
-	public BigDecimal getzMntTmp() {
-		return zMntTmp;
-	}
-
-
-	public void setzMntTmp(BigDecimal zMntTmp) {
-		this.zMntTmp = zMntTmp;
-	}
+	
 
 
 	@Override
 	public String getDesignation() {
 //		 TODO Auto-generated method stub
-		return "Etudiant  "+eleve.getMatricule()+"-"+eleve.getNom();
+		return eleve.getEleve().getMatricule()+"-"+eleve.getEleve().getNom();
 	}
 
 
-	public AnneScolaire getAnneScolaire() {
-		return anneScolaire;
-	}
-
-
-	public void setAnneScolaire(AnneScolaire anneScolaire) {
-		this.anneScolaire = anneScolaire;
-	}
-
-	
 	
 
 }
