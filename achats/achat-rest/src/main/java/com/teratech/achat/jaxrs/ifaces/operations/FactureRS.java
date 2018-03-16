@@ -33,7 +33,7 @@ public interface FactureRS
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("transfert")
+    @Path("transfere")
     public Facture transfert(@Context HttpHeaders headers,Facture entity);
     
     @PUT

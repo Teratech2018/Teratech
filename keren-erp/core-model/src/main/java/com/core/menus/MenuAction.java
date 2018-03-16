@@ -73,6 +73,11 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
      @Predicate(label = "TYPE DE VUE",search = true)
      protected String viewMode ="tree,form";
      
+     @Predicate(label = "Action liée(uniquement si modal = true)")
+     protected String link = null;
+     
+     private Boolean hide = Boolean.FALSE;
+     
      @OneToOne
      @JoinColumn(name = "MOD_ID")
      protected MenuModule module;
@@ -126,6 +131,8 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
         this.icon = menu.icon;
         this.viewMode = menu.viewMode;
         this.method = menu.method;
+        this.link = menu.link;
+        this.hide = menu.hide;
         if(menu.treeView!=null){
             this.treeView = new TreeRecord(menu.treeView);
         }
@@ -216,6 +223,22 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
 
     public void setCalendar(CalendarRecord calendar) {
         this.calendar = calendar;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public Boolean getHide() {
+        return hide;
+    }
+
+    public void setHide(Boolean hide) {
+        this.hide = hide;
     }
     
     

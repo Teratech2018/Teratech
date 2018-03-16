@@ -1585,9 +1585,21 @@ Observer.prototype = {
     notifyMe:function(){
         this.observable.register(this);
     },
+    /**
+     * 
+     * @param {type} event
+     * @param {type} parameters
+     * @returns {undefined}
+     */
     notifyObservers:function(event , parameters){
         this.observable.notifyObservers(event,parameters);
     },
+    /**
+     * 
+     * @param {type} event
+     * @param {type} parameters
+     * @returns {Observer.prototype}
+     */
     notify:function(event , parameters){
         return this;
     }

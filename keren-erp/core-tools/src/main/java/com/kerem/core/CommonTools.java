@@ -71,7 +71,8 @@ public class CommonTools {
         action.setLabel(item.getLabel());
         action.setEntityName(item.getEntityRef());
         action.setModel(item.getModelRef());        
-        //this.menu = menu;
+        action.setLink(item.getLink());
+        action.setHide(item.isHide());
         action.setModal(item.isModal());
         action.setIcon(item.getGyphycon());
         action.setViewMode(item.getViewType());
@@ -228,8 +229,10 @@ public class CommonTools {
                         map.put(col.getFieldName(), col);
                     }//end for(MetaColumn col : group.getColumns())
                 }//end if(group.getColumns()!=null) 
-                if(group.getMetaArray()!=null){
-                    map.put(group.getMetaArray().getFieldName(), group.getMetaArray());
+                if(group.getMetaArray()!=null&&group.getMetaArray().size()>0){
+                    for(MetaArray metaArray:group.getMetaArray()){
+                        map.put(metaArray.getFieldName(), metaArray);
+                    }//end for(MetaArray metaArray:group.getMetaArray())
                 }
             }
         }//end if(metaData.getGroups()!=null){
@@ -350,7 +353,7 @@ public class CommonTools {
                                       if(field.getTarget()!=null&&!field.getTarget().trim().isEmpty()){
                                           column.setTarget(field.getTarget());
                                       }
-                                      groupe.setMetaArray(column);
+                                      groupe.getMetaArray().add(column);
                                   }
                                     result.getGroups().add(groupe);
                                     sequence++;

@@ -296,12 +296,14 @@ public class MenuModuleManagerImpl
                         Map<String,Integer> map = new HashMap<>();
                         for(ActionItem it : menu.getActions()){
                             map.put(it.getName(), menu.getActions().indexOf(it));
-                        }
+                        }//end for(ActionItem it : menu.getActions())
                         MenuAction menu_old = menuitemdao.findByPrimaryKey("name", menu.getName());
-                        MenuGroupActions parent = menudao.findByPrimaryKey("name", item.getParentRef());
-                        //Verifier que le menu a un parent
-                        if(parent==null) continue ;
-                        menu.setMenu(parent);
+                        if(!item.getParentRef().trim().isEmpty()){
+                            MenuGroupActions parent = menudao.findByPrimaryKey("name", item.getParentRef());
+                            //Verifier que le menu a un parent
+                            if(parent==null) continue ;
+                             menu.setMenu(parent);
+                        }//end if(!item.getParentRef().trim().isEmpty())
                         if(menu_old!=null){
                             menu.setId(menu_old.getId());
                             for(ActionItem it:menu_old.getActions()){

@@ -91,7 +91,7 @@ public class FactureRSImpl
             for(MetaGroup group:meta.getGroups()){
                 if(group.getGroupName().trim().equalsIgnoreCase("group1")){
 //                    System.out.println(FactureRSImpl.class.toString()+"  =============================== "+group.getMetaArray()+" ====== "+group.getMetaArray().isCustomfooter()+" ==== "+group.getMetaArray().getFooterScript());
-                     group.getMetaArray().setFooterScript(FOOTER);
+                     group.getMetaArray().get(0).setFooterScript(FOOTER);
                 }//end if(group.getGroupName().trim().equalsIgnoreCase("group1"))
             }//end for(MetaGroup group:meta.getGroups())
             return meta;

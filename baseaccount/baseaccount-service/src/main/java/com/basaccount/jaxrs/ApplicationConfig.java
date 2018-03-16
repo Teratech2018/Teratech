@@ -31,6 +31,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.basaccount.jaxrs.impl.achats.FactureRSImpl.class);
+        resources.add(com.basaccount.jaxrs.impl.achats.NoteFraisRSImpl.class);
         resources.add(com.basaccount.jaxrs.impl.banques.BanqueRSImpl.class);
         resources.add(com.basaccount.jaxrs.impl.banques.CompteBancaireRSImpl.class);
         resources.add(com.basaccount.jaxrs.impl.comptabilite.CompteAnalytiqueRSImpl.class);
@@ -43,7 +45,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.basaccount.jaxrs.impl.dashboard.ComptaDashboardRSImpl.class);  
         resources.add(com.basaccount.jaxrs.impl.operations.ClotureExerciceComptableRSImpl.class);  
         resources.add(com.basaccount.jaxrs.impl.operations.ClotureJournalRSImpl.class);  
-        resources.add(com.basaccount.jaxrs.impl.operations.EcritureAnalytiqueRSImpl.class);  
+        resources.add(com.basaccount.jaxrs.impl.operations.EcritureAnalytiqueRSImpl.class);
         resources.add(com.basaccount.jaxrs.impl.operations.EcritureComptableRSImpl.class);
         resources.add(com.basaccount.jaxrs.impl.operations.EcritureTierRSImpl.class);  
         resources.add(com.basaccount.jaxrs.impl.operations.JournalSaisieRSImpl.class);  

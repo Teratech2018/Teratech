@@ -13,5 +13,6 @@ public enum DocumentAchatState {
     DEMANDE_PRIX,
     BONCOMMANDE,
     BONLIVRAISON,
-    FACTURE
+    FACTURE,
+    COMPTABILITE
 }

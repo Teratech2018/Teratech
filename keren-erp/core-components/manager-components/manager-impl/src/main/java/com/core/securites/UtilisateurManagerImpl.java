@@ -187,10 +187,12 @@ public class UtilisateurManagerImpl
         List<MenuGroupActions> datas = menudao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
         if(datas==null) return result;
         for(MenuGroupActions group : datas){
-            MenuGroupActions grp = new MenuGroupActions(group);            
-            grp.setActions(getMenuActions(grp, groupdb));
-            result.add(grp);
-        }
+            if(group.getModule()!=null){
+                 MenuGroupActions grp = new MenuGroupActions(group);            
+                grp.setActions(getMenuActions(grp, groupdb));
+                result.add(grp);
+            }//endif(group.getModule()!=null)           
+        }//end for(MenuGroupActions group : datas){
         return result;
     }
     
@@ -207,16 +209,18 @@ public class UtilisateurManagerImpl
         List<MenuAction> datas = menuitemdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
         if(datas==null) return result;
         for(MenuAction act:datas){
-            MenuAction action = new MenuAction(act);
-            for(ActionItem item : act.getActions()){
-                action.getActions().add(new ActionItem(item));
-            }
-            if(groupdb.containsKey(action.getId())){
-                if(groupdb.get(action.getId())!=null&&!groupdb.get(action.getId()).isEmpty()){
-                    action.setSecuritylevel(Short.valueOf(groupdb.get(action.getId())));
+            if(act.getHide()==Boolean.FALSE){
+                MenuAction action = new MenuAction(act);
+                for(ActionItem item : act.getActions()){
+                    action.getActions().add(new ActionItem(item));
                 }
-            }//end if(groupdb.containsKey(act.getId())){
-            result.add(action);
+                if(groupdb.containsKey(action.getId())){
+                    if(groupdb.get(action.getId())!=null&&!groupdb.get(action.getId()).isEmpty()){
+                        action.setSecuritylevel(Short.valueOf(groupdb.get(action.getId())));
+                    }
+                }//end if(groupdb.containsKey(act.getId())){
+                result.add(action);
+            }//end if(act.getHide()==Boolean.FALSE)
         }//end for(MenuAction act:datas){
         return result;
     }

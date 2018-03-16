@@ -56,7 +56,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
     private Double quantite ;
     
     @Predicate(label = "Prix HT",type = Double.class,search = true)
-    @Observer(observable = "article",source = "{\"filedname\":\"puachat\"}")
+    @Observer(observable = "article",source = "field:puachat")
     private Double puht ;
     
     @ManyToMany
