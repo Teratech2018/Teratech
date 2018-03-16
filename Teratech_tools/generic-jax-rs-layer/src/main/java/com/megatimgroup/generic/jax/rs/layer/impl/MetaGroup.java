@@ -22,7 +22,7 @@ public class MetaGroup implements Serializable{
     
     private short sequence = 0;
     
-    private MetaArray metaArray ;
+    private List<MetaArray> metaArray = new ArrayList<MetaArray>();
     
     private List<MetaColumn> columns = new ArrayList<MetaColumn>();
 
@@ -41,7 +41,7 @@ public class MetaGroup implements Serializable{
     public MetaGroup(String groupName, String groupLabel, MetaArray metaArray) {
         this.groupName = groupName;
         this.groupLabel = groupLabel;
-        this.metaArray = metaArray;
+//        this.metaArray = metaArray;
     }
 
     public String getGroupName() {
@@ -60,11 +60,11 @@ public class MetaGroup implements Serializable{
         this.groupLabel = groupLabel;
     }
 
-    public MetaArray getMetaArray() {
+    public List<MetaArray> getMetaArray() {
         return metaArray;
     }
 
-    public void setMetaArray(MetaArray metaArray) {
+    public void setMetaArray(List<MetaArray> metaArray) {
         this.metaArray = metaArray;
     }
 

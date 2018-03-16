@@ -63,6 +63,8 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     
     private boolean observable =false;
     
+    private Observer observer ;
+    
     private MetaData metaData ;
 
     /**
@@ -115,6 +117,7 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.compute = column.compute;
         this.hidden = column.hidden;
         this.observable = column.observable;
+        this.observer = column.observer;
     }
 
     public short getSequence() {
@@ -323,6 +326,14 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
 
     public void setObservable(boolean observable) {
         this.observable = observable;
+    }
+
+    public Observer getObserver() {
+        return observer;
+    }
+
+    public void setObserver(Observer observer) {
+        this.observer = observer;
     }
 
     

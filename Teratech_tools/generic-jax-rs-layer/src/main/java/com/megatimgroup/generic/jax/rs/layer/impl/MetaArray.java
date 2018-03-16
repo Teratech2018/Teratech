@@ -37,6 +37,8 @@ public class MetaArray implements Serializable{
     private String filter ;
     
      private String hidden =null;
+     
+     private Observer observer;
     /**
      * 
      */
@@ -170,6 +172,14 @@ public class MetaArray implements Serializable{
 
     public void setHidden(String hidden) {
         this.hidden = hidden;
+    }
+
+    public Observer getObserver() {
+        return observer;
+    }
+
+    public void setObserver(Observer observer) {
+        this.observer = observer;
     }
     
     

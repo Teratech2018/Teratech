@@ -109,10 +109,6 @@ public abstract class AbstractEditTemplateDialog<T extends Object, PK extends Se
         jPanel1 = new javax.swing.JPanel();
         btcancel = new javax.swing.JButton();
         btsave = new javax.swing.JButton();
-        btnotuse_1 = new javax.swing.JButton();
-        btnotuse_2 = new javax.swing.JButton();
-        btnotuse_3 = new javax.swing.JButton();
-        btnotuse_4 = new javax.swing.JButton();
         centerPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -148,18 +144,6 @@ public abstract class AbstractEditTemplateDialog<T extends Object, PK extends Se
                 btsaveActionPerformed(evt);
             }
         });
-        btnotuse_1.setText("To Customize");
-        btnotuse_1.setVisible(false);
-        
-        btnotuse_2.setText("To Customize");
-        btnotuse_2.setVisible(false);
-        
-        
-        btnotuse_3.setText("To Customize");
-        btnotuse_3.setVisible(false);
-        
-        btnotuse_4.setText("To Customize");
-        btnotuse_4.setVisible(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -167,14 +151,6 @@ public abstract class AbstractEditTemplateDialog<T extends Object, PK extends Se
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnotuse_4, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnotuse_3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnotuse_1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnotuse_2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btsave, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btcancel, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,11 +161,7 @@ public abstract class AbstractEditTemplateDialog<T extends Object, PK extends Se
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnotuse_4, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(btnotuse_3, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(btnotuse_1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(btnotuse_2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(btcancel, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(btcancel, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                     .addComponent(btsave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -238,15 +210,12 @@ public abstract class AbstractEditTemplateDialog<T extends Object, PK extends Se
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
+        fermerFenetreParLaCroix();
     }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btcancel;
     protected javax.swing.JButton btsave;
-    protected javax.swing.JButton btnotuse_1;
-    protected javax.swing.JButton btnotuse_2;
-    protected javax.swing.JButton btnotuse_3;
-    protected javax.swing.JButton btnotuse_4;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JPanel jPanel1;
@@ -475,6 +444,10 @@ public abstract class AbstractEditTemplateDialog<T extends Object, PK extends Se
         }
     }
 
+    public void fermerFenetreParLaCroix(){
+        
+    }
+    
     public void quitter() {
         this.dispose();
     }
