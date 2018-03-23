@@ -6111,7 +6111,7 @@ angular.module("mainApp")
                                    }//nd if(response.data.length>0)                                   
                                },function(error){
 //                                   commonsTools.hideDialogLoading();
-                                   commonsTools.showMessageDialog(error);
+//                                     commonsTools.showMessageDialog(error);
                                });
                    }else{
 //                        commonsTools.hideDialogLoading();
@@ -6134,7 +6134,7 @@ angular.module("mainApp")
         */
        $scope.saveanrelaod = function(model ,item ,entityName,moduleName){
            $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%"); 
-           urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/";
+           var urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/";
            $http.post(urlPath,item).then(
                 function(response){
                    urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/";
