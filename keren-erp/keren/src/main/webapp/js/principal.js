@@ -579,14 +579,14 @@ angular.module("mainApp")
                                  totalPages : 0,
                                  enabledNext: true,
                                  enabledPrevious:true,
-                                 /** Get the next pages **/
+                                /** Get the next pages **/
                                  next:function(){
                                      //Notification du chargement
                                      //Verification si on peut avance
                                      if(this.hasnext()){
                                          $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                          //this.currentPage = (this.currentPage*this.pageSize)%this.totalPages; 
-                                         $scope.pagination.beginIndex = $scope.pagination.endIndex+1;                                        
+                                         $scope.pagination.beginIndex = $scope.pagination.endIndex; //+1                                       
                                          //Chargement des donnes
                                           restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                                 .$promise.then(function(data){
@@ -655,7 +655,7 @@ angular.module("mainApp")
                                           if(this.hasnext()){
                                             $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                             //this.currentPage = (this.currentPage*this.pageSize)%this.totalPages; 
-                                            $scope.pagination.beginIndex = $scope.pagination.endIndex+1;                                        
+                                            $scope.pagination.beginIndex = $scope.pagination.endIndex;   //+1                                     
                                             //Chargement des donnes
                                              restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                                    .$promise.then(function(data){
@@ -783,25 +783,26 @@ angular.module("mainApp")
                 /** Get the next pages **/
                                  next_2:function(){
                                      //Notification du chargement
+                                    
                                      //Verification si on peut avance
                                      if(this.hasnext()){
                                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                          //this.currentPage = (this.currentPage*this.pageSize)%this.totalPages; 
-                                         this.beginIndex = this.endIndex+1;  
-                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+this.module+"/"+this.model+"/filter/"+this.beginIndex+"/"+this.pageSize;
-                                         //Chargement des donnes
+                                         this.beginIndex = this.endIndex;  //+1
+                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(this.module)+"/"+angular.lowercase(this.model)+"/filter/"+this.beginIndex+"/"+this.pageSize;
+                                         //Chargement des donnes                                          
+                                           var dmodel = this.model;
                                           $http.get(url)
                                                 .then(function(response){
                                                     var datas = response.data;
-                                                      //console.log('$scope.loadData = function() :::::::::::::::: '+datas);
+                                                     console.log('$scope.loadData = function() :::::::::::::::: '+dmodel);
                                                      if(datas){
-                                                         $scope.dataCache[model] = datas;
+                                                         $scope.dataCache[dmodel] = datas;
                                                          this.currentPage = this.beginIndex;
-                                                         this.endIndex = this.endIndex + pageSize;
-                                                         if(this.endIndex>totalPages){
+                                                         this.endIndex = this.endIndex + this.pageSize;
+                                                         if(this.endIndex>this.totalPages){
                                                              this.endIndex = this.totalPages;
-                                                         }
-                                                         
+                                                         }//end if(this.endIndex>this.totalPages){                                                         
                                                      }
                                                      commonsTools.hideDialogLoading();
                                                 } ,function(error){
@@ -828,13 +829,14 @@ angular.module("mainApp")
                                          if(this.endIndex<=0){
                                             this.endIndex = this.pageSize;                                                             
                                          }//end if(this.endIndex<=0)
+                                          var dmodel = this.model;
                                          var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(this.module)+"/"+angular.lowercase(this.model)+"/filter/"+this.beginIndex+"/"+this.pageSize;
                                           $http.get(url)
                                                   .then(function(response){
                                                       var datas = response.data;
                                                       //console.log('$scope.loadData = function() :::::::::::::::: '+datas);
                                                      if(datas){
-                                                         $scope.dataCache[model] = datas;                                                   
+                                                         $scope.dataCache[dmodel] = datas;                                                   
                                                      }
                                                      commonsTools.hideDialogLoading();
                                                 } ,function(error){
@@ -7701,7 +7703,7 @@ angular.module("mainApp")
                 for(var i=0 ; i< metaData.columns.length;i++){
                   if(angular.isDefined(metaData.columns[i].search)
                             &&(metaData.columns[i].search==true)){
-                      if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'){  
+                      if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'){  //&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'
                             var thElem = document.createElement('th');
                             thElem.innerHTML = metaData.columns[i].fieldLabel;
                             rheadElem.appendChild(thElem);
@@ -7723,8 +7725,7 @@ angular.module("mainApp")
                         for(var j=0 ; j< metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search)
                                       &&(metaData.groups[i].columns[j].search==true)){
-                                 if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'
-                                         &&metaData.groups[i].columns[j].type.type!='textarea'&&metaData.groups[i].columns[j].type.type!='richeditor'){   
+                                 if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'){   //&&metaData.groups[i].columns[j].type.type!='textarea'&&metaData.groups[i].columns[j].type.type!='richeditor'
                                     var thElem = document.createElement('th');
                                     thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel;
                                     rheadElem.appendChild(thElem);
@@ -7734,7 +7735,7 @@ angular.module("mainApp")
                                     }else{
                                         fieldtypes.push(false);
                                     }
-                                }
+                                }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
                             }
                         }//end For
                     }//Fin traitement des colommes
@@ -7757,8 +7758,8 @@ angular.module("mainApp")
             tdElem.appendChild(inputElem0);
             for(var i=0 ; i< metaData.columns.length;i++){
                   if(angular.isDefined(metaData.columns[i].search)
-                        &&(metaData.columns[i].search==true)){
-                      if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'){  
+                        &&(metaData.columns[i].search==true)){//end &&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'
+                      if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'){  
                         var thElem = document.createElement('td');
                         thElem.setAttribute('ng-click' , "viewAction(obj)");
                         if(metaData.columns[i].type=='object'){
@@ -7780,9 +7781,8 @@ angular.module("mainApp")
                     if(metaData.groups[i]&&metaData.groups[i].columns){
                         for(var j=0 ; j< metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search)
-                                      &&(metaData.groups[i].columns[j].search==true)){
-                                  if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'
-                                          &&metaData.groups[i].columns[j].type!='textarea'&&metaData.groups[i].columns[j].type!='richeditor'){   
+                                      &&(metaData.groups[i].columns[j].search==true)){//&&metaData.groups[i].columns[j].type!='textarea'&&metaData.groups[i].columns[j].type!='richeditor'
+                                  if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'){   
                                     var thElem = document.createElement('td');
                                     thElem.setAttribute('ng-click' , "viewAction(obj)");
                                     if(metaData.groups[i].columns[j].type=='object'){
@@ -7794,7 +7794,7 @@ angular.module("mainApp")
                                         thElem.setAttribute('class','text-right');
                                     }
                                     rbodyElem.appendChild(thElem);
-                                }
+                                }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
                             }
                         }//end For
                     }//Fin traitement des colommes

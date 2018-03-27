@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<model-config xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
+	xmlns="http://www.megatimgroup.net/model-config">
+    <elements>
+        <element type="com.keren.model.employes.Employe"  idclass="long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>        
+        <element type="com.keren.model.employes.Categorie"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.employes.DepartementSoc"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.employes.Echelon"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.employes.Famille"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>   
+        <element type="com.keren.model.employes.Fonction"  idclass="Long"  idname="id"  deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>   
+        <element type="com.keren.model.employes.Poste"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.model.structures.Departement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.model.comptabilite.Banque"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.comptabilite.Compte"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.model.comptabilite.CompteAnalytique"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.model.comptabilite.CompteBancaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.keren.model.comptabilite.NiveauAnalyse"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.keren.model.comptabilite.SectionAnalytique"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.model.comptabilite.Taxe"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.employes.TypeContrat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.TypeDemande"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.NiveauEtude"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Specialite"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Diplome"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Region"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Pays"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.conges.DemandeConge"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.conges.DemandeCongeC"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.conges.DemandeCongeV"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.conges.DemandeCongeR"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.conges.TypeConge"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.conges.RepriseService"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.conges.InterruptionConge"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.presences.FichePointage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.presences.LigneFichePointage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.presences.PointageJouranlier"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.presences.LignePointage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.model.discipline.ConvocationConseil"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.model.discipline.MembreConseil"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.model.discipline.ReponseDE"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.model.discipline.TraitementDE"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.model.discipline.DemandeExplication"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.discipline.LigneResolution"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.discipline.ResolutionConseil"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.discipline.Sanction"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Societe"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Devise"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+   </elements>
+    
+</model-config>

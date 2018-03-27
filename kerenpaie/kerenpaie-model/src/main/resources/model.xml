@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<model-config xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
+	xmlns="http://www.megatimgroup.net/model-config">
+    <elements>
+        <element type="com.keren.kerenpaie.model.employes.Employe"  idclass="long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>        
+        <element type="com.keren.kerenpaie.model.employes.Categorie"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.employes.DepartementSoc"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.employes.Echelon"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.employes.Famille"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>   
+        <element type="com.keren.kerenpaie.model.employes.Fonction"  idclass="Long"  idname="id"  deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>   
+        <element type="com.keren.kerenpaie.model.employes.Poste"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.kerenpaie.model.employes.ContratTravail"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.kerenpaie.model.structures.Departement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.kerenpaie.model.comptabilite.Banque"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.comptabilite.Compte"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.kerenpaie.model.comptabilite.CompteAnalytique"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.kerenpaie.model.comptabilite.CompteBancaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.keren.kerenpaie.model.comptabilite.NiveauAnalyse"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.keren.kerenpaie.model.comptabilite.SectionAnalytique"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.kerenpaie.model.comptabilite.Taxe"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.comptabilite.JournalComptable"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.employes.TypeContrat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.TypeDemande"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.NiveauEtude"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.Specialite"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.Diplome"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.Region"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.Pays"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.pret.Societe"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.Devise"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.comptabilite.ExerciceComptable"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.Rubrique"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.Variable"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+       <element type="com.keren.kerenpaie.model.paie.Convension"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.LigneConvension"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.ProfilPaie"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.BulletinPaie"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.LigneBulletinPaie"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.comptabilite.PeriodePaie"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.comptabilite.PeriodePaieOpen"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.comptabilite.PeriodePaieClose"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.PrepaSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.TraitSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.ElementSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.ParametreAvance"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.kerenpaie.model.paie.LignePonderationSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.kerenpaie.model.paie.LignePonderationTypeContrat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+       <element type="com.keren.kerenpaie.model.prets.Acompte"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.kerenpaie.model.prets.AvanceSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.kerenpaie.model.prets.CategoriePret"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.prets.DemandePret"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.prets.LigneRappel"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.prets.Rappel"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.prets.RemboursementAvance"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.prets.RemboursementPret"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.SoumettreSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.ValiderSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.PayerSalaire"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.ElementVariable"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+   </elements>
+    
+</model-config>

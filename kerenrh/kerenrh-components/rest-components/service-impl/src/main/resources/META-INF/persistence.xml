@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="keren" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/kerenrh</jta-data-source>
+    <class>com.keren.model.employes.Employe</class>
+    <class>com.keren.model.comptabilite.Banque</class>
+    <class>com.keren.model.comptabilite.Compte</class>
+    <class>com.keren.model.comptabilite.CompteAnalytique</class>
+    <class>com.keren.model.comptabilite.CompteBancaire</class>
+    <class>com.keren.model.comptabilite.NiveauAnalyse</class>
+    <class>com.keren.model.comptabilite.SectionAnalytique</class>
+    <class>com.keren.model.comptabilite.Taxe</class>
+    <class>com.keren.model.employes.Categorie</class>
+    <class>com.keren.model.employes.DepartementSoc</class>
+    <class>com.keren.model.employes.Echelon</class>
+    <class>com.keren.model.employes.Famille</class>
+    <class>com.keren.model.employes.Fonction</class>
+    <class>com.keren.model.employes.Poste</class>
+    <class>com.keren.model.employes.TypeContrat</class>
+    <class>com.keren.model.structures.Departement</class>
+    <class>com.keren.model.structures.Diplome</class>
+    <class>com.keren.model.structures.NiveauEtude</class>
+    <class>com.keren.model.structures.Specialite</class>
+    <class>com.keren.model.structures.TypeDemande</class>
+    <class>com.keren.model.structures.Region</class>
+    <class>com.keren.model.structures.Pays</class>
+    <class>com.keren.model.conges.BaseDemandeConge</class>
+    <class>com.keren.model.conges.DemandeConge</class>
+    <class>com.keren.model.conges.DemandeCongeC</class>
+    <class>com.keren.model.conges.DemandeCongeR</class>
+    <class>com.keren.model.conges.DemandeCongeV</class>
+    <class>com.keren.model.conges.TypeConge</class>
+    <class>com.keren.model.conges.InterruptionConge</class>
+    <class>com.keren.model.conges.RepriseService</class>
+    <class>com.keren.model.presences.FichePointage</class>
+    <class>com.keren.model.presences.LigneFichePointage</class>
+    <class>com.keren.model.presences.PointageJouranlier</class>
+    <class>com.keren.model.presences.LignePointage</class>
+    <class>com.keren.model.discipline.DemandeExplication</class>
+    <class>com.keren.model.discipline.ReponseDE</class>
+    <class>com.keren.model.discipline.TraitementDE</class>
+    <class>com.keren.model.discipline.MembreConseil</class>
+    <class>com.keren.model.discipline.ConvocationConseil</class>
+    <class>com.keren.model.discipline.LigneResolution</class>
+    <class>com.keren.model.discipline.ResolutionConseil</class>
+    <class>com.keren.model.discipline.Sanction</class>
+    <class>com.keren.model.structures.Societe</class>
+    <class>com.keren.model.structures.Devise</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <!--      <property name="hibernate.show_sql" value="true"/>-->
+    </properties>
+  </persistence-unit>
+</persistence>

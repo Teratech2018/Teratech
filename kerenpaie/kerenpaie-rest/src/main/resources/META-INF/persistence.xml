@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="kerenpaie" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/kerenpaie</jta-data-source>
+    <class>com.keren.kerenpaie.model.comptabilite.Banque</class>
+    <class>com.keren.kerenpaie.model.comptabilite.Compte</class>
+    <class>com.keren.kerenpaie.model.comptabilite.CompteAnalytique</class>
+    <class>com.keren.kerenpaie.model.comptabilite.CompteBancaire</class>
+    <class>com.keren.kerenpaie.model.comptabilite.NiveauAnalyse</class>
+    <class>com.keren.kerenpaie.model.comptabilite.SectionAnalytique</class>
+    <class>com.keren.kerenpaie.model.comptabilite.Taxe</class>
+    <class>com.keren.kerenpaie.model.comptabilite.PeriodePaie</class>
+    <class>com.keren.kerenpaie.model.employes.Categorie</class>
+    <class>com.keren.kerenpaie.model.employes.DepartementSoc</class>
+    <class>com.keren.kerenpaie.model.employes.Echelon</class>
+    <class>com.keren.kerenpaie.model.employes.Employe</class>
+    <class>com.keren.kerenpaie.model.employes.Famille</class>
+    <class>com.keren.kerenpaie.model.employes.Fonction</class>
+    <class>com.keren.kerenpaie.model.employes.Poste</class>
+    <class>com.keren.kerenpaie.model.employes.TypeContrat</class>
+    <class>com.keren.kerenpaie.model.structures.Departement</class>
+    <class>com.keren.kerenpaie.model.structures.Devise</class>
+    <class>com.keren.kerenpaie.model.structures.Diplome</class>
+    <class>com.keren.kerenpaie.model.structures.NiveauEtude</class>
+    <class>com.keren.kerenpaie.model.structures.Pays</class>
+    <class>com.keren.kerenpaie.model.structures.Region</class>
+    <class>com.keren.kerenpaie.model.structures.Societe</class>
+    <class>com.keren.kerenpaie.model.structures.Specialite</class>
+    <class>com.keren.kerenpaie.model.structures.TypeDemande</class>
+    <class>com.keren.kerenpaie.model.paie.Convension</class>
+    <class>com.keren.kerenpaie.model.paie.Rubrique</class>
+    <class>com.keren.kerenpaie.model.paie.Variable</class>
+    <class>com.keren.kerenpaie.model.comptabilite.ExerciceComptable</class>
+    <class>com.keren.kerenpaie.model.paie.BulletinPaie</class>
+    <class>com.keren.kerenpaie.model.paie.LigneConvension</class>
+    <class>com.keren.kerenpaie.model.paie.ProfilPaie</class>
+    <class>com.keren.kerenpaie.model.paie.LigneBulletinPaie</class>
+    <class>com.keren.kerenpaie.model.paie.ForfaitCategorieProf</class>
+    <class>com.keren.kerenpaie.model.paie.ForfaitCategorie</class>
+    <class>com.keren.kerenpaie.model.paie.ForfaitSpecialite</class>
+    <class>com.keren.kerenpaie.model.prets.Acompte</class>
+    <class>com.keren.kerenpaie.model.prets.CategoriePret</class>
+    <class>com.keren.kerenpaie.model.prets.DemandePret</class>
+    <class>com.keren.kerenpaie.model.prets.LigneRappel</class>
+    <class>com.keren.kerenpaie.model.prets.Rappel</class>
+    <class>com.keren.kerenpaie.model.prets.RemboursementPret</class>
+    <class>com.keren.kerenpaie.model.prets.AvanceSalaire</class>
+    <class>com.keren.kerenpaie.model.prets.RemboursementAvance</class>
+    <class>com.keren.kerenpaie.model.employes.ContratTravail</class>
+    <class>com.keren.kerenpaie.model.paie.ElementVariable</class>
+    <class>com.keren.kerenpaie.model.comptabilite.JournalComptable</class>
+    <class>com.keren.kerenpaie.model.paie.ElementSalaire</class>
+    <class>com.keren.kerenpaie.model.paie.LignePonderationSalaire</class>
+    <class>com.keren.kerenpaie.model.paie.LignePonderationTypeContrat</class>
+    <class>com.keren.kerenpaie.model.paie.ParametreAvance</class>
+    <class>com.keren.kerenpaie.model.paie.LigneElementVariable</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>
