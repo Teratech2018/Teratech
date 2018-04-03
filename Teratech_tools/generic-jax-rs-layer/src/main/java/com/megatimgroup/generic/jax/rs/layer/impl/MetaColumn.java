@@ -67,6 +67,8 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     
     private MetaData metaData ;
 
+    private boolean edittable = false;
+    
     /**
      * 
      */
@@ -118,6 +120,7 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.hidden = column.hidden;
         this.observable = column.observable;
         this.observer = column.observer;
+        this.edittable = column.edittable;
     }
 
     public short getSequence() {
@@ -334,6 +337,14 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
 
     public void setObserver(Observer observer) {
         this.observer = observer;
+    }
+
+    public boolean isEdittable() {
+        return edittable;
+    }
+
+    public void setEdittable(boolean edittable) {
+        this.edittable = edittable;
     }
 
     

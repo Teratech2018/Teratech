@@ -14,12 +14,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class MetaArray implements Serializable{
+    
     private String type ;
+    
     private boolean search = false;
     
-    private String target ;    
+    private String target ;   
+    
     private String fieldName ;
-    private String fieldLabel ;    
+    
+    private String fieldLabel ; 
+    
     private MetaData metaData ;
     
     private boolean optional = true ;
@@ -38,6 +43,10 @@ public class MetaArray implements Serializable{
     
      private String hidden =null;
      
+    private boolean editable = true ; 
+    
+    private boolean edittable = false ; 
+    
      private Observer observer;
     /**
      * 
@@ -180,6 +189,22 @@ public class MetaArray implements Serializable{
 
     public void setObserver(Observer observer) {
         this.observer = observer;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public boolean isEdittable() {
+        return edittable;
+    }
+
+    public void setEdittable(boolean edittable) {
+        this.edittable = edittable;
     }
     
     

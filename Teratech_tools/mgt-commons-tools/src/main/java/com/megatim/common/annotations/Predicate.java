@@ -79,4 +79,6 @@ public @interface Predicate {
      * @return 
      */
     boolean observable() default false;
+    
+    boolean edittable() default false;
 }
