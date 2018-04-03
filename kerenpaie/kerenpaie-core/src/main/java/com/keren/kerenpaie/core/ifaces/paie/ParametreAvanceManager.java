@@ -15,5 +15,11 @@ public interface ParametreAvanceManager
 {
 
     public final static String SERVICE_NAME = "ParametreAvanceManager";
+    
+    public ParametreAvance actif(ParametreAvance entity);
+	
+	public ParametreAvance inactif(ParametreAvance entity);
+	
+	public ParametreAvance genere(ParametreAvance entity);
 
 }

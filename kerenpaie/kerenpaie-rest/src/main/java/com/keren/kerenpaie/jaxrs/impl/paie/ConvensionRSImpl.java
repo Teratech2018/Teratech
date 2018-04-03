@@ -61,7 +61,12 @@ public class ConvensionRSImpl
 		try {
 			meta = MetaDataUtil.getMetaData(new Convension(), new HashMap<String, MetaData>()
 					, new ArrayList<String>());
-			MetaColumn workbtn = new MetaColumn("button", "work1", "Activer", false, "workflow", null);
+			MetaColumn workbtn = new MetaColumn("button", "work1", "Générer La Grille", false, "workflow", null);
+	        workbtn.setValue("{'model':'kerenpaie','entity':'convension','method':'genere'}");
+	        workbtn.setStates(new String[]{"etabli"});
+	        workbtn.setPattern("btn btn-primary");
+	        meta.getHeader().add(workbtn);  
+	        workbtn = new MetaColumn("button", "work1", "Activer", false, "workflow", null);
 	        workbtn.setValue("{'model':'kerenpaie','entity':'convension','method':'actif'}");
 	        workbtn.setStates(new String[]{"etabli"});
 	        workbtn.setPattern("btn btn-success");
@@ -171,6 +176,25 @@ public class ConvensionRSImpl
 			throw new KerenExecption("La Désactivation n'est possible que <br/> pour la convension active");
 		}
 		return manager.inactif(entity);
+	}
+
+	@Override
+	public Convension genere(HttpHeaders headers, Convension entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Reference est obligatoire");
+		}else if(entity.getLabel()==null||entity.getLabel().trim().isEmpty()){
+			throw new KerenExecption("L'Intitulé est obligatoire");
+		}else if(entity.getRubrique()==null){
+			throw new KerenExecption("La Rubrique de Paie est obligatoire");
+		}else if(entity.getDebut()==null){
+			throw new KerenExecption("La Date de Début  est obligatoire");
+		}else if(entity.getFin()==null){
+			throw new KerenExecption("La Date de Fin est obligatoire");
+		}else if(!entity.getState().equalsIgnoreCase("actif")){
+			throw new KerenExecption("La Désactivation n'est possible que <br/> pour la convension active");
+		}
+		return manager.genere(entity);
 	}
     
     

@@ -2,6 +2,8 @@
 package com.keren.kerenpaie.core.ifaces.paie;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
+import com.keren.kerenpaie.model.employes.ContratTravail;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.paie.Rubrique;
@@ -25,7 +27,7 @@ public interface MoteurPaieManager
      * @param salarie
      * @return
      */
-    public Double eval(Rubrique rubrique,Employe salarie);
+    public Double eval(Rubrique rubrique,Employe salarie,PeriodePaie periode,ContratTravail contrat);
     
     /**
      * Evaluation d'une variable de paie
@@ -33,6 +35,14 @@ public interface MoteurPaieManager
      * @param salarie
      * @return
      */
-    public Double eval(Variable variable,Employe salarie);
+    public Double eval(Variable variable,Employe salarie,PeriodePaie periode,ContratTravail contrat);
+    
+   
+    /**
+     * Evaluation d'un bulletin
+     * @param bulletin
+     * @return
+     */
+    public BulletinPaie eval(BulletinPaie bulletin);
 
 }

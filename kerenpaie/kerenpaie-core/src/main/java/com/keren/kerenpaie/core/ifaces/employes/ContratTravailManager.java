@@ -17,4 +17,6 @@ public interface ContratTravailManager
     public final static String SERVICE_NAME = "ContratTravailManager";
 
     public ContratTravail cloture(ContratTravail contrat);
+    
+    public ContratTravail demarrer(ContratTravail contrat);
 }

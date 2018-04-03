@@ -69,4 +69,24 @@ public class ElementVariableRSImpl
 		return meta;
 	}
 
+	@Override
+	protected void processAfterUpdate(ElementVariable entity) {
+		// TODO Auto-generated method stub
+		super.processAfterUpdate(entity);
+	}
+
+	@Override
+	protected void processBeforeDelete(Object entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeDelete(entity);
+	}
+
+	@Override
+	protected void processBeforeSave(ElementVariable entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeSave(entity);
+	}
+    
+    
+
 }

@@ -11,8 +11,10 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.employes.ContratTravailManagerRemote;
+import com.keren.kerenpaie.core.ifaces.employes.EmployeManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.employes.ContratTravailRS;
 import com.keren.kerenpaie.model.employes.ContratTravail;
+import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.prets.Acompte;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -37,6 +39,9 @@ public class ContratTravailRSImpl
      */
     @Manager(application = "kerenpaie", name = "ContratTravailManagerImpl", interf = ContratTravailManagerRemote.class)
     protected ContratTravailManagerRemote manager;
+    
+    @Manager(application = "kerenpaie", name = "EmployeManagerImpl", interf = EmployeManagerRemote.class)
+    protected EmployeManagerRemote employemanager;
 
     public ContratTravailRSImpl() {
         super();
@@ -60,16 +65,16 @@ public class ContratTravailRSImpl
 		// TODO Auto-generated method stub
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new ContratTravail(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			MetaColumn workbtn = new MetaColumn("button", "work1", "Cloturer le Contrat", false, "workflow", null);
+			MetaColumn workbtn = new MetaColumn("button", "work2", "Démarrer", false, "workflow", null);
+            workbtn.setValue("{'model':'kerenpaie','entity':'contrattravail','method':'demarrer'}");
+            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setPattern("btn btn-success");
+            meta.getHeader().add(workbtn);
+			workbtn = new MetaColumn("button", "work1", "Cloturer le Contrat", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'contrattravail','method':'cloture'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-danger");
-            meta.getHeader().add(workbtn);
-//            workbtn = new MetaColumn("button", "work2", "Payer", false, "workflow", null);
-//            workbtn.setValue("{'model':'kerenpaie','entity':'contrattravail','method':'paye'}");
-//            workbtn.setStates(new String[]{"etabli"});
-//            workbtn.setPattern("btn btn-primary");
-//            meta.getHeader().add(workbtn);
+            meta.getHeader().add(workbtn);            
 //            workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
 //            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
 //            workbtn.setStates(new String[]{"etabli"});
@@ -169,7 +174,39 @@ public class ContratTravailRSImpl
 		}
 		return manager.cloture(entity);
 	}
+
+	@Override
+	public ContratTravail demarrer(HttpHeaders headers, ContratTravail entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Référence du contrat est obligatoire");
+		}else if(entity.getEmploye()==null){
+			throw new KerenExecption("La salarié est obligatoire");
+		}else if(entity.getCategorie()==null){
+			throw new KerenExecption("La Catégorie du salarié est obligatoire");
+		}else if(entity.getType()==null){
+			throw new KerenExecption("Le Type de contrat est obligatoire");
+		}else if(entity.getEchelon()==null){
+			throw new KerenExecption("L'Echélon du salarié est obligatoire");
+		}else if(entity.getFonction()==null){
+			throw new KerenExecption("L'Emploi du salarié est obligatoire");
+		}else if(entity.getDrecurtement()==null){
+			throw new KerenExecption("La date de recrutement du salarié est obligatoire");
+		}else if(entity.getId()<=0){
+			throw new KerenExecption("Veuillez d'abord enregistrer le contrat de travail");
+		}
+		contratValidate(entity);
+		
+		return manager.demarrer(entity);
+	}
     
-    
+    private void contratValidate(ContratTravail contrat){
+    	Employe employe = employemanager.find("id",contrat.getEmploye().getId());
+    	for(ContratTravail con:employe.getContrats()){
+    		if(con.getState().trim().equalsIgnoreCase("confirme") && con.compareTo(contrat)!=0){
+    			throw new KerenExecption("Deux contrat ne peuvent être actif en même temps <br/> Veuillez désactiver le Contrat de Travail :  "+con.getDesignation()+" et Reéssayer");
+    		}//end if(con.getState().trim().equalsIgnoreCase("confirme") && con.compareTo(contrat)!=0){
+    	}//end for(ContratTravail con:employe.getContrats())
+    }
 
 }

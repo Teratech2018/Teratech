@@ -33,5 +33,11 @@ public interface ConvensionRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("inactif")
     public Convension inactif(@Context HttpHeaders headers,Convension entity);
+	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("genere")
+    public Convension genere(@Context HttpHeaders headers,Convension entity);
 
 }

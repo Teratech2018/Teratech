@@ -47,64 +47,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@JoinColumn(name="PEPA_ID")
 	@Predicate(label="Periode de Paie",type=PeriodePaie.class,target="many-to-one",optional=false,updatable=false,editable=false,search=false)
 	private PeriodePaie peiode;
-//	
-	
-//	@Predicate(label="Heures Chomé",type=Double.class,group=true,groupName="group1",groupLabel="HEURES")
-//	private Double hchomes = 0.0;
-//	
-//	@Predicate(label="Heures Période",type=Double.class,group=true,groupName="group1",groupLabel="HEURES")
-//	private Double hperiode = 0.0;
-//	
-//	@Predicate(label="Heures Payés",type=Double.class,group=true,groupName="group1",groupLabel="HEURES")
-//	private Double hpayes =0.0;
-//
-//	@Predicate(label="Heures Travaillés",type=Double.class,group=true,groupName="group1",groupLabel="HEURES")
-//	private Double htravail = 0.0;
-//	
-//	@Predicate(label="Heures Absences",type=Double.class,group=true,groupName="group1",groupLabel="HEURES")
-//	private Double nbreheuresabsences = 0.0;	
-//	
-//	@Predicate(label="SALBASE",type=Double.class,group=true,groupName="group2",groupLabel="SALAIRES")
-//	private Double salbase = 0.0;	
-//    
-//	@Predicate(label="ANCIEN",type=Double.class)
-//	private Double anciennite = 0.0;
-//	
-//	@Predicate(label="Salaire catégoriel",type=Double.class,editable=false,updatable=false,group=true,groupName="group2",groupLabel="SALAIRES")
-//	private Double salcategorie = 0.0;
-//	
-//	@Predicate(label="Salaire de base Brut",type=Double.class,editable=false,updatable=false,group=true,groupName="group2",groupLabel="SALAIRES")
-//	private Double salbasebrut = 0.0;
-//	
-//	@Predicate(label="Cumul Salaire brut Annuel",type=Double.class,editable=false,updatable=false,group=true,groupName="group2",groupLabel="SALAIRES")
-//	private Double salbrutannuel = 0.0 ;
-//
-//	@Predicate(label="Salaire cotisable",type=Double.class,editable=false,updatable=false,group=true,groupName="group2",groupLabel="SALAIRES")
-//	private Double salcotisable =0.0 ;
-//
-//	@Predicate(label="Salaire taxable",type=Double.class,editable=false,updatable=false,group=true,groupName="group2",groupLabel="SALAIRES")
-//	private Double saltaxable = 0.0;	
-//
-//	@Predicate(label="NBRECONG",type=Double.class)
-//	private Double nbreheuresconges = 0.0;
-//	
-//	@Predicate(label="NBREENF21",type=Double.class)
-//	private Double nbreenfants21 = 0.0 ;
-//
-//	@Predicate(label="NBREENF",type=Double.class)
-//	private Double nbreenfants= 0.0 ;	
-//	
-//	@Predicate(label="Salaire Brut",type=Double.class,editable=false,updatable=false,group=true,groupName="group2",groupLabel="SALAIRES")
-//	private Double salbrut =0.0;	
-//	
-//	private Double jrstraveffectif = 0.0;
-//	
-//	
-//	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-//	@JoinColumn(name="LIELVA_ID")
-//	@Predicate(label="VARIABLES",type=LigneElementVariable.class,target="one-to-many",group=true,groupName="group1",groupLabel="VARIABLES")
-//	private List<LigneElementVariable> lignes = new ArrayList<LigneElementVariable>();
-	
+
 	
 	@OneToMany(mappedBy="eltVariable",fetch=FetchType.LAZY)
 //	@Predicate(label="Remb Avance",type=RemboursementAvance.class,target="many-to-one",search=true)
@@ -190,153 +133,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		return salarie0;
 	}
 	
-	
 
-//	public Double getSalbase() {
-//		return salbase;
-//	}
-//
-//	public void setSalbase(Double salbase) {
-//		this.salbase = salbase;
-//	}
-//
-//	public Double getAnciennite() {
-//		return anciennite;
-//	}
-//
-//	public void setAnciennite(Double anciennite) {
-//		this.anciennite = anciennite;
-//	}
-//
-//	public Double getSalcategorie() {
-//		return salcategorie;
-//	}
-//
-//	public void setSalcategorie(Double salcategorie) {
-//		this.salcategorie = salcategorie;
-//	}
-//
-//	public Double getSalbasebrut() {
-//		return salbasebrut;
-//	}
-//
-//	public void setSalbasebrut(Double salbasebrut) {
-//		this.salbasebrut = salbasebrut;
-//	}
-//
-//	public Double getSalbrutannuel() {
-//		return salbrutannuel;
-//	}
-//
-//	public void setSalbrutannuel(Double salbrutannuel) {
-//		this.salbrutannuel = salbrutannuel;
-//	}
-//
-//	public Double getSalcotisable() {
-//		return salcotisable;
-//	}
-//
-//	public void setSalcotisable(Double salcotisable) {
-//		this.salcotisable = salcotisable;
-//	}
-//
-//	public Double getSaltaxable() {
-//		return saltaxable;
-//	}
-//
-//	public void setSaltaxable(Double saltaxable) {
-//		this.saltaxable = saltaxable;
-//	}
-//
-//	public Double getNbreheuresabsences() {
-//		return nbreheuresabsences;
-//	}
-//
-//	public void setNbreheuresabsences(Double nbreheuresabsences) {
-//		this.nbreheuresabsences = nbreheuresabsences;
-//	}
-//
-//	public Double getNbreheuresconges() {
-//		return nbreheuresconges;
-//	}
-//
-//	public void setNbreheuresconges(Double nbreheuresconges) {
-//		this.nbreheuresconges = nbreheuresconges;
-//	}
-//
-//	public Double getNbreenfants21() {
-//		return nbreenfants21;
-//	}
-//
-//	public void setNbreenfants21(Double nbreenfants21) {
-//		this.nbreenfants21 = nbreenfants21;
-//	}
-//
-//	public Double getSalbrut() {
-//		return salbrut;
-//	}
-//
-//	public void setSalbrut(Double salbrut) {
-//		this.salbrut = salbrut;
-//	}
-//
-//	public Double getNbreenfants() {
-//		return nbreenfants;
-//	}
-//
-//	public void setNbreenfants(Double nbreenfants) {
-//		this.nbreenfants = nbreenfants;
-//	}
-//
-//	public Double getJrstraveffectif() {
-//		return jrstraveffectif;
-//	}
-//
-//	public void setJrstraveffectif(Double jrstraveffectif) {
-//		this.jrstraveffectif = jrstraveffectif;
-//	}
-//	
-//	
-//
-//	public Double getHchomes() {
-//		return hchomes;
-//	}
-//
-//	public void setHchomes(Double hchomes) {
-//		this.hchomes = hchomes;
-//	}
-//
-//	public Double getHperiode() {
-//		return hperiode;
-//	}
-//
-//	public void setHperiode(Double hperiode) {
-//		this.hperiode = hperiode;
-//	}
-//
-//	public Double getHpayes() {
-//		return hpayes;
-//	}
-//
-//	public void setHpayes(Double hpayes) {
-//		this.hpayes = hpayes;
-//	}
-//
-//	public Double getHtravail() {
-//		return htravail;
-//	}
-//
-//	public void setHtravail(Double htravail) {
-//		this.htravail = htravail;
-//	}
-
-//	public List<LigneElementVariable> getLignes() {
-//		return lignes;
-//	}
-//
-//	public void setLignes(List<LigneElementVariable> lignes) {
-//		this.lignes = lignes;
-//	}
 
 	public void setSalarie0(Employe salarie0) {
 		this.salarie0 = salarie0;
@@ -409,7 +206,14 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@Override
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
-		return super.getStates();
+		List<State> states = new ArrayList<State>();
+		State state = new State("etabli", "Brouillon");
+		states.add(state);
+		state = new State("active", "Actif");
+		states.add(state);
+		state = new State("inactive", "Inactif");
+		states.add(state);
+		return states;
 	}
 
 	@Override
@@ -417,6 +221,8 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	
 
 	@Override
 	public String getModuleName() {

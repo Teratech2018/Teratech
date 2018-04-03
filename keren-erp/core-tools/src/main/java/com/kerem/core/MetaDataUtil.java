@@ -290,6 +290,7 @@ public class MetaDataUtil {
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable());
                         column.setCustomfooter(annot.customfooter());column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         String[] searchfields = annot.searchfields().split(",");
+                        column.setEdittable(annot.edittable());
                         column.setSearchfields(searchfields);column.setColsequence(annot.colsequence());
                         if(column.isCustomfooter()&&annot2!=null){
                             column.setFooterScript(annot2.value());
@@ -490,6 +491,7 @@ public class MetaDataUtil {
                                 }else if(field.isAnnotationPresent(OneToMany.class)){                                    
                                     MetaArray metaArray = new MetaArray("array", field.getName(), annot.groupLabel(),annot.search(),annot.target(),meta);
                                     metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
+                                    metaArray.setEdittable(annot.edittable());
                                     String[] searchfields = annot.searchfields().split(",");
                                     metaArray.setSearchfields(searchfields);metaArray.setHidden(annot.hidden());
                                     if(metaArray.isCustomfooter()&&annot2!=null){

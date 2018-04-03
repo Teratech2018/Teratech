@@ -118,6 +118,14 @@ public class ContratTravailManagerImpl
 		dao.update(contrat.getId(), contrat);
 		return contrat;
 	}
+
+	@Override
+	public ContratTravail demarrer(ContratTravail contrat) {
+		// TODO Auto-generated method stub		
+		contrat.setState("confirme");
+		dao.update(contrat.getId(), contrat);
+		return contrat;
+	}
     
     
 

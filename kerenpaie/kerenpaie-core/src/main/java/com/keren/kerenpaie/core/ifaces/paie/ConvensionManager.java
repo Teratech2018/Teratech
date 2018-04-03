@@ -19,5 +19,7 @@ public interface ConvensionManager
     public Convension actif(Convension entity);
     
     public Convension inactif(Convension entity);
+    
+    public Convension genere(Convension entity);
 
 }

@@ -69,6 +69,17 @@ public class LignePonderationSalaire extends BaseElement implements Serializable
 	
 	/**
 	 * 
+	 * @param fonction
+	 * @param taux
+	 */
+	public LignePonderationSalaire(Fonction fonction, Double taux) {
+		super(-1, null, null);
+		this.fonction = fonction;
+		this.taux = taux;
+	}
+	
+	/**
+	 * 
 	 * @param ponderation
 	 */
 	public LignePonderationSalaire(LignePonderationSalaire ponderation) {

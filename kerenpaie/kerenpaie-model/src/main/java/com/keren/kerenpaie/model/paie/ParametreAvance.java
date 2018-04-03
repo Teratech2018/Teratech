@@ -7,7 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -29,18 +31,23 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	 */
 	private static final long serialVersionUID = 4361315865563218517L;
 	
-	@Predicate(label="Type de Parametrage",target="combobox",values="Pondération salaire;Taux par Type de contrat",search=true)
+	@Predicate(label="Reference",optional=false,search=true)
+	private String code ;
+	
+	@Predicate(label="Type de Parametrage",updatable= false,target="combobox",values="Pondération salaire;Taux par Type de contrat",search=true)
 	private String type="0";
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="LIPOSA_ID")
+	@Predicate(label="Lignes",type=LignePonderationSalaire.class,target="one-to-many",group=true,groupName="group1",groupLabel="DETAILS",hidden="currentObject.type!=0",edittable=true)
+	private List<LignePonderationSalaire> fonctions = new ArrayList<LignePonderationSalaire>();
+	
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="LIPOTC_ID")
-	@Predicate(label="Lignes",type=LignePonderationSalaire.class,target="one-to-many",group=true,groupName="group1",groupLabel="DETAILS",hidden="currentObject.type!=1")
+	@Predicate(label="Lignes",type=LignePonderationTypeContrat.class,target="one-to-many",group=true,groupName="group1",groupLabel="DETAILS",hidden="currentObject.type!=1",edittable=true)
 	private List<LignePonderationTypeContrat> typescontrats = new ArrayList<LignePonderationTypeContrat>();
 	
-	@OneToMany
-	@JoinColumn(name="LIPOSA_ID")
-	@Predicate(label="Lignes",type=LignePonderationSalaire.class,target="one-to-many",group=true,groupName="group1",groupLabel="DETAILS",hidden="currentObject.type!=0")
-	private List<LignePonderationSalaire> fonctions = new ArrayList<LignePonderationSalaire>();
+	private String state ="etabli";
 	
 	
 
@@ -86,6 +93,8 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	public ParametreAvance(ParametreAvance pa) {
 		super(pa.id, pa.designation, pa.moduleName);
 		this.type = pa.type;
+		this.code = pa.code;
+		this.state = pa.state;
 //		this.fonctions = fonctions;
 //		this.typescontrats = typescontrats;
 	}
@@ -118,6 +127,22 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	
 	
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -139,7 +164,7 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return type;
+		return code;
 	}
 
 	@Override
@@ -163,7 +188,14 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	@Override
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
-		return super.getStates();
+		List<State> states = new ArrayList<State>();
+		State state = new State("etabli", "Brouillon");
+		states.add(state);
+		state = new State("active", "Actif");
+		states.add(state);
+		state = new State("inactive", "Inactif");
+		states.add(state);
+		return states;
 	}
 
 	@Override

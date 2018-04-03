@@ -1325,10 +1325,11 @@ angular.module('keren.core.commons')
                 var parts= model.split(".");
                 var key = "";
                 for(var i=1 ; i<parts.length;i++){
-                    if(i==1){
-                        key = parts[i];
+                    var part = parts[i].split("[");
+                    if(i==1){                 
+                        key = part[0];                        
                     }else{
-                        key+=parts[i];
+                        key+=part[0];
                     }
                 }
                 return key;

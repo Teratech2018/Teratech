@@ -28,6 +28,7 @@
     <class>com.keren.kerenpaie.model.structures.Societe</class>
     <class>com.keren.kerenpaie.model.structures.Specialite</class>
     <class>com.keren.kerenpaie.model.structures.TypeDemande</class>
+    <class>com.keren.kerenpaie.model.structures.Grade</class>
     <class>com.keren.kerenpaie.model.paie.Convension</class>
     <class>com.keren.kerenpaie.model.paie.Rubrique</class>
     <class>com.keren.kerenpaie.model.paie.Variable</class>
@@ -55,6 +56,8 @@
     <class>com.keren.kerenpaie.model.paie.LignePonderationTypeContrat</class>
     <class>com.keren.kerenpaie.model.paie.ParametreAvance</class>
     <class>com.keren.kerenpaie.model.paie.LigneElementVariable</class>
+    <class>com.keren.kerenpaie.model.paie.IndiceSolde</class>
+    <class>com.keren.kerenpaie.model.paie.LigneIndiceSolde</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

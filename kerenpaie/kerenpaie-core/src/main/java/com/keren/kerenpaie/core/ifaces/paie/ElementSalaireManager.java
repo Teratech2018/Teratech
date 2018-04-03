@@ -16,4 +16,9 @@ public interface ElementSalaireManager
 
     public final static String SERVICE_NAME = "ElementSalaireManager";
 
+    
+    public ElementSalaire actif(ElementSalaire entity);
+	
+	
+    public ElementSalaire inactif(ElementSalaire entity);
 }

@@ -63,6 +63,9 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	@Predicate(label="Nourriture",type=Boolean.class,group=true,groupName="group1",groupLabel="Avantages",hidden="currentObject.type!=7")
 	private Boolean alimentaire = Boolean.FALSE;
 	
+	private String state = "etabli";
+	
+	
 	/**
 	 * 
 	 */
@@ -124,6 +127,7 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 		this.electricite = elt.electricite;
 		this.vehicule = elt.vehicule;
 		this.alimentaire = elt.alimentaire;
+		this.state = elt.state;
 	}
 	
 	
@@ -198,9 +202,16 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 
 	public void setAlimentaire(Boolean alimentaire) {
 		this.alimentaire = alimentaire;
+	}	
+	
+
+	public String getState() {
+		return state;
 	}
-	
-	
+
+	public void setState(String state) {
+		this.state = state;
+	}
 
 	@Override
 	public String getEditTitle() {
@@ -247,7 +258,14 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	@Override
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
-		return super.getStates();
+		List<State> states = new ArrayList<State>();
+		State state = new State("etabli", "Brouillon");
+		states.add(state);
+		state = new State("active", "Actif");
+		states.add(state);
+		state = new State("inactive", "Inactif");
+		states.add(state);
+		return states;
 	}
 
 	@Override

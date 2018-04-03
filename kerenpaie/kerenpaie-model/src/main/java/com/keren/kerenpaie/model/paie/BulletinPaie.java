@@ -60,7 +60,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name="BUPA_ID")
-	@Predicate(label="VARIABLES",type=LigneElementVariable.class,target="one-to-many",group=true,groupName="group2",groupLabel="VARIABLES")
+	@Predicate(label="VARIABLES",type=LigneElementVariable.class,target="one-to-many",group=true,groupName="group2",groupLabel="VARIABLES",edittable=true)
 	private List<LigneElementVariable> variables = new ArrayList<LigneElementVariable>();
 	
 	

@@ -10,12 +10,15 @@ import javax.ws.rs.core.HttpHeaders;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.paie.VariableManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.VariableRS;
 import com.keren.kerenpaie.model.paie.Convension;
 import com.keren.kerenpaie.model.paie.Variable;
+import com.keren.kerenpaie.tools.KerenPaieManagerException;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
@@ -36,6 +39,9 @@ public class VariableRSImpl
      */
     @Manager(application = "kerenpaie", name = "VariableManagerImpl", interf = VariableManagerRemote.class)
     protected VariableManagerRemote manager;
+    
+    @Manager(application = "kerenpaie", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
+    protected MoteurPaieManagerRemote moteurmanager;
 
     public VariableRSImpl() {
         super();
@@ -57,9 +63,14 @@ public class VariableRSImpl
     @Override
 	public MetaData getMetaData(HttpHeaders headers) {
 		// TODO Auto-generated method stub
+    	MetaData meta = null;
 		try {
-			return MetaDataUtil.getMetaData(new Variable(), new HashMap<String, MetaData>()
+			meta = MetaDataUtil.getMetaData(new Variable(), new HashMap<String, MetaData>()
 					, new ArrayList<String>());
+			MetaColumn workbtn = new MetaColumn("button", "work1", "Evaluer la Variable", false, "object", null);
+	        workbtn.setValue("{'model':'kerenpaie','entity':'variable','method':'evaluer',template:{'this':'object'}}");
+	        workbtn.setPattern("btn btn-primary");
+	        meta.getHeader().add(workbtn);  
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,7 +78,7 @@ public class VariableRSImpl
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return meta;
 	}
 
 	@Override
@@ -120,6 +131,23 @@ public class VariableRSImpl
 			throw new KerenExecption("La Methode de la Variable est obligatoire");
 		}
 		super.processBeforeUpdate(entity);
+	}
+
+	
+	@Override
+	public Variable evaluer(HttpHeaders headers, Variable entity) {
+		// TODO Auto-generated method stub
+	  try{
+		Double valeur = moteurmanager.eval(entity, null, null, null);
+		if(valeur<0){
+			throw new KerenExecption("Echec de validation de la variable Vérifiez que : <br/> Les variables existent <br/> L'expression arithmétique est bien formées");
+		}
+		return entity;
+	  }catch(KerenPaieManagerException ex){
+		  throw new KerenExecption(ex.getMessage());
+	  }catch(Exception ex){
+		  throw new KerenExecption("Echec de validation de la variable Vérifiez que : <br/> Les variables existent <br/> L'expression arithmétique est bien formées");
+	  }
 	}
     
     

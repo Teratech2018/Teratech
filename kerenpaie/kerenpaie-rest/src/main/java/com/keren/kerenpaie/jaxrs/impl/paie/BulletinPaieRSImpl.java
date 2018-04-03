@@ -10,6 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.BulletinPaieManagerRemote;
+import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.BulletinPaieRS;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
@@ -37,6 +38,12 @@ public class BulletinPaieRSImpl
      */
     @Manager(application = "kerenpaie", name = "BulletinPaieManagerImpl", interf = BulletinPaieManagerRemote.class)
     protected BulletinPaieManagerRemote manager;
+    
+    
+    @Manager(application = "kerenpaie", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
+    protected MoteurPaieManagerRemote moteurmanager;
+    
+    
 
     public BulletinPaieRSImpl() {
         super();
@@ -60,11 +67,11 @@ public class BulletinPaieRSImpl
 		// TODO Auto-generated method stub
 		try {
 			 MetaData meta = MetaDataUtil.getMetaData(new BulletinPaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
-//			    MetaColumn workbtn = new MetaColumn("button", "work1", "Confirmer", false, "workflow", null);
-//	            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'confirme'}");
-//	            workbtn.setStates(new String[]{"etabli"});
-//	            workbtn.setPattern("btn btn-success");
-//	            meta.getHeader().add(workbtn);
+			    MetaColumn workbtn = new MetaColumn("button", "work1", "Lancer le Calcul", false, "workflow", null);
+	            workbtn.setValue("{'model':'kerenpaie','entity':'bulletinpaie','method':'calculer'}");
+	            workbtn.setStates(new String[]{"etabli"});
+	            workbtn.setPattern("btn btn-success");
+	            meta.getHeader().add(workbtn);
 //	            workbtn = new MetaColumn("button", "work2", "Payer", false, "workflow", null);
 //	            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'paye'}");
 //	            workbtn.setStates(new String[]{"etabli"});
@@ -86,6 +93,12 @@ public class BulletinPaieRSImpl
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public BulletinPaie calculer(HttpHeaders headers, BulletinPaie entity) {
+		// TODO Auto-generated method stub
+		return moteurmanager.eval(entity);
 	}
 
 }

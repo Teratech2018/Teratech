@@ -88,6 +88,21 @@ public class LigneConvension extends BaseElement implements Serializable, Compar
 	
 	/**
 	 * 
+	 * @param categorie
+	 * @param echelon
+	 * @param salbase
+	 */
+	public LigneConvension(Categorie categorie, Echelon echelon,Double salbase) {
+		super(-1, null, null);
+		this.categorie = categorie;
+		this.echelon = echelon;
+		this.salbase = salbase;
+		this.state = "etabli";
+	}
+	
+	
+	/**
+	 * 
 	 * @param ligne
 	 */
 	public LigneConvension(LigneConvension ligne) {

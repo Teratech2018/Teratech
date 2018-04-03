@@ -1,13 +1,20 @@
 
 package com.keren.kerenpaie.jaxrs.impl.paie;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.ws.rs.Path;
+import javax.ws.rs.core.HttpHeaders;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.LigneConvensionManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.LigneConvensionRS;
 import com.keren.kerenpaie.model.paie.LigneConvension;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
@@ -45,4 +52,22 @@ public class LigneConvensionRSImpl
         return ("kerenpaie");
     }
 
+	@Override
+	public MetaData getMetaData(HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		try {
+			return MetaDataUtil.getMetaData(new LigneConvension(), new HashMap<String, MetaData>(),
+					new ArrayList<String>());
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+    
+    
 }

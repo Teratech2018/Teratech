@@ -56,8 +56,10 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.ConvensionRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.ElementSalaireRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.ElementVariableRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.paie.IndiceSoldeRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.LigneBulletinPaieRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.LigneConvensionRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.paie.LigneIndiceSoldeRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.LignePonderationSalaireRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.LignePonderationTypeContratRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.ParametreAvanceRSImpl.class);
@@ -80,6 +82,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DepartementRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DeviseRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DiplomeRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.structures.GradeRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.NiveauEtudeRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.PaysRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.RegionRSImpl.class);

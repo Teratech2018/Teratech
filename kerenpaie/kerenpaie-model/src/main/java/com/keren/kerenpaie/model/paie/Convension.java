@@ -59,7 +59,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	@JoinColumn(name="LICOON_ID")
-	@Predicate(label="Lignes",type=LigneConvension.class,target="one-to-many",group=true,groupName="group1",groupLabel="Lignes de la grille salariale")
+	@Predicate(label="Lignes",type=LigneConvension.class,target="one-to-many",group=true,groupName="group1",groupLabel="Lignes de la grille salariale",edittable=true)
 	private List<LigneConvension> lignes = new ArrayList<LigneConvension>();
 
 	private String state ="etabli";

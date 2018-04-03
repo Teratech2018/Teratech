@@ -27,4 +27,10 @@ public interface ContratTravailRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("cloture")
     public ContratTravail cloture(@Context HttpHeaders headers,ContratTravail entity);
+	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("demarrer")
+    public ContratTravail demarrer(@Context HttpHeaders headers,ContratTravail entity);
 }

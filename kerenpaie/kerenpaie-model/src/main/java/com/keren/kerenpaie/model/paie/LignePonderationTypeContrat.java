@@ -70,6 +70,17 @@ public class LignePonderationTypeContrat extends BaseElement implements Serializ
 	
 	/**
 	 * 
+	 * @param fonction
+	 * @param taux
+	 */
+	public LignePonderationTypeContrat(TypeContrat fonction, Double taux) {
+		super(-1, null, null);
+		this.fonction = fonction;
+		this.taux = taux;
+	}
+	
+	/**
+	 * 
 	 * @param ponderation
 	 */
 	public LignePonderationTypeContrat(LignePonderationTypeContrat ponderation) {

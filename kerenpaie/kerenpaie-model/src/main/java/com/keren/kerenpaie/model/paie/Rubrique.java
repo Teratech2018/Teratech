@@ -56,7 +56,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@Predicate(label="Compte",type=Compte.class,target="many-to-one",search=true)
 	private Compte compte ;
 	
-	@Predicate(label="Base",target="textarea",group=true,groupName="group1",groupLabel="Elements de calcul",search=true)
+	@Predicate(label="Base",group=true,groupName="group1",groupLabel="Elements de calcul",search=true,hidden="currentObject.mode!='3'")
 	private String formule;
 	
 	@Predicate(label="Taux taxable(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul",search=true)

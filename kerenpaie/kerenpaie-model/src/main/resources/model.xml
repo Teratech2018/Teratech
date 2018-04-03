@@ -284,6 +284,21 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+        <element type="com.keren.kerenpaie.model.paie.IndiceSolde"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.paie.LigneIndiceSolde"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.Grade"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
    </elements>
     
 </model-config>
