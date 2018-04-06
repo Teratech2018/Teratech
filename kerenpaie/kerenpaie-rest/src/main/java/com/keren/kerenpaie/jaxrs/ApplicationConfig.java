@@ -52,6 +52,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.employes.FonctionRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.employes.PosteRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.employes.TypeContratRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.paie.BrouillardSalaireRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.BulletinPaieRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.ConvensionRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.ElementSalaireRSImpl.class);
@@ -88,6 +89,8 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.RegionRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.SocieteRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.SpecialiteRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.structures.SyndicatRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.structures.TypeCaisseRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.TypeDemandeRSImpl.class);
         
     }

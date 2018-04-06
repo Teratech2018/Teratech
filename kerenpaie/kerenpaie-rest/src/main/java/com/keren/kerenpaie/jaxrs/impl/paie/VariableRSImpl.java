@@ -145,8 +145,6 @@ public class VariableRSImpl
 		return entity;
 	  }catch(KerenPaieManagerException ex){
 		  throw new KerenExecption(ex.getMessage());
-	  }catch(Exception ex){
-		  throw new KerenExecption("Echec de validation de la variable Vérifiez que : <br/> Les variables existent <br/> L'expression arithmétique est bien formées");
 	  }
 	}
     

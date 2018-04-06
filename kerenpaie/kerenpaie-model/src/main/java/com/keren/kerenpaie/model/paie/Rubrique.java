@@ -36,34 +36,35 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	
 	@ManyToOne
 	@JoinColumn(name="SOC_ID")
-	@Predicate(label="Socièté",type=Societe.class,target="many-to-one",search=false)
+	@Predicate(label="Dossier de Paie",type=Societe.class,target="many-to-one",search=false)
 	private Societe societe ;
 	
 	@Predicate(label="Description",optional=true,search=true)
 	private String label;
-	
-	@Predicate(label="Mode d'évaluation",target="combobox",values="Forfait par catégorie professionnelle;Forfait par salaire catégoriel;Forfait par spécialité/Aptitude proffessionnelle;Formule")
-	private String mode="0";
-	
+
 	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true)
 	private String type ="0";
 	
+	@Predicate(label="Nature de rubrique",target="combobox",values="Salaire;Prime;Indemnité;Charge sociale;Charge fiscale;Charge parafiscale;Autre retenue",search=true)
+	private String nature ="0";	
+
 	@Predicate(label="Impression sur le bulletin",target="combobox",values="Jamais;Toujours;si non nul")
 	private String porte="0";
+
+	@Predicate(label="Mode d'évaluation",target="combobox",values="Forfait par catégorie professionnelle;Forfait par salaire catégoriel;Forfait par spécialité/Aptitude proffessionnelle;Formule")
+	private String mode="0";	
 	
-	@ManyToOne
-	@JoinColumn(name="COMP_ID")
-	@Predicate(label="Compte",type=Compte.class,target="many-to-one",search=true)
-	private Compte compte ;
-	
-	@Predicate(label="Base",group=true,groupName="group1",groupLabel="Elements de calcul",search=true,hidden="currentObject.mode!='3'")
-	private String formule;
-	
-	@Predicate(label="Taux taxable(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul",search=true)
-	private Double tauxtax = 0.0;
+//	@ManyToOne
+//	@JoinColumn(name="COMP_ID")
+//	@Predicate(label="Compte",type=Compte.class,target="many-to-one",search=true)
+//	private Compte compte ;
 	
 	@Predicate(label="Taux salarial(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul")
 	private Double tauxsal =0.0;
+	
+
+	@Predicate(label="Base",target="textarea",group=true,groupName="group1",groupLabel="Elements de calcul",search=true,hidden="currentObject.mode!='3'")
+	private String formule;	
 	
 	@Predicate(label="Taux patronal(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul")
 	private Double tauxpat=0.0;
@@ -89,6 +90,9 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@Predicate(label="Participe à la base exceptionnelle?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
 	private Boolean baseexcepsal = Boolean.FALSE;
 	
+	@Predicate(label="Taux taxable(%)",type=Double.class,group=true,groupName="group2",groupLabel="Prise en compte",search=true ,hidden="currentObject.basetaxablesal==false")
+	private Double tauxtax = 0.0;
+	
 	@Predicate(label="Participe au rappel de salaire?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
 	private Boolean rappelsal = Boolean.FALSE;
 	
@@ -107,6 +111,11 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@JoinColumn(name="RUBR_ID")
 	@Predicate(label="RU",type=ForfaitSpecialite.class,target="one-to-many",group=true,groupName="group3",groupLabel="Définition des forfaits",hidden="currentObject.mode!='2'")
 	private List<ForfaitSpecialite> forfaitsspe = new ArrayList<ForfaitSpecialite>();
+	
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
+	@JoinColumn(name="RUBR_ID")
+	@Predicate(label="RU",type=CompteRubrique.class,target="one-to-many",group=true,groupName="group4",groupLabel="Informations Comptable",edittable=true)
+	private List<CompteRubrique> comptes = new ArrayList<CompteRubrique>();
 	
 	
 	public Rubrique() {
@@ -152,7 +161,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.porte = porte;
 		this.label = label;
 		this.type = type;
-		this.compte = compte;
+//		this.compte = compte;
 		this.formule = formule;
 		this.tauxtax = tauxtax;
 		this.tauxsal = tauxsal;
@@ -175,9 +184,9 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.porte = rubrique.porte;
 		this.label = rubrique.label;
 		this.type = rubrique.type;
-		if(rubrique.compte!=null){
-			this.compte = new Compte(rubrique.compte);
-		}
+//		if(rubrique.compte!=null){
+//			this.compte = new Compte(rubrique.compte);
+//		}
 		this.formule = rubrique.formule;
 		this.tauxtax = rubrique.tauxtax;
 		this.tauxsal = rubrique.tauxsal;
@@ -191,6 +200,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.basetaxablesal = rubrique.basetaxablesal;
 		this.rappelsal = rubrique.rappelsal;
 		this.mode = rubrique.mode;
+		this.nature = rubrique.nature;
 	}
 	public String getCode() {
 		return code;
@@ -234,13 +244,13 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.type = type;
 	}
 
-	public Compte getCompte() {
-		return compte;
-	}
-
-	public void setCompte(Compte compte) {
-		this.compte = compte;
-	}
+//	public Compte getCompte() {
+//		return compte;
+//	}
+//
+//	public void setCompte(Compte compte) {
+//		this.compte = compte;
+//	}
 
 	public String getFormule() {
 		return formule;
@@ -344,9 +354,15 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 
 	public void setForfaitscatprof(List<ForfaitCategorieProf> forfaitscatprof) {
 		this.forfaitscatprof = forfaitscatprof;
+	}	
+
+	public String getNature() {
+		return nature;
 	}
-	
-	
+
+	public void setNature(String nature) {
+		this.nature = nature;
+	}
 
 	public List<ForfaitSpecialite> getForfaitsspe() {
 		return forfaitsspe;
@@ -372,6 +388,16 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 
 	public void setBasetaxablesal(Boolean basetaxablesal) {
 		this.basetaxablesal = basetaxablesal;
+	}
+	
+	
+
+	public List<CompteRubrique> getComptes() {
+		return comptes;
+	}
+
+	public void setComptes(List<CompteRubrique> comptes) {
+		this.comptes = comptes;
 	}
 
 	@Override

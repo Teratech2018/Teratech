@@ -44,16 +44,19 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	@JoinColumn(name="CATE_ID")
 	@Predicate(label="Catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
 	private Categorie categorie;
+
+	@ManyToOne
+	@JoinColumn(name="ECHE_ID")
+	@Predicate(label="Echelon",type=Echelon.class,target="many-to-one",optional=false,search=true)
+	private Echelon echelon ;
 	
 	@ManyToOne
 	@JoinColumn(name="TYCO_ID")
 	@Predicate(label="Type de Contrat",type=TypeContrat.class,target="many-to-one",optional=false,search=true)
 	private TypeContrat type ;
 	
-	@ManyToOne
-	@JoinColumn(name="ECHE_ID")
-	@Predicate(label="Echelon",type=Echelon.class,target="many-to-one",optional=false,search=true)
-	private Echelon echelon ;
+	@Predicate(label="Indice Solde",type=Short.class,hidden="currentObject.type.categorie!='2'")
+	private Short indice = 0 ;
 	
 	@ManyToOne
 	@JoinColumn(name="FONC_ID")
@@ -171,6 +174,7 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 		this.medialles = contrat.medialles;
 		this.commentaire = contrat.commentaire;
 		this.state = contrat.state;
+		this.indice = contrat.indice;
 	}
 	
 	
@@ -298,6 +302,14 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	}
 	
 	
+
+	public Short getIndice() {
+		return indice;
+	}
+
+	public void setIndice(Short indice) {
+		this.indice = indice;
+	}
 
 	public String getState() {
 		return state;

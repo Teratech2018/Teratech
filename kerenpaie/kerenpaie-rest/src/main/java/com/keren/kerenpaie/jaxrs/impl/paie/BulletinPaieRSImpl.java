@@ -6,8 +6,10 @@ import java.util.HashMap;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.BulletinPaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
@@ -15,6 +17,7 @@ import com.keren.kerenpaie.jaxrs.ifaces.paie.BulletinPaieRS;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.prets.Acompte;
+import com.keren.kerenpaie.tools.KerenPaieManagerException;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -67,16 +70,16 @@ public class BulletinPaieRSImpl
 		// TODO Auto-generated method stub
 		try {
 			 MetaData meta = MetaDataUtil.getMetaData(new BulletinPaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			    MetaColumn workbtn = new MetaColumn("button", "work1", "Lancer le Calcul", false, "workflow", null);
-	            workbtn.setValue("{'model':'kerenpaie','entity':'bulletinpaie','method':'calculer'}");
+			    MetaColumn workbtn = new MetaColumn("button", "work1", "Lancer le Calcul", false, "object", null);
+	            workbtn.setValue("{'model':'kerenpaie','entity':'bulletinpaie','method':'calculer','template':{'this':'object'}}");
 	            workbtn.setStates(new String[]{"etabli"});
 	            workbtn.setPattern("btn btn-success");
 	            meta.getHeader().add(workbtn);
-//	            workbtn = new MetaColumn("button", "work2", "Payer", false, "workflow", null);
-//	            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'paye'}");
-//	            workbtn.setStates(new String[]{"etabli"});
+	            workbtn = new MetaColumn("button", "work2", "Imprimer le Bulletin de Paie", false, "report", null);
+	            workbtn.setValue("{'model':'kerenpaie','entity':'bulletinpaie','method':'printbulletin'}");
+	            workbtn.setStates(new String[]{"etabli"});
 //	            workbtn.setPattern("btn btn-primary");
-//	            meta.getHeader().add(workbtn);
+	            meta.getHeader().add(workbtn);
 //	            workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
 //	            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
 //	            workbtn.setStates(new String[]{"etabli"});
@@ -98,7 +101,18 @@ public class BulletinPaieRSImpl
 	@Override
 	public BulletinPaie calculer(HttpHeaders headers, BulletinPaie entity) {
 		// TODO Auto-generated method stub
-		return moteurmanager.eval(entity);
+		try{
+		  return moteurmanager.eval(entity);
+		}catch(KerenPaieManagerException ex){
+			throw new KerenExecption(ex.getMessage());
+		}
+	}
+
+	@Override
+	public Response imprimer(HttpHeaders headers, BulletinPaie dmde) {
+		// TODO Auto-generated method stub
+		throw new KerenExecption("Fonctionnalite non encore implementée");
+		
 	}
 
 }

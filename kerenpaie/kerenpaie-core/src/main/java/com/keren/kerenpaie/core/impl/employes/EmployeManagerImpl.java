@@ -18,6 +18,7 @@ import com.keren.kerenpaie.core.ifaces.employes.EmployeManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.employes.EmployeDAOLocal;
 import com.keren.kerenpaie.model.employes.ContratTravail;
 import com.keren.kerenpaie.model.employes.Employe;
+import com.keren.kerenpaie.model.employes.Medaille;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -69,6 +70,9 @@ public class EmployeManagerImpl
 		}//end for(CompteBancaire cb: employ.getComptesbancaire()){
 		for(com.keren.kerenpaie.model.employes.Famille fam:employ.getFamilles()){
 			entity.getFamilles().add(new com.keren.kerenpaie.model.employes.Famille(fam));
+		}
+		for(Medaille medaille:employ.getMedailles()){
+			entity.getMedailles().add(new Medaille(medaille));
 		}
 		return  entity;
 	}

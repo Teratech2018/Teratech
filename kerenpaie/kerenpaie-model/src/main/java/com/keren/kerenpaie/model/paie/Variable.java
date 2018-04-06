@@ -57,7 +57,7 @@ public class Variable extends BaseElement implements Serializable, Comparable<Va
 	@Predicate(label="Methode de variable",target="combobox",values="Constante;Automatique;Formule de calcul")
 	private String methodcal = "0";
 	
-	@Predicate(label="Type de Formule",target="combobox",values="Expression Arithmetique;SI Expression;Cas Expression",hidden="currentObject.methodcal!='2'")
+	@Predicate(label="Type de Formule",target="combobox",values="Expression Arithmetique;SI Expression",hidden="currentObject.methodcal!='2'")
 	private String typeformule = "0";
 	
 	@Predicate(label="Formule",target="aceeditor",group=true,groupName="group1",groupLabel="Formule",search=true,hidden="currentObject.methodcal=='1'")

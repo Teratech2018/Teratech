@@ -59,7 +59,9 @@ public class BulletinPaieManagerImpl
 		// TODO Auto-generated method stub
 		PeriodePaie periode = CacheMemory.getPeriode();
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		container.addEq("periode", periode);
+		if(periode!=null){
+			container.addEq("periode", periode);
+		}//end if(periode!=null)
 		predicats.addAll(container.getPredicats());
 		List<BulletinPaie> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<BulletinPaie> result = new ArrayList<BulletinPaie>();

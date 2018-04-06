@@ -6,6 +6,7 @@ import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.employes.ContratTravail;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
+import com.keren.kerenpaie.model.paie.PrepaSalaire;
 import com.keren.kerenpaie.model.paie.Rubrique;
 import com.keren.kerenpaie.model.paie.Variable;
 
@@ -44,5 +45,12 @@ public interface MoteurPaieManager
      * @return
      */
     public BulletinPaie eval(BulletinPaie bulletin);
+    
+    /**
+     * Fonction responsable de la preparation de la solde 
+     * @param prepa
+     * @return
+     */
+    public PrepaSalaire preparerPaie(PrepaSalaire prepa);
 
 }

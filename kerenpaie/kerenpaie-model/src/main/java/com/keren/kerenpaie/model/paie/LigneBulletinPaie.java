@@ -33,10 +33,10 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	@Predicate(label="Valeurs",type=Double.class,editable=false,updatable=false,search=true)
 	private Double valeur =0.0;
 	
-	@Predicate(label="Taux Salarial",type=Double.class,editable=false,updatable=false,search=true,compute=true,values="this.valeur;*;this.rubrique.tauxsal")
+	@Predicate(label="Part Salarial",type=Double.class,editable=false,updatable=false,search=true,compute=true,values="this.valeur;*;this.rubrique.tauxsal")
 	private Double tauxsal = 0.0;
 	
-	@Predicate(label="Taux Patronal",type=Double.class,editable=false,updatable=false,search=true,compute=true,values="this.valeur;*;this.rubrique.tauxsal")
+	@Predicate(label="Part Patronal",type=Double.class,editable=false,updatable=false,search=true,compute=true,values="this.valeur;*;this.rubrique.tauxsal")
 	private Double tauxpat = 0.0;
 	
 
@@ -118,12 +118,13 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 		this.rubrique = rubrique;
 	}
 
-	public Double getValeur() {
+	public Double getValeur() {		
 		return valeur;
 	}
 
 	public void setValeur(Double valeur) {
 		this.valeur = valeur;
+		
 	}
 
 	public Double getTauxsal() {

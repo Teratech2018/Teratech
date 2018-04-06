@@ -4844,12 +4844,12 @@ angular.module("mainApp")
           $scope.displayEditPanel = function(){
               if($scope.currentAction && angular.isString($scope.currentAction)){
                   $scope.currentAction = angular.fromJson($scope.currentAction);
-              }
+              }//end if($scope.currentAction && angular.isString($scope.currentAction))
               $scope.enablefollowerpanel = false;
               $scope.desablecreateedit = $scope.isviewOperation()||!$scope.canCreate()||!$scope.canUpdate();
               $scope.desableupdateedit = $scope.isupdateOperation()||!$scope.canUpdate()||$scope.iscreateOperation();
               $scope.desabledeleteedit = !$scope.canDelete()||$scope.iscreateOperation()||($scope.showApplication==true&&$scope.currentObject.active==true);;
-              $scope.desableprintedit=$scope.iscreateOperation()||!$scope.canPrint();
+              $scope.desableprintedit=$scope.iscreateOperation()||!$scope.canPrint()||$scope.isupdateOperation();
               $scope.innerWindowType = false;
               var listElem  = null ; 
               var content = $scope.viewSelector('detail') ;
@@ -4916,34 +4916,31 @@ angular.module("mainApp")
              if(headerElem){
                     var items = listElem.find("div");
                     for(var i=0; i<items.length;i++){
-
                          if(items.eq(i).attr("id")=="workflow_menu_id"){
                                items.eq(i).replaceWith(headerElem);
+                         }//end if(items.eq(i).attr("id")=="workflow_menu_id"){                    }
+                    }//end for(var i=0; i<items.length;i++)
+                    var items = listElem.find("div");
+                    for(var i=0; i<items.length;i++){
+
+                         if(items.eq(i).attr("id")=="detail-panel-body"){
+                               items.eq(i).replaceWith(viewElem);
                          }  
                     }
-             }//end if(headerElem){
-            var items = listElem.find("div");
-            for(var i=0; i<items.length;i++){
-                 
-                 if(items.eq(i).attr("id")=="detail-panel-body"){
-                       items.eq(i).replaceWith(viewElem);
-                 }  
-            }
-            var compileFn = $compile(listElem);
-            compileFn($scope);
+                    var compileFn = $compile(listElem);
+                    compileFn($scope);
 
-            ///Remplacement dans la vue
-            var items = $element.find("div");
-            for(var i=0; i<items.length;i++){
-                 
-                 if(items.eq(i).attr("id")=="innerpanel"){
-                       items.eq(i).replaceWith(listElem);
-                 }  
-            }
-             $timeout(function() {                
-                $('.selectpicker').selectpicker('refresh');
-                
-              });
+                    ///Remplacement dans la vue
+                    var items = $element.find("div");
+                    for(var i=0; i<items.length;i++){
+                         if(items.eq(i).attr("id")=="innerpanel"){
+                               items.eq(i).replaceWith(listElem);
+                         }  
+                    }
+                     $timeout(function() {                
+                        $('.selectpicker').selectpicker('refresh');
+
+                      });
           };
 
           /**    
@@ -7103,7 +7100,7 @@ angular.module("mainApp")
            */
           $scope.viewAction = function(item){
 //                console.log("$scope.viewAction ============== "+angular.toJson(item));
-                $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                 $scope.windowType = 'view';
                 $scope.selectedObjects = [];               
                 //Recuperation du premier element
@@ -7128,7 +7125,7 @@ angular.module("mainApp")
 //                            console.log("$scope.viewAction ============== "+angular.toJson(data));
                             $scope.displayEditPanel();
 //                            console.log("$scope.viewAction after display ============== "+angular.toJson(data));
-                            $scope.hideDialogLoading();
+                            commonsTools.hideDialogLoading();
                 },function(error){
                      $scope.hideDialogLoading();
                      commonsTools.showMessageDialog(error);
@@ -8001,6 +7998,8 @@ angular.module("mainApp")
                            var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;
                            $http.post(url,template)
                                    .then(function(response){
+                                       $scope.currentObject = response.data;
+                                       $scope.displayEditPanel();
                                        $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");  
                                        commonsTools.hideDialogLoading();
                                    },function(error){

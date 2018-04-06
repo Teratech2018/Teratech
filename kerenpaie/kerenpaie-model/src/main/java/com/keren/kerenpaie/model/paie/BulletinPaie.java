@@ -45,7 +45,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="Employé",type=Employe.class,target="many-to-one",updatable=false,optional=false,search=true)
 	private Employe employe ;
 	
-	@Predicate(label="Date de payement",type=Date.class,target="date",search=true)
+	@Predicate(label="Date de payement",type=Date.class,target="date",updatable=true,search=true)
 	private Date dpayement ;
 	
 	@ManyToOne
@@ -55,7 +55,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="LIBUPA_ID")
-	@Predicate(label="Lignes",type=LigneBulletinPaie.class,target="one-to-many",group=true,groupName="group1",groupLabel="VALEURS DE RUBRIQUES")
+	@Predicate(label="Lignes",type=LigneBulletinPaie.class,target="one-to-many",updatable=false,editable=false,group=true,groupName="group1",groupLabel="VALEURS DE RUBRIQUES",edittable=true)
 	private List<LigneBulletinPaie> lignes = new ArrayList<LigneBulletinPaie>();
 	
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
@@ -269,18 +269,18 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
 		List<State> states = new ArrayList<State>();
-		State state = new State("etabli", "A soumettre");
+		State state = new State("etabli", "Brouillon");
 		states.add(state);
-		state = new State("valide", "A valider");
+		state = new State("valide", "Validé");
 		states.add(state);
 //		state = new State("constate", "A constater");
 //		states.add(state);
-		state = new State("payement", "A payer");
+		state = new State("transfere", "Transfere en Comptabilité");
 		states.add(state);
-		state = new State("ordonne", "Paiement ordonné");
-		states.add(state);
-		state = new State("paye", "Payé");
-		states.add(state);
+//		state = new State("ordonne", "Paiement ordonné");
+//		states.add(state);
+//		state = new State("paye", "Payé");
+//		states.add(state);
 		return states;
 	}
 

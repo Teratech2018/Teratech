@@ -2,6 +2,7 @@
 package com.keren.kerenpaie.jaxrs.ifaces.paie;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -9,7 +10,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import com.keren.kerenpaie.model.paie.Convension;
 import com.keren.kerenpaie.model.paie.Rubrique;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
@@ -28,4 +28,10 @@ public interface RubriqueRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("genereforfait")
     public Rubrique genereforfait(@Context HttpHeaders headers,Rubrique entity);
+	
+	@POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("evaluer")
+    public Rubrique evaluer(@Context HttpHeaders headers,Rubrique entity);
 }

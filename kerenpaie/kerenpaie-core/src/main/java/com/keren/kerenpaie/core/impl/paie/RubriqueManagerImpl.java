@@ -21,6 +21,7 @@ import com.keren.kerenpaie.dao.ifaces.paie.RubriqueDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.structures.SpecialiteDAOLocal;
 import com.keren.kerenpaie.model.employes.Categorie;
 import com.keren.kerenpaie.model.employes.Fonction;
+import com.keren.kerenpaie.model.paie.CompteRubrique;
 import com.keren.kerenpaie.model.paie.ForfaitCategorie;
 import com.keren.kerenpaie.model.paie.ForfaitCategorieProf;
 import com.keren.kerenpaie.model.paie.ForfaitSpecialite;
@@ -93,6 +94,9 @@ public class RubriqueManagerImpl
 		}
 		for(ForfaitSpecialite forfait:data.getForfaitsspe()){
 			result.getForfaitsspe().add(new ForfaitSpecialite(forfait));
+		}
+		for(CompteRubrique compte : data.getComptes()){
+			result.getComptes().add(new CompteRubrique(compte));
 		}
 		return result;
 		

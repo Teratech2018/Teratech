@@ -10,10 +10,12 @@ import javax.ws.rs.core.HttpHeaders;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.paie.RubriqueManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.RubriqueRS;
 import com.keren.kerenpaie.model.paie.Convension;
 import com.keren.kerenpaie.model.paie.Rubrique;
+import com.keren.kerenpaie.tools.KerenPaieManagerException;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -37,6 +39,9 @@ public class RubriqueRSImpl
      */
     @Manager(application = "kerenpaie", name = "RubriqueManagerImpl", interf = RubriqueManagerRemote.class)
     protected RubriqueManagerRemote manager;
+    
+    @Manager(application = "kerenpaie", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
+    protected MoteurPaieManagerRemote moteurmanager;
 
     public RubriqueRSImpl() {
         super();
@@ -61,7 +66,12 @@ public class RubriqueRSImpl
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new Rubrique(), new HashMap<String, MetaData>()
 					, new ArrayList<String>());
-			MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les forfaits", false, "workflow", null);
+			MetaColumn workbtn = new MetaColumn("button", "work1", "Evaluer la Rubrique", false, "object", null);
+	        workbtn.setValue("{'model':'kerenpaie','entity':'rubrique','method':'evaluer','template':{'this':'object'}}");
+	        workbtn.setStates(new String[]{"etabli"});
+//	        workbtn.setPattern("btn btn-success");
+	        meta.getHeader().add(workbtn);   
+			workbtn = new MetaColumn("button", "work1", "Générer les forfaits", false, "workflow", null);
 	        workbtn.setValue("{'model':'kerenpaie','entity':'rubrique','method':'genereforfait'}");
 	        workbtn.setStates(new String[]{"etabli"});
 	        workbtn.setPattern("btn btn-success");
@@ -95,8 +105,6 @@ public class RubriqueRSImpl
 			throw new KerenExecption("Le Type de Rubrique  est obligatoire");
 		}else if(entity.getMode()==null||entity.getMode().trim().isEmpty()){
 			throw new KerenExecption("Le Mode d'Evaluation est obligatoire");
-		}else if(entity.getCompte()==null){
-			throw new KerenExecption("Le Compte lié est oblligatoire");
 		}
 		super.processBeforeSave(entity);
 	}
@@ -112,8 +120,6 @@ public class RubriqueRSImpl
 			throw new KerenExecption("Le Type de Rubrique  est obligatoire");
 		}else if(entity.getMode()==null||entity.getMode().trim().isEmpty()){
 			throw new KerenExecption("Le Mode d'Evaluation est obligatoire");
-		}else if(entity.getCompte()==null){
-			throw new KerenExecption("Le Compte lié est oblligatoire");
 		}
 		super.processBeforeUpdate(entity);
 	}
@@ -129,8 +135,6 @@ public class RubriqueRSImpl
 			throw new KerenExecption("Le Type de Rubrique  est obligatoire");
 		}else if(entity.getMode()==null||entity.getMode().trim().isEmpty()){
 			throw new KerenExecption("Le Mode d'Evaluation est obligatoire");
-		}else if(entity.getCompte()==null){
-			throw new KerenExecption("Le Compte lié est oblligatoire");
 		}else if(entity.getType().equalsIgnoreCase("0") && !entity.getForfaitscatprof().isEmpty()){
 			throw new KerenExecption("Des forfaits sont déjà liés a cette rubrique");
 		}else if(entity.getType().equalsIgnoreCase("1") && !entity.getForfaitscat().isEmpty()){
@@ -139,6 +143,21 @@ public class RubriqueRSImpl
 			throw new KerenExecption("Des forfaits sont déjà liés a cette rubrique");
 		}
 		return manager.genereforfait(entity);
+	}
+
+	@Override
+	public Rubrique evaluer(HttpHeaders headers, Rubrique entity) {
+		// TODO Auto-generated method stub
+		  try{
+			Double valeur = moteurmanager.eval(entity, null, null, null);
+			if(valeur<0){
+				throw new KerenExecption("Echec de validation de la Rubrique Vérifiez que : <br/> Les variables existent <br/> L'expression arithmétique est bien formées");
+			}
+			return entity;
+		  }catch(KerenPaieManagerException ex){
+			  throw new KerenExecption(ex.getMessage());
+		  }
+//		return entity;
 	}
     
     

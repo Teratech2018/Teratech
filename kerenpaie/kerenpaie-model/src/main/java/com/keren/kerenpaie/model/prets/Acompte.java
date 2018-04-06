@@ -20,6 +20,8 @@ import com.core.base.State;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.paie.ElementVariable;
 import com.keren.kerenpaie.model.paie.Rubrique;
+import com.keren.kerenpaie.model.paie.Variable;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -41,9 +43,10 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	private Employe employe ;
 	
 	@ManyToOne
-	@JoinColumn(name="RUBR_ID")
-	@Predicate(label="Rubrique Concernée",type=Rubrique.class,target="many-to-one",optional=false,search=true)
-	private Rubrique rubrique ;
+	@JoinColumn(name="VAR_ID")
+	@Predicate(label="Variable Liée",type=Variable.class,target="many-to-one",optional=false,search=true)
+	@Filter(value="[{\"fieldName\":\"code\",\"value\":\"MTACOMPTE\",\"optional\":false,\"message:\":\"Impossible de trouver la Variable MTACOMPTE\"}]")
+	private Variable variable ;
 	
 	@Predicate(label="Date",type=Date.class,target="date",optional=false,search=true)
 	@Temporal(TemporalType.DATE)
@@ -110,9 +113,13 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 		if(acompte.eltVariable!=null){
 			this.eltVariable = new ElementVariable(acompte.eltVariable);
 		}
-		if(acompte.rubrique!=null){
-			this.rubrique = new Rubrique(acompte.rubrique);
+		
+		if(acompte.variable!=null){
+			this.variable = new Variable(acompte.variable);
 		}
+//		if(acompte.rubrique!=null){
+//			this.rubrique = new Rubrique(acompte.rubrique);
+//		}
 		this.effet = acompte.effet;
 		this.montant = acompte.montant;
 		this.description = acompte.description;
@@ -163,13 +170,13 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 		this.eltVariable = eltVariable;
 	}	
 
-	public Rubrique getRubrique() {
-		return rubrique;
-	}
-
-	public void setRubrique(Rubrique rubrique) {
-		this.rubrique = rubrique;
-	}
+//	public Rubrique getRubrique() {
+//		return rubrique;
+//	}
+//
+//	public void setRubrique(Rubrique rubrique) {
+//		this.rubrique = rubrique;
+//	}
 
 	@Override
 	public String getEditTitle() {
@@ -193,6 +200,16 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	public String getDesignation() {
 		// TODO Auto-generated method stub
 		return employe.getDesignation();
+	}
+	
+	
+
+	public Variable getVariable() {
+		return variable;
+	}
+
+	public void setVariable(Variable variable) {
+		this.variable = variable;
 	}
 
 	@Override

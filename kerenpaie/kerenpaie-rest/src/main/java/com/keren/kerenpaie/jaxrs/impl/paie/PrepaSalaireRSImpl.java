@@ -6,10 +6,12 @@ import java.util.HashMap;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.paie.PrepaSalaireManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.PrepaSalaireRS;
 import com.keren.kerenpaie.model.paie.PrepaSalaire;
@@ -35,6 +37,9 @@ public class PrepaSalaireRSImpl
      */
     @Manager(application = "kerenpaie", name = "PrepaSalaireManagerImpl", interf = PrepaSalaireManagerRemote.class)
     protected PrepaSalaireManagerRemote manager;
+    
+    @Manager(application = "kerenpaie", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
+    protected MoteurPaieManagerRemote moteurmanager;
 
     public PrepaSalaireRSImpl() {
         super();
@@ -80,6 +85,21 @@ public class PrepaSalaireRSImpl
 			throw new KerenExecption("La Période n'est pas ouverte");
 		}
 		super.processBeforeSave(entity);
+	}
+
+	@Override
+	public PrepaSalaire save(PrepaSalaire entity) {
+		// TODO Auto-generated method stub
+		processBeforeSave(entity);
+		entity = moteurmanager.preparerPaie(entity);
+		processAfterSave(entity);
+		return entity;
+	}
+
+	@Override
+	public Response imprimer(HttpHeaders headers, PrepaSalaire dmde) {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
     
