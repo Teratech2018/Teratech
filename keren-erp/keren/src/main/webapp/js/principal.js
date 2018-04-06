@@ -1912,9 +1912,9 @@ angular.module("mainApp")
                   var optionElem = document.createElement('option');
                   optionElem.setAttribute('value' , ""+i);
                   optionElem.appendChild(document.createTextNode(parts[i]));
-                  selectElem.appendChild(optionElem);
-                  //console.log("comboBoxComponent ===== "+i+" ====== "+parts[i]);   
-              }             
+                  selectElem.appendChild(optionElem);                  
+              }//end for(var i=0 ; i<parts.length;i++)             
+//              console.log("comboBoxComponent ===== "+i+" ====== "+model);   
               if(field.hide){
                 divElem.setAttribute('ng-hide',true);
               }//end if(field.hide)
@@ -1983,7 +1983,7 @@ angular.module("mainApp")
                selectElem.setAttribute('class','selectpicker form-control');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
-               selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+modelpath+"')");
+               selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+field.method+"')");
                selectElem.setAttribute('data-live-search','true');
                divElem_1.appendChild(selectElem);
               selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+key);
@@ -2102,7 +2102,7 @@ angular.module("mainApp")
                selectElem.setAttribute('data-selected-text-format' , 'count > 3');
                selectElem.setAttribute('data-live-search','true');
                selectElem.setAttribute('ng-model' , model);
-               selectElem.setAttribute('ng-change' , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"')");
+               selectElem.setAttribute('ng-change' , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+field.method+"')");
                divElem_1.appendChild(selectElem);  
                if(($scope.windowType=="view")||
                         ((angular.isDefined(field) &&angular.isDefined(field.updatable) && field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
@@ -3026,7 +3026,7 @@ angular.module("mainApp")
 //                     }else if( index==4){
 //                        aElem.setAttribute('data-target', '#myModal2');
 //                     }//end if(index==1)           
-                   aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
+                   aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"','"+field.method+"')");                      
                    aElem.appendChild(document.createTextNode("Ajouter un element"));
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
@@ -4909,38 +4909,37 @@ angular.module("mainApp")
                              commonsTools.showMessageDialog(error);
                          });
                              
-             }
+             }//end if($scope.metaData.activatefollower==true && $scope.windowType!='new')
               //             console.log("$scope.displayEditPanel = function() === "+$scope.showpjmenu+" ==== "+$scope.metaData.activefilelink);
              
              //Creation de l'entete du formultaire
-             if(headerElem){
+              if(headerElem){
                     var items = listElem.find("div");
                     for(var i=0; i<items.length;i++){
                          if(items.eq(i).attr("id")=="workflow_menu_id"){
                                items.eq(i).replaceWith(headerElem);
                          }//end if(items.eq(i).attr("id")=="workflow_menu_id"){                    }
                     }//end for(var i=0; i<items.length;i++)
-                    var items = listElem.find("div");
-                    for(var i=0; i<items.length;i++){
+            }//end if(headerElem)
+            var items = listElem.find("div");
+            for(var i=0; i<items.length;i++){
+                 if(items.eq(i).attr("id")=="detail-panel-body"){
+                       items.eq(i).replaceWith(viewElem);
+                 }  
+            }
+            var compileFn = $compile(listElem);
+            compileFn($scope);
 
-                         if(items.eq(i).attr("id")=="detail-panel-body"){
-                               items.eq(i).replaceWith(viewElem);
-                         }  
-                    }
-                    var compileFn = $compile(listElem);
-                    compileFn($scope);
-
-                    ///Remplacement dans la vue
-                    var items = $element.find("div");
-                    for(var i=0; i<items.length;i++){
-                         if(items.eq(i).attr("id")=="innerpanel"){
-                               items.eq(i).replaceWith(listElem);
-                         }  
-                    }
-                     $timeout(function() {                
-                        $('.selectpicker').selectpicker('refresh');
-
-                      });
+            ///Remplacement dans la vue
+            var items = $element.find("div");
+            for(var i=0; i<items.length;i++){
+                 if(items.eq(i).attr("id")=="innerpanel"){
+                       items.eq(i).replaceWith(listElem);
+                 }  
+            }
+             $timeout(function() {                
+                $('.selectpicker').selectpicker('refresh');
+              });
           };
 
           /**    
@@ -5454,14 +5453,14 @@ angular.module("mainApp")
          * @param {type} index
          * @returns {undefined}
          */
-        $scope.listDialogBuilder = function(model,index,modelpath){
+        $scope.listDialogBuilder = function(model,index,modelpath,method){
 //            $scope.innerWindowType = true;
             //var parts = model.split(".");
             var metaData = $scope.getCurrentMetaData(modelpath);     
             if(!metaData){
                 return ;
             }//end if(!metaData)
-//            console.log("$scope.listDialogBuilder ===== "+index+" ===== "+model+" ==== "+modelpath+" === "+angular.toJson(metaData));     
+            console.log("$scope.listDialogBuilder ===== "+index+" ===== "+model+" ==== "+modelpath+" === "+method);     
            //Chargement des donnï¿½es
            $scope.temporalPagination.beginIndex=0;
            $scope.temporalPagination.currentPage=1;
@@ -6751,14 +6750,14 @@ angular.module("mainApp")
          * @param {type} moduleName
          * @returns {undefined}
          */
-        $scope.getData = function(model ,item ,entityName,moduleName,index,modelpath){
+        $scope.getData = function(model ,item ,entityName,moduleName,index,modelpath,method){
             var status = $scope.buildFilter(model);
             if(status==false){
                 return ;
             }//end if(status==false){   
             var modelpart = model.split(".");
             var fieldName = modelpart[modelpart.length-1];
-//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]);
+            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]+" ==== "+method);
             var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/count";
             $http.get(url)
                     .then(function(response){
@@ -9167,5 +9166,4 @@ angular.module("mainApp")
                     }              
             };
         });
-
-});
+  });      

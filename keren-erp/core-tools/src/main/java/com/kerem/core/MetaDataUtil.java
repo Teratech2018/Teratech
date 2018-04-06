@@ -8,6 +8,7 @@ package com.kerem.core;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Method;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 import com.megatim.common.annotations.TableFooter;
@@ -186,6 +187,7 @@ public class MetaDataUtil {
                 Predicate annot = field.getAnnotation(Predicate.class); 
                 TableFooter annot2 = field.getAnnotation(TableFooter.class);
                 Observer annot3 = field.getAnnotation(Observer.class);
+                Method   method = field.getAnnotation(Method.class);
                 if(field.getType().equals(String.class)){   
                        if(annot.target().equals("combobox")){
                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
@@ -255,7 +257,10 @@ public class MetaDataUtil {
                         MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many", meta);
                         if(annot.target()=="many-to-many-list"){
                             column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many-list", meta);
-                        }                        
+                        }//end if(annot.target()=="many-to-many-list"){
+                        if(method!=null){
+                            column.setMethod(method.value());
+                        }//end if(method!=null){
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable()); 
                         String[] searchfields = annot.searchfields().split(",");
                         column.setSearchfields(searchfields);column.setCustomfooter(annot.customfooter());
@@ -324,7 +329,10 @@ public class MetaDataUtil {
 //                        }//end 
                      /**if(!shareCache.containsKey(field.getType().getClass().toString()))**/{
                         MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
-                        column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
+                        column.setOptional(annot.optional());column.setUpdatable(annot.updatable());
+                        if(method!=null){
+                            column.setMethod(method.value());
+                        }//end if(method!=null){
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                         //metaData.getColumns().add(column);
                         String[] searchfields = annot.searchfields().split(",");
@@ -366,6 +374,7 @@ public class MetaDataUtil {
                         annot = field.getAnnotation(Predicate.class);
                         TableFooter annot2 = field.getAnnotation(TableFooter.class);                    
                         Observer annot3 = field.getAnnotation(Observer.class);
+                        Method method = field.getAnnotation(Method.class);
                         metaGroup.setSequence(annot.sequence());
                         if(field.getType().equals(String.class)){   
                                if(annot.target().equals("combobox")){
@@ -438,6 +447,9 @@ public class MetaDataUtil {
                                          metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                          String[] searchfields = annot.searchfields().split(",");
                                          metaArray.setSearchfields(searchfields);metaArray.setHidden(annot.hidden());
+                                         if(method!=null){
+                                             metaArray.setMethod(method.value());
+                                         }//end if(method!=null){
                                          if(metaArray.isCustomfooter()&&annot2!=null){
                                             metaArray.setFooterScript(annot2.value());
                                          }//end if(column.isCustomfooter()&&annot2!=null)
@@ -464,6 +476,9 @@ public class MetaDataUtil {
                                          MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many", meta);                           
                                          column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                          column.setHide(annot.hide());column.setEditable(annot.editable());
+                                         if(method!=null){
+                                             column.setMethod(method.value());
+                                         }//end if(method!=null){
                                          column.setCustomfooter(annot.customfooter());
                                          String[] searchfields = annot.searchfields().split(",");
                                          column.setSearchfields(searchfields);column.setHidden(annot.hidden());
@@ -523,7 +538,11 @@ public class MetaDataUtil {
                                     MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
                                     column.setEditable(annot.editable());column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
-                                    column.setCustomfooter(annot.customfooter());//metaGroup.getColumns().add(column);
+                                    column.setCustomfooter(annot.customfooter());
+                                    if(method!=null){
+                                        column.setMethod(method.value());
+                                    }//end if(method!=null){
+                                    //metaGroup.getColumns().add(column);
                                     String[] searchfields = annot.searchfields().split(",");
                                     column.setSearchfields(searchfields);column.setHidden(annot.hidden());
                                     StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());    
@@ -620,6 +639,7 @@ public class MetaDataUtil {
                 Predicate annot = field.getAnnotation(Predicate.class); 
                 TableFooter annot2 = field.getAnnotation(TableFooter.class);
                 Observer annot3 = field.getAnnotation(Observer.class);
+                Method method = field.getAnnotation(Method.class);
                 if(field.getType().equals(String.class)){   
                        if(annot.target().equals("combobox")){
                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
@@ -691,6 +711,9 @@ public class MetaDataUtil {
                             column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many-list", meta);
                         }                        
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable()); 
+                        if(method!=null){
+                            column.setMethod(method.value());
+                        }//end if(method!=null){
                         String[] searchfields = annot.searchfields().split(",");
                         column.setSearchfields(searchfields);column.setCustomfooter(annot.customfooter());
                         if(column.isCustomfooter()&&annot2!=null){
@@ -724,6 +747,9 @@ public class MetaDataUtil {
                         column.setCustomfooter(annot.customfooter());column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         String[] searchfields = annot.searchfields().split(",");
                         column.setSearchfields(searchfields);column.setColsequence(annot.colsequence());
+                        if(method!=null){
+                            column.setMethod(method.value());
+                        }//end if(method!=null){
                         if(column.isCustomfooter()&&annot2!=null){
                             column.setFooterScript(annot2.value());
                         }//end if(column.isCustomfooter()&&annot2!=null)
@@ -758,7 +784,9 @@ public class MetaDataUtil {
                         MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
                         column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
-                        //metaData.getColumns().add(column);
+                        if(method!=null){
+                            column.setMethod(method.value());
+                        }//metaData.getColumns().add(column);
                         String[] searchfields = annot.searchfields().split(",");
                         column.setSearchfields(searchfields);column.setCustomfooter(annot.customfooter());
                         column.setHidden(annot.hidden());column.setObservable(annot.observable());
@@ -798,6 +826,7 @@ public class MetaDataUtil {
                         annot = field.getAnnotation(Predicate.class);
                         TableFooter annot2 = field.getAnnotation(TableFooter.class); 
                         Observer annot3 = field.getAnnotation(Observer.class);
+                        Method method = field.getAnnotation(Method.class);
                         metaGroup.setSequence(annot.sequence());
                         if(field.getType().equals(String.class)){   
                                if(annot.target().equals("combobox")){
@@ -868,6 +897,9 @@ public class MetaDataUtil {
                                      if(annot.target().equalsIgnoreCase("many-to-many-list")){//many-to-many-list
                                          MetaArray metaArray = new MetaArray("array", field.getName(), annot.groupLabel(),annot.search(),annot.target(), meta);
                                          metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
+                                         if(method!=null){
+                                             metaArray.setMethod(method.value());
+                                         }//end if(method!=null){
                                          String[] searchfields = annot.searchfields().split(",");
                                          metaArray.setSearchfields(searchfields);metaArray.setHidden(annot.hidden());
                                          if(metaArray.isCustomfooter()&&annot2!=null){
@@ -895,6 +927,9 @@ public class MetaDataUtil {
                                          MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many", meta);                           
                                          column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                          column.setHide(annot.hide());column.setEditable(annot.editable());
+                                         if(method!=null){
+                                             column.setMethod(method.value());
+                                         }//end if(method!=null){
                                          column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
                                          String[] searchfields = annot.searchfields().split(",");
                                          column.setSearchfields(searchfields);
@@ -952,7 +987,10 @@ public class MetaDataUtil {
                                     MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
                                     column.setEditable(annot.editable());column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
-                                    column.setCustomfooter(annot.customfooter());//metaGroup.getColumns().add(column);
+                                    column.setCustomfooter(annot.customfooter());
+                                    if(method!=null){
+                                        column.setMethod(method.value());
+                                    }//metaGroup.getColumns().add(column);
                                     String[] searchfields = annot.searchfields().split(",");
                                     column.setSearchfields(searchfields);column.setHidden(annot.hidden());
                                     StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());    
