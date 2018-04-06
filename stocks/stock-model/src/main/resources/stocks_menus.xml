@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="teratech_stock" />
+	 <menu id="teratech_stock_operation" label="Mouvements du stock" parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_stock_ope_1" label="Mouvement d'entrée" parent_ref="teratech_stock_operation" entity_ref="Entree" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_ope_2" label="Mouvement de sortie" parent_ref="teratech_stock_operation" entity_ref="Sortie" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_ope_5" label="Virement dépot à dépot" parent_ref="teratech_stock_operation" entity_ref="Transfert" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_stock_inventaire" label="Inventaire" parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_stock_inv_1" label="Fiche inventaire" parent_ref="teratech_stock_inventaire" entity_ref="FicheInventaire" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_inv_2" label="Régularisation du stock" parent_ref="teratech_stock_inventaire" entity_ref="RegulInventaire" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_stock_structure" label="Structures" parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_stock_str_1" label="Articles" parent_ref="teratech_stock_structure" entity_ref="Article" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_str_2" label="Familles Articles" parent_ref="teratech_stock_structure" entity_ref="FamilleArticle" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_stock_comptabilite" label="Comptabilité." parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_stock_com_1" label="Plan comptable." parent_ref="teratech_stock_comptabilite" entity_ref="Compte" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_com_2" label="Plan Tier." parent_ref="teratech_stock_comptabilite" entity_ref="Tier" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_com_3" label="Plan Analytique." parent_ref="teratech_stock_comptabilite" entity_ref="CompteAnalytique" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_com_4" label="Journal comptable." parent_ref="teratech_stock_comptabilite" entity_ref="JournalComptable" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_com_5" label="Taxes." parent_ref="teratech_stock_comptabilite" entity_ref="Taxe" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_stock_configuration" label="Configuration" parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_stock_conf_1" label="Entrepôts" parent_ref="teratech_stock_configuration" entity_ref="Entrepot" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_conf_2" label="Emplacements" parent_ref="teratech_stock_configuration" entity_ref="Emplacement" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_conf_3" label="Unité de gestion" parent_ref="teratech_stock_configuration" entity_ref="UniteGestion" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_conf_4" label="Unité d'achat" parent_ref="teratech_stock_configuration" entity_ref="UniteAchat" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_conf_5" label="Catégorie de produit" parent_ref="teratech_stock_configuration" entity_ref="CategorieProduit" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_conf_6" label="Régions ." parent_ref="teratech_stock_configuration" entity_ref="Region" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_conf_7" label="Pays." parent_ref="teratech_stock_configuration" entity_ref="Pays" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_conf_8" label="Civilité ." parent_ref="teratech_stock_configuration" entity_ref="Civilite" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+</keren>

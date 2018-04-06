@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
@@ -45,7 +47,8 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="Employé",type=Employe.class,target="many-to-one",updatable=false,optional=false,search=true)
 	private Employe employe ;
 	
-	@Predicate(label="Date de payement",type=Date.class,target="date",updatable=true,search=true)
+	@Predicate(label="Date de payement",type=Date.class,target="date",updatable=false,search=true)
+	@Temporal(TemporalType.DATE)
 	private Date dpayement ;
 	
 	@ManyToOne

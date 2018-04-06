@@ -19,6 +19,7 @@ import com.kerem.commons.DateHelper;
 import com.kerem.core.KerenExecption;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerLocal;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
+import com.keren.kerenpaie.dao.ifaces.comptabilite.PeriodePaieDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.employes.EmployeDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.BulletinPaieDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.ConvensionDAOLocal;
@@ -50,6 +51,7 @@ import com.keren.kerenpaie.model.paie.ParametreAvance;
 import com.keren.kerenpaie.model.paie.PrepaSalaire;
 import com.keren.kerenpaie.model.paie.ProfilPaie;
 import com.keren.kerenpaie.model.paie.Rubrique;
+import com.keren.kerenpaie.model.paie.ValiderSalaire;
 import com.keren.kerenpaie.model.paie.Variable;
 import com.keren.kerenpaie.model.prets.Acompte;
 import com.keren.kerenpaie.model.prets.LigneRappel;
@@ -102,6 +104,9 @@ public class MoteurPaieManagerImpl
     @EJB(name = "SocieteDAO")
     protected SocieteDAOLocal societedao;
     
+    @EJB(name = "PeriodePaieDAO")
+    protected PeriodePaieDAOLocal periodedao;
+    
     /**
      * Cache contenant les ligne element variable deja calcule
      */
@@ -152,7 +157,28 @@ public class MoteurPaieManagerImpl
 		return entity;
 	}
 	
-    
+    @Override
+	public ValiderSalaire validerSalaire(ValiderSalaire entity) {
+		// TODO Auto-generated method stub
+    	/**
+    	 * Identifications des bulletions concernés par la validation
+    	 */
+    	List<BulletinPaie> bulletins = null;
+    	if(entity.getPorte().trim().equalsIgnoreCase("0")){
+    		PeriodePaie periode = periodedao.findByPrimaryKey("id", entity.getPeriode().getId());
+    		bulletins = periode.getSalaires();
+    	}else if(entity.getPorte().trim().equalsIgnoreCase("1")){
+    		bulletins = entity.getConcernes();
+    	}//end if(entity.getPorte().trim().equalsIgnoreCase("0")){
+    	//Recalcul des Bulletins concernes
+    	for(BulletinPaie bulletin:bulletins){
+    		//Mise a jour de l'etat du bulletin
+    		bulletin.setState("valide");
+    		bulletin.setDpayement(entity.getDate());
+    		bulletin = eval(bulletin);
+    	}//end for(BulletinPaie bulletin:bulletins){    	
+		return entity;
+	}
     
     @Override
 	public BulletinPaie eval(BulletinPaie bulletin) {
@@ -1451,4 +1477,6 @@ public class MoteurPaieManagerImpl
     	List<IndiceSolde> datas = indicesoldedao.filter(container.getPredicats(), null, null, 0, -1);
     	return datas.size()>0 ? datas.get(0):null;
     }
+
+	
 }

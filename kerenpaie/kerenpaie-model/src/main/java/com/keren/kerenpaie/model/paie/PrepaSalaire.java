@@ -31,7 +31,7 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false)
-//	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
+	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
 	private PeriodePaie periode ;
 	
 	@Predicate(label="Concerne ?",target="combobox",values="Tous les employés;Seulement les employés selectionnés",optional=false)

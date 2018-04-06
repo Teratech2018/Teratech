@@ -70,16 +70,6 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="N. Dipe")
 	private String dipe;
 	
-	@ManyToOne
-	@JoinColumn(name="CAT_ID")
-	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one")
-	private Categorie categorie ;
-	
-	@ManyToOne
-	@JoinColumn(name="ECH_ID")
-	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one")
-	private Echelon echelon ;
-	
 	@Predicate(label="N. d'assurance social",group=true,groupName="group1",groupLabel="Informations Personelles")
 	private String numsec ;
 	
@@ -146,6 +136,17 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@JoinColumn(name="STRU_ID")	
 	@Predicate(label="Structure",type=Societe.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private Societe structure ;
+	
+
+	@ManyToOne
+	@JoinColumn(name="CAT_ID")
+	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
+	private Categorie categorie ;
+	
+	@ManyToOne
+	@JoinColumn(name="ECH_ID")
+	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
+	private Echelon echelon ;
 	
 	@ManyToOne
 	@JoinColumn(name="POS_ID")

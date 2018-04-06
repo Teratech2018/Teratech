@@ -97,10 +97,31 @@ public class BulletinPaieRSImpl
 		}
 		return null;
 	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeDelete(entity);
+	}
+
+
+	@Override
+	protected void processBeforeUpdate(BulletinPaie entity) {
+		// TODO Auto-generated method stub
+		if(entity.getState().trim().equalsIgnoreCase("valide")){
+			throw new KerenExecption("Ce bulletin a déjà fait l'objet d'une validation <br/> et par conséquent aucune modification n'est possible");
+		}//end if(entity.getState().trim().equalsIgnoreCase("valide")){
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public BulletinPaie calculer(HttpHeaders headers, BulletinPaie entity) {
 		// TODO Auto-generated method stub
+		if(entity.getState().trim().equalsIgnoreCase("valide")){
+			throw new KerenExecption("Ce bulletin a déjà fait l'objet d'une validation <br/> et par conséquent tout recalcul est  interdite");
+		}//end if(entity.getState().trim().equalsIgnoreCase("valide")){
 		try{
 		  return moteurmanager.eval(entity);
 		}catch(KerenPaieManagerException ex){

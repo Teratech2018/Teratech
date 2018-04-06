@@ -1912,9 +1912,9 @@ angular.module("mainApp")
                   var optionElem = document.createElement('option');
                   optionElem.setAttribute('value' , ""+i);
                   optionElem.appendChild(document.createTextNode(parts[i]));
-                  selectElem.appendChild(optionElem);                  
-              }//end for(var i=0 ; i<parts.length;i++)             
-//              console.log("comboBoxComponent ===== "+i+" ====== "+model);   
+                  selectElem.appendChild(optionElem);
+                  //console.log("comboBoxComponent ===== "+i+" ====== "+parts[i]);   
+              }             
               if(field.hide){
                 divElem.setAttribute('ng-hide',true);
               }//end if(field.hide)
@@ -1983,7 +1983,7 @@ angular.module("mainApp")
                selectElem.setAttribute('class','selectpicker form-control');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
-               selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+field.method+"')");
+               selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+modelpath+"')");
                selectElem.setAttribute('data-live-search','true');
                divElem_1.appendChild(selectElem);
               selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+key);
@@ -2102,7 +2102,7 @@ angular.module("mainApp")
                selectElem.setAttribute('data-selected-text-format' , 'count > 3');
                selectElem.setAttribute('data-live-search','true');
                selectElem.setAttribute('ng-model' , model);
-               selectElem.setAttribute('ng-change' , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+field.method+"')");
+               selectElem.setAttribute('ng-change' , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"')");
                divElem_1.appendChild(selectElem);  
                if(($scope.windowType=="view")||
                         ((angular.isDefined(field) &&angular.isDefined(field.updatable) && field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
@@ -3026,7 +3026,7 @@ angular.module("mainApp")
 //                     }else if( index==4){
 //                        aElem.setAttribute('data-target', '#myModal2');
 //                     }//end if(index==1)           
-                   aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"','"+field.method+"')");                      
+                   aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
                    aElem.appendChild(document.createTextNode("Ajouter un element"));
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
@@ -4844,12 +4844,12 @@ angular.module("mainApp")
           $scope.displayEditPanel = function(){
               if($scope.currentAction && angular.isString($scope.currentAction)){
                   $scope.currentAction = angular.fromJson($scope.currentAction);
-              }//end if($scope.currentAction && angular.isString($scope.currentAction))
+              }
               $scope.enablefollowerpanel = false;
               $scope.desablecreateedit = $scope.isviewOperation()||!$scope.canCreate()||!$scope.canUpdate();
               $scope.desableupdateedit = $scope.isupdateOperation()||!$scope.canUpdate()||$scope.iscreateOperation();
               $scope.desabledeleteedit = !$scope.canDelete()||$scope.iscreateOperation()||($scope.showApplication==true&&$scope.currentObject.active==true);;
-              $scope.desableprintedit=$scope.iscreateOperation()||!$scope.canPrint()||$scope.isupdateOperation();
+              $scope.desableprintedit=$scope.iscreateOperation()||!$scope.canPrint();
               $scope.innerWindowType = false;
               var listElem  = null ; 
               var content = $scope.viewSelector('detail') ;
@@ -4909,20 +4909,22 @@ angular.module("mainApp")
                              commonsTools.showMessageDialog(error);
                          });
                              
-             }//end if($scope.metaData.activatefollower==true && $scope.windowType!='new')
+             }
               //             console.log("$scope.displayEditPanel = function() === "+$scope.showpjmenu+" ==== "+$scope.metaData.activefilelink);
              
              //Creation de l'entete du formultaire
-              if(headerElem){
+             if(headerElem){
                     var items = listElem.find("div");
                     for(var i=0; i<items.length;i++){
+
                          if(items.eq(i).attr("id")=="workflow_menu_id"){
                                items.eq(i).replaceWith(headerElem);
-                         }//end if(items.eq(i).attr("id")=="workflow_menu_id"){                    }
-                    }//end for(var i=0; i<items.length;i++)
-            }//end if(headerElem)
+                         }  
+                    }
+             }//end if(headerElem){
             var items = listElem.find("div");
             for(var i=0; i<items.length;i++){
+                 
                  if(items.eq(i).attr("id")=="detail-panel-body"){
                        items.eq(i).replaceWith(viewElem);
                  }  
@@ -4933,12 +4935,14 @@ angular.module("mainApp")
             ///Remplacement dans la vue
             var items = $element.find("div");
             for(var i=0; i<items.length;i++){
+                 
                  if(items.eq(i).attr("id")=="innerpanel"){
                        items.eq(i).replaceWith(listElem);
                  }  
             }
              $timeout(function() {                
                 $('.selectpicker').selectpicker('refresh');
+                
               });
           };
 
@@ -5453,14 +5457,14 @@ angular.module("mainApp")
          * @param {type} index
          * @returns {undefined}
          */
-        $scope.listDialogBuilder = function(model,index,modelpath,method){
+        $scope.listDialogBuilder = function(model,index,modelpath){
 //            $scope.innerWindowType = true;
             //var parts = model.split(".");
             var metaData = $scope.getCurrentMetaData(modelpath);     
             if(!metaData){
                 return ;
             }//end if(!metaData)
-            console.log("$scope.listDialogBuilder ===== "+index+" ===== "+model+" ==== "+modelpath+" === "+method);     
+//            console.log("$scope.listDialogBuilder ===== "+index+" ===== "+model+" ==== "+modelpath+" === "+angular.toJson(metaData));     
            //Chargement des donnï¿½es
            $scope.temporalPagination.beginIndex=0;
            $scope.temporalPagination.currentPage=1;
@@ -6750,14 +6754,14 @@ angular.module("mainApp")
          * @param {type} moduleName
          * @returns {undefined}
          */
-        $scope.getData = function(model ,item ,entityName,moduleName,index,modelpath,method){
+        $scope.getData = function(model ,item ,entityName,moduleName,index,modelpath){
             var status = $scope.buildFilter(model);
             if(status==false){
                 return ;
             }//end if(status==false){   
             var modelpart = model.split(".");
             var fieldName = modelpart[modelpart.length-1];
-            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]+" ==== "+method);
+//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]);
             var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/count";
             $http.get(url)
                     .then(function(response){
@@ -7099,7 +7103,7 @@ angular.module("mainApp")
            */
           $scope.viewAction = function(item){
 //                console.log("$scope.viewAction ============== "+angular.toJson(item));
-                commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                 $scope.windowType = 'view';
                 $scope.selectedObjects = [];               
                 //Recuperation du premier element
@@ -7124,7 +7128,7 @@ angular.module("mainApp")
 //                            console.log("$scope.viewAction ============== "+angular.toJson(data));
                             $scope.displayEditPanel();
 //                            console.log("$scope.viewAction after display ============== "+angular.toJson(data));
-                            commonsTools.hideDialogLoading();
+                            $scope.hideDialogLoading();
                 },function(error){
                      $scope.hideDialogLoading();
                      commonsTools.showMessageDialog(error);
@@ -7997,8 +8001,6 @@ angular.module("mainApp")
                            var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;
                            $http.post(url,template)
                                    .then(function(response){
-                                       $scope.currentObject = response.data;
-                                       $scope.displayEditPanel();
                                        $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");  
                                        commonsTools.hideDialogLoading();
                                    },function(error){
@@ -9166,4 +9168,5 @@ angular.module("mainApp")
                     }              
             };
         });
-  });      
+
+});

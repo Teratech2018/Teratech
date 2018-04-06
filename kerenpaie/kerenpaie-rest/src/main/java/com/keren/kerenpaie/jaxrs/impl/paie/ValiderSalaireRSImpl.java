@@ -8,7 +8,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.commons.DateHelper;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.paie.ValiderSalaireManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.ValiderSalaireRS;
 import com.keren.kerenpaie.model.paie.SoumettreSalaire;
@@ -36,6 +39,10 @@ public class ValiderSalaireRSImpl
      */
     @Manager(application = "kerenpaie", name = "ValiderSalaireManagerImpl", interf = ValiderSalaireManagerRemote.class)
     protected ValiderSalaireManagerRemote manager;
+    
+    @Manager(application = "kerenpaie", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
+    protected MoteurPaieManagerRemote moteurmanager;
+    
 
     public ValiderSalaireRSImpl() {
         super();
@@ -82,5 +89,31 @@ public class ValiderSalaireRSImpl
 	    
 	    return meta;
 	}
+
+	@Override
+	protected void processBeforeSave(ValiderSalaire entity) {
+		// TODO Auto-generated method stub
+		if(entity.getSociete()==null){
+			throw new KerenExecption("La Structure concernée est obligatoire");
+		}else if(entity.getPeriode()==null){
+			throw new KerenExecption("La Periode concernée est obligatoire");
+		}else if(entity.getDate()==null){
+			throw new KerenExecption("La Date de paiement concernée est obligatoire");
+		}else if(!DateHelper.between(entity.getDate(), entity.getPeriode().getDdebut(), entity.getPeriode().getDfin())){
+			throw new KerenExecption("La Date de paiement concernée est obligatoire");
+		}else if(entity.getPeriode()==null||entity.getPorte().trim().isEmpty()){
+			throw new KerenExecption("La Portée de la validation est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	public ValiderSalaire save(ValiderSalaire entity) {
+		// TODO Auto-generated method stub
+		processBeforeSave(entity);
+		return moteurmanager.validerSalaire(entity);
+	}
+    
+    
 
 }
