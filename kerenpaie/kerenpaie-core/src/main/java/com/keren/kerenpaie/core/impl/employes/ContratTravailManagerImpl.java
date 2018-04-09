@@ -121,7 +121,12 @@ public class ContratTravailManagerImpl
 
 	@Override
 	public ContratTravail demarrer(ContratTravail contrat) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub	
+		//Mise a jour du salarie
+		Employe salarie = contrat.getEmploye();
+		salarie.setCategorie(contrat.getCategorie());
+		salarie.setEchelon(contrat.getEchelon());
+		employedao.update("id", salarie);
 		contrat.setState("confirme");
 		dao.update(contrat.getId(), contrat);
 		return contrat;

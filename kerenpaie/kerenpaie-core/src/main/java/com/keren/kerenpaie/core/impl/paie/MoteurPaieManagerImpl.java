@@ -263,9 +263,17 @@ public class MoteurPaieManagerImpl
     	/**
     	 * Mise a jour du SBB SALCO et SALTAX
     	 */
-    	executorCache.get("SBB").setValeur(salbasebrut);
-    	executorCache.get("SALCO").setValeur(salcot);
-    	executorCache.get("SALTAX").setValeur(salTaxable);
+    	if(executorCache!=null){
+    		if(executorCache.get("SBB")!=null){
+    			executorCache.get("SBB").setValeur(salbasebrut);
+    		}//end if(executorCache.get("SBB")!=null){
+    		if(executorCache.get("SALCO")!=null){
+    			executorCache.get("SALCO").setValeur(salcot);
+    		}//end if(executorCache.get("SALCO")!=null){
+    		if(executorCache.get("SALTAX")!=null){
+    			executorCache.get("SALTAX").setValeur(salTaxable);
+    		}//end if(executorCache.get("SALTAX")!=null){
+    	}//end if(executorCache!=null){
     	
     	//Mise a jour des Variables base sur des variables SBB SALCO SALTAX
     	/**

@@ -48,7 +48,7 @@ public class ValiderSalaire extends BaseElement implements Serializable, Compara
 	private String porte ="0";
 	
 	@ManyToMany
-	@Predicate(label="EM",type=BulletinPaie.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0'")
+	@Predicate(label="EM",type=BulletinPaie.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0'||temporalData.periode==null||temporalData.periode.id=='load'")
     @Filter(value="[{\"fieldName\":\"periode\",\"value\":\"object.periode\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez salectionner une periode\"}]")
 	private List<BulletinPaie> concernes = new ArrayList<BulletinPaie>(); 
 	

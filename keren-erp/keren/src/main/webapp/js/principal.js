@@ -957,9 +957,10 @@ angular.module("mainApp")
           * @returns {Boolean}Droite de creation 
           */
          $scope.canCreate = function(){
+             console.log("$scope.canCreate = function() =================== "+angular.toJson($scope.currentAction));
              if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
-             }  
+             }//end if($scope.currentAction){ 
              return false ;
          };
          
@@ -972,7 +973,7 @@ angular.module("mainApp")
          $scope.canUpdate = function(){
              if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
-             }  
+             }//end if($scope.currentAction){
              return false ;
          };
          $scope.canPrint = function(){
@@ -1075,15 +1076,12 @@ angular.module("mainApp")
           $scope.contains = function(array , item){
                if(!angular.isDefined(array)){
                   return false;
-               }
-
+               }//end if(!angular.isDefined(array)){
                for(var i= 0 ; i<array.length;i++){
-
                    if(array[i].id == item.id){
                       return true;
-                   }
-               }
-
+                   }//end if(array[i].id == item.id){
+               }//end for(var i= 0 ; i<array.length;i++){
                return false;
           };
           
@@ -1095,17 +1093,14 @@ angular.module("mainApp")
           $scope.containsObject = function(array , item){
                if(!angular.isDefined(array)){
                   return false;
-               }
-
+               }//end if(!angular.isDefined(array)){
                for(var i= 0 ; i<array.length;i++){
-
                    if(array[i].compareid == item.compareid){
                       return true;
-                   }
-               }
-
+                   }//end if(array[i].compareid == item.compareid){
+               }//end for(var i= 0 ; i<array.length;i++)
                return false;
-          };
+           };
           
           /**
            * Return the index of Item
@@ -1573,7 +1568,7 @@ angular.module("mainApp")
                     $scope.constraintsProvider(field , inputElem);
                     if(($scope.windowType=="view")||
                             ((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))||(field.editable==false)){
-                        inputElem.setAttribute('readonly' , 'readonly');
+                        inputElem.setAttribute('ng-disabled' , 'true');
                     }
                     labelElem.appendChild(inputElem);  
                     labelElem.appendChild(document.createTextNode(labelText)); 
@@ -1967,7 +1962,7 @@ angular.module("mainApp")
 //                        obj = {id:'loadwithsearch' , designation:'Chercher plus ...'};
 //                    }
                     $scope.dataCache[""+key+""].push(obj);
-                }
+                }//end if(parts.length>1){
 //                console.log("$scope.manyToOneComponent ============== filter : "+field.filter+" fieldName :"+field.fieldName+" index : "+index+" ==== model : "+model+" :::: key:"+key+" == "+angular.toJson($scope.dataCache[""+key+""]+" === teplatefilter:"+$scope.filtertemplate[key]));
                //console.log("$scope.manyToOneComponent    ===      "+model+" :::::::  !!!!!!!! "+metaData.entityName);
                var divElem = document.createElement('div');
@@ -5459,7 +5454,11 @@ angular.module("mainApp")
          */
         $scope.listDialogBuilder = function(model,index,modelpath){
 //            $scope.innerWindowType = true;
-            //var parts = model.split(".");
+            //var parts = model.split(".");  
+             var status = $scope.buildFilter(model);
+            if(status==false){
+                return ;
+            }//end if(status==false){            
             var metaData = $scope.getCurrentMetaData(modelpath);     
             if(!metaData){
                 return ;
@@ -5802,13 +5801,13 @@ angular.module("mainApp")
                bodyID="modalbody1";
            }else if(endIndex==4){
                bodyID="modalbody2";
-           }
+           }//end if(endIndex==1)
            viewElem.setAttribute('id' , bodyID);
            viewElem.setAttribute("class","modal-body");
            viewElem.setAttribute("style","height:100%;");
            var headerElem = $scope.editPanelHeader('temporalData' , metaData,index);  
            var editPanel =  $scope.editPanelComponent('temporalData',metaData,'new',index,'temporalData');
-            if(headerElem){
+           if(headerElem){
                viewElem.appendChild(headerElem);
            }//end if(headerElem)
            //viewElem.appendChild(headerElem);
@@ -5825,16 +5824,16 @@ angular.module("mainApp")
                footerID="modalfooter1";
            }else if(endIndex==4){
                footerID="modalfooter2";
-           }
+           }//end if(endIndex==1)
            footerDiv.setAttribute('id' , footerID);
+           console.log("$scope.editDialogBuilderExtern = function(metaData,index,link) ====== canupdate : "+$scope.canUpdate()+" ==== cancreate : "+$scope.canCreate())
            if($scope.canUpdate()||$scope.canCreate()){
                 var buttonElem = document.createElement('button');
                 footerDiv.appendChild(buttonElem);
                 buttonElem.setAttribute('class' , 'btn btn-primary');
                 buttonElem.setAttribute('ng-click' , "addDialogAction('temporalData' , 'save_only','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",null,'"+link+"')");
                 buttonElem.appendChild(document.createTextNode('Valider'));
-            }//end if($scope.windowType!='view'){ 
-                     
+           }//end if($scope.windowType!='view'){                      
            //Button annuler
            buttonElem = document.createElement('button');
            footerDiv.appendChild(buttonElem);
@@ -5855,7 +5854,7 @@ angular.module("mainApp")
                titleID="gmodaltitle1";
            }else if(endIndex==4){
                titleID="modaltitle2";
-           }
+           }//end if(endIndex==1){
            titleheader.setAttribute('id',titleID);
            titleheader.appendChild(document.createTextNode(metaData.editTitle));
             //console.log(viewElem.innerHTML);
@@ -5868,13 +5867,10 @@ angular.module("mainApp")
                if(items.eq(i).attr("id")==bodyID){
                      items.eq(i).replaceWith(viewElem);
                       //console.log("$scope.editDialogBuilder = function(model , item , type) ::: "+$scope.currentMetaDataPath);
-          
                } else if(items.eq(i).attr("id")==footerID){
                    items.eq(i).replaceWith(footerDiv);
-               } 
-           } 
-
-           
+               }//end if(items.eq(i).attr("id")==bodyID){ 
+           }//end for(var i=0; i<items.length;i++){          
            items = $(document).find("h4");
            for(var i=0; i<items.length;i++){               
                if(items.eq(i).attr("id")==titleID){
@@ -6428,57 +6424,90 @@ angular.module("mainApp")
        **/
      
       /**
-       * 
+       * Validate and clean Beans
+       * @param {type} metaData
+       * @param {type} entity
        * @returns {Array}
        */
-       $scope.validateFields = function(){
+       $scope.validateFields = function(metaData,currentObject){
             var champs = new Array();
             $scope.uniqueContraints =  new Array();
-            if($scope.metaData && $scope.currentObject){
-                if($scope.metaData.columns){
-                   for(var i=0 ; i<$scope.metaData.columns.length;i++){
-                       if(!$scope.metaData.columns[i].optional || $scope.metaData.columns[i].min){
-                           if(!$scope.currentObject[$scope.metaData.columns[i].fieldName]){
-                               champs.push($scope.metaData.columns[i].fieldLabel);
-                           }
-                       }
+            if(metaData && currentObject){
+                if(metaData.columns){
+                   for(var i=0 ; i<metaData.columns.length;i++){
+                       //Traitrement des object
+                       if(angular.isObject(currentObject[metaData.columns[i].fieldName])){
+                           var entity = currentObject[metaData.columns[i].fieldName];
+                           if(entity.id=='load'){
+                               currentObject[metaData.columns[i].fieldName]=null;
+                           }//end if(entity.id=='load')
+                       }else if(angular.isArray(currentObject[metaData.columns[i].fieldName])){
+                           var array = currentObject[metaData.columns[i].fieldName];
+                           for(var i=0 ; i<array.length;i++){
+                               if(angular.isObject(array[i]) && array[i].id=='load'){
+                                   array[i]=null;
+                               }//end if(array[i].id=='load')
+                           }//end for(var i=0 ; i<array.length;i++){
+                       }//end if(angular.isObject(currentObject[metaData.columns[i].fieldName]))
+                       if(!metaData.columns[i].optional || metaData.columns[i].min){
+                           if(!currentObject[metaData.columns[i].fieldName]){
+                               champs.push(metaData.columns[i].fieldLabel);
+                           }//end if(!currentObject[metaData.columns[i].fieldName]){
+                       }//end if(!metaData.columns[i].optional || metaData.columns[i].min)
                        //Construction des champs pour unicite
-                       if($scope.metaData.columns[i].unique){
+                       if(metaData.columns[i].unique){
                            var pred = new Object();
-                           pred.fieldLabel = $scope.metaData.columns[i].fieldLabel;
-                           pred.fieldName = $scope.metaData.columns[i].fieldName;
-                           pred.fieldValue = $scope.currentObject[$scope.metaData.columns[i].fieldName];
+                           pred.fieldLabel = metaData.columns[i].fieldLabel;
+                           pred.fieldName = metaData.columns[i].fieldName;
+                           pred.fieldValue = currentObject[metaData.columns[i].fieldName];
                            $scope.uniqueContraints.push(pred);
-                       }
+                       }//end if(metaData.columns[i].unique){
                    }
-                 }
+                 }//end if($scope.metaData.columns){
                  //Cas des groups
-                 if($scope.metaData.groups){
-                    for(var i=0;i<$scope.metaData.groups.length;i++){
+                 if(metaData.groups){
+                    for(var i=0;i<metaData.groups.length;i++){
 //                        if($scope.metaData.groups[i].metaArray){
-//                            for(var j=0 ; j<$scope.metaData.groups[i].metaArray.metaData.columns.length ; j++){
-//                                if(!$scope.metaData.groups[i].metaArray.metaData.columns[j].optional || $scope.metaData.groups[i].metaArray.metaData.columns[j].min){
-//                                      champs.push($scope.metaData.groups[i].metaArray.metaData.columns[j].fieldLabel);
-//                                }
-//                            }
-//                        }
+//                           //Nom du champs
+//                           var key = metaData.groups[i].metaArray.fieldName;
+//                           var array = currentObject[key];
+//                           for(var i=0 ; i<array.length;i++){
+//                                $scope.validateFields(metaData.groups[i].metaArray.metaData,array[i])
+//                           }//end for(var i=0 ; i<array.length;i++){
+//                        }//end if($scope.metaData.groups[i].metaArray){
                         //Cas des donnÃ©es normales
-                        if($scope.metaData.groups[i].columns){
-                           for(var j=0 ; j<$scope.metaData.groups[i].columns.length;j++){
-                              if(!$scope.metaData.groups[i].columns[j].optional || $scope.metaData.groups[i].columns[j].min){
-                                   var pred = new Object();
-                                    pred.fieldLabel = $scope.metaData.groups[i].columns[j].fieldLabel;
-                                    pred.fieldName = $scope.metaData.groups[i].columns[j].fieldName;
-                                    pred.value = $scope.currentObject[$scope.metaData.groups[i].columns[j].fieldName];
-                                    $scope.uniqueContraints.push(pred);
-                                    // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
-                              }
-                              //Construction des champs pour unicite
-                            if($scope.metaData.groups[i].columns[j].unique){
-                                $scope.uniqueContraints.push($scope.metaData.groups[i].columns[j].fieldLabel);
-                            }
-                           }
-                        }
+                        if(metaData.groups[i].columns){
+                           for(var j=0 ; j<metaData.groups[i].columns.length;j++){
+                               //Nom du champs
+                                var key = metaData.groups[i].columns[j].fieldName;
+                                //Traitement des Object
+                                if(angular.isObject(currentObject[key])){
+                                    var entity = currentObject[key];
+                                    if(entity.id=='load'){
+                                        currentObject[key]=null;
+                                    }//end if(entity.id=='load')
+                                }else if(angular.isArray(currentObject[key])){
+                                    var array = currentObject[key];
+                                    for(var i=0 ; i<array.length;i++){
+                                        if(angular.isObject(array[i]) && array[i].id=='load'){
+                                            array[i]=null;
+                                        }//end if(array[i].id=='load')
+                                    }//end for(var i=0 ; i<array.length;i++){
+                                }//end if(angular.isObject(currentObject[key])){
+                                if(!metaData.groups[i].columns[j].optional || metaData.groups[i].columns[j].min){
+                                     var pred = new Object();
+                                      pred.fieldLabel = metaData.groups[i].columns[j].fieldLabel;
+                                      pred.fieldName = metaData.groups[i].columns[j].fieldName;
+                                      pred.value = currentObject[metaData.groups[i].columns[j].fieldName];
+                                      $scope.uniqueContraints.push(pred);
+                                      // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
+                                }//end if(!metaData.groups[i].columns[j].optional || metaDat
+                                //Construction des champs pour unicite
+                                if(metaData.groups[i].columns[j].unique){
+                                    $scope.uniqueContraints.push(metaData.groups[i].columns[j].fieldLabel);
+                                }//end if(metaData.groups[i].columns[j].unique){
+                           }//end for(var j=0 ; j<metaData.groups[i].columns.length;j++){
+                        }//end if(metaData.groups[i].columns){
                     }
                  }
             }
@@ -6841,7 +6870,7 @@ angular.module("mainApp")
                                
                     $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");               
                      //Chargement des donnï¿½es
-                     urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
+                     var urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                      $http.get(urlPath).then( 
                        function(response){
                             //alert("Data: "+response.data+" === "+model);   
@@ -9058,8 +9087,11 @@ angular.module("mainApp")
                                             index = 1;
                                         }else{
                                             index = new Number(index)+1;
-                                        }
-//                                        console.log("initAction ========== "+index);
+                                        }//end if(index==null||!angular.isDefined(index))
+//                                        console.log("initAction ========== isString : "+angular.isString($scope.currentAction)+" ::::: isobject : "+angular.isObject($scope.currentAction));
+                                        if(angular.isString($scope.currentAction)){
+                                            $scope.currentAction = angular.fromJson($scope.currentAction);
+                                        }//end if(angular.isString($scope.currentAction)){
                                         $scope.editDialogBuilderExtern(metaData,index,$scope.currentAction.link);
 //                                        console.log("Chargement MetaData apres $scope.editDialogBuilderExtern(metaData)"); 
                                         $scope.currentAction = $scope.dataCache['currentAction'];
@@ -9077,7 +9109,7 @@ angular.module("mainApp")
                                             modalID = "myModal1";
                                         }else if(endIndex==4){
                                             modalID = "myModal2";
-                                        }
+                                        }//end if(endIndex==1){
                                         $("#"+modalID).modal("toggle");
                                         $("#"+modalID).modal("show");
                                         commonsTools.hideDialogLoading();
@@ -9092,8 +9124,8 @@ angular.module("mainApp")
                 } 
          };
           /**
-             Reception du message de changement de l'action
-          **/
+           * Reception du message de changement de l'action
+           */
           $scope.$on("currentActionUpdate" , function(event , args){
                if(args.action){
                 $scope.dataCache['currentObject'] = $scope.currentObject;
@@ -9109,6 +9141,9 @@ angular.module("mainApp")
                 $scope.initAction(template,index);
               }
            });
+           /**
+            * 
+            */
             $scope.$on("currentActionUpdateModal" , function(event , args){
               if(args.action){
                 $scope.dataCache['currentObject'] = $scope.currentObject;
@@ -9135,8 +9170,14 @@ angular.module("mainApp")
           
          
       },
-    	link : function(scope , element , attrs){
-                  
+      /**
+       * 
+       * @param {type} scope
+       * @param {type} element
+       * @param {type} attrs
+       * @returns {undefined}
+       */
+    	link : function(scope , element , attrs){                  
                   scope.listFrameBuilder(scope.metaData);
                   //var partial =angular.element(document.querySelector('#container'));
                   //console.log("Vous etes "+partial.html());
