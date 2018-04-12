@@ -47,6 +47,56 @@
     <class>com.keren.model.discipline.Sanction</class>
     <class>com.keren.model.structures.Societe</class>
     <class>com.keren.model.structures.Devise</class>
+    <class>com.keren.model.carrieres.Affectation</class>
+    <class>com.keren.model.carrieres.Avancement</class>
+    <class>com.keren.model.carrieres.Bonification</class>
+    <class>com.keren.model.carrieres.Nomination</class>
+    <class>com.keren.model.carrieres.Reclassement</class>
+    <class>com.keren.model.carrieres.Retrogradation</class>
+    <class>com.keren.model.missions.ActionMission</class>
+    <class>com.keren.model.missions.CategorieFrais</class>
+    <class>com.keren.model.missions.CategorieMission</class>
+    <class>com.keren.model.missions.Deploiement</class>
+    <class>com.keren.model.missions.Escale</class>
+    <class>com.keren.model.missions.FraisMission</class>
+    <class>com.keren.model.missions.GrilleFrais</class>
+    <class>com.keren.model.missions.IndicateurPerformance</class>
+    <class>com.keren.model.missions.Mission</class>
+    <class>com.keren.model.missions.ResultatMission</class>
+    <class>com.keren.model.recrutement.AffectationCandidat</class>
+    <class>com.keren.model.recrutement.BesionRecrutement</class>
+    <class>com.keren.model.recrutement.CandidatureSpontane</class>
+    <class>com.keren.model.recrutement.ContratTravail</class>
+    <class>com.keren.model.recrutement.DetailRecrutement</class>
+    <class>com.keren.model.recrutement.Emploi</class>
+    <class>com.keren.model.recrutement.EtapeRecrutement</class>
+    <class>com.keren.model.recrutement.ExperienceCandidat</class>
+    <class>com.keren.model.recrutement.FormationCandidat</class>
+    <class>com.keren.model.recrutement.LangueCandidat</class>
+    <class>com.keren.model.recrutement.Recrutement</class>
+    <class>com.keren.model.stages.BesionStage</class>
+    <class>com.keren.model.stages.EvaluationStage</class>
+    <class>com.keren.model.stages.LivrableStage</class>
+    <class>com.keren.model.stages.Stage</class>
+    <class>com.keren.model.stages.SuiviStage</class>
+    <class>com.keren.model.stages.TacheStage</class>
+    <class>com.keren.model.structures.Etablissement</class>
+    <class>com.keren.model.structures.Ville</class>
+    <class>com.keren.model.formations.BesionFormation</class>
+    <class>com.keren.model.formations.CategorieModule</class>
+    <class>com.keren.model.formations.DemandeFormation</class>
+    <class>com.keren.model.formations.Formateur</class>
+    <class>com.keren.model.formations.Formation</class>
+    <class>com.keren.model.formations.LigneBesionFormation</class>
+    <class>com.keren.model.formations.LignePlanningFormation</class>
+    <class>com.keren.model.formations.LigneThemeFormation</class>
+    <class>com.keren.model.formations.ModuleFormation</class>
+    <class>com.keren.model.formations.ParticipantSeance</class>
+    <class>com.keren.model.formations.PlanningFormation</class>
+    <class>com.keren.model.formations.SeanceFormation</class>
+    <class>com.keren.model.formations.ThemeFormation</class>
+    <class>com.keren.model.missions.OrdreMission</class>
+    <class>com.keren.model.carrieres.Cessation</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

@@ -18,6 +18,7 @@ import com.keren.dao.ifaces.employes.EmployeDAOLocal;
 import com.keren.model.comptabilite.CompteBancaire;
 import com.keren.model.employes.Employe;
 import com.keren.model.employes.Famille;
+import com.keren.model.recrutement.ContratTravail;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -70,6 +71,9 @@ public class EmployeManagerImpl
 		}//end for(CompteBancaire cb: employ.getComptesbancaire()){
 		for(Famille fam:employ.getFamilles()){
 			entity.getFamilles().add(new Famille(fam));
+		}
+		for(ContratTravail contrat:employ.getContrats()){
+			entity.getContrats().add(new ContratTravail(contrat));
 		}
 		return  entity;
 	}

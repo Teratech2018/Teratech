@@ -54,6 +54,13 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {       
+        resources.add(com.keren.jaxrs.impl.carrieres.AffectationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.carrieres.AvancementRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.carrieres.BonificationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.carrieres.CessationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.carrieres.NominationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.carrieres.ReclassementRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.carrieres.RetrogradationRSImpl.class);
         resources.add(com.keren.jaxrs.impl.comptabilite.BanqueRSImpl.class);
         resources.add(com.keren.jaxrs.impl.comptabilite.CompteAnalytiqueRSImpl.class);
         resources.add(com.keren.jaxrs.impl.comptabilite.CompteBancaireRSImpl.class);
@@ -84,20 +91,64 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.jaxrs.impl.employes.FonctionRSImpl.class);
         resources.add(com.keren.jaxrs.impl.employes.PosteRSImpl.class);
         resources.add(com.keren.jaxrs.impl.employes.TypeContratRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.BesionFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.CategorieModuleRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.DemandeFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.FormateurRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.FormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.GenererBesionFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.LigneBesionFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.LignePlanningFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.LigneThemeFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.ModuleFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.ParticipantSeanceRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.PlanningFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.SeanceFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.formations.ThemeFormationRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.ActionMissionRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.CategorieFraisRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.CategorieMissionRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.DeploiementRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.EscaleRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.FraisMissionRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.GrilleFraisRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.IndicateurPerformanceRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.MissionRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.OrdreMissionRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.missions.ResultatMissionRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.FichePointageRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.LigneFichePointageRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.LignePointageRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.PointageJouranlierRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.RetardRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.AffectationCandidatRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.BesionRecrutementRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.CandidatureSpontaneRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.ContratTravailRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.DetailRecrutementRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.EmploiRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.EtapeRecrutementRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.ExperienceCandidatRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.FormationCandidatRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.LangueCandidatRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.recrutement.RecrutementRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.stages.BesionStageRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.stages.EvaluationStageRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.stages.LivrableStageRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.stages.StageRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.stages.SuiviStageRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.stages.TacheStageRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.DepartementRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.DeviseRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.DiplomeRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.structures.EtablissementRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.NiveauEtudeRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.PaysRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.RegionRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.SocieteRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.SpecialiteRSImpl.class);
         resources.add(com.keren.jaxrs.impl.structures.TypeDemandeRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.structures.VilleRSImpl.class);
     }
     
 }

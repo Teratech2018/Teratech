@@ -8,6 +8,7 @@ package com.keren.model.employes;
 import com.core.base.BaseElement;
 import com.keren.model.comptabilite.Compte;
 import com.keren.model.comptabilite.CompteBancaire;
+import com.keren.model.recrutement.ContratTravail;
 import com.keren.model.structures.Departement;
 import com.keren.model.structures.Pays;
 import com.keren.model.structures.Region;
@@ -65,15 +66,16 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	private String dipe;
 	
 	@ManyToOne
-	@JoinColumn(name="ECH_ID")
-	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one")
-	private Echelon echelon ;
-	
-	@ManyToOne
 	@JoinColumn(name="CAT_ID")
-	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one")
+	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private Categorie categorie ;
 		
+	
+	@ManyToOne
+	@JoinColumn(name="ECH_ID")
+	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
+	private Echelon echelon ;
+	
 	@Predicate(label="N. d'assurance social",group=true,groupName="group1",groupLabel="Informations Personelles")
 	private String numsec ;
 	
@@ -175,6 +177,11 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@JoinColumn(name="EMP_ID")
 	@Predicate(label="Compte bancaires",group=true,groupName="group4",groupLabel="Banques",type=CompteBancaire.class,target="one-to-many")
 	private List<CompteBancaire> comptesbancaire = new ArrayList<CompteBancaire>();
+	
+
+	@OneToMany(mappedBy="employe",fetch=FetchType.LAZY)
+	@Predicate(label="Contrat de tarvail",type=ContratTravail.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group41",groupLabel="Contrats de Travail")
+    private List<ContratTravail> contrats = new ArrayList<ContratTravail>();
 	
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="EMP_ID")
@@ -561,6 +568,14 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 
 	public void setStructure(Societe structure) {
 		this.structure = structure;
+	}	
+
+	public List<ContratTravail> getContrats() {
+		return contrats;
+	}
+
+	public void setContrats(List<ContratTravail> contrats) {
+		this.contrats = contrats;
 	}
 
 	@Override

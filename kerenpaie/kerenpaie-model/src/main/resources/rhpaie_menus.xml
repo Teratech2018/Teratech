@@ -25,6 +25,7 @@
 	      <search entity="BrouillardSalaire" module="kerenpaie" method="brouillard">		    		 
 		  </search>	     
 	 </reportRecord>
+	 <menuitem id="rh_paie_6_1" label="Transfert Comptabilité" parent_ref="rh_paie_salaire" entity_ref="ValiderSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true" />
 	 <menuitem id="rh_paie_3" label="Fermer une periode" parent_ref="rh_paie_salaire" entity_ref="PeriodePaieClose" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true" />
 	 <menu id="rh_paie_element" label="Elements de salaire" parent="rh_paie" gyphycon="glyphicon glyphicon-pencil"/>
 	 <menuitem id="rh_paie_9" label="Grille de salaire" parent_ref="rh_paie_element" entity_ref="Convension" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
