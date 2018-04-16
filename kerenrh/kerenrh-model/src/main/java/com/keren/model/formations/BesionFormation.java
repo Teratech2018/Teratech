@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +29,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="BESFORMRH")
+@Table(name="T_BESFORMRH")
 public class BesionFormation extends BaseElement implements Serializable, Comparable<BesionFormation> {
 
 	/**
@@ -51,10 +50,10 @@ public class BesionFormation extends BaseElement implements Serializable, Compar
 	private String intitule ;
 	
 	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date d'émission",type=Date.class,target="date",optional=false)
+	@Predicate(label="Date d'émission",type=Date.class,target="date")
 	private Date date ;
 	
-	@Predicate(label="Coût estimatif",type=Double.class,optional=false)
+	@Predicate(label="Coût estimatif",type=Double.class)
 	private Double cout =0.0;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
@@ -76,6 +75,7 @@ public class BesionFormation extends BaseElement implements Serializable, Compar
 	 */
 	public BesionFormation() {
 		// TODO Auto-generated constructor stub
+		state = "etabli";
 	}
 
 	/**
@@ -132,6 +132,30 @@ public class BesionFormation extends BaseElement implements Serializable, Compar
 //		this.demandes = demandes;
 	}
 	
+	/**
+	 * 
+	 * @param bf
+	 */
+	public BesionFormation(GenererBesionFormation bf) {
+		super(-1, null, null);
+		this.code = bf.getCode();
+		if(bf.getStructure()!=null){
+			this.societe = bf.getStructure();
+		}
+		this.intitule = bf.getIntitule();
+		this.date = new Date();
+		this.cout = 0.0;
+//		this.lignes = lignes;
+		this.note = "";
+		this.state = "etabli";
+		//Traitement des demande
+		LigneBesionFormation ligne = new LigneBesionFormation();
+		ligne.setPlaces(Short.parseShort(""+bf.getDemandes().size()));
+		ligne.setCode(code);ligne.setDescription(intitule);
+		this.lignes.add(ligne);
+		
+//		this.demandes = demandes;
+	}
 	
 	
 
@@ -250,7 +274,7 @@ public class BesionFormation extends BaseElement implements Serializable, Compar
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillon"));
 		states.add(new State("valide", "Validé"));
-//		states.add(new State("rejete", "Brouillon"));
+		states.add(new State("planifie", "Planifié"));
 		return states;
 	}
 

@@ -8,10 +8,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.stages.BesionStageManagerRemote;
 import com.keren.jaxrs.ifaces.stages.BesionStageRS;
-import com.keren.model.missions.Mission;
 import com.keren.model.stages.BesionStage;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -66,11 +66,11 @@ public class BesionStageRSImpl
    	        workbtn.setStates(new String[]{"etabli"});
    	        workbtn.setPattern("btn btn-success");
    	        meta.getHeader().add(workbtn);  
-//   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
-//   	        workbtn.setValue("{'model':'kerenrh','entity':'mission','method':'annule'}");
-//   	        workbtn.setStates(new String[]{"etabli"});
-//   	        workbtn.setPattern("btn btn-danger");
-//   	        meta.getHeader().add(workbtn);   
+   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
+   	        workbtn.setValue("{'model':'kerenrh','entity':'mission','method':'annule'}");
+   	        workbtn.setStates(new String[]{"etabli"});
+   	        workbtn.setPattern("btn btn-danger");
+   	        meta.getHeader().add(workbtn);   
    	        MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
    	        meta.getHeader().add(stautsbar);	
    		} catch (InstantiationException e) {
@@ -82,11 +82,96 @@ public class BesionStageRSImpl
    		}
    		return meta;
    	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeDelete(entity);
+	}
+
+	@Override
+	protected void processBeforeSave(BesionStage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Référence du besion est obligatoire");
+		}else if(entity.getDemission()==null){
+			throw new KerenExecption("La Date d'émission du besion est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de debut est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getProfil()==null){
+			throw new KerenExecption("Le Profil demandé est obligatoire");
+		}else if(entity.getPlace()==null||entity.getPlace()==0){
+			throw new KerenExecption("Le nombre de place désirées est obligation");
+		}
+		entity.setState("etabli");
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(BesionStage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Référence du besion est obligatoire");
+		}else if(entity.getDemission()==null){
+			throw new KerenExecption("La Date d'émission du besion est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de debut est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getProfil()==null){
+			throw new KerenExecption("Le Profil demandé est obligatoire");
+		}else if(entity.getPlace()==null||entity.getPlace()==0){
+			throw new KerenExecption("Le nombre de place désirées est obligation");
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public BesionStage valide(HttpHeaders headers, BesionStage entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Référence du besion est obligatoire");
+		}else if(entity.getDemission()==null){
+			throw new KerenExecption("La Date d'émission du besion est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de debut est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getProfil()==null){
+			throw new KerenExecption("Le Profil demandé est obligatoire");
+		}else if(entity.getPlace()==null||entity.getPlace()==0){
+			throw new KerenExecption("Le nombre de place désirées est obligation");
+		}
+		return manager.valide(entity);
+	}
+
+	@Override
+	public BesionStage annule(HttpHeaders headers, BesionStage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Référence du besion est obligatoire");
+		}else if(entity.getDemission()==null){
+			throw new KerenExecption("La Date d'émission du besion est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de debut est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getProfil()==null){
+			throw new KerenExecption("Le Profil demandé est obligatoire");
+		}else if(entity.getPlace()==null||entity.getPlace()==0){
+			throw new KerenExecption("Le nombre de place désirées est obligation");
+		}else if(entity.getState().equalsIgnoreCase("encours")){
+			throw new KerenExecption("Le Besion de stage est déjà en cours de traitement");
+		}else if(entity.getState().equalsIgnoreCase("encours")){
+			throw new KerenExecption("Le Besion de stage est déjà traité");
+		}else if(entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("Vous ne pouvez anuulé que les Besions de stage Validé");
+		}
+		return manager.annule(entity);
 	}
 
 }

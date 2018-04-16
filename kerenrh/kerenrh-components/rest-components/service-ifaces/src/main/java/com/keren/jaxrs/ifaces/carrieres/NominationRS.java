@@ -3,6 +3,7 @@ package com.keren.jaxrs.ifaces.carrieres;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -22,13 +23,13 @@ public interface NominationRS
     extends GenericService<Nomination, Long>
 {
 
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("valide")
     public Nomination valide(@Context HttpHeaders headers,Nomination entity);
 	
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("annule")

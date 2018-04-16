@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -41,7 +43,8 @@ public class PlanningFormation extends BaseElement implements Serializable, Comp
 	
 	@ManyToOne
 	@JoinColumn(name="BEFOR_ID")
-	@Predicate(label="Besion de Formation",type=BesionFormation.class,target="many-to-one",search=true)
+	@Predicate(label="Besion de Formation",type=BesionFormation.class,target="many-to-one",search=true,optional=false,updatable=false)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"valide\"}]")
 	private BesionFormation besion ;
 	
 	@Predicate(label="Période",target="combobox",values="1er Trimestre;2ème Trimestre;3ème Trimestre;4ème Trimestre;1er Semestre;2ème Semestre")
@@ -51,6 +54,7 @@ public class PlanningFormation extends BaseElement implements Serializable, Comp
 	private Short places = 0;
 
 	@OneToMany(mappedBy="planning",fetch=FetchType.LAZY)
+//	@JoinColumn(name="PLAFOR_ID")
 	@Predicate(label=".",type=LignePlanningFormation.class,target="one-to-many",group=true,groupName="group1",groupLabel="Calendrier de Formation")
 	private List<LignePlanningFormation> lignes = new ArrayList<LignePlanningFormation>();
 	
@@ -214,6 +218,7 @@ public class PlanningFormation extends BaseElement implements Serializable, Comp
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillon"));
 		states.add(new State("valide", "Validé"));
+		states.add(new State("encours", "En Exécution"));
 		return states;
 	}
 

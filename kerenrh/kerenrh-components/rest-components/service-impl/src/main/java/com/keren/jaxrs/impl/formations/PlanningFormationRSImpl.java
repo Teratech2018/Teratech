@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.formations.PlanningFormationManagerRemote;
 import com.keren.jaxrs.ifaces.formations.PlanningFormationRS;
@@ -82,11 +83,70 @@ public class PlanningFormationRSImpl
    		}
    		return meta;
    	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		PlanningFormation entity = manager.find("id", (Long) id);
+		if(!entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("Planning de formation en cours de traitement");
+		}
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeSave(PlanningFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du planning est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du planning est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du planning est obligatoire");
+		}else if(entity.getBesion()==null){
+			throw new KerenExecption("Le besion concerné est obligatoire");
+		}else if(entity.getPeriode()==null||entity.getPeriode().trim().isEmpty()){
+			throw new KerenExecption("La periode est obligatoire");
+		}		
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(PlanningFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du planning est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du planning est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du planning est obligatoire");
+		}else if(entity.getBesion()==null){
+			throw new KerenExecption("Le besion concerné est obligatoire");
+		}else if(entity.getPeriode()==null||entity.getPeriode().trim().isEmpty()){
+			throw new KerenExecption("La periode est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public PlanningFormation valide(HttpHeaders headers, PlanningFormation entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du planning est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du planning est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du planning est obligatoire");
+		}else if(entity.getBesion()==null){
+			throw new KerenExecption("Le besion concerné est obligatoire");
+		}else if(entity.getPeriode()==null||entity.getPeriode().trim().isEmpty()){
+			throw new KerenExecption("La periode est obligatoire");
+		}else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+			throw new KerenExecption("Veuillez saisir le Calendrier de formation");
+		}
+		return manager.valide(entity);
 	}
 
 }

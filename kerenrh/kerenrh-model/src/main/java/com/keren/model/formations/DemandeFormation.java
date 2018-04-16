@@ -19,6 +19,7 @@ import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.model.employes.Employe;
 import com.keren.model.structures.Societe;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -36,7 +37,7 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	
 	@ManyToOne
 	@JoinColumn(name="DEMA_ID")
-	@Predicate(label="Demandeur",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Demandeur",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe demandeur ;
 	
 	@Predicate(label="Objet",search=true)
@@ -44,11 +45,12 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	
 	@ManyToOne
 	@JoinColumn(name="STRU_ID")
-	@Predicate(label="Structure",type=Societe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Structure",type=Societe.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="demandeur",source="field:structure")
 	private Societe structure ;
 	
 	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date",type=Date.class,target="date",optional=false,search=true)
+	@Predicate(label="Date",type=Date.class,target="date",search=true)
 	private Date date ;
 	
 	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Motif")
@@ -69,6 +71,7 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	 */
 	public DemandeFormation() {
 		// TODO Auto-generated constructor stub
+		state = "etabli";
 	}
 
 	/**
@@ -117,6 +120,7 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 		this.date = formation.date;
 		this.motif = formation.motif;
 		this.decision = formation.decision;
+		this.state = formation.state;
 	}
 
 	
@@ -171,6 +175,22 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	
 	
 
+	public BesionFormation getBesion() {
+		return besion;
+	}
+
+	public void setBesion(BesionFormation besion) {
+		this.besion = besion;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -213,6 +233,8 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillon"));
 		states.add(new State("valide", "Validée"));
+		states.add(new State("encours", "En Cours"));
+		states.add(new State("traite", "Traitée"));
 		states.add(new State("rejete", "Rejétée"));
 		return states;
 	}

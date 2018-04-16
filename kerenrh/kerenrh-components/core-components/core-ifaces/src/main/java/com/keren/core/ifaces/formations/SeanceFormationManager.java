@@ -15,5 +15,9 @@ public interface SeanceFormationManager
 {
 
     public final static String SERVICE_NAME = "SeanceFormationManager";
+    
+    public SeanceFormation valide(SeanceFormation entity);
+    
+    public SeanceFormation annule(SeanceFormation entity);
 
 }

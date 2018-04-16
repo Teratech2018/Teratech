@@ -21,6 +21,7 @@ import com.core.base.State;
 import com.keren.model.employes.Employe;
 import com.keren.model.employes.Fonction;
 import com.keren.model.employes.Poste;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -38,7 +39,7 @@ public class Nomination extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Salarié",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Salarié",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe salarie ;
 	
 	@Predicate(label="Référence",optional=false,search=true,unique=true)
@@ -47,7 +48,8 @@ public class Nomination extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name="POSTA_ID")
-	@Predicate(label="Poste",type=Poste.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Poste",type=Poste.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="salarie",source="field:poste")
 	private Poste posteA ;
 	
 	@ManyToOne
@@ -57,24 +59,27 @@ public class Nomination extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name="FONCA_ID")
-	@Predicate(label="Fonction",type=Fonction.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Fonction",type=Fonction.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="salarie",source="field:fonction")
 	private Fonction fonctionA ;
 	
 	@ManyToOne
 	@JoinColumn(name="FONCN_ID")
 	@Predicate(label="Nouvelle Fonction",type=Fonction.class,target="many-to-one",optional=false,search=true)
-	private Fonction fonctionN ;	
-	
-	
+	private Fonction fonctionN ;		
+
+
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de Nomination",type=Date.class,target="date")
 	private Date date;
 	
 	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de la décision",type=Date.class,target="date",hidden="true")
-	private Date decision ;
+	@Predicate(label="Date de la décision",type=Date.class,target="date",editable=false)
+	private Date decision ;	
 	
-	private String state="etabli";
+	@Predicate(label="Etat",hide=true,search=true)
+	private String state="etabli";	
+
 
 	/**
 	 * 
@@ -227,13 +232,13 @@ public class Nomination extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Affection";
+		return "Nomination";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Affections";
+		return "Nominations";
 	}
 
 	@Override

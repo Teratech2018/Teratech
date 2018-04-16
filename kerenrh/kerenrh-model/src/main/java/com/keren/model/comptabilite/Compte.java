@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.core.referentiels.Societe;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -56,7 +55,7 @@ public class Compte extends BaseElement implements Serializable, Comparable<Comp
     @Predicate(label = "Lettrage",target = "combobox",values = "Automatique;Manuel")
     private String lettrage = "0";
    
-    @Predicate(label = "Analytique" ,group = true,groupLabel = "Analytique",groupName = "group1",type = SectionAnalytique.class,target = "one-to-many",optional = true)
+    @Predicate(label = "Analytique" ,group = true,groupLabel = "Analytique",groupName = "group1",type = SectionAnalytique.class,target = "one-to-many",optional = true,edittable=true)
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "CPTE_ID")
     private List<SectionAnalytique> analytiques = new ArrayList<SectionAnalytique>();

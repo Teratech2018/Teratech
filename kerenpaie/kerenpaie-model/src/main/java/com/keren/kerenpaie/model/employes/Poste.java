@@ -30,13 +30,10 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	@Predicate(label="Code",optional=false,unique=true,search=true)
 	private String code;
 
-	@Predicate(label="Actif",type=Boolean.class,search=true)
-	private Boolean responsable = Boolean.FALSE;
-	
 	@ManyToOne
 	@JoinColumn(name="DEP_ID")
 	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true)
-	private DepartementSoc departement ;
+	private Departement departement ;
 	
 	@Predicate(label="Nom du poste",optional=false,search=true)
 	private String intitule ;
@@ -46,6 +43,9 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	@Predicate(label="Fonction associée",type=Fonction.class,target="many-to-one",search=true)
 	private Fonction fonction;
 	
+
+	@Predicate(label="Actif",type=Boolean.class,search=true)
+	private Boolean responsable = Boolean.FALSE;
 	
 	@Predicate(label="Description",group=true,groupName="group1",groupLabel="Description du poste",target="textarea")
 	private String description ;
@@ -71,14 +71,14 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	public Poste(Poste poste) {
 		super(poste.id, poste.designation, poste.moduleName);
 		this.code = poste.code;
-		if(poste.departement!=null){
-			this.departement = new DepartementSoc(poste.departement);
-		}
+//		if(poste.departement!=null){
+//			this.departement = new Departement(poste.departement);
+//		}
 		this.intitule = poste.intitule;
 		if(poste.fonction!=null){
 			this.fonction = new Fonction(poste.fonction);
 		}
-		this.responsable = responsable;
+		this.responsable = poste.responsable;
 		this.description = poste.description;
 	}
 
@@ -90,11 +90,11 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 		this.code = code;
 	}
 
-	public DepartementSoc getDepartement() {
+	public Departement getDepartement() {
 		return departement;
 	}
 
-	public void setDepartement(DepartementSoc departement) {
+	public void setDepartement(Departement departement) {
 		this.departement = departement;
 	}
 

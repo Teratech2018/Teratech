@@ -28,7 +28,7 @@ public class ContratTravailManagerImpl
     implements ContratTravailManagerLocal, ContratTravailManagerRemote
 {
 
-	 @EJB(name = "ContratTravailDAO")
+	    @EJB(name = "ContratTravailDAO")
 	    protected ContratTravailDAOLocal dao;
 	    
 	    @EJB(name = "EmployeDAO")

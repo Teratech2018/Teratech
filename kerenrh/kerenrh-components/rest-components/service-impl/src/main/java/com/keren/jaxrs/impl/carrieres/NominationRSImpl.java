@@ -66,11 +66,11 @@ public class NominationRSImpl
    	        workbtn.setStates(new String[]{"etabli"});
    	        workbtn.setPattern("btn btn-success");
    	        meta.getHeader().add(workbtn);  
-   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
-   	        workbtn.setValue("{'model':'kerenrh','entity':'nomination','method':'annule'}");
-   	        workbtn.setStates(new String[]{"etabli"});
-   	        workbtn.setPattern("btn btn-danger");
-   	        meta.getHeader().add(workbtn);   
+//   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
+//   	        workbtn.setValue("{'model':'kerenrh','entity':'nomination','method':'annule'}");
+//   	        workbtn.setStates(new String[]{"etabli"});
+//   	        workbtn.setPattern("btn btn-danger");
+//   	        meta.getHeader().add(workbtn);   
    	        MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
    	        meta.getHeader().add(stautsbar);	
    		} catch (InstantiationException e) {

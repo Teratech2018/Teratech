@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.stages.StageManagerRemote;
 import com.keren.jaxrs.ifaces.stages.StageRS;
@@ -82,11 +83,81 @@ public class StageRSImpl
    		}
    		return meta;
    	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		Stage entity = manager.find("id", (Long) id);
+		if(!entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("Le Stage est déjà en cours de traitement");
+		}
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeSave(Stage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Reference du stage est obligatoire");
+		}else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+			throw new KerenExecption("Le Type de stage est obligatoire");
+		}else if(entity.getType().trim().equals("0") && entity.getEcole()==null){
+			throw new KerenExecption("L'Etablissement est obligatoire pour les stage Académique");
+		}else if(entity.getDepartement()==null){
+			throw new KerenExecption("La Structure d'affectation est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de début est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getEncadreur()==null){
+			throw new KerenExecption("L'Encadreur Professionel est obligatoire");
+		}
+		entity.setState("etabli");
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(Stage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Reference du stage est obligatoire");
+		}else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+			throw new KerenExecption("Le Type de stage est obligatoire");
+		}else if(entity.getType().trim().equals("0") && entity.getEcole()==null){
+			throw new KerenExecption("L'Etablissement est obligatoire pour les stage Académique");
+		}else if(entity.getDepartement()==null){
+			throw new KerenExecption("La Structure d'affectation est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de début est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getEncadreur()==null){
+			throw new KerenExecption("L'Encadreur Professionel est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public Stage valide(HttpHeaders headers, Stage entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Reference du stage est obligatoire");
+		}else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+			throw new KerenExecption("Le Type de stage est obligatoire");
+		}else if(entity.getType().trim().equals("0") && entity.getEcole()==null){
+			throw new KerenExecption("L'Etablissement est obligatoire pour les stage Académique");
+		}else if(entity.getDepartement()==null){
+			throw new KerenExecption("La Structure d'affectation est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de début est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getEncadreur()==null){
+			throw new KerenExecption("L'Encadreur Professionel est obligatoire");
+		}
+		return manager.valide(entity);
 	}
 
 }

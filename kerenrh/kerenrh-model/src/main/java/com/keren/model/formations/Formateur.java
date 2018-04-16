@@ -74,6 +74,10 @@ public class Formateur extends BaseElement implements Serializable, Comparable<F
 		this.mail = mail;
 	}
 	
+	/**
+	 * 
+	 * @param formateur
+	 */
 	public Formateur(Formateur formateur) {
 		super(formateur.id, formateur.designation, formateur.moduleName);
 		this.nom = formateur.nom;
@@ -150,5 +154,13 @@ public class Formateur extends BaseElement implements Serializable, Comparable<F
 		// TODO Auto-generated method stub
 		return nom.compareTo(o.nom);
 	}
+
+	@Override
+	public String toString() {
+		return "Formateur [nom=" + nom + ", qualif=" + qualif + ", adress=" + adress + ", mail=" + mail + ", id=" + id
+				+ "]";
+	}
+	
+	
 
 }

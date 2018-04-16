@@ -67,6 +67,21 @@ public class ParticipantSeance extends BaseElement implements Serializable, Comp
 		this.present = present;
 	}
 	
+	/**
+	 * 
+	 * @param salarie
+	 * @param present
+	 */
+	public ParticipantSeance(Employe salarie, Boolean present) {
+		super(-1, null, null);
+		this.salarie = salarie;
+		this.present = present;
+	}
+	
+	/**
+	 * 
+	 * @param part
+	 */
 	public ParticipantSeance(ParticipantSeance part) {
 		super(part.id, part.designation, part.moduleName);
 		if(part.salarie!=null){

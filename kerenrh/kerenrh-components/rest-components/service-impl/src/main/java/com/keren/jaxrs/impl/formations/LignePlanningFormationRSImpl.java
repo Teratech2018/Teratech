@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.formations.LignePlanningFormationManagerRemote;
 import com.keren.jaxrs.ifaces.formations.LignePlanningFormationRS;
@@ -82,11 +83,58 @@ public class LignePlanningFormationRSImpl
    		}
    		return meta;
    	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		LignePlanningFormation entity = manager.find("id", (Long) id);
+		if(!entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("Calendrier de Formation en cours de traitement");
+		}
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeSave(LignePlanningFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getDdebut()==null){
+			throw new KerenExecption("La date de debut est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La date de fin est obligatoire");
+		}else if(entity.getModule()==null){
+			throw new KerenExecption("Le module de formation concerné est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(LignePlanningFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getDdebut()==null){
+			throw new KerenExecption("La date de debut est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La date de fin est obligatoire");
+		}else if(entity.getModule()==null){
+			throw new KerenExecption("Le module de formation concerné est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public LignePlanningFormation demarrer(HttpHeaders headers, LignePlanningFormation entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getDdebut()==null){
+			throw new KerenExecption("La date de debut est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La date de fin est obligatoire");
+		}else if(entity.getModule()==null){
+			throw new KerenExecption("Le module de formation concerné est obligatoire");
+		}else if(entity.getCibles()==null||entity.getCibles().isEmpty()){
+			throw new KerenExecption("Veuillez fournir la liste des apprenants");
+		}
+		return manager.demaree(entity);
 	}
 
 }

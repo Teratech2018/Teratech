@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.formations.SeanceFormationManagerRemote;
 import com.keren.jaxrs.ifaces.formations.SeanceFormationRS;
@@ -82,17 +83,49 @@ public class SeanceFormationRSImpl
    		}
    		return meta;
    	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeDelete(entity);
+	}
+
+	@Override
+	protected void processBeforeSave(SeanceFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference de la seance de formation est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(SeanceFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference de la seance de formation est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public SeanceFormation valide(HttpHeaders headers, SeanceFormation entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference de la seance de formation est obligatoire");
+		}
+		return manager.valide(entity);
 	}
 
 	@Override
 	public SeanceFormation annule(HttpHeaders headers, SeanceFormation entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference de la seance de formation est obligatoire");
+		}
+		return manager.annule(entity);
 	}
 
 }

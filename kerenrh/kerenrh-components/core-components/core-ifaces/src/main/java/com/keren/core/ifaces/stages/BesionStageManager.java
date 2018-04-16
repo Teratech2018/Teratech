@@ -15,5 +15,9 @@ public interface BesionStageManager
 {
 
     public final static String SERVICE_NAME = "BesionStageManager";
+    
+    public BesionStage valide(BesionStage entity);
+    
+    public BesionStage annule(BesionStage entity);
 
 }

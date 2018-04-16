@@ -310,6 +310,7 @@ public class MoteurPaieManagerImpl
 	@Override
 	public Double eval(Rubrique rubrique, Employe salarie,PeriodePaie periode,ContratTravail contrat) {
 		// TODO Auto-generated method stub
+//		System.out.println(MoteurPaieManagerImpl.class.toString()+" ========= contrat : "+contrat+" ==== periode : "+periode+" ===== employe: "+salarie+" === rubrique:"+rubrique);
 		if(rubrique.getMode().trim().equalsIgnoreCase("0")){
 			return evalCategorieProf(rubrique, salarie);
 		}else if(rubrique.getMode().trim().equalsIgnoreCase("1")){
@@ -334,6 +335,7 @@ public class MoteurPaieManagerImpl
 				&& executorCache.get(variable.getCode()).getValeur()>0){
 			return executorCache.get(variable.getCode()).getValeur();
 		}//end if(executorCache.containsKey(variable.getCode())){
+//		System.out.println(MoteurPaieManagerImpl.class.toString()+" ========= contrat : "+contrat+" ==== periode : "+periode+" ===== employe: "+salarie+" === variable:"+variable);
 		if(variable.getMethodcal().trim().equalsIgnoreCase("1")){
 			if(salarie==null||periode==null||contrat==null){
 				return 0.0 ;
@@ -591,8 +593,8 @@ public class MoteurPaieManagerImpl
 				}//end if(convension==null){
 			}//end if(convension==null)
 			for(LigneConvension ligne:convension.getLignes()){
-				if(ligne.getCategorie().compareTo(contrat.getCategorie())==0
-						&& ligne.getEchelon().compareTo(contrat.getEchelon())==0){
+				if(ligne.getCategorie().compareTo(salarie.getCategorie())==0
+						&& ligne.getEchelon().compareTo(salarie.getEchelon())==0){
 					return ligne.getSalbase();
 				}//end if(ligne.getCategorie().compareTo(salarie.getCategorie())==0
 			}//end for(LigneConvension ligne:convension.getLignes()){
@@ -606,7 +608,7 @@ public class MoteurPaieManagerImpl
 			for(LigneIndiceSolde ligne:indice.getIndicessolde()){
 				if(ligne.getCategorie().compareTo(salarie.getCategorie())==0
 						&& ligne.getEchelon().compareTo(salarie.getEchelon())==0
-						&& ligne.getIndice().compareTo(contrat.getIndice())==0){
+						&& ligne.getIndice().compareTo(salarie.getIndice())==0){
 					    return ligne.getSalbase();
 				}//end if(ligne.getCategorie().compareTo(salarie.getCategorie())==0
 			}//end for(LigneIndiceSolde ligne:indice.getIndicessolde()){
@@ -627,7 +629,7 @@ public class MoteurPaieManagerImpl
 		//Recherche du dernier contrat en cours de l'employé		
 		//Traitement des categorie
 		for(ForfaitCategorie forfait:rubrique.getForfaitscat()){
-			if(forfait.getCategorie().compareTo(contrat.getCategorie())==0){
+			if(forfait.getCategorie().compareTo(salarie.getCategorie())==0){
 				valeur = forfait.getValeur();
 				return valeur;
 			}

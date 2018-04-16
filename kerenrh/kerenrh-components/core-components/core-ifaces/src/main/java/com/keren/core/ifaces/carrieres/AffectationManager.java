@@ -15,5 +15,7 @@ public interface AffectationManager
 {
 
     public final static String SERVICE_NAME = "AffectationManager";
+    
+    public Affectation valide(Affectation entity);
 
 }

@@ -15,5 +15,16 @@ public interface FormationManager
 {
 
     public final static String SERVICE_NAME = "FormationManager";
+    
+    /**
+     * Validation de la formation
+     * @param entity
+     * @return
+     */
+    public Formation valide(Formation entity);
+    
+    public Formation annule(Formation entity);
+    
+    public Formation cloture(Formation entity);
 
 }

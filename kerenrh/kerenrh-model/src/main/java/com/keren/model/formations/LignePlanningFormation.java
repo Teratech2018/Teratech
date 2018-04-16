@@ -36,31 +36,34 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 	 */
 	private static final long serialVersionUID = 8070044086967830345L;
 	
-	@Predicate(label="Numéro",type=Short.class,search=true,editable=false)
-	private Short num ;
 	
 	@ManyToOne
 	@JoinColumn(name="MOFOR_ID")
 	@Predicate(label="Module de Formation",type=ModuleFormation.class,target="many-to-one",optional=false,search=true)
-	private ModuleFormation module ;
+	private ModuleFormation module ;	
+
+	@ManyToOne
+	@JoinColumn(name="PAYS_ID")
+	@Predicate(label="Pays",type=Pays.class,target="many-to-one",search=true)
+	private Pays pays ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de début",type=Date.class,target="date",search=true)
 	private Date ddebut ;
 	
+	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de fin",type=Date.class,target="date",search=true)
 	private Date dfin ;		
 	
 	@Predicate(label="Durée(Jours)",type=Short.class,editable=false)
 	private Short duree =0 ;
 	
-	@Predicate(label="Effectif à former",type=Short.class,search=true)
+	@Predicate(label="Effectif à former",type=Short.class,search=true,editable=false)
 	private Short places=0;
 
-	@ManyToOne
-	@JoinColumn(name="PAYS_ID")
-	@Predicate(label="Pays",type=Pays.class,target="many-to-one",search=true)
-	private Pays pays ;
+	@Predicate(label="Numéro",type=Short.class,hide=true)
+	private Short num ;
+	
 	
 	@ManyToMany
 	@JoinTable(name="LIPLAFOR_EMPL",joinColumns=@JoinColumn(name="LIPLFO_ID"),inverseJoinColumns=@JoinColumn(name="EMPL_ID"))
@@ -70,7 +73,6 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 
 	@ManyToOne
 	@JoinColumn(name="PLAFOR_ID")
-	@Predicate(label="Planning de Formation",updatable=false,type=PlanningFormation.class,target="many-to-one",editable=false,group=true,groupName="group2",groupLabel="Formations")
 	private PlanningFormation planning ;
 	
 	@Predicate(label="Formateur",type=Formateur.class,group=true,groupName="group2",groupLabel="Formations")
@@ -92,6 +94,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 	 */
 	public LignePlanningFormation() {
 		// TODO Auto-generated constructor stub
+		this.state = "etabli";
 	}
 
 	/**
@@ -102,6 +105,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 	public LignePlanningFormation(long id, String designation, String moduleName) {
 		super(id, designation, moduleName);
 		// TODO Auto-generated constructor stub
+		state = "etabli";
 	}
 	
 	/**
@@ -124,7 +128,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 		super(id, designation, moduleName);
 		this.num = num;
 		this.module = module;
-		this.planning = planning;
+//		this.planning = planning;
 		this.ddebut = ddebut;
 		this.dfin = dfin;
 		this.places = places;
@@ -138,9 +142,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 		if(ligne.module!=null){
 			this.module = new ModuleFormation(ligne.module);
 		}
-		if(ligne.planning!=null){
-			this.planning = new PlanningFormation(ligne.planning);
-		}
+
 		this.ddebut = ligne.ddebut;
 		this.dfin = ligne.dfin;
 		this.places = ligne.places;
@@ -279,7 +281,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return num+" - "+planning.getDesignation();
+		return module.getDesignation();
 	}
 
 	@Override

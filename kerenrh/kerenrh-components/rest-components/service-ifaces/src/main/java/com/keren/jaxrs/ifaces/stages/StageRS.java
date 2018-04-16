@@ -3,6 +3,7 @@ package com.keren.jaxrs.ifaces.stages;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -22,10 +23,17 @@ public interface StageRS
     extends GenericService<Stage, Long>
 {
 
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("valide")
     public Stage valide(@Context HttpHeaders headers,Stage entity);
+	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("annule")
+    public Stage annule(@Context HttpHeaders headers,Stage entity);
+
 
 }

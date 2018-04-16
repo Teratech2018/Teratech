@@ -15,5 +15,9 @@ public interface StageManager
 {
 
     public final static String SERVICE_NAME = "StageManager";
+    
+    public Stage valide(Stage entity);
+    
+    public Stage annule(Stage entity);
 
 }

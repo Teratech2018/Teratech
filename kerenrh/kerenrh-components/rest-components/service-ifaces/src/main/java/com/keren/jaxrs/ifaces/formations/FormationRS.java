@@ -3,6 +3,7 @@ package com.keren.jaxrs.ifaces.formations;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -22,17 +23,23 @@ public interface FormationRS
     extends GenericService<Formation, Long>
 {
 
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("valide")
     public Formation valide(@Context HttpHeaders headers,Formation entity);
 	
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("annule")
     public Formation annule(@Context HttpHeaders headers,Formation entity);
+	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("cloture")
+    public Formation cloturer(@Context HttpHeaders headers,Formation entity);
 
 
 }

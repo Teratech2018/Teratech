@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.keren.kerenpaie.model.paie.BulletinPaie;
+import com.keren.kerenpaie.model.rapports.ViewBulletinPaie;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
 
@@ -34,6 +35,12 @@ public interface BulletinPaieRS
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({"application/pdf"})
     @Path("printbulletin")
-    public Response imprimer(@Context HttpHeaders headers,BulletinPaie dmde);
+    public Response printbulletin(@Context HttpHeaders headers,BulletinPaie bulletin);
+	
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("pdf")
+    public Response buildPdfReport(BulletinPaie bulletin);
+	
 
 }

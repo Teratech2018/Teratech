@@ -99,6 +99,7 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	@Predicate(label="Notes",type=String.class,target="textarea",group=true,groupName="group2",groupLabel="Notes")
 	private String commentaire ;
 	
+	@Predicate(label="Etat",hide=true,search=true)
 	private String state ="etabli";
 	/**
 	 * 

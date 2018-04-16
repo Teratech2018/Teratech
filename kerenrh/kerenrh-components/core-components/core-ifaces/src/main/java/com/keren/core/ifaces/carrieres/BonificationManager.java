@@ -3,6 +3,7 @@ package com.keren.core.ifaces.carrieres;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.keren.model.carrieres.Bonification;
+import com.keren.model.carrieres.Reclassement;
 
 
 /**
@@ -16,4 +17,7 @@ public interface BonificationManager
 
     public final static String SERVICE_NAME = "BonificationManager";
 
+    public Bonification valide(Bonification entity);
+    
+    public Bonification annule(Bonification entity);
 }

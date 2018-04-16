@@ -2,6 +2,7 @@
 package com.keren.dao.ifaces.carrieres;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
+import com.keren.model.carrieres.Bonification;
 import com.keren.model.carrieres.Reclassement;
 
 

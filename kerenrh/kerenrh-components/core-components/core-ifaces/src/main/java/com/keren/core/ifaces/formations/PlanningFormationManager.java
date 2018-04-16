@@ -15,5 +15,7 @@ public interface PlanningFormationManager
 {
 
     public final static String SERVICE_NAME = "PlanningFormationManager";
+    
+    public PlanningFormation valide(PlanningFormation entity);
 
 }

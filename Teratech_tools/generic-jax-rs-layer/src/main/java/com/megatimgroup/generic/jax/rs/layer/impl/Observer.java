@@ -81,7 +81,7 @@ public class Observer implements Serializable,Comparable<Observer>{
          */
         public Source(String texte) {
             String[] split = texte.split(":");
-            System.out.println(Observer.class.toString()+" ======== "+texte+" ::::: "+split[0]+" ====== "+split[1]);
+//            System.out.println(Observer.class.toString()+" ======== "+texte+" ::::: "+split[0]+" ====== "+split[1]);
             if("field".equals(split[0].trim())){
                 fieldname = split[1];
             }else if("method".equals(split[0].trim())){

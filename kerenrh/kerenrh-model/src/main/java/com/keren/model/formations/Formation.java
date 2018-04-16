@@ -32,29 +32,29 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 	 */
 	private static final long serialVersionUID = 7091681592633928968L;
 	
-	@Predicate(label="Intitulé",optional=false)
+	@Predicate(label="Intitulé",optional=false,search=true)
 	private String code ;
 	
 	@ManyToOne
 	@JoinColumn(name="MOFO_ID")
-	@Predicate(label="Module de formation",type=ModuleFormation.class,target="many-to-one",editable=false,updatable=false)
+	@Predicate(label="Module de formation",type=ModuleFormation.class,target="many-to-one",editable=false,updatable=false,search=true)
 	private ModuleFormation module ;
 	
 	@ManyToOne
 	@JoinColumn(name="THEM_ID")
-	@Predicate(label="Thème de la formation",type=ThemeFormation.class,target="many-to-one",editable=false,updatable=false)
+	@Predicate(label="Thème de la formation",type=ThemeFormation.class,target="many-to-one",editable=false,updatable=false,search=true)
 	private ThemeFormation theme ;
 	
 	@ManyToOne
 	@JoinColumn(name="LIPLFO_ID")
+	@Predicate(label="Plan de Formation",type=LignePlanningFormation.class,target="many-to-one",editable=false,search=true)
 	private LignePlanningFormation plan ;
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
-	@JoinColumn(name="SEAFOR_ID")
+	@OneToMany(mappedBy="formation",fetch=FetchType.LAZY)
 	@Predicate(label=".",type=SeanceFormation.class,target="one-to-many",group=true,groupName="group1",groupLabel="Seances de Formation")
 	private List<SeanceFormation> seances = new ArrayList<SeanceFormation>();
 	
-	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Description")
+	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Description")
 	private String note ;
 	
 
@@ -119,7 +119,25 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 		this.state = formation.state;
 	}
 	
-	
+	/**
+	 * 
+	 * @param plan
+	 */
+	public Formation(LignePlanningFormation plan){
+		super(-1, null, null);
+		this.code = plan.getModule().getDesignation();
+		if(plan.getModule()!=null){
+			this.module = new ModuleFormation(plan.getModule());
+		}
+		if(plan.getModule()!=null&&plan.getModule().getTheme()!=null){
+			this.theme = new ThemeFormation(plan.getModule().getTheme());
+		}
+		this.plan = new LignePlanningFormation(plan);
+		
+//		this.seances = seances;
+//		this.note = formation.note;
+		this.state = "etabli";
+	}
 
 	public String getCode() {
 		return code;
@@ -229,6 +247,13 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 
 	@Override
 	public boolean isActivatefollower() {
+		// TODO Auto-generated method stub
+		return true;
+	}	
+	
+
+	@Override
+	public boolean isDesablecreate() {
 		// TODO Auto-generated method stub
 		return true;
 	}

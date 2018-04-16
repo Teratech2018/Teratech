@@ -15,5 +15,6 @@ public interface SuiviStageManager
 {
 
     public final static String SERVICE_NAME = "SuiviStageManager";
+    
 
 }

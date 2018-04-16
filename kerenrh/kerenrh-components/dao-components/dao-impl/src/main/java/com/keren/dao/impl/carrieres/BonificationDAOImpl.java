@@ -8,6 +8,7 @@ import com.bekosoftware.genericdaolayer.dao.impl.AbstractGenericDAO;
 import com.keren.dao.ifaces.carrieres.BonificationDAOLocal;
 import com.keren.dao.ifaces.carrieres.BonificationDAORemote;
 import com.keren.model.carrieres.Bonification;
+import com.keren.model.carrieres.Reclassement;
 
 @Stateless(mappedName = "BonificationDAO")
 public class BonificationDAOImpl

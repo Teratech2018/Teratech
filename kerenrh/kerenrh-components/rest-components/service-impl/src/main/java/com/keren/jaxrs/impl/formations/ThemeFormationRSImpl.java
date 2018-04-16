@@ -3,6 +3,7 @@ package com.keren.jaxrs.impl.formations;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.keren.core.ifaces.formations.ThemeFormationManagerRemote;
 import com.keren.jaxrs.ifaces.formations.ThemeFormationRS;
 import com.keren.model.formations.ThemeFormation;
@@ -44,5 +45,29 @@ public class ThemeFormationRSImpl
     public String getModuleName() {
         return ("kerenrh");
     }
+
+	@Override
+	protected void processBeforeSave(ThemeFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du theme est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du theme est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(ThemeFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du theme est obligatoire");
+		}else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé du theme est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
+    
+    
 
 }

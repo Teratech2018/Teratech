@@ -21,6 +21,7 @@ import com.core.base.State;
 import com.keren.model.employes.Employe;
 import com.keren.model.employes.Fonction;
 import com.keren.model.employes.Poste;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -38,7 +39,7 @@ public class Affectation extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Salarié",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Salarié",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe salarie ;
 	
 	@Predicate(label="Référence",optional=false,search=true,unique=true)
@@ -47,7 +48,8 @@ public class Affectation extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name="POSTA_ID")
-	@Predicate(label="Ancien Poste",type=Poste.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Ancien Poste",type=Poste.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="salarie",source="field:poste")
 	private Poste posteA ;
 	
 	@ManyToOne
@@ -57,7 +59,8 @@ public class Affectation extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name="FONCA_ID")
-	@Predicate(label="Ancien Fonction",type=Fonction.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Ancien Fonction",type=Fonction.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="salarie",source="field:fonction")
 	private Fonction fonctionA ;
 	
 	@ManyToOne
@@ -65,20 +68,22 @@ public class Affectation extends BaseElement implements Serializable, Comparable
 	@Predicate(label="Nouvelle Fonction",type=Fonction.class,target="many-to-one",optional=false,search=true)
 	private Fonction fonctionN ;
 	
-	@Predicate(label="Ancien lieu de travail",search=true)
+	@Predicate(label="Ancien lieu de travail",search=true,editable=false)
+	@Observer(observable="salarie",source="field:lieuaffectation")
 	private String lieuA ;
 	
 	@Predicate(label="Nouveau lieu de travail",search=true)
 	private String lieuN;
+
+	@Temporal(TemporalType.DATE)
+	@Predicate(label="Date de la décision",type=Date.class,target="date")
+	private Date decision ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date prise d'effet",type=Date.class,target="date")
 	private Date deffet;
 	
-	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de la décision",type=Date.class,target="date",hidden="true")
-	private Date decision ;
-	
+	@Predicate(label="Etat",hide=true,search=true)
 	private String state ="etabli";
 	
 

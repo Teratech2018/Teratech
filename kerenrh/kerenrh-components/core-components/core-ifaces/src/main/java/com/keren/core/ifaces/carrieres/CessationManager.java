@@ -15,5 +15,7 @@ public interface CessationManager
 {
 
     public final static String SERVICE_NAME = "CessationManager";
+    
+    public Cessation valide(Cessation entity);
 
 }

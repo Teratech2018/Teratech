@@ -57,7 +57,8 @@
     <class>com.keren.kerenpaie.model.paie.ParametreAvance</class>
     <class>com.keren.kerenpaie.model.paie.LigneElementVariable</class>
     <class>com.keren.kerenpaie.model.paie.IndiceSolde</class>
-    <class>com.keren.kerenpaie.model.paie.LigneIndiceSolde</class>
+    <class>com.keren.kerenpaie.model.paie.LigneIndiceSolde</class>   
+    <class>com.keren.kerenpaie.model.rapports.ViewBulletinPaie</class>
     <class>com.keren.kerenpaie.model.structures.Planification</class>
     <class>com.keren.kerenpaie.model.employes.Medaille</class>
     <class>com.keren.kerenpaie.model.paie.CompteRubrique</class>

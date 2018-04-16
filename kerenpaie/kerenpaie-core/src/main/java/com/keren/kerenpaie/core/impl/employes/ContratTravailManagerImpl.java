@@ -126,7 +126,8 @@ public class ContratTravailManagerImpl
 		Employe salarie = contrat.getEmploye();
 		salarie.setCategorie(contrat.getCategorie());
 		salarie.setEchelon(contrat.getEchelon());
-		employedao.update("id", salarie);
+		salarie.setIndice(contrat.getIndice());
+		employedao.update(salarie.getId(), salarie);
 		contrat.setState("confirme");
 		dao.update(contrat.getId(), contrat);
 		return contrat;

@@ -15,5 +15,7 @@ public interface RetrogradationManager
 {
 
     public final static String SERVICE_NAME = "RetrogradationManager";
+    
+    public Retrogradation valide(Retrogradation entity);
 
 }

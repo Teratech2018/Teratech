@@ -2,17 +2,18 @@
 package com.keren.jaxrs.impl.formations;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.formations.BesionFormationManagerRemote;
 import com.keren.jaxrs.ifaces.formations.BesionFormationRS;
 import com.keren.model.formations.BesionFormation;
-import com.keren.model.formations.DemandeFormation;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -82,11 +83,50 @@ public class BesionFormationRSImpl
    		}
    		return meta;
    	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		BesionFormation entity = manager.find("id", (Long) id);
+		if(!entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("Le Beseion en Formation est déjà en cours de traitement");
+		}
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeSave(BesionFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du Besion est obligatoire");
+		}
+		if(entity.getDate()==null){
+			entity.setDate(new Date());
+		}
+		entity.setState("etabli");
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(BesionFormation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du Besion est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public BesionFormation valide(HttpHeaders headers, BesionFormation entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La reference du Besion est obligatoire");
+		}else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+			throw new KerenExecption("Veuillez saisir au moins un détail");
+		}
+		return manager.valide(entity);
 	}
 
 }

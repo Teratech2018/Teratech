@@ -174,7 +174,7 @@ public class MetaDataUtil {
                 }else if(!annot.groupName().trim().isEmpty()){
                     if(groups.get(annot.groupName())==null){
                         groups.put(annot.groupName(), new ArrayList<Field>());
-                    }
+                    }//end if(groups.get(annot.groupName())==null)
                     groups.get(annot.groupName()).add(field);
                 }//end if(!annot.group()){        
             }//end if(annot!=null){
@@ -722,6 +722,7 @@ public class MetaDataUtil {
                         MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"one-to-many", null);
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable());
                         column.setCustomfooter(annot.customfooter());column.setSequence(annot.sequence());column.setHidden(annot.hidden());
+                        column.setEdittable(annot.edittable());
                         String[] searchfields = annot.searchfields().split(",");
                         column.setSearchfields(searchfields);column.setColsequence(annot.colsequence());
                         if(column.isCustomfooter()&&annot2!=null){
@@ -923,6 +924,7 @@ public class MetaDataUtil {
                                     MetaArray metaArray = new MetaArray("array", field.getName(), annot.groupLabel(),annot.search(),annot.target(),meta);
                                     metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                     String[] searchfields = annot.searchfields().split(",");
+                                    metaArray.setEdittable(annot.edittable());
                                     metaArray.setSearchfields(searchfields);metaArray.setHidden(annot.hidden());
                                     if(metaArray.isCustomfooter()&&annot2!=null){
                                         metaArray.setFooterScript(annot2.value());

@@ -3,6 +3,7 @@ package com.keren.jaxrs.ifaces.stages;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -23,9 +24,15 @@ public interface BesionStageRS
 {
 
 
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("valide")
     public BesionStage valide(@Context HttpHeaders headers,BesionStage entity);
+	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("annule")
+    public BesionStage annule(@Context HttpHeaders headers,BesionStage entity);
 }

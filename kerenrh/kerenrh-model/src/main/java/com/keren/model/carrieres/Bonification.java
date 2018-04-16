@@ -18,9 +18,9 @@ import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
-import com.keren.model.employes.Categorie;
 import com.keren.model.employes.Echelon;
 import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -28,7 +28,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_BONIFRH")
+@Table(name="T_RECLASRH")
 public class Bonification extends BaseElement implements Serializable, Comparable<Bonification> {
 
 	/**
@@ -38,7 +38,7 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe salarie ;
 	
 	@Predicate(label="Référence",search=true,unique=true)
@@ -46,14 +46,15 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 	private String code ;
 	
 	@ManyToOne
-	@JoinColumn(name="CATA_ID")
-	@Predicate(label="Ancienne catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
-	private Categorie categorieA ;
+	@JoinColumn(name="ECHEA_ID")
+	@Predicate(label="Ancienne Echélon",type=Echelon.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="salarie",source="field:echelon")
+	private Echelon echelonA ;
 	
 	@ManyToOne
-	@JoinColumn(name="CATN_ID")
-	@Predicate(label="Nouvelle catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
-	private Categorie categorieN ; 
+	@JoinColumn(name="ECHEN_ID")
+	@Predicate(label="Nouvelle Echélon",type=Echelon.class,target="many-to-one",optional=false,search=true)
+	private Echelon echelonN ; 
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date d'enregistrement",type=Date.class,target="date")
@@ -64,12 +65,14 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 	private Date deffet ;
 	
 	private String state="etabli";
+	
 
 	/**
 	 * 
 	 */
 	public Bonification() {
 		// TODO Auto-generated constructor stub
+		state ="etabli";
 	}
 
 	/**
@@ -96,12 +99,12 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 	 */
 
 	public Bonification(long id, String designation, String moduleName, Employe salarie, String code,
-			Categorie categorieA, Categorie categorieN, Date denreg, Date deffet) {
+			Echelon categorieA, Echelon categorieN, Date denreg, Date deffet) {
 		super(id, designation, moduleName);
 		this.salarie = salarie;
 		this.code = code;
-		this.categorieA = categorieA;
-		this.categorieN = categorieN;
+		this.echelonA = categorieA;
+		this.echelonN = categorieN;
 		this.denreg = denreg;
 		this.deffet = deffet;
 	}
@@ -116,11 +119,11 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 			this.salarie = new Employe(reclassement.salarie);
 		}
 		this.code = reclassement.code;
-		if(reclassement.categorieA!=null){
-			this.categorieA = new Categorie(reclassement.categorieA);
+		if(reclassement.echelonA!=null){
+			this.echelonA = new Echelon(reclassement.echelonA);
 		}
-		if(reclassement.categorieN!=null){
-			this.categorieN = new Categorie(reclassement.categorieN);
+		if(reclassement.echelonN!=null){
+			this.echelonN = new Echelon(reclassement.echelonN);
 		}
 		this.denreg = reclassement.denreg;
 		this.deffet = reclassement.deffet;
@@ -145,20 +148,21 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 		this.code = code;
 	}
 
-	public Categorie getCategorieA() {
-		return categorieA;
+	
+	public Echelon getEchelonA() {
+		return echelonA;
 	}
 
-	public void setCategorieA(Categorie categorieA) {
-		this.categorieA = categorieA;
+	public void setEchelonA(Echelon echelonA) {
+		this.echelonA = echelonA;
 	}
 
-	public Categorie getCategorieN() {
-		return categorieN;
+	public Echelon getEchelonN() {
+		return echelonN;
 	}
 
-	public void setCategorieN(Categorie categorieN) {
-		this.categorieN = categorieN;
+	public void setEchelonN(Echelon echelonN) {
+		this.echelonN = echelonN;
 	}
 
 	public Date getDenreg() {
@@ -229,7 +233,7 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillion"));
 		states.add(new State("valide", "Validé"));
-		states.add(new State("annule", "Annulé"));
+//		states.add(new State("annule", "Annulé"));
 		return states;
 	}
 
@@ -248,5 +252,4 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 		return code.compareTo(arg0.code);
 	}
 
-	
 }

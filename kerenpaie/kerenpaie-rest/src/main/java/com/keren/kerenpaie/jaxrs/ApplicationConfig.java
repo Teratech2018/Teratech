@@ -80,6 +80,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.RappelRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.RemboursementAvanceRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.RemboursementPretRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.rapports.ViewBulletinPaieRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DepartementRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DeviseRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DiplomeRSImpl.class);

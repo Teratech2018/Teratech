@@ -15,5 +15,9 @@ public interface DemandeFormationManager
 {
 
     public final static String SERVICE_NAME = "DemandeFormationManager";
+    
+    public DemandeFormation valide(DemandeFormation entity);
+    
+    public DemandeFormation rejete(DemandeFormation entity);
 
 }

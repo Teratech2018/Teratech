@@ -47,18 +47,19 @@ public class BesionStage extends BaseElement implements Serializable, Comparable
 	@Predicate(label="Structure",type=Societe.class,target="many-to-one",optional=false,search=true)
 	private Societe structure ;
 	
-	@ManyToOne
-	@JoinColumn(name="SPEC_ID")
-	@Predicate(label="Profil demandé",type=Specialite.class,target="many-to-one",search=true)
-	private Specialite profil ;
+
+	@Temporal(TemporalType.DATE)
+	@Predicate(label="Date de fin",type=Date.class,target="date",optional=false,search=true)
+	private Date dfin ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de début",type=Date.class,target="date",optional=false,search=true)
 	private Date ddebut ;
 	
-	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de fin",type=Date.class,target="date",optional=false,search=true)
-	private Date dfin ;
+	@ManyToOne
+	@JoinColumn(name="SPEC_ID")
+	@Predicate(label="Profil demandé",type=Specialite.class,target="many-to-one",search=true)
+	private Specialite profil ;
 	
 	@Predicate(label="Nombre de Places",type=Short.class,optional=false,min=1,search=true)
 	private Short place =0;
@@ -71,6 +72,7 @@ public class BesionStage extends BaseElement implements Serializable, Comparable
 	@Lob
 	private String description ;
 	
+	@Predicate(label="Etat",hide=true,search=true)
 	private String state = "etabli";
 
 	/**
@@ -262,6 +264,9 @@ public class BesionStage extends BaseElement implements Serializable, Comparable
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillon"));
 		states.add(new State("valide", "Validé"));
+		states.add(new State("encours", "En Cours"));
+		states.add(new State("traite", "Traité"));
+		states.add(new State("annule", "Annulé"));
 		return states;
 	}
 

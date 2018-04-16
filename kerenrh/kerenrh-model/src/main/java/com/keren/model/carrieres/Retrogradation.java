@@ -21,6 +21,7 @@ import com.core.base.State;
 import com.keren.model.employes.Categorie;
 import com.keren.model.employes.Echelon;
 import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -38,7 +39,7 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe salarie ;
 	
 	@Predicate(label="Référence",search=true,unique=true)
@@ -47,18 +48,20 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 	
 	@ManyToOne
 	@JoinColumn(name="CATA_ID")
-	@Predicate(label="Ancienne catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Ancienne catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true,updatable=false,editable=false)
+	@Observer(observable="salarie",source="field:categorie")
 	private Categorie categorieA ;
-	
-	@ManyToOne
-	@JoinColumn(name="ECHEA_ID")
-	@Predicate(label="Ancienne echélon",type=Echelon.class,target="many-to-one",optional=false,search=true)
-	private Echelon echelonA ;
 	
 	@ManyToOne
 	@JoinColumn(name="CATN_ID")
 	@Predicate(label="Nouvelle catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
 	private Categorie categorieN ; 
+	
+	@ManyToOne
+	@JoinColumn(name="ECHEA_ID")
+	@Predicate(label="Ancienne echélon",type=Echelon.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="salarie",source="field:echelon")
+	private Echelon echelonA ;	
 	
 	@ManyToOne
 	@JoinColumn(name="ECHEN_ID")
@@ -73,7 +76,8 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 	@Predicate(label="Date prise d'effet",type=Date.class,target="date")
 	private Date deffet ;
 	
-	
+	@Predicate(label="Etat",hide=true,search=true)
+	private String state = "etabli";
 
 	/**
 	 * 
@@ -90,6 +94,7 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 	public Retrogradation(long id, String designation, String moduleName) {
 		super(id, designation, moduleName);
 		// TODO Auto-generated constructor stub
+		state ="etabli";
 	}
 	
 	/**
@@ -141,6 +146,7 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 		}
 		this.denreg = reclassement.denreg;
 		this.deffet = reclassement.deffet;
+		this.state = reclassement.state;
 	}
 	
 	
@@ -191,9 +197,34 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 
 	public void setDeffet(Date deffet) {
 		this.deffet = deffet;
+	}	
+	
+
+	public Echelon getEchelonA() {
+		return echelonA;
+	}
+
+	public void setEchelonA(Echelon echelonA) {
+		this.echelonA = echelonA;
+	}
+
+	public Echelon getEchelonN() {
+		return echelonN;
+	}
+
+	public void setEchelonN(Echelon echelonN) {
+		this.echelonN = echelonN;
 	}
 	
 	
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 
 	@Override
 	public String getEditTitle() {

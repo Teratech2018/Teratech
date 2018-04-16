@@ -21,6 +21,7 @@ import com.core.base.State;
 import com.keren.model.employes.Categorie;
 import com.keren.model.employes.Echelon;
 import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -38,7 +39,7 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe salarie ;
 	
 	@Predicate(label="Référence",search=true,unique=true)
@@ -47,7 +48,8 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name="CATA_ID")
-	@Predicate(label="Ancienne catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Ancienne catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true,updatable=false,editable=false)
+	@Observer(observable="salarie",source="field:categorie")
 	private Categorie categorieA ;	
 
 	@ManyToOne
@@ -57,7 +59,8 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name="ECHEA_ID")
-	@Predicate(label="Ancienne echélon",type=Echelon.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Ancienne echélon",type=Echelon.class,target="many-to-one",optional=false,search=true,updatable=false,editable=false)
+	@Observer(observable="salarie",source="field:echelon")
 	private Echelon echelonA ;	 
 	
 	@ManyToOne
@@ -81,7 +84,7 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 	 */
 	public Avancement() {
 		// TODO Auto-generated constructor stub
-		
+		state ="etabli";
 	}
 
 	/**
@@ -264,7 +267,7 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillion"));
 		states.add(new State("valide", "Validé"));
-		states.add(new State("annule", "Annulé"));
+//		states.add(new State("annule", "Annulé"));
 		return states;
 	}
 

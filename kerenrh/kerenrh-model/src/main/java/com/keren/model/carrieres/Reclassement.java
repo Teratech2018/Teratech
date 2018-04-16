@@ -18,8 +18,10 @@ import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.keren.model.employes.Categorie;
 import com.keren.model.employes.Echelon;
 import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -27,7 +29,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_RECLASRH")
+@Table(name="T_BONIFRH")
 public class Reclassement extends BaseElement implements Serializable, Comparable<Reclassement> {
 
 	/**
@@ -37,7 +39,7 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe salarie ;
 	
 	@Predicate(label="Référence",search=true,unique=true)
@@ -45,14 +47,15 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 	private String code ;
 	
 	@ManyToOne
-	@JoinColumn(name="ECHEA_ID")
-	@Predicate(label="Ancienne Echélon",type=Echelon.class,target="many-to-one",optional=false,search=true)
-	private Echelon echelonA ;
+	@JoinColumn(name="CATA_ID")
+	@Predicate(label="Ancienne catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true,editable=false)
+	@Observer(observable="salarie",source="field:categorie")
+	private Categorie categorieA ;
 	
 	@ManyToOne
-	@JoinColumn(name="ECHEN_ID")
-	@Predicate(label="Nouvelle Echélon",type=Echelon.class,target="many-to-one",optional=false,search=true)
-	private Echelon echelonN ; 
+	@JoinColumn(name="CATN_ID")
+	@Predicate(label="Nouvelle catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
+	private Categorie categorieN ; 
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date d'enregistrement",type=Date.class,target="date")
@@ -63,7 +66,6 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 	private Date deffet ;
 	
 	private String state="etabli";
-	
 
 	/**
 	 * 
@@ -96,12 +98,12 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 	 */
 
 	public Reclassement(long id, String designation, String moduleName, Employe salarie, String code,
-			Echelon categorieA, Echelon categorieN, Date denreg, Date deffet) {
+			Categorie categorieA, Categorie categorieN, Date denreg, Date deffet) {
 		super(id, designation, moduleName);
 		this.salarie = salarie;
 		this.code = code;
-		this.echelonA = categorieA;
-		this.echelonN = categorieN;
+		this.categorieA = categorieA;
+		this.categorieN = categorieN;
 		this.denreg = denreg;
 		this.deffet = deffet;
 	}
@@ -116,11 +118,11 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 			this.salarie = new Employe(reclassement.salarie);
 		}
 		this.code = reclassement.code;
-		if(reclassement.echelonA!=null){
-			this.echelonA = new Echelon(reclassement.echelonA);
+		if(reclassement.categorieA!=null){
+			this.categorieA = new Categorie(reclassement.categorieA);
 		}
-		if(reclassement.echelonN!=null){
-			this.echelonN = new Echelon(reclassement.echelonN);
+		if(reclassement.categorieN!=null){
+			this.categorieN = new Categorie(reclassement.categorieN);
 		}
 		this.denreg = reclassement.denreg;
 		this.deffet = reclassement.deffet;
@@ -145,21 +147,20 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 		this.code = code;
 	}
 
-	
-	public Echelon getEchelonA() {
-		return echelonA;
+	public Categorie getCategorieA() {
+		return categorieA;
 	}
 
-	public void setEchelonA(Echelon echelonA) {
-		this.echelonA = echelonA;
+	public void setCategorieA(Categorie categorieA) {
+		this.categorieA = categorieA;
 	}
 
-	public Echelon getEchelonN() {
-		return echelonN;
+	public Categorie getCategorieN() {
+		return categorieN;
 	}
 
-	public void setEchelonN(Echelon echelonN) {
-		this.echelonN = echelonN;
+	public void setCategorieN(Categorie categorieN) {
+		this.categorieN = categorieN;
 	}
 
 	public Date getDenreg() {
@@ -249,4 +250,5 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 		return code.compareTo(arg0.code);
 	}
 
+	
 }

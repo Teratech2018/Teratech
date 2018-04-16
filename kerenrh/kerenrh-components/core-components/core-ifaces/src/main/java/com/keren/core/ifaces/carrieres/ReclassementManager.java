@@ -15,5 +15,7 @@ public interface ReclassementManager
 {
 
     public final static String SERVICE_NAME = "ReclassementManager";
+    
+    public Reclassement valide(Reclassement entity);
 
 }

@@ -15,5 +15,12 @@ public interface LignePlanningFormationManager
 {
 
     public final static String SERVICE_NAME = "LignePlanningFormationManager";
+    
+    /**
+     * Demarrer une formation
+     * @param entity
+     * @return
+     */
+    public LignePlanningFormation demaree(LignePlanningFormation entity);
 
 }

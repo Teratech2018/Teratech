@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.carrieres.RetrogradationManagerRemote;
 import com.keren.jaxrs.ifaces.carrieres.RetrogradationRS;
@@ -66,11 +67,11 @@ public class RetrogradationRSImpl
    	        workbtn.setStates(new String[]{"etabli"});
    	        workbtn.setPattern("btn btn-success");
    	        meta.getHeader().add(workbtn);  
-   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
-   	        workbtn.setValue("{'model':'kerenrh','entity':'retrogradation','method':'annule'}");
-   	        workbtn.setStates(new String[]{"etabli"});
-   	        workbtn.setPattern("btn btn-danger");
-   	        meta.getHeader().add(workbtn);   
+//   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
+//   	        workbtn.setValue("{'model':'kerenrh','entity':'retrogradation','method':'annule'}");
+//   	        workbtn.setStates(new String[]{"etabli"});
+//   	        workbtn.setPattern("btn btn-danger");
+//   	        meta.getHeader().add(workbtn);   
    	        MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
    	        meta.getHeader().add(stautsbar);	
    		} catch (InstantiationException e) {
@@ -82,11 +83,76 @@ public class RetrogradationRSImpl
    		}
    		return meta;
    	}
+    
+    
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		Retrogradation entity = manager.find("id", (Long) id);
+		if(entity.getState().trim().equalsIgnoreCase("valide")){
+			throw new KerenExecption("Retrogradation déjà validé ");
+		}
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeSave(Retrogradation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getSalarie()==null){
+			throw new KerenExecption("L'Employé est obligatoire");
+		}else if(entity.getCategorieA()==null){
+			throw new KerenExecption("L'Encien catégorie est obligatoire");
+		}else if(entity.getCategorieN()==null){
+			throw new KerenExecption("La nouvelle catégorie est obligatoire");
+		}else if(entity.getEchelonA()==null){
+			throw new KerenExecption("L'Encien Echelon est obligatoire");
+		}else if(entity.getEchelonN()==null){
+			throw new KerenExecption("Le nouveau Echelon est obligatoire");
+		}else if(entity.getDenreg()==null){
+			throw new KerenExecption("La date d'enregistrement est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(Retrogradation entity) {
+		// TODO Auto-generated method stub
+		if(entity.getSalarie()==null){
+			throw new KerenExecption("L'Employé est obligatoire");
+		}else if(entity.getCategorieA()==null){
+			throw new KerenExecption("L'Encien catégorie est obligatoire");
+		}else if(entity.getCategorieN()==null){
+			throw new KerenExecption("La nouvelle catégorie est obligatoire");
+		}else if(entity.getEchelonA()==null){
+			throw new KerenExecption("L'Encien Echelon est obligatoire");
+		}else if(entity.getEchelonN()==null){
+			throw new KerenExecption("Le nouveau Echelon est obligatoire");
+		}else if(entity.getDenreg()==null){
+			throw new KerenExecption("La date d'enregistrement est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public Retrogradation valide(HttpHeaders headers, Retrogradation entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getSalarie()==null){
+			throw new KerenExecption("L'Employé est obligatoire");
+		}else if(entity.getCategorieA()==null){
+			throw new KerenExecption("L'Encien catégorie est obligatoire");
+		}else if(entity.getCategorieN()==null){
+			throw new KerenExecption("La nouvelle catégorie est obligatoire");
+		}else if(entity.getEchelonA()==null){
+			throw new KerenExecption("L'Encien Echelon est obligatoire");
+		}else if(entity.getEchelonN()==null){
+			throw new KerenExecption("Le nouveau Echelon est obligatoire");
+		}else if(entity.getDenreg()==null){
+			throw new KerenExecption("La date d'enregistrement est obligatoire");
+		}else if(entity.getDeffet()==null){
+			throw new KerenExecption("La date de prise d'effet est obligatoire");
+		}
+		return manager.valide(entity);
 	}
 
 	@Override

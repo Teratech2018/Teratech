@@ -43,22 +43,27 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 	@Column(unique=true)
 	private String code ;
 	
+
+	@ManyToOne
+	@JoinColumn(name="FORMA_ID")
+	@Predicate(label="Formation Concerné",type=Formation.class,target="many-to-one",editable=false)
+	private Formation formation ;
+
+	@ManyToMany
+	@JoinTable(name="T_SEAN_FORM",joinColumns=@JoinColumn(name="SEAN_ID"),inverseJoinColumns=@JoinColumn(name="FORM_ID"))
+	@Predicate(label="Formateurs",type=Formateur.class,target="many-to-many",updatable=false)
+	private List<Formateur> formateurs = new ArrayList<Formateur>();
+	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de la séance",type=Date.class,target="date",optional=false,search=true)
 	private Date date ;
 	
-	@Temporal(TemporalType.TIME)
 	@Predicate(label="Heure de début",type=Date.class,target="time",optional=false,search=true)
-	private Date hdebut ;
+	private String hdebut ;
 	
-	@Temporal(TemporalType.TIME)
 	@Predicate(label="Heure de fin",type=Date.class,target="time",optional=false,search=true)
-	private Date hfin ;
+	private String hfin ;
 	
-	@ManyToMany
-	@JoinTable(name="T_SEAN_FORM",joinColumns=@JoinColumn(name="SEAN_ID"),inverseJoinColumns=@JoinColumn(name="FORM_ID"))
-	@Predicate(label="Formateurs",type=Formateur.class,target="many-to-many")
-	private List<Formateur> formateurs = new ArrayList<Formateur>();
 	
 	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Resumé du Cours")
 	private String cours ;
@@ -68,7 +73,8 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 	@Predicate(label=".",type=ParticipantSeance.class,target="one-to-many",editable=false,edittable=true,group=true,groupName="group2",groupLabel="Presences ")
 	private List<ParticipantSeance> participants = new ArrayList<ParticipantSeance>();
 	
-	
+	@Predicate(label="Etat",hide=true,search=true)
+	private String state="etabli";
 
 	/**
 	 * 
@@ -87,10 +93,22 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	/**
+	 * 
+	 * @param id
+	 * @param designation
+	 * @param moduleName
+	 * @param code
+	 * @param date
+	 * @param hdebut
+	 * @param hfin
+	 * @param formateurs
+	 * @param cours
+	 * @param participants
+	 */
 
-	public SeanceFormation(long id, String designation, String moduleName, String code, Date date, Date hdebut,
-			Date hfin, List<Formateur> formateurs, String cours, List<ParticipantSeance> participants) {
+	public SeanceFormation(long id, String designation, String moduleName, String code, Date date, String hdebut,
+			String hfin, List<Formateur> formateurs, String cours, List<ParticipantSeance> participants) {
 		super(id, designation, moduleName);
 		this.code = code;
 		this.date = date;
@@ -101,7 +119,24 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 		this.participants = participants;
 	}
 	
-	
+	/**
+	 * 
+	 * @param seance
+	 */
+	public SeanceFormation(SeanceFormation seance) {
+		super(seance.id, seance.designation, seance.moduleName);
+		this.code = seance.code;
+		this.date = seance.date;
+		this.hdebut = seance.hdebut;
+		this.hfin = seance.hfin;
+//		if(seance.formation!=null){
+//			this.formation = new Formation(seance.formation);
+//		}
+		this.state = seance.state;
+//		this.formateurs = formateurs;
+//		this.cours = cours;
+//		this.participants = participants;
+	}
 
 	public String getCode() {
 		return code;
@@ -119,19 +154,19 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 		this.date = date;
 	}
 
-	public Date getHdebut() {
+	public String getHdebut() {
 		return hdebut;
 	}
 
-	public void setHdebut(Date hdebut) {
+	public void setHdebut(String hdebut) {
 		this.hdebut = hdebut;
 	}
 
-	public Date getHfin() {
+	public String getHfin() {
 		return hfin;
 	}
 
-	public void setHfin(Date hfin) {
+	public void setHfin(String hfin) {
 		this.hfin = hfin;
 	}
 
@@ -149,6 +184,14 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 
 	public void setCours(String cours) {
 		this.cours = cours;
+	}	
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public List<ParticipantSeance> getParticipants() {
@@ -157,9 +200,15 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 
 	public void setParticipants(List<ParticipantSeance> participants) {
 		this.participants = participants;
+	}	
+
+	public Formation getFormation() {
+		return formation;
 	}
-	
-	
+
+	public void setFormation(Formation formation) {
+		this.formation = formation;
+	}
 
 	@Override
 	public String getEditTitle() {

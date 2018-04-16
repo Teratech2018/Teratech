@@ -642,9 +642,10 @@ angular.module("mainApp")
                                      return true ;
                                  },
                                 hasPreviousPage:function(){
+//                                    console.log("pagination.hasPreviousPage() ================= c_page : "+this.currentPage+" ==== b_index : "+this.beginIndex)
                                      if(this.currentPage<=1){
                                        return false;
-                                   }  
+                                    }  
                                    return true;
                                  },            
                                  nextPage:function(){
@@ -696,26 +697,26 @@ angular.module("mainApp")
                                      }//end if(this.hasNextPage())
                                  },
                                  previousPage:function(){
-                                     if(this.hasPreviousPage()){
+                                     if(this.currentPage>(this.beginIndex+1)){
                                           $scope.pagination.currentPage -=1;
                                          $rootScope.$broadcast("displayitem",{index:$scope.pagination.currentPage});
                                      }else{
                                          if(this.hasprevious()){
-                                            $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
-                                            var interval = this.endIndex - this.beginIndex;
-                                            this.beginIndex = this.beginIndex-this.pageSize-1;
-                                            this.currentPage = this.beginIndex+1 ;
-                                            if(this.beginIndex<0){
-                                                this.beginIndex = 0;
-                                                this.currentPage = 1;
+//                                            $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
+                                            var interval = $scope.pagination.endIndex - $scope.pagination.beginIndex;
+                                            $scope.pagination.beginIndex = $scope.pagination.beginIndex-$scope.pagination.pageSize-1;
+                                            $scope.pagination.currentPage -= 1 ;
+                                            if($scope.pagination.beginIndex<0){
+                                                $scope.pagination.beginIndex = 0;
+//                                                $scope.pagination.currentPage = 1;
                                             }
-                                            if(interval>=this.pageSize){
-                                                this.endIndex = this.endIndex - this.pageSize;
+                                            if(interval>=$scope.pagination.pageSize){
+                                                $scope.pagination.endIndex = $scope.pagination.endIndex - $scope.pagination.pageSize;
                                             }else{
-                                                this.endIndex = this.endIndex - interval-1;
+                                                $scope.pagination.endIndex = $scope.pagination.endIndex-interval;
                                             }//end if(interval>=this.pageSize){
-                                            if(this.endIndex<=0){
-                                               this.endIndex = this.pageSize;                                                             
+                                            if($scope.pagination.endIndex<=0){
+                                               $scope.pagination.endIndex = $scope.pagination.pageSize;                                                             
                                             }//end if(this.endIndex<=0)
                                              restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                                    .$promise.then(function(data){
@@ -725,9 +726,9 @@ angular.module("mainApp")
                                                             //$scope.hideDialogLoading();
                                                             $rootScope.$broadcast("displayitem",{index:$scope.pagination.currentPage});
                                                         }
-                                                        $scope.hideDialogLoading();
+//                                                        $scope.hideDialogLoading();
                                                    } ,function(error){
-                                                       $scope.hideDialogLoading();
+//                                                       $scope.hideDialogLoading();
                                                        commonsTools.showMessageDialog(error);
                                                    });  
                                         }//end if(this.hasprevious()){
@@ -754,7 +755,7 @@ angular.module("mainApp")
                                          if(interval>=this.pageSize){
                                              this.endIndex = this.endIndex - this.pageSize;
                                          }else{
-                                             this.endIndex = this.endIndex - interval-1;
+                                             this.endIndex = this.endIndex - interval;
                                          }//end if(interval>=this.pageSize){
                                          if(this.endIndex<=0){
                                             this.endIndex = this.pageSize;                                                             
@@ -779,7 +780,7 @@ angular.module("mainApp")
                            };
             $scope.temporalPagination = {
                                  module:null ,
-                                 model:null,
+                                 model:null,                                 
                 /** Get the next pages **/
                                  next_2:function(){
                                      //Notification du chargement
@@ -788,20 +789,20 @@ angular.module("mainApp")
                                      if(this.hasnext()){
                                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                          //this.currentPage = (this.currentPage*this.pageSize)%this.totalPages; 
-                                         this.beginIndex = this.endIndex;  //+1
-                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(this.module)+"/"+angular.lowercase(this.model)+"/filter/"+this.beginIndex+"/"+this.pageSize;
+                                        $scope.temporalPagination.beginIndex = $scope.temporalPagination.endIndex;  //+1
+                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.temporalPagination.module)+"/"+angular.lowercase($scope.temporalPagination.model)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                                          //Chargement des donnes                                          
                                            var dmodel = this.model;
                                           $http.get(url)
                                                 .then(function(response){
                                                     var datas = response.data;
-                                                     console.log('$scope.loadData = function() :::::::::::::::: '+dmodel);
+//                                                     console.log('$scope.loadData = function() :::::::::::::::: b_index : '+$scope.temporalPagination.beginIndex+" ::: e_index : "+$scope.temporalPagination.endIndex+" === size : "+$scope.temporalPagination.pageSize);
                                                      if(datas){
                                                          $scope.dataCache[dmodel] = datas;
-                                                         this.currentPage = this.beginIndex;
-                                                         this.endIndex = this.endIndex + this.pageSize;
-                                                         if(this.endIndex>this.totalPages){
-                                                             this.endIndex = this.totalPages;
+                                                         $scope.temporalPagination.currentPage = $scope.temporalPagination.beginIndex;
+                                                         $scope.temporalPagination.endIndex = $scope.temporalPagination.endIndex + $scope.temporalPagination.pageSize;
+                                                         if($scope.temporalPagination.endIndex>$scope.temporalPagination.totalPages){
+                                                             $scope.temporalPagination.endIndex = $scope.temporalPagination.totalPages;
                                                          }//end if(this.endIndex>this.totalPages){                                                         
                                                      }
                                                      commonsTools.hideDialogLoading();
@@ -815,29 +816,29 @@ angular.module("mainApp")
                                      if(this.hasprevious()){
                                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                          var interval = this.endIndex - this.beginIndex;
-                                         this.beginIndex = this.beginIndex-this.pageSize-1;
-                                         this.currentPage = this.beginIndex+1 ;
-                                         if(this.beginIndex<0){
-                                             this.beginIndex = 0;
-                                             this.currentPage = 1;
+                                         $scope.temporalPagination.beginIndex = $scope.temporalPagination.beginIndex-$scope.temporalPagination.pageSize-1;
+                                         $scope.temporalPagination.currentPage = $scope.temporalPagination.beginIndex+1 ;
+                                         if($scope.temporalPagination.beginIndex<0){
+                                             $scope.temporalPagination.beginIndex = 0;
+                                             $scope.temporalPagination.currentPage = 1;
                                          }
-                                         if(interval>=this.pageSize){
-                                             this.endIndex = this.endIndex - this.pageSize;
+                                         if(interval>=$scope.temporalPagination.pageSize){
+                                             $scope.temporalPagination.endIndex = $scope.temporalPagination.endIndex - $scope.temporalPagination.pageSize;
                                          }else{
-                                             this.endIndex = this.endIndex - interval-1;
-                                         }
-                                         if(this.endIndex<=0){
-                                            this.endIndex = this.pageSize;                                                             
+                                             $scope.temporalPagination.endIndex = $scope.temporalPagination.endIndex - interval;
+                                         }//end if(interval>=$scope.temporalPagination.pageSize)
+                                         if($scope.temporalPagination.endIndex<=0){
+                                            $scope.temporalPagination.endIndex = $scope.temporalPagination.pageSize;                                                             
                                          }//end if(this.endIndex<=0)
-                                          var dmodel = this.model;
-                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(this.module)+"/"+angular.lowercase(this.model)+"/filter/"+this.beginIndex+"/"+this.pageSize;
+                                         var dmodel = $scope.temporalPagination.model;
+                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.temporalPagination.module)+"/"+angular.lowercase($scope.temporalPagination.model)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                                           $http.get(url)
                                                   .then(function(response){
                                                       var datas = response.data;
                                                       //console.log('$scope.loadData = function() :::::::::::::::: '+datas);
                                                      if(datas){
                                                          $scope.dataCache[dmodel] = datas;                                                   
-                                                     }
+                                                     }//end if(datas){
                                                      commonsTools.hideDialogLoading();
                                                 } ,function(error){
                                                     $scope.hideDialogLoading();
@@ -881,7 +882,7 @@ angular.module("mainApp")
                //enregistrement un observer a recevoir des notifications
                 register:function(observer){
                     this.observers.push(observer);           
-                    console.log("Observer pattern === register : "+observer+" ==== "+this.observers.length);
+//                    console.log("Observer pattern === register : "+observer+" ==== "+this.observers.length);
                     return this;
                 },
                 //envoie une notification a tous les observers enregistres
@@ -935,13 +936,45 @@ angular.module("mainApp")
                  var template = angular.fromJson(angular.toJson(this.template["source"]));
                  if(template["fieldname"] && data[this.template["observable"]]){
                      var entity = data[this.template["observable"]];
-                     data[modelsplit[modelsplit.length-1]] = entity[template["fieldname"]];
+                     var elem = entity[template["fieldname"]];
+                     data[modelsplit[modelsplit.length-1]] = elem;
+//                     console.log("principal.notify :::: model : "+this.model+" ==== template : "+angular.toJson(template)+" ==== parentmodel : "+parentmodel+" === isObject:"+angular.isObject(elem)+" ==== elem:"+angular.toJson(elem));
+                     if(angular.isObject(elem)){
+                         var key = commonsTools.keygenerator(this.model);
+                         $scope.dataCache[""+key+""].push(elem);
+                         $timeout(function() {
+                            $('.selectpicker').selectpicker('refresh');
+                         });
+                     }else if(angular.isArray(elem)){
+                         var key = commonsTools.keygenerator(this.model);
+                         for(var i=0 ; i<elem.length;i++){
+                             $scope.dataCache[""+key+""].push(elem[i]);
+                         }//end for(var i=0 ; i<elem.length;i++){
+                         $timeout(function() {
+                            $('.selectpicker').selectpicker('refresh');
+                         });
+                     }//end if(angular.isObject(elem)){
                  }else if(template["methodname"]){
                      commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                      var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.metaData.moduleName)+"/"+angular.lowercase($scope.metaData.entityName)+"/"+template["methodname"];
                      $http.get(url)
                              .then(function(response){
                                  data[modelsplit[modelsplit.length-1]] = response.data;
+                                 if(angular.isObject(elem)){
+                                    var key = commonsTools.keygenerator(this.model);
+                                    $scope.dataCache[""+key+""].push(response.data);
+                                    $timeout(function() {
+                                       $('.selectpicker').selectpicker('refresh');
+                                    });
+                                 }else if(angular.isArray(elem)){
+                                     var key = commonsTools.keygenerator(this.model);
+                                     for(var i=0 ; i<response.data.length;i++){
+                                         $scope.dataCache[""+key+""].push(response.data[i]);
+                                     }//end for(var i=0 ; i<response.data.length;i++){
+                                     $timeout(function() {
+                                       $('.selectpicker').selectpicker('refresh');
+                                     });
+                                 }//end if(angular.isObject(elem))
                                  commonsTools.hideDialogLoading();
                              },function(error){
                                   commonsTools.hideDialogLoading();
@@ -957,7 +990,7 @@ angular.module("mainApp")
           * @returns {Boolean}Droite de creation 
           */
          $scope.canCreate = function(){
-             console.log("$scope.canCreate = function() =================== "+angular.toJson($scope.currentAction));
+//             console.log("$scope.canCreate = function() =================== "+angular.toJson($scope.currentAction));
              if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
              }//end if($scope.currentAction){ 
@@ -2023,7 +2056,11 @@ angular.module("mainApp")
 
             if(($scope.windowType=="view")||(metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                 buttonElem.setAttribute('disabled' , 'disabled');
-            }     
+            }  
+            if(field.editable==false){
+                buttonElem.setAttribute('disabled' , 'disabled');
+                selectElem.setAttribute('disabled' , 'true');
+            }//end if(field.editable==false)
             if(field.hide){
                 divElem.setAttribute('ng-hide',true);
             }//end if(field.hide)
@@ -2141,6 +2178,10 @@ angular.module("mainApp")
                 if(($scope.windowType=="view"||metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                     buttonElem.setAttribute('disabled' , 'disabled');
                 }   
+                if(field.editable==false){
+                    buttonElem.setAttribute('disabled' , 'disabled');
+                    selectElem.setAttribute('disabled' , 'true');
+                }//end if(field.editable==false)
                 if(field.hide){
                     divElem.setAttribute('ng-hide',true);
                 }//end if(field.hide)
@@ -2529,7 +2570,7 @@ angular.module("mainApp")
              //Creation du corps du tableau
              var tbodyElem = document.createElement('tbody');
              tableElem.appendChild(tbodyElem);
-              if(metaData.createonfield==true){  
+              if(metaData.createonfield==true && field.editable==true){  
                     //Creation de la ligne des actions
                     var trElem = document.createElement('tr');
                     tbodyElem.appendChild(trElem);
@@ -2556,8 +2597,7 @@ angular.module("mainApp")
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
                    }            
-               }//end if(metaData.createonfield==true)
-             
+               }//end if(metaData.createonfield==true)               
              //Construction du corps du tableau
              trElem = document.createElement('tr');
              trElem.setAttribute('style' ,"cursor: pointer;");
@@ -2669,6 +2709,7 @@ angular.module("mainApp")
             var date = new Date();
             data.id = -date.getTime();
             var datamodel = $scope.getCurrentModel(model);
+//            console.log("$scope.addnewLine = function(model) =======  model : "+model+" ==== data : "+angular.toJson(data));            
             datamodel.unshift(data);
         };
         /**
@@ -2689,19 +2730,23 @@ angular.module("mainApp")
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
-            var items = $element.find("span");
-            for(var i=0; i<items.length;i++){
-                 if(items.eq(i).attr("id")==id){
-                       spanElem =items.eq(i) ;
-//                       console.log(" ======================= on a trouve report  span identifiant : "+id);
-                 }//end if(items.eq(i).attr("id")=="innerpanel")  
-                 if(oldId!=null && oldId!=id){
-                     if(items.eq(i).attr("id")==oldId){
-                            oldspanElem =items.eq(i) ;
-//                            console.log(" ======================= on a trouve report Old  span identifiant : "+oldId);
-                      }//end if(items.eq(i).attr("id")=="innerpanel")  
-                 }//end if(oldId!=null){
-            }//end if(items.eq(i).attr("id")=="innerpanel")
+//            var items = $element.find("span");
+//            for(var i=0; i<items.length;i++){
+//                 if(items.eq(i).attr("id")==id){
+//                       spanElem =items.eq(i) ;
+////                       console.log(" ======================= on a trouve report  span identifiant : "+id);
+//                 }//end if(items.eq(i).attr("id")=="innerpanel")  
+//                 if(oldId!=null && oldId!=id){
+//                     if(items.eq(i).attr("id")==oldId){
+//                            oldspanElem =items.eq(i) ;
+////                            console.log(" ======================= on a trouve report Old  span identifiant : "+oldId);
+//                      }//end if(items.eq(i).attr("id")=="innerpanel")  
+//                 }//end if(oldId!=null){
+//            }//end if(items.eq(i).attr("id")=="innerpanel")
+             spanElem = $("#"+id)
+             if(oldId!=null && oldId!=id){
+                 oldspanElem = $("#"+oldId);
+             }//end if(oldId!=null && oldId!=id){
             if(oldItem!=null && oldspanElem!=null&&(oldId != id)){
                 var data = oldItem[oldfieldname];
                 var spanelem = document.createElement("span");
@@ -2855,6 +2900,7 @@ angular.module("mainApp")
             var scriptelem = trEleme ; //document.createElement("span");
 //            scriptelem.setAttribute('type','text/ng-template');
 //            scriptelem.setAttribute("ng-show","enableeditRow(item)");
+//            console.log("$scope.displayTemplate = function(metaData,model,modelpath,trEleme,key,index) ======================= "+angular.toJson(metaData));
             for(var i=0 ; i< metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
@@ -2988,7 +3034,7 @@ angular.module("mainApp")
              //Creation du corps du tableau
              var tbodyElem = document.createElement('tbody');
              tableElem.appendChild(tbodyElem);
-              /*if(metaData.createonfield==true)*/{  
+             if(metaData.createonfield==true && field.editable==true){  
                     //Creation de la ligne des actions
                     var trElem = document.createElement('tr');
                     tbodyElem.appendChild(trElem);
@@ -3025,9 +3071,8 @@ angular.module("mainApp")
                    aElem.appendChild(document.createTextNode("Ajouter un element"));
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
-                   }            
-               }
-             
+                   }//end if($scope.windowType=="view"){            
+               }//end if(metaData.createonfield==true)             
              //Construction du corps du tableau
              trElem = document.createElement('tr');
              trElem.setAttribute('style' ,"cursor: pointer;");
@@ -4989,10 +5034,9 @@ angular.module("mainApp")
                         return data;
                     }else{
                           var model =data;
-                          for(var i=1 ; i<part.length;i++){
-                            /*if((prop==part[1]) || (prop=="'"+part[1]+"'"))*/{
+                          for(var i=1 ; i<part.length;i++){                            
                               if(part[i].split("[").length==1){
-                                //console.log(prop+"=====editDialogBuilder  ***************Youpi************ "+angular.isArray($scope.currentObject[prop]));
+//                                console.log("=====editDialogBuilder  ***************Youpi************ "+angular.isArray(model));
                                 if(model[part[i]]){
                                     model = model[part[i]];
                                 } //end if(model[part[i]])
@@ -5003,14 +5047,11 @@ angular.module("mainApp")
                                   var sufix = parts[0];
                                   model = model[prefix];
                                   model = model[new Number(sufix)];
-                                  console.log("=====editDialogBuilder  ***************Youpi************ "+prefix+" ==== "+sufix+" ==== "+angular.toJson(model));
+//                                  console.log("=====editDialogBuilder  ***************Youpi************ "+prefix+" ==== "+sufix+" ==== "+angular.toJson(model));
                               }//end if(part[i].split("[").length==1)
                             }//end for(var i=1 ; i<part.length;i++)
-                           return model;
-                      }                 
-                   
-               }
-
+                           return model;    
+                    }//end if(part.length==1){
           };     
           
 
@@ -5478,7 +5519,7 @@ angular.module("mainApp")
                            $scope.temporalPagination.endIndex = $scope.temporalPagination.pageSize;
                            if(itemscount<$scope.temporalPagination.pageSize){
                                $scope.temporalPagination.endIndex = itemscount;
-                           }
+                           }//end if(itemscount<$scope.temporalPagination.pageSize){
                            $scope.getData2("dataCache."+metaData.entityName,metaData.entityName,metaData.moduleName);
                         //Traitement du currentObject       
                            //Affeectation du model dans l'object temporaire              
@@ -5826,13 +5867,14 @@ angular.module("mainApp")
                footerID="modalfooter2";
            }//end if(endIndex==1)
            footerDiv.setAttribute('id' , footerID);
-           console.log("$scope.editDialogBuilderExtern = function(metaData,index,link) ====== canupdate : "+$scope.canUpdate()+" ==== cancreate : "+$scope.canCreate())
+//           console.log("$scope.editDialogBuilderExtern = function(metaData,index,link) ====== canupdate : "+$scope.canUpdate()+" ==== cancreate : "+$scope.canCreate())
            if($scope.canUpdate()||$scope.canCreate()){
                 var buttonElem = document.createElement('button');
                 footerDiv.appendChild(buttonElem);
                 buttonElem.setAttribute('class' , 'btn btn-primary');
                 buttonElem.setAttribute('ng-click' , "addDialogAction('temporalData' , 'save_only','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",null,'"+link+"')");
                 buttonElem.appendChild(document.createTextNode('Valider'));
+                buttonElem.setAttribute("ng-hide",metaData.desablecreate);
            }//end if($scope.windowType!='view'){                      
            //Button annuler
            buttonElem = document.createElement('button');
@@ -6074,7 +6116,7 @@ angular.module("mainApp")
                             templateModel = templateModel[parts[i]];
                         }//end for(var i=1 ; i<parts.length-1;i++){
                     }//end if(parts[0]=='currentObject')
-                    console.log("$scope.addDialogAction =list ===== model: "+model+"===== "+items.length+" === "+parts[0]+" === "+parts[1]+" == modelpath:"+modelpath+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
+//                    console.log("$scope.addDialogAction =list ===== model: "+model+"===== "+items.length+" === "+parts[0]+" === "+parts[1]+" == modelpath:"+modelpath+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
                     if(!angular.isDefined(templateModel[parts[col]])){
                         templateModel = $scope.getCurrentModel(model);
                     }//end if(!angular.isDefined(templateModel[parts[col]]))
@@ -6560,11 +6602,11 @@ angular.module("mainApp")
            //Chargement des donnees
                 //restService.url('societe');
 //               console.log('$scope.loadData = function() ::::::::::::::::'+$scope.pagination.currentPage+"==== "+$scope.pagination.totalPages+" ==== "+angular.isNumber($scope.pagination.totalPages));
-               try{   var pageBeginIndex = $scope.pagination.currentPage - $scope.pagination.pageSize;
+               try{   /**var pageBeginIndex = $scope.pagination.currentPage - $scope.pagination.pageSize;
                       if(pageBeginIndex<0){
                           pageBeginIndex = 0;
-                      }                   
-                      restService.filter($scope.predicats ,pageBeginIndex , $scope.pagination.pageSize)
+                      }   **/                
+                      restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                .$promise.then(function(datas){                                    
                                     if(datas){
                                         $scope.datas = datas;
@@ -7383,7 +7425,7 @@ angular.module("mainApp")
                  if(angular.isDefined($scope.currentObject)){
                     restService.cancel($scope.currentObject);                      
                  }
-                 $scope.pagination.currentPage = $scope.pagination.beginIndex+1;
+//                 $scope.pagination.currentPage = $scope.pagination.beginIndex+1;
                  $scope.reset(); 
                  $scope.dataCache['resources'] = new Array();
                  $scope.dataCache['names'] = new Array();
@@ -8111,11 +8153,23 @@ angular.module("mainApp")
                                 });
                            //alert("Vous voulez executer la methode::: "+data.method+" de l'entite :: "+data.entity+" disponible sur la resource :: "+data.model+" data template : "+angular.toJson(template));
                        }//end if(data.model&&data.entity&&data.method)            
-                  }
+                  }//end  if(type=='action'){
                     
-                }                                  
+                }//end  if(data){    
+                 var modalID = "";
+                 var endIndex = index;            
+                 if(endIndex==1){
+                    modalID = "myModal";
+                 }else if(endIndex==2){
+                    modalID = "globalModal";
+                 }else if(endIndex==3){
+                    modalID = "myModal1";
+                 }else if(endIndex==4){
+                    modalID = "myModal2";
+                 }
+                 $('#'+modalID).modal('hide');    
              }catch(ex){
-                 console.error(ex);
+//                 console.error(ex);
                  commonsTools.showMessageDialog(ex);
              }
         };

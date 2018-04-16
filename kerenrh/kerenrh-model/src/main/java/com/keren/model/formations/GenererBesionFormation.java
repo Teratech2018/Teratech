@@ -11,7 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
-import com.keren.model.structures.Departement;
+import com.keren.model.structures.Societe;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -26,8 +27,8 @@ public class GenererBesionFormation extends BaseElement implements Serializable,
 	private static final long serialVersionUID = -5430441740256544687L;
 	
 	@ManyToOne
-	@Predicate(label="Pour la Structure",type=Departement.class,target="many-to-one")
-	private Departement structure ;
+	@Predicate(label="Pour la Structure",type=Societe.class,target="many-to-one")
+	private Societe structure ;
 	
 	@Predicate(label="Reference",optional=false)
 	private String code ;
@@ -37,6 +38,7 @@ public class GenererBesionFormation extends BaseElement implements Serializable,
 	
 	@ManyToMany
 	@Predicate(label=".",type=DemandeFormation.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Requêtes concernées")
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"valide\"}]")
 	private List<DemandeFormation> demandes = new ArrayList<DemandeFormation>();
 	
 
@@ -68,7 +70,7 @@ public class GenererBesionFormation extends BaseElement implements Serializable,
 	 * @param demandes
 	 */
 
-	public GenererBesionFormation(long id, String designation, String moduleName, Departement structure, String code,
+	public GenererBesionFormation(long id, String designation, String moduleName, Societe structure, String code,
 			String intitule, List<DemandeFormation> demandes) {
 		super(id, designation, moduleName);
 		this.structure = structure;
@@ -87,11 +89,11 @@ public class GenererBesionFormation extends BaseElement implements Serializable,
 	
 	
 
-	public Departement getStructure() {
+	public Societe getStructure() {
 		return structure;
 	}
 
-	public void setStructure(Departement structure) {
+	public void setStructure(Societe structure) {
 		this.structure = structure;
 	}
 

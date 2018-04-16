@@ -24,6 +24,8 @@ import com.keren.model.structures.Departement;
 import com.keren.model.structures.Etablissement;
 import com.keren.model.structures.NiveauEtude;
 import com.keren.model.structures.Specialite;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -43,12 +45,12 @@ public class Stage extends BaseElement implements Serializable, Comparable<Stage
 	@Column(unique=true)
 	private String code ;
 	
-	@Predicate(label="Nom & Prenom",optional=false,unique=true,search=true)
-	private String nom ;
-	
 	@Predicate(label="Type de stage",target="combobox",values="Académique;Pré-Emploi;Professionnel")
 	private String type="0";
      
+	@Predicate(label="Nom & Prenom",optional=false,unique=true,search=true)
+	private String nom ;
+	
 	@ManyToOne
 	@JoinColumn(name="ETAB_ID")
 	@Predicate(label="Etablissement",type=Etablissement.class,target="many-to-one",hidden="currentObject.type!='0'")
@@ -57,33 +59,38 @@ public class Stage extends BaseElement implements Serializable, Comparable<Stage
 	@ManyToOne
 	@JoinColumn(name="DEPAR_ID")
 	@Predicate(label="Structure d'affectation",type=Departement.class,target="many-to-one",search=true)
-	private Departement departement ;
-	
-	@ManyToOne
-	@JoinColumn(name="SPEC_ID")
-	@Predicate(label="Spécialité",type=Specialite.class,target="many-to-one")
-	private Specialite specialite;
-	
-	@ManyToOne
-	@JoinColumn(name="BEST_ID")
-	@Predicate(label="Ref Besion en Stagiaire",type=BesionStage.class,target="many-to-one")
-	private BesionStage besion ;
+	private Departement departement ;	
 	
 	@ManyToOne
 	@JoinColumn(name="NIVE_ID")
 	@Predicate(label="Niveau d'étude",type=NiveauEtude.class,target="many-to-one")
 	private NiveauEtude niveau ;
 	
-	@Predicate(label="Thème du stage",group=true,groupName="group1",groupLabel="Informations du stage")
-	private String theme ;
+	
+	@ManyToOne
+	@JoinColumn(name="BEST_ID")
+	@Predicate(label="Ref Besion en Stagiaire",type=BesionStage.class,target="many-to-one",observable=true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"valide\"}]")
+	private BesionStage besion ;
+	
+	@ManyToOne
+	@JoinColumn(name="SPEC_ID")
+	@Predicate(label="Spécialité",type=Specialite.class,target="many-to-one")
+	@Observer(observable="besion",source="field:profil")
+	private Specialite specialite;
+	
+	@Predicate(label="Thème du stage",group=true,groupName="group1",groupLabel="Informations du stage",hidden="currentObject.type!='0'")
+	private String theme ;	
+
+	@Temporal(TemporalType.DATE)
+	@Predicate(label="Date de fin",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations du stage")
+	@Observer(observable="besion",source="field:dfin")
+	private Date dfin ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de debut",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations du stage")
-	private Date ddebut ;
-	
-	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de fin",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations du stage")
-	private Date dfin ;
+	@Observer(observable="besion",source="field:ddebut")
+	private Date ddebut ;	
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")

@@ -148,6 +148,8 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private Echelon echelon ;
 	
+	private Short indice = 0 ;
+	
 	@ManyToOne
 	@JoinColumn(name="POS_ID")
 	@Predicate(label="Poste",type=Poste.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
@@ -305,6 +307,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		if(employ.echelon!=null){
 			this.echelon = new Echelon(employ.echelon);
 		}
+		this.indice = employ.indice;
 		this.numsec = employ.numsec;
 		if(employ.nationalite!=null){
 			this.nationalite = employ.nationalite;
@@ -364,6 +367,16 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
         if(employ.profilpaie!=null){
         	this.profilpaie = new ProfilPaie(employ.profilpaie);
         }
+	}
+    
+    
+
+	public Short getIndice() {
+		return indice;
+	}
+
+	public void setIndice(Short indice) {
+		this.indice = indice;
 	}
 
 	public String getMatricule() {

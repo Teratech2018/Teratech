@@ -3,6 +3,7 @@ package com.keren.core.ifaces.formations;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.keren.model.formations.BesionFormation;
+import com.keren.model.formations.GenererBesionFormation;
 
 
 /**
@@ -15,5 +16,19 @@ public interface BesionFormationManager
 {
 
     public final static String SERVICE_NAME = "BesionFormationManager";
+    
+    /**
+     * Validation
+     * @param entity
+     * @return
+     */
+    public BesionFormation valide(BesionFormation entity);
+    
+    /**
+     * Generation du Besion de formation a partir 
+     * @param entity
+     * @return
+     */
+    public BesionFormation genererBF(GenererBesionFormation entity);
 
 }

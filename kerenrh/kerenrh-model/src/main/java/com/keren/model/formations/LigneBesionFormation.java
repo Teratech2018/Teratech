@@ -93,7 +93,13 @@ public class LigneBesionFormation extends BaseElement implements Serializable, C
 		this.places = ligne.places;
 	}
 	
-	
+	public LigneBesionFormation(DemandeFormation dmde) {
+		super(-1, null, null);
+		this.code = dmde.getObjet();
+		this.description = dmde.getMotif();		
+	    this.poste = new Poste(dmde.getDemandeur().getPoste());		
+		this.places = 0;
+	}
 	
 
 	public String getCode() {

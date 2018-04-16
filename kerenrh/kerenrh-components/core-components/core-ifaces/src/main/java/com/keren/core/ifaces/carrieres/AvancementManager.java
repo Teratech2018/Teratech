@@ -15,5 +15,9 @@ public interface AvancementManager
 {
 
     public final static String SERVICE_NAME = "AvancementManager";
+    
+    public Avancement valide(Avancement entity);
+    
+    public Avancement annule(Avancement entity);
 
 }
