@@ -3,6 +3,7 @@ package com.keren.jaxrs.ifaces.missions;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -23,13 +24,13 @@ public interface MissionRS
     extends GenericService<Mission, Long>
 {
    
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("valide")
     public Mission valide(@Context HttpHeaders headers,Mission entity);
 	
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("annule")

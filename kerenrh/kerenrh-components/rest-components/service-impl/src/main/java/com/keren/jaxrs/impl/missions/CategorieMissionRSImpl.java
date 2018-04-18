@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.missions.CategorieMissionManagerRemote;
 import com.keren.jaxrs.ifaces.missions.CategorieMissionRS;
@@ -19,7 +20,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Apr 10 17:59:57 GMT+01:00 2018
  * 
  */
@@ -54,20 +56,42 @@ public class CategorieMissionRSImpl
     }
     
     @Override
-   	public MetaData getMetaData(HttpHeaders headers) {
-   		// TODO Auto-generated method stub
-   		MetaData meta = null;
-   		try {
-   			meta = MetaDataUtil.getMetaData(new CategorieMission(), new HashMap<String, MetaData>()
-   			, new ArrayList<String>());
-   		} catch (InstantiationException e) {
-   			// TODO Auto-generated catch block
-   			e.printStackTrace();
-   		} catch (IllegalAccessException e) {
-   			// TODO Auto-generated catch block
-   			e.printStackTrace();
-   		}
-   		return meta;
-   	}
+    public MetaData getMetaData(HttpHeaders headers) {
+            // TODO Auto-generated method stub
+            MetaData meta = null;
+            try {
+                    meta = MetaDataUtil.getMetaData(new CategorieMission(), new HashMap<String, MetaData>()
+                    , new ArrayList<String>());
+            } catch (InstantiationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+            }
+            return meta;
+    }
+    
+    @Override
+    protected void processBeforeUpdate(CategorieMission entity) {
+
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("La Reference est obligatoire");
+        }else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+            throw new KerenExecption("La Intitulé est obligatoire");
+        }
+        super.processBeforeUpdate(entity);
+    }
+
+    @Override
+    protected void processBeforeSave(CategorieMission entity) {
+
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("La Reference est obligatoire");
+        }else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+            throw new KerenExecption("La Intitulé est obligatoire");
+        }
+        super.processBeforeSave(entity);
+    }
 
 }

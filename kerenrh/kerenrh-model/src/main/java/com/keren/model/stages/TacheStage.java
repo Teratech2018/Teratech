@@ -25,14 +25,14 @@ public class TacheStage extends BaseElement implements Serializable, Comparable<
 	 */
 	private static final long serialVersionUID = -4324753306872872990L;
 	
-	@Predicate(label="Tâche",optional=false)
+	@Predicate(label="Tâche",optional=false,search=true)
 	private String code ;
 	
-	@Predicate(label="Difficulté rencontrées",target="textarea")
+	@Predicate(label="Difficulté rencontrées",target="textarea",search=true)
 	@Lob
 	private String diff ;
 	
-	@Predicate(label="Propositions d'améliorations",target="textarea")
+	@Predicate(label="Propositions d'améliorations",target="textarea",search=true)
 	@Lob
 	private String propo;
 

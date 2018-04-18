@@ -112,6 +112,7 @@ public class RetrogradationRSImpl
 		}else if(entity.getDenreg()==null){
 			throw new KerenExecption("La date d'enregistrement est obligatoire");
 		}
+		entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
 

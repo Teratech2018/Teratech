@@ -28,13 +28,13 @@ public class EvaluationStage extends BaseElement implements Serializable, Compar
 	 */
 	private static final long serialVersionUID = -4324753306872872990L;
 	
-	@Predicate(label="Critère",optional=false)
+	@Predicate(label="Critère",optional=false,search=true)
 	private String code ;
 	
-	@Predicate(label="Note",type=Double.class)	
+	@Predicate(label="Note",type=Double.class,search=true)	
 	private Double note =0.0 ;
 	
-	@Predicate(label="Validateur",target="many-to-one",type=Employe.class,optional=false)
+	@Predicate(label="Validateur",target="many-to-one",type=Employe.class,optional=false,search=true)
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
 	private Employe validateur;

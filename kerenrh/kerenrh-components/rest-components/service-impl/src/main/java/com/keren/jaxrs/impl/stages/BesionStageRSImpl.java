@@ -67,7 +67,7 @@ public class BesionStageRSImpl
    	        workbtn.setPattern("btn btn-success");
    	        meta.getHeader().add(workbtn);  
    	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
-   	        workbtn.setValue("{'model':'kerenrh','entity':'mission','method':'annule'}");
+   	        workbtn.setValue("{'model':'kerenrh','entity':'besionstage','method':'annule'}");
    	        workbtn.setStates(new String[]{"etabli"});
    	        workbtn.setPattern("btn btn-danger");
    	        meta.getHeader().add(workbtn);   
@@ -166,10 +166,11 @@ public class BesionStageRSImpl
 			throw new KerenExecption("Le nombre de place désirées est obligation");
 		}else if(entity.getState().equalsIgnoreCase("encours")){
 			throw new KerenExecption("Le Besion de stage est déjà en cours de traitement");
-		}else if(entity.getState().equalsIgnoreCase("encours")){
-			throw new KerenExecption("Le Besion de stage est déjà traité");
+		}else if(entity.getState().equalsIgnoreCase("encours")
+				||entity.getState().equalsIgnoreCase("traite")){
+			throw new KerenExecption("Le Besion de stage est en cours ou déjà traité");
 		}else if(entity.getState().equalsIgnoreCase("etabli")){
-			throw new KerenExecption("Vous ne pouvez anuulé que les Besions de stage Validé");
+			throw new KerenExecption("Vous ne pouvez annulé que les Besions de stage Validé");
 		}
 		return manager.annule(entity);
 	}

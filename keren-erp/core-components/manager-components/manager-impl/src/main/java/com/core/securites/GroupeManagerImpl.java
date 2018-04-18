@@ -129,6 +129,40 @@ public class GroupeManagerImpl
         Groupe result = new Groupe(data);
         return result; 
     }
+
+    @Override
+    public List<GroupeDetail> getHabilitations(long id) {
+        //To change body of generated methods, choose Tools | Templates.
+         MenuModule data =  moduledao.findByPrimaryKey("id", id);
+         List<GroupeDetail> droits = new ArrayList<GroupeDetail>();
+         if(data==null){
+             return droits;
+         }
+        //Si aucun droits n'est cree initiliaisation des droits         
+            //Chargement des menu concernant le module
+            RestrictionsContainer container = RestrictionsContainer.newInstance();
+            container.addEq("module.id", data.getId());
+            List<MenuGroupActions> menus = menudao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+            if(menus!=null){
+                long index = 1;
+                for(MenuGroupActions menu : menus){
+                    //Chargement des actions specifiques a un menus
+                    container = RestrictionsContainer.newInstance();
+                    container.addEq("menu.id", menu.getId());
+                    List<MenuAction> actions = menuitemdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+                    if(actions!=null){
+                        for(MenuAction act : actions){
+                            GroupeDetail detail = new GroupeDetail(new MenuAction(act), "0");
+                            detail.setId(-index);
+                            droits.add(detail);
+                            index ++;
+                        }//end for(MenuAction act : actions){
+                    }//end if(actions!=null){
+                }//end for(MenuGroupActions menu : menus){
+            }  //end if(menus!=null){          
+       
+        return droits ;
+    }
     
     
 

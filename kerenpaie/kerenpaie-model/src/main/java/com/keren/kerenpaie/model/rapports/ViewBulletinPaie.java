@@ -1,18 +1,24 @@
 package com.keren.kerenpaie.model.rapports;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.paie.LigneBulletinPaie;
 import com.keren.kerenpaie.model.paie.Rubrique;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Predicate;
+
 
 @Table
 @Entity(name = "v_bulletin_paie")
@@ -35,33 +41,48 @@ public class ViewBulletinPaie  extends BaseElement implements Serializable, Comp
 	@JoinColumn(name = "BUL_ID")
 	protected BulletinPaie bulletin;
 	
-
-	@Column(name = "MATRICULE")
-	//@Predicate(label = "Matricule:",type = String.class, search=true)
-    private String matricule ;
+//
+//	@Column(name = "MATRICULE")
+//	@Predicate(label = "Matricule:",type = String.class, search=true)
+//    private String matricule ;
 	
     
     @ManyToOne
     @JoinColumn(name = "PERIODE_ID")
-   // @Predicate(label = "Periode:",type = PeriodePaie.class,target = "many-to-one")
+    @Predicate(label = "Periode:",type = PeriodePaie.class,target = "many-to-one",optional=false)
+    @Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
     private PeriodePaie periode ;
-
+    
+    @Transient
+    @Predicate(label="Concerne ?",target="combobox",values="Tous les employés;Seulement les employés selectionnés",optional=false)
+	private String porte ="0";
+	
+    @ManyToMany
+    @Transient
+	@Predicate(label="EM",type=BulletinPaie.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0'||temporalData.periode==null||temporalData.periode.id=='load'")
+    @Filter(value="[{\"fieldName\":\"periode\",\"value\":\"object.periode\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez sélectionner une periode\"}]")
+	private List<BulletinPaie> concernes = new ArrayList<BulletinPaie>(); 
 	
 
-	public ViewBulletinPaie(Rubrique rubrique, LigneBulletinPaie ligneBulletin, BulletinPaie bulletin, PeriodePaie periode, String matricule) {
+	public ViewBulletinPaie(Rubrique rubrique, LigneBulletinPaie ligneBulletin, 
+			BulletinPaie bulletin, PeriodePaie periode, String matricule , String porte,
+			List<BulletinPaie> concernes) {
 		super();
 		this.rubrique = rubrique;
 		this.ligneBulletin =ligneBulletin;
 		this.bulletin = bulletin;
 		this.periode= periode;
-		this.matricule=matricule;
+		this.porte = porte;
+		this.concernes = concernes;
 	}
 	
 	public ViewBulletinPaie(BulletinPaie bulletin) {
 		super();
 		this.bulletin = new BulletinPaie(bulletin);
+		if(this.periode!=null){
 		this.periode= new PeriodePaie(bulletin.getPeriode());
-		this.matricule=bulletin.getEmploye().getMatricule();
+		this.porte = "0";
+		}
 	}
 	public ViewBulletinPaie(ViewBulletinPaie view) {
 		this.id = view.id;
@@ -69,7 +90,6 @@ public class ViewBulletinPaie  extends BaseElement implements Serializable, Comp
 		this.ligneBulletin = new LigneBulletinPaie(view.ligneBulletin);
 		this.bulletin = new BulletinPaie(view.bulletin);
 		this.periode= new PeriodePaie(view.getPeriode());
-		this.matricule=view.getMatricule();
 	}
 
 	public ViewBulletinPaie() {
@@ -108,13 +128,6 @@ public class ViewBulletinPaie  extends BaseElement implements Serializable, Comp
 		this.bulletin = bulletin;
 	}
 
-	public String getMatricule() {
-		return matricule;
-	}
-
-	public void setMatricule(String matricule) {
-		this.matricule = matricule;
-	}
 
 	public PeriodePaie getPeriode() {
 		return periode;
@@ -122,6 +135,22 @@ public class ViewBulletinPaie  extends BaseElement implements Serializable, Comp
 
 	public void setPeriode(PeriodePaie periode) {
 		this.periode = periode;
+	}
+
+	public String getPorte() {
+		return porte;
+	}
+
+	public void setPorte(String porte) {
+		this.porte = porte;
+	}
+
+	public List<BulletinPaie> getConcernes() {
+		return concernes;
+	}
+
+	public void setConcernes(List<BulletinPaie> concernes) {
+		this.concernes = concernes;
 	}
 
 	@Override

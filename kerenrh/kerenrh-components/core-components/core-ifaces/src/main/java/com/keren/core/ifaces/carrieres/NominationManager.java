@@ -15,5 +15,8 @@ public interface NominationManager
 {
 
     public final static String SERVICE_NAME = "NominationManager";
-
+    
+    public Nomination valide(Nomination entity);
+    
+    public Nomination annule(Nomination entity);
 }

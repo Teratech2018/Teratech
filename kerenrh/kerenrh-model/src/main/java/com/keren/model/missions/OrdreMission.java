@@ -40,7 +40,7 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 	 */
 	private static final long serialVersionUID = 6886836769210172784L;
 	
-	@Predicate(label="Numero",type=Short.class,editable=false,search=true)
+	@Predicate(label="Numero",type=Short.class,editable=false,hide=true)
 	private Short numero;
 	
 	@ManyToOne
@@ -58,7 +58,7 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 	
 	@ManyToOne
 	@JoinColumn(name="MISS_ID")
-	@Predicate(label="Mission",type=Mission.class,target="many-to-one",editable=false,updatable=false,search=true)
+//	@Predicate(label="Mission",type=Mission.class,target="many-to-one",editable=false,updatable=false,search=true)
 	private Mission mission ;
 	
 	@ManyToOne
@@ -170,9 +170,7 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 		if(ordre.pays!=null){
 			this.pays = new Pays(ordre.pays);
 		}
-		if(ordre.mission!=null){
-			this.mission = new Mission(ordre.mission);
-		}
+		
 		if(ordre.salarie!=null){
 			this.salarie = new Employe(ordre.salarie);
 		}
@@ -335,7 +333,8 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return numero+" / "+mission.getDesignation();
+		return salarie.getDesignation();
+               
 	}
 
 	@Override

@@ -25,13 +25,13 @@ public class LivrableStage extends BaseElement implements Serializable, Comparab
 	 */
 	private static final long serialVersionUID = -4324753306872872990L;
 	
-	@Predicate(label="Libellé",optional=false)
+	@Predicate(label="Libellé",optional=false,search=true)
 	private String code ;
 	
-	@Predicate(label="Quantité",type=Double.class)	
+	@Predicate(label="Quantité",type=Double.class,search=true)	
 	private Double quantite =0.0 ;
 	
-	@Predicate(label="Description",target="textarea")
+	@Predicate(label="Description",target="textarea",search=true)
 	@Lob
 	private String propo;
 

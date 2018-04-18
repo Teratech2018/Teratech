@@ -92,3 +92,131 @@ public class EmployeManagerImpl
     
 
 }
+/*
+    @EJB(name = "ContratTravailDAO")
+    protected ContratTravailDAOLocal contrattravaildao;
+
+
+    @Override
+    public List<Employe> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
+        List<Employe> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Employe> results = new ArrayList<Employe>();
+        for(Employe data:datas){
+            results.add(new Employe(data));
+        }
+        return results;
+    }
+
+    @Override
+    public List<Employe> findAll() {
+        List<Employe> datas = super.findAll();
+        List<Employe> results = new ArrayList<Employe>();
+
+        for(Employe data:datas){
+            results.add(new Employe(data));
+        }
+        return results;
+    }
+
+    @Override
+    public Employe find(String propertyName, Long entityID) {
+        Employe data = super.find(propertyName, entityID);
+        Employe result = new Employe(data);
+
+        for(CompteBancaire aas:data.getComptesbancaire()){
+            result.getComptesbancaire().add(new CompteBancaire(aas));
+        }
+
+        for(ContratTravail aas:data.getContrats()){
+            result.getContrats().add(new ContratTravail(aas));
+        }
+
+        for(Famille aas:data.getFamilles()){
+            result.getFamilles().add(new Famille(aas));
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public void processAfterUpdate(Employe entity) {
+
+         for(ContratTravail aas:entity.getContrats()){
+
+            aas.setEmploye(entity);
+
+            if(aas.getId()>0){
+                contrattravaildao.update(aas.getId(), aas);
+            }else {
+                contrattravaildao.save(aas);
+            }
+        }
+        super.processAfterUpdate(entity);
+    }
+
+    @Override
+    public void processAfterSave(Employe entity) {
+         entity = dao.findByPrimaryKey("code", entity.getCode());
+
+
+        for(ContratTravail aas:entity.getContrats()){
+            aas.setEmploye(entity);
+
+            if(aas.getId()>0){
+                contrattravaildao.update(aas.getId(), aas);
+            }else {
+                contrattravaildao.save(aas);
+            }
+        }
+        super.processAfterSave(entity);
+    }
+
+    @Override
+    public Employe valide(Employe entity) {
+
+        if(entity.getState().trim().equalsIgnoreCase("etabli")){
+            entity.setState("valide");
+        }
+
+        Employe data = dao.update(entity.getId(), entity);
+
+
+        for(ContratTravail aas:entity.getContrats()){
+            aas.setEmploye(entity);
+
+            if(aas.getId()>0){
+                contrattravaildao.update(aas.getId(), aas);
+            }else {
+                contrattravaildao.save(aas);
+            }
+        }
+
+        Employe result = new Employe(data);
+
+        for(CompteBancaire aas:data.getComptesbancaire()){
+            result.getComptesbancaire().add(new CompteBancaire(aas));
+        }
+
+        for(ContratTravail aas:data.getContrats()){
+            result.getContrats().add(new ContratTravail(aas));
+        }
+
+        for(Famille aas:data.getFamilles()){
+            result.getFamilles().add(new Famille(aas));
+        }
+
+        return result;
+
+    @Override
+    public Employe annule(Employe entity) {
+
+        if(entity.getState().trim().equalsIgnoreCase("valide")){
+            entity.setState("annule");
+        }
+
+        Employe data = dao.update(entity.getId(), entity);
+        return new Employe(data);
+    }
+
+*/

@@ -42,16 +42,16 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 	 */
 	private static final long serialVersionUID = 2850156837807405991L;
 	
-	@Predicate(label="Reference",optional=false,unique=true,search=true)
+	@Predicate(label="Reference",optional=false,unique=true,search=true,editable=false)
 	@Column(unique=true)
 	private String code ;
 	
-	@Predicate(label="Nom & Prenom",optional=false,unique=true,search=true)
+	@Predicate(label="Nom & Prenom",optional=false,unique=true,search=true,editable=false)
 	private String nom ;
 	
 	@ManyToOne
 	@JoinColumn(name="DEPAR_ID")
-	@Predicate(label="Structure d'affectation",type=Departement.class,target="many-to-one",search=true)
+	@Predicate(label="Structure d'affectation",type=Departement.class,target="many-to-one",search=true,editable=false)
 	private Departement departement ;	
 	
 	@Temporal(TemporalType.DATE)
@@ -64,11 +64,11 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Encadreur professionnel",type=Employe.class,target="many-to-one",group=true,groupName="group1",groupLabel="Informations du stage")
+	@Predicate(label="Encadreur professionnel",type=Employe.class,target="many-to-one",group=true,groupName="group1",groupLabel="Informations du stage",editable=false)
 	private Employe encadreur ;  
 	
 	@Lob
-	@Predicate(label="Portable du Stagiaire",target="richeditor",group=true,groupName="group1",groupLabel="Notes")
+	@Predicate(label="Portable du Stagiaire",target="richeditor",group=true,groupName="group5",groupLabel="Notes")
 	private String note ;
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
@@ -83,11 +83,11 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	@JoinColumn(name="SUISTA_ID")
-	@Predicate(label=".",type=TacheStage.class,target="one-to-many",edittable=true,group=true,groupName="group4",groupLabel="Outils Livrés")
+	@Predicate(label=".",type=LivrableStage.class,target="one-to-many",edittable=true,group=true,groupName="group4",groupLabel="Outils Livrés")
 	private List<LivrableStage> livrables = new ArrayList<LivrableStage>();
 	
 
-	@Predicate(label="Etat",hide=true,search=true)
+//	@Predicate(label="Etat",hide=true,search=true)
 	private String state = "etabli";
 	
 	

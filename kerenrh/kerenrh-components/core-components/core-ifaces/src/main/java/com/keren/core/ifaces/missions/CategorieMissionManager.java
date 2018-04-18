@@ -6,7 +6,8 @@ import com.keren.model.missions.CategorieMission;
 
 
 /**
- * Interface etendue par les interfaces locale et remote du manager
+ * Interface etendue par les interfaces locale et remote du manager
+
  * @since Tue Apr 10 17:59:56 GMT+01:00 2018
  * 
  */
@@ -17,3 +18,4 @@ public interface CategorieMissionManager
     public final static String SERVICE_NAME = "CategorieMissionManager";
 
 }
+

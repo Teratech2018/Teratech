@@ -3,6 +3,7 @@ package com.keren.jaxrs.ifaces.stages;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -23,10 +24,10 @@ public interface SuiviStageRS
     extends GenericService<SuiviStage, Long>
 {
 
-	@POST
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("termine")
-    public SuiviStage encours(@Context HttpHeaders headers,SuiviStage entity);
+    public SuiviStage termine(@Context HttpHeaders headers,SuiviStage entity);
 
 }

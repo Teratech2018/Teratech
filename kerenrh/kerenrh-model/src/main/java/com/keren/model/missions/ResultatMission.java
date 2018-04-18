@@ -41,7 +41,7 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 	private String intitule ;	
 
 	
-	@Predicate(label="Type de mission",target="combobox",values="Locale;Internationale")
+	@Predicate(label="Type de mission",target="combobox",values="Locale;Internationale",updatable=false)
 	private String type ="0";
 	
 	@Temporal(TemporalType.DATE)
@@ -50,9 +50,12 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ORDMIS_ID")
-	@Predicate(label=".",type=ActionMission.class,target="one-to-many",group=true,groupName="group4",groupLabel="Actions à mener")
+	@Predicate(label=".",type=ActionMission.class,target="one-to-many",group=true,groupName="group4",groupLabel="Actions à mener",edittable=true)
 	private List<ActionMission> actions = new ArrayList<ActionMission>();
 
+//	@Predicate(label="Etat",hide=true,search=true)
+	private String state = "etabli";
+	
 	/**
 	 * 
 	 */
@@ -103,7 +106,7 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 		this.code = mission.code;
 		this.dcreation = mission.dcreation;
 		this.intitule = mission.intitule;
-		
+		this.state = mission.state;
 	}
 	
 	
@@ -155,6 +158,14 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 	
 	
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -191,7 +202,17 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 		return true;
 	}
 
-	
+	@Override
+	public List<State> getStates() {
+		// TODO Auto-generated method stub
+		List<State> states = new ArrayList<State>();
+		states.add(new State("etabli", "Brouillon"));
+		states.add(new State("valide", "Validée"));
+		states.add(new State("encours", "En Cours"));
+		states.add(new State("termine", "Terminée"));
+		states.add(new State("annule", "Annulée"));
+		return states;
+	}
 	
 	@Override
 	public boolean isCreateonfield() {

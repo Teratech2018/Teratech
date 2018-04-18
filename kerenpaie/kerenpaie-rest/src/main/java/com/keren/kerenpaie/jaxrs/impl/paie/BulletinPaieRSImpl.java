@@ -20,6 +20,7 @@ import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.BulletinPaieManagerRemote;
+import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.BulletinPaieRS;
@@ -149,8 +150,10 @@ public class BulletinPaieRSImpl
 
 	@Override
 	public Response printbulletin(HttpHeaders headers, BulletinPaie bulletin) {
+		bulletin.setPeriode(CacheMemory.getPeriode());
+		System.out.println("BulletinPaieRSImpl.printbulletin() periode"+bulletin.getPeriode());
 		// TODO Auto-generated method stub
-		if (bulletin.getCode()==null) {
+		if (bulletin.getPeriode()==null) {
 			throw new KerenExecption("Ce bulletin est nulle <br/> ");
 		} // end if(entity.getState().trim().equalsIgnoreCase("valide")){
 		try {
@@ -182,6 +185,7 @@ public class BulletinPaieRSImpl
     @Override
     public Response buildPdfReport(BulletinPaie bulletin) {
         try {
+        	 bulletin.setPeriode(CacheMemory.getPeriode());
         	  List<ViewBulletinPaie> records =viewmanager.getCriteres(new ViewBulletinPaie(bulletin));
               String URL = ReportHelper.templateURL+ReportsName.BULLETIN_PAIE.getName();
               Map parameters = new HashMap();

@@ -6,7 +6,8 @@ import com.keren.model.missions.ResultatMission;
 
 
 /**
- * Interface etendue par les interfaces locale et remote du manager
+ * Interface etendue par les interfaces locale et remote du manager
+
  * @since Wed Apr 11 11:50:58 GMT+01:00 2018
  * 
  */
@@ -15,5 +16,7 @@ public interface ResultatMissionManager
 {
 
     public final static String SERVICE_NAME = "ResultatMissionManager";
+    
+    public ResultatMission cloture(ResultatMission entity);
 
 }

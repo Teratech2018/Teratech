@@ -103,7 +103,7 @@ public class Ville extends BaseElement implements Serializable, Comparable<Ville
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kerenrh";
 	}
 
 	@Override

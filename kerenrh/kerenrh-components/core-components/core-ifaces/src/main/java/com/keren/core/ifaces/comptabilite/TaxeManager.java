@@ -6,7 +6,8 @@ import com.keren.model.comptabilite.Taxe;
 
 
 /**
- * Interface etendue par les interfaces locale et remote du manager
+ * Interface etendue par les interfaces locale et remote du manager
+
  * @since Wed Feb 14 12:53:09 GMT+01:00 2018
  * 
  */

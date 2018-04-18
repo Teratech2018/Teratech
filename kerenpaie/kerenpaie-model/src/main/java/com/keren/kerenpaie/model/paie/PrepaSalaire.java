@@ -117,13 +117,13 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Préparation des salaires";
+		return "Impression du Broulliard de Paie";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Préparation des salaires";
+		return "Impression du Broulliard de Paie";
 	}
 
 	@Override

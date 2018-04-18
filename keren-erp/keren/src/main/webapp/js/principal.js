@@ -934,6 +934,7 @@ angular.module("mainApp")
                  }//end for(var i=0;i<modelsplit.length;i++)
                  var data = $scope.getCurrentModel(parentmodel);
                  var template = angular.fromJson(angular.toJson(this.template["source"]));
+//                  console.log("notify:function(event , parameters) ============= method:"+template["methodname"]+" :::: entity : "+angular.toJson(data[this.template["observable"]]));
                  if(template["fieldname"] && data[this.template["observable"]]){
                      var entity = data[this.template["observable"]];
                      var elem = entity[template["fieldname"]];
@@ -954,9 +955,19 @@ angular.module("mainApp")
                             $('.selectpicker').selectpicker('refresh');
                          });
                      }//end if(angular.isObject(elem)){
-                 }else if(template["methodname"]){
-                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
-                     var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.metaData.moduleName)+"/"+angular.lowercase($scope.metaData.entityName)+"/"+template["methodname"];
+                 }else if(template["methodname"]  && data[this.template["observable"]]){
+//                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                     var entity = data[this.template["observable"]];
+                     if(angular.isDefined(entity)){
+                         var id = entity.id ;
+                         if(!angular.isNumber(id)){
+                             id = -1 ;
+                         }//end if(!angular.isNumber(id)){
+                         $http.defaults.headers.common['id']=angular.toJson(id);
+                     }//end if(angular.isDefined(entity)){
+//                     console.log("notify:function(event , parameters) ============= model "+this.model+" method:"+template["methodname"]+" :::: entity : "+angular.toJson(entity));
+                     var metaData = $scope.getParentMetaData(this.model);
+                     var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(metaData.moduleName)+"/"+angular.lowercase(metaData.entityName)+"/"+template["methodname"];
                      $http.get(url)
                              .then(function(response){
                                  data[modelsplit[modelsplit.length-1]] = response.data;
@@ -975,9 +986,9 @@ angular.module("mainApp")
                                        $('.selectpicker').selectpicker('refresh');
                                      });
                                  }//end if(angular.isObject(elem))
-                                 commonsTools.hideDialogLoading();
+//                                 commonsTools.hideDialogLoading();
                              },function(error){
-                                  commonsTools.hideDialogLoading();
+//                                  commonsTools.hideDialogLoading();
                                  commonsTools.showMessageDialog(error);
                              });
                  }//end if(template["fieldname"] && data[this.template["observable"]])
@@ -2011,6 +2022,9 @@ angular.module("mainApp")
                selectElem.setAttribute('class','selectpicker form-control');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
+               if(angular.isString(index)){
+                   index = new Number(index);
+               }//end if(angular.isString(index)){
                selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+modelpath+"')");
                selectElem.setAttribute('data-live-search','true');
                divElem_1.appendChild(selectElem);
@@ -2726,7 +2740,7 @@ angular.module("mainApp")
             if(oldItem!=null){
                 oldId = "td"+Math.abs(oldItem.id)+"_"+oldfieldname;
             }//end if(oldItem!=null)
-//            console.log("$scope.getTemplate = function(item) ========= "+angular.toJson(item)+" ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
+            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
@@ -2886,6 +2900,12 @@ angular.module("mainApp")
             }//end if(metaData.createonfield==true){
             return scriptelem;
         };
+        /**
+         * 
+         * @param {type} item
+         * @param {type} index
+         * @returns {String}
+         */
         $scope.identfiantenerator = function(item,index){
 //             var date = new Date();
              var id = "td"+Math.abs(item.id)+"_"+index;
@@ -2969,7 +2989,7 @@ angular.module("mainApp")
                 aElem.appendChild(spanElem);
                 if($scope.windowType=="view"){
                      aElem.setAttribute('disabled' , 'disabled');                  
-                 }            
+                }//end if($scope.windowType=="view"){            
             }//end if(metaData.createonfield==true){
             
             return scriptelem;
@@ -3118,11 +3138,11 @@ angular.module("mainApp")
                                 //tdElem.setAttribute('ng-click',"editDialogBuilder('"+model+"' ,item,'update')");    
                                 trElem.appendChild(tdElem);
                             }
-                        }
-                     }
+                        }//end for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
+                     }//end if(metaData.groups[i].columns&&metaData.groups[i].columns.length>0){
                      
-                 }
-             }
+                 }//end for(var i=0;i<metaData.groups.length;i++){
+             }//end if(metaData.groups&&metaData.groups.length>0){
              var key = commonsTools.keygenerator(modelpath);
              //Building table footer
              if(field.customfooter==false){
@@ -5043,18 +5063,57 @@ angular.module("mainApp")
                               }else {
                                   var parts = part[i].split("[");
                                   var prefix = parts[0];
-                                  parts = parts[1].split("]")
+                                  parts = parts[1].split("]");
                                   var sufix = parts[0];
                                   model = model[prefix];
                                   model = model[new Number(sufix)];
 //                                  console.log("=====editDialogBuilder  ***************Youpi************ "+prefix+" ==== "+sufix+" ==== "+angular.toJson(model));
                               }//end if(part[i].split("[").length==1)
                             }//end for(var i=1 ; i<part.length;i++)
+//                            console.log("$scope.getCurrentModel ========================= "+angular.toJson(model));
                            return model;    
                     }//end if(part.length==1){
           };     
           
-
+          /**
+           * 
+           * @param {type} model
+           * @returns {@var;data|$scope.temporalData|$scope.dataCache|$scope.currentObject}
+           */
+           $scope.getParentModel = function(model){
+//                   console.log("$scope.getCurrentModel ========================= "+model);
+                    var part = model.split(".");              
+                    var data = $scope.currentObject;
+                    if(part[0]=='dataCache'){
+                        data = $scope.dataCache;
+                    }else if(part[0]=='temporalData'){
+                        data = $scope.temporalData;
+                    }//end if(part[0]=='dataCache')
+                    if(part.length==1){
+                        return data;
+                    }else{
+                          var model =data;
+                          for(var i=1 ; i<part.length-1;i++){                            
+                              if(part[i].split("[").length==1){
+//                                console.log("=====editDialogBuilder  ***************Youpi************ "+angular.isArray(model));
+                                if(model[part[i]]){
+                                    model = model[part[i]];
+                                } //end if(model[part[i]])
+                              }else {
+                                  var parts = part[i].split("[");
+                                  var prefix = parts[0];
+                                  parts = parts[1].split("]");
+                                  var sufix = parts[0];
+                                  model = model[prefix];
+                                  model = model[new Number(sufix)];
+//                                  console.log("=====editDialogBuilder  ***************Youpi************ "+prefix+" ==== "+sufix+" ==== "+angular.toJson(model));
+                              }//end if(part[i].split("[").length==1)
+                            }//end for(var i=1 ; i<part.length;i++)
+//                            console.log("$scope.getCurrentModel ========================= "+angular.toJson(model));
+                           return model;    
+                    }//end if(part.length==1){
+          };     
+           
         /**
          * 
          * @param {type} model
@@ -5117,6 +5176,67 @@ angular.module("mainApp")
                 }           
           };
 
+/**
+ * 
+ * @param {type} model
+ * @returns {groupe.metaArray.metaData|$scope.metaData|$scope.temporalMetaData}
+ */
+           $scope.getParentMetaData = function(model){
+                if(angular.isString(model)){                
+
+                      var part = model.split(".");              
+                     var metaData = $scope.metaData;
+                     if(part[0]=='temporalData'){
+                        metaData = $scope.temporalMetaData;
+                     }//end if(part[0]=='temporalData')
+//                     console.log("$scope.getCurrentMetaData = ========================= "+model+" ============== "+angular.toJson(metaData));
+                
+                     if(part.length==1){
+                         return metaData;
+                     }else{
+                         for(var k=1;k<part.length-1;k++){
+                                for(var i=0 ; i<metaData.columns.length ;i++){
+                                    if(part[k]==metaData.columns[i].fieldName){
+     //                                    console.log("!!!!!!!"+part[1]+"=====editDialogBuilder  ===== "+metaData.columns[i].fieldName+" ******* "+angular.toJson(metaData.columns[i].metaData));                               
+                                         metaData = metaData.columns[i].metaData;
+                                    }//end if(part[1]==$scope.metaData.columns[i].fieldName){
+
+                                }//end for(var i=0 ; i<$scope.metaData.columns.length ;i++){
+
+                               //Recherches dans les groups
+                               if(metaData.groups){
+                                  for(var i=0 ; i<metaData.groups.length;i++){
+                                      if(metaData.groups[i]){
+//                                          console.log("!!!!!!!====editDialogBuilder  ===== "+metaData.groups[i].groupName+" ******* "+metaData.groups[i].columns.length);
+                                           var groupe = metaData.groups[i];
+                                           if(metaData.groups[i].columns){
+                                                var taille = metaData.groups[i].columns.length;
+                                                var columns = metaData.groups[i].columns;
+                                                for(var j=0 ; j < taille ;j++){
+                                                     if(columns && (part[k]== columns[j].fieldName)){
+                                                           metaData = columns[j].metaData;
+                                                      }
+                                                }//end for(var j=0 ; j < taille ;j++){
+                                            }//end if(metaData.groups[i].columns)
+                                          //Cas des metaArray
+                                            if(groupe.metaArray&&groupe.metaArray.length>0){//&&
+                                                for(var l=0;l<groupe.metaArray.length;l++){
+                                                    if(groupe.metaArray[l].fieldName==part[k]){
+                                                        metaData = groupe.metaArray[l].metaData;
+                                                    }//end if(groupe.metaArray[l].fieldName==part[k])
+                                                }//end for(var l=0;l<groupe.metaArray.length;l++){
+                                            }//end if(groupe.metaArray&&groupe.metaArray.length>0){
+                                      }
+                                      
+                                  }
+                               }//end if(metaData.groups){
+                           }//end for(var i=1;i<part.length;i++){
+                           return metaData;
+                     }
+                }else{
+                    return metaData;
+                }           
+          };
 
         /**
          * 
@@ -5936,7 +6056,8 @@ angular.module("mainApp")
         $scope.removeFromTable = function(model , item,modelpath){
             var parts = model.split(".");            
             if(parts.length>1){
-                $scope.removeFromArray($scope.currentObject[parts[1]],item);
+                var datamodel = $scope.getParentModel(model);
+                $scope.removeFromArray(datamodel[parts[parts.length-1]],item);
                  var metaData = $scope.getCurrentMetaData(model) ;
                 //console.log("editDialogBuilder  =====  ************* Vous avez cliquez :::: "+model+" ***** "+item+" ==== "+type+" ::: "+entityName+" ::: "+moduleName+" == "+angular.toJson(metaData));
                 if(!metaData){
@@ -6106,20 +6227,21 @@ angular.module("mainApp")
                     var items = $scope.dataCache.selectedObjects;
                     $scope.dataCache[""+key+""] = new Array();
                     var templateModel = null;
-                    if(parts[0]=='currentObject'){
-                        templateModel = $scope.currentObject;
-                    }else if(parts[0]=='temporalData'){
-                        templateModel = $scope.temporalData;
-                    }else if(parts[0]=='dataCache'){                        
-                        templateModel = $scope.dataCache;
-                        for(var i=1 ; i<parts.length-1;i++){
-                            templateModel = templateModel[parts[i]];
-                        }//end for(var i=1 ; i<parts.length-1;i++){
-                    }//end if(parts[0]=='currentObject')
-//                    console.log("$scope.addDialogAction =list ===== model: "+model+"===== "+items.length+" === "+parts[0]+" === "+parts[1]+" == modelpath:"+modelpath+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
-                    if(!angular.isDefined(templateModel[parts[col]])){
-                        templateModel = $scope.getCurrentModel(model);
-                    }//end if(!angular.isDefined(templateModel[parts[col]]))
+//                    if(parts[0]=='currentObject'){
+//                        templateModel = $scope.currentObject;
+//                    }else if(parts[0]=='temporalData'){
+//                        templateModel = $scope.temporalData;
+//                    }else if(parts[0]=='dataCache'){                        
+//                        templateModel = $scope.dataCache;
+//                        for(var i=1 ; i<parts.length-1;i++){
+//                            templateModel = templateModel[parts[i]];
+//                        }//end for(var i=1 ; i<parts.length-1;i++){
+//                    }//end if(parts[0]=='currentObject')
+//                    if(!angular.isDefined(templateModel[parts[col]])){
+                        templateModel = $scope.getParentModel(model);
+//                        console.log("$scope.addDialogAction =list ===== fieldName: "+parts[col]+" == modelpath:"+model+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
+//                    }//end if(!angular.isDefined(templateModel[parts[col]]))
+                    
                     if(angular.isArray(templateModel[parts[col]])){
                         if(!templateModel[parts[col]]){
                             templateModel[parts[col]] = new Array();
@@ -6136,8 +6258,18 @@ angular.module("mainApp")
                             $scope.dataCache[""+key+""].push(items[0]);
                         }
                     }//end if(angular.isArray($scope.currentObject[parts[1]]))
+                    //console.log($scope.dataCache[""+parts[1]+""]);
+                    $timeout(function() {
+                       $('.selectpicker').selectpicker('refresh');
+                    });
                     var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
-                    $scope.dataCache[""+key+""].push(obj);
+                    $scope.dataCache[""+key+""].push(obj);                    
+                     var modelpart = model.split(".");
+                     var fieldName = modelpart[modelpart.length-1];
+                     var observable = $scope.observablePools[fieldName];
+                     if(observable){
+                        observable.notifyObservers();
+                     }//end if(observable)
                      //Evenement de construction du pied de tableau
 //                    $rootScope.$broadcast("tablefooter" , {metaData:metaData,model:model});  
                 }//end if(parts.length>1)
@@ -6832,7 +6964,7 @@ angular.module("mainApp")
             }//end if(status==false){   
             var modelpart = model.split(".");
             var fieldName = modelpart[modelpart.length-1];
-//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]);
+            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]+"  ::: index : "+index);
             var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/count";
             $http.get(url)
                     .then(function(response){

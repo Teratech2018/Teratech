@@ -12,20 +12,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.FileHelper;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.rapports.ViewBulletinPaieRS;
+import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.rapports.ViewBulletinPaie;
+import com.keren.kerenpaie.tools.KerenPaieManagerException;
 import com.keren.kerenpaie.tools.report.ReportHelper;
 import com.keren.kerenpaie.tools.report.ReportsName;
 import com.keren.kerenpaie.tools.report.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 import net.sf.jasperreports.engine.JRException;
@@ -76,8 +81,20 @@ public class ViewBulletinPaieRSImpl
     @Override
     public MetaData getMetaData() {
         try {
-            //To change body of generated methods, choose Tools | Templates.
-            return MetaDataUtil.getMetaData(new ViewBulletinPaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
+        	MetaData meta = MetaDataUtil.getMetaData(new ViewBulletinPaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
+//		    MetaColumn workbtn = new MetaColumn("button", "work2", "Imprimer les Bulletin de Paie", false, "report", null);
+//            workbtn.setValue("{'model':'kerenpaie','entity':'viewbulletinpaie','method':'printbulletin'}");
+//            workbtn.setStates(new String[]{"etabli"});
+////            workbtn.setPattern("btn btn-primary");
+//            meta.getHeader().add(workbtn);
+////            workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
+////            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
+////            workbtn.setStates(new String[]{"etabli"});
+////            workbtn.setPattern("btn btn-danger");
+////            meta.getHeader().add(workbtn);	           
+//            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+//            meta.getHeader().add(stautsbar);
+		    return meta;
         } catch (InstantiationException ex) {
             Logger.getLogger(ViewBulletinPaieRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -106,12 +123,24 @@ public class ViewBulletinPaieRSImpl
 
         return params;
     }
+    
+	@Override
+	public Response printbulletin(HttpHeaders headers, ViewBulletinPaie bulletin) {
+		// TODO Auto-generated method stub
+		if (bulletin.getPeriode()==null) {
+			throw new KerenExecption("Bien vouloir saisir les paramètres d'impression <br/> ");
+		} // end if(entity.getState().trim().equalsIgnoreCase("valide")){
+		try {
+			return this.buildPdfReport(bulletin);
+		} catch (KerenPaieManagerException ex) {
+			throw new KerenExecption(ex.getMessage());
+		}
+	}
 
 
     @Override
     public Response buildPdfReport(ViewBulletinPaie bulletin) {
         try {
-        	  bulletin.setPeriode(CacheMemory.getPeriode());
         	  List<ViewBulletinPaie> records =manager.getCriteres(bulletin);
               String URL = ReportHelper.templateURL+ReportsName.BULLETIN_PAIE.getName();
               System.out.println("EleveSearchRSImpl.buildPdfReport() chemin file++++++ "+URL);

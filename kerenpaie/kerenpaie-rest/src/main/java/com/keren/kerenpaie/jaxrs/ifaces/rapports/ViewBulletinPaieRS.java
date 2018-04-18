@@ -3,13 +3,17 @@ package com.keren.kerenpaie.jaxrs.ifaces.rapports;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.rapports.ViewBulletinPaie;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -42,4 +46,10 @@ public interface ViewBulletinPaieRS
     @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewBulletinPaie bulletin);
+    
+    @PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({"application/pdf"})
+    @Path("printbulletin")
+    public Response printbulletin(@Context HttpHeaders headers,ViewBulletinPaie bulletin);
 }

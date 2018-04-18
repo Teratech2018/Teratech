@@ -67,11 +67,11 @@ public class StageRSImpl
    	        workbtn.setStates(new String[]{"etabli"});
    	        workbtn.setPattern("btn btn-success");
    	        meta.getHeader().add(workbtn);  
-//   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
-//   	        workbtn.setValue("{'model':'kerenrh','entity':'mission','method':'annule'}");
-//   	        workbtn.setStates(new String[]{"etabli"});
-//   	        workbtn.setPattern("btn btn-danger");
-//   	        meta.getHeader().add(workbtn);   
+   	        workbtn = new MetaColumn("button", "work1", "Annuler", false, "workflow", null);
+   	        workbtn.setValue("{'model':'kerenrh','entity':'stage','method':'annule'}");
+   	        workbtn.setStates(new String[]{"etabli"});
+   	        workbtn.setPattern("btn btn-danger");
+   	        meta.getHeader().add(workbtn);   
    	        MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
    	        meta.getHeader().add(stautsbar);	
    		} catch (InstantiationException e) {
@@ -158,6 +158,31 @@ public class StageRSImpl
 			throw new KerenExecption("L'Encadreur Professionel est obligatoire");
 		}
 		return manager.valide(entity);
+	}
+
+	@Override
+	public Stage annule(HttpHeaders headers, Stage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("La Reference du stage est obligatoire");
+		}else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+			throw new KerenExecption("Le Type de stage est obligatoire");
+		}else if(entity.getType().trim().equals("0") && entity.getEcole()==null){
+			throw new KerenExecption("L'Etablissement est obligatoire pour les stage Académique");
+		}else if(entity.getDepartement()==null){
+			throw new KerenExecption("La Structure d'affectation est obligatoire");
+		}else if(entity.getDdebut()==null){
+			throw new KerenExecption("La Date de début est obligatoire");
+		}else if(entity.getDfin()==null){
+			throw new KerenExecption("La Date de fin est obligatoire");
+		}else if(entity.getEncadreur()==null){
+			throw new KerenExecption("L'Encadreur Professionel est obligatoire");
+		}else if(entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("L'Annulation ne concerne que les Stages déjà validés");
+		}else if(!entity.getState().equalsIgnoreCase("valide")){
+			throw new KerenExecption("Seule les Stage Validé peut être annulé");
+		}
+		return manager.annule(entity);
 	}
 
 }

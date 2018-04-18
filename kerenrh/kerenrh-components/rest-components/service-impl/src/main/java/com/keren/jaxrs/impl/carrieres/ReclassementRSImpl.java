@@ -108,6 +108,7 @@ public class ReclassementRSImpl
 		}else if(entity.getDenreg()==null){
 			throw new KerenExecption("La date d'enregisttrement est obligatoire");
 		}
+		entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
 

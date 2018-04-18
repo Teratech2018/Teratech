@@ -2,6 +2,7 @@
 package com.keren.core.impl.formations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -131,8 +132,13 @@ public class PlanningFormationManagerImpl
 	}
 
 	@Override
-	public void processAfterUpdate(PlanningFormation entity) {
+	public void processBeforeUpdate(PlanningFormation entity) {
 		// TODO Auto-generated method stub
+		PlanningFormation oldentity = dao.findByPrimaryKey("id", entity.getId());
+		HashMap<Long, LignePlanningFormation> map = new HashMap<Long, LignePlanningFormation>();
+		for(LignePlanningFormation ligne:oldentity.getLignes()){
+			map.put(ligne.getId(), ligne);
+		}//end for(LignePlanningFormation ligne:oldentity.getLignes()){
 		//Traitement des LignePlanning
 		for(LignePlanningFormation ligne:entity.getLignes()){
 			ligne.setState("etabli");
@@ -141,11 +147,15 @@ public class PlanningFormationManagerImpl
 			ligne.setDuree(Short.parseShort(""+DateHelper.numberOfMonth(ligne.getDdebut(), ligne.getDfin())));
 //			System.out.println(PlanningFormationManagerImpl.class.toString()+" ::::::::::::::::::::::::::::::::::::::::::"+ligne.getFormateur().toString());			
 			if(ligne.getId()>0){
+				map.remove(ligne.getId());
 				plandao.update(ligne.getId(), ligne);
 			}else {
 				plandao.save(ligne);
-			}
-		}
+			}//end if(ligne.getId()>0){
+		}//end for(LignePlanningFormation ligne:entity.getLignes()){
+		for(Long key:map.keySet()){
+			plandao.delete(map.get(key).getId());
+		}//end for(Long key:map.keySet()){
 		super.processBeforeUpdate(entity);
 	}
 

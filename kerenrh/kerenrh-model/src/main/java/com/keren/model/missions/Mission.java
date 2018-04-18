@@ -12,7 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -42,28 +41,25 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 	@Predicate(label="Date de création",type=Date.class,target="date",editable=false,search=true)
 	private Date dcreation ;
 	
-	@Predicate(label="Libellé",search=true)
-	private String intitule ;
+	@Predicate(label="Libellé",search=true,optional=false)
+	private String intitule ;        
+        
+	@Predicate(label="Type de mission",target="combobox",values="Locale;Internationale",optional=false)
+	private String type ="0";
 	
+//	@ManyToOne
+//	@JoinColumn(name="CATMIS_ID")
+//	@Predicate(label="Catégorie de Mission",type=CategorieFrais.class,target="many-to-one")
+//	private CategorieMission categorie ;
+        
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de validation",type=Date.class,target="date")
 	private Date dvalidation ;
 	
-	@Predicate(label="Type de mission",target="combobox",values="Locale;Internationale")
-	private String type ="0";
-	
-	@Temporal(TemporalType.DATE)
+        @Temporal(TemporalType.DATE)
 	@Predicate(label="Date d'approbation",type=Date.class,target="date")
 	private Date dapprob ;
 	
-	@ManyToOne
-	@JoinColumn(name="CATMIS_ID")
-	@Predicate(label="Type de Mission",type=CategorieFrais.class,target="many-to-one")
-	private CategorieMission categorie ;
-	
-	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de cloture",type=Date.class,target="date")
-	private Date dcloture ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de début",type=Date.class,target="date",search=true)
@@ -71,7 +67,11 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de fin",type=Date.class,target="date",search=true)
-	private Date dfin ;
+	private Date dfin ;	
+
+	@Temporal(TemporalType.DATE)
+	@Predicate(label="Date de cloture",type=Date.class,target="date")
+	private Date dcloture ;
 	
 	@Predicate(label="Coût total",type=Double.class,editable=false,updatable=false)
 	private Double cout ;
@@ -98,6 +98,7 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 	 */
 	public Mission() {
 		// TODO Auto-generated constructor stub
+            state = "etabli";
 	}
 
 	/**
@@ -138,7 +139,7 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 		this.dvalidation = dvalidation;
 		this.type = type;
 		this.dapprob = dapprob;
-		this.categorie = categorie;
+//		this.categorie = categorie;
 		this.dcloture = dcloture;
 		this.ddebut = ddebut;
 		this.dfin = dfin;
@@ -153,9 +154,9 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 		this.dvalidation = mission.dvalidation;
 		this.type = mission.type;
 		this.dapprob = mission.dapprob;
-		if(mission.categorie!=null){
-			this.categorie = new CategorieMission(mission.categorie);
-		}
+//		if(mission.categorie!=null){
+//			this.categorie = new CategorieMission(mission.categorie);
+//		}
 		this.dcloture = mission.dcloture;
 		this.ddebut = mission.ddebut;
 		this.dfin = mission.dfin;
@@ -213,13 +214,13 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 		this.dapprob = dapprob;
 	}
 
-	public CategorieMission getCategorie() {
-		return categorie;
-	}
-
-	public void setCategorie(CategorieMission categorie) {
-		this.categorie = categorie;
-	}
+//	public CategorieMission getCategorie() {
+//		return categorie;
+//	}
+//
+//	public void setCategorie(CategorieMission categorie) {
+//		this.categorie = categorie;
+//	}
 
 	public Date getDcloture() {
 		return dcloture;

@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.stages.SuiviStageManagerRemote;
 import com.keren.jaxrs.ifaces.stages.SuiviStageRS;
@@ -84,9 +85,14 @@ public class SuiviStageRSImpl
    	}
 
 	@Override
-	public SuiviStage encours(HttpHeaders headers, SuiviStage entity) {
+	public SuiviStage termine(HttpHeaders headers, SuiviStage entity) {
 		// TODO Auto-generated method stub
-		return null;
+		if(entity.getDdebutr()==null){
+			throw new KerenExecption("La date de début effective est obligatoire");
+		}else if(entity.getDfinr()==null){
+			throw new KerenExecption("La date de fin effective est obligatoire");
+		}
+		return manager.termine(entity);
 	}
 
 }

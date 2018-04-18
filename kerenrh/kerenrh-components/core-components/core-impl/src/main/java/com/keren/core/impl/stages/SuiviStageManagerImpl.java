@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.core.ifaces.stages.SuiviStageManagerLocal;
 import com.keren.core.ifaces.stages.SuiviStageManagerRemote;
@@ -29,7 +30,8 @@ public class SuiviStageManagerImpl
 {
 
     @EJB(name = "SuiviStageDAO")
-    protected SuiviStageDAOLocal dao;
+    protected SuiviStageDAOLocal dao;    
+    
 
     public SuiviStageManagerImpl() {
     }
@@ -48,6 +50,10 @@ public class SuiviStageManagerImpl
 	public List<SuiviStage> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addNotEq("state", "etabli");
+		container.addNotEq("state", "annule");
+		predicats.addAll(container.getPredicats());
 		List<SuiviStage> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<SuiviStage> results = new ArrayList<SuiviStage>();
 		for(SuiviStage data:datas){
@@ -82,6 +88,44 @@ public class SuiviStageManagerImpl
 			results.add(new SuiviStage(data));
 		}
 		return results;
+	}
+	
+	
+
+	@Override
+	public void processAfterSave(SuiviStage entity) {
+		// TODO Auto-generated method stub
+		super.processAfterSave(entity);
+	}
+
+	@Override
+	public void processBeforeUpdate(SuiviStage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getState().equalsIgnoreCase("valide")){
+			entity.setState("encours");			
+		}
+		super.processAfterUpdate(entity);
+	}
+
+	@Override
+	public SuiviStage termine(SuiviStage entity) {
+		// TODO Auto-generated method stub
+		if(entity.getState().equalsIgnoreCase("valide")||
+				entity.getState().equalsIgnoreCase("encours")){
+			entity.setState("termine");
+			entity = dao.update(entity.getId(), entity);
+		}
+		SuiviStage result = new SuiviStage(entity);
+		for(TacheStage tach:entity.getTaches()){
+			result.getTaches().add(new TacheStage(tach));
+		}
+		for(EvaluationStage tach:entity.getEvaluations()){
+			result.getEvaluations().add(new EvaluationStage(tach));
+		}
+		for(LivrableStage tach:entity.getLivrables()){
+			result.getLivrables().add(new LivrableStage(tach));
+		}
+		return result;
 	}
     
     

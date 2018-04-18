@@ -271,7 +271,7 @@ public class Nomination extends BaseElement implements Serializable, Comparable<
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillon"));
 		states.add(new State("valide", "Validé"));
-		states.add(new State("annule", "Annulé"));
+//		states.add(new State("annule", "Annulé"));
 		return states;
 	}
 

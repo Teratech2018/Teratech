@@ -231,7 +231,7 @@ public class Reclassement extends BaseElement implements Serializable, Comparabl
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillion"));
 		states.add(new State("valide", "Validé"));
-		states.add(new State("annule", "Annulé"));
+//		states.add(new State("annule", "Annulé"));
 		return states;
 	}
 

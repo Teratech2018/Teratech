@@ -109,6 +109,7 @@ public class CessationRSImpl
 		}else if(entity.getType()==null||entity.getType().trim().isEmpty()){
 			throw new KerenExecption("Lype de Cessation est obligatoire");
 		}
+		entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
 

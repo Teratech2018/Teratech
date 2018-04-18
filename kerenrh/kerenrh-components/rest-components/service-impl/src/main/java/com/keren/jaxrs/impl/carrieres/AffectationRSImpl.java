@@ -109,6 +109,7 @@ public class AffectationRSImpl
 		}else if(entity.getDecision()==null){
 			throw new KerenExecption("La Date de la decision est obligatoire");
 		}
+		entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
 

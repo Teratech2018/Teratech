@@ -34,4 +34,20 @@ public class NominationManagerImpl
         return "id";
     }
 
+	@Override
+	public Nomination valide(Nomination entity) {
+		// TODO Auto-generated method stub
+		if(entity.getState().equalsIgnoreCase("etabli")){
+			entity.setState("valide");
+			entity = dao.update(entity.getId(), entity);
+		}
+		return new Nomination(entity);
+	}
+
+	@Override
+	public Nomination annule(Nomination entity) {
+		// TODO Auto-generated method stub
+		return entity;
+	}
+
 }
