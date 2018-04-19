@@ -970,9 +970,7 @@ angular.module("mainApp")
                          if(parameters.length>0){
                              for(var i=0;i<parameters.length;i++){
                                  var param = parameters[i];
-                                 if(angular.isDate(data[param])){
-                                     $http.defaults.headers.common[param]=angular.toJson(data[param].getTime());
-                                 }else if(angular.isObject(data[param])){
+                                 if(angular.isObject(data[param])){
                                      $http.defaults.headers.common[param]=angular.toJson(data[param].id);
                                  }else if(!angular.isArray(data[param])){//element
                                       $http.defaults.headers.common[param]=angular.toJson(data[param]);
