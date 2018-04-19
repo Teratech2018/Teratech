@@ -34,30 +34,31 @@ public class Recrutement extends BaseElement implements Comparable<Recrutement>,
 	
 	@ManyToOne
 	@JoinColumn(name="CAND_ID")
-	@Predicate(label="Candidat concerné",type=CandidatureSpontane.class,target="many-to-one")
+	@Predicate(label="Candidat concerné",type=CandidatureSpontane.class,target="many-to-one", search = true, updatable = false)
 	private CandidatureSpontane candidature ;
 	
 	@ManyToOne
 	@JoinColumn(name="BESREC_ID")
-	@Predicate(label="Besion Liée",type=BesionRecrutement.class,target="many-to-one")
+	@Predicate(label="Besion Liée",type=BesionRecrutement.class,target="many-to-one", search = true, updatable = false)
 	private BesionRecrutement besion ;
 	
 	@ManyToOne
 	@JoinColumn(name="ETAREC_ID")
-	@Predicate(label="Etape Recrutement",type=EtapeRecrutement.class,target="many-to-one")
+	@Predicate(label="Etape Recrutement",type=EtapeRecrutement.class,target="many-to-one",hide = true)
 	private EtapeRecrutement etape ;
 	
-	@Predicate(label="Appréciation",target="combobox",values="Faible;Moyen;Bon;Excellent;Parfait")
+	@Predicate(label="Appréciation",target="combobox",values="Faible;Moyen;Bon;Excellent;Parfait" ,hide=true)
 	private String niveau ;
 	
-	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Appréciations")
+	@Predicate(label="Description",target="textarea",group=true,groupName="group1",groupLabel="Appréciations" , search = true)
 	private String note;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="DETREC_ID")
+        @Predicate(label = ".",type = DetailRecrutement.class,target = "one-to-many",edittable = true,group = true,groupName = "group0",groupLabel = "Etapes de Recrutement", search = false)
 	private List<DetailRecrutement> details = new ArrayList<DetailRecrutement>();
 
-	@Predicate(label="Etat",hide=true,search=true)
+	@Predicate(label="Etat",hide=true)
 	private String state = "etabli";
 
 	/**

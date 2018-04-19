@@ -194,7 +194,7 @@ public class MetaDataUtil {
                           column.setHide(annot.hide());column.setCustomfooter(annot.customfooter());column.setCompute(annot.compute());
                           column.setHidden(annot.hidden());column.setObservable(annot.observable());
                           if(annot3!=null){
-                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);        
                        }else{
@@ -204,7 +204,7 @@ public class MetaDataUtil {
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                           column.setCompute(annot.compute());column.setHidden(annot.hidden());
                           if(annot3!=null){
-                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);        
                        }                               
@@ -215,7 +215,7 @@ public class MetaDataUtil {
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                           column.setCompute(annot.compute());column.setHidden(annot.hidden());
                           if(annot3!=null){
-                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);
                 }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
@@ -227,7 +227,7 @@ public class MetaDataUtil {
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
                     column.setCompute(annot.compute());column.setValue(annot.values());
                     if(annot3!=null){
-                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                     }//end if(annot3!=null)
                     metaData.getColumns().add(column);
                 }else if(field.getType().equals(Boolean.class)){
@@ -237,7 +237,7 @@ public class MetaDataUtil {
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                     column.setCompute(annot.compute());column.setHidden(annot.hidden());
                     if(annot3!=null){
-                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                     }//end if(annot3!=null)
                     metaData.getColumns().add(column);
                 }else if(field.getType().equals(List.class)){
@@ -282,7 +282,7 @@ public class MetaDataUtil {
                         column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         column.setColsequence(annot.colsequence()); 
                         if(annot3!=null){
-                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                         }//end if(annot3!=null)
                     }else if(field.isAnnotationPresent(OneToMany.class)){
                         //System.out.println("===================================================="+annot.type().newInstance());
@@ -296,7 +296,7 @@ public class MetaDataUtil {
                             column.setFooterScript(annot2.value());
                         }//end if(column.isCustomfooter()&&annot2!=null)
                         if(annot3!=null){
-                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                         }//end if(annot3!=null)
                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                         keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                            
@@ -338,7 +338,7 @@ public class MetaDataUtil {
                         }//end if(field.isAnnotationPresent(Filter.class)){
                         column.setObservable(annot.observable());
                         if(annot3!=null){
-                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                         }//end if(annot3!=null)
                         /*if(!exclures.contains(keybuilder.toString()))*/{                           
                             metaData.getColumns().add(column);
@@ -376,7 +376,7 @@ public class MetaDataUtil {
                                   column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
                                   column.setObservable(annot.observable());
                                   if(annot3!=null){
-                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                   }//end if(annot3!=null)
                                   metaGroup.getColumns().add(column);        
                                }else{
@@ -386,7 +386,7 @@ public class MetaDataUtil {
                                    column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                                    column.setHidden(annot.hidden());
                                    if(annot3!=null){
-                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                     }//end if(annot3!=null)
                                    metaGroup.getColumns().add(column);        
                                }                               
@@ -397,7 +397,7 @@ public class MetaDataUtil {
                                 column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                                 column.setHidden(annot.hidden());
                                  if(annot3!=null){
-                                    column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                    column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                 }//end if(annot3!=null)
                                 metaGroup.getColumns().add(column); 
                       }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
@@ -410,7 +410,7 @@ public class MetaDataUtil {
                             column.setCompute(annot.compute());column.setValue(annot.values());
                             column.setHidden(annot.hidden());
                             if(annot3!=null){
-                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                             }//end if(annot3!=null)
                             metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(Boolean.class)){
@@ -419,7 +419,7 @@ public class MetaDataUtil {
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                             column.setHidden(annot.hidden());
                             if(annot3!=null){
-                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                             }//end if(annot3!=null)
                             metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(List.class)){
@@ -442,7 +442,7 @@ public class MetaDataUtil {
                                             metaArray.setFooterScript(annot2.value());
                                          }//end if(column.isCustomfooter()&&annot2!=null)
                                          if(annot3!=null){
-                                            metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                            metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                         }//end if(annot3!=null)
                                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                                         keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                            
@@ -471,7 +471,7 @@ public class MetaDataUtil {
                                             column.setFooterScript(annot2.value());
                                          }//end if(column.isCustomfooter()&&annot2!=null)
                                          if(annot3!=null){
-                                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                         }//end if(annot3!=null)
                                          StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                                          keybuilder.append(annot.type().toString());keybuilder.append(field.getName());   
@@ -498,7 +498,7 @@ public class MetaDataUtil {
                                         metaArray.setFooterScript(annot2.value());
                                     }//end if(column.isCustomfooter()&&annot2!=null)
                                     if(annot3!=null){
-                                        metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                        metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                     }//end if(annot3!=null)
                                     StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                                     keybuilder.append(annot.type().toString());keybuilder.append(field.getName());  
@@ -535,7 +535,7 @@ public class MetaDataUtil {
                                             column.setFilter(filter.value());
                                         }//end if(field.isAnnotationPresent(Filter.class)){
                                         if(annot3!=null){
-                                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                         }//end if(annot3!=null)
                                         /*if(shareCache.containsKey(annot.type().toString()))*/{
                                              //exclures.add(keybuilder.toString());
@@ -628,7 +628,7 @@ public class MetaDataUtil {
                           column.setHide(annot.hide());column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
                           column.setObservable(annot.observable());
                           if(annot3!=null){
-                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);        
                        }else{
@@ -638,7 +638,7 @@ public class MetaDataUtil {
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                           column.setHidden(annot.hidden());
                           if(annot3!=null){
-                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);        
                        }                               
@@ -649,7 +649,7 @@ public class MetaDataUtil {
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                           column.setHidden(annot.hidden());
                           if(annot3!=null){
-                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                              column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);
                 }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
@@ -661,7 +661,7 @@ public class MetaDataUtil {
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());column.setCompute(annot.compute());
                     column.setValue(annot.values());column.setHidden(annot.hidden());
                     if(annot3!=null){
-                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                     }//end if(annot3!=null)
                     metaData.getColumns().add(column);
                 }else if(field.getType().equals(Boolean.class)){
@@ -671,7 +671,7 @@ public class MetaDataUtil {
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                     column.setHidden(annot.hidden());
                     if(annot3!=null){
-                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                     }//end if(annot3!=null)
                     metaData.getColumns().add(column);
                 }else if(field.getType().equals(List.class)){
@@ -697,7 +697,7 @@ public class MetaDataUtil {
                             column.setFooterScript(annot2.value());
                         }//end if(column.isCustomfooter()&&annot2!=null)
                         if(annot3!=null){
-                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                         }//end if(annot3!=null)
                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                         keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                      
@@ -729,7 +729,7 @@ public class MetaDataUtil {
                             column.setFooterScript(annot2.value());
                         }//end if(column.isCustomfooter()&&annot2!=null)
                         if(annot3!=null){
-                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                         }//end if(annot3!=null)
                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                         keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                            
@@ -771,7 +771,7 @@ public class MetaDataUtil {
                             column.setFilter(filter.value());
                         }//end if(field.isAnnotationPresent(Filter.class)){
                         if(annot3!=null){
-                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                         }//end if(annot3!=null)
                         if(!exclures.contains(keybuilder.toString())){                           
                             metaData.getColumns().add(column);
@@ -809,7 +809,7 @@ public class MetaDataUtil {
                                   column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
                                   column.setObservable(annot.observable());
                                   if(annot3!=null){
-                                    column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                    column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                   }//end if(annot3!=null)
                                   metaGroup.getColumns().add(column);        
                                }else{
@@ -819,7 +819,7 @@ public class MetaDataUtil {
                                    column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                                    column.setHidden(annot.hidden());
                                    if(annot3!=null){
-                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                     }//end if(annot3!=null)
                                    metaGroup.getColumns().add(column);        
                                }                               
@@ -830,7 +830,7 @@ public class MetaDataUtil {
                                 column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                                 column.setHidden(annot.hidden());
                                 if(annot3!=null){
-                                    column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                    column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                 }//end if(annot3!=null)
                                 metaGroup.getColumns().add(column); 
                       }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
@@ -843,7 +843,7 @@ public class MetaDataUtil {
                             column.setCompute(annot.compute());column.setValue(annot.values());
                             column.setHidden(annot.hidden());
                             if(annot3!=null){
-                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                             }//end if(annot3!=null)
                             metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(Boolean.class)){
@@ -852,7 +852,7 @@ public class MetaDataUtil {
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                             column.setHidden(annot.hidden());
                             if(annot3!=null){
-                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                             }//end if(annot3!=null)
                             metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(List.class)){
@@ -875,7 +875,7 @@ public class MetaDataUtil {
                                             metaArray.setFooterScript(annot2.value());
                                          }//end if(column.isCustomfooter()&&annot2!=null)
                                         if(annot3!=null){
-                                            metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                            metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                         }//end if(annot3!=null)
                                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                                         keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                            
@@ -917,7 +917,7 @@ public class MetaDataUtil {
                                             column.setFilter(filter.value());
                                         }//end if(field.isAnnotationPresent(Filter.class)){
                                         if(annot3!=null){
-                                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                            column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                         }//end if(annot3!=null)
                                     }
                                 }else if(field.isAnnotationPresent(OneToMany.class)){                                    
@@ -930,7 +930,7 @@ public class MetaDataUtil {
                                         metaArray.setFooterScript(annot2.value());
                                     }//end if(column.isCustomfooter()&&annot2!=null)
                                     if(annot3!=null){
-                                        metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                        metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                     }//end if(annot3!=null)
                                     StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
                                     keybuilder.append(annot.type().toString());keybuilder.append(field.getName());  
@@ -974,7 +974,7 @@ public class MetaDataUtil {
                                     }//end if(field.isAnnotationPresent(Filter.class)){
                                     column.setObservable(annot.observable());
                                     if(annot3!=null){
-                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source()));
+                                        column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                     }//end if(annot3!=null)
                                 }//end if(!shareCache.containsKey(annot.type().getClass().toString()))
                           }//end if(field.isAnnotationPresent(ManyToOne.class)){

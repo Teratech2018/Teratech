@@ -13,10 +13,12 @@ import javax.ws.rs.core.MediaType;
 import com.keren.model.recrutement.AffectationCandidat;
 import com.keren.model.recrutement.BesionRecrutement;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
+import javax.ws.rs.PUT;
 
 
 /**
- * Interface du service JAX-RS
+ * Interface du service JAX-RS
+
  * @since Wed Apr 11 11:31:28 GMT+01:00 2018
  * 
  */
@@ -24,13 +26,13 @@ public interface AffectationCandidatRS
     extends GenericService<AffectationCandidat, Long>
 {
 
-	@PUT
+    @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("valide")
     public AffectationCandidat valide(@Context HttpHeaders headers,AffectationCandidat entity);
 	
-	@PUT
+    @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("rejete")

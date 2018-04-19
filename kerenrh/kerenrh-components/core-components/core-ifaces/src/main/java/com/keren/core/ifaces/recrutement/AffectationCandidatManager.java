@@ -6,7 +6,8 @@ import com.keren.model.recrutement.AffectationCandidat;
 
 
 /**
- * Interface etendue par les interfaces locale et remote du manager
+ * Interface etendue par les interfaces locale et remote du manager
+
  * @since Wed Apr 11 11:31:28 GMT+01:00 2018
  * 
  */
@@ -15,5 +16,9 @@ public interface AffectationCandidatManager
 {
 
     public final static String SERVICE_NAME = "AffectationCandidatManager";
+    
+    public AffectationCandidat valide(AffectationCandidat entity);
+
+    public AffectationCandidat annule(AffectationCandidat entity);
 
 }

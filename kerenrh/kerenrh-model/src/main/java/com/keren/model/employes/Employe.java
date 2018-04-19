@@ -181,7 +181,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 
 	@OneToMany(mappedBy="employe",fetch=FetchType.LAZY)
 	@Predicate(label="Contrat de tarvail",type=ContratTravail.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group41",groupLabel="Contrats de Travail")
-    private List<ContratTravail> contrats = new ArrayList<ContratTravail>();
+        private List<ContratTravail> contrats = new ArrayList<ContratTravail>();
 	
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="EMP_ID")
@@ -264,12 +264,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		}
 		this.structure = employ.structure;
 		this.nbrejours = employ.nbrejours;
-//		for(CompteBancaire cb:employ.comptesbancaire){
-//			comptesbancaire.add(new CompteBancaire(cb));
-//		}
-//		for(Famille fam:employ.familles){
-//			familles.add(new Famille(fam));
-//		}
+
 	}
 
 	public String getMatricule() {
@@ -560,8 +555,6 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.familles = familles;
 	}
 	
-	
-
 	public Societe getStructure() {
 		return structure;
 	}

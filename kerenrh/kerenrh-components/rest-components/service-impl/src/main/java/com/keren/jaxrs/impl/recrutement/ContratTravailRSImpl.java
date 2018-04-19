@@ -22,7 +22,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Wed Apr 11 11:31:28 GMT+01:00 2018
  * 
  */
@@ -65,12 +66,12 @@ public class ContratTravailRSImpl
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new ContratTravail(), new HashMap<String, MetaData>(),new ArrayList<String>());
 			MetaColumn workbtn = new MetaColumn("button", "work2", "Démarrer", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'contrattravail','method':'demarrer'}");
+            workbtn.setValue("{'model':'kerenrh','entity':'contrattravail','method':'demarrer'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-success");
             meta.getHeader().add(workbtn);
 			workbtn = new MetaColumn("button", "work1", "Cloturer le Contrat", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'contrattravail','method':'cloture'}");
+            workbtn.setValue("{'model':'kerenrh','entity':'contrattravail','method':'cloture'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);            
@@ -129,6 +130,8 @@ public class ContratTravailRSImpl
 				throw new KerenExecption("L'Indice de Solde du salarié est obligatoire");
 			}
 		}
+                
+                entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
 

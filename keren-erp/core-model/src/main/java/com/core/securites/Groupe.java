@@ -39,7 +39,7 @@ public class Groupe extends BaseElement implements Serializable,Comparable<Group
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID")
     @Predicate(label = "HABILITATIONS",group = true,groupName = "group_1",groupLabel = "HABILITATIONS",updatable = false,target = "one-to-many",type = GroupeDetail.class,edittable = true)
-    @Observer(observable = "module",source = "method:detail")
+    @Observer(observable = "module",source = "method:detail",parameters = "code,module")
     private List<GroupeDetail> droits = new ArrayList<GroupeDetail>();
 
     /**

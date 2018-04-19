@@ -6,7 +6,8 @@ import com.keren.model.recrutement.EtapeRecrutement;
 
 
 /**
- * Interface etendue par les interfaces locale et remote du manager
+ * Interface etendue par les interfaces locale et remote du manager
+
  * @since Wed Apr 11 11:31:28 GMT+01:00 2018
  * 
  */
@@ -17,3 +18,8 @@ public interface EtapeRecrutementManager
     public final static String SERVICE_NAME = "EtapeRecrutementManager";
 
 }
+/*
+public EtapeRecrutement valide(EtapeRecrutement entity);
+
+public EtapeRecrutement annule(EtapeRecrutement entity);
+*/

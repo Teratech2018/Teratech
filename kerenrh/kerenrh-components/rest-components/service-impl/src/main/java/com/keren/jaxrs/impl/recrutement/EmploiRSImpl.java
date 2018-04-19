@@ -8,7 +8,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.keren.core.ifaces.recrutement.AffectationCandidatManagerRemote;
 import com.keren.core.ifaces.recrutement.EmploiManagerRemote;
 import com.keren.jaxrs.ifaces.recrutement.EmploiRS;
 import com.keren.model.formations.SeanceFormation;
@@ -20,7 +22,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Wed Apr 11 11:31:28 GMT+01:00 2018
  * 
  */
@@ -36,6 +39,13 @@ public class EmploiRSImpl
      */
     @Manager(application = "kerenrh", name = "EmploiManagerImpl", interf = EmploiManagerRemote.class)
     protected EmploiManagerRemote manager;
+    
+    /**
+     * On injecte un Gestionnaire d'entites 
+     * 
+     */
+    @Manager(application = "kerenrh", name = "AffectationCandidatManagerImpl", interf = AffectationCandidatManagerRemote.class)
+    protected AffectationCandidatManagerRemote AffectationCandidatManager;
 
     public EmploiRSImpl() {
         super();
@@ -55,20 +65,39 @@ public class EmploiRSImpl
     }
     
     @Override
-   	public MetaData getMetaData(HttpHeaders headers) {
-   		// TODO Auto-generated method stub
-   		MetaData meta = null;
-   		try {
-   			meta = MetaDataUtil.getMetaData(new Emploi(), new HashMap<String, MetaData>()
-   			, new ArrayList<String>());   			
-   		} catch (InstantiationException e) {
-   			// TODO Auto-generated catch block
-   			e.printStackTrace();
-   		} catch (IllegalAccessException e) {
-   			// TODO Auto-generated catch block
-   			e.printStackTrace();
-   		}
-   		return meta;
-   	}
+    public MetaData getMetaData(HttpHeaders headers) {
+        // TODO Auto-generated method stub
+        MetaData meta = null;
+        try {
+                meta = MetaDataUtil.getMetaData(new Emploi(), new HashMap<String, MetaData>()
+                , new ArrayList<String>());   			
+        } catch (InstantiationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        } catch (IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+        return meta;
+    }
 
+    @Override
+    public Emploi delete(Long id) {
+        
+        //Initialsiation
+        Emploi entity = null;
+        
+        try{
+            
+            //On supprime l'entite
+            entity = super.delete(id);
+            
+        }catch(Exception e){
+            
+            //On lève une exception
+            throw new KerenExecption("Cet emploi a deja fait l'objet d'un traitement ");
+        }
+        
+        return entity; 
+    }
 }

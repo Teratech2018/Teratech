@@ -34,15 +34,15 @@ public class AffectationCandidat extends BaseElement implements Serializable, Co
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Emploi concerné",type=Emploi.class,target="many-to-one",optional=false)
+	@Predicate(label="Emploi concerné",type=Emploi.class,target="many-to-one",optional=false, search=true, updatable = false)
 	private Emploi emploi;
 	
 	@ManyToOne
 	@JoinColumn(name="VILL_ID")
-	@Predicate(label="Lieu de recrutement",type=Ville.class,target="many-to-one",optional=false)
+	@Predicate(label="Lieu de recrutement",type=Ville.class,target="many-to-one",optional=true, search=true, updatable = false)
 	private Ville lieu ;
 	
-	@Predicate(label="Nombre de Places",type=Short.class,optional=false)
+	@Predicate(label="Nombre de Places",type=Short.class,optional=false, search=true, updatable = false)
 	private Short place;
 	
 	@ManyToMany
@@ -50,11 +50,11 @@ public class AffectationCandidat extends BaseElement implements Serializable, Co
 	@Predicate(label=".",type=CandidatureSpontane.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Candidatures Associées")
 	private List<CandidatureSpontane> candidatures = new ArrayList<CandidatureSpontane>();
 	
-	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Motivation du besion")
+	@Predicate(label="Motivation",target="textarea",group=true,groupName="group2",groupLabel="Motivation du besion", search=true, updatable = false)
 	private String motivation ;
 
-	@Predicate(label="Etat",hide=true,search=true)
-	private String state = "etabli";
+	@Predicate(label="Etat",hide=true)
+	private String state = "valide";
 	
 	/**
 	 * 
@@ -163,13 +163,13 @@ public class AffectationCandidat extends BaseElement implements Serializable, Co
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Expression du Besion";
+		return "Associer une candidature";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Expression des Besions";
+		return "Associer une candidature";
 	}
 
 	@Override
@@ -200,9 +200,10 @@ public class AffectationCandidat extends BaseElement implements Serializable, Co
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
 		List<State> states = new ArrayList<State>();
-		states.add(new State("etabli", "Brouillon"));
-		states.add(new State("valide", "Validée"));
-		states.add(new State("annule", "Annulée"));
+		//states.add(new State("etabli", "Brouillon"));
+		states.add(new State("valide", "Besoin Soumis"));
+                states.add(new State("confirmation", "Validée"));
+		//states.add(new State("annule", "Annulée"));
 		return states;
 	}
 

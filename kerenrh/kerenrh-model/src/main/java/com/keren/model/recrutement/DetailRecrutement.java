@@ -30,13 +30,13 @@ public class DetailRecrutement extends BaseElement implements Serializable, Comp
 	
 	@ManyToOne
 	@JoinColumn(name="ETAREC_ID")
-	@Predicate(label="Etape Recrutement",type=EtapeRecrutement.class,target="many-to-one")
+	@Predicate(label="Etape Recrutement",type=EtapeRecrutement.class,target="many-to-one",search = true)
 	private EtapeRecrutement etape ;
 	
-	@Predicate(label="Appréciation",target="combobox",values="Faible;Moyen;Bon;Excellent;Parfait")
+	@Predicate(label="Appréciation",target="combobox",values="Faible;Moyen;Bon;Excellent;Parfait",search = true)
 	private String niveau ;
 	
-	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Appréciations")
+	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Appréciations",search = true)
 	private String note;
 
 	/**

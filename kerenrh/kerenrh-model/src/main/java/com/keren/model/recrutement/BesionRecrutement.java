@@ -46,7 +46,7 @@ public class BesionRecrutement extends BaseElement implements Serializable, Comp
 	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Motivation du besion",search=true)
 	private String motivation ;
 	
-	@Predicate(label="Etat",hide=true,search=true)
+	@Predicate(label="Etat",hide=true)
 	private String state = "etabli";
 
 	
@@ -185,7 +185,7 @@ public class BesionRecrutement extends BaseElement implements Serializable, Comp
 		List<State> states = new ArrayList<State>();
 		states.add(new State("etabli", "Brouillon"));
 		states.add(new State("valide", "Validée"));
-		states.add(new State("annule", "Annulée"));
+		//states.add(new State("annule", "Annulée"));
 		return states;
 	}
 

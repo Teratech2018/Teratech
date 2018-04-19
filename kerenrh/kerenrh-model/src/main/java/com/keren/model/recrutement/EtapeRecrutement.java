@@ -29,7 +29,7 @@ public class EtapeRecrutement extends BaseElement implements Serializable, Compa
 	 */
 	private static final long serialVersionUID = 8635243368208200240L;
 	
-	@Predicate(label="Nom ",unique=true,optional=false)
+	@Predicate(label="Nom ",unique=true,optional=false, search = true)
 	@Column(unique=true)
 	private String code ;
 	
@@ -41,11 +41,11 @@ public class EtapeRecrutement extends BaseElement implements Serializable, Compa
 	
 	@ManyToOne
 	@JoinColumn(name="DEP_ID")
-	@Predicate(label="Département Lié",type=Departement.class,target="many-to-one")
+	@Predicate(label="Département Lié",type=Departement.class,target="many-to-one", search = true)
 	private Departement departement ;
 	
 	@Lob
-	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Exigences")
+	@Predicate(label="Description",target="textarea",group=true,groupName="group1",groupLabel="Exigences", search = true)
 	private String note;
 
 	/**

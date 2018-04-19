@@ -6,7 +6,8 @@ import com.keren.model.recrutement.BesionRecrutement;
 
 
 /**
- * Interface etendue par les interfaces locale et remote du manager
+ * Interface etendue par les interfaces locale et remote du manager
+
  * @since Wed Apr 11 11:31:28 GMT+01:00 2018
  * 
  */
@@ -15,5 +16,10 @@ public interface BesionRecrutementManager
 {
 
     public final static String SERVICE_NAME = "BesionRecrutementManager";
+    
+    public BesionRecrutement valide(BesionRecrutement entity);
+
+    public BesionRecrutement annule(BesionRecrutement entity);
 
 }
+
