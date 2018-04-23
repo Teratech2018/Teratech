@@ -116,6 +116,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.jaxrs.impl.missions.MissionRSImpl.class);
         resources.add(com.keren.jaxrs.impl.missions.OrdreMissionRSImpl.class);
         resources.add(com.keren.jaxrs.impl.missions.ResultatMissionRSImpl.class);
+        resources.add(com.keren.jaxrs.impl.presences.AbsenceRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.FichePointageRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.LigneFichePointageRSImpl.class);
         resources.add(com.keren.jaxrs.impl.presences.LignePointageRSImpl.class);

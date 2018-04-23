@@ -15,5 +15,13 @@ public interface PointageJouranlierManager
 {
 
     public final static String SERVICE_NAME = "PointageJouranlierManager";
+    
+    /**
+     * Confirmation du pointage journalier
+     * 
+     * @param entity
+     * @return
+     */
+    public PointageJouranlier confirmer(PointageJouranlier entity);
 
 }

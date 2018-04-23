@@ -342,9 +342,9 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.vehicule = employ.vehicule;
 		this.alimentaire = employ.alimentaire;
 		this.noel = employ.noel;
-		if(employ.departement!=null){
-			this.departement = new Departement(employ.departement);
-		}
+//		if(employ.departement!=null){
+//			this.departement = new Departement(employ.departement);
+//		}
 		if(employ.departementsoc!=null){
 			this.departementsoc = new DepartementSoc(employ.departementsoc);
 		}

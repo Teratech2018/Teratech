@@ -1,18 +1,26 @@
 
 package com.keren.jaxrs.impl.presences;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.keren.core.ifaces.presences.FichePointageManagerRemote;
 import com.keren.core.ifaces.presences.PointageJouranlierManagerRemote;
 import com.keren.jaxrs.ifaces.presences.PointageJouranlierRS;
 import com.keren.model.conges.InterruptionConge;
+import com.keren.model.presences.FichePointage;
+import com.keren.model.presences.LigneFichePointage;
+import com.keren.model.presences.LignePointage;
 import com.keren.model.presences.PointageJouranlier;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -37,6 +45,10 @@ public class PointageJouranlierRSImpl
      */
     @Manager(application = "kerenrh", name = "PointageJouranlierManagerImpl", interf = PointageJouranlierManagerRemote.class)
     protected PointageJouranlierManagerRemote manager;
+    
+    @Manager(application = "kerenrh", name = "FichePointageManagerImpl", interf = FichePointageManagerRemote.class)
+    protected FichePointageManagerRemote fichemanager;
+    
 
     public PointageJouranlierRSImpl() {
         super();
@@ -65,7 +77,7 @@ public class PointageJouranlierRSImpl
 						, new ArrayList<String>());
 				MetaColumn workbtn = new MetaColumn("button", "work1", "Confirmer", false, "workflow", null);
 				workbtn.setStates(new String[]{"etabli"});
-				workbtn.setValue("{'model':'kerenrh','entity':'pointagejournalier','method':'confirme'}");
+				workbtn.setValue("{'model':'kerenrh','entity':'pointagejouranlier','method':'confirme'}");
 				meta.getHeader().add(workbtn);
 				MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
 				meta.getHeader().add(stautsbar);
@@ -75,11 +87,87 @@ public class PointageJouranlierRSImpl
 				throw new WebApplicationException(e);
 			}
 	}
+	
+	
 
 	@Override
-	public PointageJouranlier confirmer(HttpHeaders headers, PointageJouranlier dmde) {
+	protected void processBeforeSave(PointageJouranlier entity) {
 		// TODO Auto-generated method stub
-		return dmde;
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé est obligatoire");
+		}else if(entity.getDatepointage()==null){
+			throw new KerenExecption("La date de la feuille de pointage est obligatoire");
+		}else if(entity.getFiche()==null){
+			throw new KerenExecption("La fiche de pointage est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+	
+	
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		PointageJouranlier entity = manager.find("id", (Long) id);
+		if(entity.getState().equalsIgnoreCase("confirmer")){
+			throw new KerenExecption("Le Pointage journalier est déjà validé");
+		}//end if(entity.getState().equalsIgnoreCase("valide")){
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeUpdate(PointageJouranlier entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé est obligatoire");
+		}else if(entity.getDatepointage()==null){
+			throw new KerenExecption("La date de la feuille de pointage est obligatoire");
+		}else if(entity.getFiche()==null){
+			throw new KerenExecption("La fiche de pointage est obligatoire");
+		}else if(entity.getState().equalsIgnoreCase("confirmer")){
+			throw new KerenExecption("Pointage journalier deéjà confirmé");
+		}
+		super.processBeforeUpdate(entity);
+	}
+
+	@Override
+	public PointageJouranlier confirmer(HttpHeaders headers, PointageJouranlier entity) {
+		// TODO Auto-generated method stub
+		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+			throw new KerenExecption("L'intitulé est obligatoire");
+		}else if(entity.getDatepointage()==null){
+			throw new KerenExecption("La date de la feuille de pointage est obligatoire");
+		}else if(entity.getFiche()==null){
+			throw new KerenExecption("La fiche de pointage est obligatoire");
+		}else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+			throw new KerenExecption("Veuillez saisir au moins une ligne de pointage");
+		}
+		return manager.confirmer(entity);
+	}
+
+	@Override
+	public List<LignePointage> presences(HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		List<LignePointage> datas = new ArrayList<LignePointage>();
+//		System.out.println(PointageJouranlierRSImpl.class.toString()+" ==================== "+headers.getRequestHeader("id")+" ======= "+headers.getRequestHeader("datepointage"));
+		Gson gson = new Gson();
+		Long id = gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		if(id==null||id<0){
+			return datas;
+		}//end if(id==null||id<0){
+//		Date date = gson.fromJson(headers.getRequestHeader("datepointage").get(0), Date.class);
+//		//Construction des pointages
+//		if(date==null){
+//			throw new KerenExecption("Veuillez saisir la date de la feuille de presence");
+//		}//end if(date==null){
+		//Chargement de la fiche de pointae
+		FichePointage fiche = fichemanager.find("id", id);
+		
+		//Construction des lignes
+		for(LigneFichePointage ligne:fiche.getLignes()){
+			datas.add(new LignePointage(ligne));
+		}//end for(LigneFichePointage ligne:fiche.getLignes()){
+		return datas;
 	}
 
 }

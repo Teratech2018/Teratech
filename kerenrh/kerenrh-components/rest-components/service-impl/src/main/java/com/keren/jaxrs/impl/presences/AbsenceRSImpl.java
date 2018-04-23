@@ -10,10 +10,10 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
-import com.keren.core.ifaces.presences.RetardManagerRemote;
-import com.keren.jaxrs.ifaces.presences.RetardRS;
+import com.keren.core.ifaces.presences.AbsenceManagerRemote;
+import com.keren.jaxrs.ifaces.presences.AbsenceRS;
+import com.keren.model.presences.Absence;
 import com.keren.model.presences.LignePointage;
-import com.keren.model.presences.Retard;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -22,23 +22,23 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 /**
  * Classe d'implementation du Web Service JAX-RS
- * @since Mon Apr 23 09:28:01 GMT+01:00 2018
+ * @since Sun Apr 22 11:44:27 GMT+01:00 2018
  * 
  */
-@Path("/retard")
-public class RetardRSImpl
-    extends AbstractGenericService<Retard, Long>
-    implements RetardRS
+@Path("/absence")
+public class AbsenceRSImpl
+    extends AbstractGenericService<Absence, Long>
+    implements AbsenceRS
 {
 
     /**
      * On injecte un Gestionnaire d'entites
      * 
      */
-    @Manager(application = "kerenrh", name = "RetardManagerImpl", interf = RetardManagerRemote.class)
-    protected RetardManagerRemote manager;
+    @Manager(application = "kerenrh", name = "AbsenceManagerImpl", interf = AbsenceManagerRemote.class)
+    protected AbsenceManagerRemote manager;
 
-    public RetardRSImpl() {
+    public AbsenceRSImpl() {
         super();
     }
 
@@ -47,7 +47,7 @@ public class RetardRSImpl
      * 
      */
     @Override
-    public GenericManager<Retard, Long> getManager() {
+    public GenericManager<Absence, Long> getManager() {
         return manager;
     }
 
@@ -59,15 +59,15 @@ public class RetardRSImpl
 	public MetaData getMetaData(HttpHeaders headers) {
 		// TODO Auto-generated method stub
 		 try {
-				MetaData meta = MetaDataUtil.getMetaData(new Retard(),new HashMap<String, MetaData>()
+				MetaData meta = MetaDataUtil.getMetaData(new Absence(),new HashMap<String, MetaData>()
 						, new ArrayList<String>());
 				MetaColumn workbtn = new MetaColumn("button", "work1", "Justifiée", false, "workflow", null);
 				workbtn.setStates(new String[]{"etabli"});
-				workbtn.setValue("{'model':'kerenrh','entity':'retard','method':'justifier'}");
+				workbtn.setValue("{'model':'kerenrh','entity':'absence','method':'justifier'}");
 				meta.getHeader().add(workbtn);
 				workbtn = new MetaColumn("button", "work2", "Non justifiée", false, "workflow", null);
 				workbtn.setStates(new String[]{"etabli"});
-				workbtn.setValue("{'model':'kerenrh','entity':'retard','method':'nonjustifier'}");
+				workbtn.setValue("{'model':'kerenrh','entity':'absence','method':'nonjustifier'}");
 				meta.getHeader().add(workbtn);
 				MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
 				meta.getHeader().add(stautsbar);
@@ -79,17 +79,34 @@ public class RetardRSImpl
 	}
 
 	@Override
-	public Retard justifier(HttpHeaders headers, Retard entity) {
+	protected void processBeforeDelete(Object entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeDelete(entity);
+	}
+
+	@Override
+	protected void processBeforeSave(Absence entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(Absence entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeUpdate(entity);
+	}
+
+	@Override
+	public Absence justifier(HttpHeaders headers, Absence entity) {
 		// TODO Auto-generated method stub
 		return manager.justifie(entity);
 	}
 
 	@Override
-	public Retard nonjustifier(HttpHeaders headers, Retard entity) {
+	public Absence nonjustifier(HttpHeaders headers, Absence entity) {
 		// TODO Auto-generated method stub
 		return manager.nonjustifie(entity);
 	}
-    
     
     
 

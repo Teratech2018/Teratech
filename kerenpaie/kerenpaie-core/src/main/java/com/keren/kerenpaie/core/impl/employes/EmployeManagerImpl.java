@@ -19,6 +19,7 @@ import com.keren.kerenpaie.dao.ifaces.employes.EmployeDAOLocal;
 import com.keren.kerenpaie.model.employes.ContratTravail;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.employes.Medaille;
+import com.keren.kerenpaie.model.structures.Departement;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -52,7 +53,11 @@ public class EmployeManagerImpl
 		List<Employe> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<Employe> output = new ArrayList<Employe>();
 		for(Employe emp:datas){
-			output.add(new Employe(emp));
+			Employe data = new Employe(emp);
+			if(data.getDepartement()!=null){
+				data.setDepartement(new Departement(data.getDepartement()));
+			}//end if(data.getDepartement()!=null){
+			output.add(data);
 		}//end for(Employe emp:datas){
 		return output;
 	}
@@ -64,7 +69,9 @@ public class EmployeManagerImpl
 		// TODO Auto-generated method stub
 		Employe employ = super.find(propertyName, entityID);		
 		Employe entity = new Employe(employ);
-		
+		if(employ.getDepartement()!=null){
+			entity.setDepartement(new Departement(employ.getDepartement()));
+		}//end if(employ.getDepartement()!=null){
 		for(ContratTravail contrat: employ.getContrats()){
 			entity.getContrats().add(new ContratTravail(contrat));
 		}//end for(CompteBancaire cb: employ.getComptesbancaire()){

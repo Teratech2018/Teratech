@@ -56,7 +56,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Matricule",search=true,optional=false,nullable=false,unique=true)
     private String matricule ;    
     
-	@Predicate(label="Genre",target="combobox",values="Masculin;Feminin")
+	@Predicate(label="Genre",target="combobox",values="Masculin;Feminin",search=true)
     private String genre ="0";
 	
 	@Predicate(label="Statut",type=String.class,target="combobox",values="Agent local;Agent public")
@@ -245,9 +245,9 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.modile = employ.modile;
 		this.mail = employ.mail;
 		this.region = employ.region;
-		if(employ.departement!=null){
-			this.departement = new Departement(employ.departement);
-		}
+//		if(employ.departement!=null){
+//			this.departement = new Departement(employ.departement);
+//		}
 		if(employ.departementsoc!=null){
 			this.departementsoc = new DepartementSoc(employ.departementsoc);
 		}

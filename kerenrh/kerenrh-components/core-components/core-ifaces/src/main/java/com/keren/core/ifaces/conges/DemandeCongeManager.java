@@ -17,6 +17,6 @@ public interface DemandeCongeManager
 
     public final static String SERVICE_NAME = "DemandeCongeManager";
     
-    public DemandeCongeC confirmer(DemandeConge dmde);
+    public DemandeConge confirmer(DemandeConge dmde);
 
 }

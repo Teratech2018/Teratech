@@ -37,6 +37,7 @@
     <class>com.keren.model.presences.LigneFichePointage</class>
     <class>com.keren.model.presences.PointageJouranlier</class>
     <class>com.keren.model.presences.LignePointage</class>
+    <class>com.keren.model.presences.Absence</class>
     <class>com.keren.model.discipline.DemandeExplication</class>
     <class>com.keren.model.discipline.ReponseDE</class>
     <class>com.keren.model.discipline.TraitementDE</class>
@@ -97,6 +98,7 @@
     <class>com.keren.model.formations.ThemeFormation</class>
     <class>com.keren.model.missions.OrdreMission</class>
     <class>com.keren.model.carrieres.Cessation</class>
+    <class>com.keren.model.presences.Retard</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

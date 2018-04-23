@@ -25,8 +25,8 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_LIFIPORH")
-public class LigneFichePointage extends BaseElement implements Serializable, Comparable<LigneFichePointage> {
+@Table(name="T_LIPORH")
+public class Retard extends BaseElement implements Serializable, Comparable<Retard> {
 
 	/**
 	 * 
@@ -35,33 +35,38 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,nullable=false,search=true)
+	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,updatable=false,nullable=false,search=true)
 	private Employe employe ;
 	
-	@Temporal(TemporalType.TIME)
-	@Predicate(label="Date du pointage",type=Date.class,target="date",search=true)
-	private Date datepointage ;	
+	@Temporal(TemporalType.DATE)
+//	@Predicate(label="Date du pointage",type=Date.class,target="date",editable=false,search=true,hi)
+	private Date datepointage ;
 	
 	@Predicate(label="Heure arrivé",target="time",search=true)
-	private String heurearrive ;	
+	private String heurearrive ;
 	
 	@Predicate(label="Heure de depart",target="time",search=true)
 	private String heuredepart ;
 	
+	@Predicate(label="Retard",type=Boolean.class,search=true,editable=false)
+	private Boolean retard = Boolean.FALSE;
+	
 	@Predicate(label="Absent",type=Boolean.class,search=true)
 	private Boolean absent = Boolean.FALSE;
 	
-	@Predicate(label="Absent payée",type=Boolean.class,search=true)
-	private Boolean absencepaye = Boolean.FALSE;
+	@ManyToOne
+	@JoinColumn(name="POJO_ID")
+	private PointageJouranlier pointage ;
 	
-	
+	@Predicate(label="Etat",hide=true,search=true)
+	private String state ="etabli";
 
 	/**
 	 * 
 	 */
-	public LigneFichePointage() {
+	public Retard() {
 		// TODO Auto-generated constructor stub
-//		state ="etabli";
+		state ="etabli";
 	}
 
 	/**
@@ -69,10 +74,10 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 	 * @param designation
 	 * @param moduleName
 	 */
-	public LigneFichePointage(long id, String designation, String moduleName) {
+	public Retard(long id, String designation, String moduleName) {
 		super(id, designation, moduleName);
 		// TODO Auto-generated constructor stub
-//		state ="etabli";
+		state ="etabli";
 	}
 	
 	
@@ -87,45 +92,49 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
  * @param absent
  * @param absencepaye
  */
-	public LigneFichePointage(long id, String designation, String moduleName, Employe employe, String heurearrive,
+	public Retard(long id, String designation, String moduleName, Employe employe, String heurearrive,
 			String heuredepart, Boolean absent, Boolean absencepaye) {
 		super(id, designation, moduleName);
 		this.employe = employe;
 		this.heurearrive = heurearrive;
 		this.heuredepart = heuredepart;
 		this.absent = absent;
-		this.absencepaye = absencepaye;
-//		state ="etabli";
+		state ="etabli";
 		
-	}
-	
-	/**
-	 * 
-	 * @param employe
-	 */
-	public LigneFichePointage(Employe employe) {
-		super(-1, null, null);
-		this.employe = employe;		
 	}
 	
 	/**
 	 * 
 	 * @param lign
 	 */
-	public LigneFichePointage(LigneFichePointage lign) {
+	public Retard(Retard lign) {
 		super(lign.id, lign.designation, lign.moduleName);
 		if(lign.employe!=null){
 			this.employe = new Employe(lign.employe);
-		}//end if(lign.employe!=null){
+		}
 		this.heurearrive = lign.heurearrive;
 		this.heuredepart = lign.heuredepart;
 		this.absent = lign.absent;
-		this.absencepaye = lign.absencepaye;
+		this.retard = lign.retard;
 		this.datepointage = lign.datepointage;
-//		state =lign.state;
+		state =lign.state;
 	}
 	
-	
+	/**
+	 * 
+	 * @param lign
+	 */
+	public Retard(LigneFichePointage lign) {
+		super(-1, null, null);
+		if(lign.getEmploye()!=null){
+			this.employe = new Employe(lign.getEmploye());
+		}//end if(lign.getEmploye()!=null){
+		this.heurearrive = lign.getHeurearrive();
+		this.heuredepart = lign.getHeuredepart();
+		this.absent = lign.getAbsent();
+		this.datepointage = lign.getDatepointage();
+		state ="etabli";
+	}
 	
 
 	public Employe getEmploye() {
@@ -160,20 +169,27 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 		this.absent = absent;
 	}
 
-	public Boolean getAbsencepaye() {
-		return absencepaye;
+	
+	public Boolean getRetard() {
+		return retard;
 	}
 
-	public void setAbsencepaye(Boolean absencepaye) {
-		this.absencepaye = absencepaye;
+	public void setRetard(Boolean retard) {
+		this.retard = retard;
 	}
-	
-	
+
+	public PointageJouranlier getPointage() {
+		return pointage;
+	}
+
+	public void setPointage(PointageJouranlier pointage) {
+		this.pointage = pointage;
+	}
 
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "POINTANGE "+(employe==null ? "":" / "+employe.getNom());
+		return "Retard ";
 	}
 	
 	
@@ -186,18 +202,18 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 		this.datepointage = datepointage;
 	}
 
-//	public String getState() {
-//		return state;
-//	}
-//
-//	public void setState(String state) {
-//		this.state = state;
-//	}
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "ABSENCES NON JUSTIFIEES";
+		return "Retard";
 	}
 
 	@Override
@@ -214,6 +230,20 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 
 	@Override
 	public boolean isActivefilelien() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	
+
+	@Override
+	public boolean isDesablecreate() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isDesabledelete() {
 		// TODO Auto-generated method stub
 		return true;
 	}
@@ -241,18 +271,9 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(LigneFichePointage o) {
+	public int compareTo(Retard o) {
 		// TODO Auto-generated method stub
 		return employe.compareTo(o.employe);
 	}
-
-	@Override
-	public String toString() {
-		return "LigneFichePointage [employe=" + employe + ", datepointage=" + datepointage + ", heurearrive="
-				+ heurearrive + ", heuredepart=" + heuredepart + ", absent=" + absent + ", absencepaye=" + absencepaye
-				+ ", id=" + id + "]";
-	}
-	
-	
 
 }

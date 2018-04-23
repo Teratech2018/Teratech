@@ -163,4 +163,11 @@ public class Departement extends BaseElement implements Serializable, Comparable
 		return code.compareTo(o.code);
 	}
 
+    @Override
+    public String toString() {
+        return "Departement{" + "code=" + code + ", actif=" + actif + ", nom=" + nom + ", parent=" + parent + ", responsable=" + responsable + ", type=" + type + '}';
+    }
+        
+        
+
 }

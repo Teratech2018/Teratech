@@ -102,17 +102,17 @@ public class DemandeCongeCRSImpl
 	}
 
 	@Override
-	public DemandeCongeV approuver(HttpHeaders headers, DemandeCongeC dmde) {
+	public DemandeCongeC approuver(HttpHeaders headers, DemandeCongeC dmde) {
 		return manager.approuver(dmde);
 	}
 
 	@Override
-	public DemandeCongeR rejeter(HttpHeaders headers, DemandeCongeC dmde) {
+	public DemandeCongeC rejeter(HttpHeaders headers, DemandeCongeC dmde) {
 		return manager.rejeter(dmde);
 	}
 
 	@Override
-	public DemandeConge annuler(HttpHeaders headers, DemandeCongeC dmde) {
+	public DemandeCongeC annuler(HttpHeaders headers, DemandeCongeC dmde) {
 		return manager.annuler(dmde);
 	}
 

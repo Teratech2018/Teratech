@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -25,7 +27,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_INRCON")
+@Table(name="T_INRCONRH")
 public class InterruptionConge extends BaseElement implements Serializable, Comparable<InterruptionConge> {
 
 	/**
@@ -36,25 +38,35 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 	
 	@ManyToOne
 	@JoinColumn(name="DC_ID")
-	@Predicate(label="Congé concerné",type=DemandeCongeV.class,target="many-to-one",optional=false,nullable=false,search=true)
-	private DemandeCongeV conge ;
+	@Predicate(label="Congé concerné",type=DemandeConge.class,target="many-to-one",optional=false,nullable=false,search=true, observable = true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"valider\"}]")
+	private DemandeConge conge ;
+        
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
 	@Predicate(label="Employe",type=Employe.class,target="many-to-one",optional=true,nullable=false,search=true, editable=false)
+    @Observer(observable = "conge",source = "field:employe")
 	private Employe employe;
 	
 	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de prise effet",type=Date.class,target="date",search=true , optional=false)
+	@Predicate(label="Date de prise de service effectif",type=Date.class,target="date",search=true , optional=false)
 	private Date date ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Début du congé",type=Date.class,target="date",editable=false,search=true)
-	private Date dateconge;
+        @Observer(observable = "conge",source = "field:debut")
+	private Date dateDebutConge;
 	
 	@Predicate(label="Durer du Congé",type=Short.class,editable=false,search=true)
+        @Observer(observable = "conge",source = "field:duree")
 	private Short dureeconge ;
 	
-	@Predicate(label="Nombre de jours restant",type=Short.class,editable=false,search=true)
+        @Temporal(TemporalType.DATE)
+	@Predicate(label="Fin du congé",type=Date.class, target="date",editable=false,search=true)
+        @Observer(observable = "conge",source = "field:fin")
+	private Date dateFinconge;
+        
+	@Predicate(label="Nombre de jours restant",type=Short.class,editable=false,search=false, hide = true)
 	private Short joursr =0;
 	
 	@Predicate(target="textarea",group=true,groupName="group1",groupLabel="Motif Interruption")
@@ -97,12 +109,12 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 	 * @param joursr
 	 */
 	public InterruptionConge(long id, String designation, String moduleName, Employe employe, Date date,
-			DemandeCongeV conge, Date dateconge, Short dureeconge, Short joursr) {
+			DemandeConge conge, Date dateconge, Short dureeconge, Short joursr) {
 		super(id, designation, moduleName);
 		this.employe = employe;
 		this.date = date;
 		this.conge = conge;
-		this.dateconge = dateconge;
+		this.dateDebutConge = dateconge;
 		this.dureeconge = dureeconge;
 		this.joursr = joursr;
 		state = "etabli";
@@ -115,9 +127,10 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 		}
 		this.date = cg.date;
 		if(cg.conge!=null){
-			this.conge = new DemandeCongeV(cg.conge);
+			this.conge = new DemandeConge(cg.conge);
 		}
-		this.dateconge = cg.dateconge;
+		this.dateDebutConge = cg.dateDebutConge;
+                this.dateFinconge = cg.dateFinconge;
 		this.dureeconge = cg.dureeconge;
 		this.joursr = cg.joursr;
 		this.motif = cg.motif;
@@ -158,20 +171,20 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 		this.date = date;
 	}
 
-	public DemandeCongeV getConge() {
+	public DemandeConge getConge() {
 		return conge;
 	}
 
-	public void setConge(DemandeCongeV conge) {
+	public void setConge(DemandeConge conge) {
 		this.conge = conge;
 	}
 
-	public Date getDateconge() {
-		return dateconge;
+	public Date getDateDebutConge() {
+		return dateDebutConge;
 	}
 
-	public void setDateconge(Date dateconge) {
-		this.dateconge = dateconge;
+	public void setDateDebutConge(Date dateconge) {
+		this.dateDebutConge = dateconge;
 	}
 
 	public Short getDureeconge() {
@@ -190,8 +203,14 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 		this.joursr = joursr;
 	}
 
-	
-	
+        public Date getDateFinconge() {
+            return dateFinconge;
+        }
+
+        public void setDateFinconge(Date dateFinconge) {
+            this.dateFinconge = dateFinconge;
+        }
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub

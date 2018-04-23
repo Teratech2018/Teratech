@@ -146,8 +146,10 @@ public class AffectationCandidatManagerImpl
                 
                 //On recupere la candidature
                 recrutement.setCandidature(candidature);
+                
                 //Affectation du besion lie
                 recrutement.setBesion(besion);
+                
                 //On save
                 recrutementDao.save(recrutement);
             }
@@ -165,13 +167,16 @@ public class AffectationCandidatManagerImpl
 
     @Override
     public AffectationCandidat annule(AffectationCandidat entity) {
-
+        
+        //Variables
+        AffectationCandidat result = null;
+        
         if(entity.getState().trim().equalsIgnoreCase("valide")){
             entity.setState("annule");
             entity = dao.update(entity.getId(), entity);            
         }
         
-        AffectationCandidat result = new AffectationCandidat(entity);
+       result = new AffectationCandidat(entity);
         
         for(CandidatureSpontane candidature : entity.getCandidatures()){
             result.getCandidatures().add(new CandidatureSpontane(candidature));

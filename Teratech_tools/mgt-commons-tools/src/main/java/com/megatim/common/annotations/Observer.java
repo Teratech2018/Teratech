@@ -29,4 +29,10 @@ public @interface Observer {
      * @return 
      */
     String source();
+    /**
+     * Liste des parametres pour la methode
+     * Liste des champs donc le ID doit être injecte separe par des ,
+     * @return 
+     */
+    String parameters() default "";
 }

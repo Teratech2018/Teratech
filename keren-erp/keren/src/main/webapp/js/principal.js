@@ -959,17 +959,21 @@ angular.module("mainApp")
 //                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                      var entity = data[this.template["observable"]];
                      if(angular.isDefined(entity)){
-                         var id = entity.id ;
-                         if(!angular.isNumber(id)){
-                             id = -1 ;
-                         }//end if(!angular.isNumber(id)){
+                         var id = entity ;
+                         if(angular.isObject(entity)){
+                             id = entity.id ;
+                             if(!angular.isNumber(id)){
+                                  id = -1 ;
+                             }//end if(!angular.isNumber(id)){
+                         }//end if(angular.isObject(entity)){                         
                          $http.defaults.headers.common['id']=angular.toJson(id);
                          //Construction des autres
                          var parameters = this.template["parameters"];
-//                          console.log("notify:function(event , parameters) ============= model "+this.model+" method:"+template["methodname"]+" :::: entity : "+angular.toJson(parameters));
+//                          console.log("notify:function(event , parameters) ============= model "+this.model+" method:"+template["methodname"]+" :::: entity : "+angular.toJson(parameters)+" ===== ID : "+id);
                          if(parameters.length>0){
                              for(var i=0;i<parameters.length;i++){
                                  var param = parameters[i];
+//                                 console.log("notify:function(event , parameters) ============= ===== Date param : "+data[param]+" === param : "+param+" ==== isDate : "+angular.isDate(data[param]));
                                  if(angular.isObject(data[param])){
                                      $http.defaults.headers.common[param]=angular.toJson(data[param].id);
                                  }else if(!angular.isArray(data[param])){//element
@@ -1945,7 +1949,7 @@ angular.module("mainApp")
                selectElem.setAttribute('class','form-control');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
-               //selectElem.setAttribute('ng-change' , "getData('"+model+"',"+entityName+")");
+               selectElem.setAttribute('ng-change' , "getComboboxData('"+field.fieldName+"')");
                divElem_1.appendChild(selectElem);
               //selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+parts[1]);
               $scope.constraintsProvider(field , selectElem);
@@ -2003,15 +2007,15 @@ angular.module("mainApp")
                //Creation de l'entree
                //Filter criteria
                var key = commonsTools.keygenerator(model);
-//               console.log("$scope.manyToOneComponent = ======= "+model+" ====== "+metaData.entityName+" === "+field.fieldName+" === "+index+" ==== "+modelpath+" ===== "+key);
                $scope.filtertemplate[""+key+""] = field.filter ;
                var exprFn = $parse(model); 
                 var data = exprFn($scope);
                 var parts = model.split(".");
 //                var key = commonsTools.keygenerator(model);
+//                console.log("$scope.manyToOneComponent = ======= mode :"+model+" ====== entityname:"+metaData.entityName+" === field:"+field.fieldName+" === index:"+index+" ==== path:"+modelpath+" ===== key:"+key+" === data:"+angular.toJson(data));
                 if(parts.length>1){
                     $scope.dataCache[""+key+""] = new Array();
-                    if(data){
+                    if(data && angular.isDefined(data.id)){
                       $scope.dataCache[""+key+""].push(data);
                     }
                     var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
@@ -2404,7 +2408,7 @@ angular.module("mainApp")
              for(var i=0 ; i< metaData.columns.length;i++){
                 if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
-                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'){
+                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'&& metaData.columns[i].type!='combobox'){
                          tdElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
                          if(metaData.columns[i].type=='number'){
                             tdElem.setAttribute('class','text-right');
@@ -2412,7 +2416,9 @@ angular.module("mainApp")
                      }else if(metaData.columns[i].type=='object'){
                           //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
                           tdElem.appendChild(document.createTextNode("{{item."+metaData.columns[i].fieldName+"['designation']}}"));
-                     }
+                     }else if(metaData.columns[i].type=='combobox'){
+                         tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
+                     }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                      tdElem.setAttribute('data-toggle' , "modal");
                      //tdElem.setAttribute('data-target' , '#myModal');
                      if(nextIndex==1){
@@ -2436,14 +2442,17 @@ angular.module("mainApp")
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                                 var tdElem = document.createElement('td');
-                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){
+                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'
+                                        && metaData.groups[i].columns[j].type!='combobox'){
                                     tdElem.appendChild(document.createTextNode('{{item.'+metaData.groups[i].columns[j].fieldName+'}}'));
                                     if(metaData.groups[i].columns[j].type=='number'){
                                         tdElem.setAttribute('class','text-right');
                                     }
                                 }else if(metaData.groups[i].columns[j].type=='object'){
                                     tdElem.appendChild(document.createTextNode("{{item."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
-                                }
+                                }else if(metaData.groups[i].columns[j].type=='combobox'){
+                                    tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                                 tdElem.setAttribute('data-toggle' , "modal");
                                  if(nextIndex==1){
                                     tdElem.setAttribute('data-target', '#myModal');   
@@ -2753,7 +2762,7 @@ angular.module("mainApp")
             if(oldItem!=null){
                 oldId = "td"+Math.abs(oldItem.id)+"_"+oldfieldname;
             }//end if(oldItem!=null)
-            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
+//            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
@@ -2937,7 +2946,8 @@ angular.module("mainApp")
             for(var i=0 ; i< metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
-                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'){
+                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'
+                              && metaData.columns[i].type!='combobox'){
                          var spanElem = document.createElement("span");
                          spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                          spanElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
@@ -2950,6 +2960,12 @@ angular.module("mainApp")
                           var spanElem = document.createElement("span");
                           spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                           spanElem.appendChild(document.createTextNode("{{item."+metaData.columns[i].fieldName+"['designation']}}"));
+                          tdElem.appendChild(spanElem);
+                     }else if(metaData.columns[i].type=='combobox'){
+                          //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
+                          var spanElem = document.createElement("span");
+                          spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
+                          spanElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
                           tdElem.appendChild(spanElem);
                      }
 //                     tdElem.setAttribute('ng-show' , "noteditRow(item,'"+key+"','"+id+"')");                           
@@ -2965,7 +2981,8 @@ angular.module("mainApp")
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                                 var tdElem = document.createElement('td');
-                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){
+                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object' 
+                                        && metaData.groups[i].columns[j].type!='combobox'){
                                     var spanElem = document.createElement("span");
                                     spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                                     spanElem.appendChild(document.createTextNode('{{item.'+metaData.groups[i].columns[j].fieldName+'}}'));
@@ -2978,7 +2995,12 @@ angular.module("mainApp")
                                     spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                                     spanElem.appendChild(document.createTextNode("{{item."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
                                     tdElem.appendChild(spanElem);
-                                }     
+                                }else if(metaData.groups[i].columns[j].type=="combobox"){
+                                    var spanElem = document.createElement("span");
+                                    spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
+                                    spanElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                    tdElem.appendChild(spanElem);                              
+                                } //end if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){    
 //                                tdElem.setAttribute('ng-show' , "noteditRow(item,'"+key+"','"+id+"')"); 
                                 tdElem.setAttribute('ng-click',"getTemplate(item,'"+metaData.columns[i].fieldName+"','"+key+"', '"+model+"' , '"+modelpath+"','"+index+"','"+i+"')"); 
                                 scriptelem.appendChild(tdElem);
@@ -3115,7 +3137,8 @@ angular.module("mainApp")
              for(var i=0 ; i< metaData.columns.length;i++){
                 if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
-                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'){
+                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object' 
+                             && metaData.columns[i].type!='combobox'){
                          tdElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
                          if(metaData.columns[i].type=='number'){
                             tdElem.setAttribute('class','text-right');
@@ -3123,7 +3146,9 @@ angular.module("mainApp")
                      }else if(metaData.columns[i].type=='object'){
                           //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
                           tdElem.appendChild(document.createTextNode("{{item."+metaData.columns[i].fieldName+"['designation']}}"));
-                     }
+                     }else if(metaData.columns[i].type=='combobox'){
+                         tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
+                     }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                      tdElem.setAttribute('data-toggle' , "modal");
                      tdElem.setAttribute('data-target' , '#'+modalID);
                      tdElem.setAttribute('ng-click',"editDialogBuilder('"+model+"' ,item,'update',null,null,"+(index+1)+",'"+modelpath+"')");    
@@ -3138,14 +3163,17 @@ angular.module("mainApp")
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                                 var tdElem = document.createElement('td');
-                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){
+                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object' 
+                                        && metaData.groups[i].columns[j].type!='combobox'){
                                     tdElem.appendChild(document.createTextNode('{{item.'+metaData.groups[i].columns[j].fieldName+'}}'));
                                     if(metaData.groups[i].columns[j].type=='number'){
                                         tdElem.setAttribute('class','text-right');
                                      }
                                 }else if(metaData.groups[i].columns[j].type=='object'){
                                     tdElem.appendChild(document.createTextNode("{{item."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
-                                }
+                                }else if(metaData.groups[i].columns[j].type=='combobox'){
+                                    tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                                 tdElem.setAttribute('data-toggle' , "modal");
                                 tdElem.setAttribute('data-target' , '#'+modalID);
                                 //tdElem.setAttribute('ng-click',"editDialogBuilder('"+model+"' ,item,'update')");    
@@ -3670,6 +3698,8 @@ angular.module("mainApp")
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'time');
                }else if (field.type=='datetime') {
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'datetime-local');
+               }else if (field.type=='file') {
+                   return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'file');
                }else if (field.type=='password') {
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'password');
                }else if (field.type=='boolean') {
@@ -6412,7 +6442,7 @@ angular.module("mainApp")
               for(var i=0 ; i< columns.length;i++){
                    if(columns[i].type=='object'){
                      if(!entity[""+columns[i].fieldName+""]){
-                       entity[""+columns[i].fieldName+""] = new Object();
+                       entity[""+columns[i].fieldName+""] = null;
                      }
                    }else if(columns[i].type=='array'){
                       if(!entity[""+columns[i].fieldName+""]) {
@@ -6961,6 +6991,16 @@ angular.module("mainApp")
              console.error(ex);
              return true;
          }
+       };
+       /**
+        * 
+        * @returns {undefined}
+        */
+       $scope.getComboboxData =function(fieldName){
+            var observable = $scope.observablePools[fieldName];
+            if(observable){
+                observable.notifyObservers();
+            }//end if(observable)
        };
         /**
          * 
@@ -8407,6 +8447,14 @@ angular.module("mainApp")
           return data ;
       };
       /**
+       * Sorted table base of the value of fieldname
+       * @param {type} column
+       * @returns {undefined}
+       */
+      $scope.globaltablecolumnsorter = function(column){
+          $scope.datas = $filter('orderBy')($scope.datas,column,false); 
+      };
+      /**
          Algorithme de creation du tableau     
        **/
          $scope.tableListComponent = function(metaData){
@@ -8432,6 +8480,8 @@ angular.module("mainApp")
             //Array of field name
             var fieldnames = new Array();
             var fieldtypes = new Array();
+            //Contient des reference au champs de type combobox
+            var comboMap = new Object();
             //Traitement des champs columns
             if(metaData.columns){
                 //Sort of array
@@ -8447,8 +8497,11 @@ angular.module("mainApp")
                             if(metaData.columns[i].type=='number'){
                                 fieldtypes.push(true);
                             }else{
+//                                if(metaData.columns[i].type=='combobox'){
+//                                    comboMap[metaData.columns[i].fieldName]= metaData.columns[i].value.split(";");
+//                                }//end if(metaData.columns[i].type=='combobox'){
                                 fieldtypes.push(false);
-                            }
+                            }//end if(metaData.columns[i].type=='number')
                        }//end if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i]
                    }//end if(angular.isDefined(metaData.columns[i].search)
                 }
@@ -8469,6 +8522,9 @@ angular.module("mainApp")
                                     if(metaData.groups[i].columns[j].type=='number'){
                                         fieldtypes.push(true);
                                     }else{
+//                                        if(metaData.groups[i].columns[j].type=='combobox'){
+//                                            comboMap[metaData.groups[i].columns[j].fieldName]= metaData.groups[i].columns[j].value.split(";");
+//                                        }//end if(metaData.columns[i].type=='combobox'){
                                         fieldtypes.push(false);
                                     }
                                 }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
@@ -8500,9 +8556,11 @@ angular.module("mainApp")
                         thElem.setAttribute('ng-click' , "viewAction(obj)");
                         if(metaData.columns[i].type=='object'){
                           thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+".designation}}";
-                        }else{
+                        }else if(metaData.columns[i].type=='combobox'){
+                            thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
+                        }else{                            
                           thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+"}}";
-                        }
+                        }//end if(metaData.columns[i].type=='object'){
                         if(metaData.columns[i].type=='number'){
                             thElem.setAttribute('class','text-right');
                         }
@@ -8523,6 +8581,8 @@ angular.module("mainApp")
                                     thElem.setAttribute('ng-click' , "viewAction(obj)");
                                     if(metaData.groups[i].columns[j].type=='object'){
                                       thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+".designation}}";
+                                    }else if(metaData.groups[i].columns[j].type=='combobox'){
+                                        thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}";
                                     }else{
                                       thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+"}}";                                      
                                     }
@@ -8565,6 +8625,18 @@ angular.module("mainApp")
             return tableElem;
          };
          
+         /**
+          * 
+          * @param {type} selectedValue
+          * @param {type} value
+          * @returns {undefined}
+          */
+         $scope.comboboxselctionvalues = function(selectedValue,value){
+//             console.log("$scope.comboboxselctionvalues = function(selectedValue,value){ =========== "+selectedValue+" ==== "+value)
+             var values = value.split(";");
+             var index = new Number(selectedValue);
+             return values[index];
+         };
         /**
          * Algorithme de creation du tableau    
          * @param {type} metaData

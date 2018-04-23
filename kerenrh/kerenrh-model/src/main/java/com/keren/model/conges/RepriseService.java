@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -25,7 +27,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_REPSER")
+@Table(name="T_REPSERRH")
 public class RepriseService extends BaseElement implements Serializable, Comparable<RepriseService> {
 
 	/**
@@ -42,15 +44,17 @@ public class RepriseService extends BaseElement implements Serializable, Compara
 
 	@ManyToOne
 	@JoinColumn(name="CON_ID")
-	@Predicate(label="Congé concerné",type=DemandeCongeV.class,target="many-to-one",search=true)
-	private DemandeCongeV conge;
+	@Predicate(label="Congé concerné",type=DemandeConge.class,target="many-to-one",search=true, observable = true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"valider\"}]")
+	private DemandeConge conge;
 		
 	@Predicate(label="Employe",type=Employe.class,target="many-to-one",optional=true,nullable=false,search=true,editable=false)
+        @Observer(observable = "conge",source = "field:employe")
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
 	private Employe employe ;
 	
-	
+	@Predicate(label="Statut",hide=true, search=true)
 	private String state = "etabli";
 	
 
@@ -86,7 +90,7 @@ public class RepriseService extends BaseElement implements Serializable, Compara
 	 * @param conge
 	 */
 	public RepriseService(long id, String designation, String moduleName, String code, Date date, Employe employe,
-			DemandeCongeV conge) {
+			DemandeConge conge) {
 		super(id, designation, moduleName);
 		this.code = code;
 		this.date = date;
@@ -104,7 +108,7 @@ public class RepriseService extends BaseElement implements Serializable, Compara
 		this.employe = new Employe(reprise.employe);
 		}
 		if(reprise.conge!=null){
-			this.conge = new DemandeCongeV(reprise.conge);
+			this.conge = new DemandeConge(reprise.conge);
 		}
 	}
 	
@@ -142,11 +146,11 @@ public class RepriseService extends BaseElement implements Serializable, Compara
 		this.employe = employe;
 	}
 
-	public DemandeCongeV getConge() {
+	public DemandeConge getConge() {
 		return conge;
 	}
 
-	public void setConge(DemandeCongeV conge) {
+	public void setConge(DemandeConge conge) {
 		this.conge = conge;
 	}
 	

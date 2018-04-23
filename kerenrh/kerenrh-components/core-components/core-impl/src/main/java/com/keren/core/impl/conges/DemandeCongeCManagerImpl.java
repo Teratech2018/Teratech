@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.core.ifaces.conges.DemandeCongeCManagerLocal;
 import com.keren.core.ifaces.conges.DemandeCongeCManagerRemote;
@@ -69,6 +70,9 @@ public class DemandeCongeCManagerImpl
 	public List<DemandeCongeC> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+    	container.addEq("state", "confirmer");
+    	predicats.addAll(container.getPredicats());		
 		List<DemandeCongeC> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<DemandeCongeC> result = new ArrayList<DemandeCongeC>();
 		for(DemandeCongeC data:datas){
@@ -110,30 +114,30 @@ public class DemandeCongeCManagerImpl
 	}
 
 	@Override
-	public DemandeCongeV approuver(DemandeCongeC dmde) {
-		DemandeCongeV dcv = new DemandeCongeV(dmde);
-		dcv.setId(-1);
-		dao.delete(dmde.getId());
-		daodcv.save(dcv);
-		return dcv;
+	public DemandeCongeC approuver(DemandeCongeC dmde) {           
+		if(dmde.getState().equalsIgnoreCase("confirmer")){
+			dmde.setState("valider");
+			dmde = dao.update(dmde.getId(), dmde);
+		}
+		return new DemandeCongeC(dmde);
 	}
 
 	@Override
-	public DemandeCongeR rejeter(DemandeCongeC dmde) {
-		DemandeCongeR dcr = new DemandeCongeR(dmde);
-		dcr.setId(-1);
-		dao.delete(dmde.getId());
-		daodcr.save(dcr);
-		return dcr;
+	public DemandeCongeC rejeter(DemandeCongeC dmde) {
+        if(dmde.getState().equalsIgnoreCase("confirmer")){
+        	dmde.setState("rejete");
+        	dmde = dao.update(dmde.getId(), dmde);
+        }
+		return new DemandeCongeC(dmde);
 	}
 
 	@Override
-	public DemandeConge annuler(DemandeCongeC dmde) {
-		DemandeConge dc = new DemandeConge(dmde);
-		dc.setId(-1);
-		dao.delete(dmde.getId());
-		daodc.save(dc);
-		return dc;
+	public DemandeCongeC annuler(DemandeCongeC dmde) {
+            if(dmde.getState().equalsIgnoreCase("confirmer")){
+            	dmde.setState("etabli");
+            	dmde = dao.update(dmde.getId(), dmde);
+            }
+            return dmde;
 	}
     
     

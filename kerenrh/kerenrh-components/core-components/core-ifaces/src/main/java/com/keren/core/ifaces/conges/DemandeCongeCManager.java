@@ -20,10 +20,10 @@ public interface DemandeCongeCManager
     public final static String SERVICE_NAME = "DemandeCongeCManager";
     
 
-    public DemandeCongeV approuver(DemandeCongeC dmde);
+    public DemandeCongeC approuver(DemandeCongeC dmde);
 
-    public DemandeCongeR rejeter(DemandeCongeC dmde);
+    public DemandeCongeC rejeter(DemandeCongeC dmde);
 
-    public DemandeConge annuler(DemandeCongeC dmde);
+    public DemandeCongeC annuler(DemandeCongeC dmde);
 
 }
