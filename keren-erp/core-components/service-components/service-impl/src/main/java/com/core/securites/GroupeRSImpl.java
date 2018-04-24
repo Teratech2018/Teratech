@@ -3,14 +3,14 @@ package com.core.securites;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -60,6 +60,15 @@ public class GroupeRSImpl
         }catch (Exception ex) {          
            throw new WebApplicationException(ex);
         }
+    }
+
+    @Override
+    public List<GroupeDetail> getHabilitation(HttpHeaders headers) {
+        //To change body of generated methods, choose Tools | Templates.
+        Gson gson =new Gson();
+        long id = gson.fromJson(headers.getRequestHeader("id").get(0),Long.class);
+//        System.out.println(GroupeRSImpl.class.toString()+" =========================== ID:"+id);
+        return  manager.getHabilitations(id);
     }
     
     

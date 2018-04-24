@@ -45,7 +45,9 @@ public class MetaArray implements Serializable{
      
     private boolean editable = true ; 
     
-    private boolean edittable = false ; 
+    private boolean edittable = false ;
+    
+    private String method = null;
     
      private Observer observer;
     /**
@@ -205,6 +207,14 @@ public class MetaArray implements Serializable{
 
     public void setEdittable(boolean edittable) {
         this.edittable = edittable;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String mothod) {
+        this.method = mothod;
     }
     
     

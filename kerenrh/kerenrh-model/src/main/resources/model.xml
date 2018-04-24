@@ -224,6 +224,271 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+        <element type="com.keren.model.formations.BesionFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.CategorieModule"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.DemandeFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.Formateur"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.LigneBesionFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.LignePlanningFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.LigneThemeFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.ModuleFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.ParticipantSeance"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.PlanningFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.SeanceFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.ThemeFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.carrieres.Affectation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.carrieres.Avancement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.carrieres.Bonification"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.carrieres.Cessation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.carrieres.Nomination"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.carrieres.Reclassement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.carrieres.Retrogradation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Ville"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.structures.Etablissement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.stages.BesionStage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.stages.EvaluationStage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.stages.LivrableStage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.stages.Stage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.stages.SuiviStage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.stages.TacheStage"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.ActionMission"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.CategorieFrais"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.CategorieMission"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.Deploiement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.Escale"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.FraisMission"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.GrilleFrais"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.IndicateurPerformance"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.Mission"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.OrdreMission"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.AffectationCandidat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.BesionRecrutement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.CandidatureSpontane"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.ContratTravail"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.DetailRecrutement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.Emploi"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.EtapeRecrutement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.ExperienceCandidat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.FormationCandidat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.LangueCandidat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.recrutement.Recrutement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.missions.ResultatMission"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.GenererBesionFormation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.formations.Formation"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.model.presences.Absence"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.model.presences.Retard"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
    </elements>
     
 </model-config>

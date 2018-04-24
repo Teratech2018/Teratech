@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.kerenpaie.model.employes.Employe;
+import com.keren.kerenpaie.model.structures.Syndicat;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -36,12 +37,17 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	private String type ="0";
 	
 	@ManyToOne
+	@JoinColumn(name="SYND_ID")
+	@Predicate(label="Syndicat",type=Syndicat.class,target="many-to-one",optional=false,hidden="currentObject.type!='3'")
+	private Syndicat syndicat ;
+
+	@Predicate(label="Valeur",type=Double.class,hidden="currentObject.type==6||currentObject.type==7",search=true)
+	private Double valeur = 0.0;	
+	
+	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
 	@Predicate(label="Salarié",type=Employe.class,target="many-to-one",optional=false,search=true)
 	private Employe employe ;
-	
-	@Predicate(label="Valeur",type=Double.class,hidden="currentObject.type==6||currentObject.type==7",search=true)
-	private Double valeur = 0.0;
 	
 	@ManyToMany
 	@JoinTable(name="T_ELSALRUB",joinColumns=@JoinColumn(name="ELSA_ID"),inverseJoinColumns=@JoinColumn(name="RUBR_ID"))

@@ -139,6 +139,16 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+        <element type="com.keren.kerenpaie.model.structures.Syndicat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.kerenpaie.model.structures.TypeCaisse"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
         <element type="com.keren.kerenpaie.model.comptabilite.ExerciceComptable"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
@@ -295,6 +305,12 @@ and open the template in the editor.
             </roles>           
         </element>
         <element type="com.keren.kerenpaie.model.structures.Grade"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+         <element type="com.keren.kerenpaie.model.rapports.ViewBulletinPaie"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           

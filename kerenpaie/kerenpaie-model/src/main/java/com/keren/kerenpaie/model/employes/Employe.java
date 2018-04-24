@@ -70,16 +70,6 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="N. Dipe")
 	private String dipe;
 	
-	@ManyToOne
-	@JoinColumn(name="CAT_ID")
-	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one")
-	private Categorie categorie ;
-	
-	@ManyToOne
-	@JoinColumn(name="ECH_ID")
-	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one")
-	private Echelon echelon ;
-	
 	@Predicate(label="N. d'assurance social",group=true,groupName="group1",groupLabel="Informations Personelles")
 	private String numsec ;
 	
@@ -147,6 +137,19 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Structure",type=Societe.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private Societe structure ;
 	
+
+	@ManyToOne
+	@JoinColumn(name="CAT_ID")
+	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
+	private Categorie categorie ;
+	
+	@ManyToOne
+	@JoinColumn(name="ECH_ID")
+	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
+	private Echelon echelon ;
+	
+	private Short indice = 0 ;
+	
 	@ManyToOne
 	@JoinColumn(name="POS_ID")
 	@Predicate(label="Poste",type=Poste.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
@@ -196,7 +199,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Familles",group=true,groupName="group5",groupLabel="Familles",type=Famille.class,target="one-to-many")
+	@Predicate(label="Familles",group=true,groupName="group5",groupLabel="Familles",type=Famille.class,target="one-to-many",edittable=true)
 	private List<Famille> familles = new ArrayList<Famille>();
 	
 	@OneToMany(mappedBy="employe",fetch=FetchType.LAZY)
@@ -262,6 +265,10 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
     @Predicate(label="Rubriques?",type=Rubrique.class,editable=false,updatable=false,target="many-to-many-list",group=true,groupName="group401",groupLabel="Rubriques Complémentaires")
     private List<Rubrique> rubriques = new ArrayList<Rubrique>();
     
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
+    @JoinColumn(name="EMPL_ID")
+    @Predicate(label="Medialles",type=Medaille.class,target="one-to-many",edittable=true,group=true,groupName="group6",groupLabel="Médailles")
+    private List<Medaille> medailles = new ArrayList<Medaille>();
     
     public Employe(String matricule, String nom, String prenom) {
         this.matricule = matricule;
@@ -300,6 +307,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		if(employ.echelon!=null){
 			this.echelon = new Echelon(employ.echelon);
 		}
+		this.indice = employ.indice;
 		this.numsec = employ.numsec;
 		if(employ.nationalite!=null){
 			this.nationalite = employ.nationalite;
@@ -334,9 +342,9 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.vehicule = employ.vehicule;
 		this.alimentaire = employ.alimentaire;
 		this.noel = employ.noel;
-		if(employ.departement!=null){
-			this.departement = new Departement(employ.departement);
-		}
+//		if(employ.departement!=null){
+//			this.departement = new Departement(employ.departement);
+//		}
 		if(employ.departementsoc!=null){
 			this.departementsoc = new DepartementSoc(employ.departementsoc);
 		}
@@ -359,6 +367,16 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
         if(employ.profilpaie!=null){
         	this.profilpaie = new ProfilPaie(employ.profilpaie);
         }
+	}
+    
+    
+
+	public Short getIndice() {
+		return indice;
+	}
+
+	public void setIndice(Short indice) {
+		this.indice = indice;
 	}
 
 	public String getMatricule() {
@@ -642,6 +660,14 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 //	public void setComptesbancaire(List<CompteBancaire> comptesbancaire) {
 //		this.comptesbancaire = comptesbancaire;
 //	}
+
+	public List<Medaille> getMedailles() {
+		return medailles;
+	}
+
+	public void setMedailles(List<Medaille> medailles) {
+		this.medailles = medailles;
+	}
 
 	public Specialite getSpecialite() {
 		return specialite;

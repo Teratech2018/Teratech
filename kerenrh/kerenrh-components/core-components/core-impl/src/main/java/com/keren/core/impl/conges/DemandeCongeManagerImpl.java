@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.KerenExecption;
 import com.keren.core.ifaces.conges.DemandeCongeManagerLocal;
 import com.keren.core.ifaces.conges.DemandeCongeManagerRemote;
 import com.keren.dao.ifaces.conges.DemandeCongeCDAOLocal;
@@ -47,60 +48,66 @@ public class DemandeCongeManagerImpl
         return "id";
     }
 
-	@Override
-	public List<DemandeConge> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<DemandeConge> datas =  super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<DemandeConge> output = new ArrayList<DemandeConge>();
-		for(DemandeConge dc:datas){
-			output.add(new DemandeConge(dc));
-		}
-		return output;
-	}
+    @Override
+    public List<DemandeConge> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
+        // TODO Auto-generated method stub
+        List<DemandeConge> datas =  super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<DemandeConge> output = new ArrayList<DemandeConge>();
 
-	@Override
-	public DemandeConge find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		DemandeConge dmde = super.find(propertyName, entityID);
-		return new DemandeConge(dmde);
-	}
+        for(DemandeConge dc:datas){
+                output.add(new DemandeConge(dc));
+        }
 
-	@Override
-	public List<DemandeConge> findAll() {
-		// TODO Auto-generated method stub
-		List<DemandeConge> datas =  super.findAll();
-		List<DemandeConge> output = new ArrayList<DemandeConge>();
-		for(DemandeConge dc:datas){
-			output.add(new DemandeConge(dc));
-		}
-		return output;
-	}
+        return output;
+    }
 
-	@Override
-	public void processAfterSave(DemandeConge entity) {
-		
-		super.processAfterSave(entity);
-	}
+    @Override
+    public DemandeConge find(String propertyName, Long entityID) {
+        
+        // TODO Auto-generated method stub
+        DemandeConge dmde = super.find(propertyName, entityID);
+        return new DemandeConge(dmde);
+    }
 
-	@Override
-	public void processAfterUpdate(DemandeConge entity) {
-		// TODO Auto-generated method stub
-		super.processAfterUpdate(entity);
-	}
+    @Override
+    public List<DemandeConge> findAll() {
+        
+        // TODO Auto-generated method stub
+        List<DemandeConge> datas =  super.findAll();
+        List<DemandeConge> output = new ArrayList<DemandeConge>();
+        
+        for(DemandeConge dc:datas){
+                output.add(new DemandeConge(dc));
+        }
+        
+        return output;
+    }
 
-	@Override
-	public DemandeCongeC confirmer(DemandeConge dmde) {
-		DemandeCongeC result = new DemandeCongeC(dmde);		
-		result.setId(-1);
-		dao.delete(dmde.getId());
-		daodcc.save(result);
-		return result;
-	}
+    @Override
+    public void processAfterSave(DemandeConge entity) {
+        super.processAfterSave(entity);
+    }
+
+    @Override
+    public void processAfterUpdate(DemandeConge entity) {           
+        super.processAfterUpdate(entity);
+    }
+
+    @Override
+    public DemandeConge confirmer(DemandeConge dmde) {
+        if(dmde.getState().equals("etabli")){
+        	dmde.setState("confirmer");
+        	dmde = dao.update(dmde.getId(), dmde);
+        }
+        return new DemandeConge(dmde);
+    }
 	
+    @Override
+    public DemandeConge delete(Long id) {        
+        DemandeConge data = super.delete(id);
+        DemandeConge result = new DemandeConge(data);        
+        return result;
+    }
 	
-	
-    
-    
-
 }

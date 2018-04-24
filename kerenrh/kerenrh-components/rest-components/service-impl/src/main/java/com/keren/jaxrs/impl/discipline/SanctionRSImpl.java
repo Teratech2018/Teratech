@@ -10,6 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.discipline.SanctionManagerRemote;
 import com.keren.jaxrs.ifaces.discipline.SanctionRS;
@@ -66,5 +67,33 @@ public class SanctionRSImpl
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
    		}
 	}
+
+	@Override
+	protected void processBeforeSave(Sanction entity) {
+		// TODO Auto-generated method stub
+		if(entity.getSanction()==null||entity.getSanction().trim().isEmpty()){
+			throw new KerenExecption("La sanction retenue est obligatoire");
+		}else if(entity.getDemande()==null){
+			throw new KerenExecption("La Demande concernée est obligatoire");
+		}else if(entity.getDateeffet()==null){
+			throw new KerenExecption("La Date d'effet est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(Sanction entity) {
+		// TODO Auto-generated method stub
+		if(entity.getSanction()==null||entity.getSanction().trim().isEmpty()){
+			throw new KerenExecption("La sanction retenue est obligatoire");
+		}else if(entity.getDemande()==null){
+			throw new KerenExecption("La Demande concernée est obligatoire");
+		}else if(entity.getDateeffet()==null){
+			throw new KerenExecption("La Date d'effet est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
+    
+    
 
 }

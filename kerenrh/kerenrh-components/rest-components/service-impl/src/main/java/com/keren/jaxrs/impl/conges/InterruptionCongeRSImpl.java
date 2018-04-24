@@ -24,7 +24,8 @@ import javassist.tools.reflect.Loader;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 11:54:14 GMT+01:00 2018
  * 
  */
@@ -83,10 +84,13 @@ public class InterruptionCongeRSImpl
 	protected void processBeforeSave(InterruptionConge entity) {
 		_controlreView(entity);
 		
+                //On applique l'etat
+                entity.setState("etabli");
+                
 		entity.setEmploye(entity.getConge().getEmploye());
-		entity.setDateconge(entity.getConge().getDebut());
+		entity.setDateDebutConge(entity.getConge().getDebut());
 		long duree = entity.getDate().getTime()-entity.getConge().getFin().getTime();
-		long nbrejourr = entity.getDate().getTime()-entity.getDateconge().getTime();
+		long nbrejourr = entity.getDate().getTime()-entity.getDateDebutConge().getTime();
 		entity.setDureeconge(new Long(duree).shortValue());
 		entity.setJoursr(new Long(nbrejourr).shortValue());
 		
@@ -99,9 +103,9 @@ public class InterruptionCongeRSImpl
 		final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 		this._controlreView(entity);
 		entity.setEmploye(entity.getConge().getEmploye());
-		entity.setDateconge(entity.getConge().getDebut());
+		entity.setDateDebutConge(entity.getConge().getDebut());
 		long duree = Math.abs(entity.getConge().getFin().getTime()-entity.getDate().getTime())/MILLISECONDS_PER_DAY;
-		long nbrejourr = Math.abs(entity.getDateconge().getTime()-entity.getDate().getTime())/MILLISECONDS_PER_DAY;
+		long nbrejourr = Math.abs(entity.getDateDebutConge().getTime()-entity.getDate().getTime())/MILLISECONDS_PER_DAY;
 		entity.setDureeconge(new Long(duree).shortValue());
 		entity.setJoursr(new Long(nbrejourr).shortValue());
 		

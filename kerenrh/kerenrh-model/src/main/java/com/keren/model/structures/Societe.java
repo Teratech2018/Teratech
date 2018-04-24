@@ -121,7 +121,50 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
       this.devise = devise;
       //this.societeMere = societeMere;
   }
+  
+  
 
+  public Societe(long id, String designation, String moduleName, String image, String code, String intitule,
+		String adresse, String telephone, String ville, String fax, String codePostal, String courriel, Pays pays,
+		String numFiscal, String siteWeb, String registre, Devise devise, Societe societeMere) {
+	super(id, designation, moduleName);
+	this.image = image;
+	this.code = code;
+	this.intitule = intitule;
+	this.adresse = adresse;
+	this.telephone = telephone;
+	this.ville = ville;
+	this.fax = fax;
+	this.codePostal = codePostal;
+	this.courriel = courriel;
+	this.pays = pays;
+	this.numFiscal = numFiscal;
+	this.siteWeb = siteWeb;
+	this.registre = registre;
+	this.devise = devise;
+	this.societeMere = societeMere;
+}
+
+public Societe(Societe societe) {
+	super(societe.id, societe.designation, societe.moduleName);
+      this.image = societe.image;
+      this.code = societe.code;
+      this.intitule = societe.designation;
+      this.adresse = societe.adresse;
+      this.telephone = societe.telephone;
+      this.ville = societe.ville;
+      this.fax = societe.fax;
+      this.codePostal = societe.codePostal;
+      this.courriel = societe.courriel;
+      if(societe.pays!=null){
+    	  this.pays = new Pays(societe.pays);
+      }
+      this.numFiscal = societe.numFiscal;
+      this.siteWeb = societe.siteWeb;
+      this.registre = societe.registre;
+      this.devise = societe.devise;
+      //this.societeMere = societeMere;
+  }
  
   public String getImage() {
       return image;

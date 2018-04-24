@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="base_account" />
+	 <menu id="base_account_dashboard" label="Tableaux de bord" parent="base_account" gyphycon="glyphicon glyphicon-scale"/>
+	 <menuitem id="base_account_dashboard_01" label="Tableau de bord" parent_ref="base_account_dashboard" entity_ref="ComptaDashboard" model_ref="baseaccount" method_ref="solde" gyphycon="glyphicon glyphicon-th" modal="false" view_type="dashboard" />
+	 <menu id="base_account_ventes" label="Ventes" parent="base_account" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menu id="base_account_achats" label="Achats" parent="base_account" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="base_account_ach02" label="Factures fournisseurs" parent_ref="base_account_achats" entity_ref="Facture" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="base_account_ach03" label="Avoirs fournisseurs" parent_ref="base_account_achats" entity_ref="FactureFournisseur" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="base_account_ach04" label="Recus d'achat" parent_ref="base_account_achats" entity_ref="NoteFrais" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="base_account_ach05" label="Paiements fournisseurs" parent_ref="base_account_achats" entity_ref="ReglementFournisseur" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="base_account_operations" label="Opérations" parent="base_account" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="base_account_10" label="Pièces Comptable" parent_ref="base_account_operations" entity_ref="PieceComptable" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="base_account_10_1" label="Ecritures à vérifier" parent_ref="base_account_operations" entity_ref="PieceComptable" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="base_account_14" label="Journaux de saisie" parent_ref="base_account_operations" entity_ref="JournalSaisie" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt" />
+	 <menuitem id="base_account_15" label="Interrogation analytique" parent_ref="base_account_operations" entity_ref="EcritureAnalytique" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt" />
+	 <menuitem id="base_account_16" label="Interrogation tier" parent_ref="base_account_operations" entity_ref="EcritureTier" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt" />
+	 <menu id="base_account_compta" label="Comptabilité" parent="base_account" gyphycon="glyphicon glyphicon-plus"/>
+	 <menuitem id="base_account_01" label="Plan Comptable" parent_ref="base_account_compta" entity_ref="Compte" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th">
+	      <action id="plc_01" type="action" name="plc_name01" label="Action 1" value="{'name':'update_pwd'}"/>
+		  <action id="plc_02" type="object" name="plc_name02" label="Action 2" value="{'model':'email','entity':'mail','method':'sendmail','template':{'object':'Modification de mot de passe','source':'user.courriel','cible':'object.courriel','message':'Votre mot de passe est @object.password'}}"/>
+	 </menuitem>
+	 <menuitem id="base_account_02" label="Plan Analytique" parent_ref="base_account_compta" entity_ref="CompteAnalytique" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th-list"/>
+	 <menuitem id="base_account_03" label="Taux Taxes" parent_ref="base_account_compta" entity_ref="Taxe" model_ref="baseaccount" gyphycon="glyphicon glyphicon-minus"/>
+	 <menuitem id="base_account_04" label="Code Journaux" parent_ref="base_account_compta" entity_ref="JournalComptable" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt"/>
+	 <menu id="base_account_tiers" label="Plan Tiers" parent="base_account" gyphycon="glyphicon glyphicon-user"/>
+	 <menuitem id="base_account_06" label="Plan tiers" parent_ref="base_account_tiers" entity_ref="Tier" model_ref="baseaccount" gyphycon="glyphicon glyphicon-user"/>
+	 <menu id="base_account_banques" label="Banques" parent="base_account" gyphycon="glyphicon glyphicon-bank"/>
+	 <menuitem id="base_account_07" label="Banques" parent_ref="base_account_banques" entity_ref="Banque" model_ref="baseaccount" gyphycon="glyphicon glyphicon-user"/>
+	 <menu id="base_account_exercice" label="Fin Exercices" parent="base_account" gyphycon="glyphicon glyphicon-bank"/>
+	 <menuitem id="base_account_12" label="Exercices Comptable" parent_ref="base_account_exercice" entity_ref="ExerciceComptable" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt" />
+	 <menuitem id="base_account_17" label="Cloture Exercice" parent_ref="base_account_exercice" entity_ref="ClotureExerciceComptable" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt" modal="true" />
+	 <menuitem id="base_account_18" label="Cloture des Journaux" parent_ref="base_account_exercice" entity_ref="ClotureJournal" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt" modal="true"  />
+	 <formRecord id="base_account_form01" label="Banque" action_ref="base_account_07">
+	    <header>
+		     <button type="action" name="un button" label="Contact banque" value="{'name':'base_account_07'}" class="btn btn-primary" />
+			 <button type="workflow" name="valider" label="Valider banque" value="{'model':'baseaccount','entity':'Banque','method':'workflow'}" class="btn btn-primary" states="etabli"/>
+			 <field name="state" target="statusbar"/>
+		</header>
+		<sheet>
+		     <field name="code"/>
+			 <field name="label"/>
+			 <field name="adresse"/>
+			 <field name="tel" target="tel"/>
+			 <field name="fax" target="tel"/>
+			 <field name="courriel" target="email"/>
+			 <field name="active" />
+		</sheet>
+	 </formRecord>
+	 <reportRecord  id="base_account_report01" label="Situations" action_ref="base_account_01"  extern="false">
+	      <template>
+		     <![CDATA[
+		       <div for="{'source':'datas','var':'obj'}">
+			       <label>N Compte</label><p>obj.code</p>
+				   <label>Libelle</label><p>obj.libele</p>
+			       <table class="table  table-striped table-bordered table-hover table-condensed">
+				       <thead> 
+					      <tr style="font-weight: bold;">
+						     <td>Section analytique</td><td>Clé repartition</td><td>quantité</td>
+						  </tr>
+					   </thead>
+					   <tbody>
+					      <tr for="{'source':'obj.analytiques','var':'obj'}">
+						     <td>obj.compte</td><td if="{'op1':'obj.type','op2':'0','cond':'=='}">Pourcentage</td>
+							 <td if="{'op1':'obj.type','op2':'1','cond':'=='}">Equilibre</td>
+							 <td if="{'op1':'obj.type','op2':'2','cond':'=='}">Montant</td>
+							 <td>obj.quantite</td>
+						  </tr>
+					   </tbody>
+				   </table>
+			   </div>
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="base_account_report02" label="Somethings" action_ref="base_account_01"  extern="false">
+	      <search entity="EcritureSearch" module="baseaccount" method="somethings">
+		     <field name="code"/>
+             <field name="libele"/>			 
+		  </search>
+	      <template>
+		     <![CDATA[
+		       <div>
+			       <table class="table  table-striped table-bordered table-hover table-condensed">
+				       <thead> 
+					      <tr style="font-weight: bold;">
+						     <td>Date</td><td>N° pièce</td><td>Compte</td><td>Journal</td><td>Libelle</td><td>Débit</td><td>Crédit</td>
+						  </tr>
+					   </thead>
+					   <tbody>
+					      <tr for="{'source':'requete','var':'obj'}">
+						     <td>obj.dateEcriture</td><td>obj.refPiece</td><td>obj.compte</td>
+							 <td>obj.journal</td><td>obj.libelle</td><td>obj.debit</td><td>obj.credit</td>
+						  </tr>
+					   </tbody>
+				   </table>
+			   </div>
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="base_account_report03" label="IReport Report" action_ref="base_account_01"  extern="true">
+	      <search entity="EcritureSearch" module="baseaccount" method="pdf">
+		     <field name="code"/>
+             <field name="libele"/>			 
+		  </search>	     
+	 </reportRecord>
+	 <treeRecord id="base_account_tree01" label="Banques" action_ref="base_account_07">
+	         <field name="code"/>
+			 <field name="label"/>
+			 <field name="adresse"/>
+			 <field name="tel"/>
+			 <field name="fax"/>
+			 <field name="courriel" />
+	 </treeRecord>
+	 <dashboardRecord id="dashboard_001" label="Tableau de Bord"  action_ref="base_account_dashboard_01" entity_ref="ComptaDashboard"  model_ref="baseaccount" method_ref="dashboard">
+	     <dashboard  id="dashboard001" parent_ref="dashboard_001" label="Trésorerie">
+		      <dashboardentry id="dashentry001" type="data,bar,pie,line" parent_ref="dashboard001" label="Données">
+			          <field name="debit" model_ref="baseaccount" entity_ref="EcritureComptable" method_ref="analytique"/>
+					  <field name="credit"/>
+			  </dashboardentry>			  
+		 </dashboard>
+		 <dashboard  id="dashboard002" parent_ref="dashboard_001" label="Stock">
+		      <dashboardentry id="dashentry001" type="data" parent_ref="dashboard001" label="Données">
+			          <field name="debit"/>
+					  <field name="credit"/>
+			  </dashboardentry>
+			  <dashboardentry id="dashentry002" type="bar" parent_ref="dashboard001" label="Graphe">
+			          <field name="debit"/>
+					  <field name="credit"/>
+			  </dashboardentry>
+		 </dashboard>
+		 <dashboard  id="dashboard003" parent_ref="dashboard_001" label="Ventes">
+		      <dashboardentry id="dashentry001" type="data" parent_ref="dashboard001" label="Données">
+			          <field name="debit"/>
+					  <field name="credit"/>
+			  </dashboardentry>
+			  <dashboardentry id="dashentry002" type="bar" parent_ref="dashboard001" label="Graphe">
+			          <field name="debit"/>
+					  <field name="credit"/>
+			  </dashboardentry>
+		 </dashboard>
+	 </dashboardRecord>
+</keren>

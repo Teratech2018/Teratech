@@ -9,22 +9,29 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import com.keren.model.presences.LignePointage;
+import com.keren.model.presences.Absence;
+import com.keren.model.presences.Retard;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
 
 /**
  * Interface du service JAX-RS
- * @since Thu Feb 15 14:18:53 GMT+01:00 2018
+ * @since Mon Apr 23 09:28:01 GMT+01:00 2018
  * 
  */
 public interface RetardRS
-    extends GenericService<LignePointage, Long>
+    extends GenericService<Retard, Long>
 {
 
 	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("justifier")
-    public LignePointage justifier(@Context HttpHeaders headers,LignePointage dmde);
+    public Retard justifier(@Context HttpHeaders headers,Retard entity);
+	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("nonjustifier")
+    public Retard nonjustifier(@Context HttpHeaders headers,Retard entity);
 }

@@ -16,6 +16,7 @@ import com.core.base.BaseElement;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.structures.Societe;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -40,14 +41,16 @@ public class ValiderSalaire extends BaseElement implements Serializable, Compara
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false)
+	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
 	private PeriodePaie periode ;
 	
 	@Predicate(label="Concerne ?",target="combobox",values="Tous les employés;Seulement les employés selectionnés",optional=false)
 	private String porte ="0";
 	
 	@ManyToMany
-	@Predicate(label="EM",type=Employe.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés")
-	private List<Employe> concernes = new ArrayList<Employe>(); 
+	@Predicate(label="EM",type=BulletinPaie.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0'||temporalData.periode==null||temporalData.periode.id=='load'")
+    @Filter(value="[{\"fieldName\":\"periode\",\"value\":\"object.periode\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez sélectionner une periode\"}]")
+	private List<BulletinPaie> concernes = new ArrayList<BulletinPaie>(); 
 	
 	/**
 	 * 
@@ -103,6 +106,38 @@ public class ValiderSalaire extends BaseElement implements Serializable, Compara
 	}
 	
 	
+
+	public Societe getSociete() {
+		return societe;
+	}
+
+	public void setSociete(Societe societe) {
+		this.societe = societe;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getPorte() {
+		return porte;
+	}
+
+	public void setPorte(String porte) {
+		this.porte = porte;
+	}
+
+	public List<BulletinPaie> getConcernes() {
+		return concernes;
+	}
+
+	public void setConcernes(List<BulletinPaie> concernes) {
+		this.concernes = concernes;
+	}
 
 	@Override
 	public String getEditTitle() {

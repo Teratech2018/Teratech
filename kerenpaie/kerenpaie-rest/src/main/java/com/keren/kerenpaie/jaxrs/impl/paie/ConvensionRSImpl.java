@@ -13,6 +13,8 @@ import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.ConvensionManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.ConvensionRS;
 import com.keren.kerenpaie.model.paie.Convension;
+import com.keren.kerenpaie.model.paie.LigneConvension;
+import com.keren.kerenpaie.model.prets.Acompte;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -20,7 +22,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Mar 06 14:40:10 GMT+01:00 2018
  * 
  */
@@ -59,6 +62,7 @@ public class ConvensionRSImpl
 		// TODO Auto-generated method stub
 		MetaData meta =null;
 		try {
+
 			meta = MetaDataUtil.getMetaData(new Convension(), new HashMap<String, MetaData>()
 					, new ArrayList<String>());
 			MetaColumn workbtn = new MetaColumn("button", "work1", "Générer La Grille", false, "workflow", null);
@@ -78,6 +82,7 @@ public class ConvensionRSImpl
 	        meta.getHeader().add(workbtn);   
 	        MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
 	        meta.getHeader().add(stautsbar);	       
+
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,7 +92,7 @@ public class ConvensionRSImpl
 		}
 		return meta;
 	}
-
+/*
 	@Override
 	protected void processBeforeDelete(Object key) {
 		// TODO Auto-generated method stub
@@ -123,8 +128,8 @@ public class ConvensionRSImpl
 			throw new KerenExecption("La Date de Fin est obligatoire");
 		}
 		super.processBeforeSave(entity);
-	}
-
+	}*/
+/*
 	@Override
 	protected void processBeforeUpdate(Convension entity) {
 		// TODO Auto-generated method stub
@@ -141,7 +146,7 @@ public class ConvensionRSImpl
 		}
 		super.processBeforeUpdate(entity);
 	}
-
+*/
 	@Override
 	public Convension actif(HttpHeaders headers, Convension entity) {
 		// TODO Auto-generated method stub
@@ -197,6 +202,18 @@ public class ConvensionRSImpl
 		return manager.genere(entity);
 	}
     
-    
+    private void validateGruille(Convension convension){
+        int i = 0;
+        for(LigneConvension lign:convension.getLignes()){
+            i++;
+            if(lign.getCategorie()==null){
+                throw new KerenExecption("La Catégorie est obligatoire ligne : "+i);
+            }else if(lign.getEchelon()==null){
+                 throw new KerenExecption("L'Echélon est obligatoire ligne : "+i);
+            }else if(lign.getSalbase()==null){
+                 throw new KerenExecption("Le Salaire de base est obligatoire ligne : "+i);
+            }
+        }
+    }
 
 }

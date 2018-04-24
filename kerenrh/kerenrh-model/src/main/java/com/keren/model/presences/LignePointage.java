@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.model.employes.Employe;
@@ -25,7 +27,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_LIPO")
+@Table(name="T_LIPORH")
 public class LignePointage extends BaseElement implements Serializable, Comparable<LignePointage> {
 
 	/**
@@ -35,20 +37,21 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,nullable=false,search=true)
+	@Predicate(label="Employé",type=Employe.class,target="many-to-one",optional=false,updatable=false,nullable=false,search=true)
 	private Employe employe ;
 	
-	@Temporal(TemporalType.TIME)
-	@Predicate(label="Date du pointage",type=Date.class,target="date",search=true)
+	@Temporal(TemporalType.DATE)
+//	@Predicate(label="Date du pointage",type=Date.class,target="date",editable=false,search=true,hi)
 	private Date datepointage ;
 	
-	@Temporal(TemporalType.TIME)
-	@Predicate(label="Heure arrivé",type=Date.class,target="time",search=true)
-	private Date heurearrive ;
+	@Predicate(label="Heure arrivé",target="time",search=true)
+	private String heurearrive ;
 	
-	@Temporal(TemporalType.TIME)
-	@Predicate(label="Heure de depart",type=Date.class,target="time",search=true)
-	private Date heuredepart ;
+	@Predicate(label="Heure de depart",target="time",search=true)
+	private String heuredepart ;
+	
+	@Predicate(label="Retard",type=Boolean.class,search=true)
+	private Boolean retard = Boolean.FALSE;
 	
 	@Predicate(label="Absent",type=Boolean.class,search=true)
 	private Boolean absent = Boolean.FALSE;
@@ -56,6 +59,12 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
 	@Predicate(label="Absent payée",type=Boolean.class,search=true)
 	private Boolean absencepaye = Boolean.FALSE;
 	
+	@ManyToOne
+	@JoinColumn(name="POJO_ID")
+	@JsonIgnore	
+	private PointageJouranlier pointage ;
+	
+	@Predicate(label="Etat",hide=true,search=true)
 	private String state ="etabli";
 
 	/**
@@ -89,8 +98,8 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
  * @param absent
  * @param absencepaye
  */
-	public LignePointage(long id, String designation, String moduleName, Employe employe, Date heurearrive,
-			Date heuredepart, Boolean absent, Boolean absencepaye) {
+	public LignePointage(long id, String designation, String moduleName, Employe employe, String heurearrive,
+			String heuredepart, Boolean absent, Boolean absencepaye) {
 		super(id, designation, moduleName);
 		this.employe = employe;
 		this.heurearrive = heurearrive;
@@ -101,18 +110,40 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
 		
 	}
 	
+	/**
+	 * 
+	 * @param lign
+	 */
 	public LignePointage(LignePointage lign) {
 		super(lign.id, lign.designation, lign.moduleName);
-		this.employe = lign.employe;
+		if(lign.employe!=null){
+			this.employe = new Employe(lign.employe);
+		}
 		this.heurearrive = lign.heurearrive;
 		this.heuredepart = lign.heuredepart;
 		this.absent = lign.absent;
+		this.retard = lign.retard;
 		this.absencepaye = lign.absencepaye;
 		this.datepointage = lign.datepointage;
 		state =lign.state;
 	}
 	
-	
+	/**
+	 * 
+	 * @param lign
+	 */
+	public LignePointage(LigneFichePointage lign) {
+		super(-1, null, null);
+		if(lign.getEmploye()!=null){
+			this.employe = new Employe(lign.getEmploye());
+		}//end if(lign.getEmploye()!=null){
+		this.heurearrive = lign.getHeurearrive();
+		this.heuredepart = lign.getHeuredepart();
+		this.absent = lign.getAbsent();
+		this.absencepaye = Boolean.FALSE;
+		this.datepointage = lign.getDatepointage();
+		state ="etabli";
+	}
 	
 
 	public Employe getEmploye() {
@@ -123,19 +154,19 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
 		this.employe = employe;
 	}
 
-	public Date getHeurearrive() {
+	public String getHeurearrive() {
 		return heurearrive;
 	}
 
-	public void setHeurearrive(Date heurearrive) {
+	public void setHeurearrive(String heurearrive) {
 		this.heurearrive = heurearrive;
 	}
 
-	public Date getHeuredepart() {
+	public String getHeuredepart() {
 		return heuredepart;
 	}
 
-	public void setHeuredepart(Date heuredepart) {
+	public void setHeuredepart(String heuredepart) {
 		this.heuredepart = heuredepart;
 	}
 
@@ -153,9 +184,23 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
 
 	public void setAbsencepaye(Boolean absencepaye) {
 		this.absencepaye = absencepaye;
+	}	
+
+	public Boolean getRetard() {
+		return retard;
 	}
-	
-	
+
+	public void setRetard(Boolean retard) {
+		this.retard = retard;
+	}
+
+	public PointageJouranlier getPointage() {
+		return pointage;
+	}
+
+	public void setPointage(PointageJouranlier pointage) {
+		this.pointage = pointage;
+	}
 
 	@Override
 	public String getEditTitle() {

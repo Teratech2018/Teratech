@@ -14,7 +14,10 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.core.ifaces.discipline.SanctionManagerLocal;
 import com.keren.core.ifaces.discipline.SanctionManagerRemote;
+import com.keren.dao.ifaces.discipline.DemandeExplicationDAOLocal;
 import com.keren.dao.ifaces.discipline.SanctionDAOLocal;
+import com.keren.model.discipline.DemandeExplication;
+import com.keren.model.discipline.LigneResolution;
 import com.keren.model.discipline.Sanction;
 import com.keren.model.discipline.Sanction;
 import com.megatim.common.annotations.OrderType;
@@ -28,6 +31,10 @@ public class SanctionManagerImpl
 
     @EJB(name = "SanctionDAO")
     protected SanctionDAOLocal dao;
+    
+    @EJB(name = "DemandeExplicationDAO")
+    protected DemandeExplicationDAOLocal dedao;
+    
 
     public SanctionManagerImpl() {
     }
@@ -48,7 +55,10 @@ public class SanctionManagerImpl
   		List<Sanction> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
   		List<Sanction> result = new ArrayList<Sanction>();
   		for(Sanction data:datas){
-  			result.add(new Sanction(data));
+  			Sanction sanction =new Sanction(data);
+  			sanction.setDemande(new DemandeExplication(data.getDemande()));
+  			sanction.setResolution(null);
+  			result.add(sanction);
   		}
   		return result;
   	}
@@ -59,7 +69,11 @@ public class SanctionManagerImpl
   	public Sanction find(String propertyName, Long entityID) {
   		// TODO Auto-generated method stub
   		Sanction data = super.find(propertyName, entityID);
-  		Sanction result = new Sanction(data);		
+  		Sanction result = new Sanction(data);	
+  		result.setDemande(new DemandeExplication(data.getDemande()));
+  		if(data.getResolution()!=null){
+  			result.setResolution(new LigneResolution(data.getResolution()));
+  		}//end if(data.getResolution()!=null){
   		return result;
   	}
 
@@ -73,5 +87,35 @@ public class SanctionManagerImpl
   		}
   		return result;
   	}
+
+	@Override
+	public void processAfterDelete(Sanction entity) {
+		// TODO Auto-generated method stub
+		DemandeExplication demande = entity.getDemande();
+		demande.setState("encours");
+		dedao.update(demande.getId(), demande);
+		super.processAfterDelete(entity);
+	}
+	
+	
+
+	@Override
+	public void processBeforeSave(Sanction entity) {
+		// TODO Auto-generated method stub
+		DemandeExplication demande = dedao.findByPrimaryKey("id", entity.getDemande().getId());
+		entity.setResolution(new LigneResolution(demande.getResolution()));
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	public void processAfterSave(Sanction entity) {
+		// TODO Auto-generated method stub
+		DemandeExplication demande = entity.getDemande();
+		demande.setState("traite");
+		dedao.update(demande.getId(), demande);
+		super.processAfterSave(entity);
+	}
+  	
+  	
 
 }

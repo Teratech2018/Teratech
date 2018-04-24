@@ -19,7 +19,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */ 
 @Entity
-@Table(name="T_MECO")
+@Table(name="T_MECORH")
 public class MembreConseil extends BaseElement implements Serializable, Comparable<MembreConseil> {
 
 	/**

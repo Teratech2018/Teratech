@@ -34,8 +34,8 @@ public class Famille extends BaseElement implements Serializable, Comparable<Fam
 	@Predicate(label="Eligible?",type=Boolean.class,search=true)
 	private Boolean eligible = Boolean.FALSE;
 	
-	@Predicate(label="Qualité" ,type=Short.class,target="combobox",values="Conjoint;Enfant",search=true)
-	private Short qualite = 0 ;
+	@Predicate(label="Qualité" ,target="combobox",values="Enfant;Conjoint",search=true)
+	private String qualite = "0" ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de naissance",type=Date.class,target="date",search=true)
@@ -77,11 +77,11 @@ public class Famille extends BaseElement implements Serializable, Comparable<Fam
 		this.intitule = intitule;
 	}
 
-	public Short getQualite() {
+	public String getQualite() {
 		return qualite;
 	}
 
-	public void setQualite(Short qualite) {
+	public void setQualite(String qualite) {
 		this.qualite = qualite;
 	}
 

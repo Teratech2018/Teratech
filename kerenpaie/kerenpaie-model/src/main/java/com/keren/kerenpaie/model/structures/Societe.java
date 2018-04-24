@@ -4,10 +4,15 @@
 package com.keren.kerenpaie.model.structures;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.print.attribute.standard.JobOriginatingUserName;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -97,7 +102,10 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
    @JoinColumn(name="JOCO_ID")
    private JournalComptable journal;
    
-   
+   @OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
+   @JoinColumn(name="SOC_ID")
+   @Predicate(label="Planification",type=Planification.class,target="one-to-many",group=true,groupLabel="Planification",groupName="aplan",edittable=true)
+   private List<Planification> planifications = new ArrayList<Planification>();
    
    /**
     * 
@@ -332,7 +340,21 @@ public String getImage() {
 //      this.societeMere = societeMere;
 //  }
 
-  public Compte getRegroupement() {
+  public List<Planification> getPlanifications() {
+	return planifications;
+}
+
+
+
+
+public void setPlanifications(List<Planification> planifications) {
+	this.planifications = planifications;
+}
+
+
+
+
+public Compte getRegroupement() {
 	return regroupement;
 }
 

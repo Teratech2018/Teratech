@@ -26,33 +26,33 @@ import com.megatim.common.annotations.Predicate;
 @Table(name="T_TAXE")
 public class Taxe extends BaseElement implements Serializable, Comparable<Taxe> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7529723511100447981L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7529723511100447981L;
 
-	@Predicate(label = "Code taxe",unique = true,optional = false,search = true)
+    @Predicate(label="Code taxe",unique=true,optional=false,search=true)
     private String code ;
     
-    @Predicate(label = "Sens",target = "combobox",values = "Déductible;Collectée",search = false)    
+    @Predicate(label="Sens",target="combobox",values="Déductible;Collectée",search=false)    
     private String sens ="0";
     
-    @Predicate(label = "Intitulé" ,optional = false,search = true)
+    @Predicate(label="Intitulé" ,optional=false,search=true)
     private String label ;
     
-    @Predicate(label = "Portée de la taxe",target = "combobox",values = "Ventes;Achats;Aucun",search = false)
+    @Predicate(label="Portée de la taxe",target="combobox",values="Ventes;Achats;Aucun",search=false)
     private String porte = "0";
     
-    @Predicate(label = "Calcul de la taxe",target = "combobox",values = "Fixé;Pourcentage du prix;Pourcentage du prix taxes incluses",search = false)
+    @Predicate(label="Calcul de la taxe",target="combobox",values="Fixé;Pourcentage du prix;Pourcentage du prix taxes incluses",search=false)
     private String calculTaxe = "0" ;
     
-    @Predicate(label = "Montant" ,optional = false,type = Double.class,search = false)
+    @Predicate(label="Montant" ,optional=false,type=Double.class,search=false)
     private Double montant = 0.0;
     
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "taxe")
+    @OneToMany(fetch=FetchType.LAZY,mappedBy="taxe")
     private List<Compte> comptes = new ArrayList<Compte>();
     
-    @Predicate(label = "Bloc-notes",group = true,groupLabel = "Bloc-notes",groupName = "group2",target = "textarea",search = false)
+    @Predicate(label="Bloc-notes",group=true,groupLabel="Bloc-notes",groupName="group2",target ="textarea",search=false)
     private String note ;
 	/**
 	 * 

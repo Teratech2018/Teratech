@@ -1,0 +1,18 @@
+{
+	'name':'Achats',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Gestion des Achats',
+	'sequence':10,
+	'description':'',
+	'category':'Accounting',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\achats_menus.xml'],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

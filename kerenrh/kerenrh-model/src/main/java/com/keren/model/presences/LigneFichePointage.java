@@ -25,7 +25,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_LIFIPO")
+@Table(name="T_LIFIPORH")
 public class LigneFichePointage extends BaseElement implements Serializable, Comparable<LigneFichePointage> {
 
 	/**
@@ -40,15 +40,13 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 	
 	@Temporal(TemporalType.TIME)
 	@Predicate(label="Date du pointage",type=Date.class,target="date",search=true)
-	private Date datepointage ;
+	private Date datepointage ;	
 	
-	@Temporal(TemporalType.TIME)
-	@Predicate(label="Heure arrivé",type=Date.class,target="time",search=true)
-	private Date heurearrive ;
+	@Predicate(label="Heure arrivé",target="time",search=true)
+	private String heurearrive ;	
 	
-	@Temporal(TemporalType.TIME)
-	@Predicate(label="Heure de depart",type=Date.class,target="time",search=true)
-	private Date heuredepart ;
+	@Predicate(label="Heure de depart",target="time",search=true)
+	private String heuredepart ;
 	
 	@Predicate(label="Absent",type=Boolean.class,search=true)
 	private Boolean absent = Boolean.FALSE;
@@ -89,8 +87,8 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
  * @param absent
  * @param absencepaye
  */
-	public LigneFichePointage(long id, String designation, String moduleName, Employe employe, Date heurearrive,
-			Date heuredepart, Boolean absent, Boolean absencepaye) {
+	public LigneFichePointage(long id, String designation, String moduleName, Employe employe, String heurearrive,
+			String heuredepart, Boolean absent, Boolean absencepaye) {
 		super(id, designation, moduleName);
 		this.employe = employe;
 		this.heurearrive = heurearrive;
@@ -101,9 +99,24 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 		
 	}
 	
+	/**
+	 * 
+	 * @param employe
+	 */
+	public LigneFichePointage(Employe employe) {
+		super(-1, null, null);
+		this.employe = employe;		
+	}
+	
+	/**
+	 * 
+	 * @param lign
+	 */
 	public LigneFichePointage(LigneFichePointage lign) {
 		super(lign.id, lign.designation, lign.moduleName);
-		this.employe = lign.employe;
+		if(lign.employe!=null){
+			this.employe = new Employe(lign.employe);
+		}//end if(lign.employe!=null){
 		this.heurearrive = lign.heurearrive;
 		this.heuredepart = lign.heuredepart;
 		this.absent = lign.absent;
@@ -123,19 +136,19 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 		this.employe = employe;
 	}
 
-	public Date getHeurearrive() {
+	public String getHeurearrive() {
 		return heurearrive;
 	}
 
-	public void setHeurearrive(Date heurearrive) {
+	public void setHeurearrive(String heurearrive) {
 		this.heurearrive = heurearrive;
 	}
 
-	public Date getHeuredepart() {
+	public String getHeuredepart() {
 		return heuredepart;
 	}
 
-	public void setHeuredepart(Date heuredepart) {
+	public void setHeuredepart(String heuredepart) {
 		this.heuredepart = heuredepart;
 	}
 
@@ -232,5 +245,14 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 		// TODO Auto-generated method stub
 		return employe.compareTo(o.employe);
 	}
+
+	@Override
+	public String toString() {
+		return "LigneFichePointage [employe=" + employe + ", datepointage=" + datepointage + ", heurearrive="
+				+ heurearrive + ", heuredepart=" + heuredepart + ", absent=" + absent + ", absencepaye=" + absencepaye
+				+ ", id=" + id + "]";
+	}
+	
+	
 
 }

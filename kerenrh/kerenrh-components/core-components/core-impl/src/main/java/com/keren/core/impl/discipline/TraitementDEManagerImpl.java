@@ -15,7 +15,9 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.core.ifaces.discipline.TraitementDEManagerLocal;
 import com.keren.core.ifaces.discipline.TraitementDEManagerRemote;
+import com.keren.dao.ifaces.discipline.DemandeExplicationDAOLocal;
 import com.keren.dao.ifaces.discipline.TraitementDEDAOLocal;
+import com.keren.model.discipline.DemandeExplication;
 import com.keren.model.discipline.TraitementDE;
 import com.megatim.common.annotations.OrderType;
 
@@ -28,6 +30,9 @@ public class TraitementDEManagerImpl
 
     @EJB(name = "TraitementDEDAO")
     protected TraitementDEDAOLocal dao;
+    
+    @EJB(name = "DemandeExplicationDAO")
+    protected DemandeExplicationDAOLocal dedao;
 
     public TraitementDEManagerImpl() {
     }
@@ -75,5 +80,28 @@ public class TraitementDEManagerImpl
   		}
   		return result;
   	}
+
+	@Override
+	public TraitementDE delete(Long id) {
+		// TODO Auto-generated method stub
+		TraitementDE data = super.delete(id);
+		TraitementDE result = new TraitementDE(data);
+		return result;
+	}
+
+	@Override
+	public void processAfterSave(TraitementDE entity) {
+		// TODO Auto-generated method stub
+		DemandeExplication demande = entity.getDemande();
+		if(demande.getState().equalsIgnoreCase("reponse")){
+			demande.setState("encours");
+			dedao.update(demande.getId(), demande);
+		}
+		super.processAfterSave(entity);
+	}
+
+	
+  	
+  	
 
 }

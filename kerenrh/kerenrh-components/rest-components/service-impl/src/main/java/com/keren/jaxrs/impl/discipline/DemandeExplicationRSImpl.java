@@ -10,12 +10,14 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.discipline.DemandeExplicationManagerRemote;
 import com.keren.jaxrs.ifaces.discipline.DemandeExplicationRS;
 import com.keren.model.discipline.DemandeExplication;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
@@ -59,29 +61,57 @@ public class DemandeExplicationRSImpl
 		// TODO Auto-generated method stub
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new DemandeExplication(), new HashMap<String, MetaData>()
-					, new ArrayList<String>());
-			//Construction du workflow
-//			MetaColumn workbtn = new MetaColumn("button", "work1", "Approuver", false, "workflow", null);
-//			workbtn.setStates(new String[]{"confirmer"});workbtn.setPattern("btn btn-primary");
-//			workbtn.setValue("{'model':'kerenrh','entity':'demandeconge','method':'approuve'}");
-//			meta.getHeader().add(workbtn);
-//			//Cas du refus
-//			workbtn = new MetaColumn("button", "work2", "Refuser", false, "workflow", null);
-//			workbtn.setStates(new String[]{"confirmer"});
-//			workbtn.setValue("{'model':'kerenrh','entity':'demandeconge','method':'rejete'}");
-//			meta.getHeader().add(workbtn);
-//			//Resoumettre
-//			workbtn = new MetaColumn("button", "work3", "Remettre brouillon", false, "workflow", null);
-//			workbtn.setStates(new String[]{"confirmer"});
-//			workbtn.setValue("{'model':'kerenrh','entity':'demandeconge','method':'annuler'}");
-//			meta.getHeader().add(workbtn);
-//			MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-//			meta.getHeader().add(stautsbar);
+					, new ArrayList<String>());			
+			MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+			meta.getHeader().add(stautsbar);
 			return meta;
 		} catch (Exception e) {
    			// TODO Auto-generated catch block
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
    		}
 	}
+
+	
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		DemandeExplication entity = manager.find("id", (Long) id);
+		if(!entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("La demende est déjà en cours de traitement");
+		}//end if(!entity.getState().equalsIgnoreCase("etabli")){
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeSave(DemandeExplication entity) {
+		// TODO Auto-generated method stub
+		if(entity.getAuteur()==null){
+			throw new KerenExecption("L'auteur de la demande est obligatoire");
+		}else if(entity.getReference()==null||entity.getReference().trim().isEmpty()){
+			throw new KerenExecption("La Reference de la demande est obligatoire");
+		}else if(entity.getDestinataire()==null){
+			throw new KerenExecption("L'employé concerné par la demande est obligatoire");
+		}
+		entity.setState("etabli");
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(DemandeExplication entity) {
+		// TODO Auto-generated method stub
+		if(entity.getAuteur()==null){
+			throw new KerenExecption("L'auteur de la demande est obligatoire");
+		}else if(entity.getReference()==null||entity.getReference().trim().isEmpty()){
+			throw new KerenExecption("La Reference de la demande est obligatoire");
+		}else if(entity.getDestinataire()==null){
+			throw new KerenExecption("L'employé concerné par la demande est obligatoire");
+		}if(!entity.getState().equalsIgnoreCase("etabli")){
+			throw new KerenExecption("La demende est déjà en cours de traitement");
+		}
+		super.processBeforeUpdate(entity);
+	}
+    
+    
 
 }

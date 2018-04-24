@@ -7,8 +7,9 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
@@ -20,7 +21,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_LIRE")
+@Table(name="T_LIRERH")
 public class LigneResolution extends BaseElement implements Serializable,Comparable<LigneResolution>{
 
 	/**
@@ -28,7 +29,7 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 	 */
 	private static final long serialVersionUID = 1478087362649689592L;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="DE_ID")
 	@Predicate(label="Demande",type=DemandeExplication.class,target="many-to-one",search=true,optional=false,nullable=false)
 	private DemandeExplication demande ;
@@ -38,14 +39,18 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 	@Predicate(label="Concerné",type=Employe.class,target="many-to-one",search=true,editable=false,updatable=false)
 	private Employe concerne;
 	
-	@ManyToOne
-	@JoinColumn(name="SAN_ID")
+	@OneToOne(mappedBy="resolution")
 	@Predicate(label="Sanction",type=Sanction.class,target="many-to-one",search=true,editable=false,updatable=false)
 	private Sanction sanction ;
 	
-	@Predicate(label="Recommendation",target="textarea",group=true,groupName="group1",groupLabel="RECOMMENDATION")
+	@Predicate(label="Recommendation",target="textarea",group=true,groupName="group1",groupLabel="RECOMMENDATION",search=true)
+	@Lob
 	private String recommendation ;	
 	
+//	@ManyToOne
+//	
+//	@JsonManagedReference
+//	private ResolutionConseil resolution;
 
 	/**
 	 * 
@@ -71,7 +76,21 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 		this.recommendation = recommendation;
 	}
 
+	public LigneResolution(DemandeExplication dmde) {
+		super(-1, null, null);
+		
+	   this.demande = new DemandeExplication(dmde);
+	    
+		if(dmde.getDestinataire()!=null){
+			this.concerne = new Employe(dmde.getDestinataire());
+		}//end if(dmde.getDestinataire()!=null){		
+		
+	}
 
+	/**
+	 * 
+	 * @param lign
+	 */
 	public LigneResolution(LigneResolution lign) {
 		super(lign.id, lign.designation, lign.moduleName);
 		if(lign.demande!=null){
@@ -79,10 +98,7 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 	    }
 		if(lign.concerne!=null){
 			this.concerne = new Employe(lign.concerne);
-		}
-		if(lign.sanction!=null){
-			this.sanction = new Sanction(lign.sanction);
-		}
+		}		
 		this.recommendation = lign.recommendation;
 	}
 	
@@ -137,6 +153,18 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 	}
 
     
+
+//	public ResolutionConseil getResolution() {
+//		return resolution;
+//	}
+//
+//
+//
+//	public void setResolution(ResolutionConseil resolution) {
+//		this.resolution = resolution;
+//	}
+
+
 
 	@Override
 	public String getEditTitle() {

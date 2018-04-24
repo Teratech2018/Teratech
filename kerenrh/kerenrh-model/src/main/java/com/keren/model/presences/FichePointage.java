@@ -17,6 +17,8 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.keren.model.employes.DepartementSoc;
+import com.keren.model.structures.Departement;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -24,7 +26,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_FIPO")
+@Table(name="T_FIPORH")
 public class FichePointage extends BaseElement implements Serializable, Comparable<FichePointage> {
 
 	/**
@@ -40,17 +42,18 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
 	@Predicate(label="Intitulé de la fiche",search=true)
 	private String intitule ;
 	
-	@Predicate(label="Générer pour" ,target="combobox",values="Tout les employes;Pour un département",search=true)
+	@Predicate(label="Générer pour" ,target="combobox",values="Tout les employes;Pour un département",search=true,observable=true,updatable=false)
 	private String porte ="0";
 	
 	@ManyToOne
 	@JoinColumn(name="DEP_ID")
-	@Predicate(label="Département",type=DepartementSoc.class,target="many-to-one",search=true)
-	private DepartementSoc departement;
+	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true,hidden="currentObject.porte=='0'",updatable=false)
+	private Departement departement;
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	@JoinColumn(name="FIPO_ID")
-	@Predicate(label="Fiche pointage",type=LigneFichePointage.class,target="one-to-many",group=true,groupName="group1",groupLabel="POINTAGES")
+	@Predicate(label="Fiche pointage",type=LigneFichePointage.class,target="one-to-many",group=true,groupName="group1",groupLabel="POINTAGES",edittable=true)
+	@Observer(observable="porte",source="method:presence",parameters="departement")
 	private List<LigneFichePointage> lignes = new ArrayList<LigneFichePointage>();
 
 	/**
@@ -84,7 +87,7 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
  * @param lignes
  */
 	public FichePointage(long id, String designation, String moduleName, String code, Boolean actif, String intitule,
-			String porte, DepartementSoc departement, List<LigneFichePointage> lignes) {
+			String porte, Departement departement, List<LigneFichePointage> lignes) {
 		super(id, designation, moduleName);
 		this.code = code;
 		this.actif = actif;
@@ -105,7 +108,7 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
 		this.intitule = fiche.intitule;
 		this.porte = fiche.porte;
 		if(fiche.departement!=null){
-			this.departement = new DepartementSoc(fiche.departement);
+			this.departement = new Departement(fiche.departement);
 		}
 		
 	}	
@@ -143,11 +146,11 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
 		this.porte = porte;
 	}
 
-	public DepartementSoc getDepartement() {
+	public Departement getDepartement() {
 		return departement;
 	}
 
-	public void setDepartement(DepartementSoc departement) {
+	public void setDepartement(Departement departement) {
 		this.departement = departement;
 	}
 
@@ -193,5 +196,13 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
 		// TODO Auto-generated method stub
 		return code.compareTo(arg0.code);
 	}
+
+	@Override
+	public String toString() {
+		return "FichePointage [code=" + code + ", actif=" + actif + ", intitule=" + intitule + ", porte=" + porte
+				+ ", departement=" + departement + ", lignes=" + lignes + "]";
+	}
+	
+	
 
 }

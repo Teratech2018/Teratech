@@ -18,15 +18,18 @@ public class Observer implements Serializable,Comparable<Observer>{
     private String observable;
     
     private Source source ;
+    
+    private String[] parameters ;
 
     /**
      * 
      * @param observable
      * @param source 
      */
-    public Observer(String observable, String source) {
+    public Observer(String observable, String source,String parameters) {
         this.observable = observable;
         this.source = new Source(source);
+        this.parameters = parameters.split(",");
     }
 
     /**
@@ -36,6 +39,7 @@ public class Observer implements Serializable,Comparable<Observer>{
      public Observer(Observer obser) {
         this.observable = obser.observable;
         this.source = obser.source;
+        this.parameters = obser.parameters;
     }
      
     public Observer() {
@@ -56,6 +60,16 @@ public class Observer implements Serializable,Comparable<Observer>{
     public void setSource(Source source) {
         this.source = source;
     }
+
+    public String[] getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(String[] parameters) {
+        this.parameters = parameters;
+    }
+    
+    
     
     
     @Override
@@ -81,7 +95,7 @@ public class Observer implements Serializable,Comparable<Observer>{
          */
         public Source(String texte) {
             String[] split = texte.split(":");
-            System.out.println(Observer.class.toString()+" ======== "+texte+" ::::: "+split[0]+" ====== "+split[1]);
+//            System.out.println(Observer.class.toString()+" ======== "+texte+" ::::: "+split[0]+" ====== "+split[1]);
             if("field".equals(split[0].trim())){
                 fieldname = split[1];
             }else if("method".equals(split[0].trim())){

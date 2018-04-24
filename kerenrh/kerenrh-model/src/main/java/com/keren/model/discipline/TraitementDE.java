@@ -8,6 +8,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,6 +17,8 @@ import javax.persistence.TemporalType;
 import com.core.base.BaseElement;
 import com.keren.model.employes.Employe;
 import com.keren.model.employes.Poste;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -23,7 +26,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_TRDE")
+@Table(name="T_TRDERH")
 public class TraitementDE extends BaseElement implements Serializable, Comparable<TraitementDE> {
 
 	/**
@@ -34,26 +37,37 @@ public class TraitementDE extends BaseElement implements Serializable, Comparabl
 	@ManyToOne
 	@JoinColumn(name="DE_ID")
 	@Predicate(label="Demande" ,type=DemandeExplication.class,target="many-to-one",optional=false,nullable=false,search=true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"reponse\"}]")
 	private DemandeExplication demande ;
+
+	@ManyToOne
+	@JoinColumn(name="EMP_ID")
+	@Predicate(label="Employé Concerné",type=Employe.class,target="many-to-one",editable=false,search=true)
+	@Observer(observable="demande",source="field:destinataire")
+	private Employe concerne ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date avis" , type=Date.class,target="date",optional=false,nullable=false,search=true)
 	private Date dateavis ;
 	
 	@ManyToOne
-	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Supérieur" ,type=Employe.class,target="many-to-one",optional=false,search=true)
+	@JoinColumn(name="SUP_ID")
+	@Predicate(label="Supérieur" ,type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe superieur ;
 	
-	@ManyToOne
-	@JoinColumn(name="POS_ID")
-	@Predicate(label="Poste" ,type=Poste.class,target="many-to-one",optional=false,search=true)
-	private Poste poste ;
 	
-	@Predicate(label="Sanction proposée",target="combobox",values="Classer;Avertissement;Lettre d'observation;Blâme;Mise à pied;Licenciement;Convoquer le conseil",search=true)
+	@Predicate(label="Sanction proposée",target="combobox",values="Classer;Avertissement;Lettre observation;Blame;Mise a pied;Licenciement;Convoquer le conseil",search=true)
 	private String sanction = "0";
 	
+
+	@ManyToOne
+	@JoinColumn(name="POS_ID")
+	@Predicate(label="Poste" ,type=Poste.class,target="many-to-one",editable=false,optional=false,search=true)
+	@Observer(observable="superieur",source="field:poste")
+	private Poste poste ;
+	
 	@Predicate(label="Motivation",target="textarea",group=true,groupName="group1",groupLabel="MOTIVATION")
+	@Lob
     private String motivation;
 	/**
 	 * 
@@ -105,6 +119,9 @@ public class TraitementDE extends BaseElement implements Serializable, Comparabl
 		this.dateavis = trait.dateavis;
 		if(trait.superieur!=null){
 			this.superieur = new Employe(trait.superieur);
+		}
+		if(trait.concerne!=null){
+			this.concerne = new Employe(trait.concerne);
 		}
 		if(trait.poste!=null){
 			this.poste = new Poste(trait.poste);
@@ -164,6 +181,15 @@ public class TraitementDE extends BaseElement implements Serializable, Comparabl
 	}
 	
 	
+	
+
+	public Employe getConcerne() {
+		return concerne;
+	}
+
+	public void setConcerne(Employe concerne) {
+		this.concerne = concerne;
+	}
 
 	@Override
 	public String getEditTitle() {

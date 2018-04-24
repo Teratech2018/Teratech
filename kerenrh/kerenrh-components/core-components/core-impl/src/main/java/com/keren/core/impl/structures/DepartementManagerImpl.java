@@ -77,7 +77,15 @@ public class DepartementManagerImpl
 		}
 		return result;
 	}
+
+    @Override
+    public void processBeforeSave(Departement entity) {
+        System.out.println(DepartementManagerImpl.class.toString()+" ========================== "+entity);
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
     
+        
+        
     
 
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -18,8 +18,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -27,7 +30,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_POJO")
+@Table(name="T_POJORH")
 public class PointageJouranlier extends BaseElement implements Serializable, Comparable<PointageJouranlier> {
 
 	/**
@@ -35,23 +38,25 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 	 */
 	private static final long serialVersionUID = 7027189051167266574L;
 	
-	@Predicate(label="Intitulé" ,optional=false,search=true)
+	@Predicate(label="Intitulé" ,optional=false,search=true,unique=true)
+	@Column(unique=true)
 	private String code ;
-	
-	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de la feuille de presence",type=Date.class,target="date",optional=false,search=true)
-	private Date date ;
 	
 	@ManyToOne
 	@JoinColumn(name="FIPO_ID")
-	@Predicate(label="Fiche de pointage",type=FichePointage.class,target="many-to-one",updatable=false,search=true)
+	@Predicate(label="Fiche de pointage",type=FichePointage.class,target="many-to-one",updatable=false,search=true,observable=true)
 	private FichePointage fiche ;
+
+	@Temporal(TemporalType.DATE)
+	@Predicate(label="Date de la feuille de presence",type=Date.class,target="date",updatable=false,optional=false,search=true)
+	private Date datepointage ;
 	
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	@JoinColumn(name="FIPO_ID")
-	@Predicate(label="Fiche pointage",type=LigneFichePointage.class,target="one-to-many",group=true,groupName="group1",groupLabel="POINTAGES")
+	@OneToMany(mappedBy="pointage",fetch=FetchType.LAZY)
+	@Predicate(label="Fiche pointage",type=LignePointage.class,target="one-to-many",group=true,groupName="group1",groupLabel="POINTAGES",edittable=true)
+	@Observer(observable="fiche",source="method:presence",parameters="datepointage")
 	private List<LignePointage> lignes =new ArrayList<LignePointage>();
 	
+	@Predicate(label="Etat",hide=true,search=true)
 	private String state = "etabli";
 
 	/**
@@ -89,7 +94,7 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 			FichePointage fiche, List<LignePointage> lignes) {
 		super(id, designation, moduleName);
 		this.code = code;
-		this.date = date;
+		this.datepointage = date;
 		this.fiche = fiche;
 		this.lignes = lignes;
 		state = "etabli";
@@ -102,15 +107,11 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 	public PointageJouranlier(PointageJouranlier p) {
 		super(p.id, p.designation, p.moduleName);
 		this.code = p.code;
-		this.date = p.date;
+		this.datepointage = p.datepointage;
 		state = p.state;
 		if(p.fiche!=null){
 			this.fiche = new FichePointage(p.fiche);
-		}
-
-        for(LignePointage lig:p.lignes){
-        	this.lignes.add(new LignePointage(lig));
-        }
+		}       
 	}
 
 	public String getCode() {
@@ -121,14 +122,20 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 		this.code = code;
 	}
 
-	public Date getDate() {
-		return date;
+	
+	public String getState() {
+		return state;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setState(String state) {
+		this.state = state;
 	}
 
+	public void setDatepointage(Date datepointage) {
+		this.datepointage = datepointage;
+	}
+
+	
 	public FichePointage getFiche() {
 		return fiche;
 	}
@@ -146,6 +153,10 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 	}
 	
 	
+
+	public Date getDatepointage() {
+		return datepointage;
+	}
 
 	@Override
 	public String getEditTitle() {

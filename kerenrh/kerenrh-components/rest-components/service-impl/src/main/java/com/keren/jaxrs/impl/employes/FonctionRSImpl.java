@@ -9,6 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.employes.FonctionManagerRemote;
 import com.keren.jaxrs.ifaces.employes.FonctionRS;
@@ -20,7 +21,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Wed Feb 14 12:53:10 GMT+01:00 2018
  * 
  */
@@ -55,15 +57,49 @@ public class FonctionRSImpl
     }
     
     @Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-			return MetaDataUtil.getMetaData(new Fonction(),new HashMap<String, MetaData>()
-					, new ArrayList<String>());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			throw new WebApplicationException(e);
-		}
-	}
+    public MetaData getMetaData(HttpHeaders headers) {
+            // TODO Auto-generated method stub
+            try {
+                    return MetaDataUtil.getMetaData(new Fonction(),new HashMap<String, MetaData>()
+                                    , new ArrayList<String>());
+            } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    throw new WebApplicationException(e);
+            }
+    }
+    
+    @Override
+    protected void processBeforeUpdate(Fonction entity) {
+
+         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("Le Code/Abbréviation est obligatoire");
+        }/*else if(entity.getActif()==null){
+            throw new KerenExecption("La Actif est obligatoire");
+        }else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+            throw new KerenExecption("La Intitulé est obligatoire");
+        }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+            throw new KerenExecption("La Type est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+            throw new KerenExecption("La Descrition  est obligatoire");
+        }*/
+        super.processBeforeUpdate(entity);
+    }
+
+    @Override
+    protected void processBeforeSave(Fonction entity) {
+
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+            throw new KerenExecption("Le Code/Abbréviation est obligatoire");
+        }/*else if(entity.getActif()==null){
+            throw new KerenExecption("La Actif est obligatoire");
+        }else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+            throw new KerenExecption("La Intitulé est obligatoire");
+        }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+            throw new KerenExecption("La Type est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+            throw new KerenExecption("La Descrition  est obligatoire");
+        }*/
+        super.processBeforeSave(entity);
+    }
 
 }

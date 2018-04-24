@@ -30,17 +30,17 @@ public interface DemandeCongeCRS
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("approuve")
-    public DemandeCongeV approuver(@Context HttpHeaders headers,DemandeCongeC dmde);
+    public DemandeCongeC approuver(@Context HttpHeaders headers,DemandeCongeC dmde);
 	
 	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("rejete")
-    public DemandeCongeR rejeter(@Context HttpHeaders headers,DemandeCongeC dmde);
+    public DemandeCongeC rejeter(@Context HttpHeaders headers,DemandeCongeC dmde);
 	
 	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("annuler")
-    public DemandeConge annuler(@Context HttpHeaders headers,DemandeCongeC dmde);
+    public DemandeCongeC annuler(@Context HttpHeaders headers,DemandeCongeC dmde);
 }

@@ -3,6 +3,7 @@ package com.keren.kerenpaie.jaxrs.impl.employes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -13,9 +14,11 @@ import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.employes.EmployeManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.employes.EmployeRS;
 import com.keren.kerenpaie.model.employes.Employe;
+import com.keren.kerenpaie.model.paie.ValiderSalaire;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 
 /**
@@ -64,5 +67,19 @@ public class EmployeRSImpl
    			throw new WebApplicationException(e);
    		}
    	}
+
+	@Override
+	public List<Employe> getSalaries(HttpHeaders headers, ValiderSalaire entity) {
+		// TODO Auto-generated method stub
+		List<Employe> salaries = new ArrayList<Employe>();
+		return salaries;
+	}
+
+	@Override
+	public RSNumber countSalaries(HttpHeaders headers, ValiderSalaire entity) {
+		// TODO Auto-generated method stub
+		RSNumber number = new RSNumber(0);
+		return number;
+	}
 
 }

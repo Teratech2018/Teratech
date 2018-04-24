@@ -24,7 +24,7 @@ public class GroupeDetail extends BaseElement implements Serializable,Comparable
 
     @ManyToOne
     @JoinColumn(name = "ACT_ID")
-    @Predicate(label = "ACTION ",optional = false,type = MenuAction.class,target = "many-to-one",updatable = false,search = true)
+    @Predicate(label = "ACTION ",optional = false,type = MenuAction.class,target = "many-to-one",editable = false,search = true)
     private MenuAction menuAction ;
     
     @Predicate(label = "NIVEAU HABILITATION" , target = "combobox" ,values = "Suppression;Ecriture;Lecture;Aucune",search = true)

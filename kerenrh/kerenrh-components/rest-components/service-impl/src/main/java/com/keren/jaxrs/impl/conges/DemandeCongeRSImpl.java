@@ -78,7 +78,7 @@ public class DemandeCongeRSImpl
 	}
 
 	@Override
-	public DemandeCongeC confirmer(HttpHeaders headers, DemandeConge dmde) {
+	public DemandeConge confirmer(HttpHeaders headers, DemandeConge dmde) {
 		return manager.confirmer(dmde);
 	}
 
@@ -102,7 +102,7 @@ public class DemandeCongeRSImpl
 	}
 	
 	private void _controlreView(DemandeConge entity){
-		 if(entity.getDebut().after(entity.getFin())){
+		    if(entity.getDebut().after(entity.getFin())){
 	            throw new KerenExecption("Saisie Date erronée !!!");
 	        }else if(entity.getDebut().equals(entity.getFin())){
 	            throw new KerenExecption("Saisie Date erronée !!!");

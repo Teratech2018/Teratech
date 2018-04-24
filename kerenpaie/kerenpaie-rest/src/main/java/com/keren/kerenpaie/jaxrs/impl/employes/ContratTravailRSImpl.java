@@ -125,6 +125,10 @@ public class ContratTravailRSImpl
 			throw new KerenExecption("L'Emploi du salarié est obligatoire");
 		}else if(entity.getDrecurtement()==null){
 			throw new KerenExecption("La date de recrutement du salarié est obligatoire");
+		}else if(entity.getType().getCategorie().equalsIgnoreCase("2")){
+			if(entity.getIndice()==null||entity.getIndice()==0){
+				throw new KerenExecption("L'Indice de Solde du salarié est obligatoire");
+			}
 		}
 		super.processBeforeSave(entity);
 	}
@@ -146,6 +150,10 @@ public class ContratTravailRSImpl
 			throw new KerenExecption("L'Emploi du salarié est obligatoire");
 		}else if(entity.getDrecurtement()==null){
 			throw new KerenExecption("La date de recrutement du salarié est obligatoire");
+		}else if(entity.getType().getCategorie().equalsIgnoreCase("2")){
+			if(entity.getIndice()==null||entity.getIndice()==0){
+				throw new KerenExecption("L'Indice de Solde du salarié est obligatoire");
+			}
 		}
 		super.processBeforeUpdate(entity);
 	}
@@ -194,6 +202,10 @@ public class ContratTravailRSImpl
 			throw new KerenExecption("La date de recrutement du salarié est obligatoire");
 		}else if(entity.getId()<=0){
 			throw new KerenExecption("Veuillez d'abord enregistrer le contrat de travail");
+		}else if(entity.getType().getCategorie().equalsIgnoreCase("2")){
+			if(entity.getIndice()==null||entity.getIndice()==0){
+				throw new KerenExecption("L'Indice de Solde du salarié est obligatoire");
+			}
 		}
 		contratValidate(entity);
 		

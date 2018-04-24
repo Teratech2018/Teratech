@@ -31,14 +31,14 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false)
-//	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
+	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
 	private PeriodePaie periode ;
 	
 	@Predicate(label="Concerne ?",target="combobox",values="Tous les employés;Seulement les employés selectionnés",optional=false)
 	private String porte ="0";
 	
 	@ManyToMany
-	@Predicate(label="EM",type=Employe.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés")
+	@Predicate(label="EM",type=Employe.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0'")
 	private List<Employe> concernes = new ArrayList<Employe>();
 	
 	/**
@@ -117,13 +117,13 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Préparation des salaires";
+		return "Impression du Broulliard de Paie";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Préparation des salaires";
+		return "Impression du Broulliard de Paie";
 	}
 
 	@Override

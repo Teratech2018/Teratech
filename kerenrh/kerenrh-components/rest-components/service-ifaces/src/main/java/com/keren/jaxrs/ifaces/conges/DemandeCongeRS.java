@@ -27,6 +27,6 @@ public interface DemandeCongeRS
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("confirme")
-    public DemandeCongeC confirmer(@Context HttpHeaders headers,DemandeConge dmde);
+    public DemandeConge confirmer(@Context HttpHeaders headers,DemandeConge dmde);
 
 }

@@ -3,17 +3,26 @@ package com.keren.jaxrs.impl.presences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.keren.core.ifaces.employes.EmployeManagerRemote;
 import com.keren.core.ifaces.presences.FichePointageManagerRemote;
+import com.keren.core.ifaces.structures.DepartementManagerRemote;
 import com.keren.jaxrs.ifaces.presences.FichePointageRS;
 import com.keren.model.conges.InterruptionConge;
+import com.keren.model.employes.Employe;
 import com.keren.model.presences.FichePointage;
+import com.keren.model.presences.LigneFichePointage;
+import com.keren.model.structures.Departement;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -37,6 +46,13 @@ public class FichePointageRSImpl
      */
     @Manager(application = "kerenrh", name = "FichePointageManagerImpl", interf = FichePointageManagerRemote.class)
     protected FichePointageManagerRemote manager;
+    
+    @Manager(application = "kerenrh", name = "EmployeManagerImpl", interf = EmployeManagerRemote.class)
+    protected EmployeManagerRemote employemanager;
+    
+    @Manager(application = "kerenrh", name = "DepartementManagerImpl", interf = DepartementManagerRemote.class)
+    protected DepartementManagerRemote departementmanager;
+    
 
     public FichePointageRSImpl() {
         super();
@@ -67,6 +83,42 @@ public class FichePointageRSImpl
 			throw new WebApplicationException(e);
 		}
 
+	}
+	
+	
+
+	@Override
+	protected void processBeforeSave(FichePointage entity) {
+		// TODO Auto-generated method stub
+//		System.out.println(FichePointageRSImpl.class.toString()+" ================ "+entity);
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	public List<LigneFichePointage> presences(HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		String key = gson.fromJson(headers.getRequestHeader("id").get(0), String.class);
+		Long depID = gson.fromJson(headers.getRequestHeader("departement").get(0), Long.class);
+		
+		//Employe concernes
+		List<Employe> employes = new ArrayList<Employe>();
+		if(key.trim().equalsIgnoreCase("0")){
+			employes = employemanager.findAll();
+		}else if(key.trim().equalsIgnoreCase("1")){
+			RestrictionsContainer container = RestrictionsContainer.newInstance();
+			if(depID==null){
+				throw new KerenExecption("Veuillez saisir le departement concerné");
+			}//end if(depID==null){
+			Departement departement = departementmanager.find("id", depID);
+			container.addEq("departement", departement);
+			employes = employemanager.filter(container.getPredicats(), null, null, 0, -1);
+		}//end if(key.trim().equalsIgnoreCase("0")){
+		List<LigneFichePointage> datas = new ArrayList<LigneFichePointage>();
+		for(Employe employe : employes){
+			datas.add(new LigneFichePointage(employe));
+		}//end for(Employe employe : employes){
+		return datas;
 	}
     
     

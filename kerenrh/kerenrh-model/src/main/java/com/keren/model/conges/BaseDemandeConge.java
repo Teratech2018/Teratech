@@ -4,25 +4,14 @@
 package com.keren.model.conges;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
-import com.core.base.State;
-import com.keren.model.employes.DepartementSoc;
 import com.keren.model.employes.Employe;
 import com.keren.model.structures.Departement;
 import com.megatim.common.annotations.Predicate;
@@ -31,11 +20,6 @@ import com.megatim.common.annotations.Predicate;
  * @author BEKO
  *
  */
-@Entity
-@Table(name="T_DC")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="DC",discriminatorType=DiscriminatorType.STRING)
-@DiscriminatorValue("BDC")
 public class BaseDemandeConge extends BaseElement implements Serializable, Comparable<BaseDemandeConge> {
 
 	/**

@@ -7,6 +7,7 @@ package com.core.securites;
 
 import com.core.base.BaseElement;
 import com.core.menus.MenuModule;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,12 +33,13 @@ public class Groupe extends BaseElement implements Serializable,Comparable<Group
     
     @ManyToOne
     @JoinColumn(name = "M_ID")
-    @Predicate(label = "MODULE CONCERNE",target = "many-to-one",optional = false,updatable = false,type = MenuModule.class,search = true)
+    @Predicate(label = "MODULE CONCERNE",target = "many-to-one",optional = false,updatable = false,type = MenuModule.class,search = true,observable = true)
     private MenuModule module ;
     
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID")
-    @Predicate(label = "HABILITATIONS",group = true,groupName = "group_1",groupLabel = "HABILITATIONS",target = "one-to-many",type = GroupeDetail.class)
+    @Predicate(label = "HABILITATIONS",group = true,groupName = "group_1",groupLabel = "HABILITATIONS",updatable = false,target = "one-to-many",type = GroupeDetail.class,edittable = true)
+    @Observer(observable = "module",source = "method:detail",parameters = "code,module")
     private List<GroupeDetail> droits = new ArrayList<GroupeDetail>();
 
     /**

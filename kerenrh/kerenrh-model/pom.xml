@@ -35,6 +35,16 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>  
+        <dependency>
+		    <groupId>org.codehaus.jackson</groupId>
+		    <artifactId>jackson-core-asl</artifactId>
+		    <version>1.1.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>2.9.5</version>
+		</dependency>
     </dependencies>   
    
     <build>        
@@ -50,11 +60,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-components\dao-components\dao-ifaces\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\dao-components\dao-ifaces\src\main\java</outputDirectory>
                             <layer>dao</layer>
                             <sublayer>interface</sublayer>
-                            <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>                       
+                            <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>                       
                             <specification>ejb</specification>                                   
                         </configuration>  
                         <id>dao-ifaces-generate</id>                                           
@@ -64,11 +74,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-components\dao-components\dao-impl\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\dao-components\dao-impl\src\main\java</outputDirectory>
                             <layer>dao</layer>
                             <sublayer>implementation</sublayer>
-                            <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>      
+                            <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>      
                             <persistanceunitname>keren</persistanceunitname>   
                             <specification>ejb</specification>
                             <session>stateless</session>                           
@@ -82,11 +92,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-components\core-components\core-ifaces\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\core-components\core-ifaces\src\main\java</outputDirectory>
                             <layer>manager</layer>
                             <sublayer>interface</sublayer>
-                            <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>      
+                            <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>      
                             <specification>ejb</specification>                              
                         </configuration>   
                         <id>manager-ifaces-generate</id>                     
@@ -96,11 +106,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-components\core-components\core-impl\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\core-components\core-impl\src\main\java</outputDirectory>
                             <layer>manager</layer>
                             <sublayer>implementation</sublayer>
-                             <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>      
+                             <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>      
                             <persistanceunitname>keren</persistanceunitname>     
                             <specification>ejb</specification>
                             <session>stateless</session>                            
@@ -114,11 +124,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-components\rest-components\service-ifaces\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\rest-components\service-ifaces\src\main\java</outputDirectory>
                             <layer>jax-rs</layer>
                             <sublayer>interface</sublayer>
-                            <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>    
+                            <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>    
                             <specification>jax-rs</specification>                              
                         </configuration>   
                         <id>services-ifaces-generate</id>                     
@@ -128,11 +138,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-components\rest-components\service-impl\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\rest-components\service-impl\src\main\java</outputDirectory>
                             <layer>jax-rs</layer>
                             <sublayer>implementation</sublayer>
-                            <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\koris_erp\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>    
+                            <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-model\src\main\resources\model.xml</xmlfile>    
                             <specification>jax-rs</specification>   
                             <application>kerenrh</application>     
                             <module></module>                      

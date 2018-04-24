@@ -50,6 +50,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 	private Rubrique rubrique;
 	
 	@Temporal(TemporalType.DATE)
+
 	@Predicate(label="Date de début",target="date",type=Date.class,search=true)
 	private Date debut;
 	
@@ -61,7 +62,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 	@JoinColumn(name="LICOON_ID")
 	@Predicate(label="Lignes",type=LigneConvension.class,target="one-to-many",group=true,groupName="group1",groupLabel="Lignes de la grille salariale",edittable=true)
 	private List<LigneConvension> lignes = new ArrayList<LigneConvension>();
-
+        
 	private String state ="etabli";
 	
 	/**
@@ -121,6 +122,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 		}
 		this.debut = convension.debut;
 		this.fin = convension.fin;
+
 		this.state = convension.state;
 //		this.lignes = lignes;
 	}
@@ -231,6 +233,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 	@Override
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
+
 		List<State> states = new ArrayList<State>();
 		State state = new State("etabli", "Brouillon");
 		states.add(state);

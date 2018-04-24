@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="rh_admin" />
+	 <menu id="rh_admin_employe" label="Employés" parent="rh_admin" gyphycon="glyphicon glyphicon-user"/>
+	 <menuitem id="rh_admin_1" label="Employé" parent_ref="rh_admin_employe" entity_ref="Employe" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_admin_conge" label="gestion des congés" parent="rh_admin" gyphycon="glyphicon glyphicon-th"/>
+	 <menuitem id="rh_admin_2" label="Demande de congé" parent_ref="rh_admin_conge" entity_ref="DemandeConge" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" view_type="calendar,tree,form"/>
+	 <calendarRecord id="rh_admin_calendar01" label="DEMANDE de CONGE" action_ref="rh_admin_2" titlefield="designation" startfield="debut" allday="true">	        
+	 </calendarRecord>
+	 <menuitem id="rh_admin_3" label="Validation demande de congé" parent_ref="rh_admin_conge" entity_ref="DemandeCongeC" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_4" label="Reprise de service" parent_ref="rh_admin_conge" entity_ref="RepriseService" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" /><menu id="rh_admin_presence" label="Gestion des présences" parent="rh_admin" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="rh_admin_5" label="Interruption de congé" parent_ref="rh_admin_conge" entity_ref="InterruptionConge" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" /><menu id="rh_admin_discipline" label="Gestion de la discipline" parent="rh_admin" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menu id="rh_admin_presence" label="Gestion des présences" parent="rh_admin" gyphycon="glyphicon glyphicon-dashboard"/>
+	 <menuitem id="rh_admin_6_1" label="Fiche de pointage" parent_ref="rh_admin_presence" entity_ref="FichePointage" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_6" label="Pointage journalier" parent_ref="rh_admin_presence" entity_ref="PointageJouranlier" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="calendar,tree,form" />
+	 <calendarRecord id="rh_admin_calendar02" label="PRESENCE JOURNALIER" action_ref="rh_admin_6" titlefield="designation" startfield="date" allday="true">	        
+	 </calendarRecord>
+	 <menuitem id="rh_admin_7" label="Gérer les absences" parent_ref="rh_admin_presence" entity_ref="LignePointage" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_8" label="Gérer les retards" parent_ref="rh_admin_presence" entity_ref="Retard" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_9" label="Demande d'explication" parent_ref="rh_admin_discipline" entity_ref="DemandeExplication" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_10" label="Reponse à une DE" parent_ref="rh_admin_discipline" entity_ref="ReponseDE" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_11" label="Traiter une DE" parent_ref="rh_admin_discipline" entity_ref="TraitementDE" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_12" label="Convocation du conseil" parent_ref="rh_admin_discipline" entity_ref="ConvocationConseil" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_13" label="Résolution du conseil" parent_ref="rh_admin_discipline" entity_ref="ResolutionConseil" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_14" label="Sanctions" parent_ref="rh_admin_discipline" entity_ref="Sanction" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_admin_carriere" label="Gestion des Carrières" parent="rh_admin" gyphycon="glyphicon glyphicon-warning-sign"/>
+	 <menuitem id="rh_carriere_1" label="Avancement " parent_ref="rh_admin_carriere" entity_ref="Avancement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_carriere_2" label="Reclassements" parent_ref="rh_admin_carriere" entity_ref="Reclassement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_carriere_3" label="Bonification d'échelon" parent_ref="rh_admin_carriere" entity_ref="Bonification" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_carriere_4" label="Retrogration " parent_ref="rh_admin_carriere" entity_ref="Retrogradation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_carriere_5" label="Affectations" parent_ref="rh_admin_carriere" entity_ref="Affectation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_carriere_6" label="Cessation de Travail" parent_ref="rh_admin_carriere" entity_ref="Cessation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_carriere_7" label="Nominations" parent_ref="rh_admin_carriere" entity_ref="Nomination" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_admin_mission" label="Gestion des Missions" parent="rh_admin" gyphycon="glyphicon glyphicon-cog"/>
+	 <menuitem id="rh_mission_1" label="Missions" parent_ref="rh_admin_mission" entity_ref="Mission" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_mission_2" label="Ordre de Mission" parent_ref="rh_admin_mission" entity_ref="OrdreMission" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_mission_3" label="Résultat Mission" parent_ref="rh_admin_mission" entity_ref="ResultatMission" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_mission_4" label="Type de dépenses" parent_ref="rh_admin_mission" entity_ref="CategorieFrais" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_mission_5" label="Type de Missions" parent_ref="rh_admin_mission" entity_ref="CategorieMission" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_admin_formation" label="Gestion de la formation" parent="rh_admin" gyphycon="glyphicon glyphicon-cog"/>
+	 <menuitem id="rh_formation_1" label="Demande de Formation" parent_ref="rh_admin_formation" entity_ref="DemandeFormation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_formation_2" label="Generer un BF" parent_ref="rh_admin_formation" entity_ref="GenererBesionFormation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="true" />
+	 <menuitem id="rh_formation_3" label="Besion de Formation" parent_ref="rh_admin_formation" entity_ref="BesionFormation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_formation_4" label="Plannings" parent_ref="rh_admin_formation" entity_ref="PlanningFormation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_formation_5" label="Plans" parent_ref="rh_admin_formation" entity_ref="LignePlanningFormation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_formation_6" label="Formations" parent_ref="rh_admin_formation" entity_ref="Formation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_formation_7" label="Suivis Formation" parent_ref="rh_admin_formation" entity_ref="SeanceFormation" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_admin_recrutement" label="Gestion des Recrutements" parent="rh_admin" gyphycon="glyphicon glyphicon-cog"/>
+	 <menuitem id="rh_recrutement_1" label="Emploi" parent_ref="rh_admin_recrutement" entity_ref="Emploi" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_recrutement_2" label="Expression du Besion" parent_ref="rh_admin_recrutement" entity_ref="BesionRecrutement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_recrutement_3" label="Candidatures " parent_ref="rh_admin_recrutement" entity_ref="CandidatureSpontane" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_recrutement_4" label="Associer une candidature" parent_ref="rh_admin_recrutement" entity_ref="AffectationCandidat" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_recrutement_5" label="Suivi du recrutement" parent_ref="rh_admin_recrutement" entity_ref="Recrutement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_recrutement_6" label="Contrats de Travail" parent_ref="rh_admin_recrutement" entity_ref="ContratTravail" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_recrutement_7" label="Etapes Recrutement" parent_ref="rh_admin_recrutement" entity_ref="EtapeRecrutement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_admin_stages" label="Gestion des Stages" parent="rh_admin" gyphycon="glyphicon glyphicon-cog"/>
+	 <menuitem id="rh_stage_1" label="Besion en Stage" parent_ref="rh_admin_stages" entity_ref="BesionStage" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_stage_2" label="Stages" parent_ref="rh_admin_stages" entity_ref="Stage" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_stage_3" label="Suivi de Stage" parent_ref="rh_admin_stages" entity_ref="SuiviStage" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_admin_config" label="Configurations" parent="rh_admin" gyphycon="glyphicon glyphicon-cog"/>
+	 <menuitem id="rh_admin_16_1" label="Structure" parent_ref="rh_admin_config" entity_ref="Societe" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_15" label="Type Demande" parent_ref="rh_admin_config" entity_ref="TypeDemande" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_16" label="Type Contract" parent_ref="rh_admin_config" entity_ref="TypeContrat" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_17" label="Catégorie" parent_ref="rh_admin_config" entity_ref="Categorie" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_18" label="Echélon" parent_ref="rh_admin_config" entity_ref="Echelon" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_19" label="Structure entreprise" parent_ref="rh_admin_config" entity_ref="DepartementSoc" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_20" label="Organigramme" parent_ref="rh_admin_config" entity_ref="DConge" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_20_1" label="Département Administrative" parent_ref="rh_admin_config" entity_ref="Departement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_21" label="Postes" parent_ref="rh_admin_config" entity_ref="Poste" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_22" label="Fonctions" parent_ref="rh_admin_config" entity_ref="Fonction" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_23" label="niveau d'etude" parent_ref="rh_admin_config" entity_ref="NiveauEtude" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_24" label="Spécialités" parent_ref="rh_admin_config" entity_ref="Specialite" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_25" label="Diplômes" parent_ref="rh_admin_config" entity_ref="Diplome" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_26" label="Regions" parent_ref="rh_admin_config" entity_ref="Region" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_27" label="Departement" parent_ref="rh_admin_config" entity_ref="Departement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_28" label="Pays" parent_ref="rh_admin_config" entity_ref="Pays" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+</keren>

@@ -642,9 +642,10 @@ angular.module("mainApp")
                                      return true ;
                                  },
                                 hasPreviousPage:function(){
+//                                    console.log("pagination.hasPreviousPage() ================= c_page : "+this.currentPage+" ==== b_index : "+this.beginIndex)
                                      if(this.currentPage<=1){
                                        return false;
-                                   }  
+                                    }  
                                    return true;
                                  },            
                                  nextPage:function(){
@@ -696,26 +697,26 @@ angular.module("mainApp")
                                      }//end if(this.hasNextPage())
                                  },
                                  previousPage:function(){
-                                     if(this.hasPreviousPage()){
+                                     if(this.currentPage>(this.beginIndex+1)){
                                           $scope.pagination.currentPage -=1;
                                          $rootScope.$broadcast("displayitem",{index:$scope.pagination.currentPage});
                                      }else{
                                          if(this.hasprevious()){
-                                            $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
-                                            var interval = this.endIndex - this.beginIndex;
-                                            this.beginIndex = this.beginIndex-this.pageSize-1;
-                                            this.currentPage = this.beginIndex+1 ;
-                                            if(this.beginIndex<0){
-                                                this.beginIndex = 0;
-                                                this.currentPage = 1;
+//                                            $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
+                                            var interval = $scope.pagination.endIndex - $scope.pagination.beginIndex;
+                                            $scope.pagination.beginIndex = $scope.pagination.beginIndex-$scope.pagination.pageSize-1;
+                                            $scope.pagination.currentPage -= 1 ;
+                                            if($scope.pagination.beginIndex<0){
+                                                $scope.pagination.beginIndex = 0;
+//                                                $scope.pagination.currentPage = 1;
                                             }
-                                            if(interval>=this.pageSize){
-                                                this.endIndex = this.endIndex - this.pageSize;
+                                            if(interval>=$scope.pagination.pageSize){
+                                                $scope.pagination.endIndex = $scope.pagination.endIndex - $scope.pagination.pageSize;
                                             }else{
-                                                this.endIndex = this.endIndex - interval-1;
+                                                $scope.pagination.endIndex = $scope.pagination.endIndex-interval;
                                             }//end if(interval>=this.pageSize){
-                                            if(this.endIndex<=0){
-                                               this.endIndex = this.pageSize;                                                             
+                                            if($scope.pagination.endIndex<=0){
+                                               $scope.pagination.endIndex = $scope.pagination.pageSize;                                                             
                                             }//end if(this.endIndex<=0)
                                              restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                                    .$promise.then(function(data){
@@ -725,9 +726,9 @@ angular.module("mainApp")
                                                             //$scope.hideDialogLoading();
                                                             $rootScope.$broadcast("displayitem",{index:$scope.pagination.currentPage});
                                                         }
-                                                        $scope.hideDialogLoading();
+//                                                        $scope.hideDialogLoading();
                                                    } ,function(error){
-                                                       $scope.hideDialogLoading();
+//                                                       $scope.hideDialogLoading();
                                                        commonsTools.showMessageDialog(error);
                                                    });  
                                         }//end if(this.hasprevious()){
@@ -754,7 +755,7 @@ angular.module("mainApp")
                                          if(interval>=this.pageSize){
                                              this.endIndex = this.endIndex - this.pageSize;
                                          }else{
-                                             this.endIndex = this.endIndex - interval-1;
+                                             this.endIndex = this.endIndex - interval;
                                          }//end if(interval>=this.pageSize){
                                          if(this.endIndex<=0){
                                             this.endIndex = this.pageSize;                                                             
@@ -779,7 +780,7 @@ angular.module("mainApp")
                            };
             $scope.temporalPagination = {
                                  module:null ,
-                                 model:null,
+                                 model:null,                                 
                 /** Get the next pages **/
                                  next_2:function(){
                                      //Notification du chargement
@@ -788,20 +789,20 @@ angular.module("mainApp")
                                      if(this.hasnext()){
                                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                          //this.currentPage = (this.currentPage*this.pageSize)%this.totalPages; 
-                                         this.beginIndex = this.endIndex;  //+1
-                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(this.module)+"/"+angular.lowercase(this.model)+"/filter/"+this.beginIndex+"/"+this.pageSize;
+                                        $scope.temporalPagination.beginIndex = $scope.temporalPagination.endIndex;  //+1
+                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.temporalPagination.module)+"/"+angular.lowercase($scope.temporalPagination.model)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                                          //Chargement des donnes                                          
                                            var dmodel = this.model;
                                           $http.get(url)
                                                 .then(function(response){
                                                     var datas = response.data;
-                                                     console.log('$scope.loadData = function() :::::::::::::::: '+dmodel);
+//                                                     console.log('$scope.loadData = function() :::::::::::::::: b_index : '+$scope.temporalPagination.beginIndex+" ::: e_index : "+$scope.temporalPagination.endIndex+" === size : "+$scope.temporalPagination.pageSize);
                                                      if(datas){
                                                          $scope.dataCache[dmodel] = datas;
-                                                         this.currentPage = this.beginIndex;
-                                                         this.endIndex = this.endIndex + this.pageSize;
-                                                         if(this.endIndex>this.totalPages){
-                                                             this.endIndex = this.totalPages;
+                                                         $scope.temporalPagination.currentPage = $scope.temporalPagination.beginIndex;
+                                                         $scope.temporalPagination.endIndex = $scope.temporalPagination.endIndex + $scope.temporalPagination.pageSize;
+                                                         if($scope.temporalPagination.endIndex>$scope.temporalPagination.totalPages){
+                                                             $scope.temporalPagination.endIndex = $scope.temporalPagination.totalPages;
                                                          }//end if(this.endIndex>this.totalPages){                                                         
                                                      }
                                                      commonsTools.hideDialogLoading();
@@ -815,29 +816,29 @@ angular.module("mainApp")
                                      if(this.hasprevious()){
                                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                          var interval = this.endIndex - this.beginIndex;
-                                         this.beginIndex = this.beginIndex-this.pageSize-1;
-                                         this.currentPage = this.beginIndex+1 ;
-                                         if(this.beginIndex<0){
-                                             this.beginIndex = 0;
-                                             this.currentPage = 1;
+                                         $scope.temporalPagination.beginIndex = $scope.temporalPagination.beginIndex-$scope.temporalPagination.pageSize-1;
+                                         $scope.temporalPagination.currentPage = $scope.temporalPagination.beginIndex+1 ;
+                                         if($scope.temporalPagination.beginIndex<0){
+                                             $scope.temporalPagination.beginIndex = 0;
+                                             $scope.temporalPagination.currentPage = 1;
                                          }
-                                         if(interval>=this.pageSize){
-                                             this.endIndex = this.endIndex - this.pageSize;
+                                         if(interval>=$scope.temporalPagination.pageSize){
+                                             $scope.temporalPagination.endIndex = $scope.temporalPagination.endIndex - $scope.temporalPagination.pageSize;
                                          }else{
-                                             this.endIndex = this.endIndex - interval-1;
-                                         }
-                                         if(this.endIndex<=0){
-                                            this.endIndex = this.pageSize;                                                             
+                                             $scope.temporalPagination.endIndex = $scope.temporalPagination.endIndex - interval;
+                                         }//end if(interval>=$scope.temporalPagination.pageSize)
+                                         if($scope.temporalPagination.endIndex<=0){
+                                            $scope.temporalPagination.endIndex = $scope.temporalPagination.pageSize;                                                             
                                          }//end if(this.endIndex<=0)
-                                          var dmodel = this.model;
-                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(this.module)+"/"+angular.lowercase(this.model)+"/filter/"+this.beginIndex+"/"+this.pageSize;
+                                         var dmodel = $scope.temporalPagination.model;
+                                         var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.temporalPagination.module)+"/"+angular.lowercase($scope.temporalPagination.model)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                                           $http.get(url)
                                                   .then(function(response){
                                                       var datas = response.data;
                                                       //console.log('$scope.loadData = function() :::::::::::::::: '+datas);
                                                      if(datas){
                                                          $scope.dataCache[dmodel] = datas;                                                   
-                                                     }
+                                                     }//end if(datas){
                                                      commonsTools.hideDialogLoading();
                                                 } ,function(error){
                                                     $scope.hideDialogLoading();
@@ -881,7 +882,7 @@ angular.module("mainApp")
                //enregistrement un observer a recevoir des notifications
                 register:function(observer){
                     this.observers.push(observer);           
-                    console.log("Observer pattern === register : "+observer+" ==== "+this.observers.length);
+//                    console.log("Observer pattern === register : "+observer+" ==== "+this.observers.length);
                     return this;
                 },
                 //envoie une notification a tous les observers enregistres
@@ -933,18 +934,78 @@ angular.module("mainApp")
                  }//end for(var i=0;i<modelsplit.length;i++)
                  var data = $scope.getCurrentModel(parentmodel);
                  var template = angular.fromJson(angular.toJson(this.template["source"]));
+//                  console.log("notify:function(event , parameters) ============= method:"+template["methodname"]+" :::: entity : "+angular.toJson(data[this.template["observable"]]));
                  if(template["fieldname"] && data[this.template["observable"]]){
                      var entity = data[this.template["observable"]];
-                     data[modelsplit[modelsplit.length-1]] = entity[template["fieldname"]];
-                 }else if(template["methodname"]){
-                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
-                     var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.metaData.moduleName)+"/"+angular.lowercase($scope.metaData.entityName)+"/"+template["methodname"];
+                     var elem = entity[template["fieldname"]];
+                     data[modelsplit[modelsplit.length-1]] = elem;
+//                     console.log("principal.notify :::: model : "+this.model+" ==== template : "+angular.toJson(template)+" ==== parentmodel : "+parentmodel+" === isObject:"+angular.isObject(elem)+" ==== elem:"+angular.toJson(elem));
+                     if(angular.isObject(elem)){
+                         var key = commonsTools.keygenerator(this.model);
+                         $scope.dataCache[""+key+""].push(elem);
+                         $timeout(function() {
+                            $('.selectpicker').selectpicker('refresh');
+                         });
+                     }else if(angular.isArray(elem)){
+                         var key = commonsTools.keygenerator(this.model);
+                         for(var i=0 ; i<elem.length;i++){
+                             $scope.dataCache[""+key+""].push(elem[i]);
+                         }//end for(var i=0 ; i<elem.length;i++){
+                         $timeout(function() {
+                            $('.selectpicker').selectpicker('refresh');
+                         });
+                     }//end if(angular.isObject(elem)){
+                 }else if(template["methodname"]  && data[this.template["observable"]]){
+//                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                     var entity = data[this.template["observable"]];
+                     if(angular.isDefined(entity)){
+                         var id = entity ;
+                         if(angular.isObject(entity)){
+                             id = entity.id ;
+                             if(!angular.isNumber(id)){
+                                  id = -1 ;
+                             }//end if(!angular.isNumber(id)){
+                         }//end if(angular.isObject(entity)){                         
+                         $http.defaults.headers.common['id']=angular.toJson(id);
+                         //Construction des autres
+                         var parameters = this.template["parameters"];
+//                          console.log("notify:function(event , parameters) ============= model "+this.model+" method:"+template["methodname"]+" :::: entity : "+angular.toJson(parameters)+" ===== ID : "+id);
+                         if(parameters.length>0){
+                             for(var i=0;i<parameters.length;i++){
+                                 var param = parameters[i];
+//                                 console.log("notify:function(event , parameters) ============= ===== Date param : "+data[param]+" === param : "+param+" ==== isDate : "+angular.isDate(data[param]));
+                                 if(angular.isObject(data[param])){
+                                     $http.defaults.headers.common[param]=angular.toJson(data[param].id);
+                                 }else if(!angular.isArray(data[param])){//element
+                                      $http.defaults.headers.common[param]=angular.toJson(data[param]);
+                                 }//end if(angular.isObject(entity[param])){
+                             }//end for(var i=0;i<parameters.length;i++){
+                         }//end if(parameters.length>0){
+                     }//end if(angular.isDefined(entity)){
+//                     console.log("notify:function(event , parameters) ============= model "+this.model+" method:"+template["methodname"]+" :::: entity : "+angular.toJson(entity));
+                     var metaData = $scope.getParentMetaData(this.model);
+                     var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(metaData.moduleName)+"/"+angular.lowercase(metaData.entityName)+"/"+template["methodname"];
                      $http.get(url)
                              .then(function(response){
                                  data[modelsplit[modelsplit.length-1]] = response.data;
-                                 commonsTools.hideDialogLoading();
+                                 if(angular.isObject(elem)){
+                                    var key = commonsTools.keygenerator(this.model);
+                                    $scope.dataCache[""+key+""].push(response.data);
+                                    $timeout(function() {
+                                       $('.selectpicker').selectpicker('refresh');
+                                    });
+                                 }else if(angular.isArray(elem)){
+                                     var key = commonsTools.keygenerator(this.model);
+                                     for(var i=0 ; i<response.data.length;i++){
+                                         $scope.dataCache[""+key+""].push(response.data[i]);
+                                     }//end for(var i=0 ; i<response.data.length;i++){
+                                     $timeout(function() {
+                                       $('.selectpicker').selectpicker('refresh');
+                                     });
+                                 }//end if(angular.isObject(elem))
+//                                 commonsTools.hideDialogLoading();
                              },function(error){
-                                  commonsTools.hideDialogLoading();
+//                                  commonsTools.hideDialogLoading();
                                  commonsTools.showMessageDialog(error);
                              });
                  }//end if(template["fieldname"] && data[this.template["observable"]])
@@ -957,9 +1018,10 @@ angular.module("mainApp")
           * @returns {Boolean}Droite de creation 
           */
          $scope.canCreate = function(){
+//             console.log("$scope.canCreate = function() =================== "+angular.toJson($scope.currentAction));
              if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
-             }  
+             }//end if($scope.currentAction){ 
              return false ;
          };
          
@@ -972,7 +1034,7 @@ angular.module("mainApp")
          $scope.canUpdate = function(){
              if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
-             }  
+             }//end if($scope.currentAction){
              return false ;
          };
          $scope.canPrint = function(){
@@ -1075,15 +1137,12 @@ angular.module("mainApp")
           $scope.contains = function(array , item){
                if(!angular.isDefined(array)){
                   return false;
-               }
-
+               }//end if(!angular.isDefined(array)){
                for(var i= 0 ; i<array.length;i++){
-
                    if(array[i].id == item.id){
                       return true;
-                   }
-               }
-
+                   }//end if(array[i].id == item.id){
+               }//end for(var i= 0 ; i<array.length;i++){
                return false;
           };
           
@@ -1095,17 +1154,14 @@ angular.module("mainApp")
           $scope.containsObject = function(array , item){
                if(!angular.isDefined(array)){
                   return false;
-               }
-
+               }//end if(!angular.isDefined(array)){
                for(var i= 0 ; i<array.length;i++){
-
                    if(array[i].compareid == item.compareid){
                       return true;
-                   }
-               }
-
+                   }//end if(array[i].compareid == item.compareid){
+               }//end for(var i= 0 ; i<array.length;i++)
                return false;
-          };
+           };
           
           /**
            * Return the index of Item
@@ -1573,7 +1629,7 @@ angular.module("mainApp")
                     $scope.constraintsProvider(field , inputElem);
                     if(($scope.windowType=="view")||
                             ((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))||(field.editable==false)){
-                        inputElem.setAttribute('readonly' , 'readonly');
+                        inputElem.setAttribute('ng-disabled' , 'true');
                     }
                     labelElem.appendChild(inputElem);  
                     labelElem.appendChild(document.createTextNode(labelText)); 
@@ -1893,7 +1949,7 @@ angular.module("mainApp")
                selectElem.setAttribute('class','form-control');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
-               //selectElem.setAttribute('ng-change' , "getData('"+model+"',"+entityName+")");
+               selectElem.setAttribute('ng-change' , "getComboboxData('"+field.fieldName+"')");
                divElem_1.appendChild(selectElem);
               //selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+parts[1]);
               $scope.constraintsProvider(field , selectElem);
@@ -1951,15 +2007,15 @@ angular.module("mainApp")
                //Creation de l'entree
                //Filter criteria
                var key = commonsTools.keygenerator(model);
-//               console.log("$scope.manyToOneComponent = ======= "+model+" ====== "+metaData.entityName+" === "+field.fieldName+" === "+index+" ==== "+modelpath+" ===== "+key);
                $scope.filtertemplate[""+key+""] = field.filter ;
                var exprFn = $parse(model); 
                 var data = exprFn($scope);
                 var parts = model.split(".");
 //                var key = commonsTools.keygenerator(model);
+//                console.log("$scope.manyToOneComponent = ======= mode :"+model+" ====== entityname:"+metaData.entityName+" === field:"+field.fieldName+" === index:"+index+" ==== path:"+modelpath+" ===== key:"+key+" === data:"+angular.toJson(data));
                 if(parts.length>1){
                     $scope.dataCache[""+key+""] = new Array();
-                    if(data){
+                    if(data && angular.isDefined(data.id)){
                       $scope.dataCache[""+key+""].push(data);
                     }
                     var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
@@ -1967,7 +2023,7 @@ angular.module("mainApp")
 //                        obj = {id:'loadwithsearch' , designation:'Chercher plus ...'};
 //                    }
                     $scope.dataCache[""+key+""].push(obj);
-                }
+                }//end if(parts.length>1){
 //                console.log("$scope.manyToOneComponent ============== filter : "+field.filter+" fieldName :"+field.fieldName+" index : "+index+" ==== model : "+model+" :::: key:"+key+" == "+angular.toJson($scope.dataCache[""+key+""]+" === teplatefilter:"+$scope.filtertemplate[key]));
                //console.log("$scope.manyToOneComponent    ===      "+model+" :::::::  !!!!!!!! "+metaData.entityName);
                var divElem = document.createElement('div');
@@ -1983,6 +2039,9 @@ angular.module("mainApp")
                selectElem.setAttribute('class','selectpicker form-control');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
+               if(angular.isString(index)){
+                   index = new Number(index);
+               }//end if(angular.isString(index)){
                selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+modelpath+"')");
                selectElem.setAttribute('data-live-search','true');
                divElem_1.appendChild(selectElem);
@@ -2028,7 +2087,11 @@ angular.module("mainApp")
 
             if(($scope.windowType=="view")||(metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                 buttonElem.setAttribute('disabled' , 'disabled');
-            }     
+            }  
+            if(field.editable==false){
+                buttonElem.setAttribute('disabled' , 'disabled');
+                selectElem.setAttribute('disabled' , 'true');
+            }//end if(field.editable==false)
             if(field.hide){
                 divElem.setAttribute('ng-hide',true);
             }//end if(field.hide)
@@ -2146,6 +2209,10 @@ angular.module("mainApp")
                 if(($scope.windowType=="view"||metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
                     buttonElem.setAttribute('disabled' , 'disabled');
                 }   
+                if(field.editable==false){
+                    buttonElem.setAttribute('disabled' , 'disabled');
+                    selectElem.setAttribute('disabled' , 'true');
+                }//end if(field.editable==false)
                 if(field.hide){
                     divElem.setAttribute('ng-hide',true);
                 }//end if(field.hide)
@@ -2341,7 +2408,7 @@ angular.module("mainApp")
              for(var i=0 ; i< metaData.columns.length;i++){
                 if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
-                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'){
+                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'&& metaData.columns[i].type!='combobox'){
                          tdElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
                          if(metaData.columns[i].type=='number'){
                             tdElem.setAttribute('class','text-right');
@@ -2349,7 +2416,9 @@ angular.module("mainApp")
                      }else if(metaData.columns[i].type=='object'){
                           //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
                           tdElem.appendChild(document.createTextNode("{{item."+metaData.columns[i].fieldName+"['designation']}}"));
-                     }
+                     }else if(metaData.columns[i].type=='combobox'){
+                         tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
+                     }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                      tdElem.setAttribute('data-toggle' , "modal");
                      //tdElem.setAttribute('data-target' , '#myModal');
                      if(nextIndex==1){
@@ -2373,14 +2442,17 @@ angular.module("mainApp")
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                                 var tdElem = document.createElement('td');
-                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){
+                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'
+                                        && metaData.groups[i].columns[j].type!='combobox'){
                                     tdElem.appendChild(document.createTextNode('{{item.'+metaData.groups[i].columns[j].fieldName+'}}'));
                                     if(metaData.groups[i].columns[j].type=='number'){
                                         tdElem.setAttribute('class','text-right');
                                     }
                                 }else if(metaData.groups[i].columns[j].type=='object'){
                                     tdElem.appendChild(document.createTextNode("{{item."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
-                                }
+                                }else if(metaData.groups[i].columns[j].type=='combobox'){
+                                    tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                                 tdElem.setAttribute('data-toggle' , "modal");
                                  if(nextIndex==1){
                                     tdElem.setAttribute('data-target', '#myModal');   
@@ -2534,7 +2606,7 @@ angular.module("mainApp")
              //Creation du corps du tableau
              var tbodyElem = document.createElement('tbody');
              tableElem.appendChild(tbodyElem);
-              if(metaData.createonfield==true){  
+              if(metaData.createonfield==true && field.editable==true){  
                     //Creation de la ligne des actions
                     var trElem = document.createElement('tr');
                     tbodyElem.appendChild(trElem);
@@ -2561,8 +2633,7 @@ angular.module("mainApp")
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
                    }            
-               }//end if(metaData.createonfield==true)
-             
+               }//end if(metaData.createonfield==true)               
              //Construction du corps du tableau
              trElem = document.createElement('tr');
              trElem.setAttribute('style' ,"cursor: pointer;");
@@ -2674,6 +2745,7 @@ angular.module("mainApp")
             var date = new Date();
             data.id = -date.getTime();
             var datamodel = $scope.getCurrentModel(model);
+//            console.log("$scope.addnewLine = function(model) =======  model : "+model+" ==== data : "+angular.toJson(data));            
             datamodel.unshift(data);
         };
         /**
@@ -2690,23 +2762,27 @@ angular.module("mainApp")
             if(oldItem!=null){
                 oldId = "td"+Math.abs(oldItem.id)+"_"+oldfieldname;
             }//end if(oldItem!=null)
-//            console.log("$scope.getTemplate = function(item) ========= "+angular.toJson(item)+" ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
+//            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
-            var items = $element.find("span");
-            for(var i=0; i<items.length;i++){
-                 if(items.eq(i).attr("id")==id){
-                       spanElem =items.eq(i) ;
-//                       console.log(" ======================= on a trouve report  span identifiant : "+id);
-                 }//end if(items.eq(i).attr("id")=="innerpanel")  
-                 if(oldId!=null && oldId!=id){
-                     if(items.eq(i).attr("id")==oldId){
-                            oldspanElem =items.eq(i) ;
-//                            console.log(" ======================= on a trouve report Old  span identifiant : "+oldId);
-                      }//end if(items.eq(i).attr("id")=="innerpanel")  
-                 }//end if(oldId!=null){
-            }//end if(items.eq(i).attr("id")=="innerpanel")
+//            var items = $element.find("span");
+//            for(var i=0; i<items.length;i++){
+//                 if(items.eq(i).attr("id")==id){
+//                       spanElem =items.eq(i) ;
+////                       console.log(" ======================= on a trouve report  span identifiant : "+id);
+//                 }//end if(items.eq(i).attr("id")=="innerpanel")  
+//                 if(oldId!=null && oldId!=id){
+//                     if(items.eq(i).attr("id")==oldId){
+//                            oldspanElem =items.eq(i) ;
+////                            console.log(" ======================= on a trouve report Old  span identifiant : "+oldId);
+//                      }//end if(items.eq(i).attr("id")=="innerpanel")  
+//                 }//end if(oldId!=null){
+//            }//end if(items.eq(i).attr("id")=="innerpanel")
+             spanElem = $("#"+id)
+             if(oldId!=null && oldId!=id){
+                 oldspanElem = $("#"+oldId);
+             }//end if(oldId!=null && oldId!=id){
             if(oldItem!=null && oldspanElem!=null&&(oldId != id)){
                 var data = oldItem[oldfieldname];
                 var spanelem = document.createElement("span");
@@ -2846,6 +2922,12 @@ angular.module("mainApp")
             }//end if(metaData.createonfield==true){
             return scriptelem;
         };
+        /**
+         * 
+         * @param {type} item
+         * @param {type} index
+         * @returns {String}
+         */
         $scope.identfiantenerator = function(item,index){
 //             var date = new Date();
              var id = "td"+Math.abs(item.id)+"_"+index;
@@ -2860,10 +2942,12 @@ angular.module("mainApp")
             var scriptelem = trEleme ; //document.createElement("span");
 //            scriptelem.setAttribute('type','text/ng-template');
 //            scriptelem.setAttribute("ng-show","enableeditRow(item)");
+//            console.log("$scope.displayTemplate = function(metaData,model,modelpath,trEleme,key,index) ======================= "+angular.toJson(metaData));
             for(var i=0 ; i< metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
-                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'){
+                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'
+                              && metaData.columns[i].type!='combobox'){
                          var spanElem = document.createElement("span");
                          spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                          spanElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
@@ -2876,6 +2960,12 @@ angular.module("mainApp")
                           var spanElem = document.createElement("span");
                           spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                           spanElem.appendChild(document.createTextNode("{{item."+metaData.columns[i].fieldName+"['designation']}}"));
+                          tdElem.appendChild(spanElem);
+                     }else if(metaData.columns[i].type=='combobox'){
+                          //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
+                          var spanElem = document.createElement("span");
+                          spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
+                          spanElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
                           tdElem.appendChild(spanElem);
                      }
 //                     tdElem.setAttribute('ng-show' , "noteditRow(item,'"+key+"','"+id+"')");                           
@@ -2891,7 +2981,8 @@ angular.module("mainApp")
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                                 var tdElem = document.createElement('td');
-                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){
+                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object' 
+                                        && metaData.groups[i].columns[j].type!='combobox'){
                                     var spanElem = document.createElement("span");
                                     spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                                     spanElem.appendChild(document.createTextNode('{{item.'+metaData.groups[i].columns[j].fieldName+'}}'));
@@ -2904,7 +2995,12 @@ angular.module("mainApp")
                                     spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
                                     spanElem.appendChild(document.createTextNode("{{item."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
                                     tdElem.appendChild(spanElem);
-                                }     
+                                }else if(metaData.groups[i].columns[j].type=="combobox"){
+                                    var spanElem = document.createElement("span");
+                                    spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
+                                    spanElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                    tdElem.appendChild(spanElem);                              
+                                } //end if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){    
 //                                tdElem.setAttribute('ng-show' , "noteditRow(item,'"+key+"','"+id+"')"); 
                                 tdElem.setAttribute('ng-click',"getTemplate(item,'"+metaData.columns[i].fieldName+"','"+key+"', '"+model+"' , '"+modelpath+"','"+index+"','"+i+"')"); 
                                 scriptelem.appendChild(tdElem);
@@ -2928,7 +3024,7 @@ angular.module("mainApp")
                 aElem.appendChild(spanElem);
                 if($scope.windowType=="view"){
                      aElem.setAttribute('disabled' , 'disabled');                  
-                 }            
+                }//end if($scope.windowType=="view"){            
             }//end if(metaData.createonfield==true){
             
             return scriptelem;
@@ -2993,7 +3089,7 @@ angular.module("mainApp")
              //Creation du corps du tableau
              var tbodyElem = document.createElement('tbody');
              tableElem.appendChild(tbodyElem);
-              /*if(metaData.createonfield==true)*/{  
+             if(metaData.createonfield==true && field.editable==true){  
                     //Creation de la ligne des actions
                     var trElem = document.createElement('tr');
                     tbodyElem.appendChild(trElem);
@@ -3030,9 +3126,8 @@ angular.module("mainApp")
                    aElem.appendChild(document.createTextNode("Ajouter un element"));
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
-                   }            
-               }
-             
+                   }//end if($scope.windowType=="view"){            
+               }//end if(metaData.createonfield==true)             
              //Construction du corps du tableau
              trElem = document.createElement('tr');
              trElem.setAttribute('style' ,"cursor: pointer;");
@@ -3042,7 +3137,8 @@ angular.module("mainApp")
              for(var i=0 ; i< metaData.columns.length;i++){
                 if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
-                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'){
+                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object' 
+                             && metaData.columns[i].type!='combobox'){
                          tdElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
                          if(metaData.columns[i].type=='number'){
                             tdElem.setAttribute('class','text-right');
@@ -3050,7 +3146,9 @@ angular.module("mainApp")
                      }else if(metaData.columns[i].type=='object'){
                           //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
                           tdElem.appendChild(document.createTextNode("{{item."+metaData.columns[i].fieldName+"['designation']}}"));
-                     }
+                     }else if(metaData.columns[i].type=='combobox'){
+                         tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
+                     }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                      tdElem.setAttribute('data-toggle' , "modal");
                      tdElem.setAttribute('data-target' , '#'+modalID);
                      tdElem.setAttribute('ng-click',"editDialogBuilder('"+model+"' ,item,'update',null,null,"+(index+1)+",'"+modelpath+"')");    
@@ -3065,24 +3163,27 @@ angular.module("mainApp")
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                                 var tdElem = document.createElement('td');
-                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){
+                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object' 
+                                        && metaData.groups[i].columns[j].type!='combobox'){
                                     tdElem.appendChild(document.createTextNode('{{item.'+metaData.groups[i].columns[j].fieldName+'}}'));
                                     if(metaData.groups[i].columns[j].type=='number'){
                                         tdElem.setAttribute('class','text-right');
                                      }
                                 }else if(metaData.groups[i].columns[j].type=='object'){
                                     tdElem.appendChild(document.createTextNode("{{item."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
-                                }
+                                }else if(metaData.groups[i].columns[j].type=='combobox'){
+                                    tdElem.appendChild(document.createTextNode("{{comboboxselctionvalues(item."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                }//end if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object')
                                 tdElem.setAttribute('data-toggle' , "modal");
                                 tdElem.setAttribute('data-target' , '#'+modalID);
                                 //tdElem.setAttribute('ng-click',"editDialogBuilder('"+model+"' ,item,'update')");    
                                 trElem.appendChild(tdElem);
                             }
-                        }
-                     }
+                        }//end for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
+                     }//end if(metaData.groups[i].columns&&metaData.groups[i].columns.length>0){
                      
-                 }
-             }
+                 }//end for(var i=0;i<metaData.groups.length;i++){
+             }//end if(metaData.groups&&metaData.groups.length>0){
              var key = commonsTools.keygenerator(modelpath);
              //Building table footer
              if(field.customfooter==false){
@@ -3597,6 +3698,8 @@ angular.module("mainApp")
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'time');
                }else if (field.type=='datetime') {
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'datetime-local');
+               }else if (field.type=='file') {
+                   return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'file');
                }else if (field.type=='password') {
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'password');
                }else if (field.type=='boolean') {
@@ -3784,9 +3887,9 @@ angular.module("mainApp")
                                    if(type=='list'){                                    
                                       content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>Filtres</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()'>Creer</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desableupdate'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>Importer</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> Imprimer <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Imprimer </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> <div id='viewmodeid'></div></span>  </div> </div> </nav> </div><div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'> <table class='table table-striped table-hover table-responsive table-sm  table-header'  style='margin-top: -10px;' id='table'> <thead> <tr id='rowheader'> <th><input type='checkbox' ng-model='tableheaderselected' ng-click='onCheckboxClick()'></th> <th>Module Name</th> <th>Module Description</th> </tr> </thead> <tbody id='tablebody'> <tr  ng-repeat=' module in modules' > <td><input type='checkbox' ng-model='module.selected'  ng-click='onRowCheckboxClick(module)'></td> <td>{{module.name}}</td> <td>{{module.shortDescription}}</td> </tr> </tbody> </table>  </div> </div>"     ;
                                    }else if(type=='detail'){
-                                     content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'     ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>Enregistrer</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()'>Annuler</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> Imprimer <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> Imprimer </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> PiÃ¨ce(s) jointe(s) <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Ajouter </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableupdateedit'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel}} </a> </li>  <li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}} </a> </li> <li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> AbonnÃ©e(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnÃ©es </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
+                                     content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'     ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>Enregistrer</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()'>Quitter</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> Imprimer <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> Imprimer </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> Pièce(s) jointe(s) <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Ajouter </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableupdateedit'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel}} </a> </li>  <li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}} </a> </li> <li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> AbonnÃ©e(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnÃ©es </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
                                    }else if(type=="report"){ 
-                                       content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' ng-hide='hideannuler'>Annuler</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
+                                       content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' ng-hide='hideannuler'>Quitter</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
                                    }else if(type=="calendar"){ 
                                        content = content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>Filtres</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()' ng-hide='true'>Creer</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='true'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>Importer</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> Imprimer <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Imprimer </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div><div id='viewmodeid'></div></span>  </div> </div> </nav> </div>   <div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'><div class='col-sm-12  col-md-12' id='calendar' ui-calendar='uiConfig.calendar' ng-model='eventSources' calendar='myCalendar' ></div></div> </div>"
                                                
@@ -4994,31 +5097,66 @@ angular.module("mainApp")
                         return data;
                     }else{
                           var model =data;
-                          for(var i=1 ; i<part.length;i++){
-                            /*if((prop==part[1]) || (prop=="'"+part[1]+"'"))*/{
+                          for(var i=1 ; i<part.length;i++){                            
                               if(part[i].split("[").length==1){
-                                //console.log(prop+"=====editDialogBuilder  ***************Youpi************ "+angular.isArray($scope.currentObject[prop]));
+//                                console.log("=====editDialogBuilder  ***************Youpi************ "+angular.isArray(model));
                                 if(model[part[i]]){
                                     model = model[part[i]];
                                 } //end if(model[part[i]])
                               }else {
                                   var parts = part[i].split("[");
                                   var prefix = parts[0];
-                                  parts = parts[1].split("]")
+                                  parts = parts[1].split("]");
                                   var sufix = parts[0];
                                   model = model[prefix];
                                   model = model[new Number(sufix)];
-                                  console.log("=====editDialogBuilder  ***************Youpi************ "+prefix+" ==== "+sufix+" ==== "+angular.toJson(model));
+//                                  console.log("=====editDialogBuilder  ***************Youpi************ "+prefix+" ==== "+sufix+" ==== "+angular.toJson(model));
                               }//end if(part[i].split("[").length==1)
                             }//end for(var i=1 ; i<part.length;i++)
-                           return model;
-                      }                 
-                   
-               }
-
+//                            console.log("$scope.getCurrentModel ========================= "+angular.toJson(model));
+                           return model;    
+                    }//end if(part.length==1){
           };     
           
-
+          /**
+           * 
+           * @param {type} model
+           * @returns {@var;data|$scope.temporalData|$scope.dataCache|$scope.currentObject}
+           */
+           $scope.getParentModel = function(model){
+//                   console.log("$scope.getCurrentModel ========================= "+model);
+                    var part = model.split(".");              
+                    var data = $scope.currentObject;
+                    if(part[0]=='dataCache'){
+                        data = $scope.dataCache;
+                    }else if(part[0]=='temporalData'){
+                        data = $scope.temporalData;
+                    }//end if(part[0]=='dataCache')
+                    if(part.length==1){
+                        return data;
+                    }else{
+                          var model =data;
+                          for(var i=1 ; i<part.length-1;i++){                            
+                              if(part[i].split("[").length==1){
+//                                console.log("=====editDialogBuilder  ***************Youpi************ "+angular.isArray(model));
+                                if(model[part[i]]){
+                                    model = model[part[i]];
+                                } //end if(model[part[i]])
+                              }else {
+                                  var parts = part[i].split("[");
+                                  var prefix = parts[0];
+                                  parts = parts[1].split("]");
+                                  var sufix = parts[0];
+                                  model = model[prefix];
+                                  model = model[new Number(sufix)];
+//                                  console.log("=====editDialogBuilder  ***************Youpi************ "+prefix+" ==== "+sufix+" ==== "+angular.toJson(model));
+                              }//end if(part[i].split("[").length==1)
+                            }//end for(var i=1 ; i<part.length;i++)
+//                            console.log("$scope.getCurrentModel ========================= "+angular.toJson(model));
+                           return model;    
+                    }//end if(part.length==1){
+          };     
+           
         /**
          * 
          * @param {type} model
@@ -5081,6 +5219,67 @@ angular.module("mainApp")
                 }           
           };
 
+/**
+ * 
+ * @param {type} model
+ * @returns {groupe.metaArray.metaData|$scope.metaData|$scope.temporalMetaData}
+ */
+           $scope.getParentMetaData = function(model){
+                if(angular.isString(model)){                
+
+                      var part = model.split(".");              
+                     var metaData = $scope.metaData;
+                     if(part[0]=='temporalData'){
+                        metaData = $scope.temporalMetaData;
+                     }//end if(part[0]=='temporalData')
+//                     console.log("$scope.getCurrentMetaData = ========================= "+model+" ============== "+angular.toJson(metaData));
+                
+                     if(part.length==1){
+                         return metaData;
+                     }else{
+                         for(var k=1;k<part.length-1;k++){
+                                for(var i=0 ; i<metaData.columns.length ;i++){
+                                    if(part[k]==metaData.columns[i].fieldName){
+     //                                    console.log("!!!!!!!"+part[1]+"=====editDialogBuilder  ===== "+metaData.columns[i].fieldName+" ******* "+angular.toJson(metaData.columns[i].metaData));                               
+                                         metaData = metaData.columns[i].metaData;
+                                    }//end if(part[1]==$scope.metaData.columns[i].fieldName){
+
+                                }//end for(var i=0 ; i<$scope.metaData.columns.length ;i++){
+
+                               //Recherches dans les groups
+                               if(metaData.groups){
+                                  for(var i=0 ; i<metaData.groups.length;i++){
+                                      if(metaData.groups[i]){
+//                                          console.log("!!!!!!!====editDialogBuilder  ===== "+metaData.groups[i].groupName+" ******* "+metaData.groups[i].columns.length);
+                                           var groupe = metaData.groups[i];
+                                           if(metaData.groups[i].columns){
+                                                var taille = metaData.groups[i].columns.length;
+                                                var columns = metaData.groups[i].columns;
+                                                for(var j=0 ; j < taille ;j++){
+                                                     if(columns && (part[k]== columns[j].fieldName)){
+                                                           metaData = columns[j].metaData;
+                                                      }
+                                                }//end for(var j=0 ; j < taille ;j++){
+                                            }//end if(metaData.groups[i].columns)
+                                          //Cas des metaArray
+                                            if(groupe.metaArray&&groupe.metaArray.length>0){//&&
+                                                for(var l=0;l<groupe.metaArray.length;l++){
+                                                    if(groupe.metaArray[l].fieldName==part[k]){
+                                                        metaData = groupe.metaArray[l].metaData;
+                                                    }//end if(groupe.metaArray[l].fieldName==part[k])
+                                                }//end for(var l=0;l<groupe.metaArray.length;l++){
+                                            }//end if(groupe.metaArray&&groupe.metaArray.length>0){
+                                      }
+                                      
+                                  }
+                               }//end if(metaData.groups){
+                           }//end for(var i=1;i<part.length;i++){
+                           return metaData;
+                     }
+                }else{
+                    return metaData;
+                }           
+          };
 
         /**
          * 
@@ -5103,7 +5302,7 @@ angular.module("mainApp")
              }else{
                  $scope.temporalModel = model ;
                  $scope.dataCache[key+"model"] = model;
-             }             
+             }//end if(angular.isString(model)){             
              var edittitle = 'Nouveau';
              $scope.innerWindowType = 'new';
              if(item){
@@ -5459,7 +5658,11 @@ angular.module("mainApp")
          */
         $scope.listDialogBuilder = function(model,index,modelpath){
 //            $scope.innerWindowType = true;
-            //var parts = model.split(".");
+            //var parts = model.split(".");  
+             var status = $scope.buildFilter(model);
+            if(status==false){
+                return ;
+            }//end if(status==false){            
             var metaData = $scope.getCurrentMetaData(modelpath);     
             if(!metaData){
                 return ;
@@ -5479,7 +5682,7 @@ angular.module("mainApp")
                            $scope.temporalPagination.endIndex = $scope.temporalPagination.pageSize;
                            if(itemscount<$scope.temporalPagination.pageSize){
                                $scope.temporalPagination.endIndex = itemscount;
-                           }
+                           }//end if(itemscount<$scope.temporalPagination.pageSize){
                            $scope.getData2("dataCache."+metaData.entityName,metaData.entityName,metaData.moduleName);
                         //Traitement du currentObject       
                            //Affeectation du model dans l'object temporaire              
@@ -5802,13 +6005,13 @@ angular.module("mainApp")
                bodyID="modalbody1";
            }else if(endIndex==4){
                bodyID="modalbody2";
-           }
+           }//end if(endIndex==1)
            viewElem.setAttribute('id' , bodyID);
            viewElem.setAttribute("class","modal-body");
            viewElem.setAttribute("style","height:100%;");
            var headerElem = $scope.editPanelHeader('temporalData' , metaData,index);  
            var editPanel =  $scope.editPanelComponent('temporalData',metaData,'new',index,'temporalData');
-            if(headerElem){
+           if(headerElem){
                viewElem.appendChild(headerElem);
            }//end if(headerElem)
            //viewElem.appendChild(headerElem);
@@ -5825,16 +6028,17 @@ angular.module("mainApp")
                footerID="modalfooter1";
            }else if(endIndex==4){
                footerID="modalfooter2";
-           }
+           }//end if(endIndex==1)
            footerDiv.setAttribute('id' , footerID);
+//           console.log("$scope.editDialogBuilderExtern = function(metaData,index,link) ====== canupdate : "+$scope.canUpdate()+" ==== cancreate : "+$scope.canCreate())
            if($scope.canUpdate()||$scope.canCreate()){
                 var buttonElem = document.createElement('button');
                 footerDiv.appendChild(buttonElem);
                 buttonElem.setAttribute('class' , 'btn btn-primary');
                 buttonElem.setAttribute('ng-click' , "addDialogAction('temporalData' , 'save_only','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",null,'"+link+"')");
                 buttonElem.appendChild(document.createTextNode('Valider'));
-            }//end if($scope.windowType!='view'){ 
-                     
+                buttonElem.setAttribute("ng-hide",metaData.desablecreate);
+           }//end if($scope.windowType!='view'){                      
            //Button annuler
            buttonElem = document.createElement('button');
            footerDiv.appendChild(buttonElem);
@@ -5855,7 +6059,7 @@ angular.module("mainApp")
                titleID="gmodaltitle1";
            }else if(endIndex==4){
                titleID="modaltitle2";
-           }
+           }//end if(endIndex==1){
            titleheader.setAttribute('id',titleID);
            titleheader.appendChild(document.createTextNode(metaData.editTitle));
             //console.log(viewElem.innerHTML);
@@ -5868,13 +6072,10 @@ angular.module("mainApp")
                if(items.eq(i).attr("id")==bodyID){
                      items.eq(i).replaceWith(viewElem);
                       //console.log("$scope.editDialogBuilder = function(model , item , type) ::: "+$scope.currentMetaDataPath);
-          
                } else if(items.eq(i).attr("id")==footerID){
                    items.eq(i).replaceWith(footerDiv);
-               } 
-           } 
-
-           
+               }//end if(items.eq(i).attr("id")==bodyID){ 
+           }//end for(var i=0; i<items.length;i++){          
            items = $(document).find("h4");
            for(var i=0; i<items.length;i++){               
                if(items.eq(i).attr("id")==titleID){
@@ -5898,7 +6099,8 @@ angular.module("mainApp")
         $scope.removeFromTable = function(model , item,modelpath){
             var parts = model.split(".");            
             if(parts.length>1){
-                $scope.removeFromArray($scope.currentObject[parts[1]],item);
+                var datamodel = $scope.getParentModel(model);
+                $scope.removeFromArray(datamodel[parts[parts.length-1]],item);
                  var metaData = $scope.getCurrentMetaData(model) ;
                 //console.log("editDialogBuilder  =====  ************* Vous avez cliquez :::: "+model+" ***** "+item+" ==== "+type+" ::: "+entityName+" ::: "+moduleName+" == "+angular.toJson(metaData));
                 if(!metaData){
@@ -6068,20 +6270,21 @@ angular.module("mainApp")
                     var items = $scope.dataCache.selectedObjects;
                     $scope.dataCache[""+key+""] = new Array();
                     var templateModel = null;
-                    if(parts[0]=='currentObject'){
-                        templateModel = $scope.currentObject;
-                    }else if(parts[0]=='temporalData'){
-                        templateModel = $scope.temporalData;
-                    }else if(parts[0]=='dataCache'){                        
-                        templateModel = $scope.dataCache;
-                        for(var i=1 ; i<parts.length-1;i++){
-                            templateModel = templateModel[parts[i]];
-                        }//end for(var i=1 ; i<parts.length-1;i++){
-                    }//end if(parts[0]=='currentObject')
-                    console.log("$scope.addDialogAction =list ===== model: "+model+"===== "+items.length+" === "+parts[0]+" === "+parts[1]+" == modelpath:"+modelpath+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
-                    if(!angular.isDefined(templateModel[parts[col]])){
-                        templateModel = $scope.getCurrentModel(model);
-                    }//end if(!angular.isDefined(templateModel[parts[col]]))
+//                    if(parts[0]=='currentObject'){
+//                        templateModel = $scope.currentObject;
+//                    }else if(parts[0]=='temporalData'){
+//                        templateModel = $scope.temporalData;
+//                    }else if(parts[0]=='dataCache'){                        
+//                        templateModel = $scope.dataCache;
+//                        for(var i=1 ; i<parts.length-1;i++){
+//                            templateModel = templateModel[parts[i]];
+//                        }//end for(var i=1 ; i<parts.length-1;i++){
+//                    }//end if(parts[0]=='currentObject')
+//                    if(!angular.isDefined(templateModel[parts[col]])){
+                        templateModel = $scope.getParentModel(model);
+//                        console.log("$scope.addDialogAction =list ===== fieldName: "+parts[col]+" == modelpath:"+model+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
+//                    }//end if(!angular.isDefined(templateModel[parts[col]]))
+                    
                     if(angular.isArray(templateModel[parts[col]])){
                         if(!templateModel[parts[col]]){
                             templateModel[parts[col]] = new Array();
@@ -6098,8 +6301,18 @@ angular.module("mainApp")
                             $scope.dataCache[""+key+""].push(items[0]);
                         }
                     }//end if(angular.isArray($scope.currentObject[parts[1]]))
+                    //console.log($scope.dataCache[""+parts[1]+""]);
+                    $timeout(function() {
+                       $('.selectpicker').selectpicker('refresh');
+                    });
                     var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
-                    $scope.dataCache[""+key+""].push(obj);
+                    $scope.dataCache[""+key+""].push(obj);                    
+                     var modelpart = model.split(".");
+                     var fieldName = modelpart[modelpart.length-1];
+                     var observable = $scope.observablePools[fieldName];
+                     if(observable){
+                        observable.notifyObservers();
+                     }//end if(observable)
                      //Evenement de construction du pied de tableau
 //                    $rootScope.$broadcast("tablefooter" , {metaData:metaData,model:model});  
                 }//end if(parts.length>1)
@@ -6229,7 +6442,7 @@ angular.module("mainApp")
               for(var i=0 ; i< columns.length;i++){
                    if(columns[i].type=='object'){
                      if(!entity[""+columns[i].fieldName+""]){
-                       entity[""+columns[i].fieldName+""] = new Object();
+                       entity[""+columns[i].fieldName+""] = null;
                      }
                    }else if(columns[i].type=='array'){
                       if(!entity[""+columns[i].fieldName+""]) {
@@ -6428,57 +6641,90 @@ angular.module("mainApp")
        **/
      
       /**
-       * 
+       * Validate and clean Beans
+       * @param {type} metaData
+       * @param {type} entity
        * @returns {Array}
        */
-       $scope.validateFields = function(){
+       $scope.validateFields = function(metaData,currentObject){
             var champs = new Array();
             $scope.uniqueContraints =  new Array();
-            if($scope.metaData && $scope.currentObject){
-                if($scope.metaData.columns){
-                   for(var i=0 ; i<$scope.metaData.columns.length;i++){
-                       if(!$scope.metaData.columns[i].optional || $scope.metaData.columns[i].min){
-                           if(!$scope.currentObject[$scope.metaData.columns[i].fieldName]){
-                               champs.push($scope.metaData.columns[i].fieldLabel);
-                           }
-                       }
+            if(metaData && currentObject){
+                if(metaData.columns){
+                   for(var i=0 ; i<metaData.columns.length;i++){
+                       //Traitrement des object
+                       if(angular.isObject(currentObject[metaData.columns[i].fieldName])){
+                           var entity = currentObject[metaData.columns[i].fieldName];
+                           if(entity.id=='load'){
+                               currentObject[metaData.columns[i].fieldName]=null;
+                           }//end if(entity.id=='load')
+                       }else if(angular.isArray(currentObject[metaData.columns[i].fieldName])){
+                           var array = currentObject[metaData.columns[i].fieldName];
+                           for(var i=0 ; i<array.length;i++){
+                               if(angular.isObject(array[i]) && array[i].id=='load'){
+                                   array[i]=null;
+                               }//end if(array[i].id=='load')
+                           }//end for(var i=0 ; i<array.length;i++){
+                       }//end if(angular.isObject(currentObject[metaData.columns[i].fieldName]))
+                       if(!metaData.columns[i].optional || metaData.columns[i].min){
+                           if(!currentObject[metaData.columns[i].fieldName]){
+                               champs.push(metaData.columns[i].fieldLabel);
+                           }//end if(!currentObject[metaData.columns[i].fieldName]){
+                       }//end if(!metaData.columns[i].optional || metaData.columns[i].min)
                        //Construction des champs pour unicite
-                       if($scope.metaData.columns[i].unique){
+                       if(metaData.columns[i].unique){
                            var pred = new Object();
-                           pred.fieldLabel = $scope.metaData.columns[i].fieldLabel;
-                           pred.fieldName = $scope.metaData.columns[i].fieldName;
-                           pred.fieldValue = $scope.currentObject[$scope.metaData.columns[i].fieldName];
+                           pred.fieldLabel = metaData.columns[i].fieldLabel;
+                           pred.fieldName = metaData.columns[i].fieldName;
+                           pred.fieldValue = currentObject[metaData.columns[i].fieldName];
                            $scope.uniqueContraints.push(pred);
-                       }
+                       }//end if(metaData.columns[i].unique){
                    }
-                 }
+                 }//end if($scope.metaData.columns){
                  //Cas des groups
-                 if($scope.metaData.groups){
-                    for(var i=0;i<$scope.metaData.groups.length;i++){
+                 if(metaData.groups){
+                    for(var i=0;i<metaData.groups.length;i++){
 //                        if($scope.metaData.groups[i].metaArray){
-//                            for(var j=0 ; j<$scope.metaData.groups[i].metaArray.metaData.columns.length ; j++){
-//                                if(!$scope.metaData.groups[i].metaArray.metaData.columns[j].optional || $scope.metaData.groups[i].metaArray.metaData.columns[j].min){
-//                                      champs.push($scope.metaData.groups[i].metaArray.metaData.columns[j].fieldLabel);
-//                                }
-//                            }
-//                        }
+//                           //Nom du champs
+//                           var key = metaData.groups[i].metaArray.fieldName;
+//                           var array = currentObject[key];
+//                           for(var i=0 ; i<array.length;i++){
+//                                $scope.validateFields(metaData.groups[i].metaArray.metaData,array[i])
+//                           }//end for(var i=0 ; i<array.length;i++){
+//                        }//end if($scope.metaData.groups[i].metaArray){
                         //Cas des donnÃ©es normales
-                        if($scope.metaData.groups[i].columns){
-                           for(var j=0 ; j<$scope.metaData.groups[i].columns.length;j++){
-                              if(!$scope.metaData.groups[i].columns[j].optional || $scope.metaData.groups[i].columns[j].min){
-                                   var pred = new Object();
-                                    pred.fieldLabel = $scope.metaData.groups[i].columns[j].fieldLabel;
-                                    pred.fieldName = $scope.metaData.groups[i].columns[j].fieldName;
-                                    pred.value = $scope.currentObject[$scope.metaData.groups[i].columns[j].fieldName];
-                                    $scope.uniqueContraints.push(pred);
-                                    // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
-                              }
-                              //Construction des champs pour unicite
-                            if($scope.metaData.groups[i].columns[j].unique){
-                                $scope.uniqueContraints.push($scope.metaData.groups[i].columns[j].fieldLabel);
-                            }
-                           }
-                        }
+                        if(metaData.groups[i].columns){
+                           for(var j=0 ; j<metaData.groups[i].columns.length;j++){
+                               //Nom du champs
+                                var key = metaData.groups[i].columns[j].fieldName;
+                                //Traitement des Object
+                                if(angular.isObject(currentObject[key])){
+                                    var entity = currentObject[key];
+                                    if(entity.id=='load'){
+                                        currentObject[key]=null;
+                                    }//end if(entity.id=='load')
+                                }else if(angular.isArray(currentObject[key])){
+                                    var array = currentObject[key];
+                                    for(var i=0 ; i<array.length;i++){
+                                        if(angular.isObject(array[i]) && array[i].id=='load'){
+                                            array[i]=null;
+                                        }//end if(array[i].id=='load')
+                                    }//end for(var i=0 ; i<array.length;i++){
+                                }//end if(angular.isObject(currentObject[key])){
+                                if(!metaData.groups[i].columns[j].optional || metaData.groups[i].columns[j].min){
+                                     var pred = new Object();
+                                      pred.fieldLabel = metaData.groups[i].columns[j].fieldLabel;
+                                      pred.fieldName = metaData.groups[i].columns[j].fieldName;
+                                      pred.value = currentObject[metaData.groups[i].columns[j].fieldName];
+                                      $scope.uniqueContraints.push(pred);
+                                      // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
+                                }//end if(!metaData.groups[i].columns[j].optional || metaDat
+                                //Construction des champs pour unicite
+                                if(metaData.groups[i].columns[j].unique){
+                                    $scope.uniqueContraints.push(metaData.groups[i].columns[j].fieldLabel);
+                                }//end if(metaData.groups[i].columns[j].unique){
+                           }//end for(var j=0 ; j<metaData.groups[i].columns.length;j++){
+                        }//end if(metaData.groups[i].columns){
                     }
                  }
             }
@@ -6531,11 +6777,11 @@ angular.module("mainApp")
            //Chargement des donnees
                 //restService.url('societe');
 //               console.log('$scope.loadData = function() ::::::::::::::::'+$scope.pagination.currentPage+"==== "+$scope.pagination.totalPages+" ==== "+angular.isNumber($scope.pagination.totalPages));
-               try{   var pageBeginIndex = $scope.pagination.currentPage - $scope.pagination.pageSize;
+               try{   /**var pageBeginIndex = $scope.pagination.currentPage - $scope.pagination.pageSize;
                       if(pageBeginIndex<0){
                           pageBeginIndex = 0;
-                      }                   
-                      restService.filter($scope.predicats ,pageBeginIndex , $scope.pagination.pageSize)
+                      }   **/                
+                      restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                .$promise.then(function(datas){                                    
                                     if(datas){
                                         $scope.datas = datas;
@@ -6746,6 +6992,16 @@ angular.module("mainApp")
              return true;
          }
        };
+       /**
+        * 
+        * @returns {undefined}
+        */
+       $scope.getComboboxData =function(fieldName){
+            var observable = $scope.observablePools[fieldName];
+            if(observable){
+                observable.notifyObservers();
+            }//end if(observable)
+       };
         /**
          * 
          * @param {type} model
@@ -6761,7 +7017,7 @@ angular.module("mainApp")
             }//end if(status==false){   
             var modelpart = model.split(".");
             var fieldName = modelpart[modelpart.length-1];
-//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]);
+            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]+"  ::: index : "+index);
             var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/count";
             $http.get(url)
                     .then(function(response){
@@ -6841,7 +7097,7 @@ angular.module("mainApp")
                                
                     $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");               
                      //Chargement des donnï¿½es
-                     urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
+                     var urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                      $http.get(urlPath).then( 
                        function(response){
                             //alert("Data: "+response.data+" === "+model);   
@@ -7354,7 +7610,7 @@ angular.module("mainApp")
                  if(angular.isDefined($scope.currentObject)){
                     restService.cancel($scope.currentObject);                      
                  }
-                 $scope.pagination.currentPage = $scope.pagination.beginIndex+1;
+//                 $scope.pagination.currentPage = $scope.pagination.beginIndex+1;
                  $scope.reset(); 
                  $scope.dataCache['resources'] = new Array();
                  $scope.dataCache['names'] = new Array();
@@ -8019,7 +8275,7 @@ angular.module("mainApp")
                             $http.put(url,$scope.currentObject)
                                    .then(function(response){
                                        $scope.currentObject = response.data;
-                                       $scope.displayListPanel();
+                                       $scope.displayEditPanel();
                                        $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");  
                                        commonsTools.hideDialogLoading();
                                    },function(error){
@@ -8035,7 +8291,7 @@ angular.module("mainApp")
 //                           var template = $scope.templateDataBuilder(data['template']);
                            commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                            var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;                        
-                            $http.put(url,$scope.temporalData, {responseType: 'arraybuffer'})
+                            $http.put(url,$scope.currentObject, {responseType: 'arraybuffer'})
                               .then(function(response){
                                     var contentElem = $scope.viewSelector("report");
 //                               console.log(angular.toJson("$scope.addDialogAction ====== "+angular.toJson(response)));
@@ -8082,11 +8338,23 @@ angular.module("mainApp")
                                 });
                            //alert("Vous voulez executer la methode::: "+data.method+" de l'entite :: "+data.entity+" disponible sur la resource :: "+data.model+" data template : "+angular.toJson(template));
                        }//end if(data.model&&data.entity&&data.method)            
-                  }
+                  }//end  if(type=='action'){
                     
-                }                                  
+                }//end  if(data){    
+                 var modalID = "";
+                 var endIndex = index;            
+                 if(endIndex==1){
+                    modalID = "myModal";
+                 }else if(endIndex==2){
+                    modalID = "globalModal";
+                 }else if(endIndex==3){
+                    modalID = "myModal1";
+                 }else if(endIndex==4){
+                    modalID = "myModal2";
+                 }
+                 $('#'+modalID).modal('hide');    
              }catch(ex){
-                 console.error(ex);
+//                 console.error(ex);
                  commonsTools.showMessageDialog(ex);
              }
         };
@@ -8179,6 +8447,14 @@ angular.module("mainApp")
           return data ;
       };
       /**
+       * Sorted table base of the value of fieldname
+       * @param {type} column
+       * @returns {undefined}
+       */
+      $scope.globaltablecolumnsorter = function(column){
+          $scope.datas = $filter('orderBy')($scope.datas,column,false); 
+      };
+      /**
          Algorithme de creation du tableau     
        **/
          $scope.tableListComponent = function(metaData){
@@ -8204,6 +8480,8 @@ angular.module("mainApp")
             //Array of field name
             var fieldnames = new Array();
             var fieldtypes = new Array();
+            //Contient des reference au champs de type combobox
+            var comboMap = new Object();
             //Traitement des champs columns
             if(metaData.columns){
                 //Sort of array
@@ -8219,8 +8497,11 @@ angular.module("mainApp")
                             if(metaData.columns[i].type=='number'){
                                 fieldtypes.push(true);
                             }else{
+//                                if(metaData.columns[i].type=='combobox'){
+//                                    comboMap[metaData.columns[i].fieldName]= metaData.columns[i].value.split(";");
+//                                }//end if(metaData.columns[i].type=='combobox'){
                                 fieldtypes.push(false);
-                            }
+                            }//end if(metaData.columns[i].type=='number')
                        }//end if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i]
                    }//end if(angular.isDefined(metaData.columns[i].search)
                 }
@@ -8241,6 +8522,9 @@ angular.module("mainApp")
                                     if(metaData.groups[i].columns[j].type=='number'){
                                         fieldtypes.push(true);
                                     }else{
+//                                        if(metaData.groups[i].columns[j].type=='combobox'){
+//                                            comboMap[metaData.groups[i].columns[j].fieldName]= metaData.groups[i].columns[j].value.split(";");
+//                                        }//end if(metaData.columns[i].type=='combobox'){
                                         fieldtypes.push(false);
                                     }
                                 }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
@@ -8272,9 +8556,11 @@ angular.module("mainApp")
                         thElem.setAttribute('ng-click' , "viewAction(obj)");
                         if(metaData.columns[i].type=='object'){
                           thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+".designation}}";
-                        }else{
+                        }else if(metaData.columns[i].type=='combobox'){
+                            thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
+                        }else{                            
                           thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+"}}";
-                        }
+                        }//end if(metaData.columns[i].type=='object'){
                         if(metaData.columns[i].type=='number'){
                             thElem.setAttribute('class','text-right');
                         }
@@ -8295,6 +8581,8 @@ angular.module("mainApp")
                                     thElem.setAttribute('ng-click' , "viewAction(obj)");
                                     if(metaData.groups[i].columns[j].type=='object'){
                                       thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+".designation}}";
+                                    }else if(metaData.groups[i].columns[j].type=='combobox'){
+                                        thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}";
                                     }else{
                                       thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+"}}";                                      
                                     }
@@ -8337,6 +8625,18 @@ angular.module("mainApp")
             return tableElem;
          };
          
+         /**
+          * 
+          * @param {type} selectedValue
+          * @param {type} value
+          * @returns {undefined}
+          */
+         $scope.comboboxselctionvalues = function(selectedValue,value){
+//             console.log("$scope.comboboxselctionvalues = function(selectedValue,value){ =========== "+selectedValue+" ==== "+value)
+             var values = value.split(";");
+             var index = new Number(selectedValue);
+             return values[index];
+         };
         /**
          * Algorithme de creation du tableau    
          * @param {type} metaData
@@ -8749,13 +9049,12 @@ angular.module("mainApp")
                   compileFn($scope);
                   //Insertion du tableau
                   var items = $element.find("div");
-                  for(var i=0; i<items.length;i++){
-                       
+                  for(var i=0; i<items.length;i++){                       
                        if(items.eq(i).attr("id")=="container"){
                              items.eq(i).replaceWith(listElem);
                             // console.log("listFramePanelBuilder ====== "+$scope.enabledVerticalMenu);
-                       }  
-                  }
+                       }//end if(items.eq(i).attr("id")=="container"){  
+                  }//end for(var i=0; i<items.length;i++){  
 
                  return listElem;
           };
@@ -9058,8 +9357,11 @@ angular.module("mainApp")
                                             index = 1;
                                         }else{
                                             index = new Number(index)+1;
-                                        }
-//                                        console.log("initAction ========== "+index);
+                                        }//end if(index==null||!angular.isDefined(index))
+//                                        console.log("initAction ========== isString : "+angular.isString($scope.currentAction)+" ::::: isobject : "+angular.isObject($scope.currentAction));
+                                        if(angular.isString($scope.currentAction)){
+                                            $scope.currentAction = angular.fromJson($scope.currentAction);
+                                        }//end if(angular.isString($scope.currentAction)){
                                         $scope.editDialogBuilderExtern(metaData,index,$scope.currentAction.link);
 //                                        console.log("Chargement MetaData apres $scope.editDialogBuilderExtern(metaData)"); 
                                         $scope.currentAction = $scope.dataCache['currentAction'];
@@ -9077,7 +9379,7 @@ angular.module("mainApp")
                                             modalID = "myModal1";
                                         }else if(endIndex==4){
                                             modalID = "myModal2";
-                                        }
+                                        }//end if(endIndex==1){
                                         $("#"+modalID).modal("toggle");
                                         $("#"+modalID).modal("show");
                                         commonsTools.hideDialogLoading();
@@ -9092,8 +9394,8 @@ angular.module("mainApp")
                 } 
          };
           /**
-             Reception du message de changement de l'action
-          **/
+           * Reception du message de changement de l'action
+           */
           $scope.$on("currentActionUpdate" , function(event , args){
                if(args.action){
                 $scope.dataCache['currentObject'] = $scope.currentObject;
@@ -9109,6 +9411,9 @@ angular.module("mainApp")
                 $scope.initAction(template,index);
               }
            });
+           /**
+            * 
+            */
             $scope.$on("currentActionUpdateModal" , function(event , args){
               if(args.action){
                 $scope.dataCache['currentObject'] = $scope.currentObject;
@@ -9135,8 +9440,14 @@ angular.module("mainApp")
           
          
       },
-    	link : function(scope , element , attrs){
-                  
+      /**
+       * 
+       * @param {type} scope
+       * @param {type} element
+       * @param {type} attrs
+       * @returns {undefined}
+       */
+    	link : function(scope , element , attrs){                  
                   scope.listFrameBuilder(scope.metaData);
                   //var partial =angular.element(document.querySelector('#container'));
                   //console.log("Vous etes "+partial.html());

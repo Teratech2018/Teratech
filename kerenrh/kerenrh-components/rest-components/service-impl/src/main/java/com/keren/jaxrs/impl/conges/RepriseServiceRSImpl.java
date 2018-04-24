@@ -26,7 +26,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 11:54:14 GMT+01:00 2018
  * 
  */
@@ -62,51 +63,53 @@ public class RepriseServiceRSImpl
     
     @Override
    	public MetaData getMetaData(HttpHeaders headers) {
-   		// TODO Auto-generated method stub
-   		try {
-   			MetaData meta = MetaDataUtil.getMetaData(new RepriseService(),new HashMap<String, MetaData>()
-   					, new ArrayList<String>());
-   			MetaColumn workbtn = new MetaColumn("button", "work1", "Confirmer", false, "workflow", null);
-			workbtn.setStates(new String[]{"etabli"});
-			workbtn.setValue("{'model':'kerenrh','entity':'repriseservice','method':'confirme'}");
-			meta.getHeader().add(workbtn);
-			MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-			meta.getHeader().add(stautsbar);
-   			return meta;
-   		} catch (Exception e) {
-   			// TODO Auto-generated catch block
-   			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
-   		}
+            
+            // TODO Auto-generated method stub
+            try {
+                MetaData meta = MetaDataUtil.getMetaData(new RepriseService(),new HashMap<String, MetaData>()
+                                , new ArrayList<String>());
+                MetaColumn workbtn = new MetaColumn("button", "work1", "Confirmer", false, "workflow", null);
+                workbtn.setStates(new String[]{"etabli"});
+                workbtn.setValue("{'model':'kerenrh','entity':'repriseservice','method':'confirme'}");
+                meta.getHeader().add(workbtn);
+                MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+                meta.getHeader().add(stautsbar);
+                return meta;
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
+            }
    	}
 
     
 	@Override
 	protected void processBeforeSave(RepriseService entity) {
 		_controlreView(entity);
-		entity.setEmploye(entity.getConge().getEmploye());
-		entity.getConge().setFinEffetif(entity.getDate());
-		super.processBeforeSave(entity);
+            entity.setEmploye(entity.getConge().getEmploye());
+            entity.getConge().setFinEffetif(entity.getDate());
+
+            entity.setState("etabli");
+            super.processBeforeSave(entity);
 	}
 
 	@Override
 	protected void processBeforeUpdate(RepriseService entity) {
-		_controlreView(entity);
-		entity.setEmploye(entity.getConge().getEmploye());
-		entity.getConge().setFinEffetif(entity.getDate());;
-		super.processBeforeUpdate(entity);
+            _controlreView(entity);
+            entity.setEmploye(entity.getConge().getEmploye());
+            entity.getConge().setFinEffetif(entity.getDate());;
+            super.processBeforeUpdate(entity);
 	}
 
 	@Override
 	public RepriseService confirmer(HttpHeaders headers, RepriseService dmde) {
-		return manager.confirmer(dmde);
+            return manager.confirmer(dmde);
 	}
 	
 	private void _controlreView(RepriseService entity){
-		if (!entity.getDate().equals(entity.getConge().getFin())) {
-			throw new KerenExecption("Impossible de saisir la reprise: congé encours.. !!! le congé Prend fin le : "+entity.getConge().getFin());
-		} else if (new Date().after(entity.getConge().getFin())) {
-			throw new KerenExecption("Impossible de saisir la reprise: congé encours.. !!! Le congé Prend Fin le : "+entity.getConge().getFin());
-		}
+		
+            if (!entity.getDate().after(entity.getConge().getFin())) {
+                throw new KerenExecption("Impossible de saisir la reprise: conge encours.. !!! Le conge Prend Fin le : "+entity.getConge().getFin());
+            }
 	}
 
 }

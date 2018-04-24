@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import com.core.base.BaseElement;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.employes.Employe;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -30,6 +31,7 @@ public class TraitSalaire extends BaseElement implements Serializable, Comparabl
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
 	private PeriodePaie periode ;
 	
 	/**
