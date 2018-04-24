@@ -3276,7 +3276,7 @@ angular.module("mainApp")
          * @param {type} windowType
          * @returns {undefined}
          */
-        $scope.editPanelHeader = function(model , metaData,index){
+        $scope.editPanelHeader = function(model , metaData,index,extern){
             if(metaData && metaData.header && metaData.header.length>0){
                 var divElem = document.createElement('div');
                 divElem.setAttribute('class','panel panel-default col-sm-12  col-md-12');
@@ -3304,9 +3304,9 @@ angular.module("mainApp")
                       }
                       //Verifier si l'etat est autorise
                       if(metaData.header[i].states && metaData.header[i].states.length>0){
-                          aElem.setAttribute('ng-click',"buttonAction("+metaData.header[i].value+" , '"+metaData.header[i].target+"','"+angular.toJson(metaData.header[i].states)+"','"+index+"')");
+                          aElem.setAttribute('ng-click',"buttonAction("+metaData.header[i].value+" , '"+metaData.header[i].target+"','"+angular.toJson(metaData.header[i].states)+"','"+index+"',"+extern+")");
                       }else{
-                          aElem.setAttribute('ng-click',"buttonAction("+metaData.header[i].value+" , '"+metaData.header[i].target+"',null,'"+index+"')");
+                          aElem.setAttribute('ng-click',"buttonAction("+metaData.header[i].value+" , '"+metaData.header[i].target+"',null,'"+index+"',"+extern+")");
                       }//end if(metaData.header[i].states && metaData.header[i].states.length>0)
                       aElem.setAttribute('class',clasElem);
                       aElem.setAttribute('style','margin-right: 5px;');
@@ -6009,7 +6009,7 @@ angular.module("mainApp")
            viewElem.setAttribute('id' , bodyID);
            viewElem.setAttribute("class","modal-body");
            viewElem.setAttribute("style","height:100%;");
-           var headerElem = $scope.editPanelHeader('temporalData' , metaData,index);  
+           var headerElem = $scope.editPanelHeader('temporalData' , metaData,index,true);  
            var editPanel =  $scope.editPanelComponent('temporalData',metaData,'new',index,'temporalData');
            if(headerElem){
                viewElem.appendChild(headerElem);
@@ -8214,7 +8214,7 @@ angular.module("mainApp")
          * @param {type} values
          * @returns {undefined}
          */
-        $scope.buttonAction = function(data,type,states,index){
+        $scope.buttonAction = function(data,type,states,index,extern){
             try{  //Verifier que l'object est definie
                 if(angular.isString(data)){
                     data = angular.fromJson(data);
@@ -8236,7 +8236,7 @@ angular.module("mainApp")
                                       var datas = response.data;
                                       if(datas && datas.length>0){
                                           var action = datas[0];
-                                           var template = $scope.templateDataBuilder(data['template']);
+                                           var template = $scope.templateDataBuilder(data['template'],extern);
                                            //commonsTools.hideDialogLoading();
                                            $rootScope.$broadcast("currentActionUpdateModal" ,{
                                                 action:action , verticalMenu:$scope.enabledVerticalMenu , template:template,index:index});  
@@ -8252,7 +8252,7 @@ angular.module("mainApp")
                       }   
                    }else if(type=='object'){//Traitement des objects message en background
                        if(data.model&&data.entity&&data.method){
-                           var template = $scope.templateDataBuilder(data['template']);
+                           var template = $scope.templateDataBuilder(data['template'],extern);
                            commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                            var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;
                            $http.post(url,template)
@@ -8338,6 +8338,52 @@ angular.module("mainApp")
                                 });
                            //alert("Vous voulez executer la methode::: "+data.method+" de l'entite :: "+data.entity+" disponible sur la resource :: "+data.model+" data template : "+angular.toJson(template));
                        }//end if(data.model&&data.entity&&data.method)            
+                  }else if(type=='download'){
+                      if(data.model&&data.entity&&data.method){
+                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                           var template = $scope.templateDataBuilder(data['template'],extern);
+//                           $http.defaults.headers.common['states']=states;
+                           for(var key in template){
+                               if(angular.isDate(template[key])){
+                                   $http.defaults.headers.common[key]=angular.toJson(template[key]);
+                               }else if(angular.isObject(template[key])){
+                                   $http.defaults.headers.common[key]=angular.toJson(template[key].id);
+                               }else if(!angular.isArray(template[key])){
+                                   $http.defaults.headers.common[key]=angular.toJson(template[key]);
+                               } 
+                           }//end for(var key in template){
+//                           console.log("$scope.buttonAction = function(data,type,states,index,extern){ =============== extern : "+extern+"=== template : "+angular.toJson($http.defaults.headers.common));
+                           var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;   
+                           $http.get(url, {responseType: "arraybuffer"})
+                                     .then(function(response){
+//                                         console.log("$scope.piecejointeviewAction  ============================================= "+angular.toJson(response));
+//                                         var filename = response.headers['x-filename'];
+//                                         var contentType = response.headers['content-type'];
+                                         var linkElement = document.createElement('a');
+                                         try{
+                                                 var arrayBufferView = new Uint8Array(response.data );
+                                                var blob = new Blob( [ arrayBufferView ], { type: type } );
+                                                var urlCreator = window.URL || window.webkitURL;
+                                                var docUrl = urlCreator.createObjectURL( blob );
+                                                linkElement.setAttribute('href', docUrl);
+                                                var today = new Date();
+                                                var fileName = new String(today.getTime());                                                
+                                                linkElement.setAttribute("download", fileName);
+                                                var clickEvent = new MouseEvent("click", {
+                                                    "view": window,
+                                                    "bubbles": true,
+                                                    "cancelable": false
+                                                });
+                                                linkElement.dispatchEvent(clickEvent);
+                                         } catch (ex) {
+                                           commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
+                                        }
+                                         commonsTools.hideDialogLoading();
+                                     },function(error){
+                                         commonsTools.hideDialogLoading();
+                                         commonsTools.showMessageDialog(error);
+                                     });
+                      }//end if(data.model&&data.entity&&data.method){
                   }//end  if(type=='action'){
                     
                 }//end  if(data){    
@@ -8364,12 +8410,12 @@ angular.module("mainApp")
         * @param {type} template
         * @returns {undefined}
         */   
-      $scope.templateDataBuilder = function(template){
+      $scope.templateDataBuilder = function(template,extern){
           
           if(template==null||!angular.isDefined(template)){
               return null;
           }
-          
+//          console.log("$scope.templateDataBuilder = function(template) ==================== "+extern);
           //Construction du template
           var data = new Object();
           for(var key in template){  
@@ -8377,7 +8423,11 @@ angular.module("mainApp")
               var attr = template[key];
               if(key=='this'){
                   if(attr=='object'){
-                      return $scope.currentObject;
+                      if(angular.isDefined(extern) && extern==true){
+                          return $scope.temporalData;
+                      }else{
+                          return $scope.currentObject;
+                      }//end if(angular.isDefined(extern) && extern==true){
                   }else if(attr=='user'){
                       return $rootScope.globals.user;
                   }
@@ -8390,9 +8440,13 @@ angular.module("mainApp")
                         value = $rootScope.globals.user;
                      }//end if($rootScope.globals.user["'"+part[1]+"'"])
                   }else if(part[0]=='object'){
-                      if($scope.currentObject){
-                          value = $scope.currentObject;
-                      }//end if($scope.currentObject["'"+part[1]+"'"])
+                      if(angular.isDefined(extern) && extern==true){
+                          value =  $scope.temporalData;
+                      }else{
+                          if($scope.currentObject){
+                                value = $scope.currentObject;
+                          }//end if($scope.currentObject["'"+part[1]+"'"])
+                      }//end if(angular.isDefined(extern) && extern==true){                      
                   }//end if(part[0]=='user')
                   for(var i=1 ; i<part.length;i++){
                       if(value[part[i]]){
