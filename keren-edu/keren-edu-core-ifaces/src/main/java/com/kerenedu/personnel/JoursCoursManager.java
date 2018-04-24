@@ -14,5 +14,5 @@ public interface JoursCoursManager
 {
 
     public final static String SERVICE_NAME = "JoursCoursManager";
-
+   
 }

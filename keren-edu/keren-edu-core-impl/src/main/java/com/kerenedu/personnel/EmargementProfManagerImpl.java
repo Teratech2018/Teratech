@@ -85,14 +85,14 @@ public class EmargementProfManagerImpl
 	   		 System.out.println("EmargementProfManagerImpl.find() je suis ici 1 "+listplaning.size());
 	   			for(PlanifCours planing : listplaning){
 	   			
-	   				listJour=planing.getJourscours();
+//	   				listJour=planing.getJourscours();
 	   			 System.out.println("EmargementProfManagerImpl.find() je suis ici 2 "+listJour.size());
 	   				for(JoursCours jour : listJour){
 	   					if(jour.getJournne().equals(getDateOfWeek(elev.datemarg).trim())){
 	   	   				 System.out.println("EmargementProfManagerImpl.find() je suis journee 3ssq "+jour.getJournne());
 		   				 System.out.println("EmargementProfManagerImpl.find() je suis Journee 4ss "+getDateOfWeek(elev.datemarg));
 	   						for(TrancheHoraireCours thcours : jour.getTranchehorairecours()){
-	   							if(elev.getProf().getId()==thcours.getMatiere().getProffesseur().getId()){
+	   							if(elev.getProf().getId()==thcours.getMatiere().getId()){
 	   								System.out.println("EmargementProfManagerImpl.find() je suis Journee 5 "+thcours.getId());
 	   								EmargementProfDetails emarge= new EmargementProfDetails(thcours);
 	   								emargeDlt.add(emarge);
@@ -143,7 +143,12 @@ public class EmargementProfManagerImpl
 	        throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
 	    }
 	    entity.setAnneScolaire(annee.get(0).getCode());
-	    
+	    List<EmargementProfDetails> listdlt = new ArrayList<EmargementProfDetails>();
+	    for(EmargementProfDetails emargedlt : entity.getEmagementdlt()){
+	    	emargedlt.setId(-1);
+	    	listdlt.add(emargedlt);
+	    }
+	    entity.setEmagementdlt(listdlt);
 	    System.out.println("EmargementProfManagerImpl.processBeforeSave() ane is ....."+entity.getAnneScolaire());
 		super.processBeforeSave(entity);
 	}

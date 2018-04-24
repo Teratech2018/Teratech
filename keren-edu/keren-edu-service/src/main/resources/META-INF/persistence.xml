@@ -27,7 +27,6 @@
 	  <class>com.kerenedu.personnel.ProfMatiereEns</class>
 	  <class>com.kerenedu.personnel.MatiereCoutProf</class>
 	  <class>com.kerenedu.personnel.JoursCours</class>  
-	  <class>com.kerenedu.personnel.PlanifCours</class>  
 	  <class>com.kerenedu.personnel.TrancheHoraireCours</class>  
 	   <class>com.kerenedu.discipline.TypeAbscence</class> 
 	   <class>com.kerenedu.discipline.Abscence</class> 
@@ -76,7 +75,6 @@
 	      <class>com.kerenedu.stages.EvaluationStage</class>
 	     
 	        
-			  	
     <shared-cache-mode>NONE</shared-cache-mode>
  <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

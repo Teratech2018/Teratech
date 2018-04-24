@@ -2,15 +2,18 @@
 package com.kerenedu.personnel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseManagerRemote;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -33,6 +36,13 @@ public class EmargementProfRSImpl
      */
     @Manager(application = "kereneducation", name = "EmargementProfManagerImpl", interf = EmargementProfManagerRemote.class)
     protected EmargementProfManagerRemote manager;
+    
+    @Manager(application = "kereneducation", name = "ProfesseurManagerImpl", interf = ProfesseurManagerRemote.class)
+    protected ProfesseurManagerRemote managerProf;
+    
+    @Manager(application = "kereneducation", name = "EmargementProfDetailsManagerImpl", interf = EmargementProfDetailsManagerRemote.class)
+    protected EmargementProfDetailsManagerRemote manageremargedlt;
+    
 
     public EmargementProfRSImpl() {
         super();
@@ -65,6 +75,28 @@ public class EmargementProfRSImpl
   		}
   		return null;
   	}
+
+	@Override
+	public List<Professeur> findprofclasse(HttpHeaders headers) {
+		Gson gson = new Gson();
+		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);		
+		return managerProf.findprofclasse(id);
+	}
+
+	@Override
+	public List<EmargementProfDetails> findmatiereprof(HttpHeaders headers) {
+		Gson gson = new Gson();
+		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		long idclasse =gson.fromJson(headers.getRequestHeader("classe").get(0), Long.class);
+		Date date =gson.fromJson(headers.getRequestHeader("datemarg").get(0), Date.class);
+		
+		
+		System.out.println("EmargementProfRSImpl.findprofclasse() id===========X "+id);
+		System.out.println("EmargementProfRSImpl.findprofclasse() idClass===========X "+idclasse);
+		System.out.println("EmargementProfRSImpl.findprofclasse() date===========X "+date);
+		
+		return manageremargedlt.findmatiereprof(id,idclasse,date);
+	}
 
 
 

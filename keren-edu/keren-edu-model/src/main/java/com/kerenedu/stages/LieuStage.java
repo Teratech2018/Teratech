@@ -56,7 +56,6 @@ public class LieuStage extends BaseElement implements Serializable, Comparable<L
 		this.code=filiere.code;
 		this.service = new ArrayList<DivisionStage>();
 		
-
 	}
 
 	public String getLibelle() {

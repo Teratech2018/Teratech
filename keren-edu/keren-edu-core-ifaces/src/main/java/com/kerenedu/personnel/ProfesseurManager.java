@@ -1,6 +1,8 @@
 
 package com.kerenedu.personnel;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 
@@ -14,5 +16,7 @@ public interface ProfesseurManager
 {
 
     public final static String SERVICE_NAME = "ProfesseurManager";
+    
+    public List<Professeur> findprofclasse(Long id );
 
 }

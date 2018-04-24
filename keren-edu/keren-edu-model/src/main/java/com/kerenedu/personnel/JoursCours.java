@@ -13,12 +13,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.core.tools.EnmJoursCours;
-
+import com.kerenedu.configuration.Classe;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -34,15 +37,18 @@ public class JoursCours extends BaseElement implements Serializable, Comparable<
 	@Predicate(label="JOURS",optional=false,updatable=true,search=true , sequence=1, editable=false)
 	protected String journne ;
 	
+	@ManyToOne
+	@JoinColumn(name="CLASSE_ID")
+	private Classe classe ;
+	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "TRANCHE_COURS_ID")
-	@Predicate(label="tranche", group = true,groupName = "tab1",groupLabel = "Tranche Horaire de cours",target ="one-to-many",type = TrancheHoraireCours.class,search = true)
+	@Predicate(label="tranche", group = true,groupName = "tab1",groupLabel = "Tranche Horaire de cours",target ="one-to-many",type = TrancheHoraireCours.class,search = true, edittable=true)
 	private List<TrancheHoraireCours> tranchehorairecours = new ArrayList<TrancheHoraireCours>();
 
-//	@ManyToOne
-//	@JoinColumn(name = "ANNEE_ID")
-//	protected AnneScolaire anneScolaire;
-//	
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire;
+	
 
 
 	public JoursCours() {
@@ -52,11 +58,12 @@ public class JoursCours extends BaseElement implements Serializable, Comparable<
 
 
 
-	public JoursCours(String journne, List<TrancheHoraireCours> tranchehorairecours) {
+	public JoursCours(String journne, List<TrancheHoraireCours> tranchehorairecours , Classe classe,String anneScolaire) {
 		super();
 		this.journne = journne;
 		this.tranchehorairecours = tranchehorairecours;
-	//	this.anneScolaire = new AnneScolaire(anneScolaire);
+		this.classe= classe ;
+		this.anneScolaire = anneScolaire;
 	}
 
 
@@ -64,7 +71,12 @@ public class JoursCours extends BaseElement implements Serializable, Comparable<
 	public JoursCours(JoursCours ins) {
 		super(ins.id, ins.designation, ins.moduleName);
 		this.journne = ins.journne;
+		if(ins.classe!=null){
+		this.classe=new Classe(ins.classe);
+		}
 		this.tranchehorairecours = new ArrayList<TrancheHoraireCours>();
+		this.anneScolaire=ins.anneScolaire;
+		
 	//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
 	
 	}
@@ -85,6 +97,30 @@ public class JoursCours extends BaseElement implements Serializable, Comparable<
 		return hash;
 	}
 
+	public Classe getClasse() {
+		return classe;
+	}
+
+
+
+	public void setClasse(Classe classe) {
+		this.classe = classe;
+	}
+
+
+
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
+	}
+
+
+
 	public int compareTo(JoursCours o) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -92,13 +128,13 @@ public class JoursCours extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Journée de  ";
+		return "Planning des cours du  ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Journée de ";
+		return "Planning des cours  " ;
 	}
 
 	@Override
@@ -112,7 +148,7 @@ public class JoursCours extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getDesignation() {
 //		 TODO Auto-generated method stub
-		return journne;
+		return journne +" / "+classe.getLibelle();
 	}
 
 

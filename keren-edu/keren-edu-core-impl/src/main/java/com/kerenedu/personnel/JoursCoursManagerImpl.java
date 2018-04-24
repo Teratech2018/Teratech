@@ -12,8 +12,14 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.core.tools.EnmHeureCours;
+import com.core.tools.EnmJoursCours;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseDAOLocal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -27,7 +33,10 @@ public class JoursCoursManagerImpl
     protected JoursCoursDAOLocal dao;
     
     @EJB(name = "AnneScolaireDAO")
-    protected AnneScolaireDAOLocal annedao;    
+    protected AnneScolaireDAOLocal annedao;   
+    
+    @EJB(name = "ClasseDAO")
+    protected ClasseDAOLocal classedao;
 
     public JoursCoursManagerImpl() {
     }
@@ -45,24 +54,65 @@ public class JoursCoursManagerImpl
    	public List<JoursCours> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
    		// TODO Auto-generated method stub
+    	Classe classe = CacheMemory.getClasse();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		 TrancheHoraireCours thc ;
+		 List<TrancheHoraireCours>listthc = new ArrayList<TrancheHoraireCours>();
+		 List<EnmJoursCours> listjours =EnmJoursCours.getList();
+		 List<EnmHeureCours> listheure=EnmHeureCours.getList();
+		 List<JoursCours>listjc = new ArrayList<JoursCours>();
+		 JoursCours jc ;
+		 List<JoursCours> result = new ArrayList<JoursCours>();
+		if(classe!=null){
+			container.addEq("classe", classe);
+		}//end if(classe!=null)
+		predicats.addAll(container.getPredicats());
    		List<JoursCours> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-   		List<JoursCours> result = new ArrayList<JoursCours>();
-   		for(JoursCours elev:datas){
-   			result.add(new JoursCours(elev));
-   		}
+//   		if(datas==null||datas.isEmpty()||datas.size()==0){
+//   			System.out.println("JoursCoursManagerImpl.filter() planif not exit ;;;;");
+//   			long index =1;
+//   			for(EnmJoursCours jour :listjours){
+//   				listthc = new ArrayList<TrancheHoraireCours>();
+//   				long idx =1;
+//   				for(EnmHeureCours heure:listheure){
+//   					 thc = new TrancheHoraireCours(heure);
+//   					 thc.setId(-idx);
+//   					 listthc.add(thc);
+//   					idx++;
+//   				}
+//   				 jc = new JoursCours(jour,listthc);
+//   				 jc.setId(-index);
+//   				 listjc.add(jc);
+//   				index ++;
+//   			}
+//   			result.addAll(listjc);
+//   		}else{
+   			System.out.println("JoursCoursManagerImpl.filter() planif  exit ;;;;"+datas.size());
+   			for(JoursCours elev:datas){
+   	   			result.add(new JoursCours(elev));
+   	   		}
+//   		}
+  		
    		return result;
    	}
 
    	@Override
    	public JoursCours find(String propertyName, Long entityID) {
    		// TODO Auto-generated method stub
-   		JoursCours elev = super.find(propertyName, entityID);
-   		JoursCours inscrip = new JoursCours(elev);
-   		System.out.println("JoursCoursManagerImpl.find() nombre jours is "+elev.getTranchehorairecours().size());
-   		for(TrancheHoraireCours jour: elev.getTranchehorairecours()){
-   			inscrip.getTranchehorairecours().add(new TrancheHoraireCours(jour));
-   		}
-   		return inscrip;
+   		TrancheHoraireCours thc ;
+		 List<TrancheHoraireCours>listthc = new ArrayList<TrancheHoraireCours>();
+		 List<EnmJoursCours> listjours =EnmJoursCours.getList();
+		 List<EnmHeureCours> listheure=EnmHeureCours.getList();
+		 List<JoursCours>listjc = new ArrayList<JoursCours>();
+		 JoursCours jc = new JoursCours() ;
+		 JoursCours result = new JoursCours();
+   			JoursCours jours = super.find(propertyName, entityID);
+   			result = new JoursCours(jours);
+   	   		for(TrancheHoraireCours jour: jours.getTranchehorairecours()){
+   	   		result.getTranchehorairecours().add(new TrancheHoraireCours(jour));
+   	   		}
+
+   		return result;
    	}
 
    	@Override
@@ -85,18 +135,6 @@ public class JoursCoursManagerImpl
    		return new JoursCours(elev);
    	}
 
-	@Override
-	public void processBeforeSave(JoursCours entity) {
-		// set annescolaire courante
-//		  //Creation des journaux de saisie
-//		 RestrictionsContainer container = RestrictionsContainer.newInstance();
-//		 container.addEq("connected", true);
-//		List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0 , -1);
-//	    if(annee==null||annee.size()==0){
-//	        RuntimeException excep = new RuntimeException("Aucune Année Scolaire disponible !!!");
-//	        throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
-//	    }
-//	    entity.setAnneScolaire(annee.get(0));
-		super.processBeforeSave(entity);
-	}
+
+
 }

@@ -4,19 +4,12 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.kerenedu.school.Contacts;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -28,25 +21,17 @@ import com.megatim.common.annotations.Predicate;
 public class Appreciation extends BaseElement implements Serializable, Comparable<Appreciation> {
 	
 	
-	@Column(name = "CODE" ,unique=true)	
-	@Predicate(label="CODE",optional=false,updatable=true,search=true , sequence=1)
-	protected String code;
-	
-	@Column(name = "LIBELLE",unique=true )	
+	@Column(name = "APP",unique=true )	
 	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true , sequence=2)
 	protected String libelle;
 	
-	@Column(name = "NIV_FORMT")
-	@Predicate(label="NIVEAU FORMATION",optional=false,updatable=true,search=false, target="combobox", values="Marternelle;Primaire;Secondaire;université" , sequence=3)
-	protected String nivFormation="0";
+	@Column(name = "I_DEB" )	
+	@Predicate(label="MIN.",optional=false,updatable=true,search=true , sequence=4, type=Long.class)
+	protected Long deb;
 	
-	@Column(name = "CAPACITE" )	
-	@Predicate(label="CAPACITE",optional=false,updatable=true,search=true , sequence=4, type=Long.class)
-	protected Long capacite;
-	
-	@Column(name = "DUREE" )	
-	@Predicate(label="DUREE",optional=false,updatable=true,search=true , sequence=5, type=Long.class)
-	protected Long duree;
+	@Column(name = "I_FIN" )	
+	@Predicate(label="MAX.",optional=false,updatable=true,search=true , sequence=3, type=Long.class)
+	protected Long fin;
 
 
 	public Appreciation() {
@@ -55,14 +40,22 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 	}
 
 
-	public Appreciation(Appreciation filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
-		this.libelle = filiere.libelle;
-		this.code=filiere.code;
-		this.capacite=filiere.capacite;
-		this.duree=filiere.duree;
-		this.nivFormation=filiere.nivFormation;
+
+	public Appreciation(String code, String libelle, Long min, Long max) {
+		super();
+		this.libelle = libelle;
+		this.deb = min;
+		this.fin = max;
 	}
+	
+	public Appreciation(Appreciation app) {
+		super();
+		this.libelle = app.libelle;
+		this.deb = app.deb;
+		this.fin = app.fin;
+	}
+
+
 
 	public String getLibelle() {
 		return libelle;
@@ -74,64 +67,40 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 
 
 
-	/**
-	 * @return the code
-	 */
-	public String getCode() {
-		return code;
-	}
-
-
-	/**
-	 * @param code the code to set
-	 */
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-
-	public String getNivFormation() {
-		return nivFormation;
-	}
-
-
-	public void setNivFormation(String nivFormation) {
-		this.nivFormation = nivFormation;
-	}
-
-
-	public Long getCapacite() {
-		return capacite;
-	}
-
-
-	public void setCapacite(Long capacite) {
-		this.capacite = capacite;
-	}
-
-
-	public Long getDuree() {
-		return duree;
-	}
-
-
-	public void setDuree(Long duree) {
-		this.duree = duree;
+	public Long getDeb() {
+		return deb;
 	}
 
 
 
-	
+	public void setDeb(Long deb) {
+		this.deb = deb;
+	}
+
+
+
+	public Long getFin() {
+		return fin;
+	}
+
+
+
+	public void setFin(Long fin) {
+		this.fin = fin;
+	}
+
+
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Edition des Filières";
+		return "Edition des Appreciations";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Filières";
+		return "Gestion des Appreciations";
 	}
 
 	@Override

@@ -2,6 +2,7 @@
 package com.kerenedu.personnel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,8 +18,9 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.tools.EnmHeureCours;
 import com.core.tools.EnmJoursCours;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
-import com.kerenedu.notes.CoefMatiereDetail;
+import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.notes.CoefMatiereDetailDAOLocal;
+import com.kerenedu.notes.CoefMatiereManagerImpl;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -31,11 +33,17 @@ public class PlanifCoursManagerImpl
     @EJB(name = "PlanifCoursDAO")
     protected PlanifCoursDAOLocal dao;
     
-    @EJB(name = "CoefMatiereDetail")
+    @EJB(name = "CoefMatiereDetailDAO")
     protected CoefMatiereDetailDAOLocal daoCoefMatDlt;
     
     @EJB(name = "AnneScolaireDAO")
     protected AnneScolaireDAOLocal annedao;    
+    
+    @EJB(name = "ClasseDAO")
+    protected ClasseDAOLocal classedao;    
+    
+    @EJB(name = "JoursCoursDAO")
+    protected JoursCoursDAOLocal jourCoursdao;
 
 
     public PlanifCoursManagerImpl() {
@@ -73,34 +81,33 @@ public class PlanifCoursManagerImpl
 		 List<EnmHeureCours> listheure=EnmHeureCours.getList();
 		 List<JoursCours>listjc = new ArrayList<JoursCours>();
 		 JoursCours jc ;
-   	 if(data.getJourscours()==null||data.getJourscours().isEmpty()){
-		for(EnmJoursCours jour :listjours){
-			listthc = new ArrayList<TrancheHoraireCours>();
-			for(EnmHeureCours heure:listheure){
-				 thc = new TrancheHoraireCours(heure);
-				 listthc.add(thc);
-			}
-			 jc = new JoursCours(jour,listthc);
-			 listjc.add(jc);
-		}
-		result.setJourscours(listjc);
-	 }else{
-		 List<JoursCours> listJC = new ArrayList<JoursCours>();
-		 List<TrancheHoraireCours>listtranche = new ArrayList<TrancheHoraireCours>();
-		 listJC = new ArrayList<JoursCours>();
-		 for(JoursCours serv: data.getJourscours()){
-			 JoursCours jci = new JoursCours(serv);
-			 listtranche = new ArrayList<TrancheHoraireCours>();
-			 listtranche=serv.getTranchehorairecours();
-			 jci.getTranchehorairecours().addAll(listtranche);
-			 listJC.add(jci);			
-	   		}
-		 result.setJourscours(listJC);
-	   	
-	 }
+//   	 if(data.getJourscours()==null||data.getJourscours().isEmpty()){
+//		for(EnmJoursCours jour :listjours){
+//			listthc = new ArrayList<TrancheHoraireCours>();
+//			for(EnmHeureCours heure:listheure){
+//				 thc = new TrancheHoraireCours(heure);
+//				 listthc.add(thc);
+//			}
+//			 jc = new JoursCours(jour,listthc);
+//			 listjc.add(jc);
+//		}
+//		result.setJourscours(listjc);
+//	 }else{
+//		 List<JoursCours> listJC = new ArrayList<JoursCours>();
+//		 List<TrancheHoraireCours>listtranche = new ArrayList<TrancheHoraireCours>();
+//		 listJC = new ArrayList<JoursCours>();
+//		 for(JoursCours serv: data.getJourscours()){
+//			 JoursCours jci = new JoursCours(serv);
+//			 listtranche = new ArrayList<TrancheHoraireCours>();
+//			 listtranche=serv.getTranchehorairecours();
+//			 jci.getTranchehorairecours().addAll(listtranche);
+//			 listJC.add(jci);			
+//	   		}
+//		 result.setJourscours(listJC);
+//	   	
+//	 }
  	return result;
-	// en fonction de lenumjour contruire l'objet Jours cours
-	// et pour chaque jours cours construire les tranche horaire
+
    		
    	}
 
@@ -123,61 +130,55 @@ public class PlanifCoursManagerImpl
    		PlanifCours elev = super.delete(id);
    		return new PlanifCours(elev);
    	}
+   	
+	public List<JoursCours> findjourscours(Long id) {
+		System.out.println(CoefMatiereManagerImpl.class.toString()+" ========================================== "+id);
+		List<JoursCours> datas = new ArrayList<JoursCours>() ;
+		 List<JoursCours> result = new ArrayList<JoursCours>();
+		 RestrictionsContainer container = RestrictionsContainer.newInstance();
+		 TrancheHoraireCours thc ;
+		 List<TrancheHoraireCours>listthc = new ArrayList<TrancheHoraireCours>();
+		 List<EnmJoursCours> listjours =EnmJoursCours.getList();
+		 List<EnmHeureCours> listheure=EnmHeureCours.getList();
+		 List<JoursCours>listjc = new ArrayList<JoursCours>();
+		 JoursCours jc ;
+		 
+		if(id>0){
+			// recherche l'objet classe
+			// verifier si existe dejà	
+			container = RestrictionsContainer.newInstance();
+			 container.addEq("classe.id",id);
+			 result = jourCoursdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+			 
+			if(result==null||result.isEmpty()||result.size()==0){
+				 long index = 1 ;
+				for(EnmJoursCours jour :listjours){
+	   				listthc = new ArrayList<TrancheHoraireCours>();
+	   				long idx =1;
+	   				for(EnmHeureCours heure:listheure){
+	   					 thc = new TrancheHoraireCours(heure);
+	   					 thc.setId(idx);
+	   					 listthc.add(thc);
+	   					idx++;
+	   				}// fin for(EnmHeureCours heure:listheure)
+	   				 jc = new JoursCours(jour,listthc);
+	   				jc.setId(-index);
+	   				 listjc.add(jc);
+	   				index++;
+	   			} // fin (EnmJoursCours jour :listjours)
+				datas.addAll(listjc);
+			}else{
+				System.out.println("CoefMatiereManagerImpl.findMatiereFiliere() size is "+result.size());
+				for(JoursCours elev:result){
+					datas.add(new JoursCours(elev));
+	   	   		}// fin for(JoursCours elev:result)
+			} // end if(result==null||result.isEmpty()||result.size()==0)
 
-//	@Override
-//	public void processBeforeSave(PlanifCours entity) {
-//		
-//		List<JoursCours> listJC = new ArrayList<JoursCours>();
-//		 List<TrancheHoraireCours>listtranche = new ArrayList<TrancheHoraireCours>();
-//		for(JoursCours jco:entity.getJourscours()){
-//			listtranche = new ArrayList<TrancheHoraireCours>();
-//			for(TrancheHoraireCours thcou : jco.getTranchehorairecours()){
-//				RestrictionsContainer container = RestrictionsContainer.newInstance();
-//				 container.addEq("matiere", thcou.getMatiere());
-//				 List<CoefMatiereDetail> coefmat= daoCoefMatDlt.filter(container.getPredicats(), null, null, 0 , -1);
-//				 
-//				 if(coefmat!=null&& !coefmat.isEmpty()){
-//					 thcou.setProf(coefmat.get(0).getProffesseur());
-//				 }
-//				 listtranche.add(thcou); 
-//				 jco.setTranchehorairecours(listtranche);
-//			}
-//			listJC.add(jco);
-//		}
-//		entity.setJourscours(listJC);
-//		
-//
-//		super.processBeforeSave(entity);
-//	}
-//	
-//	@Override
-//	public void processBeforeUpdate(PlanifCours entity) {
-//		
-//		List<JoursCours> listJC = new ArrayList<JoursCours>();
-//		 List<TrancheHoraireCours>listtranche = new ArrayList<TrancheHoraireCours>();
-//		for(JoursCours jco:entity.getJourscours()){
-//			listtranche = new ArrayList<TrancheHoraireCours>();
-//			for(TrancheHoraireCours thcou : jco.getTranchehorairecours()){
-//				RestrictionsContainer container = RestrictionsContainer.newInstance();
-//				 container.addEq("matiere", thcou.getMatiere());
-//				 List<CoefMatiereDetail> coefmat= daoCoefMatDlt.filter(container.getPredicats(), null, null, 0 , -1);
-//				 
-//				 if(coefmat!=null&& !coefmat.isEmpty()){
-//					 thcou.setProf(coefmat.get(0).getProffesseur());
-//				 }
-//				 listtranche.add(thcou); 
-//				 jco.setTranchehorairecours(listtranche);
-//			}
-//			
-//			listJC.add(jco);
-//		}
-//		entity.setJourscours(listJC);
-//		
-//
-//		super.processBeforeSave(entity);
-//	}
-//   	
-//   	
+		}//end if(id!=-1){
+		return datas;
+	}
+
+
    	
 
 }

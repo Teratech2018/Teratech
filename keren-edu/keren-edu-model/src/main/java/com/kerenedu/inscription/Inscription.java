@@ -73,9 +73,9 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 //	private Service serviceList ;
 //	
 	
-	@ManyToOne
-	@JoinColumn(name = "ANNEE_ID")
-	protected AnneScolaire anneScolaire ;
+	
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire ;
 	
 //
 //	public Service getServiceList() {
@@ -103,7 +103,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		this.zSolde = ins.zSolde;
 		this.classe = new Classe(ins.classe);
 		this.datIns=ins.datIns;
-		this.anneScolaire=new AnneScolaire(ins.anneScolaire);
+		this.anneScolaire=ins.anneScolaire;
 	//	this.serviceList= new Service(ins.serviceList);
 		this.satut=ins.satut;
 		
@@ -217,14 +217,16 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	}
 
 
-	public AnneScolaire getAnneScolaire() {
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
+	}
+
+
+	public String getAnneScolaire() {
 		return anneScolaire;
 	}
 
 
-	public void setAnneScolaire(AnneScolaire anneScolaire) {
-		this.anneScolaire = anneScolaire;
-	}
 
 
 	public Date getDatIns() {

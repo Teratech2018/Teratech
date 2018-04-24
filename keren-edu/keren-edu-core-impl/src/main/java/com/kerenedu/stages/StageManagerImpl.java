@@ -13,7 +13,7 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.kerenedu.inscription.Inscription;
+import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -25,6 +25,9 @@ public class StageManagerImpl
 
     @EJB(name = "StageDAO")
     protected StageDAOLocal dao;
+    
+    @EJB(name = "SuiviStageDAO")
+    protected SuiviStageDAOLocal daosuivistage;
     
 
     public StageManagerImpl() {
@@ -50,7 +53,8 @@ public class StageManagerImpl
     @Override
   	public Stage terminer(Stage stage) {
     	stage.setState("terminer");
-  		dao.update(stage.getId(), stage);
+    	stage=dao.update(stage.getId(), stage);
+  		daosuivistage.save(new SuiviStage(stage));
   		return stage;
   	}
       
@@ -72,8 +76,8 @@ public class StageManagerImpl
      		Stage elev = super.find(propertyName, entityID);
      		Stage data = new Stage(elev);
      		
-     		for(Inscription el : elev.getElevelist()){
-     			data.getElevelist().add(new Inscription(el));
+     		for(Eleve el : elev.getElevelist()){
+     			data.getElevelist().add(new Eleve(el));
      		}
      		return data;
      	}

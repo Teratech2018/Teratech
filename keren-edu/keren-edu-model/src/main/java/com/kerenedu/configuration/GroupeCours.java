@@ -14,8 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -45,13 +48,21 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne 
     @JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "CLASSE",target = "many-to-one",type = Classe.class,search =false  , sequence=5, colsequence=5)
+	@Predicate(label = "CLASSE",target = "many-to-one",type = Classe.class,search =false  , sequence=5, colsequence=5 , observable=true)
 	private Classe classe = new Classe();
+	
+	@Transient
+	@ManyToOne 
+    @JoinColumn(name ="FILIERE_ID")
+	@Predicate(label = "Filiere",target = "many-to-one",type = Filiere.class,search =false  , sequence=6,hide=true)
+	@Observer(observable="classe",source="field:filiere")
+	private Filiere filiere = new Filiere();
 	
 	
 	@ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "MATIERE_ID")
 	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = Matiere.class,search = false)
+	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\"}]")
 	private List<Matiere> matiereList = new ArrayList<Matiere>();
 	
 	
@@ -69,6 +80,10 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		this.coef = annee.coef;
 		this.unite=new UniteEns(annee.unite);
 		this.classe=new Classe(annee.classe);
+		if(annee.filiere!=null){
+			this.filiere=new Filiere(annee.filiere);
+		}
+		
 		this.matiereList= new ArrayList<Matiere>();
 
 	}
@@ -156,6 +171,17 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		return code+"-"+libelle;
 	}
 
+
+
+	public Filiere getFiliere() {
+		return filiere;
+	}
+
+
+	public void setFiliere(Filiere filiere) {
+		
+		this.filiere = filiere;
+	}
 
 
 	public int compareTo(GroupeCours o) {

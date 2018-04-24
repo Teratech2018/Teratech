@@ -14,8 +14,11 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.core.tools.EnmHeureCours;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.Matiere;
+import com.kerenedu.notes.CoefMatiere;
 import com.kerenedu.notes.CoefMatiereDetail;
-
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -42,11 +45,18 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	@Predicate(label="HEURE TOTAL",optional=true,updatable=false,search=false, type=Long.class, target="time", sequence=5, hide=true)
 	protected Long heuretotal;
 
-	@ManyToOne
-	@JoinColumn(name = "MAT_PROF_ID")
-	@Predicate(label="MATIERE",updatable=true,type=CoefMatiereDetail.class , target="many-to-one",search=true , sequence=1, optional=false	)
-	protected CoefMatiereDetail matiere= new CoefMatiereDetail();
+//	@ManyToOne
+//	@JoinColumn(name="CLASSE_ID")
+//	@Predicate(label="CLASSE.",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1,hide=true	)
+//	private Classe classe ;
 	
+	@ManyToOne
+	@JoinColumn(name = "MAT_ID")
+	@Predicate(label="MATIERE",updatable=true,type=CoefMatiereDetail.class , target="many-to-one",search=true , sequence=1, optional=false	)
+//	@Filter(value="[{\"fieldName\":\"classe\",\"value\":\"object.classe\",\"searchfield\":\"code\"}]")
+	protected CoefMatiereDetail matiere ;
+	
+
 //	@ManyToOne
 //	@JoinColumn(name = "PROF_ID")
 //	//@Predicate(label="MATIERE.",updatable=true,type=Matiere.class , target="many-to-one",search=true , sequence=1	)
@@ -67,12 +77,14 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	}
 
 
-	public TrancheHoraireCours(CoefMatiereDetail matiere,String heuredebut, String heurefin, Long heuretotal) {
+	public TrancheHoraireCours(CoefMatiereDetail matiere,String heuredebut, String heurefin, Long heuretotal,Classe classe) {
 		super();
 		this.heuredebut = heuredebut;
 		this.heuretotal = heuretotal;
 		this.heurefin = heurefin;
+//		this.classe=classe;
 		//this.anneScolaire = anneScolaire;
+		
 		this.matiere=matiere;
 	}
 
@@ -81,20 +93,31 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 		super(ins.id, ins.designation, ins.moduleName);
 		
 	//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
-		this.matiere= new CoefMatiereDetail(ins.matiere);
+		if(ins.matiere!=null){
+		  this.matiere= new CoefMatiereDetail(ins.matiere);
+		}
+//		if(ins.classe!=null){
+//			  this.classe= new Classe(ins.classe);
+//			}
 		this.heurefin = ins.heurefin;
 		this.heuredebut = ins.heuredebut;
 		this.heuretotal = ins.heuretotal;
 	
 	}
 
-	public TrancheHoraireCours(EnmHeureCours ins) {		
+	public TrancheHoraireCours(PlanifCours jc, EnmHeureCours ins) {		
 	//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
-		this.matiere= new CoefMatiereDetail();
 		this.heurefin = ins.getHfin();
 		this.heuredebut = ins.getHdeb();
+//		this.classe=jc.getClasse();
 	
 	}
+	
+	public TrancheHoraireCours(EnmHeureCours ins) {		
+		//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
+			this.heurefin = ins.getHfin();
+			this.heuredebut = ins.getHdeb();		
+		}
 
 	
 
@@ -175,6 +198,16 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	public void setMatiere(CoefMatiereDetail matiere) {
 		this.matiere = matiere;
 	}
+
+
+//	public Classe getClasse() {
+//		return classe;
+//	}
+//
+//
+//	public void setClasse(Classe classe) {
+//		this.classe = classe;
+//	}
 
 
 

@@ -56,6 +56,11 @@ public class BaseStage extends BaseElement implements Serializable, Comparable<B
 	@JoinColumn(name = "SERVI_ID")
 	@Predicate(label = "Ref. Service d'affectation", target = "many-to-one", type = DivisionStage.class, search = true, sequence = 3)
 	private DivisionStage service;
+	
+	@ManyToOne
+	@JoinColumn(name = "PROF_ID")
+	@Predicate(label = "Ref. Encadreur ACC.", target = "many-to-one", type = Professeur.class, search = true, sequence = 2,updatable=true)
+	private Professeur prof;
 
 	@Temporal(TemporalType.DATE)
 	@Predicate(label = "Date Début", type = Date.class, target = "date", optional = false, search = false, editable = true, sequence = 5)
@@ -73,9 +78,9 @@ public class BaseStage extends BaseElement implements Serializable, Comparable<B
 	
 	@ManyToMany(fetch = FetchType.LAZY )
     @JoinColumn(name = "ETU_ID")
-	@Predicate(target = "many-to-many-list",type = Inscription.class,search = true,sequence=1
+	@Predicate(target = "many-to-many-list",type = Eleve.class,search = true,sequence=1
 	, group = true, groupName = "tab1", groupLabel = "Etudiants concernés")
-	private List<Inscription> elevelist = new ArrayList<Inscription>();
+	private List<Eleve> elevelist = new ArrayList<Eleve>();
 	
 	@Predicate( target = "textarea", group = true, groupName = "tab2", groupLabel = "notes",sequence=2)
 	@Column(name = "MOTIF")
@@ -110,14 +115,15 @@ public class BaseStage extends BaseElement implements Serializable, Comparable<B
 		this.bstage = new BesionStage(stage.bstage);
 		this.service = new DivisionStage(stage.service);
 		this.classe = new Classe(stage.classe);
+		this.prof = new Professeur(stage.prof);
 		this.debut = stage.debut;
 		this.fin = stage.fin;
-		this.elevelist = new ArrayList<Inscription>();
+		this.elevelist = new ArrayList<Eleve>();
 		this.motif = stage.motif;
 		this.state = stage.state;
 	}
 	
-	public BaseStage(String reference, BesionStage bstage, Date debut, Date fin, Professeur prof, List<Inscription> elevelist,
+	public BaseStage(String reference, BesionStage bstage, Date debut, Date fin, Professeur prof, List<Eleve> elevelist,
 			String motif, String state) {
 		super();
 		this.reference = reference;
@@ -217,16 +223,24 @@ public class BaseStage extends BaseElement implements Serializable, Comparable<B
 		return bstage;
 	}
 
+	public Professeur getProf() {
+		return prof;
+	}
+
+	public void setProf(Professeur prof) {
+		this.prof = prof;
+	}
+
 	public void setBstage(BesionStage bstage) {
 		this.bstage = bstage;
 	}
 
 
-	public List<Inscription> getElevelist() {
+	public List<Eleve> getElevelist() {
 		return elevelist;
 	}
 
-	public void setElevelist(List<Inscription> elevelist) {
+	public void setElevelist(List<Eleve> elevelist) {
 		this.elevelist = elevelist;
 	}
 

@@ -15,8 +15,11 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Matiere;
 import com.kerenedu.configuration.MatiereDAOLocal;
+import com.kerenedu.configuration.PeriodeScolaire;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionDAOLocal;
 import com.kerenedu.school.Eleve;
@@ -58,6 +61,16 @@ public class NoteManagerImpl
    	public List<Note> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
    		// TODO Auto-generated method stub
+    	PeriodeScolaire periode = CacheMemory.getPeriode();
+    	Classe classe = CacheMemory.getClasse();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if(periode!=null){
+			container.addEq("examen.periode", periode);
+		}//end if(periode!=null)
+		if(classe!=null){
+			container.addEq("classe", classe);
+		}//end if(classe!=null)
+		predicats.addAll(container.getPredicats());
    		List<Note> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
    		List<Note> result = new ArrayList<Note>();
    		for(Note elev:datas){
