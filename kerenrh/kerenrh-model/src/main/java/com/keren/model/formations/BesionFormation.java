@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -62,6 +63,7 @@ public class BesionFormation extends BaseElement implements Serializable, Compar
 	private List<LigneBesionFormation> lignes = new ArrayList<LigneBesionFormation>();
 	
 	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Notes")
+	@Lob
 	private String note ;
 	
 	@OneToMany(mappedBy="besion" , fetch=FetchType.LAZY)

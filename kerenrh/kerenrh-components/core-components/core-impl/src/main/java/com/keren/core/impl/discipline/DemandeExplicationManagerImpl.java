@@ -17,6 +17,9 @@ import com.keren.core.ifaces.discipline.DemandeExplicationManagerLocal;
 import com.keren.core.ifaces.discipline.DemandeExplicationManagerRemote;
 import com.keren.dao.ifaces.discipline.DemandeExplicationDAOLocal;
 import com.keren.model.discipline.DemandeExplication;
+import com.keren.model.discipline.ReponseDE;
+import com.keren.model.discipline.Sanction;
+import com.keren.model.discipline.TraitementDE;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -67,6 +70,15 @@ public class DemandeExplicationManagerImpl
    		// TODO Auto-generated method stub
    		DemandeExplication data = super.find(propertyName, entityID);
    		DemandeExplication result = new DemandeExplication(data);		
+   		if(data.getSanction()!=null){
+   			result.setSanction(new Sanction(data.getSanction()));
+   		}//end if(data.getSanction()!=null){
+   		for(ReponseDE reponse:data.getReponses()){
+   			result.getReponses().add(new ReponseDE(reponse));
+   		}//end for(ReponseDE reponse:data.getReponses()){
+   		for(TraitementDE trait:data.getTraitements()){
+   			result.getTraitements().add(new TraitementDE(trait));
+   		}//end for(TraitementDE trait:data.getTraitements()){
    		return result;
    	}
 

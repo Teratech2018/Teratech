@@ -15,7 +15,9 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.core.ifaces.discipline.ReponseDEManagerLocal;
 import com.keren.core.ifaces.discipline.ReponseDEManagerRemote;
+import com.keren.dao.ifaces.discipline.DemandeExplicationDAOLocal;
 import com.keren.dao.ifaces.discipline.ReponseDEDAOLocal;
+import com.keren.model.discipline.DemandeExplication;
 import com.keren.model.discipline.ReponseDE;
 import com.megatim.common.annotations.OrderType;
 
@@ -28,6 +30,9 @@ public class ReponseDEManagerImpl
 
     @EJB(name = "ReponseDEDAO")
     protected ReponseDEDAOLocal dao;
+    
+    @EJB(name = "DemandeExplicationDAO")
+    protected DemandeExplicationDAOLocal dedao;
 
     public ReponseDEManagerImpl() {
     }
@@ -45,8 +50,10 @@ public class ReponseDEManagerImpl
     
     @Override
   	public ReponseDE delete(Long id) {
-  		// TODO Auto-generated method stub
+  		// TODO Auto-generated method stub    	
   		ReponseDE data= super.delete(id);
+  		data.getDemande().setState("reponse");
+		dedao.update(data.getDemande().getId(), data.getDemande());
   		return new ReponseDE(data);
   	}
 
@@ -82,5 +89,20 @@ public class ReponseDEManagerImpl
   		}
   		return result;
   	}
+
+	@Override
+	public void processAfterSave(ReponseDE entity) {
+		// TODO Auto-generated method stub
+		DemandeExplication de = entity.getDemande();
+		if(de.getState().equalsIgnoreCase("etabli")||
+				de.getState().equalsIgnoreCase("reponse")){
+			de.setState("reponse");
+			dedao.update(de.getId(), de);
+		}
+//		dedao.update(de.getId(), de);
+		super.processAfterSave(entity);
+	}
+  	
+  	
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -54,9 +55,11 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	private Date date ;
 	
 	@Predicate(label=".",target="textarea",group=true,groupName="group1",groupLabel="Motif")
+	@Lob
 	private String motif ;
 	
 	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Décision de la Drirection")
+	@Lob
 	private String decision ;
 
 	@ManyToOne

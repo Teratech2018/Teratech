@@ -10,6 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.discipline.TraitementDEManagerRemote;
 import com.keren.jaxrs.ifaces.discipline.TraitementDERS;
@@ -66,5 +67,43 @@ public class TraitementDERSImpl
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
    		}
 	}
+
+	@Override
+	protected void processBeforeDelete(Object entity) {
+		// TODO Auto-generated method stub
+		super.processBeforeDelete(entity);
+	}
+
+	@Override
+	protected void processBeforeSave(TraitementDE entity) {
+		// TODO Auto-generated method stub
+		if(entity.getDemande()==null){
+			throw new KerenExecption("La demande concerné est obligatoire");
+		}else if(entity.getSuperieur()==null){
+			throw new KerenExecption("Le supérieur concerné est obligatoire");
+		}else if(entity.getDateavis()==null){
+			throw new KerenExecption("La Date d'avis est obligatoire");
+		}else if(entity.getSanction()==null||entity.getSanction().trim().isEmpty()){
+			throw new KerenExecption("La Sanction décidée est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(TraitementDE entity) {
+		// TODO Auto-generated method stub
+		if(entity.getDemande()==null){
+			throw new KerenExecption("La demande concerné est obligatoire");
+		}else if(entity.getSuperieur()==null){
+			throw new KerenExecption("Le supérieur concerné est obligatoire");
+		}else if(entity.getDateavis()==null){
+			throw new KerenExecption("La Date d'avis est obligatoire");
+		}else if(entity.getSanction()==null||entity.getSanction().trim().isEmpty()){
+			throw new KerenExecption("La Sanction décidée est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
+    
+    
 
 }

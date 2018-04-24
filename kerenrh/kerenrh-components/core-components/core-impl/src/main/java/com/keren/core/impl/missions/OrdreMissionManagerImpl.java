@@ -94,7 +94,17 @@ public class OrdreMissionManagerImpl
     
     
     @Override
+	public void processBeforeUpdate(OrdreMission entity) {
+		// TODO Auto-generated method stub
+    	OrdreMission old = dao.findByPrimaryKey("id", entity.getId());
+    	entity.setMission(old.getMission());
+		super.processBeforeUpdate(entity);
+	}
+
+	@Override
     public OrdreMission valide(OrdreMission entity) {
+		OrdreMission old = dao.findByPrimaryKey("id", entity.getId());
+    	entity.setMission(old.getMission());
         if(entity.getState().equalsIgnoreCase("etabli")){
         	entity.setState("valide");
         	entity = dao.update(entity.getId(), entity);
@@ -117,6 +127,8 @@ public class OrdreMissionManagerImpl
 
     @Override
     public OrdreMission annule(OrdreMission entity) {
+    	OrdreMission old = dao.findByPrimaryKey("id", entity.getId());
+    	entity.setMission(old.getMission());
     	if(entity.getState().equalsIgnoreCase("valide")){
         	entity.setState("annule");
         	entity = dao.update(entity.getId(), entity);

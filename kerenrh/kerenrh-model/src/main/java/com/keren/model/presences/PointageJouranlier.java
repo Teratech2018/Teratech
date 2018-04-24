@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.megatim.common.annotations.Observer;

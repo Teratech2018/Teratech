@@ -62,8 +62,7 @@ public class MissionManagerImpl
     public List<Mission> findAll() {
         //To change body of generated methods, choose Tools | Templates.
          List<Mission> datas = super.findAll(); 
-        List<Mission> results = new ArrayList<Mission>();
-        
+        List<Mission> results = new ArrayList<Mission>();        
         for(Mission data:datas){
             results.add(new Mission(data));
         }
@@ -73,8 +72,7 @@ public class MissionManagerImpl
     @Override
     public Mission find(String propertyName, Long entityID) {
         Mission data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
-        Mission result = new Mission(data);
-        
+        Mission result = new Mission(data);        
         for(OrdreMission ordre:data.getMissions()){
             result.getMissions().add(new OrdreMission(ordre));
         }
@@ -109,7 +107,7 @@ public class MissionManagerImpl
             ordre.setMission(entity);
             if(ordre.getId()>0){
             	map.remove(ordre.getId());
-                ordredao.update(ordre.getId(), ordre);
+            	ordredao.update(ordre.getId(), ordre);
             }else {
             	ordre.setState("etabli");
                 ordredao.save(ordre);

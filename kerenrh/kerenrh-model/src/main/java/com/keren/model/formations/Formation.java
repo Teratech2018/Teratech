@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -55,6 +56,7 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 	private List<SeanceFormation> seances = new ArrayList<SeanceFormation>();
 	
 	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Description")
+	@Lob
 	private String note ;
 	
 

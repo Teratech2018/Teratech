@@ -158,7 +158,11 @@ public class FormationManagerImpl
 		if(entity.getState().equalsIgnoreCase("valide")
 				||entity.getState().equalsIgnoreCase("encours")){
 			entity.setState("termine");
-			entity = dao.update(entity.getId(), entity);			
+			entity = dao.update(entity.getId(), entity);
+			//Traitement de la ligne de planning
+			LignePlanningFormation calendrier = plandao.findByPrimaryKey("id", entity.getPlan().getId());
+			calendrier.setState("termine");
+			plandao.update(calendrier.getId(), calendrier);
 		}//end if(entity.getState().equalsIgnoreCase("valide")
 		Formation result = new Formation(entity);
 		for(SeanceFormation seance:entity.getSeances()){

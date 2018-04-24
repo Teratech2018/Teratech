@@ -8,12 +8,16 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
+import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -21,7 +25,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_REDE")
+@Table(name="T_REDERH")
 public class ReponseDE extends BaseElement implements Serializable, Comparable<ReponseDE> {
 
 	/**
@@ -31,14 +35,22 @@ public class ReponseDE extends BaseElement implements Serializable, Comparable<R
 	
 	@ManyToOne
 	@JoinColumn(name="DE_ID")
-	@Predicate(label="Demande",type=DemandeExplication.class,target="many-to-one",optional=false,nullable=false,search=true)
+	@Predicate(label="Demande",type=DemandeExplication.class,target="many-to-one",updatable=false,optional=false,nullable=false,search=true,observable=true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
 	private DemandeExplication demande ;
+	
+	@ManyToOne
+	@JoinColumn(name="EMP_ID")
+	@Predicate(label="Employé Concerné",type=Employe.class,target="many-to-one",editable=false,search=true)
+	@Observer(observable="demande",source="field:destinataire")
+	private Employe concerne ;
 	
 	@Temporal(TemporalType.DATE)
 	@Predicate(label="Date de la reponse",type=Date.class,target="date" ,optional=false,search=true)
 	private Date dater ;
 	
 	@Predicate(label="Resumé",target="textarea" ,group=true,groupName="group1",groupLabel="RESUME")
+	@Lob
 	private String resume;
 	
 
@@ -82,6 +94,9 @@ public class ReponseDE extends BaseElement implements Serializable, Comparable<R
 		if(rep.demande!=null){
 			this.demande = new DemandeExplication(rep.demande);
 		}
+		if(rep.concerne!=null){
+			this.concerne = new Employe(rep.concerne);
+		}
 		this.dater = rep.dater;
 		this.resume = rep.resume;
 	}
@@ -110,9 +125,16 @@ public class ReponseDE extends BaseElement implements Serializable, Comparable<R
 
 	public void setResume(String resume) {
 		this.resume = resume;
+	}	
+	
+
+	public Employe getConcerne() {
+		return concerne;
 	}
-	
-	
+
+	public void setConcerne(Employe concerne) {
+		this.concerne = concerne;
+	}
 
 	@Override
 	public String getEditTitle() {

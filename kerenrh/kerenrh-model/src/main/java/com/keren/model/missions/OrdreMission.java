@@ -20,8 +20,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.keren.model.employes.Employe;
 import com.keren.model.structures.Pays;
 import com.keren.model.structures.Ville;
@@ -58,6 +61,7 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 	
 	@ManyToOne
 	@JoinColumn(name="MISS_ID")
+	@JsonIgnore
 //	@Predicate(label="Mission",type=Mission.class,target="many-to-one",editable=false,updatable=false,search=true)
 	private Mission mission ;
 	

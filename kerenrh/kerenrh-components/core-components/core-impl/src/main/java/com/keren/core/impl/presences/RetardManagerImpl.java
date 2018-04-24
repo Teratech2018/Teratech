@@ -16,6 +16,7 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.core.ifaces.presences.RetardManagerLocal;
 import com.keren.core.ifaces.presences.RetardManagerRemote;
 import com.keren.dao.ifaces.presences.RetardDAOLocal;
+import com.keren.model.presences.PointageJouranlier;
 import com.keren.model.presences.Retard;
 import com.megatim.common.annotations.OrderType;
 
@@ -70,6 +71,7 @@ public class RetardManagerImpl
 		// TODO Auto-generated method stub
 		Retard data = super.find(propertyName, entityID);
 		Retard result = new Retard(data);
+		result.setPointage(new PointageJouranlier(data.getPointage()));
 		return result;
 	}
 

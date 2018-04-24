@@ -14,6 +14,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -32,7 +33,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_DEEX")
+@Table(name="T_DEEXRH")
 public class DemandeExplication extends BaseElement implements Serializable, Comparable<DemandeExplication> {
 
 	/**
@@ -55,7 +56,7 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 	
 	@ManyToOne
 	@JoinColumn(name="TYDE_ID")
-	@Predicate(label="Type de demande",type=TypeDemande.class,target="many-to-one",optional=false,nullable=false,search=true)
+	@Predicate(label="Type de demande",type=TypeDemande.class,target="many-to-one",search=true)
 	private TypeDemande type ;
 	
 	@Predicate(label="Date de notification",type=Date.class,target="date",search=true)
@@ -67,18 +68,22 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 	private Date dated;
 	
 	@OneToOne(mappedBy="demande")
-//	@Predicate(label="Sanction",type=Sanction.class,target="many-to-one",group=true,groupName="group4",groupLabel="Sanction",editable=false)
+	@Predicate(label="Sanction",type=Sanction.class,target="many-to-one",group=true,groupName="group4",groupLabel="Sanction",editable=false)
 	private Sanction sanction ;
 	
+	@OneToOne(mappedBy="demande")
+	private LigneResolution resolution ;
+	
 	@Predicate(target="textarea",group=true,groupName="group1",groupLabel="Motif")
+	@Lob
 	private String motif ;
 	
 	@OneToMany(mappedBy="demande",fetch=FetchType.LAZY)
-//	@Predicate(label="Reponses",type=ReponseDE.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group2",groupLabel="Réponses")
+	@Predicate(label="Reponses",type=ReponseDE.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group2",groupLabel="Réponses")
 	private List<ReponseDE> reponses = new ArrayList<ReponseDE>();
 	
 	@OneToMany(mappedBy="demande",fetch=FetchType.LAZY)
-//	@Predicate(label="Avis de la hierachie",type=TraitementDE.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group3",groupLabel="Avis de la hierachie")
+	@Predicate(label="Avis de la hierachie",type=TraitementDE.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group3",groupLabel="Avis de la hierachie")
 	private List<TraitementDE> traitements = new ArrayList<TraitementDE>();
 	
 	private String state ="etabli";
@@ -142,20 +147,13 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 		if(dmde.destinataire!=null){
 			this.destinataire = new Employe(dmde.destinataire);
 		}
-		if(dmde.sanction!=null){
-			this.sanction = new Sanction(dmde.sanction);
-		}
+
 		this.type = dmde.type;
 		this.daten = dmde.daten;
 		this.dated = dmde.dated;
 		this.motif = dmde.motif;
 		this.state =dmde.state;
-//		for(ReponseDE rep:dmde.reponses){
-//			this.reponses.add(new ReponseDE(rep));
-//		}
-//		for(TraitementDE tr:dmde.traitements){
-//			this.traitements.add(new TraitementDE(tr));
-//		}
+
 	}
 	
 	
@@ -214,9 +212,16 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 
 	public void setMotif(String motif) {
 		this.motif = motif;
+	}	
+	
+
+	public LigneResolution getResolution() {
+		return resolution;
 	}
-	
-	
+
+	public void setResolution(LigneResolution resolution) {
+		this.resolution = resolution;
+	}
 
 	public Sanction getSanction() {
 		return sanction;
@@ -284,11 +289,7 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 	
 	
 
-	@Override
-	public boolean isCreateonfield() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 	@Override
 	public boolean isActivefilelien() {
@@ -303,9 +304,11 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 		List<State> states = new ArrayList<State>();
 		State etat = new State("etabli", "Etabli");
 		states.add(etat);
-		etat = new State("confirmer", "En cours");
+		etat = new State("reponse", "Reponse recue");
 		states.add(etat);
-		etat = new State("cloture", "Terminé");
+		etat = new State("encours", "En cours");
+		states.add(etat);
+		etat = new State("traite", "Traité");
 		states.add(etat);
 		return states;
 	}

@@ -42,11 +42,11 @@ public class Retard extends BaseElement implements Serializable, Comparable<Reta
 //	@Predicate(label="Date du pointage",type=Date.class,target="date",editable=false,search=true,hi)
 	private Date datepointage ;
 	
-	@Predicate(label="Heure arrivé",target="time",search=true)
-	private String heurearrive ;
-	
 	@Predicate(label="Heure de depart",target="time",search=true)
 	private String heuredepart ;
+
+	@Predicate(label="Heure arrivé",target="time",search=true)
+	private String heurearrive ;
 	
 	@Predicate(label="Retard",type=Boolean.class,search=true,editable=false)
 	private Boolean retard = Boolean.FALSE;

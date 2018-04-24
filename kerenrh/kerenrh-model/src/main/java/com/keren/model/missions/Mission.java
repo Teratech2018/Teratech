@@ -17,8 +17,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -76,7 +79,7 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 	@Predicate(label="Coût total",type=Double.class,editable=false,updatable=false)
 	private Double cout ;
 	
-	@OneToMany(mappedBy="mission",fetch=FetchType.LAZY) 
+	@OneToMany(mappedBy="mission",fetch=FetchType.LAZY)
 	@Predicate(label=".",type=OrdreMission.class,target="one-to-many",group=true,groupName="group2",groupLabel="Ordres de missions")
 	private List<OrdreMission> missions = new ArrayList<OrdreMission>();
 	

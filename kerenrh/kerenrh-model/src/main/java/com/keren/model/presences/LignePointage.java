@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.model.employes.Employe;
@@ -59,6 +61,7 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
 	
 	@ManyToOne
 	@JoinColumn(name="POJO_ID")
+	@JsonIgnore	
 	private PointageJouranlier pointage ;
 	
 	@Predicate(label="Etat",hide=true,search=true)

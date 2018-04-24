@@ -141,7 +141,6 @@ public class PlanningFormationManagerImpl
 		}//end for(LignePlanningFormation ligne:oldentity.getLignes()){
 		//Traitement des LignePlanning
 		for(LignePlanningFormation ligne:entity.getLignes()){
-			ligne.setState("etabli");
 			ligne.setPlanning(entity);
 			ligne.setPlaces(Short.parseShort(""+(ligne.getCibles()==null ? 0:ligne.getCibles().size())));
 			ligne.setDuree(Short.parseShort(""+DateHelper.numberOfMonth(ligne.getDdebut(), ligne.getDfin())));
@@ -150,6 +149,7 @@ public class PlanningFormationManagerImpl
 				map.remove(ligne.getId());
 				plandao.update(ligne.getId(), ligne);
 			}else {
+				ligne.setState("etabli");
 				plandao.save(ligne);
 			}//end if(ligne.getId()>0){
 		}//end for(LignePlanningFormation ligne:entity.getLignes()){

@@ -64,11 +64,7 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 	public Categorie(Categorie cat) {
 		super(cat.id, cat.designation, cat.moduleName);
 		this.code = cat.code;
-		this.type = cat.type;
-		echelons= new ArrayList<Echelon>();
-//		for(Echelon ech:cat.echelons){
-//			echelons.add(new Echelon(ech));
-//		}//end for(Echelon ech:cat.echelons)
+		this.type = cat.type;		
 	}
 
 	public Short getCode() {

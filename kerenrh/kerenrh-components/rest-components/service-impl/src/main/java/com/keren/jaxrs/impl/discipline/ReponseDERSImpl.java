@@ -10,6 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.discipline.ReponseDEManagerRemote;
 import com.keren.jaxrs.ifaces.discipline.ReponseDERS;
@@ -66,5 +67,39 @@ public class ReponseDERSImpl
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
    		}
 	}
+
+	@Override
+	protected void processBeforeDelete(Object id) {
+		// TODO Auto-generated method stub
+		ReponseDE entity = manager.find("id", (Long) id);
+		if(!entity.getDemande().getState().equalsIgnoreCase("reponse")){
+			throw new KerenExecption("La reponse est déjà prise en compte pour la suite du traitement de la demande");
+		}//end if(!entity.getDemande().getState().equalsIgnoreCase("reponse")){
+		super.processBeforeDelete(id);
+	}
+
+	@Override
+	protected void processBeforeSave(ReponseDE entity) {
+		// TODO Auto-generated method stub
+		if(entity.getDemande()==null){
+			throw new KerenExecption("La Demande concernée est obligatoire");
+		}else if(entity.getDater()==null){
+			throw new KerenExecption("La Date de la reponse est obligatoire");
+		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(ReponseDE entity) {
+		// TODO Auto-generated method stub
+		if(entity.getDemande()==null){
+			throw new KerenExecption("La Demande concernée est obligatoire");
+		}else if(entity.getDater()==null){
+			throw new KerenExecption("La Date de la reponse est obligatoire");
+		}
+		super.processBeforeUpdate(entity);
+	}
+    
+    
 
 }

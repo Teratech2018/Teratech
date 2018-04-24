@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
+import com.core.base.State;
 import com.keren.model.employes.Employe;
 import com.megatim.common.annotations.Predicate;
 
@@ -29,7 +30,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */ 
 @Entity
-@Table(name="T_COCO") 
+@Table(name="T_COCORH") 
 public class ConvocationConseil extends BaseElement implements Serializable, Comparable<ConvocationConseil> {
 
 	/**
@@ -49,19 +50,21 @@ public class ConvocationConseil extends BaseElement implements Serializable, Com
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Emetteur",type=Employe.class,target="many-to-one",optional=false,nullable=false,search=true)
+	@Predicate(label="Emetteur",type=Employe.class,target="many-to-one",search=true)
 	private Employe emetteur ;
 	
 	@ManyToMany
-	@JoinTable(name="T_DE_CS",joinColumns=@JoinColumn(name="CC_ID"),inverseJoinColumns=@JoinColumn(name="DE_ID"))
+	@JoinTable(name="T_DE_CSRH",joinColumns=@JoinColumn(name="CC_ID"),inverseJoinColumns=@JoinColumn(name="DE_ID"))
 	@Predicate(label="DE",type=DemandeExplication.class,target="many-to-many-list",optional=false,group=true,groupName="group1",groupLabel="Demandes concernées")
 	private List<DemandeExplication> demandes = new ArrayList<DemandeExplication>();
 	
 	@OneToMany(fetch=FetchType.LAZY,orphanRemoval=true,cascade=CascadeType.ALL)
 	@JoinColumn(name="MC_ID")
-	@Predicate(label="DE",type=MembreConseil.class,target="one-to-many",group=true,groupName="group2",groupLabel="Membres du conseil")
+	@Predicate(label="DE",type=MembreConseil.class,target="one-to-many",group=true,groupName="group2",groupLabel="Membres du conseil",edittable=true)
 	private List<MembreConseil> membres = new ArrayList<MembreConseil>();
 
+	@Predicate(label="Etape",hide=true,search=true)
+	private String state ="convoque";
 	/**
 	 * 
 	 */
@@ -111,6 +114,7 @@ public class ConvocationConseil extends BaseElement implements Serializable, Com
 		if(cc.emetteur!=null){
 			this.emetteur = new Employe(cc.emetteur);
 		}
+		this.state = cc.state;
 //		for(DemandeExplication de:cc.demandes){
 //			demandes.add(new DemandeExplication(de));
 //		}
@@ -171,6 +175,14 @@ public class ConvocationConseil extends BaseElement implements Serializable, Com
 	
 	
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -209,6 +221,29 @@ public class ConvocationConseil extends BaseElement implements Serializable, Com
 
 	@Override
 	public boolean isActivefilelien() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	
+
+	@Override
+	public List<State> getStates() {
+		// TODO Auto-generated method stub
+		List<State> states = new ArrayList<State>();
+		State etat = new State("convoque", "Convoqué");
+		states.add(etat);
+		etat = new State("siege", "A Siègé");
+		states.add(etat);
+//		etat = new State("encours", "En cours");
+//		states.add(etat);
+//		etat = new State("traite", "Traité");
+//		states.add(etat);
+		return states;
+	}
+
+	@Override
+	public boolean isActivatefollower() {
 		// TODO Auto-generated method stub
 		return true;
 	}

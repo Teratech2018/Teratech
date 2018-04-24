@@ -49,7 +49,7 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 	private Date dcreation ;	
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ORDMIS_ID")
+	@JoinColumn(name="MISS_ID")
 	@Predicate(label=".",type=ActionMission.class,target="one-to-many",group=true,groupName="group4",groupLabel="Actions à mener",edittable=true)
 	private List<ActionMission> actions = new ArrayList<ActionMission>();
 

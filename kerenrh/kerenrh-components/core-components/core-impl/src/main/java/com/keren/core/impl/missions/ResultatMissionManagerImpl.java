@@ -10,8 +10,12 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.core.ifaces.missions.ResultatMissionManagerLocal;
 import com.keren.core.ifaces.missions.ResultatMissionManagerRemote;
+import com.keren.dao.ifaces.missions.MissionDAOLocal;
+import com.keren.dao.ifaces.missions.OrdreMissionDAOLocal;
 import com.keren.dao.ifaces.missions.ResultatMissionDAOLocal;
 import com.keren.model.missions.ActionMission;
+import com.keren.model.missions.Mission;
+import com.keren.model.missions.OrdreMission;
 import com.keren.model.missions.ResultatMission;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
@@ -29,6 +33,12 @@ public class ResultatMissionManagerImpl
     @EJB(name = "ResultatMissionDAO")
     protected ResultatMissionDAOLocal dao;
 
+    @EJB(name = "MissionDAO")
+    protected MissionDAOLocal missiondao;
+    
+    @EJB(name = "OrdreMissionDAO")
+    protected OrdreMissionDAOLocal ordredao;
+    
     public ResultatMissionManagerImpl() {
     }
 
@@ -86,8 +96,6 @@ public class ResultatMissionManagerImpl
 
     @Override
     public void processAfterSave(ResultatMission entity) {
-         entity = dao.findByPrimaryKey("code", entity.getCode());
-
         super.processAfterSave(entity);
     }
 
@@ -97,6 +105,11 @@ public class ResultatMissionManagerImpl
 		if(entity.getState().equalsIgnoreCase("encours")){
 			entity.setState("termine");
 			entity = dao.update(entity.getId() , entity);
+			Mission mission = missiondao.findByPrimaryKey("id", entity.getId());
+			for(OrdreMission ordre:mission.getMissions()){
+				ordre.setState("termine");
+				ordredao.update(ordre.getId(), ordre);
+			}
 		}//end if(entity.getState().equalsIgnoreCase("encours")){
 		return entity;
 	}

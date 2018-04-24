@@ -8,13 +8,19 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
 import com.keren.model.employes.Employe;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -22,7 +28,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_SANC")
+@Table(name="T_SANCRH")
 public class Sanction extends BaseElement implements Serializable, Comparable<Sanction> {
 
 	/**
@@ -30,26 +36,34 @@ public class Sanction extends BaseElement implements Serializable, Comparable<Sa
 	 */
 	private static final long serialVersionUID = 2062764020303145550L;
 	
-	@Predicate(label="Sanction",target="combobox",values="Avertissement;Lettre d'observation;Blâme;Mise à pied;Licenciement",search=true)
+	@Predicate(label="Sanction",target="combobox",values="Avertissement;Lettre observation;Blame;Mise a pied;Licenciement",search=true)
 	private String sanction ="0";
 	
-	@Predicate(label="Référence",optional=false,unique=true,search=true)
+	@Predicate(label="Référence",search=true)
 	private String reference;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name="CC_ID")
-	@Predicate(label="Demande",type=DemandeExplication.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Demande",type=DemandeExplication.class,target="many-to-one",optional=false,search=true,observable=true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"encours\"}]")
 	private DemandeExplication demande ;
 	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="LIRO_ID")
+	private LigneResolution resolution ;
+	
 	@Predicate(label="Date d'effet",type=Date.class,target="date",optional=false,search=true)
+	@Temporal(TemporalType.DATE)
 	private Date dateeffet ;
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
 	@Predicate(label="Concerné",type=Employe.class,target="many-to-one",editable=false,search=true)
+	@Observer(observable="demande",source="field:destinataire")
 	private Employe concerne ;
 	
 	@Predicate(label="compte",target="textarea",group=true,groupName="group1",groupLabel="Compte rendu")
+	@Lob
 	private String compterendu;
 
 	/**
@@ -101,10 +115,7 @@ public class Sanction extends BaseElement implements Serializable, Comparable<Sa
 	public Sanction(Sanction san) {
 		super(san.id, san.designation, san.moduleName);
 		this.sanction = san.sanction;
-		this.reference = san.reference;
-		if(san.demande!=null){
-			this.demande = new DemandeExplication(san.demande);
-		}
+		this.reference = san.reference;		
 		this.dateeffet = san.dateeffet;
 		if(san.concerne!=null){
 			this.concerne = new Employe(san.concerne);
@@ -166,6 +177,14 @@ public class Sanction extends BaseElement implements Serializable, Comparable<Sa
 	
 	
 	
+
+	public LigneResolution getResolution() {
+		return resolution;
+	}
+
+	public void setResolution(LigneResolution resolution) {
+		this.resolution = resolution;
+	}
 
 	@Override
 	public String getEditTitle() {

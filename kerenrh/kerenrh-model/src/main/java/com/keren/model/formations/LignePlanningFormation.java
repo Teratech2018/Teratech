@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.model.employes.Employe;
@@ -73,6 +75,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 
 	@ManyToOne
 	@JoinColumn(name="PLAFOR_ID")
+	@JsonIgnore
 	private PlanningFormation planning ;
 	
 	@Predicate(label="Formateur",type=Formateur.class,group=true,groupName="group2",groupLabel="Formations")

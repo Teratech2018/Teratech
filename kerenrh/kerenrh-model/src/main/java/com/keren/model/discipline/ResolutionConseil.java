@@ -19,6 +19,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -26,7 +28,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_RECO")
+@Table(name="T_RECORH")
 public class ResolutionConseil extends BaseElement implements Serializable, Comparable<ResolutionConseil> {
 
 	/**
@@ -43,15 +45,17 @@ public class ResolutionConseil extends BaseElement implements Serializable, Comp
 	
 	@ManyToOne
 	@JoinColumn(name="CC_ID")
-	@Predicate(label="Conseil concerné",type=ConvocationConseil.class,target="many-to-one",optional=false,nullable=false,search=true)
+	@Predicate(label="Conseil concerné",type=ConvocationConseil.class,target="many-to-one",optional=false,nullable=false,search=true,observable=true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"convoque\"}]")
 	private ConvocationConseil convocation ;
 	
 	@Predicate(label="Lieu de tenue",search=true)
 	private String lieutenue ;
 	
 	@OneToMany(fetch=FetchType.LAZY,orphanRemoval=true,cascade=CascadeType.ALL)
-	@JoinColumn(name="RC_ID")
+	@JoinColumn(name="RC_ID")	
 	@Predicate(label="DC",type=LigneResolution.class,target="one-to-many",group=true,groupName="group1",groupLabel="Recommendations")
+	@Observer(observable="convocation",source="method:demande")
 	private List<LigneResolution> lignes = new ArrayList<LigneResolution>();
 	
 	
@@ -105,11 +109,8 @@ public class ResolutionConseil extends BaseElement implements Serializable, Comp
 		this.datetenue = re.datetenue;
 		if(re.convocation!=null){
 			convocation = new ConvocationConseil(re.convocation);
-		}
-		this.lieutenue = re.lieutenue;
-		for(LigneResolution lign:re.lignes){
-			this.lignes.add(new LigneResolution(lign));
-		}
+		}//end if(re.convocation!=null)
+		this.lieutenue = re.lieutenue;		
 	}
 	
 	
