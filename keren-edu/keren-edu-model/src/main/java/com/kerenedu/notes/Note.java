@@ -8,27 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Matiere;
 import com.megatim.common.annotations.Predicate;
 
 /**
  * @author ntchuente
  *
  */
-@Table
-@Entity(name = "e_note")
+//@Table
+//@Entity(name = "e_note")
 public class Note extends BaseElement implements Serializable, Comparable<Note> {
-	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1	)
@@ -38,6 +33,7 @@ public class Note extends BaseElement implements Serializable, Comparable<Note> 
 	@JoinColumn(name = "EXAMEN_ID")
 	@Predicate(label="EXAMEN",updatable=true,type=Examen.class , target="many-to-one",search=true , sequence=2	)
 	protected Examen examen;
+	
 	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "MATIERE_NOTE_ID")

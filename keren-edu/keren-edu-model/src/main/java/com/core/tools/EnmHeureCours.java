@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public enum EnmHeureCours {
 	PLAGEA("8:00","10:00"),
-	PLAGEB("10:00","12:00");
+	PLAGEB("10:00","12:00"),
+	PLAGEC("12:00","14:00"),
+	PLAGED("14:00","16:00");
 	
 	
 	  private final String hdeb;

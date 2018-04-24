@@ -87,7 +87,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	// ajout tab absence
 	
 	public Professeur() {
-		super();
+	
 		
 	}
 	

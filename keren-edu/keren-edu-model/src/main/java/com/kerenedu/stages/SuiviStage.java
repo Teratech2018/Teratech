@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,8 +22,8 @@ import javax.persistence.TemporalType;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.inscription.Inscription;
 import com.kerenedu.personnel.Professeur;
+import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -63,11 +64,11 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 	private Classe classe;
 
 	
-	@OneToMany(fetch = FetchType.LAZY )
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "ETU_ID")
 	@Predicate(target = "one-to-many",type = SuiviStageEleve.class,search = true,sequence=1
 	, group = true, groupName = "tab1", groupLabel = "Stagiaires")
-	private List<SuiviStageEleve> stagiaires = new ArrayList<SuiviStageEleve>();
+	private List<SuiviStageEleve> stagiaires ;
 	
 
 	
@@ -103,6 +104,20 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 		this.fin = stage.fin;
 		this.stagiaires = new ArrayList<SuiviStageEleve>();
 		this.state = stage.state;
+	}
+	
+	public SuiviStage(Stage stage) {;
+		this.reference = stage.reference;
+		this.bstage = new BesionStage(stage.getBstage());
+		this.service = new DivisionStage(stage.getService());
+		this.classe = new Classe(stage.getClasse());
+		this.debut = stage.getDebut();
+		this.fin = stage.getFin();
+		this.stagiaires = new ArrayList<SuiviStageEleve>();
+		for(Eleve ins:stage.getElevelist()){
+			this.stagiaires.add(new SuiviStageEleve(ins,stage));
+		}
+		this.state = "etabli";
 	}
 	
 	public SuiviStage(String reference, BesionStage bstage, Date debut, Date fin, Professeur prof, List<SuiviStageEleve> stagiaires,
@@ -251,6 +266,12 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 	public boolean isCreateonfield() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean isDesablecreate() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 	

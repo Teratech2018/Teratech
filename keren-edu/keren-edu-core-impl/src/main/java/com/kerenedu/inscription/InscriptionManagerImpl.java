@@ -109,11 +109,11 @@ public class InscriptionManagerImpl
             RuntimeException excep = new RuntimeException("Aucune Année Scolaire disponible !!!");
             throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
         }
-        entity.setAnneScolaire(annee.get(0));
+        entity.setAnneScolaire(annee.get(0).getCode());
         // verifier si l'étudiant a déjà été inscit 
         container = RestrictionsContainer.newInstance();
         	container.addEq("eleve.matricule", entity.getEleve().getMatricule());
-        	container.addEq("anneScolaire.code", entity.getAnneScolaire().getCode());
+        	container.addEq("anneScolaire.code", entity.getAnneScolaire());
         	List<Inscription> inscit = dao.filter(container.getPredicats(), null, null, 0 , -1);
         if((inscit!=null&&inscit.size()!=0)){
             RuntimeException excep = new RuntimeException("Eléve déjà Inscrit !!!");

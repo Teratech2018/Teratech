@@ -24,10 +24,9 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_notedlt")
 public class NoteDetail extends BaseElement implements Serializable, Comparable<NoteDetail> {
 	
-		
 	@ManyToOne
     @JoinColumn(name = "ETUDIANT_ID")
-	@Predicate(label="ETUDIANT" ,target = "many-to-one",type = Eleve.class,search = true , sequence=1, colsequence=1)
+	@Predicate(label="ETUDIANT" ,target = "many-to-one",type = Eleve.class,search = true , sequence=1, colsequence=1,editable=true)
 	private Eleve eleve = new Eleve();
 	
 	@Column(name = "NOTE")
@@ -35,7 +34,7 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	private Long note = new Long(0) ;
 	
 	@Column(name = "APPRECIATION")
-	@Predicate(label = "Appreciation", search = true  , sequence=3, colsequence=3 , hide=true)
+	@Predicate(label = "Appreciation", search = true  , sequence=3, colsequence=3 ,editable=false)
 	private String obs  ;
 	
 	
@@ -48,7 +47,9 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 
 	public NoteDetail(NoteDetail notedetail) {
 		super(notedetail.id, notedetail.designation, notedetail.moduleName);
-		this.eleve = new Eleve(notedetail.eleve);
+		if(notedetail.eleve!=null){
+			this.eleve = new Eleve(notedetail.eleve);
+		}
 		this.obs= notedetail.obs;
 		this.note= notedetail.note;
 

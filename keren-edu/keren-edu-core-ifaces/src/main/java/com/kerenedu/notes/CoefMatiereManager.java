@@ -1,6 +1,8 @@
 
 package com.kerenedu.notes;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 
@@ -14,5 +16,7 @@ public interface CoefMatiereManager
 {
 
     public final static String SERVICE_NAME = "CoefMatiereManager";
+    
+    public List<CoefMatiereDetail> findMatiereFiliere(Long id) ;
 
 }

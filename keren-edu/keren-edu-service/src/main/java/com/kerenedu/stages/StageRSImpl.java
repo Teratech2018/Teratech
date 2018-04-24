@@ -62,7 +62,7 @@ public class StageRSImpl
    			MetaColumn workbtn = new MetaColumn("button", "work1", "Confimer", false, "workflow", null);
    			workbtn.setStates(new String[]{"etabli"});
    			workbtn.setValue("{'model':'kereneducation','entity':'stage','method':'confirmer'}");
-   			
+   			   			
    			MetaColumn workbtn1 = new MetaColumn("button", "work2", "Terminer", false, "workflow", null);
    			workbtn1.setStates(new String[]{"encours"});
    			workbtn1.setValue("{'model':'kereneducation','entity':'stage','method':'terminer'}");

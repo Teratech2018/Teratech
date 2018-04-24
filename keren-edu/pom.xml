@@ -13,6 +13,7 @@
     <module>keren-edu-core-ifaces</module>
     <module>keren-edu-dao-ifaces</module>
     <module>keren-edu-service</module>
+    <module>keren-edu-tools</module>
   </modules>
     <properties>
   

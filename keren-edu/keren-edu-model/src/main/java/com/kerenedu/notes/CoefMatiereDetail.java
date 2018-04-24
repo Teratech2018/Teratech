@@ -4,6 +4,7 @@
 package com.kerenedu.notes;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Matiere;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
@@ -31,7 +33,7 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	@ManyToOne
 	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "PROF.", target = "many-to-one", type = Professeur.class, search = true, editable = false, sequence = 2, colsequence = 2)
+	@Predicate(label = "PROF.", target = "many-to-one", type = Professeur.class, search = true, sequence = 2, colsequence = 2)
 	private Professeur proffesseur;
 
 	@Column(name = "COEF")
@@ -46,7 +48,10 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 	@Predicate(label="COUT/HEURE",optional=true,updatable=true,search=true, type=Long.class, sequence=5)
 	protected Long coutheure=new Long(0);
 
-
+	@ManyToOne 
+    @JoinColumn(name = "CLASSE_ID")
+	private Classe classe ;
+	
 	public CoefMatiereDetail() {
 		super();
 	}
@@ -58,12 +63,14 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 		this.coutheure=cmatdetail.coutheure;
 		this.heuretotal=cmatdetail.heuretotal;
 		this.coef = cmatdetail.coef;
+		if(cmatdetail.classe!=null){
+		this.classe=new Classe( cmatdetail.classe);
+		}
 
 	}
 
 	public CoefMatiereDetail(Matiere matiere) {
 		this.matiere = new Matiere(matiere);
-		this.proffesseur= new Professeur();
 		this.coef = new Long(0);
 		this.coutheure=new Long(0);
 		this.heuretotal=new Long(0);
@@ -132,6 +139,14 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	public void setCoutheure(Long coutheure) {
 		this.coutheure = coutheure;
+	}
+
+	public Classe getClasse() {
+		return classe;
+	}
+
+	public void setClasse(Classe classe) {
+		this.classe = classe;
 	}
 
 	public int compareTo(CoefMatiereDetail o) {

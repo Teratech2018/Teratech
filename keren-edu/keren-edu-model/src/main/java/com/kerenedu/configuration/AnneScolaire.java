@@ -45,7 +45,7 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 	protected Boolean connected = false;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "PERIODE_ID")
+    @JoinColumn(name = "ANNEE_ID")
 	@Predicate(group = true,groupName = "tab1",groupLabel = "Période Scolaire",target = "one-to-many",type = PeriodeScolaire.class,search = false)
 	private List<PeriodeScolaire> periodeScoalire = new ArrayList<PeriodeScolaire>() ;
 	

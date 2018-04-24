@@ -63,4 +63,10 @@ public class ClasseRSImpl
    		} 
    	}
 
+	@Override
+	protected void processBeforeSave(Classe entity) {
+		entity.setEffectif(new Long("0"));
+		super.processBeforeSave(entity);
+	}
+
 }

@@ -1,6 +1,8 @@
 
 package com.kerenedu.personnel;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 
@@ -14,5 +16,6 @@ public interface PlanifCoursManager
 {
 
     public final static String SERVICE_NAME = "PlanifCoursManager";
+    public List<JoursCours> findjourscours(Long id) ;
 
 }

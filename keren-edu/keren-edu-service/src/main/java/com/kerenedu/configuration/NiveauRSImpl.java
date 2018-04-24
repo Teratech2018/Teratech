@@ -4,18 +4,14 @@ package com.kerenedu.configuration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
-import com.megatim.common.annotations.OrderType;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;

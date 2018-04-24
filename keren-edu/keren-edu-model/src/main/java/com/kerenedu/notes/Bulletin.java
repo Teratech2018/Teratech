@@ -118,7 +118,6 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		return libelle;
 	}
 
-
 	
 
 	public int compareTo(Bulletin o) {

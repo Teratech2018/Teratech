@@ -1,6 +1,9 @@
 
 package com.kerenedu.personnel;
 
+import java.util.Date;
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 
@@ -14,5 +17,7 @@ public interface EmargementProfDetailsManager
 {
 
     public final static String SERVICE_NAME = "EmargementProfDetailsManager";
+    
+    public List<EmargementProfDetails> findmatiereprof(long id,long idclasse, Date date);
 
 }

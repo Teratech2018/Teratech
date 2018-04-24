@@ -24,7 +24,7 @@ public interface StageRS
 	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("confirme")
+    @Path("confirmer")
     public Stage confirmer(@Context HttpHeaders headers,Stage dmde);
 	
 	@PUT

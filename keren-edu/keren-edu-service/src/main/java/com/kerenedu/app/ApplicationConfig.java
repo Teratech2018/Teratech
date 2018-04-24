@@ -166,6 +166,9 @@ public class ApplicationConfig extends Application {
         resources.add(SuiviStageRSImpl.class);
         resources.add(TacheStageRSImpl.class);
         resources.add(EvaluationStageRSImpl.class);
+        resources.add(com.kerenedu.notes.TraitNoteRSImpl.class);
+		resources.add(com.kerenedu.notes.MatiereNoteRSImpl.class);
+		resources.add(com.kerenedu.notes.NoteDetailRSImpl.class);
     }
     
 }

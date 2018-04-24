@@ -74,7 +74,10 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	}
 	
 	public EmargementProfDetails(TrancheHoraireCours ins) {
-		this.matiere= new Matiere(ins.getMatiere().getMatiere());
+		
+		if(ins.matiere!=null){
+			this.matiere= new Matiere(ins.getMatiere().getMatiere());
+		}
 		this.heurefin = ins.getHeurefin();
 		this.heuredebut = ins.getHeuredebut();
 		this.statut= "0";

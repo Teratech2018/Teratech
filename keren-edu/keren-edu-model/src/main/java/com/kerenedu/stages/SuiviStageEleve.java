@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,10 +20,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
-import com.core.base.State;
-import com.kerenedu.configuration.Classe;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.personnel.Professeur;
+import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -30,7 +30,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name = "e_sstgeel")
+@Table(name = "e_suvi_eleve")
 public class SuiviStageEleve extends BaseElement implements Serializable, Comparable<SuiviStageEleve> {
 
 	protected static final long serialVersionUID = 7741105795796486143L;
@@ -38,10 +38,10 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
 	@Predicate(label = "Ref. Etudiant Concerné", target = "many-to-one", type = Inscription.class, search = true, sequence = 1,updatable=false)
-	private Inscription inscription;
+	private Eleve eleve;
 	
 	@ManyToOne
-	@JoinColumn(name = "BS_ID")
+	@JoinColumn(name = "PROF_ID")
 	@Predicate(label = "Ref. Encadreur ACC.", target = "many-to-one", type = Professeur.class, search = true, sequence = 2,updatable=true)
 	private Professeur prof;
 	
@@ -58,30 +58,30 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 	@Predicate(label = "Ref. Service d'affectation", target = "many-to-one", type = DivisionStage.class, search = true, sequence = 5)
 	private DivisionStage service;
 
-	@Column(name = "OBS")
-	@Predicate( type = String.class, updatable=true,search = true, sequence =1,group = true, groupName = "tab1", groupLabel = "Notes" )
-	private String obs;
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true )
+    @JoinColumn(name = "TACHE_ID")
+	@Predicate(target = "one-to-many",type = TacheStage.class,search = true,sequence=1, group = true, groupName = "tab1", groupLabel = "Tâches")
+	private List<TacheStage> taches = new ArrayList<TacheStage>();
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "EVA_ID")
+	@Predicate(target = "one-to-many",type = EvaluationStage.class,search = true,sequence=1, group = true, groupName = "tab2", groupLabel = "Evaluation du STage")
+	private List<EvaluationStage> evaluation = new ArrayList<EvaluationStage>();
 	
 	@Column(name = "E_NOM")
-	@Predicate(label = "Nom", type = String.class, updatable=true,search = true, sequence = 2,group = true, groupName = "tab2", groupLabel = "Encadreur Prof." )
+	@Predicate(label = "Nom", type = String.class, updatable=true,search = false, sequence = 2,group = true, groupName = "tab3", groupLabel = "Encadreur Prof." )
 	private String nom;
 	
 	@Column(name = "E_CONTACT")
-	@Predicate(label = "Contact", type = String.class, updatable=true,search = true, sequence = 2,group = true, groupName = "tab2", groupLabel = "Encadreur Prof." )
+	@Predicate(label = "Contact", type = String.class, updatable=true,search = false, sequence = 2,group = true, groupName = "tab3", groupLabel = "Encadreur Prof." )
 	private String contact;
 	
-	@OneToMany(fetch = FetchType.LAZY )
-    @JoinColumn(name = "TACHE_ID")
-	@Predicate(target = "one-to-many",type = TacheStage.class,search = true,sequence=1, group = true, groupName = "tab3", groupLabel = "Tâches")
-	private List<TacheStage> taches = new ArrayList<TacheStage>();
-	
-	@OneToMany(fetch = FetchType.LAZY )
-    @JoinColumn(name = "EVA_ID")
-	@Predicate(target = "one-to-many",type = EvaluationStage.class,search = true,sequence=1, group = true, groupName = "tab4", groupLabel = "Evaluation du STage")
-	private List<EvaluationStage> evaluation = new ArrayList<EvaluationStage>();
+	@Column(name = "OBS")
+	@Predicate( type = String.class, updatable=true,search = true, sequence =1,group = true, groupName = "tab4", groupLabel = "Notes" )
+	private String obs;
 	
 	@Column(name = "VAL_FINAL")
-	@Predicate(label="Appreciation Finale",optional=false,updatable=true,search=false, target="combobox", values="Mauvais;Médiocre;Moyen;Bien;Trein Bien; Excelent" , sequence=6)
+	@Predicate(label="Appreciation Finale",optional=false,updatable=true,search=true, target="combobox", values="Mauvais;Médiocre;Moyen;Bien;Trein Bien; Excelent" , sequence=6)
 	protected String app ;
 
 	/**
@@ -103,11 +103,11 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 
 
 
-	public SuiviStageEleve(Inscription inscription, Professeur prof, Date debut, Date fin, DivisionStage service,
+	public SuiviStageEleve(Eleve eleve, Professeur prof, Date debut, Date fin, DivisionStage service,
 			String obs, String nom, String contact, List<TacheStage> taches, List<EvaluationStage> evaluation,
 			String app) {
 		super();
-		this.inscription = inscription;
+		this.eleve = eleve;
 		this.prof = prof;
 		this.debut = debut;
 		this.fin = fin;
@@ -121,8 +121,8 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 	}
 	
 	public SuiviStageEleve(SuiviStageEleve sseleve) {
-		super();
-		this.inscription = new Inscription(sseleve.inscription);
+		super(sseleve.id, sseleve.designation, sseleve.moduleName);
+		this.eleve = new Eleve(sseleve.eleve);
 		this.prof = new Professeur(sseleve.prof);
 		this.debut = sseleve.debut;
 		this.fin = sseleve.fin;
@@ -133,6 +133,21 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 		this.taches = new ArrayList<TacheStage>();
 		this.evaluation = new ArrayList<EvaluationStage>();
 		this.app = sseleve.app;
+	}
+	
+	public SuiviStageEleve(Eleve sseleve,Stage suivi) {
+		super();
+		this.eleve = new Eleve(sseleve);
+		this.prof = new Professeur(suivi.getProf());
+		this.debut = new Date();
+		this.fin = new Date();
+		this.service = new DivisionStage(suivi.getService());
+		this.obs = "";
+		this.nom = "";
+		this.contact ="";
+		this.taches = new ArrayList<TacheStage>();
+		this.evaluation = new ArrayList<EvaluationStage>();
+		this.app = "";
 	}
 
 	@Override
@@ -150,7 +165,7 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return inscription.getDesignation();
+		return eleve.getDesignation();
 	}
 
 	@Override
@@ -207,12 +222,12 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 
 
 
-	public Inscription getInscription() {
-		return inscription;
+	public Eleve getEleve() {
+		return eleve;
 	}
 
-	public void setInscription(Inscription inscription) {
-		this.inscription = inscription;
+	public void setEleve(Eleve eleve) {
+		this.eleve = eleve;
 	}
 
 	public Professeur getProf() {

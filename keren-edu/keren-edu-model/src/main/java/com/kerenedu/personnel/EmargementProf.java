@@ -20,11 +20,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Matiere;
-import com.kerenedu.notes.NoteDetail;
-
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -44,18 +42,21 @@ public class EmargementProf extends BaseElement implements Serializable, Compara
 	protected Date datemarg = new Date();
 	
 	@ManyToOne
-	@JoinColumn(name = "PROF_ID")
-	@Predicate(label="PROF.",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=1	)
-	protected Professeur prof;
+	@JoinColumn(name = "CLS_ID")
+	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=3 ,observable=true	)
+	protected Classe classe;
 	
 	@ManyToOne
-	@JoinColumn(name = "CLS_ID")
-	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1	)
-	protected Classe classe;
+	@JoinColumn(name = "PROF_ID")
+	@Predicate(label="PROF.",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=2 ,observable=true	)
+	@Observer(observable="classe",source="method:findprofclasse")
+	protected Professeur prof;
+	
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "EMARG_DLT_ID")
-	@Predicate(group = true,groupName = "tab1",groupLabel = "Emargement des cours",target ="one-to-many",type = EmargementProfDetails.class,search = false)
+	@Predicate(group = true,groupName = "tab1",groupLabel = "Emargement des cours",target ="one-to-many",type = EmargementProfDetails.class,search = false, edittable=true)
+	@Observer(observable="prof",source="method:findmatiereprof",parameters="classe,datemarg")
 	private List<EmargementProfDetails> emagementdlt = new ArrayList<EmargementProfDetails>();
 
 	@Column(name = "ANNEE_ID")

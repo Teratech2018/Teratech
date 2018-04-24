@@ -2,6 +2,7 @@
 package com.kerenedu.configuration;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
+import com.kerenedu.notes.NoteDetail;
 
 
 /**
@@ -18,5 +19,7 @@ public interface AppreciationDAO
      * 
      */
     public final static String SERVICE_NAME = "AppreciationDAO";
+    
+    public Appreciation getAppreciation(NoteDetail entiy);
 
 }
