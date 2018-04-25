@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<model-config xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
+	xmlns="http://www.megatimgroup.net/model-config">
+    <elements>
+        <element type="com.megatimgroup.smsgw.model.referentiel.Client"  idclass="Long"  idname="id"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>   
+        <element type="com.megatimgroup.smsgw.model.referentiel.Product"  idclass="Long"  idname="id"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>     
+        <element type="com.megatimgroup.smsgw.model.referentiel.Order"  idclass="Long"  idname="id"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.megatimgroup.smsgw.model.referentiel.ProductOrder"  idclass="Long"  idname="id"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>    
+    </elements>
+</model-config>

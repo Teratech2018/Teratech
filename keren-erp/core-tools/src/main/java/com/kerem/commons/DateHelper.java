@@ -127,7 +127,7 @@ public class DateHelper {
         c.set(Calendar.SECOND, time.getSeconds());
         
         long times = c.getTimeInMillis()-begin.getTime();
-        System.out.println("DateHelper.times(Date begin , Date end , Date time) ::::::::::::::::::::::::::::::::::::  "+c.getTime());
+//        System.out.println("DateHelper.times(Date begin , Date end , Date time) ::::::::::::::::::::::::::::::::::::  "+c.getTime());
         return times;
     }
     
@@ -293,6 +293,53 @@ public class DateHelper {
             debut = nextMonth(debut);
         }//end while(convertToString(debut, "yyyy-MM-dd").compareTo(convertToString(end, "yyyy-MM-dd"))<=0)
         return number;
+    }
+    
+    /**
+     * 
+     * @param begin
+     * @param end
+     * @return 
+     */
+    public static int numberOfDays(Date begin , Date end){
+        int number = 0;
+        
+        Date debut = begin;        
+        while(convertToString(debut, "yyyy-MM-dd").compareTo(convertToString(end, "yyyy-MM-dd"))<=0){
+            number = number+1 ;
+            debut = next(debut,1);
+        }//end while(convertToString(debut, "yyyy-MM-dd").compareTo(convertToString(end, "yyyy-MM-dd"))<=0)
+        return number;
+    }
+    
+    /**
+     * 
+     * @param heure
+     * @return 
+     */
+    public static Double getHours(String heure){
+        Double hours = 0.0;
+        int index = 1 ;
+        String[] bsplit = heure.split(":");
+        for(String block:bsplit){
+            if(index==1){
+                hours+=Double.parseDouble(block)*60*60;
+            }else if(index==2){
+                hours+=Double.parseDouble(block)*60;
+            }else if(index==3){
+                hours+=Double.parseDouble(block);
+            }
+        }//end for(String block:bsplit){
+        return hours;
+    }
+    /**
+     * Hours format HH:MM:SS
+     * @param begin
+     * @param end
+     * @return 
+     */
+    public static Double numberHours(String begin , String end){
+        return getHours(end)-getHours(begin);
     }
     
 //    /**
