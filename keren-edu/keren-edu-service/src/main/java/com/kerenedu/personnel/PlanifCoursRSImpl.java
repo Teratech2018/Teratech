@@ -105,12 +105,8 @@ public class PlanifCoursRSImpl
 		 List<JoursCours> datas= new ArrayList<JoursCours>();
 		 List<JoursCours> result = new ArrayList<JoursCours>();
 			container.addEq("classe.id", classe.getId());
-			System.out.println("PlanifCoursRSImpl.save() je suis 333333333333 classe"+classe.getId());
 			 datas = managerJours.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-			System.out.println("PlanifCoursRSImpl.save() je suis 44444444444444"+datas.size());
-   		if(datas==null||datas.isEmpty()){
-   			System.out.println("PlanifCoursRSImpl.todoWork() 55555555555555555");
-   			
+   		if(datas==null||datas.isEmpty()){   			
    			for(EnmJoursCours jour :listjours){
    				listthc = new ArrayList<TrancheHoraireCours>();
    			//	long idx =1;

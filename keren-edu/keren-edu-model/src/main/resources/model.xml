@@ -402,6 +402,22 @@ and open the template in the editor.
 	                <role>ADMIN</role>
 	            </roles>           
 	        </element>
+	        <element type="com.kerenedu.notes.ModelBulletin" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+			<element type="com.kerenedu.notes.LigneBulletinClasse" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+			<element type="com.kerenedu.notes.BulletinHelperGenerate" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+        
         
     </elements>
 </model-config>

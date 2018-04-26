@@ -1,7 +1,10 @@
 
 package com.kerenedu.notes;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.ViewBulletin;
 
 
 /**
@@ -14,5 +17,7 @@ public interface BulletinManager
 {
 
     public final static String SERVICE_NAME = "BulletinManager";
+    
+    public List<Bulletin> getCriteres(Bulletin critere);
 
 }

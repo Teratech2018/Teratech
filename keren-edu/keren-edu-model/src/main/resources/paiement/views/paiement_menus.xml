@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+ <action id="keren_education" />
+ 	<menu id="keren_education_paiement" label=" Frais de Scolarité" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_paie" label=" Paiements des Etudiants " parent_ref="keren_education_paiement" entity_ref="Reglement" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false"  />
+	
+	<menu id="keren_education_sal" label=" Salaire" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_va" label="Paiements des Profs" parent_ref="keren_education_sal" entity_ref="ReglementProf" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" />
+	
+	<menu id="keren_education_caisse" label=" Caisse" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_cai" label="Caisse" parent_ref="keren_education_caisse" entity_ref="Caisse" model_ref="kereneducation" gyphycon="icon icon-shopping-cart"  modal="false" />
+	
+	<menu id="keren_paiement_para" label=" Configuration" parent="keren_education" gyphycon="icon icon-cogs"/>
+	<menuitem id="keren_education_ser" label="Services Financiers" parent_ref="keren_paiement_para" entity_ref="Service" model_ref="kereneducation" gyphycon="icon icon-wrench"  modal="false" />
+	
+	<reportRecord  id="keren_paiement_report_02" label="Imprimer les Retards" action_ref="keren_education_paie"  extern="true">
+	      <search entity="EleveSearch" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	 <reportRecord  id="keren_paiement_report_03" label="Imprimer les Echeancier" action_ref="keren_education_paie"  extern="true">
+	      <search entity="EleveSearch" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+
+</keren>

@@ -5,6 +5,9 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="keren-edu-tools-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-tools/keren-edu-tools">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="keren-edu-model-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/keren-edu-model/keren-edu-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>

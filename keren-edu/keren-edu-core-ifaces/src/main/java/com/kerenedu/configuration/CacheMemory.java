@@ -6,6 +6,7 @@ package com.kerenedu.configuration;
 import java.io.Serializable;
 
 import com.kerenedu.notes.Examen;
+import com.kerenedu.notes.ModelBulletin;
 import com.kerenedu.personnel.Professeur;
 
 /**
@@ -22,6 +23,7 @@ public class CacheMemory implements Serializable{
 	private static Filiere filiere = null;
 	private static Classe classe = null;
 	private static Examen examen = null;
+	private static ModelBulletin modelBulletin = null ;
 	
 	private static Professeur prof = null;
 
@@ -62,6 +64,14 @@ public class CacheMemory implements Serializable{
 
 	public static synchronized void   setProf(Professeur prof) {
 		CacheMemory.prof = prof;
+	}
+
+	public static synchronized ModelBulletin getModelBulletin() {
+		return modelBulletin;
+	}
+
+	public static synchronized  void setModelBulletin(ModelBulletin modelBulletin) {
+		CacheMemory.modelBulletin = modelBulletin;
 	}
 
 	public static synchronized Examen getExamen() {

@@ -73,6 +73,10 @@
 	      <class>com.kerenedu.stages.SuiviStageEleve</class>
 	      <class>com.kerenedu.stages.TacheStage</class>
 	      <class>com.kerenedu.stages.EvaluationStage</class>
+	      <class>com.kerenedu.notes.ModelBulletin</class>
+	      <class>com.kerenedu.notes.LigneBulletinClasse</class>
+	      <class>com.kerenedu.notes.BulletinHelperGenerate</class>
+	      
 	     
 	        
     <shared-cache-mode>NONE</shared-cache-mode>

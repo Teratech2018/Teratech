@@ -5,7 +5,6 @@
  */
 package com.kerenedu.jaxrs.search;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,12 +24,12 @@ import com.kerem.core.FileHelper;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionManagerRemote;
-import com.kerenedu.jaxrs.reports.tools.ReportHelper;
-import com.kerenedu.jaxrs.reports.tools.ReportsName;
-import com.kerenedu.jaxrs.reports.tools.ReportsParameter;
 import com.kerenedu.model.search.EleveSearch;
 import com.kerenedu.school.Eleve;
 import com.kerenedu.school.EleveManagerRemote;
+import com.kerenedu.tools.reports.ReportHelper;
+import com.kerenedu.tools.reports.ReportsName;
+import com.kerenedu.tools.reports.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.AnnotationsProcessor;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -115,7 +114,6 @@ public class EleveSearchRSImpl extends AbstractGenericService<EleveSearch, Long>
         	  //List<Eleve> datas = elevemanager.getCriteres(eleveSearch);
         	  List<Inscription> records =inscriptionmanager.getCriteres(eleveSearch);
               String URL = ReportHelper.templateURL+ReportsName.CERTIFICAT_SCOLAIRE.getName();
-              System.out.println("EleveSearchRSImpl.buildPdfReport() chemin file++++++ "+URL);
               Map parameters = new HashMap();
               return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
         } catch (FileNotFoundException ex) {

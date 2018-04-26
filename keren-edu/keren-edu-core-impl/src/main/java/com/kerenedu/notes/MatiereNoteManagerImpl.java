@@ -142,13 +142,10 @@ public class MatiereNoteManagerImpl
 		String app= " default";
 		Appreciation value = daoapp.getAppreciation(note);
 		if(value!=null){
-			System.out.println("MatiereNoteManagerImpl.getAppreciation() appreciation trouvée !!!!!"+value.getLibelle());
 			app = value.getLibelle();
 		}else{
-			System.out.println("MatiereNoteManagerImpl.getAppreciation() Aucune appreciation trouveee !!!!!");
 			app= "Default";
 		}
-		System.out.println("MatiereNoteManagerImpl.processAfterUpdate() value appreciation "+app);
 		return app;
 	}
 

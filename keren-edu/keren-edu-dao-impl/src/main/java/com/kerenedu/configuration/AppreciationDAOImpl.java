@@ -38,24 +38,12 @@ public class AppreciationDAOImpl
 		  try{
 			  Appreciation app = new Appreciation();
 			  String q= "SELECT * FROM e_app a "+ "WHERE a.I_DEB <= "+entiy.getNote()+" and a.I_FIN >= "+entiy.getNote()+"";
-			  System.out.println("AppreciationDAOImpl.getAppreciation() requete "+q);
-			  System.out.println("AppreciationDAOImpl.getAppreciation() entity factory is "+em.getClass());
 			  Query query = em.createNativeQuery(q,Appreciation.class);
-			  System.out.println("AppreciationDAOImpl.getAppreciation() je suis ici/////");
-			  System.out.println("AppreciationDAOImpl.getAppreciation() entity factory is "+em.getClass());
-			  System.out.println("AppreciationDAOImpl.getAppreciation() querry final "+query);
 			  List<Appreciation> listapp= query.getResultList();
-			  System.out.println("AppreciationDAOImpl.getAppreciation() liste "+listapp);
 			  if(listapp!=null){
-				  System.out.println("AppreciationDAOImpl.getAppreciation() taille de la liste "+listapp.size());
-				  for(Appreciation p : listapp){
-					  System.out.println("AppreciationDAOImpl.getAppreciation() apprecition tr===="+p.getId());
-				  }
 				  app = listapp.get(0);
-				  System.out.println("AppreciationDAOImpl.getAppreciation() apreciation trouvée ===="+app.getId());
 			  }else{
 				  app = new Appreciation();
-				  System.out.println("AppreciationDAOImpl.getAppreciation() valeur appreciation RAS ");
 			  }
 
 	            return app;

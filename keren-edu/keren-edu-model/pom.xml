@@ -51,112 +51,112 @@
 	<!-- <url>http://mvn.collide.info/content/repositories/releases/</url> -->
 	<!-- </repository> -->
 	<!-- </repositories> -->
-	<!-- <build> -->
-	<!-- <plugins> -->
+	<build>
+		<plugins>
 
-	<!-- <plugin> -->
-	<!-- <groupId>com.bekosoft</groupId> -->
-	<!-- <artifactId>classesgenerator</artifactId> -->
-	<!-- <version>1.0-SNAPSHOT</version> -->
-	<!-- <executions> -->
-	<!-- Generation des EJB Stateless couche DAO specification EJB 3.0 -->
-	<!-- <execution> -->
-	<!-- <goals> -->
-	<!-- <goal>generate</goal> -->
-	<!-- </goals> -->
-	<!-- <configuration> -->
-	<!-- <outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-dao-ifaces\src\main\java</outputDirectory> -->
-	<!-- <layer>dao</layer> -->
-	<!-- <sublayer>interface</sublayer> -->
-	<!-- <sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory> -->
-	<!-- <xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile> -->
-	<!-- <specification>ejb</specification> -->
-	<!-- </configuration> -->
-	<!-- <id>dao-ifaces-generate</id> -->
-	<!-- </execution> -->
-	<!-- <execution> -->
-	<!-- <goals> -->
-	<!-- <goal>generate</goal> -->
-	<!-- </goals> -->
-	<!-- <configuration> -->
-	<!-- <outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-dao-impl\src\main\java</outputDirectory> -->
-	<!-- <layer>dao</layer> -->
-	<!-- <sublayer>implementation</sublayer> -->
-	<!-- <sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory> -->
-	<!-- <xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile> -->
-	<!-- <persistanceunitname>keren</persistanceunitname> -->
-	<!-- <specification>ejb</specification> -->
-	<!-- <session>stateless</session> -->
-	<!-- </configuration> -->
-	<!-- <id>dao-impl-generate</id> -->
-	<!-- </execution> -->
+			<plugin>
+				<groupId>com.bekosoft</groupId>
+				<artifactId>classesgenerator</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				<executions>
+<!-- 					Generation des EJB Stateless couche DAO specification EJB 3.0 -->
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-dao-ifaces\src\main\java</outputDirectory>
+							<layer>dao</layer>
+							<sublayer>interface</sublayer>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<specification>ejb</specification>
+						</configuration>
+						<id>dao-ifaces-generate</id>
+					</execution>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-dao-impl\src\main\java</outputDirectory>
+							<layer>dao</layer>
+							<sublayer>implementation</sublayer>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<persistanceunitname>keren</persistanceunitname>
+							<specification>ejb</specification>
+							<session>stateless</session>
+						</configuration>
+						<id>dao-impl-generate</id>
+					</execution>
 
-	<!-- Generation des EJB Stateless couche Manager specification EJB 3.0 -->
-	<!-- <execution> -->
-	<!-- <goals> -->
-	<!-- <goal>generate</goal> -->
-	<!-- </goals> -->
-	<!-- <configuration> -->
-	<!-- <outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-core-ifaces\src\main\java</outputDirectory> -->
-	<!-- <layer>manager</layer> -->
-	<!-- <sublayer>interface</sublayer> -->
-	<!-- <sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory> -->
-	<!-- <xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile> -->
-	<!-- <specification>ejb</specification> -->
-	<!-- </configuration> -->
-	<!-- <id>manager-ifaces-generate</id> -->
-	<!-- </execution> -->
-	<!-- <execution> -->
-	<!-- <goals> -->
-	<!-- <goal>generate</goal> -->
-	<!-- </goals> -->
-	<!-- <configuration> -->
-	<!-- <outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-core-impl\src\main\java</outputDirectory> -->
-	<!-- <layer>manager</layer> -->
-	<!-- <sublayer>implementation</sublayer> -->
-	<!-- <sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory> -->
-	<!-- <xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile> -->
-	<!-- <persistanceunitname>orion</persistanceunitname> -->
-	<!-- <specification>ejb</specification> -->
-	<!-- <session>stateless</session> -->
-	<!-- </configuration> -->
-	<!-- <id>manager-impl-generate</id> -->
-	<!-- </execution> -->
+<!-- 					Generation des EJB Stateless couche Manager specification EJB 3.0 -->
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-core-ifaces\src\main\java</outputDirectory>
+							<layer>manager</layer>
+							<sublayer>interface</sublayer>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<specification>ejb</specification>
+						</configuration>
+						<id>manager-ifaces-generate</id>
+					</execution>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-core-impl\src\main\java</outputDirectory>
+							<layer>manager</layer>
+							<sublayer>implementation</sublayer>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<persistanceunitname>orion</persistanceunitname>
+							<specification>ejb</specification>
+							<session>stateless</session>
+						</configuration>
+						<id>manager-impl-generate</id>
+					</execution>
 
-	<!-- Generation des web services specification JAX-RS -->
-	<!-- <execution> -->
-	<!-- <goals> -->
-	<!-- <goal>generate</goal> -->
-	<!-- </goals> -->
-	<!-- <configuration> -->
-	<!-- <outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-service\src\main\java</outputDirectory> -->
-	<!-- <layer>jax-rs</layer> -->
-	<!-- <sublayer>interface</sublayer> -->
-	<!-- <sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory> -->
-	<!-- <xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile> -->
-	<!-- <specification>jax-rs</specification> -->
-	<!-- </configuration> -->
-	<!-- <id>services-ifaces-generate</id> -->
-	<!-- </execution> -->
-	<!-- <execution> -->
-	<!-- <goals> -->
-	<!-- <goal>generate</goal> -->
-	<!-- </goals> -->
-	<!-- <configuration> -->
-	<!-- <outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-service\src\main\java</outputDirectory> -->
-	<!-- <layer>jax-rs</layer> -->
-	<!-- <sublayer>implementation</sublayer> -->
-	<!-- <sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory> -->
-	<!-- <xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile> -->
-	<!-- <specification>jax-rs</specification> -->
-	<!-- <application>kereneducation</application> -->
-	<!-- <module></module> -->
-	<!-- </configuration> -->
-	<!-- <id>services-impl-generate</id> -->
-	<!-- </execution> -->
-	<!-- </executions> -->
-	<!-- </plugin> -->
-	<!-- </plugins> -->
-	<!-- </build> -->
+<!-- 					Generation des web services specification JAX-RS -->
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-service\src\main\java</outputDirectory>
+							<layer>jax-rs</layer>
+							<sublayer>interface</sublayer>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<specification>jax-rs</specification>
+						</configuration>
+						<id>services-ifaces-generate</id>
+					</execution>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-service\src\main\java</outputDirectory>
+							<layer>jax-rs</layer>
+							<sublayer>implementation</sublayer>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\education\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<specification>jax-rs</specification>
+							<application>kereneducation</application>
+							<module></module>
+						</configuration>
+						<id>services-impl-generate</id>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
