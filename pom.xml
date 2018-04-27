@@ -9,6 +9,7 @@
         <module>SMS_GW_CLIENT</module>
         <module>SMS_GW_SERVER</module>
         <module>smsgw-model</module>
+        <module>keren_sms/smsgateway</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
