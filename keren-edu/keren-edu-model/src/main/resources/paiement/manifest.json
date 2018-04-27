@@ -1,0 +1,18 @@
+{
+	'name':'Gestion Financieres',
+	'version':'1.0',
+	'author' : 'NTW',
+	'summary':'Plateforme de gestion scoalaire',
+	'sequence':10,
+	'description':'',
+	'category':'paiement',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\paiement_menus.xml'],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

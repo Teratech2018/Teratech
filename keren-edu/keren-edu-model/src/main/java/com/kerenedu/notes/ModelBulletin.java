@@ -22,12 +22,12 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Table
-@Entity(name = "e_mod_bul")
+@Entity(name = "e_bul_mod")
 public class ModelBulletin extends BaseElement implements Serializable, Comparable<ModelBulletin> {
 	
 
 	@Column(name = "CODE" ,unique=true)	
-	@Predicate(label="CODE",optional=false,updatable=false,search=false , sequence=1, colsequence=1)
+	@Predicate(label="CODE",optional=false,updatable=false,search=true , sequence=1, colsequence=1)
 	protected String code;
 	
 	@Column(name = "LIBELLE" )	
@@ -80,7 +80,7 @@ public class ModelBulletin extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Model Bulletin";
+		return "Gestion des Model de Bulletin";
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class ModelBulletin extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Model Bulletin";
+		return "Gestion des Model de Bulletin";
 	}
 
 	@Override

@@ -169,6 +169,9 @@ public class ApplicationConfig extends Application {
         resources.add(com.kerenedu.notes.TraitNoteRSImpl.class);
 		resources.add(com.kerenedu.notes.MatiereNoteRSImpl.class);
 		resources.add(com.kerenedu.notes.NoteDetailRSImpl.class);
+		resources.add(com.kerenedu.notes.ModelBulletinRSImpl.class);
+		resources.add(com.kerenedu.notes.EdtBulletinRSImpl.class);
+		resources.add(com.kerenedu.notes.BulletinHelperGenerateRSImpl.class);
     }
     
 }

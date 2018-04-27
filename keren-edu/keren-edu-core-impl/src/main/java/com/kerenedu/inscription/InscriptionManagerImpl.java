@@ -10,13 +10,12 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.Classe;
@@ -100,24 +99,23 @@ public class InscriptionManagerImpl
 
 	@Override
 	public void processBeforeSave(Inscription entity) {
+		System.out.println("InscriptionManagerImpl.processBeforeSave() je suis ici ");
 		// set annescolaire courante
 		  //Creation des journaux de saisie
 		 RestrictionsContainer container = RestrictionsContainer.newInstance();
 		 container.addEq("connected", true);
 		List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0 , -1);
-        if(annee==null||annee.size()==0){
-            RuntimeException excep = new RuntimeException("Aucune Année Scolaire disponible !!!");
-            throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
-        }
+		 if(annee==null||annee.size()==0){
+              throw new KerenExecption("Aucune Année Scolaire disponible !!!");
+          }
         entity.setAnneScolaire(annee.get(0).getCode());
         // verifier si l'étudiant a déjà été inscit 
         container = RestrictionsContainer.newInstance();
         	container.addEq("eleve.matricule", entity.getEleve().getMatricule());
-        	container.addEq("anneScolaire.code", entity.getAnneScolaire());
+        	container.addEq("anneScolaire", entity.getAnneScolaire());
         	List<Inscription> inscit = dao.filter(container.getPredicats(), null, null, 0 , -1);
         if((inscit!=null&&inscit.size()!=0)){
-            RuntimeException excep = new RuntimeException("Eléve déjà Inscrit !!!");
-            throw new WebApplicationException(excep,Response.Status.NOT_MODIFIED);
+            throw new KerenExecption("Eléve déjà Inscrit !!!");
         }
        // System.out.println("InscriptionManagerImpl.processBeforeSave()"+inscit.get(0).getEleve().getMatricule());
         

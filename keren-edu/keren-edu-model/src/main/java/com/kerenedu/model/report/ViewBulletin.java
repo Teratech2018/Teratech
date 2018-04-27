@@ -94,6 +94,11 @@ public class ViewBulletin  extends BaseElement implements Serializable, Comparab
 		this.bulletin= new Bulletin(view.bulletin);
 		this.moyClsMat=view.moyClsMat;
 	}
+	
+	public ViewBulletin(Bulletin view) {
+		super();
+		this.bulletin= new Bulletin(view);
+	}
 
 	public ViewBulletin() {
 		super();

@@ -51,7 +51,7 @@ public class ViewBulletinManagerImpl
             }
             
             if(critere.getBulletin()!=null){
-                container.addEq("bulletin.libelle", critere.getBulletin().getLibelle());
+                container.addEq("bulletin.code", critere.getBulletin().getCode());
             }
             
             if(critere.getClasse()!=null){
