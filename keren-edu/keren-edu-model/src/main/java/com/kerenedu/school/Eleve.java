@@ -56,12 +56,17 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	@Predicate(label="EMAIL",optional=true,updatable=true,search=false , target="email", sequence=8)
 	protected String email;
 	
+	@Column(name = "TEL")
+	@Predicate(label="TEL.",optional=true,updatable=true,search=false , sequence=9)
+	protected String telephone;
+	
+	
 	@Column(name = "PRENOM")
 	@Predicate(label="PRENOM",optional=false,updatable=true,search=true , sequence=5, colsequence=3)
 	protected String prenon;
 	
 	@Column(name = "SEXE")
-	@Predicate(label="SEXE",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=9)
+	@Predicate(label="SEXE",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=11)
 	protected String sexe="0";
 
 	@Column(name = "SITFAMILIALE")
@@ -174,6 +179,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		this.profession = eleve.profession;
 		this.dossierMedical= new ArrayList<DossierMedical>();
 		this.contact=new ArrayList<Contacts>();
+		this.telephone= eleve.telephone;
 	
 		
 		/*for(DossierMedical dos:eleve.dossierMedical){
@@ -290,6 +296,16 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		return nationalite;
 	}
 
+
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
 
 
 	public void setNationalite(Nationalite nationalite) {

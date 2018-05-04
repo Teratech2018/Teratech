@@ -11,6 +11,7 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
@@ -52,7 +53,14 @@ public class ReglementRSImpl
    	public MetaData getMetaData(HttpHeaders headers) {
    		// TODO Auto-generated method stub
    		try {
-   			return MetaDataUtil.getMetaData(new Reglement(), new HashMap<String, MetaData>(),new ArrayList<String>());
+   			MetaData meta = MetaDataUtil.getMetaData(new Reglement(), new HashMap<String, MetaData>(),new ArrayList<String>());
+			MetaColumn workbtn = new MetaColumn("button", "work1", "Edition des Retards", false, "object", null);
+			workbtn.setValue("{'model':'kereneducation','entity':'paiement','method':'annuler','template':{'this':'object'}}");
+			workbtn.setStates(new String[] { "etabli" });
+			meta.getHeader().add(workbtn);
+			MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+			meta.getHeader().add(stautsbar);
+			return meta;
    		} catch (InstantiationException e) {
    			// TODO Auto-generated catch block
    			e.printStackTrace();

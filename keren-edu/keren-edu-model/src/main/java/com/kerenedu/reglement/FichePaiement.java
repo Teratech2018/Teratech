@@ -4,28 +4,18 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.Service;
 import com.kerenedu.inscription.Inscription;
-import com.kerenedu.school.Eleve;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -47,7 +37,8 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	protected Long zQte;
 	
 	@Column(name = "M_HT")	
-	@Predicate(label="Montant HT",optional=true,updatable=true,search=true, type=Long.class ,sequence=3)
+	@Predicate(label="Montant HT",optional=true,updatable=true,search=true, type=Long.class ,sequence=3, editable=false)
+	@Observer(observable="service",source="field:zMnt")
 	protected Long zMntHt;
 	
 	@Column(name = "REMISE" )	
@@ -59,21 +50,23 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	protected Long ztva = new Long(0);
 		
 	@Column(name = "TYP_REG")
-	@Predicate(label="reglement",optional=false,updatable=true,search=false, target="combobox", values="a la commande;programmé;echeancier" , sequence=6 )
+	@Predicate(label="reglement",optional=false,updatable=true,search=true, target="combobox", values="à la commande;programmé;echeancier" , sequence=6 )
 	protected String typePaiment="0";
 	
 	@Column(name = "TOTAL_TTC" )	
 	@Predicate(label="TOTAL TTC",optional=true,search=true, type=Long.class ,sequence=7, editable=false)
 	protected Long ztotal= new Long(0);
 	
-
-
+	@Column(name = "MNT_PAYER" )	
+	@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
+	protected Long mntpayer = new Long(0);
 	
-	@Column(name = "MNT_PAI")	
-	protected Long zMnt;;
+	@Column(name = "SOLDE" )	
+	@Predicate(label="Solde ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
+	protected Long solde =new Long(0);
 
 	@Column(name = "MNT_PAI_TMP")	
-	protected BigDecimal zMntTmp =BigDecimal.ZERO;
+	protected Long zMntTmp =new Long(0);
 	
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire ;
@@ -97,9 +90,11 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 		this.zremise=ins.zremise;
 		this.ztva=ins.ztva;
 		this.service= new Service(ins.service);
-		this.zMnt=ins.zMnt;
+		this.mntpayer = ins.mntpayer;
 		this.zMntTmp=ins.zMntTmp;
 		this.eleve= new Inscription(ins.eleve);
+		this.solde=ins.solde;
+		this.mntpayer= ins.mntpayer;
 	
 	}
 
@@ -200,22 +195,35 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	}
 
 
-	public Long getzMnt() {
-		return zMnt;
+	
+
+
+	public Long getMntpayer() {
+		return mntpayer;
 	}
 
 
-	public void setzMnt(Long zMnt) {
-		this.zMnt = zMnt;
+	public void setMntpayer(Long mntpayer) {
+		this.mntpayer = mntpayer;
 	}
 
 
-	public BigDecimal getzMntTmp() {
+	public Long getSolde() {
+		return solde;
+	}
+
+
+	public void setSolde(Long solde) {
+		this.solde = solde;
+	}
+
+
+	public Long getzMntTmp() {
 		return zMntTmp;
 	}
 
 
-	public void setzMntTmp(BigDecimal zMntTmp) {
+	public void setzMntTmp(Long zMntTmp) {
 		this.zMntTmp = zMntTmp;
 	}
 

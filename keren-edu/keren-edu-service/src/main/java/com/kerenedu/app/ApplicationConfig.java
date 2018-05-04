@@ -59,6 +59,7 @@ import com.kerenedu.reglement.ReglementProfRSImpl;
 import com.kerenedu.reglement.ReglementRSImpl;
 import com.kerenedu.reglement.RetardRSImpl;
 import com.kerenedu.reglement.RetenueProfRSImpl;
+import com.kerenedu.reglement.SelectClasseRSImpl;
 import com.kerenedu.school.ContactsRSImpl;
 import com.kerenedu.school.EleveRSImpl;
 import com.kerenedu.school.NationaliteRSImpl;
@@ -172,6 +173,8 @@ public class ApplicationConfig extends Application {
 		resources.add(com.kerenedu.notes.ModelBulletinRSImpl.class);
 		resources.add(com.kerenedu.notes.EdtBulletinRSImpl.class);
 		resources.add(com.kerenedu.notes.BulletinHelperGenerateRSImpl.class);
+		resources.add(com.kerenedu.configuration.NoteSMSSelectRSImpl.class);
+		resources.add(SelectClasseRSImpl.class);
     }
     
 }

@@ -14,5 +14,6 @@ public interface NoteSMSManager
 {
 
     public final static String SERVICE_NAME = "NoteSMSManager";
+    
 
 }

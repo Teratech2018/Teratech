@@ -24,6 +24,7 @@ import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.Service;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
@@ -43,17 +44,20 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	protected Date datEnc;
 
 	@Column(name = "REVENU" )	
-	@Predicate(label="REVENU",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=4, colsequence=3)
+	@Predicate(label="REVENU",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=2, colsequence=3)
 	protected Long zRevenu = new Long(0);
 	
 	@Column(name = "DEPENSE")	
-	@Predicate(label="DEPENSE",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=4, colsequence=4)
+	@Predicate(label="DEPENSE",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=3, colsequence=4)
 	protected Long zDepense =new Long(0);
 	
 	@Column(name = "DESCRIPTION")
-	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true , sequence=2 , colsequence=2)
+	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true , sequence=2 , colsequence=4)
 	protected String description ;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "PAI_ET_ID" )
+	protected Paiement paiement = new Paiement();
 	
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire ;
@@ -73,9 +77,11 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 		this.datEnc=ins.datEnc;
 		this.anneScolaire=ins.anneScolaire;
 		this.description=ins.description;
+		if(ins.paiement!=null){
+			this.paiement= new Paiement(ins.paiement);
+		}
 		
-	
-	
+		
 	}
 	
 	public Caisse(Paiement reglement){
@@ -83,7 +89,8 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 		this.zDepense = new Long(0);
 		this.datEnc=new Date();
 		this.anneScolaire= reglement.service.anneScolaire;
-		this.description="Paiement Etudiant "+reglement.service.eleve.getEleve().getMatricule();
+		this.description="Paiement "+reglement.service.getService().getLibelle()+"//Etudiant "+reglement.service.eleve.getEleve().getNom();
+		this.paiement= new Paiement(reglement);
 	}
 
 	
@@ -193,6 +200,16 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	 */
 	public String getDescription() {
 		return description;
+	}
+
+
+	public Paiement getPaiement() {
+		return paiement;
+	}
+
+
+	public void setPaiement(Paiement paiement) {
+		this.paiement = paiement;
 	}
 
 

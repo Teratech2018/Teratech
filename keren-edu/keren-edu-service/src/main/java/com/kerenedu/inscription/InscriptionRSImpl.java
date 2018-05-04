@@ -12,8 +12,10 @@ import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.school.Eleve;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
@@ -56,7 +58,16 @@ public class InscriptionRSImpl
   	public MetaData getMetaData(HttpHeaders headers) {
   		// TODO Auto-generated method stub
   		try {
-  			return MetaDataUtil.getMetaData(new Inscription(), new HashMap<String, MetaData>(),new ArrayList<String>());
+  			MetaColumn col = new MetaColumn("button", "paiementfrais", "Paiement des frais", false, "action", null);
+			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object'}}");
+
+			MetaColumn col2 = new MetaColumn("button", "abscence", "Abscence", false, "action", null);
+			col2.setValue("{'name':'keren_education_abs','template':{'eleveList':'object'}}");
+			
+			MetaData meta =  MetaDataUtil.getMetaData(new Inscription(), new HashMap<String, MetaData>(),new ArrayList<String>());
+			meta.getHeader().add(col);
+			meta.getHeader().add(col2);
+  			return meta ;
   		}  catch (Exception e) {
    			// TODO Auto-generated catch block
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());

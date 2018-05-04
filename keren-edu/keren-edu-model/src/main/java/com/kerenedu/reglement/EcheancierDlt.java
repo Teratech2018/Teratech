@@ -4,27 +4,17 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
-import com.kerenedu.configuration.Service;
-import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -43,7 +33,21 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 	
 	@Column(name = "MNT" )	
 	@Predicate(label="Montant ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
-	protected Long Zmnt;
+	protected Long mnt;
+	
+	@Column(name = "MNT_PAYER" )	
+	@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
+	protected Long mntpayer = new Long(0);
+	
+	@Column(name = "SOLDE" )	
+	@Predicate(label="Solde ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
+	protected Long solde =new Long(0);;
+	
+	@ManyToOne
+	@JoinColumn(name = "FICHE_PAI_ID")
+	protected FichePaiement fiche = new FichePaiement();
+	
+	
 
 	
 	
@@ -57,7 +61,13 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 	public EcheancierDlt(EcheancierDlt ins) {
 		super(ins.id, ins.designation, ins.moduleName);
 		this.dateEch = ins.dateEch;
-		this.Zmnt = ins.Zmnt;
+		this.mnt = ins.mnt;
+		this.mntpayer = ins.mntpayer;
+		this.solde = (ins.mnt-ins.mntpayer);
+		if(ins.fiche!=null){
+			this.fiche= new FichePaiement(ins.fiche);
+		}
+		
 	
 	}
 
@@ -94,7 +104,7 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getDesignation() {
 //		 TODO Auto-generated method stub
-		return id+"";
+		return fiche.getService().getDesignation()+"/"+mnt;
 	}
 
 
@@ -103,19 +113,54 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 	}
 
 
+
+
 	public void setDateEch(Date dateEch) {
 		this.dateEch = dateEch;
 	}
 
 
-	public Long getZmnt() {
-		return Zmnt;
+	public Long getMnt() {
+		return mnt;
 	}
 
 
-	public void setZmnt(Long zmnt) {
-		Zmnt = zmnt;
+	public FichePaiement getFiche() {
+		return fiche;
 	}
+
+
+	public void setFiche(FichePaiement fiche) {
+		this.fiche = fiche;
+	}
+
+
+	public Long getMntpayer() {
+		return mntpayer;
+	}
+
+
+	public void setMntpayer(Long mntpayer) {
+		this.mntpayer = mntpayer;
+	}
+
+
+	public Long getSolde() {
+		return solde;
+	}
+
+
+	public void setSolde(Long solde) {
+		this.solde = solde;
+	}
+
+
+	public void setMnt(Long mnt) {
+		this.mnt = mnt;
+	}
+
+
+	
 
 		
 	

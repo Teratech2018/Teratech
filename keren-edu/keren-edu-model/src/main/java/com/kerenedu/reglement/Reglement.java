@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.inscription.Inscription;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -33,25 +34,28 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 
 	@ManyToOne
 	@JoinColumn(name = "EL_ID" )
-	@Predicate(label="ETUDIANT",updatable=true,type=Inscription.class , target="many-to-one",search=true , sequence=1	)
+	@Predicate(label="ETUDIANT",updatable=false,type=Inscription.class , target="many-to-one",search=true , sequence=1	)
 	protected Inscription eleve = new Inscription();
 	
 	@Column(name = "APAYER" )	
 	@Predicate(label="Scolarite",updatable=false,search=true, type=Long.class ,sequence=2,editable=false )
+	@Observer(observable="eleve",source="field:zMnt")
 	protected Long scolarite;
 	
 	@Column(name = "PAYER" )	
 	@Predicate(label="Payer",updatable=false,search=true, type=Long.class ,sequence=3,editable=false)
+	@Observer(observable="eleve",source="field:zMntPaye")
 	protected Long payer;
 	
 	@Column(name = "SOLD" )	
 	@Predicate(label="Solde",updatable=false,search=true, type=Long.class ,sequence=4,editable=false)
+	@Observer(observable="eleve",source="field:zSolde")
 	protected Long solde;
 	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "FICHE_PAIE_ID")
 	@Predicate(updatable=true,type=FichePaiement.class , target="one-to-many",search=true , sequence=2,group=true,
-	groupLabel="Fiche Paiement", groupName="tab1")
+	groupLabel="Fiche Paiement", groupName="tab1", edittable=true)
 	protected List<FichePaiement> service = new ArrayList<FichePaiement>();
 	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
@@ -94,6 +98,18 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 		this.scolarite=ins.scolarite;
 		this.payer=ins.payer;
 		this.solde=ins.solde;
+
+	}
+	
+	public Reglement(Inscription ins) {
+		this.eleve = new Inscription(ins);
+		this.service= new ArrayList<FichePaiement>();
+		this.paiement= new ArrayList<Paiement>();
+		this.retard= new ArrayList<Retard>();
+		this.echeance= new ArrayList<Echeancier>();
+		this.scolarite= ins.getzMnt();
+		this.payer=ins.getzMntPaye();
+		this.solde=ins.getzSolde();
 
 	}
 
@@ -204,7 +220,7 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Paiements des étudiants ";
+		return "Gestion des Paiements de l'étudiant ";
 	}
 
 	@Override
