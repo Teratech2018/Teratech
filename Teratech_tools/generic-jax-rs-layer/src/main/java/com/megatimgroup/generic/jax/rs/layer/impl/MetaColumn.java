@@ -70,6 +70,8 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     private boolean edittable = false;
     
     private String method = null;
+    
+    private String frozen = null;
     /**
      * 
      */
@@ -123,6 +125,7 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.observer = column.observer;
         this.edittable = column.edittable;
         this.method = column.method;
+        this.frozen = column.frozen;
     }
 
     public short getSequence() {
@@ -355,6 +358,14 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    public String getFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(String frozen) {
+        this.frozen = frozen;
     }
 
     

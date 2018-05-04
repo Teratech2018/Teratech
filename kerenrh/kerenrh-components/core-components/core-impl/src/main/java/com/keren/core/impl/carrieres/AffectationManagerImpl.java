@@ -47,50 +47,66 @@ public class AffectationManagerImpl
         return "id";
     }
 
-	@Override
-	public List<Affectation> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Affectation> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Affectation> results = new ArrayList<Affectation>();
-		for(Affectation data:datas){
-			results.add(new Affectation(data));
-		}
-		return results;
-	}
+    @Override
+    public List<Affectation> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
 
-	@Override
-	public Affectation find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Affectation data =  super.find(propertyName, entityID);
-		return new Affectation(data);
-	}
+        // TODO Auto-generated method stub
+        List<Affectation> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Affectation> results = new ArrayList<Affectation>();
 
-	@Override
-	public List<Affectation> findAll() {
-		// TODO Auto-generated method stub		
-		List<Affectation> datas = super.findAll();
-		List<Affectation> results = new ArrayList<Affectation>();
-		for(Affectation data:datas){
-			results.add(new Affectation(data));
-		}
-		return results;
-	}
+        for(Affectation data:datas){
+            results.add(new Affectation(data));
+        }
 
-	@Override
-	public Affectation valide(Affectation entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().equalsIgnoreCase("etabli")){
-			entity.setState("valide");
-			entity = dao.update(entity.getId(), entity);
-			Employe salarie = entity.getSalarie();
-			salarie.setPoste(entity.getPosteN());
-			salarie.setFonction(entity.getFonctionN());
-			employedao.update(salarie.getId(), salarie);
-		}
-		return new Affectation(entity);
-	}
+        return results;
+    }
+
+    @Override
+    public Affectation find(String propertyName, Long entityID) {
+
+        // TODO Auto-generated method stub
+        Affectation data =  super.find(propertyName, entityID);
+        return new Affectation(data);
+    }
+
+    @Override
+    public List<Affectation> findAll() {
+
+        // TODO Auto-generated method stub		
+        List<Affectation> datas = super.findAll();
+        List<Affectation> results = new ArrayList<Affectation>();
+
+        for(Affectation data:datas){
+                results.add(new Affectation(data));
+        }
+
+        return results;
+    }
+
+    @Override
+    public Affectation delete(Long id) {
+
+        // TODO Auto-generated method stub    	
+        Affectation data= super.delete(id);
+
+        return new Affectation(data);
+    }
+
+    @Override
+    public Affectation valide(Affectation entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getState().equalsIgnoreCase("etabli")){
+            entity.setState("valide");
+            entity = dao.update(entity.getId(), entity);
+            Employe salarie = entity.getSalarie();
+            salarie.setPoste(entity.getPosteN());
+            salarie.setFonction(entity.getFonctionN());
+            employedao.update(salarie.getId(), salarie);
+        }
+        
+        return new Affectation(entity);
+    }
     
-    
-
 }

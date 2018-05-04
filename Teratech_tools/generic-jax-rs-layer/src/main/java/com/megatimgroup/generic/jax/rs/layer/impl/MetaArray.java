@@ -50,6 +50,8 @@ public class MetaArray implements Serializable{
     private String method = null;
     
      private Observer observer;
+     
+     private String frozen = null;
     /**
      * 
      */
@@ -215,6 +217,14 @@ public class MetaArray implements Serializable{
 
     public void setMethod(String mothod) {
         this.method = mothod;
+    }
+
+    public String getFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(String frozen) {
+        this.frozen = frozen;
     }
     
     

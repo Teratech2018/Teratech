@@ -43,6 +43,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.PeriodePaieRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.SectionAnalytiqueRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.TaxeRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.conges.DemandeCongeRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.employes.CategorieRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.employes.ContratTravailRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.employes.DepartementSocRSImpl.class);
@@ -72,6 +73,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.TraitSalaireRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.ValiderSalaireRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.paie.VariableRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.presences.LignePointageRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.AcompteRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.AvanceSalaireRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.CategoriePretRSImpl.class);
@@ -80,7 +82,10 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.RappelRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.RemboursementAvanceRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.prets.RemboursementPretRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.rapports.BPaieRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.rapports.LivrePaieRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.rapports.ViewBulletinPaieRSImpl.class);
+        resources.add(com.keren.kerenpaie.jaxrs.impl.rapports.ViewDipePaieRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DepartementRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DeviseRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.DiplomeRSImpl.class);
@@ -93,7 +98,6 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.SyndicatRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.TypeCaisseRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.structures.TypeDemandeRSImpl.class);
-        
     }
     
 }

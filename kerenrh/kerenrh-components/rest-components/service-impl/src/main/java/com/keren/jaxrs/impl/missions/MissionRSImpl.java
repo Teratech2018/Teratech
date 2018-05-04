@@ -161,5 +161,24 @@ public class MissionRSImpl
               }   
             return manager.annule(entity);
     }
+    
+    @Override
+    public Mission delete(Long id) {
+        
+        //Initialisation
+        Mission data = null;
+        Mission result = null;
 
+        try{
+
+            data = super.delete(id);
+            result = new Mission(data);
+
+        }catch(Exception e){
+
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
+        }
+
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -20,7 +20,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Apr 10 17:59:57 GMT+01:00 2018
  * 
  */
@@ -83,14 +84,38 @@ public class BesionStageRSImpl
    		return meta;
    	}
     
-    
-
 	@Override
-	protected void processBeforeDelete(Object entity) {
-		// TODO Auto-generated method stub
-		super.processBeforeDelete(entity);
+	protected void processBeforeDelete(Object id) {
+            
+            // TODO Auto-generated method stub
+            BesionStage entity = manager.find("id", (Long) id);
+            
+            // On teste l'etat
+            if(!entity.getState().equalsIgnoreCase("etabli")){
+                throw new KerenExecption("Ce besion de stage est en cours de traitement");
+            }
+            
+            super.processBeforeDelete(id);
 	}
 
+        @Override
+	public BesionStage delete(Long id) {
+            
+            // TODO Auto-generated method stub
+            BesionStage entity = manager.find("id", id);
+            
+            try{
+                
+                //on supprimme l'objet
+                super.delete(id);
+                
+            }catch(Exception ex){
+                throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+            }
+           
+            return entity;
+	}
+        
 	@Override
 	protected void processBeforeSave(BesionStage entity) {
 		// TODO Auto-generated method stub
@@ -106,7 +131,10 @@ public class BesionStageRSImpl
 			throw new KerenExecption("Le Profil demandé est obligatoire");
 		}else if(entity.getPlace()==null||entity.getPlace()==0){
 			throw new KerenExecption("Le nombre de place désirées est obligation");
+		}else if(entity.getDdebut().after(entity.getDfin())){
+			throw new KerenExecption("La date de début est incorrecte");
 		}
+                
 		entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
@@ -126,7 +154,10 @@ public class BesionStageRSImpl
 			throw new KerenExecption("Le Profil demandé est obligatoire");
 		}else if(entity.getPlace()==null||entity.getPlace()==0){
 			throw new KerenExecption("Le nombre de place désirées est obligation");
+		}else if(entity.getDdebut().after(entity.getDfin())){
+			throw new KerenExecption("La date de début est incorrecte");
 		}
+                
 		super.processBeforeUpdate(entity);
 	}
 
@@ -145,7 +176,10 @@ public class BesionStageRSImpl
 			throw new KerenExecption("Le Profil demandé est obligatoire");
 		}else if(entity.getPlace()==null||entity.getPlace()==0){
 			throw new KerenExecption("Le nombre de place désirées est obligation");
+		}else if(entity.getDdebut().after(entity.getDfin())){
+			throw new KerenExecption("La date de début est incorrecte");
 		}
+                
 		return manager.valide(entity);
 	}
 
@@ -171,7 +205,10 @@ public class BesionStageRSImpl
 			throw new KerenExecption("Le Besion de stage est en cours ou déjà traité");
 		}else if(entity.getState().equalsIgnoreCase("etabli")){
 			throw new KerenExecption("Vous ne pouvez annulé que les Besions de stage Validé");
+		}else if(entity.getDdebut().after(entity.getDfin())){
+			throw new KerenExecption("La date de début est incorrecte");
 		}
+                
 		return manager.annule(entity);
 	}
 

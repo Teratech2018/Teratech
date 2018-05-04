@@ -253,6 +253,11 @@ public class DemandeConge extends BaseElement implements Serializable,Comparable
 		return serial;
 	}
 
+    @Override
+    public boolean isCreateonfield() {
+        return false; //To change body of generated methods, choose Tools | Templates.
+    }
+
 	
 	
 	@Override

@@ -9,6 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.conges.DemandeCongeCManagerRemote;
 import com.keren.core.ifaces.conges.DemandeCongeManagerRemote;
@@ -26,7 +27,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 09:30:08 GMT+01:00 2018
  * 
  */
@@ -72,35 +74,72 @@ public class DemandeCongeCRSImpl
     
     @Override
 	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-				MetaData meta = MetaDataUtil.getMetaData(new DemandeCongeC(),new HashMap<String, MetaData>()
-						, new ArrayList<String>());
-				//Construction du workflow
-				MetaColumn workbtn = new MetaColumn("button", "work1", "Approuver", false, "workflow", null);
-				workbtn.setStates(new String[]{"confirmer"});workbtn.setPattern("btn btn-primary");
-				workbtn.setValue("{'model':'kerenrh','entity':'demandecongec','method':'approuve'}");
-				meta.getHeader().add(workbtn);
-				//Cas du refus
-				workbtn = new MetaColumn("button", "work2", "Refuser", false, "workflow", null);
-				workbtn.setStates(new String[]{"confirmer"});
-				workbtn.setValue("{'model':'kerenrh','entity':'demandecongec','method':'rejete'}");
-				meta.getHeader().add(workbtn);
-				//Resoumettre
-				workbtn = new MetaColumn("button", "work3", "Remettre brouillon", false, "workflow", null);
-				workbtn.setStates(new String[]{"confirmer"});
-				workbtn.setValue("{'model':'kerenrh','entity':'demandecongec','method':'annuler'}");
-				meta.getHeader().add(workbtn);
-				MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-				meta.getHeader().add(stautsbar);
-				return  meta;
-					
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			throw new WebApplicationException(e);
-		}
+            
+            // TODO Auto-generated method stub
+            try {
+                
+                    MetaData meta = MetaDataUtil.getMetaData(new DemandeCongeC(),new HashMap<String, MetaData>()
+                                    , new ArrayList<String>());
+                    
+                    //Construction du workflow
+                    MetaColumn workbtn = new MetaColumn("button", "work1", "Approuver", false, "workflow", null);
+                    workbtn.setStates(new String[]{"confirmer"});workbtn.setPattern("btn btn-primary");
+                    workbtn.setValue("{'model':'kerenrh','entity':'demandecongec','method':'approuve'}");
+                    meta.getHeader().add(workbtn);
+                    
+                    //Cas du refus
+                    workbtn = new MetaColumn("button", "work2", "Refuser", false, "workflow", null);
+                    workbtn.setStates(new String[]{"confirmer"});
+                    workbtn.setValue("{'model':'kerenrh','entity':'demandecongec','method':'rejete'}");
+                    meta.getHeader().add(workbtn);
+                    
+                    //Resoumettre
+                    workbtn = new MetaColumn("button", "work3", "Remettre brouillon", false, "workflow", null);
+                    workbtn.setStates(new String[]{"confirmer"});
+                    workbtn.setValue("{'model':'kerenrh','entity':'demandecongec','method':'annuler'}");
+                    meta.getHeader().add(workbtn);
+                    MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+                    meta.getHeader().add(stautsbar);
+                    return  meta;
+
+            } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    throw new WebApplicationException(e);
+            }
+	}
+        
+        @Override
+        protected void processBeforeDelete(Object id) {
+            
+            //Variables
+            DemandeCongeC demandeCongeC = manager.find("id",(Long)id);
+            
+            if(demandeCongeC.getState().equalsIgnoreCase("valider")){
+                throw new KerenExecption("Suppression impossible, car l'element a deja ete valide");
+            }
+
+            super.processBeforeDelete(id);
+        }
+        
+        @Override
+	protected void processBeforeSave(DemandeCongeC entity) {
+		this._controlreView(entity);
+		super.processBeforeSave(entity);
 	}
 
+	@Override
+	protected void processBeforeUpdate(DemandeCongeC entity) {
+		this._controlreView(entity);		
+		super.processBeforeUpdate(entity);
+	}
+	
+	private void _controlreView(DemandeCongeC entity){
+		
+            if(entity.getState().equalsIgnoreCase("valider")){
+                throw new KerenExecption("Modification impossible, car l'element a deja ete valide");
+            }
+	}
+        
 	@Override
 	public DemandeCongeC approuver(HttpHeaders headers, DemandeCongeC dmde) {
 		return manager.approuver(dmde);

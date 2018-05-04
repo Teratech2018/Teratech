@@ -97,4 +97,24 @@ public class ActionMissionRSImpl
         }*/
         super.processBeforeSave(entity);
     }
+    
+    @Override
+    public ActionMission delete(Long id) {
+        
+        //Initialisation
+        ActionMission data = null;
+        ActionMission result = null;
+        
+        try{
+        
+            data = super.delete(id);
+            result = new ActionMission(data);
+            
+        }catch(Exception e){
+            
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
+        }
+        
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }    
 }

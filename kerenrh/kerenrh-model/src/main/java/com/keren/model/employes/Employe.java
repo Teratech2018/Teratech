@@ -595,6 +595,14 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		return matricule+" - "+nom;
 	}
 
+    @Override
+    public String[] searchFields() {
+        //To change body of generated methods, choose Tools | Templates.
+        return new String[]{"nom","matricule"}; 
+    }
+        
+        
+
 	@Override
     public int compareTo(Employe o) {
         //To change body of generated methods, choose Tools | Templates.

@@ -49,50 +49,69 @@ public class CessationManagerImpl
         return "id";
     }
 
-	@Override
-	public List<Cessation> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Cessation> datas =  super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Cessation> results = new ArrayList<Cessation>();
-		for(Cessation data:datas){
-			results.add(new Cessation(data));
-		}
-		return results;
-	}
+    @Override
+    public List<Cessation> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
 
-	@Override
-	public Cessation find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Cessation data = super.find(propertyName, entityID);
-		Cessation result = new Cessation(data);
-		return result;
-	}
+        // TODO Auto-generated method stub
+        List<Cessation> datas =  super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Cessation> results = new ArrayList<Cessation>();
 
-	@Override
-	public List<Cessation> findAll() {
-		// TODO Auto-generated method stub		
-		List<Cessation> datas = super.findAll();
-		List<Cessation> results = new ArrayList<Cessation>();
-		for(Cessation data:datas){
-			results.add(new Cessation(data));
-		}
-		return results;
-	}
+        for(Cessation data:datas){
+                results.add(new Cessation(data));
+        }
 
-	@Override
-	public Cessation valide(Cessation entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().equalsIgnoreCase("etabli")){
-			entity.setState("valide");
-			entity = dao.update(entity.getId(), entity);
-			ContratTravail contrat = getValideContrat(entity.getSalarie());
-			contrat.setCommentaire(entity.getMotif());
-			contrat.setState("cloture");
-			contratdao.update(contrat.getId(), contrat);
-		}//end if(entity.getState().equalsIgnoreCase("etabli")){
-		return new Cessation(entity);
-	}
+        return results;
+    }
+
+    @Override
+    public Cessation find(String propertyName, Long entityID) {
+
+        // TODO Auto-generated method stub
+        Cessation data = super.find(propertyName, entityID);
+        Cessation result = new Cessation(data);
+
+        return result;
+    }
+
+    @Override
+    public List<Cessation> findAll() {
+
+        // TODO Auto-generated method stub		
+        List<Cessation> datas = super.findAll();
+        List<Cessation> results = new ArrayList<Cessation>();
+
+        for(Cessation data:datas){
+                results.add(new Cessation(data));
+        }
+
+        return results;
+    }
+
+    @Override
+    public Cessation delete(Long id) {
+
+        // TODO Auto-generated method stub    	
+        Cessation data= super.delete(id);
+
+        return new Cessation(data);
+    }
+
+    @Override
+    public Cessation valide(Cessation entity) {
+
+        // TODO Auto-generated method stub
+        if(entity.getState().equalsIgnoreCase("etabli")){
+            entity.setState("valide");
+            entity = dao.update(entity.getId(), entity);
+            ContratTravail contrat = getValideContrat(entity.getSalarie());
+            contrat.setCommentaire(entity.getMotif());
+            contrat.setState("cloture");
+            contratdao.update(contrat.getId(), contrat);
+        }//end if(entity.getState().equalsIgnoreCase("etabli")){
+
+        return new Cessation(entity);
+    }
     
 	/**
 	 * 

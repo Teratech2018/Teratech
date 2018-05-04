@@ -9,6 +9,7 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.megatim.common.annotations.OrderType;
 import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
+import com.megatimgroup.generic.jax.rs.layer.impl.KerenEntity;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 import java.io.Serializable;
@@ -142,10 +143,22 @@ public interface GenericService<T ,PK extends Serializable> {
         @Path("unique")
         public List<FilterPredicat> uniqueProperties(@Context HttpHeaders headers);
         
+        /**
+         * Constructeur de METAData
+         * @param headers
+         * @return 
+         */
 	@GET
         @Produces({MediaType.APPLICATION_JSON})
         @Path("meta")
         public MetaData getMetaData(@Context HttpHeaders headers);
+        
+        /**
+         * Constructeur de METADATA de l'Import
+         * @param headers
+         * @return 
+         */
+       
 	/**
 	 * Methode de chargement de tous les objets
 	 * @return	Liste de tous les objets

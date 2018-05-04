@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerem.core.KerenExecption;
 import com.keren.core.ifaces.conges.DemandeCongeManagerLocal;
@@ -51,12 +52,19 @@ public class DemandeCongeManagerImpl
     @Override
     public List<DemandeConge> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
                     int firstResult, int maxResult) {
-        // TODO Auto-generated method stub
+        
+        //On applique les criteres
+        /*RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("state", "etabli");
+        predicats.addAll(container.getPredicats());*/
+        
+        //on recupere les donnees
         List<DemandeConge> datas =  super.filter(predicats, orders, properties, firstResult, maxResult);
         List<DemandeConge> output = new ArrayList<DemandeConge>();
-
+        
+        //On parcourt la liste et pour faire une copie de chaque objet
         for(DemandeConge dc:datas){
-                output.add(new DemandeConge(dc));
+            output.add(new DemandeConge(dc));
         }
 
         return output;
@@ -73,12 +81,12 @@ public class DemandeCongeManagerImpl
     @Override
     public List<DemandeConge> findAll() {
         
-        // TODO Auto-generated method stub
-        List<DemandeConge> datas =  super.findAll();
+        //on applique le critrere et recupere les resultats
+        List<DemandeConge> datas = super.findAll();
         List<DemandeConge> output = new ArrayList<DemandeConge>();
         
         for(DemandeConge dc:datas){
-                output.add(new DemandeConge(dc));
+            output.add(new DemandeConge(dc));
         }
         
         return output;
@@ -96,17 +104,21 @@ public class DemandeCongeManagerImpl
 
     @Override
     public DemandeConge confirmer(DemandeConge dmde) {
+        
         if(dmde.getState().equals("etabli")){
-        	dmde.setState("confirmer");
-        	dmde = dao.update(dmde.getId(), dmde);
+            dmde.setState("confirmer");
+            dmde = dao.update(dmde.getId(), dmde);
         }
+        
         return new DemandeConge(dmde);
     }
 	
     @Override
-    public DemandeConge delete(Long id) {        
+    public DemandeConge delete(Long id) {    
+        
         DemandeConge data = super.delete(id);
-        DemandeConge result = new DemandeConge(data);        
+        DemandeConge result = new DemandeConge(data);    
+        
         return result;
     }
 	

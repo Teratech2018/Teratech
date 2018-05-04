@@ -17,6 +17,8 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<!--        <serveur.jboss.repertoire.deploiement.war>C:\Users\ABEGA ABEGA SERGE\Documents\JBOSS KORIS ERP\jboss-as-7.1.1.Final.Serge\jboss-as-7.1.1.Final\standalone\deployments\kerenrh.war</serveur.jboss.repertoire.deploiement.war>
+        <repertoire.target.generation.war>E:\wamp\www\FS\datas\121220171544445357\[SOURCES]\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\rest-components\service-impl\target\kerenrh.war</repertoire.target.generation.war>-->
     </properties>
 
     <dependencies>
@@ -121,6 +123,26 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Ant run maven plugin -->
+<!--            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mkdir-files-artifact-repo</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <tasks>
+                                <delete file="${serveur.jboss.repertoire.deploiement.war}"/>
+                                <copy file="${repertoire.target.generation.war}" tofile="${serveur.jboss.repertoire.deploiement.war}" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
         </plugins>
          <finalName>kerenrh</finalName>
     </build>

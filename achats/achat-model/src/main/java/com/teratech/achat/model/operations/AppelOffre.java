@@ -59,7 +59,7 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
     
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "APOF_ID")
-    @Predicate(label = "AP",type = LigneAppeloffre.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Produits")
+    @Predicate(label = "AP",type = LigneAppeloffre.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Produits",edittable = true)
     private List<LigneAppeloffre> lignes = new ArrayList<LigneAppeloffre>();
     
     @Predicate(label = "COND",target = "textarea",group = true,groupName = "group3",groupLabel = "Conditions générales")

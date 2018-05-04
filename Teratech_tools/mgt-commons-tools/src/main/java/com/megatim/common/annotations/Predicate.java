@@ -81,4 +81,10 @@ public @interface Predicate {
     boolean observable() default false;
     
     boolean edittable() default false;
+    
+    /**
+     * Indique si un champs est gélé ou pas
+     * @return 
+     */
+    String frozen() default "";
 }

@@ -20,7 +20,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Apr 10 13:14:15 GMT+01:00 2018
  * 
  */
@@ -90,7 +91,7 @@ public class CessationRSImpl
 		// TODO Auto-generated method stub
 		Cessation entity = manager.find("id", (Long) id);
 		if(entity.getState().trim().equalsIgnoreCase("valide")){
-			throw new KerenExecption("Impossible de supprimer une effactation validée");
+			throw new KerenExecption("Impossible de supprimer une cessation validée");
 		}
 		super.processBeforeDelete(id);
 	}

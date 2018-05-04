@@ -46,51 +46,66 @@ public class RetrogradationManagerImpl
         return "id";
     }
 
-	@Override
-	public List<Retrogradation> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Retrogradation> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Retrogradation> results = new ArrayList<Retrogradation>();
-		for(Retrogradation data:datas){
-			results.add(new Retrogradation(data));
-		}
-		return results;
-	}
+    @Override
+    public List<Retrogradation> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
 
-	@Override
-	public Retrogradation find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Retrogradation data = super.find(propertyName, entityID);
-		return new Retrogradation(data);
-	}
+        // TODO Auto-generated method stub
+        List<Retrogradation> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Retrogradation> results = new ArrayList<Retrogradation>();
 
-	@Override
-	public List<Retrogradation> findAll() {
-		// TODO Auto-generated method stub		
-		List<Retrogradation> datas = super.findAll();
-		List<Retrogradation> results = new ArrayList<Retrogradation>();
-		for(Retrogradation data:datas){
-			results.add(new Retrogradation(data));
-		}
-		return results;
-	}
+        for(Retrogradation data:datas){
+            results.add(new Retrogradation(data));
+        }
 
-	@Override
-	public Retrogradation valide(Retrogradation entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().equals("etabli")){
-			entity.setState("valide");
-			entity = dao.update(entity.getId(), entity);
-			Employe salarie = entity.getSalarie();
-			salarie.setCategorie(entity.getCategorieN());
-			salarie.setEchelon(entity.getEchelonN());
-			employedao.update(salarie.getId(), salarie);
-			//Chargement des
-		}
-		return new Retrogradation(entity);
-	}
-    
-    
+        return results;
+    }
 
+    @Override
+    public Retrogradation find(String propertyName, Long entityID) {
+
+        // TODO Auto-generated method stub
+        Retrogradation data = super.find(propertyName, entityID);
+        return new Retrogradation(data);
+    }
+
+    @Override
+    public List<Retrogradation> findAll() {
+
+        // TODO Auto-generated method stub		
+        List<Retrogradation> datas = super.findAll();
+        List<Retrogradation> results = new ArrayList<Retrogradation>();
+
+        for(Retrogradation data:datas){
+            results.add(new Retrogradation(data));
+        }
+
+        return results;
+    }
+
+    @Override
+    public Retrogradation delete(Long id) {
+
+        // TODO Auto-generated method stub    	
+        Retrogradation data= super.delete(id);
+
+        return new Retrogradation(data);
+    }
+
+    @Override
+    public Retrogradation valide(Retrogradation entity) {
+
+        // TODO Auto-generated method stub
+        if(entity.getState().equals("etabli")){
+            entity.setState("valide");
+            entity = dao.update(entity.getId(), entity);
+            Employe salarie = entity.getSalarie();
+            salarie.setCategorie(entity.getCategorieN());
+            salarie.setEchelon(entity.getEchelonN());
+            employedao.update(salarie.getId(), salarie);
+            //Chargement des
+        }
+
+        return new Retrogradation(entity);
+    } 
 }

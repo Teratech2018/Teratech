@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerLocal;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.rapports.ViewBulletinPaieDAOLocal;
@@ -48,24 +49,29 @@ public class ViewBulletinPaieManagerImpl
         RestrictionsContainer container = RestrictionsContainer.newInstance();
         List<ViewBulletinPaie> datas = new ArrayList<ViewBulletinPaie>();
         if(critere!=null){
-        	  if(critere.getPorte()==null|| critere.getPorte().equals("0")){
-        		  
+//        	  if(critere.getPorte()==null|| critere.getPorte().equals("0")){
+//        	
+        	critere.setPeriode(CacheMemory.getPeriode());
         		  if(critere.getPeriode()!=null){
+                      System.out.println("ViewBulletinPaieManagerImpl.getCriteres() periode critere "+critere.getPeriode().getId());
                       container.addEq("periode.id", critere.getPeriode().getId());
+
+
                   }
         		 datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
-              }else{ 
-            	  List<BulletinPaie> bulletinselect= critere.getConcernes();
-            	  System.out.println("ViewBulletinPaieManagerImpl.getCriteres() nombre employes"+bulletinselect.size());
-            	  datas = new ArrayList<ViewBulletinPaie>();
-            	  List<ViewBulletinPaie> datasresult= new ArrayList<ViewBulletinPaie>();
-            	  for(BulletinPaie bulletin :bulletinselect){
-            		  datasresult= new ArrayList<ViewBulletinPaie>();
-            		  container.addEq("bulletin.code", bulletin.getCode());
-            		  datasresult = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
-            		  datas.addAll(datasresult);
-            	  }
-              }
+        		 System.out.println("ViewBulletinPaieManagerImpl.getCriteres() nombre selection "+datas.size());
+//              }else{ 
+//            	  List<BulletinPaie> bulletinselect= critere.getConcernes();
+//            	  System.out.println("ViewBulletinPaieManagerImpl.getCriteres() nombre employes"+bulletinselect.size());
+//            	  datas = new ArrayList<ViewBulletinPaie>();
+//            	  List<ViewBulletinPaie> datasresult= new ArrayList<ViewBulletinPaie>();
+//            	  for(BulletinPaie bulletin :bulletinselect){
+//            		  datasresult= new ArrayList<ViewBulletinPaie>();
+//            		  container.addEq("bulletin.code", bulletin.getCode());
+//            		  datasresult = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+//            		  datas.addAll(datasresult);
+//            	  }
+//              }
         }
         List<ViewBulletinPaie>  result = new ArrayList<ViewBulletinPaie>();
         for(ViewBulletinPaie ecrit:datas){            

@@ -226,7 +226,7 @@ angular.module("mainApp")
     		$scope.currentAction = action;
                 $rootScope.$broadcast("currentActionUpdate" ,{
                                    action:$scope.currentAction , verticalMenu:$scope.enabledVerticalMenu});  
-    	}    	
+    	}//end if(angular.isDefined(action)){    	
     };
 
     /**
@@ -255,12 +255,12 @@ angular.module("mainApp")
 	     	 for(var i=0 ; i<$scope.modules.length;i++){
 	     	    module = $scope.modules[i];	     	 	 		  
 	     	 	module.selected = $scope.tableheaderselected;
-	     	 }
+	     	 }//end for(var i=0 ; i<$scope.modules.length;i++){
                  
              for(var i=0 ; i<$scope.modules.length;i++){
              	  module = $scope.modules[i];	     
              	  //console.log("Vous avez cliquez sur "+module.name+" === "+module.shortDescription+"==="+module.selected); 
-             }  
+             }//end for(var i=0 ; i<$scope.modules.length;i++){  
     };
 
 
@@ -1486,7 +1486,7 @@ angular.module("mainApp")
                    textareaElem.setAttribute('class' , 'form-control');
                    if(angular.isDefined(field.optional)&&(!field.optional) || field.min){
                          textareaElem.setAttribute('class' , 'form-control required') ;        
-                   }
+                   }//end if(angular.isDefined(field.optional)&&(!field.optional) || field.min){
                    textareaElem.setAttribute('name' , field.fieldName);
                    textareaElem.setAttribute('placeholder' , labelText+" ....");
                    textareaElem.setAttribute('rows' ,'3');
@@ -1555,10 +1555,11 @@ angular.module("mainApp")
                          
                          if(type=="number"){
                              inputElem.setAttribute('value' , "0");
-                         }
+                         }//end if(type=="number"){
                          
                     }
 //                    console.log("================================ "+$scope.innerWindowType+"==============="+($scope.windowType=="view")+"===="+((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType!='new'))+" === "+(field.editable==false)+" ================= "+(($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType!='new'))||(field.editable==false)));
+                    
                     inputElem.setAttribute('type' , type);
                     inputElem.setAttribute('ng-model' , model);
                     $scope.constraintsProvider(field , inputElem);
@@ -2523,8 +2524,8 @@ angular.module("mainApp")
                 aElem.appendChild(spanElem);
                 if($scope.windowType=="view"){
                      aElem.setAttribute('disabled' , 'disabled');                  
-                 }            
-            }
+                 }//end if($scope.windowType=="view"){            
+            }//end if(metaData.createonfield==true)
             if(field.hide){
                divElem.setAttribute('ng-hide',true);
             }//end if(field.hide)
@@ -2582,7 +2583,7 @@ angular.module("mainApp")
                    trElem.appendChild(thElem);
                    fieldnames.push(metaData.columns[i].fieldName);
                    columnNumber++;
-                 }
+                 }//end if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
              }
              //Traitement  des champs des groupes
              if(metaData.groups&&metaData.groups.length>0){
@@ -2632,7 +2633,7 @@ angular.module("mainApp")
                    aElem.appendChild(document.createTextNode("Ajouter un element"));
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
-                   }            
+                   }//end if($scope.windowType=="view"){            
                }//end if(metaData.createonfield==true)               
              //Construction du corps du tableau
              trElem = document.createElement('tr');
@@ -2989,7 +2990,7 @@ angular.module("mainApp")
                                     tdElem.appendChild(spanElem);
                                     if(metaData.groups[i].columns[j].type=='number'){
                                         tdElem.setAttribute('class','text-right');
-                                    }
+                                    }//end if(metaData.groups[i].columns[j].type=='number'){
                                 }else if(metaData.groups[i].columns[j].type=='object'){
                                     var spanElem = document.createElement("span");
                                     spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
@@ -3672,11 +3673,15 @@ angular.module("mainApp")
 
         
         /**
-             Fonction qui renvoie un composant en fonction de la valeur d'un champs
-             @model: model
-             @field : metacolumn 
-             entityName: nom de l'entite
-         **/
+         * Fonction qui renvoie un composant en fonction de la valeur d'un champs
+         * @param {type} model
+         * @param {type} field
+         * @param {type} entityName
+         * @param {type} metaDataName
+         * @param {type} index
+         * @param {type} modelpath
+         * @returns {Element|principal_L470.principalAnonym$31.controller.$scope.aceEditorComponent.divElem|principal_L351.principalAnonym$23.controller.$scope.richEditorComponent.divElem|undefined|principal_L470.principalAnonym$31.controller.$scope.richEditorComponent.divElem}
+         */
          $scope.getIhmComponent = function(model , field , entityName , metaDataName,index,modelpath){
 //               console.log("$scope.getIhmComponent = function(model , field , entityName , metaDataName) === "+field.fieldName+" ===== "+field.target+" ===== "+field.type+" == "+index);
                     
@@ -8414,7 +8419,7 @@ angular.module("mainApp")
           
           if(template==null||!angular.isDefined(template)){
               return null;
-          }
+          }//end if(template==null||!angular.isDefined(template)){
 //          console.log("$scope.templateDataBuilder = function(template) ==================== "+extern);
           //Construction du template
           var data = new Object();
@@ -8430,7 +8435,7 @@ angular.module("mainApp")
                       }//end if(angular.isDefined(extern) && extern==true){
                   }else if(attr=='user'){
                       return $rootScope.globals.user;
-                  }
+                  }//ed if(attr=='object'){
               }//end if(key=='this')
               var part = attr.split(".");             
               if(part.length>=1&&part[0].split('@').length==1){//Il sagit des champs
@@ -8447,6 +8452,8 @@ angular.module("mainApp")
                                 value = $scope.currentObject;
                           }//end if($scope.currentObject["'"+part[1]+"'"])
                       }//end if(angular.isDefined(extern) && extern==true){                      
+                  }else{//Text a recopier
+                      value = part[0];
                   }//end if(part[0]=='user')
                   for(var i=1 ; i<part.length;i++){
                       if(value[part[i]]){
@@ -8461,40 +8468,44 @@ angular.module("mainApp")
                   //console.log(key+" ================== "+attr);
                   var mesages = attr.split("@");
                   var msg = "";
-                  for(var i=0;i<mesages.length;i++){
-                      //console.log(key+" ================== "+mesages[i]);
-                      var block = mesages[i].split(".");
-                      if(block.length==1){
-                          if(i==0){
-                              msg = mesages[i];
-                          }else{
-                              msg +=" @ "+mesages[i];
-                          }//end if(i==0)
-                      }else if(block.length>1){
-                            var value = null;
-                            if(block[0]=='user'){
-                                if($rootScope.globals.user){  
-                                   value = $rootScope.globals.user;
-                                }//end if($rootScope.globals.user["'"+part[1]+"'"])
-                            }else if(block[0]=='object'){
-                                if($scope.currentObject){
-                                    value = $scope.currentObject;
-                                }//end if($scope.currentObject["'"+part[1]+"'"])
-                            }//end if(part[0]=='user')
-                            for(var i=1 ; i<block.length;i++){
-                                if(value[block[i]]){
-                                    value = value[block[i]];
+                  if(mesages.length<=1){
+                      data[key] = mesages ;
+                  }else{
+                        for(var i=0;i<mesages.length;i++){
+                            //console.log(key+" ================== "+mesages[i]);
+                            var block = mesages[i].split(".");
+                            if(block.length==1){
+                                if(i==0){
+                                    msg = mesages[i];
                                 }else{
-                                    value = null;
-                                    break ;
-                                }//end if(value["'"+part[i]+'"'])
-                            }//end for(var i=1 ; i<part.length;i++)
-                            msg += " "+value ;           
-                      }//end if(part.length==1)
-                  }//end for(var i=0;i<mesages.length;i++)
-                  data[key] = msg ; 
-              }//end 
-              //console.log(key+" ================== "+angular.toJson(data));
+                                    msg +=" @ "+mesages[i];
+                                }//end if(i==0)
+                            }else if(block.length>1){
+                                  var value = null;
+                                  if(block[0]=='user'){
+                                      if($rootScope.globals.user){  
+                                         value = $rootScope.globals.user;
+                                      }//end if($rootScope.globals.user["'"+part[1]+"'"])
+                                  }else if(block[0]=='object'){
+                                      if($scope.currentObject){
+                                          value = $scope.currentObject;
+                                      }//end if($scope.currentObject["'"+part[1]+"'"])
+                                  }//end if(part[0]=='user')
+                                  for(var i=1 ; i<block.length;i++){
+                                      if(value[block[i]]){
+                                          value = value[block[i]];
+                                      }else{
+                                          value = null;
+                                          break ;
+                                      }//end if(value["'"+part[i]+'"'])
+                                  }//end for(var i=1 ; i<part.length;i++)
+                                  msg += " "+value ;           
+                            }//end if(part.length==1)
+                        }//end for(var i=0;i<mesages.length;i++)
+                        data[key] = msg ; 
+                    }//end if(mesages.length<=1){
+              }//end if(part.length>=1&&part[0].split('@').length==1)
+              console.log(key+" ================== "+angular.toJson(data));
               //console.log(key+" ====== "+angular.toJson(data)+" === Current Data : "+angular.toJson($scope.currentObject)+" Current User :"+angular.toJson($rootScope.globals.user));
           }
                         
@@ -9405,7 +9416,7 @@ angular.module("mainApp")
                                             $scope.temporalData = pwduser2;                                                                           
                                         }else{
                                             $scope.temporalData = new Object();
-                                            $scope.createEmptyTemporalObject(metaData,$scope.temporalData);                                        
+                                            $scope.createEmptyTemporalObject(metaData,template);                                        
                                         }
                                         if(index==null||!angular.isDefined(index)){
                                             index = 1;

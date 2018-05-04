@@ -9,6 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.keren.core.ifaces.presences.LignePointageManagerRemote;
 import com.kerem.core.MetaDataUtil;
 import com.keren.jaxrs.ifaces.presences.LignePointageRS;
@@ -20,7 +21,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 14:18:53 GMT+01:00 2018
  * 
  */
@@ -76,17 +78,32 @@ public class LignePointageRSImpl
    				throw new WebApplicationException(e);
    			}
    	}
+        
+        @Override
+	protected void processBeforeDelete(Object id) {
+            
+            // TODO Auto-generated method stub
+            LignePointage entity = manager.find("id", (Long) id);
 
+            if(!entity.getState().equalsIgnoreCase("etabli")){
+                throw new KerenExecption("Le Pointage est deja valide");
+            }//end if(entity.getState().equalsIgnoreCase("valide")){
+                
+            super.processBeforeDelete(id);
+	}
+        
 	@Override
 	public LignePointage justifier(HttpHeaders headers, LignePointage dmde) {
-		// TODO Auto-generated method stub
-		return dmde;
+            
+            // TODO Auto-generated method stub
+            return manager.justifie(dmde);
 	}
 
 	@Override
 	public LignePointage nonjustifier(HttpHeaders headers, LignePointage dmde) {
-		// TODO Auto-generated method stub
-		return dmde;
+            
+            // TODO Auto-generated method stub
+            return manager.nonjustifie(dmde);
 	}
 	
 	

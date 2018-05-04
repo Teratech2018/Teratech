@@ -49,50 +49,66 @@ public class ReclassementManagerImpl
         return "id";
     }
 
-	@Override
-	public List<Reclassement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Reclassement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Reclassement> results = new ArrayList<Reclassement>();
-		for(Reclassement data:datas){
-			results.add(new Reclassement(data));
-		}//end for(Reclassement data:datas){
-		return results;
-	}
+    @Override
+    public List<Reclassement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
+        
+        // TODO Auto-generated method stub
+        List<Reclassement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Reclassement> results = new ArrayList<Reclassement>();
+        
+        for(Reclassement data:datas){
+                results.add(new Reclassement(data));
+        }//end for(Reclassement data:datas){
+        
+        return results;
+    }
 
-	@Override
-	public Reclassement find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Reclassement data = super.find(propertyName, entityID);
-		Reclassement result = new Reclassement(data);
-		return result;
-	}
+    @Override
+    public Reclassement find(String propertyName, Long entityID) {
+        
+        // TODO Auto-generated method stub
+        Reclassement data = super.find(propertyName, entityID);
+        Reclassement result = new Reclassement(data);
+            
+        return result;
+    }
 
-	@Override
-	public List<Reclassement> findAll() {
-		// TODO Auto-generated method stub
-		List<Reclassement> datas = super.findAll();
-		List<Reclassement> results = new ArrayList<Reclassement>();
-		for(Reclassement data:datas){
-			results.add(new Reclassement(data));
-		}//end for(Reclassement data:datas){
-		return results;		
-	}
-
-	@Override
-	public Reclassement valide(Reclassement entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().trim().equalsIgnoreCase("etabli")){
-			entity.setState("valide");
-			entity = dao.update(entity.getId(), entity);
-			Employe salarie = entity.getSalarie();
-			salarie.setCategorie(entity.getCategorieN());
-			employedao.update(salarie.getId(), salarie);
-		}
-		return new Reclassement(entity);
-	}
+    @Override
+    public List<Reclassement> findAll() {
+        
+        // TODO Auto-generated method stub
+        List<Reclassement> datas = super.findAll();
+        List<Reclassement> results = new ArrayList<Reclassement>();
+        
+        for(Reclassement data:datas){
+                results.add(new Reclassement(data));
+        }//end for(Reclassement data:datas){
+        
+        return results;		
+    }
     
+    @Override
+    public Reclassement delete(Long id) {
+        
+        // TODO Auto-generated method stub    	
+        Reclassement data= super.delete(id);
+        
+        return new Reclassement(data);
+    }
     
-
+    @Override
+    public Reclassement valide(Reclassement entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getState().trim().equalsIgnoreCase("etabli")){
+            entity.setState("valide");
+            entity = dao.update(entity.getId(), entity);
+            Employe salarie = entity.getSalarie();
+            salarie.setCategorie(entity.getCategorieN());
+            employedao.update(salarie.getId(), salarie);
+        }
+        
+        return new Reclassement(entity);
+    }
 }

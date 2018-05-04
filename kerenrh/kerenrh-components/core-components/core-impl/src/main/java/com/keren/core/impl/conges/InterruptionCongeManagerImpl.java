@@ -105,7 +105,7 @@ public class InterruptionCongeManagerImpl
     public List<InterruptionConge> findAll() {
 
         // TODO Auto-generated method stub
-        List<InterruptionConge> datas = super.findByUniqueProperty("state", "etabli", null);
+        List<InterruptionConge> datas = super.findAll();
         List<InterruptionConge> result = new ArrayList<InterruptionConge>();
         
         for(InterruptionConge data:datas){
@@ -137,6 +137,7 @@ public class InterruptionCongeManagerImpl
             conge.setFinEffetif(dmde.getDate());
             daodcv.update(conge.getId(), conge);
         }
+        
         //On recupre l'objet courant
         result = new InterruptionConge(dmde);
         return result;

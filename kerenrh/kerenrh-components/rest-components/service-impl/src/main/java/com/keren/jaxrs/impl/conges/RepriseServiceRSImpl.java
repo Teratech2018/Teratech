@@ -80,7 +80,19 @@ public class RepriseServiceRSImpl
                 throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
             }
    	}
+        
+        @Override
+        protected void processBeforeDelete(Object id) {
+            
+            //Variables
+            RepriseService repriseService = manager.find("id",(Long)id);
+            
+            if(repriseService.getState().equalsIgnoreCase("confirmer")){
+                throw new KerenExecption("Suppression impossible, car l'element a deja ete valide");
+            }
 
+            super.processBeforeDelete(id);
+        }
     
 	@Override
 	protected void processBeforeSave(RepriseService entity) {
@@ -99,7 +111,7 @@ public class RepriseServiceRSImpl
             entity.getConge().setFinEffetif(entity.getDate());;
             super.processBeforeUpdate(entity);
 	}
-
+        
 	@Override
 	public RepriseService confirmer(HttpHeaders headers, RepriseService dmde) {
             return manager.confirmer(dmde);
@@ -109,6 +121,8 @@ public class RepriseServiceRSImpl
 		
             if (!entity.getDate().after(entity.getConge().getFin())) {
                 throw new KerenExecption("Impossible de saisir la reprise: conge encours.. !!! Le conge Prend Fin le : "+entity.getConge().getFin());
+            }else if(entity.getState().equalsIgnoreCase("confirmer")){
+                throw new KerenExecption("Modification impossible, car l'element a deja ete valide");
             }
 	}
 

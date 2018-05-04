@@ -30,7 +30,7 @@ public class RegulInventaire extends BaseInventaire implements Serializable{
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "REIN_ID")
-    @Predicate(label = "inv",type = LigneInventaire.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Lignes inventaire",updatable = false,editable = false)
+    @Predicate(label = "inv",type = LigneInventaire.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Lignes inventaire",updatable = false,editable = false,edittable = true)
     private List<LigneInventaire> lignes = new ArrayList<LigneInventaire>();
     
     public RegulInventaire(String code, Date date, Entrepot fentrepot, Emplacement femplacement) {

@@ -39,7 +39,7 @@ public class StartupBean {
     public void terminate() {
         state = States.SHUTTINGDOWN;
         // Perform termination
-        System.out.println(StartupBean.class+"=============================================================================================Shut down in progress");
+//        System.out.println(StartupBean.class+"=============================================================================================Shut down in progress");
     }
     public States getState() {
         return state;

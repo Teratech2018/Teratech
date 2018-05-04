@@ -56,7 +56,7 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
     
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "DOST_ID")
-    @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération")
+    @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération",edittable = true)
     protected List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
     
     @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")

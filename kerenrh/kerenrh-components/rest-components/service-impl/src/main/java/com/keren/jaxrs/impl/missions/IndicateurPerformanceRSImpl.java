@@ -71,22 +71,44 @@ public class IndicateurPerformanceRSImpl
     }
     
     @Override
-	protected void processBeforeUpdate(IndicateurPerformance entity) {
-                if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-                    throw new KerenExecption("L'intitulé est obligatoire");
-                }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
-                    throw new KerenExecption("Le Type d'indicateur est obligatoire");
-                }
-                super.processBeforeUpdate(entity);
+    protected void processBeforeUpdate(IndicateurPerformance entity) {
+            if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("L'intitulé est obligatoire");
+            }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+                throw new KerenExecption("Le Type d'indicateur est obligatoire");
+            }
+            super.processBeforeUpdate(entity);
+    }
+
+    @Override
+    protected void processBeforeSave(IndicateurPerformance entity) {
+        
+            if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("L'intitulé est obligatoire");
+            }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+                throw new KerenExecption("Le Type d'indicateur est obligatoire");
+            }
+            
+            super.processBeforeSave(entity);
+    }
+    
+    @Override
+    public IndicateurPerformance delete(Long id) {
+        
+        //Initialisation
+        IndicateurPerformance data = null;
+        IndicateurPerformance result = null;
+
+        try{
+
+            data = super.delete(id);
+            result = new IndicateurPerformance(data);
+
+        }catch(Exception e){
+
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
         }
 
-	@Override
-	protected void processBeforeSave(IndicateurPerformance entity) {
-                if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-                    throw new KerenExecption("L'intitulé est obligatoire");
-                }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
-                    throw new KerenExecption("Le Type d'indicateur est obligatoire");
-                }
-                super.processBeforeSave(entity);
-        }
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }
 }

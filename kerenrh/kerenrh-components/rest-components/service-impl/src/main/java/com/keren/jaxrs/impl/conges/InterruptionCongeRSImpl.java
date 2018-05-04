@@ -9,6 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.commons.DateHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.conges.InterruptionCongeManagerRemote;
@@ -82,37 +83,58 @@ public class InterruptionCongeRSImpl
 
 	@Override
 	protected void processBeforeSave(InterruptionConge entity) {
-		_controlreView(entity);
 		
-                //On applique l'etat
-                entity.setState("etabli");
-                
-		entity.setEmploye(entity.getConge().getEmploye());
-		entity.setDateDebutConge(entity.getConge().getDebut());
-		long duree = entity.getDate().getTime()-entity.getConge().getFin().getTime();
-		long nbrejourr = entity.getDate().getTime()-entity.getDateDebutConge().getTime();
-		entity.setDureeconge(new Long(duree).shortValue());
-		entity.setJoursr(new Long(nbrejourr).shortValue());
-		
-		entity.getConge().setFinEffetif(entity.getDate());
-		super.processBeforeSave(entity);
+            _controlreView(entity);
+
+            //On applique l'etat
+            entity.setState("etabli");
+
+            entity.setEmploye(entity.getConge().getEmploye());
+            entity.setDateDebutConge(entity.getConge().getDebut());
+            entity.setDateFinconge(entity.getConge().getFin());
+
+            long duree = DateHelper.numberOfDays(entity.getConge().getDebut(), entity.getConge().getFin());
+            long nbrejourr = DateHelper.numberOfDays(entity.getDate(), entity.getConge().getFin());
+
+            entity.setDureeconge(new Long(duree).shortValue());
+            entity.setJoursr(new Long(nbrejourr).shortValue());
+
+            entity.getConge().setFinEffetif(entity.getDate());
+            super.processBeforeSave(entity);
 	}
 
 	@Override
 	protected void processBeforeUpdate(InterruptionConge entity) {
-		final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-		this._controlreView(entity);
-		entity.setEmploye(entity.getConge().getEmploye());
-		entity.setDateDebutConge(entity.getConge().getDebut());
-		long duree = Math.abs(entity.getConge().getFin().getTime()-entity.getDate().getTime())/MILLISECONDS_PER_DAY;
-		long nbrejourr = Math.abs(entity.getDateDebutConge().getTime()-entity.getDate().getTime())/MILLISECONDS_PER_DAY;
-		entity.setDureeconge(new Long(duree).shortValue());
-		entity.setJoursr(new Long(nbrejourr).shortValue());
 		
-		entity.getConge().setFinEffetif(entity.getDate());
-		super.processBeforeUpdate(entity);
+            this._controlreView(entity);
+
+            entity.setEmploye(entity.getConge().getEmploye());
+            entity.setDateDebutConge(entity.getConge().getDebut());
+            entity.setDateFinconge(entity.getConge().getFin());
+
+            long duree = DateHelper.numberOfDays(entity.getConge().getDebut(), entity.getConge().getFin());
+            long nbrejourr = DateHelper.numberOfDays(entity.getDate(), entity.getConge().getFin());
+
+            entity.setDureeconge(new Long(duree).shortValue());
+            entity.setJoursr(new Long(nbrejourr).shortValue());
+
+            entity.getConge().setFinEffetif(entity.getDate());
+            super.processBeforeUpdate(entity);
 	}
 
+        @Override
+        protected void processBeforeDelete(Object id) {
+            
+            //Variables
+            InterruptionConge interruptionConge = manager.find("id",(Long)id);
+            
+            if(interruptionConge.getState().equalsIgnoreCase("confirmer")){
+                throw new KerenExecption("Suppression impossible, car l'element a deja ete valide");
+            }
+
+            super.processBeforeDelete(id);
+        }
+        
 	@Override
 	public InterruptionConge confirmer(HttpHeaders headers, InterruptionConge dmde) {
 		return manager.confirmer(dmde);
@@ -120,9 +142,14 @@ public class InterruptionCongeRSImpl
 	
 	
 	private void _controlreView(InterruptionConge entity){
-		 if(!entity.getDate().before(entity.getConge().getFin())){
-	            throw new KerenExecption("Date d'interruption Invalide !!");
-	        }
+            
+            if(entity.getDate().before(entity.getConge().getDebut())){
+                throw new KerenExecption("Date d'interruption Invalide !!");
+            }else if(entity.getDate().after(entity.getConge().getFin())){
+                throw new KerenExecption("Date d'interruption Invalide !!");
+            }else if(entity.getState().equalsIgnoreCase("confirmer")){
+                throw new KerenExecption("Modification impossible, car l'element a deja ete valide");
+            }
 	}
 
 }

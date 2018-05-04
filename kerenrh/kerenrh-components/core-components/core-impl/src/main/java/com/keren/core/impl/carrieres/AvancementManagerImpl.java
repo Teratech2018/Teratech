@@ -48,60 +48,78 @@ public class AvancementManagerImpl
         return "id";
     }
     
+    @Override
+    public List<Avancement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
+        
+        // TODO Auto-generated method stub
+        List<Avancement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Avancement> result = new ArrayList<Avancement>();
+        
+        for(Avancement data:datas){
+            result.add(new Avancement(data));
+        }
+        
+        return result;
+    }
+
+    @Override
+    public Avancement find(String propertyName, Long entityID) {
+        
+        // TODO Auto-generated method stub
+        Avancement data = super.find(propertyName, entityID);
+        Avancement result = new Avancement(data);
+        
+        return result;
+    }
+
+    @Override
+    public List<Avancement> findAll() {
+        
+        // TODO Auto-generated method stub
+        List<Avancement> datas =  super.findAll();
+        List<Avancement> result = new ArrayList<Avancement>();
+        
+        for(Avancement data:datas){
+                result.add(new Avancement(data));
+        }
+        
+        return result;
+    }
     
+    @Override
+    public Avancement delete(Long id) {
+        
+        // TODO Auto-generated method stub    	
+        Avancement data= super.delete(id);
+        
+        return new Avancement(data);
+    }
 
-	@Override
-	public List<Avancement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Avancement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Avancement> result = new ArrayList<Avancement>();
-		for(Avancement data:datas){
-			result.add(new Avancement(data));
-		}
-		return result;
-	}
+    @Override
+    public Avancement valide(Avancement entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getState().trim().equalsIgnoreCase("etabli")){
+            
+            entity.setState("valide");
+            entity = dao.update(entity.getId(), entity);
+            Employe salarie = entity.getSalarie();
+            salarie.setCategorie(entity.getCategorieN());
+            salarie.setEchelon(entity.getEchelonN());
+            employedao.update(salarie.getId(), salarie);     
+        }
+        
+        return new Avancement(entity);
+    }
 
-	@Override
-	public Avancement find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Avancement data = super.find(propertyName, entityID);
-		Avancement result = new Avancement(data);
-		return result;
-	}
-
-	@Override
-	public List<Avancement> findAll() {
-		// TODO Auto-generated method stub
-		List<Avancement> datas =  super.findAll();
-		List<Avancement> result = new ArrayList<Avancement>();
-		for(Avancement data:datas){
-			result.add(new Avancement(data));
-		}
-		return result;
-	}
-
-	@Override
-	public Avancement valide(Avancement entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().trim().equalsIgnoreCase("etabli")){
-			entity.setState("valide");
-			entity = dao.update(entity.getId(), entity);
-			Employe salarie = entity.getSalarie();
-			salarie.setCategorie(entity.getCategorieN());
-			salarie.setEchelon(entity.getEchelonN());
-			employedao.update(salarie.getId(), salarie);
-			
-		}
-		return new Avancement(entity);
-	}
-
-	@Override
-	public Avancement annule(Avancement entity) {
-		// TODO Auto-generated method stub
-		entity.setState("annule");
-		dao.update(entity.getId(), entity);
-		return entity;
-	}
+    @Override
+    public Avancement annule(Avancement entity) {
+        
+        // TODO Auto-generated method stub
+        entity.setState("annule");
+        dao.update(entity.getId(), entity);
+        return entity;
+    }
 
 }

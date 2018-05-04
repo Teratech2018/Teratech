@@ -9,6 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.presences.RetardManagerRemote;
 import com.keren.jaxrs.ifaces.presences.RetardRS;
@@ -21,7 +22,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Mon Apr 23 09:28:01 GMT+01:00 2018
  * 
  */
@@ -77,7 +79,20 @@ public class RetardRSImpl
 				throw new WebApplicationException(e);
 			}
 	}
+        
+        @Override
+	protected void processBeforeDelete(Object id) {
+            
+            // TODO Auto-generated method stub
+            Retard entity = manager.find("id", (Long) id);
 
+            if(!entity.getState().equalsIgnoreCase("etabli")){
+                throw new KerenExecption("Le Retard est deja valide");
+            }//end if(entity.getState().equalsIgnoreCase("valide")){
+                
+		super.processBeforeDelete(id);
+	}
+        
 	@Override
 	public Retard justifier(HttpHeaders headers, Retard entity) {
 		// TODO Auto-generated method stub

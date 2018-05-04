@@ -70,7 +70,7 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
     
     @OneToMany(orphanRemoval = false,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "NOFR_ID")
-    @Predicate(label = "Lignes",type = LigneNoteFrais.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "NOTES DE FRAIS")
+    @Predicate(label = "Lignes",type = LigneNoteFrais.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "NOTES DE FRAIS",edittable = true)
     private List<LigneNoteFrais> notes = new ArrayList<LigneNoteFrais>();
 
     @Predicate(label = "Notes",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")

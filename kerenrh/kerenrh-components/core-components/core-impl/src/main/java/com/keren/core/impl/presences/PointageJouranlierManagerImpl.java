@@ -94,7 +94,7 @@ public class PointageJouranlierManagerImpl
 		entity = dao.findByPrimaryKey("code", entity.getCode());
 		for(LignePointage ligne:entity.getLignes()){
 			ligne.setPointage(entity);
-//			ligne.setDatepointage(entity.getDatepointage());
+			ligne.setDatepointage(entity.getDatepointage());
 			ligne.setState("etabli");
 			lignedao.save(ligne);
 		}//end for(LignePointage ligne:entity.getLignes()){
@@ -120,6 +120,7 @@ public class PointageJouranlierManagerImpl
 			}else{
 				map.remove(ligne.getId());
 				ligne.setPointage(entity);
+				ligne.setDatepointage(entity.getDatepointage());
 				lignedao.update(ligne.getId(), ligne);
 			}//end if(ligne.getId()<=0){
 		}//end for(LignePointage ligne:entity.getLignes()){

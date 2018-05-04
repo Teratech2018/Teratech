@@ -46,88 +46,112 @@ public class SuiviStageManagerImpl
         return "id";
     }
 
-	@Override
-	public List<SuiviStage> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		container.addNotEq("state", "etabli");
-		container.addNotEq("state", "annule");
-		predicats.addAll(container.getPredicats());
-		List<SuiviStage> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<SuiviStage> results = new ArrayList<SuiviStage>();
-		for(SuiviStage data:datas){
-			results.add(new SuiviStage(data));
-		}
-		return results;
-	}
+    @Override
+    public List<SuiviStage> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
 
-	@Override
-	public SuiviStage find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		SuiviStage data = super.find(propertyName, entityID);
-		SuiviStage result = new SuiviStage(data);
-		for(TacheStage tach:data.getTaches()){
-			result.getTaches().add(new TacheStage(tach));
-		}
-		for(EvaluationStage tach:data.getEvaluations()){
-			result.getEvaluations().add(new EvaluationStage(tach));
-		}
-		for(LivrableStage tach:data.getLivrables()){
-			result.getLivrables().add(new LivrableStage(tach));
-		}
-		return result;
-	}
+        // TODO Auto-generated method stub
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addNotEq("state", "etabli");
+        container.addNotEq("state", "annule");
+        predicats.addAll(container.getPredicats());
+        List<SuiviStage> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<SuiviStage> results = new ArrayList<SuiviStage>();
 
-	@Override
-	public List<SuiviStage> findAll() {
-		// TODO Auto-generated method stub		
-		List<SuiviStage> datas = super.findAll();
-		List<SuiviStage> results = new ArrayList<SuiviStage>();
-		for(SuiviStage data:datas){
-			results.add(new SuiviStage(data));
-		}
-		return results;
-	}
-	
-	
+        for(SuiviStage data:datas){
+            results.add(new SuiviStage(data));
+        }
 
-	@Override
-	public void processAfterSave(SuiviStage entity) {
-		// TODO Auto-generated method stub
-		super.processAfterSave(entity);
-	}
+        return results;
+    }
 
-	@Override
-	public void processBeforeUpdate(SuiviStage entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().equalsIgnoreCase("valide")){
-			entity.setState("encours");			
-		}
-		super.processAfterUpdate(entity);
-	}
+    @Override
+    public SuiviStage find(String propertyName, Long entityID) {
 
-	@Override
-	public SuiviStage termine(SuiviStage entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().equalsIgnoreCase("valide")||
-				entity.getState().equalsIgnoreCase("encours")){
-			entity.setState("termine");
-			entity = dao.update(entity.getId(), entity);
-		}
-		SuiviStage result = new SuiviStage(entity);
-		for(TacheStage tach:entity.getTaches()){
-			result.getTaches().add(new TacheStage(tach));
-		}
-		for(EvaluationStage tach:entity.getEvaluations()){
-			result.getEvaluations().add(new EvaluationStage(tach));
-		}
-		for(LivrableStage tach:entity.getLivrables()){
-			result.getLivrables().add(new LivrableStage(tach));
-		}
-		return result;
-	}
-    
-    
+        // TODO Auto-generated method stub
+        SuiviStage data = super.find(propertyName, entityID);
+        SuiviStage result = new SuiviStage(data);
 
+        for(TacheStage tach:data.getTaches()){
+                result.getTaches().add(new TacheStage(tach));
+        }
+
+        for(EvaluationStage tach:data.getEvaluations()){
+                result.getEvaluations().add(new EvaluationStage(tach));
+        }
+
+        for(LivrableStage tach:data.getLivrables()){
+                result.getLivrables().add(new LivrableStage(tach));
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<SuiviStage> findAll() {
+
+        // TODO Auto-generated method stub		
+        List<SuiviStage> datas = super.findAll();
+        List<SuiviStage> results = new ArrayList<SuiviStage>();
+
+        for(SuiviStage data:datas){
+                results.add(new SuiviStage(data));
+        }
+
+        return results;
+    }
+
+    @Override
+    public void processAfterSave(SuiviStage entity) {
+
+        // TODO Auto-generated method stub
+        super.processAfterSave(entity);
+    }
+
+    @Override
+    public void processBeforeUpdate(SuiviStage entity) {
+
+        // TODO Auto-generated method stub
+        if(entity.getState().equalsIgnoreCase("valide")){
+            entity.setState("encours");			
+        }
+
+        super.processAfterUpdate(entity);
+    }
+
+    @Override
+    public SuiviStage termine(SuiviStage entity) {
+
+        // TODO Auto-generated method stub
+        if(entity.getState().equalsIgnoreCase("valide")||
+                        entity.getState().equalsIgnoreCase("encours")){
+                entity.setState("termine");
+                entity = dao.update(entity.getId(), entity);
+        }
+
+        SuiviStage result = new SuiviStage(entity);
+
+        for(TacheStage tach:entity.getTaches()){
+                result.getTaches().add(new TacheStage(tach));
+        }
+
+        for(EvaluationStage tach:entity.getEvaluations()){
+                result.getEvaluations().add(new EvaluationStage(tach));
+        }
+
+        for(LivrableStage tach:entity.getLivrables()){
+                result.getLivrables().add(new LivrableStage(tach));
+        }
+
+        return result;
+    }
+
+    @Override
+    public SuiviStage delete(Long id) {
+
+        // TODO Auto-generated method stub    	
+        SuiviStage data= super.delete(id);
+
+        return new SuiviStage(data);
+    }
 }

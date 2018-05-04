@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -329,10 +328,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     @Override
     public  MetaData getMetaData(@Context HttpHeaders headers){
         return new MetaData();
-    }
-
-    
-
+    }   
     
     @SuppressWarnings("empty-statement")
     protected void processBeforeSave(T entity) {

@@ -21,7 +21,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Apr 10 17:59:57 GMT+01:00 2018
  * 
  */
@@ -83,6 +84,19 @@ public class SuiviStageRSImpl
    		}
    		return meta;
    	}
+        
+        @Override
+        protected void processBeforeDelete(Object id) {
+
+            // TODO Auto-generated method stub
+            SuiviStage entity = manager.find("id", (Long) id);
+            
+            if(!entity.getState().equalsIgnoreCase("etabli")){
+                throw new KerenExecption("Le SuiviStage est déjà en cours de traitement");
+            }//end if(!entity.getState().equalsIgnoreCase("etabli")){
+
+            super.processBeforeDelete(id);
+        }
 
 	@Override
 	public SuiviStage termine(HttpHeaders headers, SuiviStage entity) {
