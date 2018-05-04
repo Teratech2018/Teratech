@@ -10,7 +10,8 @@ package com.keren.kerenpaie.tools.report;
 public enum ReportsName {
 
    
-    BULLETIN_PAIE("pbulletin.jasper");
+    BULLETIN_PAIE("pbulletin.jasper"),
+    LIVRE_PAIE("plivrepaie.jasper");
 
     /**
      * Nom de l'etat sans extension

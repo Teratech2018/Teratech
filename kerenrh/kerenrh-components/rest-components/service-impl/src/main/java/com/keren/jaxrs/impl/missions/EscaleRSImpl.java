@@ -87,4 +87,24 @@ public class EscaleRSImpl
         }
         super.processBeforeUpdate(entity);
     }
+    
+    @Override
+    public Escale delete(Long id) {
+        
+        //Initialisation
+        Escale data = null;
+        Escale result = null;
+        
+        try{
+        
+            data = super.delete(id);
+            result = new Escale(data);
+            
+        }catch(Exception e){
+            
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
+        }
+        
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }
 }

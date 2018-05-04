@@ -45,8 +45,14 @@ public class RetardManagerImpl
 
 	@Override
 	public Retard delete(Long id) {
-		// TODO Auto-generated method stub
-		return super.delete(id);
+            
+            Retard data = super.find("id", id);
+            Retard result = new Retard(data);
+            
+            //on supprime
+            super.delete(id);
+            
+            return result;
 	}
 
 	@Override
@@ -58,14 +64,29 @@ public class RetardManagerImpl
 		container.addEq("retard", Boolean.TRUE);
 		container.addEq("state", "etabli");
 		predicats.addAll(container.getPredicats());
+                
 		List<Retard> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<Retard> results = new ArrayList<Retard>();
+                
 		for(Retard data:datas){
 			results.add(new Retard(data));
 		}//end for(Retard data:datas){
 		return results;
 	}
+        
+        @Override
+        public Long count(List<Predicat> predicats) {
 
+            //On applique les criteres
+            RestrictionsContainer container = RestrictionsContainer.newInstance();
+            container.addEq("pointage.state", "confirmer");
+            container.addEq("retard", Boolean.TRUE);
+            container.addEq("state", "etabli");
+            predicats.addAll(container.getPredicats());
+
+            return super.count(predicats);
+        }
+        
 	@Override
 	public Retard find(String propertyName, Long entityID) {
 		// TODO Auto-generated method stub

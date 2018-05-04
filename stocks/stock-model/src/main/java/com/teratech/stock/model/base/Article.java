@@ -108,7 +108,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
    
    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
    @JoinColumn(name = "LIEM_ID")
-   @Predicate(label = "LI",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage")
+   @Predicate(label = "LI",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage",edittable = true)
    private List<LienEmplacement> stockages = new ArrayList<LienEmplacement>();
     /**
      * 

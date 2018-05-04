@@ -41,51 +41,57 @@ public class DepartementManagerImpl
         return "id";
     }
 
-	@Override
-	public Departement delete(Long id) {
-		// TODO Auto-generated method stub
-		return super.delete(id);
-	}
+    @Override
+    public List<Departement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
+        
+        // TODO Auto-generated method stub
+        List<Departement> datas =  super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Departement> result = new ArrayList<Departement>();
 
-	@Override
-	public List<Departement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Departement> datas =  super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Departement> result = new ArrayList<Departement>();
-		for(Departement dep:datas){
-			result.add(new Departement(dep));
-		}
-		return result;
-	}
+        for(Departement dep:datas){
+                result.add(new Departement(dep));
+        }
 
-	@Override
-	public Departement find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Departement data = super.find(propertyName, entityID);
-		Departement result = new Departement(data);
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	public List<Departement> findAll() {
-		// TODO Auto-generated method stub
-		List<Departement> datas =  super.findAll();
-		List<Departement> result = new ArrayList<Departement>();
-		for(Departement dep:datas){
-			result.add(new Departement(dep));
-		}
-		return result;
-	}
+    @Override
+    public Departement find(String propertyName, Long entityID) {
+        
+        // TODO Auto-generated method stub
+        Departement data = super.find(propertyName, entityID);
+        Departement result = new Departement(data);
+        
+        return result;
+    }
+
+    @Override
+    public List<Departement> findAll() {
+        
+        // TODO Auto-generated method stub
+        List<Departement> datas =  super.findAll();
+        List<Departement> result = new ArrayList<Departement>();
+
+        for(Departement dep:datas){
+                result.add(new Departement(dep));
+        }
+
+        return result;
+    }
 
     @Override
     public void processBeforeSave(Departement entity) {
-        System.out.println(DepartementManagerImpl.class.toString()+" ========================== "+entity);
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
     
-        
-        
-    
+    @Override
+    public Departement delete(Long id) {
 
+        // TODO Auto-generated method stub    	
+        Departement data= super.delete(id);
+
+        return new Departement(data);
+    }    
+       
 }

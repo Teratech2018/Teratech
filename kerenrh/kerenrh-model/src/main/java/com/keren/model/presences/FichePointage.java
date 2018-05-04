@@ -40,15 +40,15 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
 	private Boolean actif = Boolean.TRUE;
 	
 	@Predicate(label="Intitulé de la fiche",search=true)
-	private String intitule ;
-	
-	@Predicate(label="Générer pour" ,target="combobox",values="Tout les employes;Pour un département",search=true,observable=true,updatable=false)
-	private String porte ="0";
-	
+	private String intitule ;	
+        
 	@ManyToOne
 	@JoinColumn(name="DEP_ID")
-	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true,hidden="currentObject.porte=='0'",updatable=false)
+	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true,updatable=true)
 	private Departement departement;
+        
+	@Predicate(label="Générer pour" ,target="combobox",values="Tout les employes;Pour un département",search=true,observable=true,updatable=true)
+	private String porte ="0";	
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	@JoinColumn(name="FIPO_ID")

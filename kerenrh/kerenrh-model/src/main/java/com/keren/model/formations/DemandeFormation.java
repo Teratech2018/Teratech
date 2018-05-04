@@ -22,6 +22,7 @@ import com.keren.model.employes.Employe;
 import com.keren.model.structures.Societe;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * @author BEKO
@@ -41,7 +42,7 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	@Predicate(label="Demandeur",type=Employe.class,target="many-to-one",optional=false,search=true,observable=true)
 	private Employe demandeur ;
 	
-	@Predicate(label="Objet",search=true)
+	@Predicate(label="Objet",search=true,optional=false)
 	private String objet ;
 	
 	@ManyToOne
@@ -58,12 +59,13 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	@Lob
 	private String motif ;
 	
-	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Décision de la Drirection")
+	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Décision de la Direction")
 	@Lob
 	private String decision ;
 
 	@ManyToOne
 	@JoinColumn(name="BEFO_ID")
+        @JsonIgnore
 	private BesionFormation besion ;
 	
 	@Predicate(label="Etat",hide=true,search=true)

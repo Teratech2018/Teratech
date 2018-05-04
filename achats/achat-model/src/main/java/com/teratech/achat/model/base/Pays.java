@@ -40,7 +40,7 @@ public class Pays extends BaseElement implements Serializable,Comparable<Pays>{
     @Predicate(label = "Dévise",type = Devise.class,target="many-to-one",search = true)
     private Devise devise ;
     
-    @Predicate(label = "Regions / Etats" , type = Region.class,target = "one-to-many" ,group = true,groupName = "regions",groupLabel = "Régions", search = false)
+    @Predicate(label = "Regions / Etats" , type = Region.class,target = "one-to-many" ,group = true,groupName = "regions",groupLabel = "Régions", edittable = true)
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "PAYS_ID")
     private List<Region> etats = new ArrayList<Region>();

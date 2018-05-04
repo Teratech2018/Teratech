@@ -87,7 +87,19 @@ public class SanctionManagerImpl
   		}
   		return result;
   	}
-
+        
+        @Override
+	public Sanction delete(Long id) {
+            
+            Sanction data = super.find("id", id);
+            Sanction result = new Sanction(data);
+            
+            //on supprime
+            super.delete(id);
+            
+            return result;
+	}
+        
 	@Override
 	public void processAfterDelete(Sanction entity) {
 		// TODO Auto-generated method stub

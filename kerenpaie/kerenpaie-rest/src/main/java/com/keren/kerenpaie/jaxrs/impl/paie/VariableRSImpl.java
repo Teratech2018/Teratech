@@ -138,7 +138,7 @@ public class VariableRSImpl
 	public Variable evaluer(HttpHeaders headers, Variable entity) {
 		// TODO Auto-generated method stub
 	  try{
-		Double valeur = moteurmanager.eval(entity, null, null, null);
+		Double valeur = moteurmanager.eval(entity, null, null, null,entity.getSociete());
 		if(valeur<0){
 			throw new KerenExecption("Echec de validation de la variable Vérifiez que : <br/> Les variables existent <br/> L'expression arithmétique est bien formées");
 		}

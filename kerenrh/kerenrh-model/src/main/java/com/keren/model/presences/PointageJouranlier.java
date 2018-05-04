@@ -44,11 +44,11 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 	
 	@ManyToOne
 	@JoinColumn(name="FIPO_ID")
-	@Predicate(label="Fiche de pointage",type=FichePointage.class,target="many-to-one",updatable=false,search=true,observable=true)
+	@Predicate(label="Fiche de pointage",type=FichePointage.class,target="many-to-one",updatable=true,search=true,observable=true)
 	private FichePointage fiche ;
 
 	@Temporal(TemporalType.DATE)
-	@Predicate(label="Date de la feuille de presence",type=Date.class,target="date",updatable=false,optional=false,search=true)
+	@Predicate(label="Date de la feuille de presence",type=Date.class,target="date",updatable=true,optional=false,search=true)
 	private Date datepointage ;
 	
 	@OneToMany(mappedBy="pointage",fetch=FetchType.LAZY)

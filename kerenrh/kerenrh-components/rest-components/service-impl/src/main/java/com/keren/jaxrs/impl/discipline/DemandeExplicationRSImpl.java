@@ -22,7 +22,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 16:33:29 GMT+01:00 2018
  * 
  */
@@ -57,61 +58,73 @@ public class DemandeExplicationRSImpl
     }
     
     @Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-			MetaData meta = MetaDataUtil.getMetaData(new DemandeExplication(), new HashMap<String, MetaData>()
-					, new ArrayList<String>());			
-			MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-			meta.getHeader().add(stautsbar);
-			return meta;
-		} catch (Exception e) {
-   			// TODO Auto-generated catch block
-   			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
-   		}
-	}
+    public MetaData getMetaData(HttpHeaders headers) {
+        
+        // TODO Auto-generated method stub
+        try {
+            MetaData meta = MetaDataUtil.getMetaData(new DemandeExplication(), new HashMap<String, MetaData>()
+                            , new ArrayList<String>());			
+            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+            meta.getHeader().add(stautsbar);
+            return meta;
+        } catch (Exception e) {
+            
+            // TODO Auto-generated catch block
+            throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
+        }
+    }
 
-	
 
-	@Override
-	protected void processBeforeDelete(Object id) {
-		// TODO Auto-generated method stub
-		DemandeExplication entity = manager.find("id", (Long) id);
-		if(!entity.getState().equalsIgnoreCase("etabli")){
-			throw new KerenExecption("La demende est déjà en cours de traitement");
-		}//end if(!entity.getState().equalsIgnoreCase("etabli")){
-		super.processBeforeDelete(id);
-	}
 
-	@Override
-	protected void processBeforeSave(DemandeExplication entity) {
-		// TODO Auto-generated method stub
-		if(entity.getAuteur()==null){
-			throw new KerenExecption("L'auteur de la demande est obligatoire");
-		}else if(entity.getReference()==null||entity.getReference().trim().isEmpty()){
-			throw new KerenExecption("La Reference de la demande est obligatoire");
-		}else if(entity.getDestinataire()==null){
-			throw new KerenExecption("L'employé concerné par la demande est obligatoire");
-		}
-		entity.setState("etabli");
-		super.processBeforeSave(entity);
-	}
+    @Override
+    protected void processBeforeDelete(Object id) {
+        
+        // TODO Auto-generated method stub
+        DemandeExplication entity = manager.find("id", (Long) id);
+        if(!entity.getState().equalsIgnoreCase("etabli")){
+            throw new KerenExecption("La demende est déjà en cours de traitement");
+        }//end if(!entity.getState().equalsIgnoreCase("etabli")){
+        
+        super.processBeforeDelete(id);
+    }
 
-	@Override
-	protected void processBeforeUpdate(DemandeExplication entity) {
-		// TODO Auto-generated method stub
-		if(entity.getAuteur()==null){
-			throw new KerenExecption("L'auteur de la demande est obligatoire");
-		}else if(entity.getReference()==null||entity.getReference().trim().isEmpty()){
-			throw new KerenExecption("La Reference de la demande est obligatoire");
-		}else if(entity.getDestinataire()==null){
-			throw new KerenExecption("L'employé concerné par la demande est obligatoire");
-		}if(!entity.getState().equalsIgnoreCase("etabli")){
-			throw new KerenExecption("La demende est déjà en cours de traitement");
-		}
-		super.processBeforeUpdate(entity);
-	}
-    
-    
+    @Override
+    protected void processBeforeSave(DemandeExplication entity) {
+            
+        // TODO Auto-generated method stub
+        if(entity.getAuteur()==null){
+            throw new KerenExecption("L'auteur de la demande est obligatoire");
+        }else if(entity.getReference()==null||entity.getReference().trim().isEmpty()){
+            throw new KerenExecption("La Reference de la demande est obligatoire");
+        }else if(entity.getDestinataire()==null){
+            throw new KerenExecption("L'employé concerne par la demande est obligatoire");
+        }else if(entity.getDaten() != null && entity.getDated() != null){
+            
+            if(entity.getDated().before(entity.getDaten())){
+                throw new KerenExecption("La date de decharge est incorrecte");
+            }           
+        }
+        
+        entity.setState("etabli");
+        super.processBeforeSave(entity);
+    }
 
+    @Override
+    protected void processBeforeUpdate(DemandeExplication entity) {
+            
+        // TODO Auto-generated method stub
+        if(entity.getAuteur()==null){
+            throw new KerenExecption("L'auteur de la demande est obligatoire");
+        }else if(entity.getReference()==null||entity.getReference().trim().isEmpty()){
+            throw new KerenExecption("La Reference de la demande est obligatoire");
+        }else if(entity.getDestinataire()==null){
+            throw new KerenExecption("L'employé concerné par la demande est obligatoire");
+        }if(!entity.getState().equalsIgnoreCase("etabli")){
+            throw new KerenExecption("La demende est déjà en cours de traitement");
+        }else if(entity.getDated().before(entity.getDaten())){
+            throw new KerenExecption("La date de décharge est incorrecte");
+        }
+        
+        super.processBeforeUpdate(entity);
+    }
 }

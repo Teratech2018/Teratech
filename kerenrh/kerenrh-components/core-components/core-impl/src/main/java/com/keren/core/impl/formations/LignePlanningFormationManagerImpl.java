@@ -83,6 +83,15 @@ public class LignePlanningFormationManagerImpl
 		return result;
 	}
 
+    @Override
+    public void processBeforeUpdate(LignePlanningFormation entity) {
+        LignePlanningFormation data = super.find("id", entity.getId());
+        entity.setPlanning(data.getPlanning());
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+        
+        
+
 	@Override
 	public List<LignePlanningFormation> findAll() {
 		// TODO Auto-generated method stub		
@@ -97,15 +106,17 @@ public class LignePlanningFormationManagerImpl
 	@Override
 	public LignePlanningFormation demaree(LignePlanningFormation entity) {
 		// TODO Auto-generated method stub
+             LignePlanningFormation data = super.find("id", entity.getId());
 		if(entity.getState().equalsIgnoreCase("valide")){
-			Formation formation = new Formation(entity);
+			Formation formation = new Formation(data);
 			formation.setState("etabli");
 			formationdao.save(formation);
 			//Traitement du planning de Formation
-			PlanningFormation planning = entity.getPlanning();
+			PlanningFormation planning = data.getPlanning();
 			planning.setState("encours");
 			planningdao.update(planning.getId(), planning);
 			//Traitement de ligne
+                        entity.setPlanning(planning);
 			entity.setState("demarre");
 			entity = dao.update(entity.getId(), entity);
 		}//end if(entity.getState().equalsIgnoreCase("valide")){

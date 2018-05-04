@@ -842,6 +842,7 @@ angular.module('keren.core.commons')
                 }else{return 0;}//end if(datas && datas.length>0)
             }, 
             funcEval:function(obj,currentObject,currentUser  , expr){
+//                console.log("funcEval:function(obj,currentObject,currentUser  , expr) ========== "+expr);
                 var entity = angular.fromJson(expr);
                 var data = obj;
                 if(entity.source=='this'){
@@ -990,7 +991,7 @@ angular.module('keren.core.commons')
                 container.setAttribute("id",id);
                 container.innerHTML = script;
                //parcours des tr lignes
-//               console.log("tableFooterBuilder ===  === "+container.childNodes.length+" ********* "+container.innerHTML);
+//               console.log("tableFooterBuilder ===  === "+container.childNodes.length+" ********* script : "+script);
                 for(var i=0;i<container.childNodes.length;i++){
                     //traitement des colonnes
                     var rowNode = container.childNodes[i];
@@ -1000,7 +1001,7 @@ angular.module('keren.core.commons')
                             if(colNode.tagName=='TD'){
                                 var value = colNode.textContent;                        
                                 if(value!=null&&value!=""){
-//                                    console.log("tableFooterBuilder ===  ===  ********* "+colNode.tagName+" === "+colNode.textContent);
+//                                    console.log("tableFooterBuilder ===  ===  ********* "+colNode.tagName+" === "+colNode.textContent+" ===== Value : "+value);
                                     var data = this.sumListExpr(value,datas,object,user);
                                     if(!isNaN(data)){
                                         colNode.textContent = $filter('number')(data,0);

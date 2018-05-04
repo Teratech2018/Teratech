@@ -10,6 +10,7 @@ import com.keren.kerenpaie.model.paie.PrepaSalaire;
 import com.keren.kerenpaie.model.paie.Rubrique;
 import com.keren.kerenpaie.model.paie.ValiderSalaire;
 import com.keren.kerenpaie.model.paie.Variable;
+import com.keren.kerenpaie.model.structures.Societe;
 
 
 /**
@@ -29,7 +30,7 @@ public interface MoteurPaieManager
      * @param salarie
      * @return
      */
-    public Double eval(Rubrique rubrique,Employe salarie,PeriodePaie periode,ContratTravail contrat);
+    public Double eval(Rubrique rubrique,Employe salarie,PeriodePaie periode,ContratTravail contrat,Societe structure);
     
     /**
      * Evaluation d'une variable de paie
@@ -37,7 +38,7 @@ public interface MoteurPaieManager
      * @param salarie
      * @return
      */
-    public Double eval(Variable variable,Employe salarie,PeriodePaie periode,ContratTravail contrat);
+    public Double eval(Variable variable,Employe salarie,PeriodePaie periode,ContratTravail contrat,Societe structure);
     
    
     /**

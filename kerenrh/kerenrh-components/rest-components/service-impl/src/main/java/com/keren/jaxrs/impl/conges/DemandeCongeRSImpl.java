@@ -10,6 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.commons.DateHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.conges.DemandeCongeManagerRemote;
@@ -23,7 +24,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 09:30:08 GMT+01:00 2018
  * 
  */
@@ -81,13 +83,25 @@ public class DemandeCongeRSImpl
 	public DemandeConge confirmer(HttpHeaders headers, DemandeConge dmde) {
 		return manager.confirmer(dmde);
 	}
+        
+         @Override
+        protected void processBeforeDelete(Object id) {
+            
+            //Variables
+            DemandeConge demandeConge = manager.find("id",(Long)id);
+            
+            if(!demandeConge.getState().equalsIgnoreCase("etabli")){
+                throw new KerenExecption("Suppression impossible, car l'element a deja subit des traitements");
+            }
 
+            super.processBeforeDelete(id);
+        }
+        
 	@Override
 	protected void processBeforeSave(DemandeConge entity) {
 		this._controlreView(entity);
 		
-		final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-		long dureeconge= Math.abs(entity.getFin().getTime()-entity.getDebut().getTime())/MILLISECONDS_PER_DAY;
+                long dureeconge = DateHelper.numberOfDays(entity.getDebut(), entity.getFin());
 		entity.setDuree(new Long(dureeconge).shortValue());
 		super.processBeforeSave(entity);
 	}
@@ -95,8 +109,8 @@ public class DemandeCongeRSImpl
 	@Override
 	protected void processBeforeUpdate(DemandeConge entity) {
 		this._controlreView(entity);
-		final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-		long dureeconge= Math.abs(entity.getFin().getTime()-entity.getDebut().getTime())/MILLISECONDS_PER_DAY;
+		 
+                long dureeconge = DateHelper.numberOfDays(entity.getDebut(), entity.getFin());
 		entity.setDuree(new Long(dureeconge).shortValue());
 		super.processBeforeUpdate(entity);
 	}
@@ -108,7 +122,9 @@ public class DemandeCongeRSImpl
 	            throw new KerenExecption("Saisie Date erronée !!!");
 	        }else if(entity.getFin().after(entity.getFin())){
 	            throw new KerenExecption("Saisie Date erronée !!!");
-	        }
+	        }else if(!entity.getState().equalsIgnoreCase("etabli")){
+                    throw new KerenExecption("Modification impossible, car l'element a deja subit des traitements");
+                }
 	}
 	
 	

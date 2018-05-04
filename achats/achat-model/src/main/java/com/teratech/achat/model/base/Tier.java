@@ -95,7 +95,7 @@ public class Tier extends BaseElement implements Serializable,Comparable<Tier>{
     private ConditionPaiement paiementfourn ;
     
      
-    @Predicate(label = "Comptes bancaire",group = true,groupName = "group3",groupLabel = "Comptes bancaires",target = "one-to-many",type = CompteBancaire.class,search = false,sequence = 3)
+    @Predicate(label = "Comptes bancaire",group = true,groupName = "group3",groupLabel = "Comptes bancaires",target = "one-to-many",type = CompteBancaire.class,search = false,sequence = 3,edittable = true)
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "CPT_ID")
     private List<CompteBancaire> comptesbancaire = new ArrayList<CompteBancaire>();

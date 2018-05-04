@@ -95,5 +95,24 @@ public class FraisMissionRSImpl
         }*/
         super.processBeforeSave(entity);
     }
-
+    
+    @Override
+    public FraisMission delete(Long id) {
+        
+        //Initialisation
+        FraisMission data = null;
+        FraisMission result = null;
+        
+        try{
+        
+            data = super.delete(id);
+            result = new FraisMission(data);
+            
+        }catch(Exception e){
+            
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
+        }
+        
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -93,5 +93,24 @@ public class CategorieMissionRSImpl
         }
         super.processBeforeSave(entity);
     }
-
+    
+    @Override
+    public CategorieMission delete(Long id) {
+        
+        //Initialisation
+        CategorieMission data = null;
+        CategorieMission result = null;
+        
+        try{
+        
+            data = super.delete(id);
+            result = new CategorieMission(data);
+            
+        }catch(Exception e){
+            
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
+        }
+        
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }        
 }

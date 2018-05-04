@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.model.structures.Societe;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -62,11 +63,13 @@ public class BesionFormation extends BaseElement implements Serializable, Compar
 	@Predicate(label=".",type=LigneBesionFormation.class,target="one-to-many",edittable=true,group=true,groupName="group1",groupLabel="Détails du Besion")
 	private List<LigneBesionFormation> lignes = new ArrayList<LigneBesionFormation>();
 	
-	@Predicate(label=".",target="textarea",group=true,groupName="group2",groupLabel="Notes")
+	@Predicate(label=".",target="textarea",group=true,groupName="group3",groupLabel="Notes")
 	@Lob
 	private String note ;
 	
 	@OneToMany(mappedBy="besion" , fetch=FetchType.LAZY)
+        @Predicate(label = ".",type = DemandeFormation.class,target = "many-to-many-list",group = true,groupName = "group2",groupLabel = "Demandes Liées")
+        @Filter(value="[{\"fieldName\":\"state\",\"value\":\"valide\"}]")
 	private List<DemandeFormation> demandes = new ArrayList<DemandeFormation>();
 
 	@Predicate(label="Etat",hide=true,search=true)

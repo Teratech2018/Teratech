@@ -15,7 +15,8 @@ import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
 
 /**
- * Interface du service JAX-RS
+ * Interface du service JAX-RS
+
  * @since Mon Apr 23 09:28:01 GMT+01:00 2018
  * 
  */
@@ -23,7 +24,7 @@ public interface RetardRS
     extends GenericService<Retard, Long>
 {
 
-	@PUT
+    @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("justifier")

@@ -29,7 +29,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 13:18:47 GMT+01:00 2018
  * 
  */
@@ -110,7 +111,7 @@ public class PointageJouranlierRSImpl
 		// TODO Auto-generated method stub
 		PointageJouranlier entity = manager.find("id", (Long) id);
 		if(entity.getState().equalsIgnoreCase("confirmer")){
-			throw new KerenExecption("Le Pointage journalier est déjà validé");
+			throw new KerenExecption("Le Pointage journalier est deja valide");
 		}//end if(entity.getState().equalsIgnoreCase("valide")){
 		super.processBeforeDelete(id);
 	}

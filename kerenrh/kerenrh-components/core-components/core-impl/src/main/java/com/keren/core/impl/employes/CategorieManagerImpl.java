@@ -44,43 +44,54 @@ public class CategorieManagerImpl
     }
     
     @Override
-	public List<Categorie> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Categorie> results = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Categorie> curentdata = new ArrayList<Categorie>();
-		for(Categorie elev:results){
-			curentdata.add(new Categorie(elev));
-		}
-		
-		return curentdata;
-	}
+    public List<Categorie> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
 
-	@Override
-	public Categorie find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Categorie results = super.find(propertyName, entityID);
-		Categorie curentdata = new Categorie(results);
-		
-		for(Echelon ech: results.getEchelons()){
-			curentdata.getEchelons().add(new Echelon(ech));
-   		}
-		
-		return curentdata;
-	}
+        // TODO Auto-generated method stub
+        List<Categorie> results = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Categorie> curentdata = new ArrayList<Categorie>();
 
-	@Override
-	public List<Categorie> findAll() {
-		// TODO Auto-generated method stub
-		List<Categorie> results = super.findAll();
-		List<Categorie> curentdata = new ArrayList<Categorie>();
-		
-		for(Categorie elev:curentdata){
-			results.add(new Categorie(elev));
-		}
-		return results;
-	}
+        for(Categorie elev:results){
+                curentdata.add(new Categorie(elev));
+        }
+
+        return curentdata;
+    }
+
+    @Override
+    public Categorie find(String propertyName, Long entityID) {
+        
+        // TODO Auto-generated method stub
+        Categorie results = super.find(propertyName, entityID);
+        Categorie curentdata = new Categorie(results);
+
+        for(Echelon ech: results.getEchelons()){
+                curentdata.getEchelons().add(new Echelon(ech));
+        }
+
+        return curentdata;
+    }
+
+    @Override
+    public List<Categorie> findAll() {
+        
+        // TODO Auto-generated method stub
+        List<Categorie> results = super.findAll();
+        List<Categorie> curentdata = new ArrayList<Categorie>();
+
+        for(Categorie elev:curentdata){
+                results.add(new Categorie(elev));
+        }
+        return results;
+    }
 	
     
+    @Override
+    public Categorie delete(Long id) {
 
+        // TODO Auto-generated method stub    	
+        Categorie data= super.delete(id);
+
+        return new Categorie(data);
+    }
 }

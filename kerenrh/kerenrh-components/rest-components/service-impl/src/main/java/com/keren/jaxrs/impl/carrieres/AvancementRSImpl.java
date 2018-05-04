@@ -21,7 +21,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Apr 10 13:14:15 GMT+01:00 2018
  * 
  */
@@ -88,66 +89,68 @@ public class AvancementRSImpl
 
 	@Override
 	public Avancement delete(Long id) {
-		// TODO Auto-generated method stub
-		Avancement entity = manager.find("id", id);
-		if(entity.getState().trim().equals("valide")){
-			throw new KerenExecption("Avancement déjà validé <br/>Suppresion impossible");
-		}
-		return super.delete(id);
+            // TODO Auto-generated method stub
+            Avancement entity = manager.find("id", id);
+            if(entity.getState().trim().equals("valide")){
+                    throw new KerenExecption("Avancement déjà validé <br/>Suppresion impossible");
+            }
+            return super.delete(id);
 	}
 
 	@Override
 	protected void processBeforeSave(Avancement entity) {
-		// TODO Auto-generated method stub
-		if(entity.getSalarie()==null){
-			throw new KerenExecption("L'employé concerné est obligatoire");
-		}else if(entity.getCategorieN()==null){
-			throw new KerenExecption("La nouvelle catégorie est obligatoire");
-		}else if(entity.getEchelonN()==null){
-			throw new KerenExecption("Le nouvelle échelon est obligatoire");
-		}else if(entity.getDenreg()==null){
-			throw new KerenExecption("La date d'enregistrement est obligatoire");
-		}
-		entity.setState("etabli");
-		super.processBeforeSave(entity);
+            // TODO Auto-generated method stub
+            if(entity.getSalarie()==null){
+                    throw new KerenExecption("L'employé concerné est obligatoire");
+            }else if(entity.getCategorieN()==null){
+                    throw new KerenExecption("La nouvelle catégorie est obligatoire");
+            }else if(entity.getEchelonN()==null){
+                    throw new KerenExecption("Le nouvelle échelon est obligatoire");
+            }else if(entity.getDenreg()==null){
+                    throw new KerenExecption("La date d'enregistrement est obligatoire");
+            }
+            
+
+            entity.setState("etabli");
+            super.processBeforeSave(entity);
 	}
 
 	@Override
 	protected void processBeforeUpdate(Avancement entity) {
-		// TODO Auto-generated method stub
-		if(entity.getSalarie()==null){
-			throw new KerenExecption("L'employé concerné est obligatoire");
-		}else if(entity.getCategorieN()==null){
-			throw new KerenExecption("La nouvelle catégorie est obligatoire");
-		}else if(entity.getEchelonN()==null){
-			throw new KerenExecption("Le nouvelle échelon est obligatoire");
-		}else if(entity.getDenreg()==null){
-			throw new KerenExecption("La date d'enregistrement est obligatoire");
-		}
-		super.processBeforeUpdate(entity);
+            // TODO Auto-generated method stub
+            if(entity.getSalarie()==null){
+                    throw new KerenExecption("L'employé concerné est obligatoire");
+            }else if(entity.getCategorieN()==null){
+                    throw new KerenExecption("La nouvelle catégorie est obligatoire");
+            }else if(entity.getEchelonN()==null){
+                    throw new KerenExecption("Le nouvelle échelon est obligatoire");
+            }else if(entity.getDenreg()==null){
+                    throw new KerenExecption("La date d'enregistrement est obligatoire");
+            }
+            super.processBeforeUpdate(entity);
 	}
 
 	@Override
 	public Avancement valide(HttpHeaders headers, Avancement entity) {
-		// TODO Auto-generated method stub
-		if(entity.getSalarie()==null){
-			throw new KerenExecption("L'employé concerné est obligatoire");
-		}else if(entity.getCategorieN()==null){
-			throw new KerenExecption("La nouvelle catégorie est obligatoire");
-		}else if(entity.getEchelonN()==null){
-			throw new KerenExecption("Le nouvelle échelon est obligatoire");
-		}else if(entity.getDenreg()==null){
-			throw new KerenExecption("La date d'enregistrement est obligatoire");
-		}else if(entity.getDeffet()==null){
-			throw new KerenExecption("La date de prise d'effet est obligatoire");
-		}
-		return manager.valide(entity);
+            // TODO Auto-generated method stub
+            if(entity.getSalarie()==null){
+                    throw new KerenExecption("L'employé concerné est obligatoire");
+            }else if(entity.getCategorieN()==null){
+                    throw new KerenExecption("La nouvelle catégorie est obligatoire");
+            }else if(entity.getEchelonN()==null){
+                    throw new KerenExecption("Le nouvelle échelon est obligatoire");
+            }else if(entity.getDenreg()==null){
+                    throw new KerenExecption("La date d'enregistrement est obligatoire");
+            }else if(entity.getDeffet()==null){
+                    throw new KerenExecption("La date de prise d'effet est obligatoire");
+            }
+            return manager.valide(entity);
 	}
 
 	@Override
 	public Avancement annule(HttpHeaders headers, Avancement entity) {
-		// TODO Auto-generated method stub
-		return entity;
+            // TODO Auto-generated method stub
+            return entity;
 	}
     
     

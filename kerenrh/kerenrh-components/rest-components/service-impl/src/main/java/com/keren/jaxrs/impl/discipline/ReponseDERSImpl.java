@@ -22,7 +22,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 16:33:29 GMT+01:00 2018
  * 
  */
@@ -72,8 +73,9 @@ public class ReponseDERSImpl
 	protected void processBeforeDelete(Object id) {
 		// TODO Auto-generated method stub
 		ReponseDE entity = manager.find("id", (Long) id);
-		if(!entity.getDemande().getState().equalsIgnoreCase("reponse")){
-			throw new KerenExecption("La reponse est déjà prise en compte pour la suite du traitement de la demande");
+                
+		if(entity.getDemande().getState().equalsIgnoreCase("reponse")){
+			throw new KerenExecption("La reponse est dejà prise en compte pour la suite du traitement de la demande");
 		}//end if(!entity.getDemande().getState().equalsIgnoreCase("reponse")){
 		super.processBeforeDelete(id);
 	}
@@ -82,7 +84,7 @@ public class ReponseDERSImpl
 	protected void processBeforeSave(ReponseDE entity) {
 		// TODO Auto-generated method stub
 		if(entity.getDemande()==null){
-			throw new KerenExecption("La Demande concernée est obligatoire");
+			throw new KerenExecption("La Demande concernee est obligatoire");
 		}else if(entity.getDater()==null){
 			throw new KerenExecption("La Date de la reponse est obligatoire");
 		}
@@ -93,7 +95,7 @@ public class ReponseDERSImpl
 	protected void processBeforeUpdate(ReponseDE entity) {
 		// TODO Auto-generated method stub
 		if(entity.getDemande()==null){
-			throw new KerenExecption("La Demande concernée est obligatoire");
+			throw new KerenExecption("La Demande concernee est obligatoire");
 		}else if(entity.getDater()==null){
 			throw new KerenExecption("La Date de la reponse est obligatoire");
 		}

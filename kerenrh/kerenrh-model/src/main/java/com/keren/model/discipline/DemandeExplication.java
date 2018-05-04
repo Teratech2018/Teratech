@@ -41,14 +41,14 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 	 */
 	private static final long serialVersionUID = 2021374204191064777L;
 	
-	@ManyToOne
-	@JoinColumn(name="AUT_ID")
-	@Predicate(label="Auteur",type=Employe.class,target="many-to-one",optional=false,nullable=false,search=true)
-	private Employe auteur ;
-	
 	@Predicate(label="Référence",optional=false,nullable=false,search=true)
 	private String reference ;
 	
+        @ManyToOne
+	@JoinColumn(name="AUT_ID")
+	@Predicate(label="Auteur",type=Employe.class,target="many-to-one",optional=false,nullable=false,search=true)
+	private Employe auteur ;
+        
 	@ManyToOne
 	@JoinColumn(name="DES_ID")
 	@Predicate(label="Employé concerné",type=Employe.class,target="many-to-one",optional=false,nullable=false,search=true)
@@ -59,7 +59,7 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 	@Predicate(label="Type de demande",type=TypeDemande.class,target="many-to-one",search=true)
 	private TypeDemande type ;
 	
-	@Predicate(label="Date de notification",type=Date.class,target="date",search=true)
+	@Predicate(label="Date de notification",type=Date.class,target="date",search=true,optional=false)
 	@Temporal(TemporalType.DATE)
 	private Date daten ;
 	

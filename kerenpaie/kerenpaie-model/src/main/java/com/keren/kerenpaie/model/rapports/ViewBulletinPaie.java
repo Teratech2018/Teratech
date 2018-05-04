@@ -84,6 +84,25 @@ public class ViewBulletinPaie  extends BaseElement implements Serializable, Comp
 		this.porte = "0";
 		}
 	}
+	
+	public ViewBulletinPaie(LivrePaie livre) {
+		super();
+		this.bulletin = new BulletinPaie();
+		if(this.periode!=null){
+		this.periode= new PeriodePaie(livre.getPeriode());
+		this.porte = "0";
+		}
+	}
+	
+	public ViewBulletinPaie(BPaie entity) {
+		super();
+		this.bulletin = new BulletinPaie();
+		if(this.periode!=null){
+		this.periode= new PeriodePaie(entity.getPeriode());
+		this.porte = "0";
+		}
+	}
+	
 	public ViewBulletinPaie(ViewBulletinPaie view) {
 		this.id = view.id;
 		this.rubrique = new Rubrique(view.rubrique);

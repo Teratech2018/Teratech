@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.KerenExecption;
 import com.keren.kerenpaie.core.ifaces.employes.EmployeManagerLocal;
 import com.keren.kerenpaie.core.ifaces.employes.EmployeManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.employes.EmployeDAOLocal;
@@ -43,6 +44,16 @@ public class EmployeManagerImpl
     @Override
     public String getEntityIdName() {
         return "id";
+    }
+
+    @Override
+    public Employe delete(Long id) {
+        try{
+            Employe data = super.delete(id); //To change body of generated methods, choose Tools | Templates.
+            return new Employe(data);
+        }catch(Exception ex){
+            throw new KerenExecption("Employé en cours d'utilisation ");
+        }
     }
     
 
@@ -94,6 +105,8 @@ public class EmployeManagerImpl
 		}//end for(Employe emp:datas){
 		return output;
 	}
+	
+	
     
 
 }

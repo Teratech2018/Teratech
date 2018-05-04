@@ -12,6 +12,7 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.missions.CategorieFraisManagerRemote;
 import com.keren.jaxrs.ifaces.missions.CategorieFraisRS;
+import com.keren.model.missions.ActionMission;
 import com.keren.model.missions.CategorieFrais;
 import com.keren.model.missions.ResultatMission;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -103,5 +104,25 @@ public class CategorieFraisRSImpl
             }*/
             super.processBeforeSave(entity);
     }
-
+    
+    @Override
+    public CategorieFrais delete(Long id) {
+        
+        //Initialisation
+        CategorieFrais data = null;
+        CategorieFrais result = null;
+        
+        try{
+        
+            data = super.delete(id);
+            result = new CategorieFrais(data);
+            
+        }catch(Exception e){
+            
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
+        }
+        
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }        
+        
 }

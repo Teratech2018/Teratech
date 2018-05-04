@@ -56,7 +56,14 @@ public class ConvocationConseilManagerImpl
   		return result;
   	}
   	
-
+        @Override
+  	public ConvocationConseil delete(Long id) {
+            
+            // TODO Auto-generated method stub    	
+            ConvocationConseil data= super.delete(id);
+            
+            return new ConvocationConseil(data);
+  	}
 
   	@Override
   	public ConvocationConseil find(String propertyName, Long entityID) {

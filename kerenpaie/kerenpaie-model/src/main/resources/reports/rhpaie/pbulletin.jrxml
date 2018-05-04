@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SygmaFiles" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
-	<property name="ireport.zoom" value="1.0000000000000004"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="30"/>
+	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.x" value="30"/>
+	<property name="ireport.y" value="110"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
 	<style name="table">
 		<box>
@@ -118,6 +118,11 @@
 	<field name="bulletin.employe.adresse1" class="java.lang.String"/>
 	<field name="bulletin.employe.modile" class="java.lang.String"/>
 	<field name="rubrique.nature" class="java.lang.String"/>
+	<field name="bulletin.employe.poste.initule" class="java.lang.String"/>
+	<field name="bulletin.employe.anciennite" class="java.lang.Double"/>
+	<field name="bulletin.employe.departement.nom" class="java.lang.String"/>
+	<field name="bulletin.employe.specialite.code" class="java.lang.String"/>
+	<field name="bulletin.employe.indice" class="java.lang.String"/>
 	<sortField name="bulletin.employe.matricule"/>
 	<sortField name="rubrique.nature"/>
 	<sortField name="rubrique.code"/>
@@ -144,7 +149,7 @@
 		<groupHeader>
 			<band height="277">
 				<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="385" y="61" width="97" height="12" uuid="9cf8012f-f4e0-407a-b16d-09aa392982c7"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="397" y="62" width="97" height="12" uuid="9cf8012f-f4e0-407a-b16d-09aa392982c7"/>
 					<box>
 						<leftPen lineWidth="0.0"/>
 						<bottomPen lineWidth="0.0"/>
@@ -155,7 +160,7 @@
 					<textFieldExpression><![CDATA[$F{bulletin.dpayement}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="385" y="74" width="97" height="12" uuid="0fd6cc06-0167-4e60-b90d-d95013989b98"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="397" y="75" width="97" height="12" uuid="0fd6cc06-0167-4e60-b90d-d95013989b98"/>
 					<box>
 						<leftPen lineWidth="0.0"/>
 						<bottomPen lineWidth="0.0"/>
@@ -231,7 +236,7 @@
 					<textFieldExpression><![CDATA["BULLETIN DE PAIE "]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="305" y="61" width="80" height="12" backcolor="#D3D3D3" uuid="4793fb71-95f7-439e-ab77-3256b85b9b73"/>
+					<reportElement style="table" mode="Transparent" x="305" y="61" width="92" height="12" backcolor="#D3D3D3" uuid="4793fb71-95f7-439e-ab77-3256b85b9b73"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -244,7 +249,7 @@
 					<textFieldExpression><![CDATA["Date de Paiement".toUpperCase()]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="305" y="74" width="80" height="12" backcolor="#D3D3D3" uuid="bb5cc745-740c-4de2-8bc1-015f06c16f0d"/>
+					<reportElement style="table" mode="Transparent" x="305" y="74" width="92" height="12" backcolor="#D3D3D3" uuid="bb5cc745-740c-4de2-8bc1-015f06c16f0d"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -257,7 +262,7 @@
 					<textFieldExpression><![CDATA["Periode du".toUpperCase()]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="305" y="86" width="80" height="12" backcolor="#D3D3D3" uuid="61125d0d-699f-4c90-bdd3-722a796d209e"/>
+					<reportElement style="table" mode="Transparent" x="305" y="86" width="92" height="12" backcolor="#D3D3D3" uuid="61125d0d-699f-4c90-bdd3-722a796d209e"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -270,7 +275,7 @@
 					<textFieldExpression><![CDATA["AU".toUpperCase()]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="385" y="86" width="100" height="12" uuid="bd12cba0-d3e9-40fe-99ed-1dd7778a40ff"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="397" y="87" width="100" height="12" uuid="bd12cba0-d3e9-40fe-99ed-1dd7778a40ff"/>
 					<box>
 						<leftPen lineWidth="0.0"/>
 						<bottomPen lineWidth="0.0"/>
@@ -310,7 +315,7 @@
 						<textElement verticalAlignment="Middle" markup="none">
 							<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 						</textElement>
-						<textFieldExpression><![CDATA["Adresse"]]></textFieldExpression>
+						<textFieldExpression><![CDATA["ADRESSE"]]></textFieldExpression>
 					</textField>
 					<textField evaluationTime="Auto" isBlankWhenNull="true">
 						<reportElement style="table" mode="Transparent" x="14" y="51" width="70" height="12" backcolor="#D3D3D3" uuid="9264d15c-faaf-48da-84ba-b21d2eb3862f"/>
@@ -323,7 +328,7 @@
 						<textElement verticalAlignment="Middle" markup="none">
 							<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 						</textElement>
-						<textFieldExpression><![CDATA["Boite Postale"]]></textFieldExpression>
+						<textFieldExpression><![CDATA["BP"]]></textFieldExpression>
 					</textField>
 					<textField evaluationTime="Auto" isBlankWhenNull="true">
 						<reportElement style="table" mode="Transparent" x="14" y="62" width="70" height="12" backcolor="#D3D3D3" uuid="0c8701b3-e06a-401b-a61b-947ac8916d48"/>
@@ -336,7 +341,7 @@
 						<textElement verticalAlignment="Middle" markup="none">
 							<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 						</textElement>
-						<textFieldExpression><![CDATA["Contacts"]]></textFieldExpression>
+						<textFieldExpression><![CDATA["CONTACTS"]]></textFieldExpression>
 					</textField>
 					<textField evaluationTime="Auto" isBlankWhenNull="true">
 						<reportElement style="table" mode="Transparent" x="14" y="74" width="70" height="12" backcolor="#D3D3D3" uuid="dc53084a-9d87-4671-9d72-ac77b0a6b401"/>
@@ -487,7 +492,7 @@
 					</textField>
 				</frame>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="4" y="142" width="70" height="12" backcolor="#D3D3D3" uuid="f4f3f7c3-180c-4e29-8d1c-0b1d8ff2629f"/>
+					<reportElement style="table" mode="Transparent" x="15" y="142" width="59" height="12" backcolor="#D3D3D3" uuid="f4f3f7c3-180c-4e29-8d1c-0b1d8ff2629f"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -500,7 +505,7 @@
 					<textFieldExpression><![CDATA["Con. coll."]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="4" y="158" width="70" height="12" backcolor="#D3D3D3" uuid="9f6a9422-8a7a-47af-8520-c85e6831fa3f"/>
+					<reportElement style="table" mode="Transparent" x="15" y="158" width="59" height="12" backcolor="#D3D3D3" uuid="9f6a9422-8a7a-47af-8520-c85e6831fa3f"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -526,7 +531,7 @@
 					<textFieldExpression><![CDATA["Matricule"]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="4" y="170" width="70" height="12" backcolor="#D3D3D3" uuid="b629e6bc-233c-40de-976f-fe1b610eaf26"/>
+					<reportElement style="table" mode="Transparent" x="15" y="170" width="59" height="12" backcolor="#D3D3D3" uuid="b629e6bc-233c-40de-976f-fe1b610eaf26"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -539,7 +544,7 @@
 					<textFieldExpression><![CDATA["Ancienneté"]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="4" y="189" width="70" height="12" backcolor="#D3D3D3" uuid="f405e9b4-79ca-43ea-9ce2-f51143b248c3"/>
+					<reportElement style="table" mode="Transparent" x="15" y="189" width="59" height="12" backcolor="#D3D3D3" uuid="f405e9b4-79ca-43ea-9ce2-f51143b248c3"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -565,7 +570,7 @@
 					<textFieldExpression><![CDATA["Indice"]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="3" y="200" width="70" height="12" backcolor="#D3D3D3" uuid="4f2a84d9-93c0-4c49-8bc7-06f69262dec7"/>
+					<reportElement style="table" mode="Transparent" x="14" y="200" width="59" height="12" backcolor="#D3D3D3" uuid="4f2a84d9-93c0-4c49-8bc7-06f69262dec7"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -575,7 +580,7 @@
 					<textElement verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Qualification"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Catégorie"]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="149" y="200" width="50" height="12" backcolor="#D3D3D3" uuid="abb655e6-22fe-4aa5-b2cd-e4b4c31622b6"/>
@@ -588,10 +593,10 @@
 					<textElement verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Niveau"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Echelon"]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="4" y="212" width="70" height="12" backcolor="#D3D3D3" uuid="1274f185-c475-4cd8-a190-57448f0dc3f3"/>
+					<reportElement style="table" mode="Transparent" x="15" y="212" width="59" height="12" backcolor="#D3D3D3" uuid="1274f185-c475-4cd8-a190-57448f0dc3f3"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -604,7 +609,7 @@
 					<textFieldExpression><![CDATA["Département"]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement style="table" mode="Transparent" x="4" y="224" width="70" height="12" backcolor="#D3D3D3" uuid="e5e82aec-455e-4a72-a40d-47db4561963b"/>
+					<reportElement style="table" mode="Transparent" x="15" y="224" width="59" height="12" backcolor="#D3D3D3" uuid="e5e82aec-455e-4a72-a40d-47db4561963b"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -614,7 +619,7 @@
 					<textElement verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Catégorie"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Spécialité"]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="149" y="224" width="50" height="12" backcolor="#D3D3D3" uuid="d488ff40-50e7-4c24-8d46-fc8512e6a960"/>
@@ -660,7 +665,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["INF"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.employe.anciennite}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="199" y="158" width="80" height="12" uuid="920dd696-e90b-44dc-a857-7ce5c28a7a39"/>
@@ -682,7 +687,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["INF"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.employe.indice}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="198" y="200" width="80" height="12" uuid="e7723a12-297d-4e32-ae2d-169578ffaba3"/>
@@ -693,7 +698,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["INF"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.employe.echelon.code}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="199" y="224" width="80" height="12" uuid="fc1440ab-759b-41ac-bd35-d65653f821fb"/>
@@ -715,7 +720,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["INF"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.employe.poste.initule}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="73" y="200" width="76" height="12" uuid="d5750a10-681a-4e6d-a787-44d696c60437"/>
@@ -726,7 +731,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["INF"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.employe.categorie.type}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="73" y="212" width="205" height="12" uuid="167fc14e-acab-4366-bc75-127a9d3fada4"/>
@@ -737,7 +742,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["INF"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.employe.departement.nom}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="73" y="224" width="76" height="12" uuid="491f7d03-50b3-46f7-8e84-7b429d61c878"/>
@@ -748,7 +753,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{bulletin.employe.categorie.type}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.employe.specialite.code}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="table" mode="Opaque" x="377" y="264" width="72" height="13" backcolor="#CCCCCC" uuid="7d691fe7-a6b3-41c1-a9b8-51cd964cdc60"/>

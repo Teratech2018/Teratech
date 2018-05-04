@@ -56,9 +56,9 @@ public class UtilisateurRSImpl
             MetaColumn pwd = new MetaColumn("button", "updatpassword", "Modifier le mot de passe", false, "action", null);
             pwd.setValue("{'name':'update_pwd'}");
             MetaColumn btn2 = new MetaColumn("button", "sendmessaged", "Envoyer les instructions de réinitialisation de mot de passe", false, "object", null);
-            btn2.setValue("{'model':'email','entity':'mail','method':'sendmail'"
-                    + ",template:{'object':'Modification de mot de passe','source':'user.courriel','cible':'object.courriel'"
-                    + ",'message':'votre mot de passe est @object.password'}}");
+            btn2.setValue("{'model':'kerencore','entity':'email','method':'directsent'"
+                    + ",template:{'subject':'Modification de mot de passe','source':'user.courriel','cible':'object.courriel'"
+                    + ",'text':'votre mot de passe est @object.password'}}");
             MetaColumn work1 = new MetaColumn("button", "work1", "Confirmer", false, "workflow", null);
             work1.setStates(new String[]{"etabli"});
             work1.setValue("{'model':'kerencore','entity':'utilisateur','method':'confirme'}");

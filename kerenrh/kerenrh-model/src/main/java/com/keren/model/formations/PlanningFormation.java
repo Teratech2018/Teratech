@@ -43,7 +43,7 @@ public class PlanningFormation extends BaseElement implements Serializable, Comp
 	
 	@ManyToOne
 	@JoinColumn(name="BEFOR_ID")
-	@Predicate(label="Besion de Formation",type=BesionFormation.class,target="many-to-one",search=true,optional=false,updatable=false)
+	@Predicate(label="Besion de Formation",type=BesionFormation.class,target="many-to-one",search=true,optional=false,updatable=false,observable=true)
 	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"valide\"}]")
 	private BesionFormation besion ;
 	

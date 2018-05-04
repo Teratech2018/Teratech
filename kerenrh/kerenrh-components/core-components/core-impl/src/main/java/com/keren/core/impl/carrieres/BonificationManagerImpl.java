@@ -47,56 +47,71 @@ public class BonificationManagerImpl
         return "id";
     }
 
-	@Override
-	public List<Bonification> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		List<Bonification> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<Bonification> results = new ArrayList<Bonification>();
-		for(Bonification data:datas){
-			results.add(new Bonification(data));
-		}
-		return results;
-	}
+    @Override
+    public List<Bonification> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
+        
+        // TODO Auto-generated method stub
+        List<Bonification> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+        List<Bonification> results = new ArrayList<Bonification>();
 
-	@Override
-	public Bonification find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		Bonification data = super.find(propertyName, entityID);
-		return new Bonification(data);
-	}
+        for(Bonification data:datas){
+                results.add(new Bonification(data));
+        }
+            
+        return results;
+    }
 
-	@Override
-	public List<Bonification> findAll() {
-		// TODO Auto-generated method stub
-		List<Bonification> datas = super.findAll();
-		List<Bonification> results = new ArrayList<Bonification>();
-		for(Bonification data:datas){
-			results.add(new Bonification(data));
-		}
-		return results;
-	}
+    @Override
+    public Bonification find(String propertyName, Long entityID) {
+        
+        // TODO Auto-generated method stub
+        Bonification data = super.find(propertyName, entityID);
+        return new Bonification(data);
+    }
 
-	@Override
-	public Bonification valide(Bonification entity) {
-		// TODO Auto-generated method stub
-		if(entity.getState().trim().equalsIgnoreCase("etabli")){
-			entity.setState("valide");
-		}
-		entity = dao.update(entity.getId(), entity);
-		//Mise a jour du salarie
-		Employe salarie = entity.getSalarie();
-		salarie.setEchelon(entity.getEchelonN());
-		employedao.update(salarie.getId(), salarie);
-		return new Bonification(entity);
-	}
+    @Override
+    public List<Bonification> findAll() {
+        
+        // TODO Auto-generated method stub
+        List<Bonification> datas = super.findAll();
+        List<Bonification> results = new ArrayList<Bonification>();
 
-	@Override
-	public Bonification annule(Bonification entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        for(Bonification data:datas){
+            results.add(new Bonification(data));
+        }
+
+        return results;
+    }
     
+    @Override
+    public Bonification delete(Long id) {
+        
+        // TODO Auto-generated method stub    	
+        Bonification data= super.delete(id);
+        
+        return new Bonification(data);
+    }
     
+    @Override
+    public Bonification valide(Bonification entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getState().trim().equalsIgnoreCase("etabli")){
+                entity.setState("valide");
+        }
 
+        entity = dao.update(entity.getId(), entity);
+        //Mise a jour du salarie
+        Employe salarie = entity.getSalarie();
+        salarie.setEchelon(entity.getEchelonN());
+        employedao.update(salarie.getId(), salarie);
+        return new Bonification(entity);
+    }
+
+    @Override
+    public Bonification annule(Bonification entity) {
+            // TODO Auto-generated method stub
+            return null;
+    }
 }

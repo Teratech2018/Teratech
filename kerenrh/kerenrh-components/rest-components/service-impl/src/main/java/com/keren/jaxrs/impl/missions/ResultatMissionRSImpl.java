@@ -106,18 +106,38 @@ public class ResultatMissionRSImpl
         super.processBeforeSave(entity);
     }
 
-	@Override
-	public ResultatMission cloture(HttpHeaders headers, ResultatMission entity) {
-		// TODO Auto-generated method stub
-		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-            throw new KerenExecption("La Reference est obligatoire");
-        }else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
-            throw new KerenExecption("Le Libellé est obligatoire");
-        }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
-            throw new KerenExecption("Le Type de mission est obligatoire");
-        }else if(entity.getDcreation()==null){
-            throw new KerenExecption("La Date de création est obligatoire");
+    @Override
+    public ResultatMission cloture(HttpHeaders headers, ResultatMission entity) {
+            // TODO Auto-generated method stub
+            if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+        throw new KerenExecption("La Reference est obligatoire");
+    }else if(entity.getIntitule()==null||entity.getIntitule().trim().isEmpty()){
+        throw new KerenExecption("Le Libellé est obligatoire");
+    }else if(entity.getType()==null||entity.getType().trim().isEmpty()){
+        throw new KerenExecption("Le Type de mission est obligatoire");
+    }else if(entity.getDcreation()==null){
+        throw new KerenExecption("La Date de création est obligatoire");
+    }
+            return manager.cloture(entity);
+    }
+    
+    @Override
+    public ResultatMission delete(Long id) {
+        
+        //Initialisation
+        ResultatMission data = null;
+        ResultatMission result = null;
+
+        try{
+
+            data = super.delete(id);
+            result = new ResultatMission(data);
+
+        }catch(Exception e){
+
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
         }
-		return manager.cloture(entity);
-	}
+
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }
 }

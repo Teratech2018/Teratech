@@ -59,87 +59,93 @@ public class DemandeCongeCManagerImpl
         return "id";
     }
 
-	@Override
-	public DemandeCongeC delete(Long id) {
-		// TODO Auto-generated method stub
-		DemandeCongeC data= super.delete(id);
-		return new DemandeCongeC(data);
-	}
+    @Override
+    public DemandeCongeC delete(Long id) {
+            // TODO Auto-generated method stub
+            DemandeCongeC data= super.delete(id);
+            return new DemandeCongeC(data);
+    }
 
-	@Override
-	public List<DemandeCongeC> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
-			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-    	container.addEq("state", "confirmer");
-    	predicats.addAll(container.getPredicats());		
-		List<DemandeCongeC> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
-		List<DemandeCongeC> result = new ArrayList<DemandeCongeC>();
-		for(DemandeCongeC data:datas){
-			result.add(new DemandeCongeC(data));
-		}
-		return result;
-	}
-	
-
-	@Override
-	public void processAfterSave(DemandeCongeC entity) {
-		// determine la date de din de congé  en prenant en copte les jours ouvré
-		super.processAfterSave(entity);
-	}
-
-	@Override
-	public void processAfterUpdate(DemandeCongeC entity) {
-		// TODO Auto-generated method stub
-		super.processAfterUpdate(entity);
-	}
-
-	@Override
-	public DemandeCongeC find(String propertyName, Long entityID) {
-		// TODO Auto-generated method stub
-		DemandeCongeC data = super.find(propertyName, entityID);
-		DemandeCongeC result = new DemandeCongeC(data);		
-		return result;
-	}
-
-	@Override
-	public List<DemandeCongeC> findAll() {
-		// TODO Auto-generated method stub
-		List<DemandeCongeC> datas = super.findAll();
-		List<DemandeCongeC> result = new ArrayList<DemandeCongeC>();
-		for(DemandeCongeC data:datas){
-			result.add(new DemandeCongeC(data));
-		}
-		return result;
-	}
-
-	@Override
-	public DemandeCongeC approuver(DemandeCongeC dmde) {           
-		if(dmde.getState().equalsIgnoreCase("confirmer")){
-			dmde.setState("valider");
-			dmde = dao.update(dmde.getId(), dmde);
-		}
-		return new DemandeCongeC(dmde);
-	}
-
-	@Override
-	public DemandeCongeC rejeter(DemandeCongeC dmde) {
-        if(dmde.getState().equalsIgnoreCase("confirmer")){
-        	dmde.setState("rejete");
-        	dmde = dao.update(dmde.getId(), dmde);
-        }
-		return new DemandeCongeC(dmde);
-	}
-
-	@Override
-	public DemandeCongeC annuler(DemandeCongeC dmde) {
-            if(dmde.getState().equalsIgnoreCase("confirmer")){
-            	dmde.setState("etabli");
-            	dmde = dao.update(dmde.getId(), dmde);
+    @Override
+    public List<DemandeCongeC> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+                    int firstResult, int maxResult) {
+            // TODO Auto-generated method stub
+            RestrictionsContainer container = RestrictionsContainer.newInstance();
+    container.addEq("state", "confirmer");
+    predicats.addAll(container.getPredicats());		
+            List<DemandeCongeC> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+            List<DemandeCongeC> result = new ArrayList<DemandeCongeC>();
+            for(DemandeCongeC data:datas){
+                    result.add(new DemandeCongeC(data));
             }
-            return dmde;
-	}
-    
-    
+            return result;
+    }
 
+
+    @Override
+    public void processAfterSave(DemandeCongeC entity) {
+            // determine la date de din de congé  en prenant en copte les jours ouvré
+            super.processAfterSave(entity);
+    }
+
+    @Override
+    public void processAfterUpdate(DemandeCongeC entity) {
+            // TODO Auto-generated method stub
+            super.processAfterUpdate(entity);
+    }
+
+    @Override
+    public DemandeCongeC find(String propertyName, Long entityID) {
+            // TODO Auto-generated method stub
+            DemandeCongeC data = super.find(propertyName, entityID);
+            DemandeCongeC result = new DemandeCongeC(data);		
+            return result;
+    }
+
+    @Override
+    public List<DemandeCongeC> findAll() {
+        
+        // TODO Auto-generated method stub
+        List<DemandeCongeC> datas = super.findAll();
+        List<DemandeCongeC> result = new ArrayList<DemandeCongeC>();
+        
+        for(DemandeCongeC data:datas){
+            result.add(new DemandeCongeC(data));
+        }
+        
+        return result;
+    }
+
+    @Override
+    public DemandeCongeC approuver(DemandeCongeC dmde) {  
+        
+        if(dmde.getState().equalsIgnoreCase("confirmer")){
+            dmde.setState("valider");
+            dmde = dao.update(dmde.getId(), dmde);
+        }
+        
+        return new DemandeCongeC(dmde);
+    }
+
+    @Override
+    public DemandeCongeC rejeter(DemandeCongeC dmde) {
+        
+        if(dmde.getState().equalsIgnoreCase("confirmer")){
+            dmde.setState("rejete");
+            dmde = dao.update(dmde.getId(), dmde);
+        }
+        
+        return new DemandeCongeC(dmde);
+    }
+
+    @Override
+    public DemandeCongeC annuler(DemandeCongeC dmde) { 
+
+        if(dmde.getState().equalsIgnoreCase("confirmer")){
+            dmde.setState("etabli");
+            dmde = dao.update(dmde.getId(), dmde);
+        }
+
+        return new DemandeCongeC(dmde);
+    }
 }

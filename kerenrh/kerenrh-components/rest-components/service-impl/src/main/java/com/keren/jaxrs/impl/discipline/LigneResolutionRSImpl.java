@@ -10,18 +10,21 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.discipline.LigneResolutionManagerRemote;
 import com.keren.jaxrs.ifaces.discipline.LigneResolutionRS;
 import com.keren.model.discipline.ConvocationConseil;
 import com.keren.model.discipline.LigneResolution;
+import com.keren.model.discipline.TraitementDE;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Fri Feb 16 11:11:48 GMT+01:00 2018
  * 
  */
@@ -56,15 +59,34 @@ public class LigneResolutionRSImpl
     }
     
     @Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-			return MetaDataUtil.getMetaData(new LigneResolution(), new HashMap<String, MetaData>()
-					, new ArrayList<String>());
-		} catch (Exception e) {
-   			// TODO Auto-generated catch block
-   			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
-   		}
-	}
-
+    public MetaData getMetaData(HttpHeaders headers) {
+            // TODO Auto-generated method stub
+            try {
+                    return MetaDataUtil.getMetaData(new LigneResolution(), new HashMap<String, MetaData>()
+                                    , new ArrayList<String>());
+            } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
+            }
+    }
+    
+    @Override
+    public LigneResolution delete(Long id) {
+        
+        //Initialisation
+        LigneResolution data = null;
+        LigneResolution result = null;
+        
+        try{
+        
+            data = super.delete(id);
+            result = new LigneResolution(data);
+            
+        }catch(Exception e){
+            
+            throw new KerenExecption("Suppression impossible, car cette ligne est dejà en cours d'utilisation par d'autres objets !");
+        }
+        
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }
 }

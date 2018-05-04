@@ -51,7 +51,7 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
    
    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
    @JoinColumn(name = "EXBE_ID")
-   @Predicate(label = "Moti",target = "one-to-many" ,type = LigneExprBesion.class, group = true,groupName = "group1",groupLabel = "BESIONS")
+   @Predicate(label = "Moti",target = "one-to-many" ,type = LigneExprBesion.class, group = true,groupName = "group1",groupLabel = "BESIONS",edittable = true)
    private List<LigneExprBesion> besions = new ArrayList<LigneExprBesion>();
    
    private String state = "etabli";

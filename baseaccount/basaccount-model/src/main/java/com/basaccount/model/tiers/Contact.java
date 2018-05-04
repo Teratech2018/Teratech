@@ -41,7 +41,8 @@ public class Contact extends BaseElement implements Serializable,Comparable<Cont
     @Predicate(label = "Mobile",search = true)
     private String mobile;
     
-    @Predicate(label = "Notes",target = "textarea",group = true,groupName = "group1",groupLabel = "Notes interne")
+    //,group = true,groupName = "group1",groupLabel = "Notes interne"
+    @Predicate(label = "Notes",target = "textarea",search = true)
     private String note ;
 
     public Contact() {

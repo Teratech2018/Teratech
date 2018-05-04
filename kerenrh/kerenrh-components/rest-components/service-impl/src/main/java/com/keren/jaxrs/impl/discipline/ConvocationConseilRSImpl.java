@@ -25,7 +25,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Feb 15 16:33:29 GMT+01:00 2018
  * 
  */
@@ -90,9 +91,11 @@ public class ConvocationConseilRSImpl
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("convocation.id", entity.getId());
 		List<ResolutionConseil> datas = resolutionmanager.filter(container.getPredicats(),null,null,0, -1);
+                
 		if(datas!=null&&!datas.isEmpty()){
 			throw new KerenExecption("Consiel ayant déjà siègé et résolution déjà liée");
 		}//end if(datas!=null&&!datas.isEmpty()){
+                
 		super.processBeforeDelete(id);
 	}
 

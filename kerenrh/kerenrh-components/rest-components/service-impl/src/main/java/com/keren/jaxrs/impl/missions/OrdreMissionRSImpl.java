@@ -165,5 +165,24 @@ public class OrdreMissionRSImpl
              }
              return manager.annule(entity);
         }
+    
+    @Override
+    public OrdreMission delete(Long id) {
+        
+        //Initialisation
+        OrdreMission data = null;
+        OrdreMission result = null;
 
+        try{
+
+            data = super.delete(id);
+            result = new OrdreMission(data);
+
+        }catch(Exception e){
+
+            throw new KerenExecption("Suppression impossible, car cet objet est dejà en cours d'utilisation par d'autres objets !");
+        }
+
+        return result; //To change body of generated methods, choose Tools | Templates.
+    }
 }

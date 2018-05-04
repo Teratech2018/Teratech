@@ -152,7 +152,15 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 		this.sanction = sanction;
 	}
 
-    
+
+
+	@Override
+	public boolean isDesablecreate() {
+                if(sanction!=null){
+                    return true;
+                }
+		return super.isDesablecreate(); //To change body of generated methods, choose Tools | Templates.
+	}
 
 //	public ResolutionConseil getResolution() {
 //		return resolution;
@@ -163,14 +171,19 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 //	public void setResolution(ResolutionConseil resolution) {
 //		this.resolution = resolution;
 //	}
+    @Override
+    public boolean isCreateonfield() {
+        if(sanction!=null){
+            return false;
+        }
+        return super.isCreateonfield(); //To change body of generated methods, choose Tools | Templates.
+    }
 
-
-
-	@Override
-	public String getEditTitle() {
-		// TODO Auto-generated method stub
-		return "RESOLITION";
-	}
+    @Override
+    public String getEditTitle() {
+        // TODO Auto-generated method stub
+        return "DETAIS DE LA RESOLITION";
+    }
 
 
 

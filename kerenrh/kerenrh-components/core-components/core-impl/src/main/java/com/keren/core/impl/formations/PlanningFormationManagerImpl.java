@@ -166,6 +166,7 @@ public class PlanningFormationManagerImpl
 			entity.setState("valide");
 			entity = dao.update(entity.getId(), entity);			
 			for(LignePlanningFormation ligne:entity.getLignes()){
+                                ligne.setPlanning(entity);
 				ligne.setState("valide");
 				plandao.update(ligne.getId(), ligne);
 			}//end for(LignePlanningFormation ligne:entity.getLignes()){

@@ -57,13 +57,17 @@
     <class>com.keren.kerenpaie.model.paie.ParametreAvance</class>
     <class>com.keren.kerenpaie.model.paie.LigneElementVariable</class>
     <class>com.keren.kerenpaie.model.paie.IndiceSolde</class>
-    <class>com.keren.kerenpaie.model.paie.LigneIndiceSolde</class>   
+    <class>com.keren.kerenpaie.model.paie.LigneIndiceSolde</class>
     <class>com.keren.kerenpaie.model.rapports.ViewBulletinPaie</class>
     <class>com.keren.kerenpaie.model.structures.Planification</class>
     <class>com.keren.kerenpaie.model.employes.Medaille</class>
     <class>com.keren.kerenpaie.model.paie.CompteRubrique</class>
     <class>com.keren.kerenpaie.model.structures.Syndicat</class>
     <class>com.keren.kerenpaie.model.structures.TypeCaisse</class>
+    <class>com.keren.kerenpaie.model.rapports.ViewDipePaie</class>
+    <class>com.keren.kerenpaie.model.conges.DemandeConge</class>
+    <class>com.keren.kerenpaie.model.conges.TypeConge</class>
+    <class>com.keren.kerenpaie.model.presences.LignePointage</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

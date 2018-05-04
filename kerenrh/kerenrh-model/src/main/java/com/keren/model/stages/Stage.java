@@ -69,14 +69,14 @@ public class Stage extends BaseElement implements Serializable, Comparable<Stage
 	
 	@ManyToOne
 	@JoinColumn(name="BEST_ID")
-	@Predicate(label="Ref Besion en Stagiaire",type=BesionStage.class,target="many-to-one",observable=true)
+	@Predicate(label="Ref Besion en Stagiaire",type=BesionStage.class,target="many-to-one",observable=true,optional=false)
 	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"valide\"}]")
 	private BesionStage besion ;
 	
 	@ManyToOne
 	@JoinColumn(name="SPEC_ID")
 	@Predicate(label="Spécialité",type=Specialite.class,target="many-to-one")
-	@Observer(observable="besion",source="field:profil")
+	//@Observer(observable="besion",source="field:profil")
 	private Specialite specialite;
 	
 	@Predicate(label="Thème du stage",group=true,groupName="group1",groupLabel="Informations du stage",hidden="currentObject.type!='0'")

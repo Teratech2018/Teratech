@@ -104,7 +104,7 @@ public class RepriseServiceManagerImpl
 	public List<RepriseService> findAll() {
             
             // TODO Auto-generated method stub
-            List<RepriseService> datas = super.findByUniqueProperty("state", "etabli", null);
+            List<RepriseService> datas = super.findAll();
             List<RepriseService> result = new ArrayList<RepriseService>();
             for(RepriseService data:datas){
                     result.add(new RepriseService(data));

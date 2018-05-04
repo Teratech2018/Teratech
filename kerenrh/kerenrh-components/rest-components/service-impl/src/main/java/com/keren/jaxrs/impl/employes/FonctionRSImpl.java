@@ -58,14 +58,16 @@ public class FonctionRSImpl
     
     @Override
     public MetaData getMetaData(HttpHeaders headers) {
-            // TODO Auto-generated method stub
-            try {
-                    return MetaDataUtil.getMetaData(new Fonction(),new HashMap<String, MetaData>()
-                                    , new ArrayList<String>());
-            } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    throw new WebApplicationException(e);
-            }
+        
+        // TODO Auto-generated method stub
+        try {
+            return MetaDataUtil.getMetaData(new Fonction(),new HashMap<String, MetaData>()
+                                , new ArrayList<String>());
+        } catch (Exception e) {
+            
+            // TODO Auto-generated catch block
+            throw new WebApplicationException(e);
+        }
     }
     
     @Override
@@ -99,7 +101,26 @@ public class FonctionRSImpl
         }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
             throw new KerenExecption("La Descrition  est obligatoire");
         }*/
+        
         super.processBeforeSave(entity);
+    }
+    
+    @Override
+    public Fonction delete(Long id) {
+
+        // TODO Auto-generated method stub
+        Fonction entity = manager.find("id", id);
+
+        try{
+
+            //on supprimme l'objet
+            super.delete(id);
+
+        }catch(Exception ex){
+            throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+        }
+
+        return entity;
     }
 
 }
