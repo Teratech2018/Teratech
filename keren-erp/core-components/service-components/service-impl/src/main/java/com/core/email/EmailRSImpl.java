@@ -3,6 +3,7 @@ package com.core.email;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import javax.mail.MessagingException;
@@ -50,6 +51,11 @@ public class EmailRSImpl
     public Email confirmer(HttpHeaders headers, Email mail) {
         try {
             //To change body of generated methods, choose Tools | Templates.
+            if(mail.getCible()==null||mail.getCible().trim().isEmpty()){
+                throw new KerenExecption("Adresse du destinataire introuvable!");
+            }else if(mail.getSubject()==null||mail.getSubject().trim().isEmpty()){
+                 throw new KerenExecption("L'objet du mail introuvable!");
+            }
             manager.sendmail(mail);
             return mail;
         } catch (MessagingException ex) {

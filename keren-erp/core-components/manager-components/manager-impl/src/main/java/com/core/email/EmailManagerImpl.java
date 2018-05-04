@@ -6,15 +6,22 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import java.io.File;
 import java.util.Date;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.annotation.Resource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 @TransactionAttribute
 @Stateless(mappedName = "EmailManager")
@@ -57,6 +64,21 @@ public class EmailManagerImpl
             m.setSubject(mail.getSubject());
             m.setSentDate(new Date());
             m.setText(mail.getText(), "utf-8", "html");
+            //Traitement des pieces jointes
+            if(mail.getPiecesjointes()!=null && !mail.getPiecesjointes().isEmpty()){
+                Multipart multipart = new MimeMultipart();
+                for(String fichier:mail.getPiecesjointes()){
+                    MimeBodyPart messageBodyPart = new MimeBodyPart();
+                    File file = new File(fichier);
+                    if(file.exists()){
+                        DataSource source = new FileDataSource(fichier);
+                        messageBodyPart.setDataHandler(new DataHandler(source));
+                        messageBodyPart.setFileName(file.getName());
+                        multipart.addBodyPart(messageBodyPart);
+                    }//end if(file.exists()){
+                }//end for(String fichier:mail.getPiecesjointes
+                m.setContent(multipart);
+            }//end if(mail.getPiecesjointes()!=null){
             Transport.send(m);
     }
 

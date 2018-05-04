@@ -13,6 +13,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +30,7 @@ public class Email extends BaseElement implements Serializable,Comparable<Email>
     private String subject ;
     
     @Column(name = "MESS")
+    @Lob
     private String text ;
     
     @Column(name = "FROM",nullable = false)
@@ -43,6 +45,9 @@ public class Email extends BaseElement implements Serializable,Comparable<Email>
     
     @ElementCollection
     private List<String> copies = new ArrayList<String>();
+    
+    @ElementCollection
+    private List<String> piecesjointes = new ArrayList<String>();
 
     /**
      * 
@@ -134,6 +139,16 @@ public class Email extends BaseElement implements Serializable,Comparable<Email>
     public void setCopies(List<String> copies) {
         this.copies = copies;
     }
+
+    public List<String> getPiecesjointes() {
+        return piecesjointes;
+    }
+
+    public void setPiecesjointes(List<String> piecesjointes) {
+        this.piecesjointes = piecesjointes;
+    }
+    
+    
 
     @Override
     public String getDesignation() {
