@@ -4,28 +4,19 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
-import com.kerenedu.configuration.Service;
-import com.kerenedu.inscription.Inscription;
-import com.kerenedu.school.Eleve;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -38,23 +29,37 @@ import com.megatim.common.annotations.Predicate;
 public class Paiement extends BaseElement implements Serializable, Comparable<Paiement> {
 
 	@Column(name = "DATE_PAI")
-	@Predicate(label="DATE PAIEMENT",optional=false,updatable=true,search=true, type=Date.class,sequence=1, target="date" )
+	@Predicate(label="DATE PAIEMENT",optional=false,updatable=false,search=true, type=Date.class,sequence=1, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datePaiement = new Date();
 	
+	@Column(name = "TYP_PAI")
+	@Predicate(label="Type Paiement",optional=false,updatable=false,search=true, target="combobox", values="especes;virement;chèque" , sequence=2 )
+	protected String typePaiment="0";
+	
 	@ManyToOne
 	@JoinColumn(name = "F_ID")
-	@Predicate(label="SERVICE",updatable=true,type=FichePaiement.class ,optional=false, target="many-to-one",search=true , sequence=2)
+	@Predicate(label="SERVICE",updatable=false,type=FichePaiement.class ,optional=false, target="many-to-one",search=true , sequence=3)
 	protected FichePaiement service = new FichePaiement();
+	
+	@ManyToOne
+	@JoinColumn(name = "ECH_ID")
+	@Predicate(label="Echeance de Paiement",updatable=false,type=EcheancierDlt.class ,optional=false, target="many-to-one",search=true ,sequence=4)
+//	@Filter(value="[{\"fieldName\":\"service\",\"value\":\"object.fiche\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner un service\"}]")
+	protected EcheancierDlt echeancedlt ;
+
 
 	@Column(name = "ZMNT" )	
-	@Predicate(label="Montant HT",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
+	@Predicate(label="Montant Total",optional=false,updatable=false,search=true, type=Long.class ,sequence=5, editable=false)
+	@Observer(observable="service",source="field:ztotal")
 	protected Long zMnt;
 	
+	@Column(name = "ZMNT_VERSER" )	
+	@Predicate(label="Regler ",optional=false,updatable=false,search=true, type=Long.class ,sequence=6)
+	protected Long zMntverser;
 	
-	@Column(name = "TYP_PAI")
-	@Predicate(label="Typpe Paiement",optional=false,updatable=true,search=false, target="combobox", values="especes;virement;chèque" , sequence=4 )
-	protected String typePaiment="0";
+	
+	
 	
 	
 
@@ -68,8 +73,15 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 		super(ins.id, ins.designation, ins.moduleName);
 		this.datePaiement = ins.datePaiement;
 		this.zMnt = ins.zMnt;
+		this.zMntverser = ins.zMntverser;
 		this.typePaiment=ins.typePaiment;
-		this.service= new FichePaiement(ins.service);
+		if(ins.service!=null){
+			this.service= new FichePaiement(ins.service);	
+		}
+		if(ins.echeancedlt!=null){
+			this.echeancedlt= new EcheancierDlt(ins.echeancedlt);
+		}
+		
 	
 	}
 
@@ -111,7 +123,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	@Override
 	public String getDesignation() {
 //		 TODO Auto-generated method stub
-		return id+"";
+		return  service.getService().getDesignation();
 	}
 
 
@@ -152,6 +164,34 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 		this.zMnt = zMnt;
 	}
 
+
+	public EcheancierDlt getEcheancedlt() {
+		return echeancedlt;
+	}
+
+
+	public void setEcheancedlt(EcheancierDlt echeancedlt) {
+		this.echeancedlt = echeancedlt;
+	}
+
+
+	public Long getzMntverser() {
+		return zMntverser;
+	}
+
+
+	public void setzMntverser(Long zMntverser) {
+		this.zMntverser = zMntverser;
+	}
+
+
+	@Override
+	public boolean isDesabledelete() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	
 
 		
 	

@@ -11,10 +11,8 @@ import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
-import com.kerenedu.discipline.Abscence;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
@@ -57,12 +55,8 @@ public class NoteSMSRSImpl
   	public MetaData getMetaData(HttpHeaders headers) {
   		// TODO Auto-generated method stub
   		try {
-  			MetaColumn col = new MetaColumn("button", "paiementfrais", "Configurer", false, "action", null);
-			col.setValue("{'name':'keren_education_paie'}");
-			
-			
+ 		
 			MetaData meta =  MetaDataUtil.getMetaData(new NoteSMS(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			meta.getHeader().add(col);
   			return meta;
   		}  catch (Exception e) {
    			// TODO Auto-generated catch block

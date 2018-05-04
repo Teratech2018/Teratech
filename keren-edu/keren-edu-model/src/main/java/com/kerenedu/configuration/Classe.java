@@ -78,11 +78,20 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	public Classe(Classe filiere) {
 		super(filiere.id, filiere.designation, filiere.moduleName);
 		this.libelle = filiere.libelle;
-		this.niveau= new Niveau( filiere.niveau);
+		if(this.niveau!=null){
+			this.niveau= new Niveau( filiere.niveau);
+		}
+	
 		this.typeformation=filiere.typeformation;
-		this.filiere= new Filiere(filiere.filiere);
+		if(filiere.filiere!=null){
+			this.filiere= new Filiere(filiere.filiere);
+		}
+		
 		this.effectif=filiere.effectif;
-		this.professeur= new Professeur(filiere.professeur);
+		if(filiere.professeur!=null){
+		   this.professeur= new Professeur(filiere.professeur);
+		}
+		
 		//this.elevelist= new ArrayList<Eleve>();
 	}
 

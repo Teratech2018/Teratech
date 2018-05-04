@@ -4,7 +4,10 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.ExecutorCompletionService;
 
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.notes.Examen;
 import com.kerenedu.notes.ModelBulletin;
 import com.kerenedu.personnel.Professeur;
@@ -24,6 +27,9 @@ public class CacheMemory implements Serializable{
 	private static Classe classe = null;
 	private static Examen examen = null;
 	private static ModelBulletin modelBulletin = null ;
+	private static List<Inscription> listdestinataire = null;
+	
+	private static String currentannee= "2017";
 	
 	private static Professeur prof = null;
 
@@ -76,6 +82,22 @@ public class CacheMemory implements Serializable{
 
 	public static synchronized Examen getExamen() {
 		return examen;
+	}
+
+	public static String getCurrentannee() {
+		return currentannee;
+	}
+
+	public static void setCurrentannee(String currentannee) {
+		CacheMemory.currentannee = currentannee;
+	}
+
+	public static List<Inscription> getListdestinataire() {
+		return listdestinataire;
+	}
+
+	public static void setListdestinataire(List<Inscription> listdestinataire) {
+		CacheMemory.listdestinataire = listdestinataire;
 	}
 
 	public static synchronized void setExamen(Examen examen) {

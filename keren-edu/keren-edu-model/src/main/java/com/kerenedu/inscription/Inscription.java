@@ -16,10 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.school.Eleve;
-
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -55,17 +53,17 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	
 	@Column(name = "MNT" )	
 	@Predicate(label="SCOLARITE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true ,sequence=5)
-	protected BigDecimal zMnt =BigDecimal.ZERO;
+	protected Long zMnt ;
 	
 	
 	
 	@Column(name = "MNT_PAYE")	
 	@Predicate(label="PAYER",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=7)
-	protected BigDecimal zMntPaye =BigDecimal.ZERO;
+	protected Long zMntPaye;
 	
 	@Column(name = "SOLDE")	
 	@Predicate(label="SOLDE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=8)
-	protected BigDecimal zSolde =BigDecimal.ZERO;
+	protected Long zSolde ;
 	
 //	@ManyToOne
 //    @JoinColumn(name ="SERVICE_ID")
@@ -116,7 +114,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	/**
 	 * @return the zMnt
 	 */
-	public BigDecimal getzMnt() {
+	public Long getzMnt() {
 		
 	
 		return zMnt;
@@ -125,7 +123,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	/**
 	 * @param zMnt the zMnt to set
 	 */
-	public void setzMnt(BigDecimal zMnt) {
+	public void setzMnt(Long zMnt) {
 	
 		this.zMnt = zMnt;
 	}
@@ -161,22 +159,22 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	}
 
 
-	public BigDecimal getzMntPaye() {
+	public Long getzMntPaye() {
 		return zMntPaye;
 	}
 
 
-	public void setzMntPaye(BigDecimal zMntPaye) {
+	public void setzMntPaye(Long zMntPaye) {
 		this.zMntPaye = zMntPaye;
 	}
 
 
-	public BigDecimal getzSolde() {
+	public Long getzSolde() {
 		return zSolde;
 	}
 
 
-	public void setzSolde(BigDecimal zSolde) {
+	public void setzSolde(Long zSolde) {
 		this.zSolde = zSolde;
 	}
 
