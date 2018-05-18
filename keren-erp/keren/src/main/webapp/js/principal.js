@@ -7002,7 +7002,8 @@ $scope.gererChangementFichier3 = function(event,model){
                try{   /**var pageBeginIndex = $scope.pagination.currentPage - $scope.pagination.pageSize;
                       if(pageBeginIndex<0){
                           pageBeginIndex = 0;
-                      }   **/                
+                      }   **/       
+                      $http.defaults.headers.common['userid']= $rootScope.globals.user.id;   
                       restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                .$promise.then(function(datas){                                    
                                     if(datas){

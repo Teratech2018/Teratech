@@ -37,7 +37,7 @@ angular.module("mainApp")
             **/
             getMetaData:function(action){
                 var lang = navigator.language || navigator.userLanguage;
-                console.log("Service.getMetaData:function(action) ===================== "+lang);
+//                console.log("Service.getMetaData:function(action) ===================== "+lang);
                   if(angular.isDefined(restResource)){
                        $http.defaults.headers.common['action']=angular.toJson(action);
                      return  restResource.get({path:'meta'});
