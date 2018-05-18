@@ -2962,6 +2962,7 @@ $scope.gererChangementFichier3 = function(event,model){
             var data = $scope.createFreeEmptyObject(metaData);
             var date = new Date();
             data.id = -date.getTime();
+            data.compareid = data.id;
             var datamodel = $scope.getCurrentModel(model);
 //            console.log("$scope.addnewLine = function(model) =======  model : "+model+" ==== data : "+angular.toJson(data));            
             datamodel.unshift(data);
