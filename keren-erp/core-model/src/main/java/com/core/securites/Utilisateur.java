@@ -7,6 +7,7 @@ package com.core.securites;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.core.langues.Langue;
 import com.core.referentiels.Societe;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
@@ -53,7 +54,7 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastconfirme = null;
     
-    @Predicate(label = "SOCIETE COURANTE" , type = Societe.class,optional = false,sequence = 5,search = true)
+    @Predicate(label = "SOCIETE COURANTE" , type = Societe.class,optional = false,sequence = 5,search = true,searchfields ="code" )
     @ManyToOne
     @JoinColumn(name = "SC_ID")
     private Societe societeCourante ;
@@ -74,6 +75,11 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "RIGTH_ID"))
     private List<Groupe> autorisations = new ArrayList<Groupe>();
+    
+    @ManyToOne
+    @JoinColumn(name = "LANG_ID")
+    @Predicate(label = "Langue",type = Langue.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Préférences")
+    private Langue langue ;
     
     private String state ="etabli";
 
@@ -116,6 +122,7 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
         this.actif = user.actif;
         this.societeCourante = user.societeCourante;
         this.adminlevel = user.adminlevel;
+        this.langue = user.langue;
     }
     
     public String getImage() {
@@ -209,6 +216,14 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
 
     public void setState(String state) {
         this.state = state;
+    }    
+
+    public Langue getLangue() {
+        return langue;
+    }
+
+    public void setLangue(Langue langue) {
+        this.langue = langue;
     }    
     
 

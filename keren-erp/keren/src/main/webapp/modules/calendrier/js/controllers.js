@@ -4,9 +4,75 @@
  * and open the template in the editor.
  */
 'use strict';
-angular.module('keren.core.calendar' ,['ui.calendar','ngRoute','keren.core.commons'])
-        .config(function($routeProvider ,$locationProvider){
+angular.module('keren.core.calendar' ,['ui.calendar','pascalprecht.translate','ngRoute','keren.core.commons'])
+        .config(function($routeProvider ,$locationProvider,$translateProvider){
             //$locationProvider.html5Mode(true);
+    $translateProvider.translations('en',{
+            Creer:'Create',
+            Importer:'Import',
+            Imprimer:'Print',
+            Filtres:'Filter',
+            Quitter:'Exit',
+            PJ:'Attachement(s)',
+            Actions:'Actions',
+            Enregistrer:'Save',
+            Ajouter:'Add',
+            Exporter:'Export',
+            Modifier:'Update',
+            Supprimer:'Delete',
+            Administration:'Administration',
+            Discussions:'Discussions',
+            Calendrier:'Calendar',
+            Applications:'Applications',
+            Configuration:'Configuration',
+            Documentation:'Documentation',
+            Assistance:'Assistance',
+            Préference:'Preference',
+            UPPWD:'Change the Password',
+            Déconnexion:'Log out',
+            MAIL:'Mailbox',
+            Conversation:'Tchat',
+            Administrateur:'Administrator',
+            EVENTTITLE:'Event Title',
+            Participants:'Participants',
+            EVENTDATE:'Event date',
+            Options:'Options',
+            Nom:'Name',
+            EMAIL:'Mail adrdress',
+            Socièté:'Partner',
+            Description:'Description',
+            BEGINDATETIME:'Start date and time',
+            Rappels:'Reminders',
+            Confidentialite:'Privacy',
+            ALLPEOPLE:'Everybody',
+            ONLYME:'Only me',
+            INNERONLY:'Internal user only',
+            SHOWHOURS:'Show time as',
+            Libre:'Free',
+            Occupée:'Occupied',
+            Duree:'Duration',
+            CALENDAROPTIONS:'Calendar options',
+            ADDELEMENT:'Add an element',
+            Lieu:'Place',
+            ALLDAY:'All day'
+        });
+        $translateProvider.translations('fr',{
+            PJ:'Pièce(s) Jointe(s)',
+            UPPWD:'Modifier le Mot de passe',
+            MAIL:'Boîte de réception',
+            EVENTTITLE:'Titre evenement',
+            EVENTDATE:'Date evenement',
+            EMAIL:'Adresse mail',
+            BEGINDATETIME:'Date et heure de debut',
+            ALLPEOPLE:'Tout le monde',
+            ONLYME:'Moi seulement',
+            INNERONLY:'Utilisateur interne seulement',
+            SHOWHOURS:'Afficher heure comme',
+            CALENDAROPTIONS:'Options du calendrier',
+            ADDELEMENT:'Ajouter un element',
+            ALLDAY:'Toute la journee'
+        });
+        $translateProvider.preferredLanguage('fr');
             $routeProvider.when("/edit" , {
                 templateUrl:"modules/calendrier/views/editView.html" ,
                 controller:function($scope,$timeout){
@@ -29,8 +95,8 @@ angular.module('keren.core.calendar' ,['ui.calendar','ngRoute','keren.core.commo
             });
         });
 angular.module('keren.core.calendar')
-        .controller('calendarCtrl',['$rootScope','$scope','$timeout','$location','$http','uiCalendarConfig','commonsTools','backendService'
-        , function($rootScope,$scope,$timeout,$location,$http , uiCalendarConfig,commonsTools,backendService){
+        .controller('calendarCtrl',['$rootScope','$scope','$translate','$timeout','$location','$http','uiCalendarConfig','commonsTools','backendService'
+        , function($rootScope,$scope,$translate,$timeout,$location,$http , uiCalendarConfig,commonsTools,backendService){
                 $scope.tableheaderselected = false;
                 $scope.userslist = new Array();
                 $scope.onCheckboxClick = function(){        
@@ -189,6 +255,10 @@ angular.module('keren.core.calendar')
                  * @returns {undefined}
                  */
                 $scope.switchToCalendar = function(){
+//                    var data = $rootScope.globals.user;
+//                    if(data.langue.codeISO=="en"){
+//                        $translate.use('en');
+//                    }//end if(data[0].langue.codeISO=="fr_FR"){
                     $scope.selectedObjects = [];
                     $scope.listViewType = 'calendar';
                     $scope.selectedEvent= null;

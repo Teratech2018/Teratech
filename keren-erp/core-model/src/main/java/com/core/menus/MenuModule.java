@@ -53,11 +53,13 @@ public class MenuModule extends BaseElement implements Serializable,Comparable<M
      private String autor ;
      
      @Predicate(label = "VERSION",unique = false,updatable = false,search = true)
-     private String version ;
+     private String version ;     
      
      //@Predicate(label = "SEQUENCE" ,type = Short.class,updatable = false,unique = false)
      @Column(name = "ORDRE")
      private Short sequence =0;
+     
+     private String categorie ; 
      
      //@Predicate(label = "SITE WEB" ,target = "url",updatable = false,unique = false)
      private String website ;
@@ -145,6 +147,7 @@ public MenuModule(MenuModule module) {
         this.auto_install = module.auto_install;
         this.active = module.active;
         this.hasmenu = module.hasmenu;
+        this.categorie = module.categorie;
     }
 
 /**
@@ -166,7 +169,7 @@ public MenuModule(Manifest manifest) {
         this.installable = manifest.isInstallable();
         this.application = manifest.isApplication();
         this.auto_install = manifest.isAuto_install();
-        //this.active = module.active;
+        this.categorie = manifest.getCategory();
     }
 
     /**
@@ -187,6 +190,7 @@ public MenuModule(Manifest manifest) {
         this.installable = manifest.isInstallable();
         this.application = manifest.isApplication();
         this.auto_install = manifest.isAuto_install();
+        this.categorie = manifest.getCategory();
     }
 
     @Override
@@ -253,6 +257,14 @@ public MenuModule(Manifest manifest) {
     public void setLongDescription(String longDescription) {
         this.longDescription = longDescription;
     }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }    
 
     public String getAutor() {
         return autor;

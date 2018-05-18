@@ -130,9 +130,7 @@ public class MenuModuleManagerImpl
 
     @Override
     public void installApplication(MenuModule module) throws Exception{
-        //To change body of generated methods, choose Tools | Templates.        
-        
-             
+        //To change body of generated methods, choose Tools | Templates.             
             //To change body of generated methods, choose Tools | Templates.
             if(module==null) return ;   
             //Verifier si le module a deja fait l'object d'une installation
@@ -149,12 +147,12 @@ public class MenuModuleManagerImpl
                      if(mod==null){
                          //Emettre une exception pour notifier l'utilisateur
                          return ;
-                     }
+                     }//end if(mod==null)
                      //Si le module n'est pas installer alors install
                      if(!mod.isActive()){
                          installApplication(mod);
-                     }
-                 }
+                     }//end if(!mod.isActive())
+                 }//end for(String name : manifest.getDepends())
              }//end if(manifest.getDepends().length>0)
             //Chargement des Vues
             List<Keren> views = FileHelper.getViews(module);
@@ -165,7 +163,10 @@ public class MenuModuleManagerImpl
             dao.update(module.getId(), module);
             //Deplacement des artefacts javaee
             FileHelper.processCore(manifest);
-        
+            //Copies des templates reports
+            FileHelper.processReporting(manifest);
+            //Copies des images 
+            FileHelper.processImages(manifest);
     }    
 
     /**
@@ -226,7 +227,7 @@ public class MenuModuleManagerImpl
             if(menus==null) continue;
             deleteMenuAction(menus);
             menudao.delete(data.getId());
-        }
+        }//end for(MenuGroupActions data : datas){
     }
     /**
      * Suppression des actions
@@ -309,12 +310,12 @@ public class MenuModuleManagerImpl
                             for(ActionItem it:menu_old.getActions()){
                                 if(map.containsKey(it.getName())){
                                     menu.getActions().set(map.get(it.getName()), it);
-                                }
-                            }
+                                }//end if(map.containsKey(it.getName())){
+                            }//end for(ActionItem it:menu_old.getActions())
                             menuitemdao.update(menu.getId(), menu);
                         }else{
                             menuitemdao.save(menu);
-                        }
+                        }//end if(menu_old!=null)
                         //Chargement du menu parent
                     }//end for(Menuitem item : data.getMenuitem()){
                 }//end if(data.getMenuitem()!=null){

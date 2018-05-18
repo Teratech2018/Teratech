@@ -41,6 +41,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.core.files.UploadFileRSImpl.class);
         resources.add(com.core.langues.ChargerLangueRSImpl.class);
         resources.add(com.core.langues.LangueRSImpl.class);
+        resources.add(com.core.langues.TermeRSImpl.class);
         resources.add(com.core.menus.ActionItemRSImpl.class);
         resources.add(com.core.menus.MenuActionRSImpl.class);
         resources.add(com.core.menus.MenuGroupActionsRSImpl.class);

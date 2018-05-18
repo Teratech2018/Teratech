@@ -136,7 +136,7 @@ public class Societe extends BaseElement implements Serializable,Comparable<Soci
 
     @Override
     public String getDesignation() {
-        return intitule;
+        return code;
     }
 
     public String getAdresse() {
@@ -270,6 +270,8 @@ public class Societe extends BaseElement implements Serializable,Comparable<Soci
          //To change body of generated methods, choose Tools | Templates.
         return "kerencore";
     }
+    
+    
 
     @Override
     public boolean isCreateonfield() {

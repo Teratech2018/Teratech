@@ -2,6 +2,7 @@
 package com.core.email;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import java.util.Date;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
@@ -24,5 +25,19 @@ public interface EmailManager
      * @throws javax.mail.internet.AddressException 
      */
     public void sendmail(Email mail) throws AddressException,MessagingException;
+    
+    /**
+     * Envoie les mail contenue dans la table T_Email
+     * Traitement par lot des Email a envoyer
+     */
+    public void sendmailFromDB() ; 
+    
+     /**
+     * Permet de definir la frequence de traitement des 
+     * evenements 
+     * @param initialExpiration
+     * @param duration
+     */
+    public void scheduleEventManager(Date initialExpiration , long duration);
 
 }

@@ -240,13 +240,62 @@ public class FileHelper {
                 if(file.exists()){
                     Keren data = getXmlToEntities(file);
                     datas.add(data);                     
-                }
-               
-            }
-        }      
+                }//end if(file.exists()){               
+            }//end for(String view : manif.getViews())
+        }//end if(manif.getViews()!=null){     
         return datas;
     }
     
+    /**
+     * Traitement des fichieers pour le reporting
+     * Deplacement de ces fichiers vers le reportoire de reportings
+     * @param manifest
+     * @throws IOException 
+     */
+    public static  void processReporting(Manifest manifest)  throws IOException{
+         if(manifest==null) return ;        
+        //verification que le manifest reference un fichier
+        for(String report : manifest.getReports()){
+            String path = getAddonsDirectory().getPath()+File.separator+manifest.getFilename()+File.separator+report;
+            File source = new File(path);
+            if(source.exists()){
+                createDirectory(getReportsDirectory()+File.separator+manifest.getFilename());
+                File cible = new File(getReportsDirectory()+File.separator+manifest.getFilename()+File.separator+source.getName());
+                moveFile(source, cible);
+            }//end if(source.exists()){
+        }//end for(String core : manifest.getCores()){
+    }
+    
+    /**
+     * 
+     * @param directory
+     * @throws IOException 
+     */
+    private static void createDirectory(String directory) throws IOException{
+        File fichier = new File(directory);
+        if(!fichier.exists()){
+            fichier.mkdir();
+        }//end if(!fichier.exists()){
+    }
+    
+    /**
+     * Transfert des images dans le repertoires en question
+     * @param manifest
+     * @throws IOException 
+     */
+    public static void processImages(Manifest manifest)  throws IOException{
+        if(manifest==null) return ;        
+        //verification que le manifest reference un fichier
+        for(String image : manifest.getImages()){
+            String path = getAddonsDirectory().getPath()+File.separator+manifest.getFilename()+File.separator+image;
+            File source = new File(path);
+            if(source.exists()){
+                createDirectory(getStaticDirectory()+File.separator+manifest.getFilename());
+                File cible = new File(getStaticDirectory()+File.separator+manifest.getFilename()+File.separator+source.getName());
+                moveFile(source, cible);
+            }//end if(source.exists()){
+        }//end for(String core : manifest.getCores()){
+    }
     /**
      * 
      * @param manifest 

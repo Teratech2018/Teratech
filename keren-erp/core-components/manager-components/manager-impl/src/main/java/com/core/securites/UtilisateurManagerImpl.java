@@ -8,6 +8,9 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.core.langues.Langue;
+import com.core.langues.Terme;
+import com.core.langues.TermeDAOLocal;
 import com.core.menus.ActionItem;
 import com.core.menus.MenuAction;
 import com.core.menus.MenuActionDAOLocal;
@@ -15,6 +18,7 @@ import com.core.menus.MenuGroupActions;
 import com.core.menus.MenuGroupActionsDAOLocal;
 import com.core.menus.MenuModule;
 import com.core.menus.MenuModuleDAOLocal;
+import com.kerem.commons.KerenSession;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +49,8 @@ public class UtilisateurManagerImpl
     @EJB(name = "GroupeDAO")
     protected GroupeDAOLocal groupedao;   
     
-    
+    @EJB(name = "TermeDAO")
+    protected TermeDAOLocal termedao;   
 
     public UtilisateurManagerImpl() {
     }
@@ -131,6 +136,21 @@ public class UtilisateurManagerImpl
         return result;
     }
 
+    /**
+     * 
+     * @param langue
+     * @return 
+     */
+    public Map<String,String> buildTranslateMap(Langue langue){
+        Map<String,String> map = new HashMap<String,String>();
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("langue", langue);
+        List<Terme> termes = termedao.filter(container.getPredicats(), null, null, 0, -1);
+        for(Terme terme:termes){
+            map.put(terme.getOrign(), terme.getTraduc());
+        }//end for(Terme terme:termes){
+        return map;
+    }
     
     /**
      * 
@@ -140,6 +160,17 @@ public class UtilisateurManagerImpl
     @Override
     public List<MenuModule> loadUserApplications(Utilisateur utilisateur) {
         //To change body of generated methods, choose Tools | Templates.
+        /**
+         * Intialisation de l'utilisateur courant
+         */
+        KerenSession.setCurrentUser(utilisateur);
+        /**
+         * Initialisation of Traduction cache
+         */
+        KerenSession.setTraductMap(buildTranslateMap(utilisateur.getLangue()));
+        /**
+         * Traitement du module
+         */
         List<MenuModule> result = new ArrayList<MenuModule>();
        if(!utilisateur.getIntitule().equalsIgnoreCase("Administrateur")){ 
             Utilisateur user = dao.findByPrimaryKey("id", utilisateur.getId());
@@ -147,6 +178,9 @@ public class UtilisateurManagerImpl
             for(Groupe grp : user.getAutorisations()){
                 Map<Long , String> groupdb = getHabilitation(grp);            
                 MenuModule mod = new MenuModule(grp.getModule());
+                if(KerenSession.containKey(mod.getLabel())){
+                   mod.setLabel(KerenSession.getEntry(mod.getLabel()));
+                }//end if(KerenSession.containKey(mod.getLabel())){
                 if(mod.isHasmenu()){
                     mod.setGroups(getMenuGroupes(mod, groupdb));
                 }else if(grp.getModule().getAction()!=null){
@@ -163,15 +197,18 @@ public class UtilisateurManagerImpl
            if(datas!=null){
                for(MenuModule data : datas){
                     MenuModule mod = new MenuModule(data);
+                    if(KerenSession.containKey(mod.getLabel())){
+                        mod.setLabel(KerenSession.getEntry(mod.getLabel()));
+                    }//end if(KerenSession.containKey(mod.getLabel())){
                     if(mod.isHasmenu()){
                         mod.setGroups(getMenuGroupes(mod, new HashMap<Long ,String>()));
                     }else if(data.getAction()!=null){
                        mod.setAction(new MenuAction(data.getAction()));
-                    }
+                    }//end if(mod.isHasmenu()){
                     result.add(mod);
-               }
-           }
-       }
+               }//end for(MenuModule data : datas){
+           }//end if(datas!=null){
+       }//end if(!utilisateur.getIntitule().equalsIgnoreCase("Administrateur")){
         return result;
     }
     
@@ -188,7 +225,10 @@ public class UtilisateurManagerImpl
         if(datas==null) return result;
         for(MenuGroupActions group : datas){
             if(group.getModule()!=null){
-                 MenuGroupActions grp = new MenuGroupActions(group);            
+                 MenuGroupActions grp = new MenuGroupActions(group);   
+                 if(KerenSession.containKey(grp.getLabel())){
+                     grp.setLabel(KerenSession.getEntry(grp.getLabel()));
+                 }//end if(KerenSession.containKey(grp.getLabel())){
                 grp.setActions(getMenuActions(grp, groupdb));
                 result.add(grp);
             }//endif(group.getModule()!=null)           
@@ -211,9 +251,16 @@ public class UtilisateurManagerImpl
         for(MenuAction act:datas){
             if(act.getHide()==Boolean.FALSE){
                 MenuAction action = new MenuAction(act);
+                if(KerenSession.containKey(act.getLabel())){
+                    action.setLabel(KerenSession.getEntry(act.getLabel()));
+                }//end if(KerenSession.containKey(act.getLabel())){
                 for(ActionItem item : act.getActions()){
-                    action.getActions().add(new ActionItem(item));
-                }
+                    ActionItem data = new ActionItem(item);
+                    if(KerenSession.containKey(item.getLabel())){
+                        data.setLabel(KerenSession.getEntry(item.getLabel()));
+                    }//end if(KerenSession.containKey(data.getLabel())){
+                    action.getActions().add(data);
+                }//end for(ActionItem item : act.getActions()){
                 if(groupdb.containsKey(action.getId())){
                     if(groupdb.get(action.getId())!=null&&!groupdb.get(action.getId()).isEmpty()){
                         action.setSecuritylevel(Short.valueOf(groupdb.get(action.getId())));

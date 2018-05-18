@@ -2,17 +2,16 @@
    <div class="col-md-2 col-sm-3">
           <div class="panel panel-primary">
             <div class="panel-heading">
-               CALENDAR OPTIONS
+               {{'CALENDAROPTIONS' | translate}}
             </div>
             <div class="panel-body">
                 <ul class="media-list" ng-repeat="item in userslist">
                         <li class="media">
                            <div class="media-body">
                                <div class="media">
-
                                    <div class="media-body" >
                                        <input type="checkbox" class="pull-left"  ng-model="item.selected" ng-change="userselect(item)">
-                                       <small style="font-weight: bold;" class="text-muted">{{item.intitule}}</small>                                      
+                                       <small style="font-weight: bold;" class="text-muted">{{item.intitule | translate}}</small>                                      
                                    </div>
                                </div>
 

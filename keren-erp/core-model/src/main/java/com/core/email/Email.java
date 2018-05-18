@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
  * @author BEKO
  */
 @Entity
-@Table(name = "T_EMAIL")
+@Table(name = "K_EMAIL")
 public class Email extends BaseElement implements Serializable,Comparable<Email>{
 
     @Column(name = "SUB",nullable = false)
@@ -33,14 +33,14 @@ public class Email extends BaseElement implements Serializable,Comparable<Email>
     @Lob
     private String text ;
     
-    @Column(name = "FROM",nullable = false)
+    @Column(name = "SRC",nullable = false)
     private String source;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "SENT_D")
     private Date sentDate;
     
-    @Column(name = "TO",nullable = false)
+    @Column(name = "CIB",nullable = false)
     private String cible ;
     
     @ElementCollection

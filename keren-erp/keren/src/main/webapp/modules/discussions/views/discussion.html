@@ -7,7 +7,7 @@
                         <img  width="54" hieght="50" id="mail_user_id" >
                     </a>
                     <div class="user-name">
-                        <h5><a href="#">{{currentUser.intitule}}</a></h5>
+                        <h5><a href="#">{{currentUser.intitule | translate}}</a></h5>
                         <span><a href="#">{{currentUser.courriel}}</a></span>
                     </div>
                     <a class="mail-dropdown pull-right" href="javascript:;">
@@ -19,7 +19,7 @@
                             <li>
                                 <a href="#"  ng-click="loadInboxMessages()">
                                     <i class="fa fa-inbox"></i>
-                                       INBOX 
+                                       {{'INBOX' | translate}} 
                                        <span class="label label-danger pull-right" ng-hide="messagestate.unreadMessages==0">
                                            {{messagestate.unreadMessages}}
                                        </span>
@@ -28,7 +28,7 @@
                     </ul>
                     <ul class="inbox-nav inbox-divider">
                         <li >
-                            <a href="#"><i class="fa fa-inbox"></i>CANAUX <span class="glyphicon glyphicon-plus pull-right" style="margin-top: 15px;"></span></a>
+                            <a href="#"><i class="fa fa-inbox"></i>{{'CANAUX' | translate}} <span class="glyphicon glyphicon-plus pull-right" style="margin-top: 15px;"></span></a>
                         </li>
                         <ul ng-repeat="item in canaux">
                             <li style="height: 10px;margin-top: -10px;">
@@ -38,9 +38,9 @@
                         </ul>
                     </ul>
                     <ul class="nav nav-pills nav-stacked labels-info ">
-                        <li > <h4>MESSAGES DIRECT</h4> </li>
+                        <li > <h4>{{'MSGEDIRECT' | translate}}</h4> </li>
                         <ul ng-repeat="item in connectedusers"> 
-                            <li> <a href="#"  ng-click="gotodirectdiscussion(item)"> <i class=" fa fa-circle text-success"></i>{{item.intitule}}</a>  </li>                           
+                            <li> <a href="#"  ng-click="gotodirectdiscussion(item)"> <i class=" fa fa-circle text-success"></i>{{item.intitule | translate}}</a>  </li>                           
                         </ul>
                     </ul>
                     
@@ -149,7 +149,7 @@
                       </div> -->
                     <div class="panel-heading"  ng-hide="windowType=='INBOX'">
                         <div class="input-group">
-                                 <input type="text" class="form-control" placeholder="Saisir votre Message"  ng-required="true" ng-minlength="2"  ng-model="messagebody"/>
+                                 <input type="text" class="form-control" placeholder="{{'INPUTMSGE' | translate}}"  ng-required="true" ng-minlength="2"  ng-model="messagebody"/>
                                  <div class="input-group-btn ">
                                          <button class="btn btn-info" type="button" ng-click="imageClick('pjfileinput_id')"  id="pjidbtn">
                                             <span class="glyphicon glyphicon-paperclip"  aria-hidden="true" style="color:blue;"> </span> 

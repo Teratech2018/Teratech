@@ -4,7 +4,22 @@
  * and open the template in the editor.
  */
 'use strict';
-angular.module('keren.core.discussion' ,[]);
+angular.module('keren.core.discussion' ,['pascalprecht.translate']);
+angular.module('keren.core.discussion')
+        .config(function($translateProvider){
+             $translateProvider.translations('en',{
+            CANAUX:'CHANNELS',
+            INBOX:'INBOX',
+            MSGEDIRECT:'DIRECT MESSAGES',
+            INPUTMSGE:'Enter your Message',
+            Administrateur:'Administrator'
+        });
+        $translateProvider.translations('fr',{
+            MSGEDIRECT:'MESSAGES DIRECT',
+            INPUTMSGE:'Saisir votre Message'           
+        });
+        $translateProvider.preferredLanguage('fr');
+        });
 angular.module('keren.core.discussion')
         .controller('discussionCtrl' , 
              /**
@@ -15,7 +30,7 @@ angular.module('keren.core.discussion')
               * @param {type} restService
               * @returns {undefined}
               */
-           function($scope,$rootScope,commonsTools,restService,$http,$filter,$location,$interval,$compile){
+           function($scope,$rootScope,$translate,commonsTools,restService,$http,$filter,$location,$interval,$compile){
                $scope.currentUser = null;
                //Canaux de communications
                $scope.canaux = new Array();
@@ -1073,8 +1088,23 @@ angular.module('keren.core.discussion')
                       $scope.loadCurrentUser();
                       $scope.loadInboxMessages();
              });
+              $scope.$on("login" , function(event , args){
+        //           alert(args.action);
+                     $scope.stop();
+                   
+             });
              //Start inbox Inbox worker
-             var stop =   $interval(function(){                     
+             var promise =   $interval(discussionwatcher,5000);
+             
+             $scope.start = function(){
+                 $scope.stop();
+                 promise =   $interval(discussionwatcher,5000);
+             };
+             $scope.stop = function(){
+                 $interval.cancel(promise);
+             };
+             function discussionwatcher(){ 
+//                    console.log("$scope.gotoselectcanal ====  "+$scope.windowType+" ===== connectuser : "+$scope.connecteduser+" === user : "+angular.toJson($scope.currentUser));
                     //Mise a jour du nombre de messages
                     if($scope.currentUser!=null){
                             var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/nonlus/"+$scope.currentUser.id;
@@ -1154,8 +1184,9 @@ angular.module('keren.core.discussion')
                               //Mise a jour de la liste des utilisateurs actuifs
                              $scope.loadconnectedusers();
                    }//end if($scope.currentUser!=null){
-                },5000);
-                
+                }  ; 
+                //Lancement de l'couteur
+                $scope.start();
         });
 
 

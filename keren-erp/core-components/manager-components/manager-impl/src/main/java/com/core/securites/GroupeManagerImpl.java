@@ -95,6 +95,16 @@ public class GroupeManagerImpl
     }
 
     @Override
+    public void processBeforeSave(Groupe entity) {
+        for(int i = 0 ; i<entity.getDroits().size();i++){
+            entity.getDroits().get(i).setId(-1);
+        }//end for(int i = 0 ; i<entity.getDroits().size();i++){
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
+    @Override
     public List<Groupe> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
         List<Groupe> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
          List<Groupe> resultats = new ArrayList<Groupe>();

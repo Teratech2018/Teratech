@@ -18,10 +18,10 @@ and open the template in the editor.
         <div id="navbar" class="navbar-collapse collapse ">
           <ul class="nav navbar-nav navbar-left left-menu-bar"> 
                <li>
-                 <a href="#" ng-click="discussionModule()">Discussions</a> 
+                 <a href="#" ng-click="discussionModule()">{{'Discussions' | translate}}</a> 
               </li>   
               <li>
-                 <a href="#"  ng-click="calendrierModule()">Calendrier</a> 
+                 <a href="#"  ng-click="calendrierModule()">{{'Calendrier' | translate}}</a> 
               </li>   
           </ul>
           <ul class="nav navbar-nav "  ng-repeat=" module in modules">
@@ -41,7 +41,7 @@ and open the template in the editor.
           
            <ul class="nav navbar-nav navbar-right left-menu-bar">   
                <li style="margin: 0px;">                  
-                    <a href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="bottom" title="Boîte de réception">
+                    <a href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="bottom" title="{{'MAIL' | translate}}">
                         <span > 
                             <span class="glyphicon glyphicon-envelope"  aria-hidden="true" style="display: inline-block;margin: 0px;">                                    
                             </span>
@@ -53,7 +53,7 @@ and open the template in the editor.
                                     
               </li>    
               <li style="margin: 0px;">
-                  <a  data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin: 0px;"  data-toggle="tooltip" data-placement="bottom"  title="Conversation">
+                  <a  data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin: 0px;"  data-toggle="tooltip" data-placement="bottom"  title="{{'Conversation' | translate}}">
                     <span class="glyphicon glyphicon-comment"  aria-hidden="true" style="margin: 0px;"></span>
                   </a> 
                   <ul class="dropdown-menu media-list"  role="menu">
@@ -65,7 +65,7 @@ and open the template in the editor.
                                     </a>                                        
                                     <div class="media-body" >
                                         <a href="#" ng-click="tchatwindow(item)">
-                                            <h5 class="text-muted">{{item.designation}}</h5>   
+                                            <h5 class="text-muted">{{item.designation | translate}}</h5>   
                                         </a>
                                                                         
                                     </div>
@@ -77,25 +77,25 @@ and open the template in the editor.
               <li  class="dropdown">
                   <a  id="Administration" data-target="#" data-toggle="dropdown" 
                       aria-haspopup="true" role="button" aria-expanded="true">
-                        Administration
+                        {{'Administration' | translate}}
                        <span class="caret"></span>
                   </a> 
                   <ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">
                      <li role="presentation">
-                       <a role="menuitem"   tabindex="-1" href="#" >Documentation</a>
+                       <a role="menuitem"   tabindex="-1" href="#" >{{'Documentation' | translate}}</a>
                      </li>
                      <li role="presentation">
-                       <a role="menuitem"   tabindex="-1" href="#" >Assistance</a>
+                       <a role="menuitem"   tabindex="-1" href="#" >{{'Assistance' | translate}}</a>
                      </li>
                      <li role="presentation" class="divider"></li>
                      <li role="presentation">
-                       <a role="menuitem"   tabindex="-1" href="#" >Préference</a>                     
+                       <a role="menuitem"   tabindex="-1" href="#" >{{'Préference' | translate}}</a>                     
                      </li>
                      <li role="presentation">
-                       <a role="menuitem"   tabindex="-1" href="#" ng-click="updatePassword()">Modifier le mot de passe</a>                     
+                       <a role="menuitem"   tabindex="-1" href="#" ng-click="updatePassword()">{{'UPPWD' | translate}}</a>                     
                      </li>
                      <li role="presentation">
-                         <a role="menuitem"   tabindex="-1" href="#" ng-click="deconnexion()">Déconnexion</a>
+                         <a role="menuitem"   tabindex="-1" href="#" ng-click="deconnexion()">{{'Déconnexion' | translate}}</a>
                      </li>
                   </ul>                                     
               </li>

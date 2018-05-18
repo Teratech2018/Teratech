@@ -30,6 +30,7 @@
     <class>com.core.discussions.Follower</class>
     <class>com.core.views.CalendarRecord</class>
     <class>com.core.email.Email</class>
+    <class>com.core.langues.Terme</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

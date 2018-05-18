@@ -7,6 +7,7 @@ package com.kerem.core;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.kerem.commons.KerenSession;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
@@ -64,6 +65,8 @@ public class MetaDataUtil {
     public static boolean containKey(String key){
         return sharedCache.containsKey(key);
     }
+    
+    
     
     /**
      * 
@@ -131,7 +134,13 @@ public class MetaDataUtil {
 //        }
         MetaData metaData = new MetaData();
         metaData.setEditTitle(((BaseElement)obj).getEditTitle());
+        if(KerenSession.containKey(((BaseElement)obj).getEditTitle())){
+            metaData.setEditTitle(KerenSession.getEntry(((BaseElement)obj).getEditTitle()));
+        }//end if(KerenSession.containKey(((BaseElement)obj).getEditTitle()))
         metaData.setListTitle(((BaseElement)obj).getListTitle());
+        if(KerenSession.containKey(((BaseElement)obj).getListTitle())){
+            metaData.setListTitle(KerenSession.getEntry(((BaseElement)obj).getListTitle()));
+        }//end if(KerenSession.containKey(((BaseElement)obj).getListTitle())){
         metaData.setEntityName(obj.getClass().getSimpleName());
         metaData.setModuleName(((BaseElement)obj).getModuleName());
         metaData.setCreateonfield(((BaseElement)obj).isCreateonfield()); 
@@ -188,7 +197,11 @@ public class MetaDataUtil {
                 Observer annot3 = field.getAnnotation(Observer.class);
                 if(field.getType().equals(String.class)){   
                        if(annot.target().equals("combobox")){
-                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                          String label = annot.label();
+                          if(KerenSession.containKey(annot.label())){
+                              label = KerenSession.getEntry(label);
+                          }//end if(KerenSession.containKey(annot.label())){
+                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), label,annot.search(), null, null);
                           column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());column.setEditable(annot.editable());
                           column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setPattern(annot.pattern());
                           column.setHide(annot.hide());column.setCustomfooter(annot.customfooter());column.setCompute(annot.compute());
@@ -198,7 +211,11 @@ public class MetaDataUtil {
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);        
                        }else{
-                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                            String label = annot.label();
+                           if(KerenSession.containKey(annot.label())){
+                               label = KerenSession.getEntry(label);
+                           }//end if(KerenSession.containKey(annot.label())){
+                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), label,annot.search(), null, null);
                           column.setOptional(annot.optional());column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                           column.setUnique(annot.unique());column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -209,7 +226,11 @@ public class MetaDataUtil {
                           metaData.getColumns().add(column);        
                        }                               
                 }else if(field.getType().equals(Date.class)){
-                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                          String label = annot.label();
+                          if(KerenSession.containKey(annot.label())){
+                              label = KerenSession.getEntry(label);
+                          }//end if(KerenSession.containKey(annot.label())){
+                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), label,annot.search(), null, null);
                           column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());
                           column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -221,7 +242,11 @@ public class MetaDataUtil {
                 }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
                         ||annot.type().equals(BigDecimal.class)||annot.type().equals(Integer.class)||
                         annot.type().equals(Long.class)){
-                    MetaColumn column = new MetaColumn("number", field.getName(), annot.label(),annot.search(), null, null);
+                    String label = annot.label();
+                    if(KerenSession.containKey(annot.label())){
+                        label = KerenSession.getEntry(label);
+                    }//end if(KerenSession.containKey(annot.label())){
+                    MetaColumn column = new MetaColumn("number", field.getName(),label,annot.search(), null, null);
                     column.setOptional(annot.optional());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
@@ -231,7 +256,11 @@ public class MetaDataUtil {
                     }//end if(annot3!=null)
                     metaData.getColumns().add(column);
                 }else if(field.getType().equals(Boolean.class)){
-                    MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
+                    String label = annot.label();
+                    if(KerenSession.containKey(annot.label())){
+                        label = KerenSession.getEntry(label);
+                    }//end if(KerenSession.containKey(annot.label())){
+                    MetaColumn column = new MetaColumn("boolean", field.getName(), label,annot.search(), null, null);
                     column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -252,9 +281,13 @@ public class MetaDataUtil {
                     
                     /**if(!shareCache.containsKey(annot.type().getClass().toString()))**/{
                     if(field.isAnnotationPresent(ManyToMany.class)){
-                        MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many", meta);
+                        String label = annot.label();
+                        if(KerenSession.containKey(annot.label())){
+                            label = KerenSession.getEntry(label);
+                        }//end if(KerenSession.containKey(annot.label())){
+                        MetaColumn column = new MetaColumn("array", field.getName(), label ,annot.search(),"many-to-many", meta);
                         if(annot.target()=="many-to-many-list"){
-                            column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many-list", meta);
+                            column = new MetaColumn("array", field.getName(), label,annot.search(),"many-to-many-list", meta);
                         }//end if(annot.target()=="many-to-many-list")                        
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable()); 
                         String[] searchfields = annot.searchfields().split(",");
@@ -286,7 +319,11 @@ public class MetaDataUtil {
                         }//end if(annot3!=null)
                     }else if(field.isAnnotationPresent(OneToMany.class)){
                         //System.out.println("===================================================="+annot.type().newInstance());
-                        MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"one-to-many", null);
+                        String label = annot.label();
+                        if(KerenSession.containKey(annot.label())){
+                            label = KerenSession.getEntry(label);
+                        }//end if(KerenSession.containKey(annot.label())){
+                        MetaColumn column = new MetaColumn("array", field.getName(), label,annot.search(),"one-to-many", null);
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable());
                         column.setCustomfooter(annot.customfooter());column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         String[] searchfields = annot.searchfields().split(",");
@@ -328,7 +365,11 @@ public class MetaDataUtil {
 //                           meta = getMetaData(annot.type().newInstance(),shareCache);
 //                        }//end 
                      /**if(!shareCache.containsKey(field.getType().getClass().toString()))**/{
-                        MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
+                        String label = annot.label();
+                        if(KerenSession.containKey(annot.label())){
+                            label = KerenSession.getEntry(label);
+                        }//end if(KerenSession.containKey(annot.label())){
+                        MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(), "many-to-one", meta);
                         column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                         //metaData.getColumns().add(column);
@@ -374,7 +415,11 @@ public class MetaDataUtil {
                         metaGroup.setSequence(annot.sequence());
                         if(field.getType().equals(String.class)){   
                                if(annot.target().equals("combobox")){
-                                  MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), annot.target(), null);
+                                   String label = annot.label();
+                                    if(KerenSession.containKey(annot.label())){
+                                        label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                  MetaColumn column = new MetaColumn(annot.target(), field.getName(), label,annot.search(), annot.target(), null);
                                   column.setValue(annot.values());column.setUpdatable(annot.updatable());column.setFrozen(annot.frozen());
                                   column.setEditable(annot.editable());column.setOptional(annot.optional());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                   column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
@@ -385,7 +430,11 @@ public class MetaDataUtil {
                                   }//end if(annot3!=null)
                                   metaGroup.getColumns().add(column);        
                                }else{
-                                   MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                                   String label = annot.label();
+                                    if(KerenSession.containKey(annot.label())){
+                                        label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                   MetaColumn column = new MetaColumn(annot.target(), field.getName(), label,annot.search(), null, null);
                                    column.setOptional(annot.optional());column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                    column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                    column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -396,7 +445,11 @@ public class MetaDataUtil {
                                    metaGroup.getColumns().add(column);        
                                }                               
                         }else if(field.getType().equals(Date.class)){
-                                MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                                String label = annot.label();
+                                if(KerenSession.containKey(annot.label())){
+                                    label = KerenSession.getEntry(label);
+                                }//end if(KerenSession.containKey(annot.label())){
+                                MetaColumn column = new MetaColumn(annot.target(), field.getName(), label,annot.search(), null, null);
                                 column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());
                                 column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                 column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -408,7 +461,11 @@ public class MetaDataUtil {
                       }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
                                 ||annot.type().equals(BigDecimal.class)||annot.type().equals(Integer.class)||
                                 annot.type().equals(Long.class)){
-                            MetaColumn column = new MetaColumn("number", field.getName(), annot.label(),annot.search(), null, null);
+                            String label = annot.label();
+                            if(KerenSession.containKey(annot.label())){
+                                label = KerenSession.getEntry(label);
+                            }//end if(KerenSession.containKey(annot.label())){
+                            MetaColumn column = new MetaColumn("number", field.getName(), label ,annot.search(), null, null);
                             column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());
                             column.setCustomfooter(annot.customfooter());column.setColsequence(annot.colsequence());
@@ -419,7 +476,11 @@ public class MetaDataUtil {
                             }//end if(annot3!=null)
                             metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(Boolean.class)){
-                            MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
+                            String label = annot.label();
+                            if(KerenSession.containKey(annot.label())){
+                                label = KerenSession.getEntry(label);
+                            }//end if(KerenSession.containKey(annot.label())){
+                            MetaColumn column = new MetaColumn("boolean", field.getName(), label ,annot.search(), null, null);
                             column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                             column.setHidden(annot.hidden());column.setFrozen(annot.frozen());
@@ -439,7 +500,11 @@ public class MetaDataUtil {
                             /**if(!shareCache.containsKey(annot.type().getClass().toString()))**/{
                                 if(field.isAnnotationPresent(ManyToMany.class)){
                                      if(annot.target().equalsIgnoreCase("many-to-many-list")){//many-to-many-list
-                                         MetaArray metaArray = new MetaArray("array", field.getName(), annot.groupLabel(),annot.search(),annot.target(), meta);
+                                         String label = annot.groupLabel();
+                                         if(KerenSession.containKey(annot.groupLabel())){
+                                            label = KerenSession.getEntry(label);
+                                         }//end if(KerenSession.containKey(annot.label())){
+                                         MetaArray metaArray = new MetaArray("array", field.getName(), label ,annot.search(),annot.target(), meta);
                                          metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                          String[] searchfields = annot.searchfields().split(",");
                                          metaArray.setSearchfields(searchfields);metaArray.setHidden(annot.hidden());
@@ -467,7 +532,11 @@ public class MetaDataUtil {
                                         }//end if(field.isAnnotationPresent(Filter.class)){
                                         //metaGroup.setMetaArray(metaArray);
                                      }else{
-                                         MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many", meta);                           
+                                         String label = annot.label();
+                                         if(KerenSession.containKey(annot.label())){
+                                            label = KerenSession.getEntry(label);
+                                         }//end if(KerenSession.containKey(annot.label())){
+                                         MetaColumn column = new MetaColumn("array", field.getName(), label,annot.search(),"many-to-many", meta);                           
                                          column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                          column.setHide(annot.hide());column.setEditable(annot.editable());
                                          column.setCustomfooter(annot.customfooter());column.setFrozen(annot.frozen());
@@ -494,8 +563,12 @@ public class MetaDataUtil {
                                             column.setFilter(filter.value());
                                           }//end if(field.isAnnotationPresent(Filter.class)){
                                     }
-                                }else if(field.isAnnotationPresent(OneToMany.class)){                                    
-                                    MetaArray metaArray = new MetaArray("array", field.getName(), annot.groupLabel(),annot.search(),annot.target(),meta);
+                                }else if(field.isAnnotationPresent(OneToMany.class)){ 
+                                    String label = annot.groupLabel();
+                                    if(KerenSession.containKey(annot.groupLabel())){
+                                        label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                    MetaArray metaArray = new MetaArray("array", field.getName(), label,annot.search(),annot.target(),meta);
                                     metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                     metaArray.setEdittable(annot.edittable());metaArray.setFrozen(annot.frozen());
                                     String[] searchfields = annot.searchfields().split(",");
@@ -531,7 +604,11 @@ public class MetaDataUtil {
 //                            System.out.println(MetaDataUtil.class.toString()+" ==== "+annot.type().toString()+" ==== "+field.getName());
                                     MetaData meta = null;                                
                                 /*if(!shareCache.containsKey(field.getType().getClass().toString()))*/{
-                                    MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
+                                    String label = annot.label();
+                                    if(KerenSession.containKey(annot.label())){
+                                        label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                    MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(), "many-to-one", meta);
                                     column.setEditable(annot.editable());column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                     column.setCustomfooter(annot.customfooter());column.setFrozen(annot.frozen());
@@ -576,7 +653,13 @@ public class MetaDataUtil {
 //        }
         MetaData metaData = new MetaData();
         metaData.setEditTitle(((BaseElement)obj).getEditTitle());
+        if(KerenSession.containKey(((BaseElement)obj).getEditTitle())){
+            metaData.setEditTitle(KerenSession.getEntry(((BaseElement)obj).getEditTitle()));
+        }//end if(KerenSession.containKey(((BaseElement)obj).getEditTitle()))
         metaData.setListTitle(((BaseElement)obj).getListTitle());
+        if(KerenSession.containKey(((BaseElement)obj).getListTitle())){
+            metaData.setListTitle(KerenSession.getEntry(((BaseElement)obj).getListTitle()));
+        }//end if(KerenSession.containKey(((BaseElement)obj).getListTitle())){
         metaData.setEntityName(obj.getClass().getSimpleName());
         metaData.setModuleName(((BaseElement)obj).getModuleName());
         metaData.setCreateonfield(((BaseElement)obj).isCreateonfield()); 
@@ -633,7 +716,11 @@ public class MetaDataUtil {
                 Observer annot3 = field.getAnnotation(Observer.class);
                 if(field.getType().equals(String.class)){   
                        if(annot.target().equals("combobox")){
-                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                          String label = annot.label();
+                          if(KerenSession.containKey(annot.label())){
+                               label = KerenSession.getEntry(label);
+                          }//end if(KerenSession.containKey(annot.label())){
+                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), label ,annot.search(), null, null);
                           column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());column.setEditable(annot.editable());
                           column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setPattern(annot.pattern());
                           column.setHide(annot.hide());column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
@@ -643,7 +730,11 @@ public class MetaDataUtil {
                           }//end if(annot3!=null)
                           metaData.getColumns().add(column);        
                        }else{
-                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                           String label = annot.label();
+                          if(KerenSession.containKey(annot.label())){
+                               label = KerenSession.getEntry(label);
+                          }//end if(KerenSession.containKey(annot.label())){
+                           MetaColumn column = new MetaColumn(annot.target(), field.getName(), label ,annot.search(), null, null);
                           column.setOptional(annot.optional());column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                           column.setUnique(annot.unique());column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -654,7 +745,11 @@ public class MetaDataUtil {
                           metaData.getColumns().add(column);        
                        }                               
                 }else if(field.getType().equals(Date.class)){
-                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                          String label = annot.label();
+                          if(KerenSession.containKey(annot.label())){
+                               label = KerenSession.getEntry(label);
+                          }//end if(KerenSession.containKey(annot.label())){
+                          MetaColumn column = new MetaColumn(annot.target(), field.getName(), label ,annot.search(), null, null);
                           column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());
                           column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                           column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -666,7 +761,11 @@ public class MetaDataUtil {
                 }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
                         ||annot.type().equals(BigDecimal.class)||annot.type().equals(Integer.class)||
                         annot.type().equals(Long.class)){
-                    MetaColumn column = new MetaColumn("number", field.getName(), annot.label(),annot.search(), null, null);
+                    String label = annot.label();
+                    if(KerenSession.containKey(annot.label())){
+                         label = KerenSession.getEntry(label);
+                    }//end if(KerenSession.containKey(annot.label())){
+                    MetaColumn column = new MetaColumn("number", field.getName(), label ,annot.search(), null, null);
                     column.setOptional(annot.optional());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());column.setCompute(annot.compute());
@@ -676,7 +775,11 @@ public class MetaDataUtil {
                     }//end if(annot3!=null)
                     metaData.getColumns().add(column);
                 }else if(field.getType().equals(Boolean.class)){
-                    MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
+                    String label = annot.label();
+                    if(KerenSession.containKey(annot.label())){
+                         label = KerenSession.getEntry(label);
+                    }//end if(KerenSession.containKey(annot.label())){
+                    MetaColumn column = new MetaColumn("boolean", field.getName(), label ,annot.search(), null, null);
                     column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                     column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -697,7 +800,11 @@ public class MetaDataUtil {
                     
                     /**if(!shareCache.containsKey(annot.type().getClass().toString()))**/{
                     if(field.isAnnotationPresent(ManyToMany.class)){
-                        MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many", meta);
+                        String label = annot.label();
+                        if(KerenSession.containKey(annot.label())){
+                             label = KerenSession.getEntry(label);
+                        }//end if(KerenSession.containKey(annot.label())){
+                        MetaColumn column = new MetaColumn("array", field.getName(), label ,annot.search(),"many-to-many", meta);
                         if(annot.target()=="many-to-many-list"){
                             column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many-list", meta);
                         }//end if(annot.target()=="many-to-many-list"){                        
@@ -731,7 +838,11 @@ public class MetaDataUtil {
                         column.setColsequence(annot.colsequence()); column.setHidden(annot.hidden());
                     }else if(field.isAnnotationPresent(OneToMany.class)){
                         //System.out.println("===================================================="+annot.type().newInstance());
-                        MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"one-to-many", null);
+                        String label = annot.label();
+                        if(KerenSession.containKey(annot.label())){
+                             label = KerenSession.getEntry(label);
+                        }//end if(KerenSession.containKey(annot.label())){
+                        MetaColumn column = new MetaColumn("array", field.getName(), label ,annot.search(),"one-to-many", null);
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable());
                         column.setCustomfooter(annot.customfooter());column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         column.setEdittable(annot.edittable());column.setFrozen(annot.frozen());
@@ -772,7 +883,11 @@ public class MetaDataUtil {
 //                           meta = getMetaData(annot.type().newInstance(),shareCache);
 //                        }//end 
                      /**if(!shareCache.containsKey(field.getType().getClass().toString()))**/{
-                        MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
+                        String label = annot.label();
+                        if(KerenSession.containKey(annot.label())){
+                             label = KerenSession.getEntry(label);
+                        }//end if(KerenSession.containKey(annot.label())){
+                        MetaColumn column = new MetaColumn("object", field.getName(), label,annot.search(), "many-to-one", meta);
                         column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                         column.setFrozen(annot.frozen());
@@ -818,7 +933,11 @@ public class MetaDataUtil {
                         metaGroup.setSequence(annot.sequence());
                         if(field.getType().equals(String.class)){   
                                if(annot.target().equals("combobox")){
-                                  MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), annot.target(), null);
+                                   String label = annot.label();
+                                    if(KerenSession.containKey(annot.label())){
+                                         label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                  MetaColumn column = new MetaColumn(annot.target(), field.getName(), label,annot.search(), annot.target(), null);
                                   column.setValue(annot.values());column.setUpdatable(annot.updatable());
                                   column.setEditable(annot.editable());column.setOptional(annot.optional());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                   column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
@@ -829,7 +948,11 @@ public class MetaDataUtil {
                                   }//end if(annot3!=null)
                                   metaGroup.getColumns().add(column);        
                                }else{
-                                   MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                                   String label = annot.label();
+                                    if(KerenSession.containKey(annot.label())){
+                                         label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                   MetaColumn column = new MetaColumn(annot.target(), field.getName(), label ,annot.search(), null, null);
                                    column.setOptional(annot.optional());column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                    column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                    column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -840,7 +963,11 @@ public class MetaDataUtil {
                                    metaGroup.getColumns().add(column);        
                                }                               
                         }else if(field.getType().equals(Date.class)){
-                                MetaColumn column = new MetaColumn(annot.target(), field.getName(), annot.label(),annot.search(), null, null);
+                                String label = annot.label();
+                                if(KerenSession.containKey(annot.label())){
+                                   label = KerenSession.getEntry(label);
+                                }//end if(KerenSession.containKey(annot.label())){
+                                MetaColumn column = new MetaColumn(annot.target(), field.getName(), label ,annot.search(), null, null);
                                 column.setValue(annot.values());column.setUnique(annot.unique());column.setUpdatable(annot.updatable());
                                 column.setOptional(annot.optional());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                 column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
@@ -852,7 +979,11 @@ public class MetaDataUtil {
                       }else if(field.getType().equals(Double.class)||annot.type().equals(Float.class)||annot.type().equals(Short.class)
                                 ||annot.type().equals(BigDecimal.class)||annot.type().equals(Integer.class)||
                                 annot.type().equals(Long.class)){
-                            MetaColumn column = new MetaColumn("number", field.getName(), annot.label(),annot.search(), null, null);
+                            String label = annot.label();
+                            if(KerenSession.containKey(annot.label())){
+                                 label = KerenSession.getEntry(label);
+                            }//end if(KerenSession.containKey(annot.label())){
+                            MetaColumn column = new MetaColumn("number", field.getName(), label,annot.search(), null, null);
                             column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());
                             column.setCustomfooter(annot.customfooter());column.setColsequence(annot.colsequence());
@@ -863,7 +994,11 @@ public class MetaDataUtil {
                             }//end if(annot3!=null)
                             metaGroup.getColumns().add(column);
                         }else if(field.getType().equals(Boolean.class)){
-                            MetaColumn column = new MetaColumn("boolean", field.getName(), annot.label(),annot.search(), null, null);
+                            String label = annot.label();
+                            if(KerenSession.containKey(annot.label())){
+                                 label = KerenSession.getEntry(label);
+                            }//end if(KerenSession.containKey(annot.label())){
+                            MetaColumn column = new MetaColumn("boolean", field.getName(), label ,annot.search(), null, null);
                             column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                             column.setHide(annot.hide());column.setEditable(annot.editable());column.setCustomfooter(annot.customfooter());
                             column.setHidden(annot.hidden());column.setFrozen(annot.frozen());
@@ -883,7 +1018,11 @@ public class MetaDataUtil {
                             /**if(!shareCache.containsKey(annot.type().getClass().toString()))**/{
                                 if(field.isAnnotationPresent(ManyToMany.class)){
                                      if(annot.target().equalsIgnoreCase("many-to-many-list")){//many-to-many-list
-                                         MetaArray metaArray = new MetaArray("array", field.getName(), annot.groupLabel(),annot.search(),annot.target(), meta);
+                                         String label = annot.groupLabel();
+                                        if(KerenSession.containKey(annot.groupLabel())){
+                                             label = KerenSession.getEntry(label);
+                                        }//end if(KerenSession.containKey(annot.label())){
+                                         MetaArray metaArray = new MetaArray("array", field.getName(), label ,annot.search(),annot.target(), meta);
                                          metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                          String[] searchfields = annot.searchfields().split(",");
                                          metaArray.setSearchfields(searchfields);metaArray.setHidden(annot.hidden());
@@ -910,7 +1049,11 @@ public class MetaDataUtil {
                                         }//end if(field.isAnnotationPresent(Filter.class)){
                                         //metaGroup.setMetaArray(metaArray);
                                      }else{
-                                         MetaColumn column = new MetaColumn("array", field.getName(), annot.label(),annot.search(),"many-to-many", meta);                           
+                                         String label = annot.label();
+                                         if(KerenSession.containKey(annot.label())){
+                                             label = KerenSession.getEntry(label);
+                                         }//end if(KerenSession.containKey(annot.label())){
+                                         MetaColumn column = new MetaColumn("array", field.getName(), label ,annot.search(),"many-to-many", meta);                           
                                          column.setUpdatable(annot.updatable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                          column.setHide(annot.hide());column.setEditable(annot.editable());column.setFrozen(annot.frozen());
                                          column.setCustomfooter(annot.customfooter());column.setHidden(annot.hidden());
@@ -937,8 +1080,12 @@ public class MetaDataUtil {
                                             column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                         }//end if(annot3!=null)
                                     }
-                                }else if(field.isAnnotationPresent(OneToMany.class)){                                    
-                                    MetaArray metaArray = new MetaArray("array", field.getName(), annot.groupLabel(),annot.search(),annot.target(),meta);
+                                }else if(field.isAnnotationPresent(OneToMany.class)){    
+                                    String label = annot.groupLabel();
+                                    if(KerenSession.containKey(annot.groupLabel())){
+                                         label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                    MetaArray metaArray = new MetaArray("array", field.getName(), label ,annot.search(),annot.target(),meta);
                                     metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                     String[] searchfields = annot.searchfields().split(",");
                                     metaArray.setEdittable(annot.edittable());metaArray.setFrozen(annot.frozen());
@@ -972,7 +1119,11 @@ public class MetaDataUtil {
 //                            System.out.println(MetaDataUtil.class.toString()+" ==== "+annot.type().toString()+" ==== "+field.getName());
                                     MetaData meta = null;                                
                                 /*if(!shareCache.containsKey(field.getType().getClass().toString()))*/{
-                                    MetaColumn column = new MetaColumn("object", field.getName(), annot.label(),annot.search(), "many-to-one", meta);
+                                     String label = annot.label();
+                                    if(KerenSession.containKey(annot.label())){
+                                         label = KerenSession.getEntry(label);
+                                    }//end if(KerenSession.containKey(annot.label())){
+                                    MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(), "many-to-one", meta);
                                     column.setEditable(annot.editable());column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                     column.setCustomfooter(annot.customfooter());column.setFrozen(annot.frozen());

@@ -1,9 +1,104 @@
 
-angular.module("mainApp" , ["ngResource","angularjs-datetime-picker","textAngular","keren.core.calendar","keren.core.discussion","keren.core.commons"]);        
-
+angular.module("mainApp" , ["ngResource","ngSanitize","pascalprecht.translate","angularjs-datetime-picker","textAngular","keren.core.calendar","keren.core.discussion","keren.core.commons"]);        
+//Regle de traduction 
+angular.module("mainApp").config(['$translateProvider',
+    function($translateProvider){
+        
+        $translateProvider.translations('en',{
+            Creer:'Create',
+            Importer:'Import',
+            Imprimer:'Print',
+            Filtres:'Filter',
+            Quitter:'Exit',
+            PJ:'Attachement(s)',
+            Actions:'Actions',
+            Enregistrer:'Save',
+            Ajouter:'Add',
+            Exporter:'Export',
+            Modifier:'Update',
+            Supprimer:'Delete',
+            Administration:'Administration',
+            Discussions:'Discussions',
+            Calendrier:'Calendar',
+            Applications:'Applications',
+            Configuration:'Configuration',
+            Documentation:'Documentation',
+            Assistance:'Assistance',
+            Préference:'Preference',
+            UPPWD:'Change the Password',
+            Déconnexion:'Log out',
+            MAIL:'Mailbox',
+            Conversation:'Tchat',
+            Administrateur:'Administrator',
+            EVENTTITLE:'Event Title',
+            Participants:'Participants',
+            EVENTDATE:'Event date',
+            Options:'Options',
+            Nom:'Name',
+            EMAIL:'Mail adrdress',
+            Socièté:'Partner',
+            Description:'Description',
+            BEGINDATETIME:'Start date and time',
+            Rappels:'Reminders',
+            Confidentialite:'Privacy',
+            ALLPEOPLE:'Everybody',
+            ONLYME:'Only me',
+            INNERONLY:'Internal user only',
+            SHOWHOURS:'Show time as',
+            Libre:'Free',
+            Occupée:'Occupied',
+            Duree:'Duration',
+            CALENDAROPTIONS:'Calendar options',
+            ADDELEMENT:'Add an element',
+            MISEAJOUR:'Update applcations list',
+            Utilisateurs:'Users',
+            Groupes:'Groups',
+            Societes:'Companies',
+            Pays:'Country',
+            Traductions:'Translations',
+            Langues:'Languages',
+            Discussion:'Discussion',
+            CANAUX:'Communication channels',
+            Technique:'Technical',
+            MENUGROUP:'Menu Elements',
+            MENUACTION:'Actions Menu',
+            FORMVIEW:'Form Views',
+            LISTVIEW:'List Views',
+            CALENDARVIEW:'Calendar Views',
+            DASHBORDVIEW:'Dashboards',
+            Editique:'Editique',
+            TERME:'Translated terms'
+        });
+        $translateProvider.translations('fr',{
+            PJ:'Pièce(s) Jointe(s)',
+            UPPWD:'Modifier le Mot de passe',
+            MAIL:'Boîte de réception',
+            EVENTTITLE:'Titre evenement',
+            EVENTDATE:'Date evenement',
+            EMAIL:'Adresse mail',
+            BEGINDATETIME:'Date et heure de debut',
+            ALLPEOPLE:'Tout le monde',
+            ONLYME:'Moi seulement',
+            INNERONLY:'Utilisateur interne seulement',
+            SHOWHOURS:'Afficher heure comme',
+            CALENDAROPTIONS:'Options du calendrier',
+            ADDELEMENT:'Ajouter un element',
+            MISEAJOUR:'Mise à jour',
+            CANAUX:'Canaux de communication',
+            MENUGROUP:'Menu Elements',
+            MENUACTION:'Menus Action',
+            FORMVIEW:'Vues Formulaire',
+            LISTVIEW:'Vues Liste',
+            CALENDARVIEW:'Vues Calendaires',
+            DASHBORDVIEW:'Tableaux de bord',
+            TERME:'Termes traduits'
+            
+        });
+        $translateProvider.preferredLanguage('fr');
+    }]);
 //Creation du controleur
 angular.module("mainApp")
-.controller("mainCtrl" , function($scope ,$rootScope,$http,$location,$filter, $compile,$timeout,commonsTools,restService){
+.controller("mainCtrl" , function($scope ,$rootScope,$translate,$http,$location,$filter, $compile,$timeout,commonsTools,restService){
     $scope.desablecreate = false;    
     $scope.desableupdate = false;
     $scope.desabledelete = false;
@@ -39,7 +134,7 @@ angular.module("mainApp")
                                                       
                           ]
 
-               }
+               };
    /**
        Structure du module de configuration
    **/
@@ -54,24 +149,24 @@ angular.module("mainApp")
                        ]},
                        { id:-2 , name:"traduction" , label:"Traductions",icon:"glyphicon glyphicon-book" ,showmenu:true,
                          actions:[{id:-1,name:"langues" , label:"Langues",icon:"glyphicon glyphicon-bullhorn",entityName:"Langue",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                                  {id:-2,name:"chargelangue" , label:"Charger une traduction",icon:"glyphicon glyphicon-saved",entityName:"ChargerLangue",moduleName:"kerencore",modal:true,securitylevel:0,model:'kerencore'}
-                                  //,{id:3,name:"importtraduction" , label:"Importer une traduction",icon:"glyphicon glyphicon-user",entityName:null,moduleName:"kerencore",modal:false},
+//                                  {id:-2,name:"chargelangue" , label:"Charger une traduction",icon:"glyphicon glyphicon-saved",entityName:"ChargerLangue",moduleName:"kerencore",modal:true,securitylevel:0,model:'kerencore'},
+                                  ,{id:-3,name:"traduction" , label:"TERME",icon:"glyphicon glyphicon-globe",entityName:"Terme",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}
                                   //{id:4,name:"exportertraduction" , label:"Exporter une traduction",icon:"glyphicon glyphicon-user",entityName:null,moduleName:"kerencore",modal:false}
                          ]},
                          {id:-4 , name:"discussion_conf",label:"Discussion",icon:"glyphicon glyphicon-th",showmenu:true,
                                 actions:[
-                                   {id:-100,name:"show_canal_discussion" , label:"Canaux de communication",icon:"glyphicon glyphicon-th",entityName:"Canal",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}
+                                   {id:-100,name:"show_canal_discussion" , label:"CANAUX",icon:"glyphicon glyphicon-th",entityName:"Canal",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}
 //                                   {id:-2,name:"application_update" , label:"Mise a jour",icon:"glyphicon glyphicon-refresh",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}                          
                            ]},
                        {id:-3 , name:"techniques",label:"Technique",icon:"glyphicon glyphicon-cog", showmenu:true,
                        actions:[
                           {id:-1,name:"actionsdb" , label:"Actions",icon:"glyphicon glyphicon-th",entityName:"ActionItem",moduleName:"kerencore",modal:false,securitylevel:2,model:'kerencore'},
-                          {id:-2,name:"menu" , label:"Elements de Menu",icon:"glyphicon glyphicon-th",entityName:"MenuGroupActions",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                          {id:-3,name:"actions" , label:"Actions Menu",icon:"glyphicon glyphicon-align-center",entityName:"MenuAction",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                          {id:-4,name:"formview" , label:"Vues Formulaire",icon:"glyphicon glyphicon-list-alt",entityName:"FormRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                          {id:-5,name:"treeview" , label:"Vues Arborescente",icon:"glyphicon glyphicon-align-justify",entityName:"TreeRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                          {id:-6,name:"calendarview" , label:"Vues Calendrier",icon:"glyphicon glyphicon-align-justify",entityName:"CalendarRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                          {id:-7,name:"dashboardview" , label:"Tableaux de bord",icon:"glyphicon glyphicon-align-justify",entityName:"DashboardRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                          {id:-2,name:"menu" , label:"MENUGROUP",icon:"glyphicon glyphicon-th",entityName:"MenuGroupActions",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                          {id:-3,name:"actions" , label:"MENUACTION",icon:"glyphicon glyphicon-align-center",entityName:"MenuAction",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                          {id:-4,name:"formview" , label:"FORMVIEW",icon:"glyphicon glyphicon-list-alt",entityName:"FormRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                          {id:-5,name:"treeview" , label:"LISTVIEW",icon:"glyphicon glyphicon-align-justify",entityName:"TreeRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                          {id:-6,name:"calendarview" , label:"CALENDARVIEW",icon:"glyphicon glyphicon-align-justify",entityName:"CalendarRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                          {id:-7,name:"dashboardview" , label:"DASHBORDVIEW",icon:"glyphicon glyphicon-align-justify",entityName:"DashboardRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
                           {id:-8,name:"reportview" , label:"Editique",icon:"glyphicon glyphicon-align-justify",entityName:"ReportRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}
                        ]}
                  ]
@@ -86,7 +181,7 @@ angular.module("mainApp")
                       {id:-1 , name:"application",label:"Applications",icon:"glyphicon glyphicon-th",showmenu:true,
                        actions:[
                           {id:-1,name:"applications" , label:"Applications",icon:"glyphicon glyphicon-th-list",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                          {id:-2,name:"application_update" , label:"Mise a jour",icon:"glyphicon glyphicon-refresh",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}                          
+                          {id:-2,name:"application_update" , label:"MISEAJOUR",icon:"glyphicon glyphicon-refresh",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}                          
                        ]}                       
                  ]
 
@@ -166,6 +261,10 @@ angular.module("mainApp")
                             if(data.length>0){
                                 $rootScope.globals.user = data[0];
                                 $rootScope.globals.company = $rootScope.globals.user.societeCourante;
+                                $translate.use('fr');
+                                if(data[0].langue && data[0].langue.codeISO=="en"){
+                                    $translate.use('en');
+                                }//end if(data[0].langue.codeISO=="fr_FR"){
                                 $http.defaults.headers.common['user']= angular.toJson(data[0]);           
                                 //Chargement  des modules
                                 var url = 'http://'+$location.host()+':'+$location.port()+'/kerencore/utilisateur/application'
@@ -303,7 +402,7 @@ angular.module("mainApp")
                 $scope.enabledVerticalMenu = true;
                 //var module = $scope.currentModule;
              $scope.getSelectAction($scope.currentModule.groups[0].actions[0]);
-          }
+          }//end if(angular.isDefined($scope.currentModule.groups) && ($scope.currentModule.groups.length > 0))
         //Hide the calendar panel
         $scope.showCalendar = false ;
         //Hide the discussion
@@ -467,7 +566,7 @@ angular.module("mainApp")
 });
 
 angular.module("mainApp")
-.directive("headerBuilder" , function(restService,commonsTools,$rootScope ,$filter,$http , $compile , $parse , $timeout,$location){
+.directive("headerBuilder" , function(restService,commonsTools,$rootScope ,$translate,$filter,$http , $compile , $parse , $timeout,$location){
     
     return {
     	restrict : "E",
@@ -543,11 +642,11 @@ angular.module("mainApp")
                               if($scope.calendarrecord!=null){
                                   if($scope.calendarrecord.startfield){
                                       $scope.currentObject[$scope.calendarrecord.startfield]= new Date(start);
-                                  }
+                                  }//end if($scope.calendarrecord.startfield){
                                   $scope.currentObject['allDay']=$scope.calendarrecord.allday;
                                   if($scope.calendarrecord.endfield){
                                        $scope.currentObject[$scope.calendarrecord.endfield]=new Date(end);
-                                  }
+                                  }//end if($scope.calendarrecord.endfield){
                               }//end if($scope.calendarrecord!=null)                              
                               $scope.previousType="calendar";
                                $scope.addNewCalendar();
@@ -565,10 +664,10 @@ angular.module("mainApp")
                             //      console.log("=============== "+angular.toJson(uiCalendarConfig));
                                   if(uiCalendarConfig.calendars && uiCalendarConfig.calendars.myCalendar){
                                     uiCalendarConfig.calendars.myCalendar.fullCalendar('gotoDate',$scope.events[0].start);
-                                  }
+                                  }//end if(uiCalendarConfig.calendars && uiCalendarConfig.calendars.myCalendar)
                                   isFirstTime = false;
-                           }
-                        }
+                           }//end if($scope.events.length>0 && isFirstTime){
+                        }//end eventAfterAllRender:function(){
                     }
                 };
           $scope.pagination = {  
@@ -1116,16 +1215,14 @@ angular.module("mainApp")
           $scope.onCheckboxClick = function(){
         
             $scope.tableheaderselected = !$scope.tableheaderselected;
-            $scope.selectedObjects = [];
-               
-               for(var i=0 ; i<$scope.datas.length;i++){
-                  module = $scope.datas[i];               
-                  module.selected = $scope.tableheaderselected;
-
-                  if(module.selected){
-                       $scope.selectedObjects.push(module);
-                  }
-               }                       
+            $scope.selectedObjects = [];               
+            for(var i=0 ; i<$scope.datas.length;i++){
+               var module = $scope.datas[i];               
+               module.selected = $scope.tableheaderselected;
+               if(module.selected){
+                    $scope.selectedObjects.push(module);
+               }//end if(module.selected)
+            }//end for(var i=0 ; i<$scope.datas.length;i++){                       
                
           };
   
@@ -1542,30 +1639,29 @@ angular.module("mainApp")
                         if(angular.isDefined(field.optional)&&(!field.optional)){
                                 inputElem.setAttribute('class' , 'form-control required');
                                 inputElem.setAttribute('ng-required' , 'true');
-                         } 
+                         }//end if(angular.isDefined(field.optional)&&(!field.optional)) 
                          if((field.min && field.min>0)){
                              inputElem.setAttribute('ng-minlength' , field.min);
-                         }
+                         }//end if((field.min && field.min>0))
                          if(field.max && field.max>0){
                              inputElem.setAttribute('ng-maxlength' , field.max);
-                         }
+                         }//end if(field.max && field.max>0)
                          if(field.pattern){
                              inputElem.setAttribute('ng-pattern' , field.pattern);
-                         }
-                         
-                         if(type=="number"){
-                             inputElem.setAttribute('value' , "0");
-                         }//end if(type=="number"){
-                         
-                    }
+                         }//end if(field.pattern)                         
+                                   
+                    }//end if(type!="checkbox"){
 //                    console.log("================================ "+$scope.innerWindowType+"==============="+($scope.windowType=="view")+"===="+((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType!='new'))+" === "+(field.editable==false)+" ================= "+(($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType!='new'))||(field.editable==false)));
-                    
                     inputElem.setAttribute('type' , type);
+//                    if(type=="file"){
+//                         inputElem.setAttribute("onchange","angular.element(this).scope().gererChangementFichier3(event ,'"+model+"')");    
+//                    }//end if(type=="file"){
                     inputElem.setAttribute('ng-model' , model);
                     $scope.constraintsProvider(field , inputElem);
                     if(($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType!='new'))||(field.editable==false)){
                         inputElem.setAttribute('readonly' , 'readonly');
-                    }
+                    }//end if(($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')
+                    
                     if(field.hide){
                         divElem.setAttribute('ng-hide',true);
                     }//end if(field.hide)
@@ -1886,10 +1982,10 @@ angular.module("mainApp")
               var filename = date.getTime()+"."+imgType;             
               if(!$scope.dataCache['resources']){
                   $scope.dataCache['resources'] = new Array();
-              }
+              }//end if(!$scope.dataCache['resources'])
               if(!$scope.dataCache['names']){
                   $scope.dataCache['names'] = new Array();
-              }
+              }//end if(!$scope.dataCache['names'])
 //              var map = new Map();
 //              map.set(filename,file);
               $scope.dataCache['resources'].push(file);
@@ -1922,7 +2018,62 @@ angular.module("mainApp")
          
          
          };
-
+/**
+ * 
+ * @param {type} event
+ * @returns {undefined}
+ */
+$scope.gererChangementFichier3 = function(event,model){
+              //Initiallisation du tableau des images
+//              var fileInput = document.querySelector('#'+inputID);
+              var file = event.target.files[0];              
+              console.log("$scope.gererChangementFichier3 = function(event) =============== "+file.name+" === "+model);
+              var imgType = file.name.split(".");
+              imgType = imgType[imgType.length - 1].toLowerCase();
+              var date = new Date();
+              var filename = file.name; 
+              $scope.dataCache['model'] = model;
+              if(!$scope.dataCache['resources']){
+                  $scope.dataCache['resources'] = new Array();
+              }//end if(!$scope.dataCache['resources'])
+              if(!$scope.dataCache['names']){
+                  $scope.dataCache['names'] = new Array();
+              }//end if(!$scope.dataCache['names'])
+//              var map = new Map();
+//              map.set(filename,file);
+              $scope.dataCache['resources'].push(file);
+              $scope.dataCache['names'].push(filename);
+              //transfert des resources et mise a jour du menu
+//              var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/piecejointe";
+//              var data = {id:-1,compareid:-1,designation:"",editTitle:""
+//                    ,listTitle:"",moduleName:'kerencore',selected:false,createonfield:true,desablecreate:false,
+//                    serial:"1234",activefilelien:false,desabledelete:false,filename:filename,attachename:file.name,entityserial:null,entityid:null};
+//             $scope.dataCache["messageobject"].piecesjointe.push(data);
+             commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%"); 
+//             var url2 = "http://"+$location.host()+":"+$location.port()+"/kerencore/resource/temporalupload";
+//             console.log("$scope.gererChangementFichier = function(event) =============== "+angular.toJson($scope.dataCache["messageobject"]));
+            $http.defaults.headers.common['names']= angular.toJson($scope.dataCache['names']); 
+            restService.uploadFile2($scope.dataCache['resources'])
+                .then(function(response){//                                                        alert(angular.toJson(response))                                                          
+                    $scope.dataCache['resources'] = new Array();
+                    $scope.dataCache['names'] = new Array(); 
+                    var part = $scope.dataCache['model'].split(".");
+                    var vmodel = $scope.getParentModel($scope.dataCache['model']);
+                    vmodel[part[part.length-1]] = filename;
+//                    $scope.followerpiecejointeMenu($scope.dataCache["messageobject"]);
+                    commonsTools.hideDialogLoading();                                                        
+                },function(error){
+                    $scope.dataCache['resources'] = new Array();
+                    $scope.dataCache['names'] = new Array();   
+                    commonsTools.hideDialogLoading();
+                    commonsTools.showDialogLoading(error);
+//                    commonsTools.notifyWindow("ERREUR" ,"Le transfert des ressources a Ã©chouÃ© <br> Veuillez consulter les logs pour plus de dÃ©tails","success");
+                }); 
+                      
+             //commonsTools.gererChangementImage(imageChooserInput,imageContent,apercuImageContent);
+         
+         
+         };
         /**
              Create component for ManyToOne relashion 
              model : field to map
@@ -1960,7 +2111,7 @@ angular.module("mainApp")
               if(($scope.windowType=="view")||
                         ((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))||(field.editable==false)){
                     selectElem.setAttribute('disabled' , 'true');
-                }
+                }//end if(($scope.windowType=="view")||
               var optionElem = document.createElement('option');
               optionElem.setAttribute('value' , '');
               optionElem.appendChild(document.createTextNode('Please select option'));
@@ -2117,7 +2268,73 @@ angular.module("mainApp")
               return divElem;
         };
 
-      
+/**
+ * 
+ * @param {type} model
+ * @param {type} labelText
+ * @param {type} entityName
+ * @param {type} metaData
+ * @param {type} field
+ * @param {type} index
+ * @param {type} modelpath
+ * @returns {unresolved}
+ */
+       $scope.fileLinkComponent = function(model , labelText , entityName,metaData,field,index,modelpath){ 
+//               $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);              
+//                console.log("$scope.manyToOneComponent ============== filter : "+field.filter+" fieldName :"+field.fieldName+" index : "+index+" ==== model : "+model+" :::: key:"+key+" == "+angular.toJson($scope.dataCache[""+key+""]+" === teplatefilter:"+$scope.filtertemplate[key]));
+    
+            var divElem = document.createElement('div');
+            divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12');
+            var labelElem = document.createElement('label');
+            labelElem.setAttribute('for' , field.fieldName+"_lb");
+            labelElem.appendChild(document.createTextNode(labelText));
+            divElem.appendChild(labelElem);
+            var divElem_1 = document.createElement('div');
+            divElem_1.setAttribute('class','input-group');
+            divElem.appendChild(divElem_1);
+            labelElem = document.createElement('label');
+            labelElem.setAttribute('for' , field.fieldName+"_fe");
+            var aElem = document.createElement("a");
+            aElem.setAttribute("href","");
+            aElem.setAttribute("ng-click","downloadAction('"+model+"' ,'"+field.fieldName+"')");
+            aElem.appendChild(document.createTextNode("{{"+model+"}}"));
+            labelElem.appendChild(aElem);
+            divElem_1.appendChild(labelElem);
+              //Desactiver la creation
+            var spanElem = document.createElement('span');
+            spanElem.setAttribute('class' , 'input-group-btn');
+            divElem_1.appendChild(spanElem);
+            var buttonElem = document.createElement('button');$scope.imageClick()
+            buttonElem.setAttribute('class' , 'btn btn-default btn-sm my-group-button');
+            buttonElem.setAttribute('ng-click' , "imageClick('"+field.fieldName+"_pj')");
+            buttonElem.setAttribute('data-toggle' , "modal");            
+//            buttonElem.setAttribute('data-target' , '#myModal');           
+            spanElem.appendChild(buttonElem);            
+            var spanElem_1 = document.createElement('span');
+            spanElem_1.setAttribute('class','glyphicon glyphicon-paperclip');
+            spanElem_1.setAttribute('aria-hidden' , 'true');
+            spanElem_1.setAttribute('style' , 'color:blue');
+            buttonElem.appendChild(spanElem_1);
+            if(($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
+                buttonElem.setAttribute('disabled' , 'disabled');
+            }//end if(($scope.windowType=="view")||(metaData.createonfield==false)|  
+            if(field.editable==false){
+                buttonElem.setAttribute('disabled' , 'disabled');               
+            }//end if(field.editable==false)
+            if(field.hide){
+                divElem.setAttribute('ng-hide',true);
+            }//end if(field.hide)
+            if(field.hidden!=null&&field.hidden.length>0){
+                divElem.setAttribute('ng-hide',field.hidden);
+            }//end if(field.hidden!=null&&field.hidden.length==0)   
+            var inputElem = document.createElement("input");
+            inputElem.setAttribute("type", "file");
+            inputElem.setAttribute("onchange", "angular.element(this).scope().gererChangementFichier3(event,'"+model+"')");
+            inputElem.setAttribute("id",field.fieldName+"_pj");
+            inputElem.setAttribute("ng-hide","true") ;
+            divElem.appendChild(inputElem);
+           return divElem;
+        };
 
          /**
           * 
@@ -2763,27 +2980,27 @@ angular.module("mainApp")
             if(oldItem!=null){
                 oldId = "td"+Math.abs(oldItem.id)+"_"+oldfieldname;
             }//end if(oldItem!=null)
-//            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
+            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
-//            var items = $element.find("span");
-//            for(var i=0; i<items.length;i++){
-//                 if(items.eq(i).attr("id")==id){
-//                       spanElem =items.eq(i) ;
-////                       console.log(" ======================= on a trouve report  span identifiant : "+id);
-//                 }//end if(items.eq(i).attr("id")=="innerpanel")  
-//                 if(oldId!=null && oldId!=id){
-//                     if(items.eq(i).attr("id")==oldId){
-//                            oldspanElem =items.eq(i) ;
-////                            console.log(" ======================= on a trouve report Old  span identifiant : "+oldId);
-//                      }//end if(items.eq(i).attr("id")=="innerpanel")  
-//                 }//end if(oldId!=null){
-//            }//end if(items.eq(i).attr("id")=="innerpanel")
-             spanElem = $("#"+id)
-             if(oldId!=null && oldId!=id){
-                 oldspanElem = $("#"+oldId);
-             }//end if(oldId!=null && oldId!=id){
+            var items = $element.find("span");
+            for(var i=0; i<items.length;i++){
+                 if(items.eq(i).attr("id")==id){
+                       spanElem =items.eq(i) ;
+//                       console.log(" ======================= on a trouve report  span identifiant : "+id);
+                 }//end if(items.eq(i).attr("id")=="innerpanel")  
+                 if(oldId!=null && oldId!=id){
+                     if(items.eq(i).attr("id")==oldId){
+                            oldspanElem =items.eq(i) ;
+//                            console.log(" ======================= on a trouve report Old  span identifiant : "+oldId);
+                      }//end if(items.eq(i).attr("id")=="innerpanel")  
+                 }//end if(oldId!=null){
+            }//end if(items.eq(i).attr("id")=="innerpanel")
+//             spanElem = $("#"+id)
+//             if(oldId!=null && oldId!=id){
+//                 oldspanElem = $("#"+oldId);
+//             }//end if(oldId!=null && oldId!=id){
             if(oldItem!=null && oldspanElem!=null&&(oldId != id)){
                 var data = oldItem[oldfieldname];
                 var spanelem = document.createElement("span");
@@ -3683,8 +3900,7 @@ angular.module("mainApp")
          * @returns {Element|principal_L470.principalAnonym$31.controller.$scope.aceEditorComponent.divElem|principal_L351.principalAnonym$23.controller.$scope.richEditorComponent.divElem|undefined|principal_L470.principalAnonym$31.controller.$scope.richEditorComponent.divElem}
          */
          $scope.getIhmComponent = function(model , field , entityName , metaDataName,index,modelpath){
-//               console.log("$scope.getIhmComponent = function(model , field , entityName , metaDataName) === "+field.fieldName+" ===== "+field.target+" ===== "+field.type+" == "+index);
-                    
+               console.log("$scope.getIhmComponent = function(model , field , entityName , metaDataName) === "+field.fieldName+" ===== "+field.target+" ===== "+field.type+" == "+index);
                if(field.type=='empty'){
                    return $scope.emptyComponentBuilder(model+'.'+field.fieldName, field , field.fieldLabel , field.fieldName , 'empty');
                }else if(field.type=='string'){
@@ -3703,8 +3919,6 @@ angular.module("mainApp")
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'time');
                }else if (field.type=='datetime') {
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'datetime-local');
-               }else if (field.type=='file') {
-                   return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'file');
                }else if (field.type=='password') {
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'password');
                }else if (field.type=='boolean') {
@@ -3719,6 +3933,8 @@ angular.module("mainApp")
                    return $scope.aceEditorComponent(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'richeditor');
                }else if (field.type=='image') {
                    return $scope.imageComponentBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'textarea');
+               }else if((field.type=='file')){                         
+                  return $scope.fileLinkComponent(model+'.'+field.fieldName , field.fieldLabel , field.fieldName , field.metaData,field,index,modelpath+'.'+field.fieldName);
                }else if((field.type=='object') && angular.isDefined(field.metaData)){                         
                   return $scope.manyToOneComponent(model+'.'+field.fieldName , field.fieldLabel , field.fieldName , field.metaData,field,index,modelpath+'.'+field.fieldName);
                }else if((field.type == 'array') && (angular.isDefined(field.metaData))){
@@ -3890,13 +4106,13 @@ angular.module("mainApp")
                                  
                                    var content  = null ;
                                    if(type=='list'){                                    
-                                      content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>Filtres</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()'>Creer</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desableupdate'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>Importer</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> Imprimer <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Imprimer </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> <div id='viewmodeid'></div></span>  </div> </div> </nav> </div><div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'> <table class='table table-striped table-hover table-responsive table-sm  table-header'  style='margin-top: -10px;' id='table'> <thead> <tr id='rowheader'> <th><input type='checkbox' ng-model='tableheaderselected' ng-click='onCheckboxClick()'></th> <th>Module Name</th> <th>Module Description</th> </tr> </thead> <tbody id='tablebody'> <tr  ng-repeat=' module in modules' > <td><input type='checkbox' ng-model='module.selected'  ng-click='onRowCheckboxClick(module)'></td> <td>{{module.name}}</td> <td>{{module.shortDescription}}</td> </tr> </tbody> </table>  </div> </div>"     ;
+                                      content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>{{'Filtres' | translate}}</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()'>{{'Creer' | translate}}</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desableupdate'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>{{'Importer' | translate}}</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel | translate}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel | translate}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> <div id='viewmodeid'></div></span>  </div> </div> </nav> </div><div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'> <table class='table table-striped table-hover table-responsive table-sm  table-header'  style='margin-top: -10px;' id='table'> <thead> <tr id='rowheader'> <th><input type='checkbox' ng-model='tableheaderselected' ng-click='onCheckboxClick()'></th> <th>Module Name</th> <th>Module Description</th> </tr> </thead> <tbody id='tablebody'> <tr  ng-repeat=' module in modules' > <td><input type='checkbox' ng-model='module.selected'  ng-click='onRowCheckboxClick(module)'></td> <td>{{module.name}}</td> <td>{{module.shortDescription}}</td> </tr> </tbody> </table>  </div> </div>"     ;
                                    }else if(type=='detail'){
-                                     content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'     ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>Enregistrer</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()'>Quitter</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> Imprimer <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> Imprimer </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> Pièce(s) jointe(s) <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Ajouter </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableupdateedit'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel}} </a> </li>  <li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}} </a> </li> <li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> AbonnÃ©e(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnÃ©es </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
+                                     content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'     ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>{{'Enregistrer' | translate}}</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()'>{{'Quitter' | translate}}</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> {{'PJ' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Ajouter' | translate}} </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableupdateedit'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel | translate}} </a> </li>  <li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}} </a> </li> <li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel | translate}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> AbonnÃ©e(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnÃ©es </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
                                    }else if(type=="report"){ 
-                                       content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' ng-hide='hideannuler'>Quitter</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
+                                       content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' ng-hide='hideannuler'>{{'Quitter' | translate}}</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
                                    }else if(type=="calendar"){ 
-                                       content = content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>Filtres</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()' ng-hide='true'>Creer</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='true'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>Importer</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> Imprimer <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Imprimer </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div><div id='viewmodeid'></div></span>  </div> </div> </nav> </div>   <div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'><div class='col-sm-12  col-md-12' id='calendar' ui-calendar='uiConfig.calendar' ng-model='eventSources' calendar='myCalendar' ></div></div> </div>"
+                                       content = content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>{{'Filtres' | translate}}</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()' ng-hide='true'>Creer</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='true'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>{{'Importer' | translate}}</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Imprimer </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel | translate}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div><div id='viewmodeid'></div></span>  </div> </div> </nav> </div>   <div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'><div class='col-sm-12  col-md-12' id='calendar' ui-calendar='uiConfig.calendar' ng-model='eventSources' calendar='myCalendar' ></div></div> </div>"
                                                
                                    }
                                    return angular.element(content);
@@ -4675,7 +4891,7 @@ angular.module("mainApp")
                     aElem.setAttribute('tabindex','-1');
                     aElem.setAttribute('href','#');
                     aElem.setAttribute('ng-click','imageClick("pjfileinput_id")');
-                    aElem.appendChild(document.createTextNode('Ajouter')) ;                            
+                    aElem.appendChild(document.createTextNode("{{'Ajouter' | translate}}")) ;                            
                     liElem.appendChild(aElem);      
                     ulElem.appendChild(liElem);                       
                     var compileFn = $compile(ulElem);
@@ -4767,7 +4983,7 @@ angular.module("mainApp")
                                 aElem.setAttribute('tabindex','-1');
                                 aElem.setAttribute('href','#');
                                 aElem.setAttribute('ng-click','imageClick("pj_file_input")');
-                                aElem.appendChild(document.createTextNode('Ajouter')) ;                            
+                                aElem.appendChild(document.createTextNode("{{'Ajouter' | translate}}")) ;                            
                                 liElem.appendChild(aElem);      
                                 ulElem.appendChild(liElem);
                            }//end if($scope.desableupdate==tre)
@@ -4952,7 +5168,7 @@ angular.module("mainApp")
           $scope.displayEditPanel = function(){
               if($scope.currentAction && angular.isString($scope.currentAction)){
                   $scope.currentAction = angular.fromJson($scope.currentAction);
-              }
+              }//end if($scope.currentAction && angular.isString($scope.currentAction))
               $scope.enablefollowerpanel = false;
               $scope.desablecreateedit = $scope.isviewOperation()||!$scope.canCreate()||!$scope.canUpdate();
               $scope.desableupdateedit = $scope.isupdateOperation()||!$scope.canUpdate()||$scope.iscreateOperation();
@@ -5084,6 +5300,7 @@ angular.module("mainApp")
               
           };
 
+         
          /**
           * 
           * @param {type} model
@@ -5427,13 +5644,12 @@ angular.module("mainApp")
                if(items.eq(i).attr("id")==titleID){
                      items.eq(i).replaceWith(titleheader);
                       //console.log("$scope.editDialogBuilder = function(model , item , type) ::: "+$scope.currentMetaDataPath);          
-               } 
-           } 
-           
-              $timeout(function() {                
-                $('.selectpicker').selectpicker('refresh');
-                
-              });
+               }//end if(items.eq(i).attr("id")==titleID){ 
+           }//end for(var i=0; i<items.length;i++)            
+            $timeout(function() {                
+              $('.selectpicker').selectpicker('refresh');
+
+            });
         };
         
         
@@ -6925,7 +7141,6 @@ angular.module("mainApp")
        $scope.buildFilter = function(model){
          try{
            var key = commonsTools.keygenerator(model);              
-//            console.log("$scope.buildFilter ======================= "+key+" ==== "+$scope.filtertemplate[key]+" === "+model);
            if($scope.filtertemplate[key]){
                var filtres = angular.fromJson($scope.filtertemplate[key]);
                var predicats = new Array();
@@ -6933,28 +7148,40 @@ angular.module("mainApp")
                    var predicat = new Object();
                    predicat["fieldName"] = filtres[i].fieldName;
                    predicat["fieldLabel"] = null ;
-                   predicat["type"]="EQUAL";
+                   predicat["type"]="==";
+                   if(filtres[i].operator!=null){
+                       predicat["type"]=filtres[i].operator ;
+                   }//end if(filtres[i].operator!=null){
                    predicat["searchfields"]=null;
                    if(filtres[i].searchfield){
                        predicat["searchfields"]=[filtres[i].searchfield];
-                   }
+                   }//end if(filtres[i].searchfield){
                    //Traitement de la valeur
                    var part = filtres[i].value.split('.');
                    var par = model.split('.');
                    var value = null
-                   if(part.length<=1&&part.length>0){
-                       value=part[0];
-                   }else if(part[0]=="object"){
+//                   if(part.length<=1&&part.length>0){
+//                       value=part[0];                                       
+//                   }else 
+                  if(part[0]=="object"){
                     if(par[0]=="currentObject"){
-                       var obj =$scope.currentObject[part[1]];  
+                       var obj =$scope.currentObject;
+                       if(part.length>1){
+                           obj = obj[part[1]];
+                       }//end [part[1]]
+                       value = obj;
                        if(obj && obj[filtres[i].searchfield]){
                            value=obj[filtres[i].searchfield];
                        }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
                           commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
                           return false;
-                        }
+                        }//end if(obj && obj[filtres[i].searchfield]){
                     }else if(par[0]=="temporalData"){
-                         var obj =$scope.temporalData[part[1]];
+                         var obj =$scope.temporalData;
+                         if(part.length>1){
+                            obj = obj[part[1]];
+                         }//end [part[1]]
+                         value = obj;
                           if(obj && obj[filtres[i].searchfield]){
                                 value=obj[filtres[i].searchfield];
                             }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
@@ -6963,14 +7190,18 @@ angular.module("mainApp")
                             }
                      }else if(par[0]=="dataCache"){
                           var key = commonsTools.keyparentgenerator(model);
-//                           console.log("$scope.buildFilter ======  "+model+" === "+key);
                           var obj =$scope.dataCache[key];
-                           if(obj && obj[filtres[i].searchfield]){
+                          if(part.length>1){
+                            obj = obj[part[1]];
+                          }//end [part[1]]
+                          value = obj;
+//                          console.log("$scope.buildFilter ======  model :"+model+" === key:"+key+" == data:"+obj[filtres[i].searchfield]+" ===== searchfield : "+filtres[i].searchfield+" ==== "+angular.isArray(filtres[i].searchfield)+" === obj:"+angular.toJson(obj));
+                          if(obj && obj[filtres[i].searchfield]){
                                 value=obj[filtres[i].searchfield];
-                            }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
-                               commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
-                                  return false;
-                            }
+                          }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
+                              commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
+                              return false;
+                          }//end if(obj && obj[filtres[i].searchfield]){
                      }//end if(part[0]=="object")
                  }else if(part[0]=="user"){
                      var obj = $scope.currentUser[part[1]];
@@ -6980,11 +7211,14 @@ angular.module("mainApp")
                           commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
                           return false;
                        }
+                 }else if(part.length<=1&&part.length>0){
+                     value=part[0];
                  }//end else if(part[0]=="object")
                    predicat["fieldValue"]=value;
                    predicats.push(predicat);
                }//end for(var i=0;i<filtres.length;i++)
                $http.defaults.headers.common['predicats']= angular.toJson(predicats); 
+//               console.log("$scope.buildFilter ======================= key : "+key+" ==== predicate : "+angular.toJson(predicats)+" === model:"+model);
                return true;                  
            }else{
                predicats = new Array();
@@ -7022,7 +7256,7 @@ angular.module("mainApp")
             }//end if(status==false){   
             var modelpart = model.split(".");
             var fieldName = modelpart[modelpart.length-1];
-            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]+"  ::: index : "+index);
+//            console.log("$scope.getData ===      "+model+" ==== "+item+" === "+entityName+" ==== "+moduleName+" === "+fieldName+" == "+$scope.observablePools[fieldName]+"  ::: index : "+index);
             var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/count";
             $http.get(url)
                     .then(function(response){
@@ -7632,32 +7866,33 @@ angular.module("mainApp")
              Recherche les donnÃ©es selon les criteres contenu dans predicats
           **/
           $scope.searchAction = function(){
-              $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-              try{
-                      restService.filter($scope.predicats ,$scope.pagination.currentPage , $scope.pagination.pageSize)
-                               .$promise.then(function(datas){
-                                     //console.log('$scope.loadData = function() :::::::::::::::: '+datas);
-                                    if(datas){
-                                        $scope.datas = datas;
-                                        $scope.listFramePanelBuilder($scope.metaData);
-                                        $scope.hideDialogLoading();
-                                    }
-                               } ,function(error){
-                                   $scope.hideDialogLoading();
-                                   commonsTools.showMessageDialog(error);
-                               });                       
-
-               }catch(ex){
-                   $scope.hideDialogLoading();
-                    commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
-                } 
+              $scope.loadData();
+//              $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+//              try{
+//                      restService.filter($scope.predicats ,$scope.pagination.currentPage , $scope.pagination.pageSize)
+//                               .$promise.then(function(datas){
+//                                     //console.log('$scope.loadData = function() :::::::::::::::: '+datas);
+//                                    if(datas){
+//                                        $scope.datas = datas;
+//                                        $scope.listFramePanelBuilder($scope.metaData);
+//                                        $scope.hideDialogLoading();
+//                                    }
+//                               } ,function(error){
+//                                   $scope.hideDialogLoading();
+//                                   commonsTools.showMessageDialog(error);
+//                               });                       
+//
+//               }catch(ex){
+//                   $scope.hideDialogLoading();
+//                    commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
+//                } 
           };
 
           $scope.searchCriteriaBuilder = function(){
             $scope.searchCriteria = new String();
             for(var i=0; i<$scope.predicats.length;i++){
-                if($scope.predicats[i].fieldValue){
-                  var oredicat = $scope.predicats[i].fieldName+" "+$scope.predicats[i].type+" "+$scope.predicats[i].fieldValue;
+                if($scope.predicats[i].value){
+                  var oredicat = $scope.predicats[i].fieldName+" "+$scope.predicats[i].type+" "+$scope.predicats[i].value;
                    $scope.searchCriteria = $scope.searchCriteria+" "+oredicat+" ;"
                 }
             }
@@ -7748,7 +7983,7 @@ angular.module("mainApp")
              lielem.appendChild(aElem);
              aElem.setAttribute("role","menuitem");aElem.setAttribute("tabindex","-1");
              aElem.setAttribute("href","#");aElem.setAttribute("ng-click","editPanelAjoutAborne()");
-             aElem.appendChild(document.createTextNode("Ajouter des abonnÃ©es"));
+             aElem.appendChild(document.createTextNode("Ajouter des abonnées"));
              //Menu canaux
              lielem = document.createElement("li");
              ulElem.appendChild(lielem);
@@ -8075,6 +8310,7 @@ angular.module("mainApp")
                                                 var docUrl = urlCreator.createObjectURL( blob );
                                                 linkElement.setAttribute('href', docUrl);
                                                 linkElement.setAttribute("download", pj.attachename);
+                                                linkElement.setAttribute("target", "_blank");
                                                 var clickEvent = new MouseEvent("click", {
                                                     "view": window,
                                                     "bubbles": true,
@@ -8097,6 +8333,94 @@ angular.module("mainApp")
                          commonsTools.hideDialogLoading();
                         commonsTools.showMessageDialog(error);
                      });
+         };
+         
+         /**
+          * 
+          * @param {type} model
+          * @param {type} fieldName
+          * @returns {undefined}
+          */
+          $scope.downloadAction = function(model , fieldName){
+             //Recuperation de la piece jointe
+             var data = $scope.getParentModel(model);
+             var pj = data[fieldName];
+             console.log("$scope.downloadAction = function(model , fieldName) =================== model :"+model+" === fieldName :"+fieldName+" ==== pj:"+pj);
+            commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");   
+                  if(pj){
+                             var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/resource/";
+                             var parts = pj.split(".");
+                             var type = "application/pdf";
+                             var extension = parts[parts.length-1];
+                             if(extension=='pdf'){
+                                 url = url+'pdf/'+pj+'/'+pj;
+                             }else if(extension=='png'||extension=='jpeg'){
+                                 type = "image/png";
+                                 url = url+'img/'+pj+'/'+pj;
+                             }else if(extension=='doc'||extension=='dot'){
+                                 type = "application/msword";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='docx'||extension=='dotx'){
+                                 type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='xls'||extension=='xlt'||extension=='xla'){
+                                 type = "application/vnd.ms-excel";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='xlsx'||extension=='xltx'){
+                                 type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='ppt'||extension=='pot'||extension=='pps'||extension=='ppa'){
+                                 type = "application/vnd.ms-powerpoint";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='pptx'){
+                                 type = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='mdb'){
+                                 type = "application/vnd.ms-access";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='rar'){
+                                 type = "application/x-rar-compressed, application/octet-stream";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else if(extension=='mdb'){
+                                 type = "application/zip, application/octet-stream";
+                                 url = url+'file/'+pj+'/'+pj;
+                             }else /*if(extension=='txt'||extension=='sql')*/{
+                                 url = url+'text/'+pj+'/'+pj;
+                                 type = "text/plain";
+                             }//end if(extension=='pdf')
+                             $http.get(url, {responseType: "arraybuffer"})
+                                     .then(function(response){
+//                                         console.log("$scope.piecejointeviewAction  ============================================= "+angular.toJson(response));
+//                                         var filename = response.headers['x-filename'];
+//                                         var contentType = response.headers['content-type'];
+                                         var linkElement = document.createElement('a');
+                                         try{
+                                                 var arrayBufferView = new Uint8Array(response.data );
+                                                var blob = new Blob( [ arrayBufferView ], { type: type } );
+                                                var urlCreator = window.URL || window.webkitURL;
+                                                var docUrl = urlCreator.createObjectURL( blob );
+                                                linkElement.setAttribute('href', docUrl);
+                                                linkElement.setAttribute("download", pj);
+                                                linkElement.setAttribute("target", "_blank");
+                                                var clickEvent = new MouseEvent("click", {
+                                                    "view": window,
+                                                    "bubbles": true,
+                                                    "cancelable": false
+                                                });
+                                                linkElement.dispatchEvent(clickEvent);
+                                         } catch (ex) {
+                                           commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
+                                        }
+                                         commonsTools.hideDialogLoading();
+                                     },function(error){
+                                         commonsTools.hideDialogLoading();
+                                         commonsTools.showMessageDialog(error);
+                                     });
+                         }else{
+                             commonsTools.hideDialogLoading();
+                             commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve la piÃ¨ce jointe  : "+pj,"danger");
+                         }//end if(pj)
+                     
          };
 /**
              * 
@@ -8289,7 +8613,7 @@ angular.module("mainApp")
                                    });
                        }//end if(data.model&&data.entity&&data.method)
                      }else{
-                         $scope.notifyWindow("Erreur" ,"Aucun Ã©tat n'est programmÃ©","danger");
+                         $scope.notifyWindow("Erreur" ,"Aucun état n'est programmé","danger");
                      }
                   }else if(type=='report'){
                       if(data.model&&data.entity&&data.method){
@@ -8505,7 +8829,7 @@ angular.module("mainApp")
                         data[key] = msg ; 
                     }//end if(mesages.length<=1){
               }//end if(part.length>=1&&part[0].split('@').length==1)
-              console.log(key+" ================== "+angular.toJson(data));
+//              console.log(key+" ================== "+angular.toJson(data));
               //console.log(key+" ====== "+angular.toJson(data)+" === Current Data : "+angular.toJson($scope.currentObject)+" Current User :"+angular.toJson($rootScope.globals.user));
           }
                         
@@ -8689,7 +9013,177 @@ angular.module("mainApp")
              var divElem = document.createElement('div');            
             return tableElem;
          };
-         
+           /**
+           * Tree view Builder
+           * @param {type} metaData
+           * @returns {undefined}
+           */
+         $scope.tableTreeComponent = function(metaData){
+            var tableElem = document.createElement('table');
+             tableElem.setAttribute('class' , 'table tree');
+             tableElem.setAttribute('style' , 'margin-top: -10px;');
+             tableElem.setAttribute('id' , 'table');
+             //Creation du table header
+             var theadElem = document.createElement('thead');
+             tableElem.appendChild(theadElem);
+             //Creation entete
+             var  rheadElem = document.createElement('tr');
+             rheadElem.setAttribute('class' ,'table-header');
+             theadElem.appendChild(rheadElem);
+             var thElem0 = document.createElement('th');
+             var inputElem0 = document.createElement('input');
+             inputElem0.setAttribute('type' , 'checkbox');
+             inputElem0.setAttribute('ng-model' , 'tableheaderselected');
+             inputElem0.setAttribute('ng-click' , 'onCheckboxClick()');
+            thElem0.appendChild(inputElem0);
+            rheadElem.appendChild(thElem0);
+            //Array of field name
+            var fieldnames = new Array();
+            var fieldtypes = new Array();
+            //Contient des reference au champs de type combobox
+            var comboMap = new Object();
+            //Traitement des champs columns
+            if(metaData.columns){
+                //Sort of array
+                metaData.columns = $filter('orderBy')(metaData.columns,'colsequence',false);             
+                for(var i=0 ; i< metaData.columns.length;i++){
+                  if(angular.isDefined(metaData.columns[i].search)
+                            &&(metaData.columns[i].search==true)){
+                      if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'){  //&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'
+                            var thElem = document.createElement('th');
+                            thElem.innerHTML = metaData.columns[i].fieldLabel;
+                            rheadElem.appendChild(thElem);
+                            fieldnames.push( metaData.columns[i].fieldName);
+                            if(metaData.columns[i].type=='number'){
+                                fieldtypes.push(true);
+                            }else{
+//                                if(metaData.columns[i].type=='combobox'){
+//                                    comboMap[metaData.columns[i].fieldName]= metaData.columns[i].value.split(";");
+//                                }//end if(metaData.columns[i].type=='combobox'){
+                                fieldtypes.push(false);
+                            }//end if(metaData.columns[i].type=='number')
+                       }//end if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i]
+                   }//end if(angular.isDefined(metaData.columns[i].search)
+                }
+            }//end if(metaData.columns){
+            //Traitement des groups
+            if(metaData.groups){
+                //Cas des columns
+                for(var i=0 ; i<metaData.groups.length;i++){
+                    if(metaData.groups[i]&&metaData.groups[i].columns){
+                        for(var j=0 ; j< metaData.groups[i].columns.length;j++){
+                            if(angular.isDefined(metaData.groups[i].columns[j].search)
+                                      &&(metaData.groups[i].columns[j].search==true)){
+                                 if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'){   //&&metaData.groups[i].columns[j].type.type!='textarea'&&metaData.groups[i].columns[j].type.type!='richeditor'
+                                    var thElem = document.createElement('th');
+                                    thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel;
+                                    rheadElem.appendChild(thElem);
+                                    fieldnames.push(metaData.groups[i].columns[j].fieldName);
+                                    if(metaData.groups[i].columns[j].type=='number'){
+                                        fieldtypes.push(true);
+                                    }else{
+//                                        if(metaData.groups[i].columns[j].type=='combobox'){
+//                                            comboMap[metaData.groups[i].columns[j].fieldName]= metaData.groups[i].columns[j].value.split(";");
+//                                        }//end if(metaData.columns[i].type=='combobox'){
+                                        fieldtypes.push(false);
+                                    }
+                                }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
+                            }
+                        }//end For
+                    }//Fin traitement des colommes
+                }
+            }//end if(metaData.groups){
+
+            //Creation du corps du tableau
+            var tbodyElem = document.createElement('tbody');
+            tableElem.appendChild(tbodyElem);
+            var rbodyElem = document.createElement('tr');
+            rbodyElem.setAttribute('ng-repeat' , ' obj in datas');
+            tbodyElem.appendChild(rbodyElem);
+            var tdElem = document.createElement('td');
+            rbodyElem.appendChild(tdElem);
+            rbodyElem.setAttribute('style' , "cursor: pointer;");
+            inputElem0 = document.createElement('input');
+            inputElem0.setAttribute('type' , 'checkbox');
+            inputElem0.setAttribute('ng-model' , 'obj.selected');
+            inputElem0.setAttribute('ng-click' , 'onRowCheckboxClick(obj)');
+            tdElem.appendChild(inputElem0);
+            for(var i=0 ; i< metaData.columns.length;i++){
+                  if(angular.isDefined(metaData.columns[i].search)
+                        &&(metaData.columns[i].search==true)){//end &&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'
+                      if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'){  
+                        var thElem = document.createElement('td');
+                        thElem.setAttribute('ng-click' , "viewAction(obj)");
+                        if(metaData.columns[i].type=='object'){
+                          thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+".designation}}";
+                        }else if(metaData.columns[i].type=='combobox'){
+                            thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
+                        }else{                            
+                          thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+"}}";
+                        }//end if(metaData.columns[i].type=='object'){
+                        if(metaData.columns[i].type=='number'){
+                            thElem.setAttribute('class','text-right');
+                        }
+                        rbodyElem.appendChild(thElem);
+                     }
+                  }
+             }//end for(var i=0 ; i< metaData.columns.length;i++){
+             //Traitement des groups
+            if(metaData.groups){
+                //Cas des columns
+                for(var i=0 ; i<metaData.groups.length;i++){
+                    if(metaData.groups[i]&&metaData.groups[i].columns){
+                        for(var j=0 ; j< metaData.groups[i].columns.length;j++){
+                            if(angular.isDefined(metaData.groups[i].columns[j].search)
+                                      &&(metaData.groups[i].columns[j].search==true)){//&&metaData.groups[i].columns[j].type!='textarea'&&metaData.groups[i].columns[j].type!='richeditor'
+                                  if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'){   
+                                    var thElem = document.createElement('td');
+                                    thElem.setAttribute('ng-click' , "viewAction(obj)");
+                                    if(metaData.groups[i].columns[j].type=='object'){
+                                      thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+".designation}}";
+                                    }else if(metaData.groups[i].columns[j].type=='combobox'){
+                                        thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}";
+                                    }else{
+                                      thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+"}}";                                      
+                                    }
+                                    if(metaData.groups[i].columns[j].type=='number'){
+                                        thElem.setAttribute('class','text-right');
+                                    }
+                                    rbodyElem.appendChild(thElem);
+                                }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
+                            }
+                        }//end For
+                    }//Fin traitement des colommes
+                }
+            }//end if(metaData.groups){
+            //Construction du footer du tableau
+            var footerElem = document.createElement('tfoot');
+            footerElem.setAttribute('style','background-color: #eeeeee;');
+            var trElem = document.createElement('tr');
+            var thElem = document.createElement('th');
+            trElem.appendChild(thElem);
+            footerElem.appendChild(trElem);
+            var numeric_fields = 0 ;
+            for(var i=0;i<fieldnames.length;i++){
+                var total = null;
+                if(fieldtypes[i]==true){
+                    total = commonsTools.sumTableField(fieldnames[i],$scope.datas);
+//                    console.log("$scope.tableListComponent === begin  "+i+" ****** "+fieldnames[i]+"=== "+total);
+                }
+                thElem = document.createElement('th');
+                trElem.appendChild(thElem);      
+                if(total){                    
+                    numeric_fields++ ;
+                    thElem.appendChild(document.createTextNode(total));
+                    thElem.setAttribute('class','text-right');
+                }//end if(total)
+            }//end for(var i=0;i<fieldnames.length;i++){
+            if(numeric_fields>0){
+                tableElem.appendChild(footerElem);
+            }//end if(numeric_fields>0)
+             var divElem = document.createElement('div');            
+            return tableElem;
+         };
          /**
           * 
           * @param {type} selectedValue
@@ -8842,6 +9336,7 @@ angular.module("mainApp")
                      predicat['fieldLabel'] = metaData.columns[i].fieldLabel;
                      predicat['value'] = angular.isDefined($scope.predicats[j]) ? $scope.predicats[j].value : null; 
                      predicat['type'] = 'EQUAL';
+                     predicat['target'] = 'string';
                      predicat['searchfields'] = metaData.columns[i].searchfields;
                      $scope.predicats[j] = predicat;
                      //if($scope.predicats)
@@ -8866,10 +9361,15 @@ angular.module("mainApp")
                              //inputElem.setAttribute('ng-model' , 'obj.value');
                              inputElem.setAttribute('style' , 'border:none;');
                              if(metaData.columns[i].type=='string'){
+                                predicat['type'] = 'LIKE';
                                 inputElem.setAttribute('type' , 'text');
                              }else if(metaData.columns[i].type=='number'){
+                                 predicat['type'] = 'EQUAL';
+                                 predicat['target'] = 'number';
                                inputElem.setAttribute('type' , 'number');
                              }else if(metaData.columns[i].type=='date'){
+                               predicat['type'] = 'EQUAL';
+                               predicat['target'] = 'date';
                                inputElem.setAttribute('type' , 'date');
                              }else if(metaData.columns[i].type=='tel'){
                                inputElem.setAttribute('type' , 'tel');
@@ -8880,18 +9380,21 @@ angular.module("mainApp")
                              }else if(metaData.columns[i].type=='time'){
                                inputElem.setAttribute('type' , 'time');
                              }else if(metaData.columns[i].type=='datetime'){
+                                 predicat['target'] = 'date';
                                inputElem.setAttribute('type' , 'datetime');
                              }else if(metaData.columns[i].type=='boolean'){
+                               predicat['target'] = 'boolean';
                                var labelElem = document.createElement('label');
                                labelElem.setAttribute('for' , metaData.columns[i].fieldName);
                                labelElem.appendChild(document.createTextNode(metaData.columns[i].fieldLabel)); 
                                spanElem.appendChild(labelElem);
                                inputElem.setAttribute('type' , 'checkbox');
                              }else if(metaData.columns[i].type!='object'){
+                                 predicat['target'] = 'object';
                                  inputElem.setAttribute('type' , 'text');                                 
                              }
 
-                            inputElem.setAttribute('ng-model' , 'predicats['+j+'].fieldValue');
+                            inputElem.setAttribute('ng-model' , 'predicats['+j+'].value');
                             inputElem.setAttribute('ng-change' , 'searchCriteriaBuilder()');
                             inputElem.setAttribute('placeholder' , metaData.columns[i].fieldLabel);
                          }
@@ -8962,19 +9465,17 @@ angular.module("mainApp")
                  listElem = $scope.buildPrintActionsMenu(listElem);
                 //Insertion de la zone de filter
                 var items = listElem.find("ul");
-                for(var i=0; i<items.length;i++){
-                     
+                for(var i=0; i<items.length;i++){                     
                      if(items.eq(i).attr("id")=="filterActionsId"){
                            items.eq(i).replaceWith($scope.filterOptionsComponent(metaData));
-                     }  
-                }
+                     }//end if(items.eq(i).attr("id")=="filterActionsId"){  
+                }//end for(var i=0; i<items.length;i++){
                 //Insertion viewMode
                 var items = listElem.find("div");
-                for(var i=0; i<items.length;i++){
-                     
+                for(var i=0; i<items.length;i++){                     
                      if(items.eq(i).attr("id")=="viewmodeid"){
                            items.eq(i).replaceWith($scope.viewModeBuilder());
-                     }  
+                     }  //end  if(items.eq(i).attr("id")=="viewmodeid"){
                 }
                 var divElem = document.createElement("div");
                 divElem.setAttribute("class","panel-body container-body-panel");
@@ -8993,6 +9494,11 @@ angular.module("mainApp")
                 return listElem;
           };
           
+          /**
+           * 
+           * @param {type} metaData
+           * @returns {undefined}
+           */
            $scope.calendarPanelComponent = function(metaData){               
                $scope.windowType = "calendar";
                var listElem  = null ; 
@@ -9034,7 +9540,8 @@ angular.module("mainApp")
 //                }
 
                 return listElem;
-          };
+          };        
+        
      
           /**
              Fonction de construction des 
@@ -9416,8 +9923,8 @@ angular.module("mainApp")
                                             $scope.temporalData = pwduser2;                                                                           
                                         }else{
                                             $scope.temporalData = new Object();
-                                            $scope.createEmptyTemporalObject(metaData,template);                                        
-                                        }
+                                            $scope.createEmptyTemporalObject(metaData,$scope.temporalData);                                        
+                                        }//end if($scope.currentAction.name=='update_pwd'){
                                         if(index==null||!angular.isDefined(index)){
                                             index = 1;
                                         }else{

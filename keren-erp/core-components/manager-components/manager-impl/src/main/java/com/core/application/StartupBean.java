@@ -6,6 +6,7 @@
 package com.core.application;
 
 import com.core.calendar.EventManagerLocal;
+import com.core.email.EmailManagerLocal;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -20,12 +21,20 @@ import javax.ejb.Startup;
 @Startup
 @Singleton
 public class StartupBean {
+    
     @EJB(name = "EventManager")
     protected EventManagerLocal eventManager;
     
+    @EJB(name = "EmailManager")
+    protected EmailManagerLocal emailManager;
+    
     public final long EVENTDURATION=10000;//10 seconds 
+    
+    public final long EMAILDURATION = 10000;
+    
     public enum States {BEFORESTARTED, STARTED, PAUSED, SHUTTINGDOWN};
     private States state;
+    
     @PostConstruct
     public void initialize() {
         state = States.BEFORESTARTED;
@@ -33,7 +42,11 @@ public class StartupBean {
         state = States.STARTED;
        //Demarrage du timer des evenement
         Date  today = new Date();
+        //Lancement du timer du gestionnaire des evenements
         eventManager.scheduleEventManager(today, EVENTDURATION);
+        
+        //Lancement du timer de traitement de mail
+        emailManager.scheduleEventManager(today, EMAILDURATION);
     }
     @PreDestroy
     public void terminate() {
