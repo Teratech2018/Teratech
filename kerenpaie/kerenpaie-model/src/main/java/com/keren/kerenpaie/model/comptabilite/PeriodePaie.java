@@ -23,6 +23,7 @@ import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.paie.ElementVariable;
 import com.keren.kerenpaie.model.structures.Societe;
 import com.megatim.common.annotations.Predicate;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * @author BEKO
@@ -62,11 +63,13 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 	private Date dfin ;
 	
 	@OneToMany(mappedBy="periode",fetch=FetchType.LAZY)
-	@Predicate(label="Salaires",type=BulletinPaie.class,target="one-to-many",group=true,groupName="group2",groupLabel="SALAIRES")
+        @JsonIgnore
+//	@Predicate(label="Salaires",type=BulletinPaie.class,target="one-to-many",group=true,groupName="group2",groupLabel="SALAIRES")
 	private List<BulletinPaie> salaires = new ArrayList<BulletinPaie>();
 	
 	@OneToMany(mappedBy="peiode",fetch=FetchType.LAZY)
-	@Predicate(label="Elements Variables",type=ElementVariable.class,target="one-to-many",group=true,groupName="group3",groupLabel="Elements Variables")
+        @JsonIgnore
+//	@Predicate(label="Elements Variables",type=ElementVariable.class,target="one-to-many",group=true,groupName="group3",groupLabel="Elements Variables")
 	private List<ElementVariable> variables = new ArrayList<ElementVariable>();
 	
 	private String state="etabli";

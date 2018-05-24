@@ -22,12 +22,12 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "T_CANALYTIQUE")
 public class CompteAnalytique extends BaseElement implements Serializable, Comparable<CompteAnalytique> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5131765886595965642L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5131765886595965642L;
 
-	@Predicate(label = "N° de compte",unique = true,optional = false,updatable = false,search = true)
+    @Predicate(label = "N° de compte",unique = true,optional = false,updatable = false,search = true)
     private String code ;
     
     @Predicate(label = "Intitulé",search = true)
@@ -39,13 +39,13 @@ public class CompteAnalytique extends BaseElement implements Serializable, Compa
     @Predicate(label = "Classement",search = true)
     private String classe;
     
-    @Predicate(label = "Report-à-nouveau" , type = Boolean.class,search = false)
+    @Predicate(label = "Report-à-nouveau" , type = Boolean.class,search = false, optional = true)
     private Boolean reportANouveau = false;
     
-    @Predicate(label = "Actif" , type = Boolean.class,search = false)
+    @Predicate(label = "Actif" , type = Boolean.class,search = false, optional = true)
     private Boolean active = true ;
     
-    @Predicate(label = "Niveau d'analyse",type = CompteAnalytique.class,target = "many-to-one",search = true)
+    @Predicate(label = "Niveau d'analyse",type = NiveauAnalyse.class,target = "many-to-one",search = true)
     @ManyToOne
     @JoinColumn(name = "NA_ID")
     private NiveauAnalyse niveau ;

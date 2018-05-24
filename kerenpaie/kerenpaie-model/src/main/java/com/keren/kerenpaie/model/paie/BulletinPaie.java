@@ -58,10 +58,11 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="LIBUPA_ID")
+        
 	@Predicate(label="Lignes",type=LigneBulletinPaie.class,target="one-to-many",updatable=false,editable=false,group=true,groupName="group1",groupLabel="VALEURS DE RUBRIQUES",edittable=true)
 	private List<LigneBulletinPaie> lignes = new ArrayList<LigneBulletinPaie>();
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="BUPA_ID")
 	@Predicate(label="VARIABLES",type=LigneElementVariable.class,target="one-to-many",group=true,groupName="group2",groupLabel="VARIABLES",edittable=true)
 	private List<LigneElementVariable> variables = new ArrayList<LigneElementVariable>();
@@ -299,7 +300,14 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Override
 	public int compareTo(BulletinPaie arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return employe.compareTo(arg0.employe);
 	}
+
+    @Override
+    public String toString() {
+        return "BulletinPaie{ id="+id + "code=" + code + ", employe=" + employe + ", dpayement=" + dpayement + ", periode=" + periode + ", lignes=" + lignes + ", variables=" + variables + ", state=" + state + '}';
+    }
+        
+        
 
 }

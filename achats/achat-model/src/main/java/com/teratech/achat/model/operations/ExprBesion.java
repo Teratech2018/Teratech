@@ -187,23 +187,73 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
 
     @Override
     public List<State> getStates() {
-        List<State> states = new ArrayList<State>();
-        State state = new State("etabli", "Broullion");
-        states.add(state);
-        state = new State("annule", "Annulé");
-        states.add(state);
-        state = new State("accorde", "A Accorder");
-        states.add(state);
-        state = new State("valide", "A Valider");
-        states.add(state);
-        state = new State("apprecie", "A Apprécier");
-        states.add(state);
-        state = new State("transmettre", "A Transmettre");
-        states.add(state);
-        state = new State("executer", "A Executer");
-        states.add(state);
-        state = new State("terminer", "Terminé");
-        states.add(state);
+        states = new ArrayList<State>();
+        if("etabli".equals(state)){
+            State state = new State("etabli", "Broullion");
+            states.add(state);
+             state = new State("accorde", "A Accorder");
+            states.add(state);
+            state = new State("valide", "A Valider");
+            states.add(state);
+//            return states ;
+        }else if("accorde".equals(state)){
+            State state = new State("accorde", "A Accorder");
+            states.add(state);
+            state = new State("valide", "A Valider");
+            states.add(state);
+           state = new State("annule", "Annulé");
+           states.add(state);
+        }else if("valide".equals(state)){
+            State state = new State("valide", "A Valider");
+            states.add(state);
+            state = new State("apprecie", "A Apprécier");
+            states.add(state);
+            state = new State("annule", "Annulé");
+            states.add(state);
+        }else if("apprecie".equals(state)){
+            State state = new State("apprecie", "A Apprécier");
+            states.add(state);
+            state = new State("transmettre", "A Transmettre");
+            states.add(state);
+            state = new State("annule", "Annulé");
+            states.add(state);
+        }else if("transmettre".equals(state)){
+            State state = new State("transmettre", "A Transmettre");
+            states.add(state);
+            state = new State("executer", "A Executer");
+            states.add(state);
+            state = new State("annule", "Annulé");
+            states.add(state);
+        }else if("executer".equals(state)){
+            State state = new State("executer", "A Executer");
+            states.add(state);
+            state = new State("terminer", "Terminé");
+            states.add(state);
+            state = new State("annule", "Annulé");
+            states.add(state);
+        }else if("terminer".equals(state)){
+            State state = new State("terminer", "Terminé");
+            states.add(state);
+        }else if("annule".equals(state)){
+           State state = new State("annule", "Annulé");
+           states.add(state);
+        }//end if(state=="etabli"){
+//        State state = new State("etabli", "Broullion");
+//        states.add(state);
+//        state = new State("annule", "Annulé");
+//        states.add(state);
+//        state = new State("accorde", "A Accorder");
+//        states.add(state);
+//        state = new State("valide", "A Valider");
+//        states.add(state);
+//        state = new State("apprecie", "A Apprécier");
+//        states.add(state);
+//        state = new State("transmettre", "A Transmettre");
+//        states.add(state);
+//        state = new State("executer", "A Executer");
+//        states.add(state);
+//        state = new State("terminer", "Terminé");
+//        states.add(state);
         return states; //To change body of generated methods, choose Tools | Templates.
     }
 

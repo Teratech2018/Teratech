@@ -20,7 +20,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Apr 05 13:54:58 GMT+01:00 2018
  * 
  */
@@ -54,48 +55,69 @@ public class SyndicatRSImpl
         return ("kerenpaie");
     }
 
-	@Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-			return MetaDataUtil.getMetaData(new Syndicat(),new HashMap<String, MetaData>()
-					, new ArrayList<String>());
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+    @Override
+    public MetaData getMetaData(HttpHeaders headers) {
 
-	@Override
-	protected void processBeforeSave(Syndicat entity) {
-		// TODO Auto-generated method stub
-		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-			throw new KerenExecption("Le nom de l'organisation est obligatoire");
-		}else if(entity.getComptetier()==null){
-			throw new KerenExecption("Le Compte Tier lié est obligatoire");
-		}else if(entity.getTypecaisse()==null){
-			throw new KerenExecption("Le Type de Caisse est obligatoire");
-		}
-		super.processBeforeSave(entity);
-	}
+        // TODO Auto-generated method stub
+        try {
+            return MetaDataUtil.getMetaData(new Syndicat(),new HashMap<String, MetaData>()
+                            , new ArrayList<String>());
+        } catch (InstantiationException e) {
+            
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	protected void processBeforeUpdate(Syndicat entity) {
-		// TODO Auto-generated method stub
-		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-			throw new KerenExecption("Le nom de l'organisation est obligatoire");
-		}else if(entity.getComptetier()==null){
-			throw new KerenExecption("Le Compte Tier lié est obligatoire");
-		}else if(entity.getTypecaisse()==null){
-			throw new KerenExecption("Le Type de Caisse est obligatoire");
-		}
-		super.processBeforeUpdate(entity);
-	}
+    @Override
+    protected void processBeforeSave(Syndicat entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("Le nom de l'organisation est obligatoire");
+        }else if(entity.getComptetier()==null){
+                throw new KerenExecption("Le Compte Tier lié est obligatoire");
+        }else if(entity.getTypecaisse()==null){
+                throw new KerenExecption("Le Type de Caisse est obligatoire");
+        }
+        super.processBeforeSave(entity);
+    }
+
+    @Override
+    protected void processBeforeUpdate(Syndicat entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("Le nom de l'organisation est obligatoire");
+        }else if(entity.getComptetier()==null){
+                throw new KerenExecption("Le Compte Tier lié est obligatoire");
+        }else if(entity.getTypecaisse()==null){
+                throw new KerenExecption("Le Type de Caisse est obligatoire");
+        }
+        super.processBeforeUpdate(entity);
+    }
     
-    
+    @Override
+    public Syndicat delete(Long id) {
+
+        // TODO Auto-generated method stub
+        Syndicat entity = manager.find("id", id);
+
+        try{
+
+            //on supprimme l'objet
+            super.delete(id);
+
+        }catch(Exception ex){
+            throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+        }
+
+        return entity;
+    }
 
 }

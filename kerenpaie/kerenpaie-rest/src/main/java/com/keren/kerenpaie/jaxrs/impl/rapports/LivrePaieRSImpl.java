@@ -76,9 +76,9 @@ public class LivrePaieRSImpl
         try {
         	MetaData meta = MetaDataUtil.getMetaData(new LivrePaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
 		    MetaColumn workbtn = new MetaColumn("button", "work2", "Livre de Paie", false, "report", null);
-          workbtn.setValue("{'model':'kerenpaie','entity':'livrepaie','method':'buildlivrepaie'}");
+          workbtn.setValue("{'model':'kerenpaie','entity':'livrepaie','method':'buildlivrepaie','template':{'this':'object'}}");
           workbtn.setStates(new String[]{"etabli"});
-////          workbtn.setPattern("btn btn-primary");
+          workbtn.setPattern("btn btn-primary");
 //          meta.getHeader().add(workbtn);
 ////          workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
 ////          workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
@@ -121,7 +121,6 @@ public class LivrePaieRSImpl
 	@Override
 	public Response buildLivrePaie(LivrePaie livre) {
 		livre.setPeriode(CacheMemory.getPeriode());
-	
 		if(livre.getPeriode()==null){
 			throw new KerenExecption("Bien vouloir renseigner les paramètres d'impression <br/> ");
 		}

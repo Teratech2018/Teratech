@@ -12,6 +12,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.operations.AppelOffreManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.operations.AppelOffreRS;
 import com.teratech.achat.model.operations.AppelOffre;
+import com.teratech.achat.model.operations.LigneAppeloffre;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -111,6 +112,11 @@ public class AppelOffreRSImpl
          if(entity.getState().equalsIgnoreCase("selection")||entity.getState().equalsIgnoreCase("boncommande")){
             throw  new KerenExecption("Impossible de modifier un appel d'offre déjà selectionné ou commandé");
         } 
+        for(int i=0 ; i<entity.getLignes().size();i++){
+           if(entity.getLignes().get(i).getId()<=0){
+               entity.getLignes().get(i).setId(-1);
+           }//end  if(entity.getLignes().get(i).getId()<=0){
+        }//end for(int i=0 ; i<entity.getLignes().size();i++){
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -128,7 +134,10 @@ public class AppelOffreRSImpl
              throw  new KerenExecption("Veuillez saisir la date de commande prevue");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
            throw  new KerenExecption("Veuillez saisir au moins un produit");
-        }        
+        }       
+        for(int i=0 ; i<entity.getLignes().size();i++){
+            entity.getLignes().get(i).setId(-1);
+        }//end for(int i=0 ; i<entity.getLignes().size();i++){
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 

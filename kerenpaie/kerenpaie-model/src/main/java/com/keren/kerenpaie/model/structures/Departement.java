@@ -148,7 +148,7 @@ public class Departement extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenrh";
+		return "kerenpaie";
 	}
 
 	@Override

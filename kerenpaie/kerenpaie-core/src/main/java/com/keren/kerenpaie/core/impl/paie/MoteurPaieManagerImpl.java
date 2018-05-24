@@ -502,8 +502,6 @@ public class MoteurPaieManagerImpl
 			return salarie.getIdemlogement()==null ? 0.0 : salarie.getIdemlogement();
 		}else if(codeVar.trim().equalsIgnoreCase("SALBASENEGO")){//Salaire de base négocie
 			return salarie.getSalbase()==null ? 0.0 : salarie.getSalbase();
-		}else if(codeVar.trim().equalsIgnoreCase("INDE")){//Retraite complementaire
-			return salarie.getRetraitcomplementaire()==null ? 0.0 : salarie.getRetraitcomplementaire();
 		}else if(codeVar.trim().equalsIgnoreCase("NOEL")){//Arbre de Noel 
 			return salarie.getNoel()==null ? 0.0 : salarie.getNoel();
 		}else if(codeVar.trim().equalsIgnoreCase("NMOIS")){//Renvoie le nombres de mois de l'exercice
@@ -632,45 +630,52 @@ public class MoteurPaieManagerImpl
 			Calendar c = Calendar.getInstance();
 			c.setTime(begin);
 			if(c.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY){
-				if(weekDay.get("Lundi").getOuvert().equals(Boolean.TRUE)){
+				if(weekDay.get("Lundi")!=null && weekDay.get("Lundi").getOuvert()!=null                                       
+                                        && weekDay.get("Lundi").getOuvert().equals(Boolean.TRUE)){
 					heure += weekDay.get("Lundi").getHeures();
-				}
+				}//end if(weekDay.get("Lundi")!=null && weekDay.get("Lundi").getOuvert()!=null  
 			}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.TUESDAY){
-				if(weekDay.get("Mardi").getOuvert().equals(Boolean.TRUE)){
-					heure += weekDay.get("Lundi").getHeures();
-				}
+				if(weekDay.get("Mardi")!=null && weekDay.get("Mardi").getOuvert()!=null                                       
+                                        && weekDay.get("Mardi").getOuvert().equals(Boolean.TRUE)){
+					heure += weekDay.get("Mardi").getHeures();
+				}//end if(weekDay.get("Mardi")!=null && weekDay.get("Mardi").getOuvert()!=null  
 			}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.WEDNESDAY){
-				if(weekDay.get("Mercredi").getOuvert().equals(Boolean.TRUE)){
-					heure += weekDay.get("Lundi").getHeures();
-				}
+				if(weekDay.get("Mercredi")!=null && weekDay.get("Mercredi").getOuvert()!=null                                       
+                                        && weekDay.get("Mercredi").getOuvert().equals(Boolean.TRUE)){
+					heure += weekDay.get("Mercredi").getHeures();
+				}//end if(weekDay.get("Mercredi")!=null && weekDay.get("Mercredi").getOuvert()!=null 
 			}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY){
-				if(weekDay.get("Jeudi").getOuvert().equals(Boolean.TRUE)){
-					heure += weekDay.get("Lundi").getHeures();
-				}
+				if(weekDay.get("Jeudi")!=null && weekDay.get("Jeudi").getOuvert()!=null                                       
+                                        && weekDay.get("Jeudi").getOuvert().equals(Boolean.TRUE)){
+					heure += weekDay.get("Jeudi").getHeures();
+				}//end if(weekDay.get("Jeudi")!=null && weekDay.get("Jeudi").getOuvert()!=null 
 			}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.FRIDAY){
-				if(weekDay.get("Vendredi").getOuvert().equals(Boolean.TRUE)){
-					heure += weekDay.get("Lundi").getHeures();
-				}
+				if(weekDay.get("Vendredi")!=null && weekDay.get("Vendredi").getOuvert()!=null                                       
+                                        && weekDay.get("Vendredi").getOuvert().equals(Boolean.TRUE)){
+					heure += weekDay.get("Vendredi").getHeures();
+				}//end if(weekDay.get("Vendredi")!=null && weekDay.get("Vendredi").getOuvert()!=null 
 			}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
-				if(weekDay.get("Samedi").getOuvert().equals(Boolean.TRUE)){
-					heure += weekDay.get("Lundi").getHeures();
-				}
+				if(weekDay.get("Samedi")!=null && weekDay.get("Samedi").getOuvert()!=null                                       
+                                        && weekDay.get("Samedi").getOuvert().equals(Boolean.TRUE)){
+					heure += weekDay.get("Samedi").getHeures();
+				}//end if(weekDay.get("Samedi")!=null && weekDay.get("Samedi").getOuvert()!=null  
 			}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY){
-				if(weekDay.get("Dimanche").getOuvert().equals(Boolean.TRUE)){
-					heure += weekDay.get("Lundi").getHeures();
-				}
+				if(weekDay.get("Dimanche")!=null && weekDay.get("Dimanche").getOuvert()!=null                                       
+                                        && weekDay.get("Dimanche").getOuvert().equals(Boolean.TRUE)){
+					heure += weekDay.get("Dimanche").getHeures();
+				}//end if(weekDay.get("Dimanche")!=null && weekDay.get("Dimanche").getOuvert()!=null
 			}//end if(c.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY){
 		}while(begin.compareTo(periode.getDfin())<0);
 		return heure ;
 	}
-	/**
+	/**Calcul du salaire de base
 	 * SALBASE = SALCAT + SALaire Pondere + Complement salaire
 	 * @param salarie
 	 * @param contrat
 	 * @return
 	 */
 	private Double salaireBase(Employe salarie , ContratTravail contrat){		
-		Double valeur = 0.0;
+		Double valeur ;
 		Double salcat = salaireCategoriel(salarie, contrat);
 		valeur = salcat + complementSalaire(salarie, contrat, salcat) + (salarie.getCmplsalaire()!=null ? salarie.getCmplsalaire() : 0.0);		
 		return valeur;
@@ -1456,9 +1461,8 @@ public class MoteurPaieManagerImpl
 	 * @param entity
 	 */
     private List<Employe> creationBulletinPaiePeriode(PrepaSalaire entity){
-    	//Cache des lignes du bulletion de paie
-    	HashMap<String, LigneBulletinPaie> datacache = new HashMap<String, LigneBulletinPaie>();
-    	
+        //Cache des lignes du bulletion de paie
+    	HashMap<String, LigneBulletinPaie> datacache = new HashMap<String, LigneBulletinPaie>();    	
     	/**
     	 * Cache des variables de paie
     	 */
@@ -1485,9 +1489,9 @@ public class MoteurPaieManagerImpl
 			if(bulletins!=null&&!bulletins.isEmpty()){
 				bulletin = bulletins.get(0);
 			}//end if(bulletins!=null&&!bulletins.isEmpty()){
-			if(bulletin!=null){
-				continue;
-			}//end if(bulletin!=null){
+//			if(bulletin!=null){
+//				continue;
+//			}//end if(bulletin!=null){
 			bulletin = new BulletinPaie(salarie.getNom(), salarie, null, entity.getPeriode());
 			ProfilPaie profil = profildao.findByPrimaryKey("id", salarie.getProfilpaie().getId());
 			//Construction de la liste des variables de paie
@@ -1501,7 +1505,9 @@ public class MoteurPaieManagerImpl
 				//ligne.setValeur(eval(var,salarie));
 				//Mise en cache de la variable
 				variablecache.put(var.getCode(), ligne);
-				bulletin.getVariables().add(ligne);
+                                if(!bulletin.getVariables().contains(ligne)){
+                                    bulletin.getVariables().add(ligne);
+                                }//end if(!bulletin.getVariables().contains(ligne))
 			}//end for(Variable var:variables){
 			for(Rubrique rubrique:profil.getRubriques()){				
 				LigneBulletinPaie ligne = null;
@@ -1512,7 +1518,9 @@ public class MoteurPaieManagerImpl
 					ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
 					//ligne.setValeur(eval(rubrique,salarie));
 				}//end if(datacache.containsKey(rubrique.getCode())){
-				bulletin.getLignes().add(ligne);
+                                if(!bulletin.getLignes().contains(ligne)){
+                                    bulletin.getLignes().add(ligne);
+                                }//end if(!bulletin.getLignes().contains(ligne))
 			}//end for(Rubrique rubrique:profil.getRubriques()){
 			//Traitement des rubriques complementaires
 			salarie = employedao.findByPrimaryKey("id", salarie.getId());
@@ -1525,15 +1533,17 @@ public class MoteurPaieManagerImpl
 					}else{
 						ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
 						//ligne.setValeur(eval(rubrique,salarie));
-					}//end if(datacache.containsKey(rubrique.getCode())){		
-					bulletin.getLignes().add(ligne);
+					}//end if(datacache.containsKey(rubrique.getCode())){	
+                                        if(!bulletin.getLignes().contains(ligne)){
+                                            bulletin.getLignes().add(ligne);
+                                        }
 				}//end for(Rubrique rubrique:profil.getRubriques()){
 			}//end if(salarie.getRubriques()!=null)
 		    //Traitement des Elements variables(Prêt , avances,...)
-			container = RestrictionsContainer.newInstance();
-			container.addEq("salarie0", salarie);
-			container.addEq("peiode", entity.getPeriode());
-			List<ElementVariable> eltsvariables = eltvariabledao.filter(container.getPredicats(), null,null, 0, -1);
+                    container = RestrictionsContainer.newInstance();
+                    container.addEq("salarie0", salarie);
+                    container.addEq("peiode", entity.getPeriode());
+                    List<ElementVariable> eltsvariables = eltvariabledao.filter(container.getPredicats(), null,null, 0, -1);
 		    if(eltsvariables!=null&&!eltsvariables.isEmpty()){
 		    	ElementVariable eltvar = eltsvariables.get(0);
 		    	//Remboursement Avances
@@ -1546,40 +1556,46 @@ public class MoteurPaieManagerImpl
 					}else{
 						ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
 						ligne.setValeur(rem.getMontant());
-					}//end if(datacache.containsKey(rubrique.getCode())){		
-		    		bulletin.getLignes().add(ligne);
+					}//end if(datacache.containsKey(rubrique.getCode())){
+                                        if(!bulletin.getLignes().contains(ligne)){
+                                            bulletin.getLignes().add(ligne);
+                                        }//end if(!bulletin.getLignes().contains(ligne))
 		    	}//end for(RemboursementAvance rem:eltvar.getAvances())
 		    	//Remboursement Prêts
 		    	for(RemboursementPret rem:eltvar.getPrets()){
-		    		Rubrique rubrique = rem.getPret().getRubrique();
-		    		LigneBulletinPaie ligne = null;
-					if(datacache.containsKey(rubrique.getCode())){
-						ligne = datacache.get(rubrique.getCode());
-						ligne.setValeur(rem.getMontant() + ligne.getValeur());
-					}else{
-						ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
-						ligne.setValeur(rem.getMontant());
-					}//end if(datacache.containsKey(rubrique.getCode())){	
-		    		bulletin.getLignes().add(ligne);
+                            Rubrique rubrique = rem.getPret().getRubrique();
+                            LigneBulletinPaie ligne = null;
+                            if(datacache.containsKey(rubrique.getCode())){
+                                    ligne = datacache.get(rubrique.getCode());
+                                    ligne.setValeur(rem.getMontant() + ligne.getValeur());
+                            }else{
+                                    ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
+                                    ligne.setValeur(rem.getMontant());
+                            }//end if(datacache.containsKey(rubrique.getCode())){	
+                            if(!bulletin.getLignes().contains(ligne)){
+                                bulletin.getLignes().add(ligne);
+                            }
 		    	}//end for(RemboursementAvance rem:eltvar.getAvances())
 		    	//Rappel Salaires
 		    	for(Rappel rap:eltvar.getRappels()){
-		    		for(LigneRappel lign:rap.getLignes()){
-		    			Rubrique rubrique = lign.getRubrique();
-			    		LigneBulletinPaie ligne = null;
-						if(datacache.containsKey(rubrique.getCode())){
-							ligne = datacache.get(rubrique.getCode());
-							ligne.setValeur(lign.getMontant() + ligne.getValeur());
-						}else{
-							ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
-							ligne.setValeur(lign.getMontant());
-						}//end if(datacache.containsKey(rubrique.getCode())){	
-						bulletin.getLignes().add(ligne);
-		    		}//end for(Rubrique rubrique:rap.getLignes()){
+                            for(LigneRappel lign:rap.getLignes()){
+                                Rubrique rubrique = lign.getRubrique();
+                                LigneBulletinPaie ligne = null;
+                                if(datacache.containsKey(rubrique.getCode())){
+                                        ligne = datacache.get(rubrique.getCode());
+                                        ligne.setValeur(lign.getMontant() + ligne.getValeur());
+                                }else{
+                                        ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
+                                        ligne.setValeur(lign.getMontant());
+                                }//end if(datacache.containsKey(rubrique.getCode())){	
+                                if(!bulletin.getLignes().contains(ligne)){
+                                    bulletin.getLignes().add(ligne);
+                                }
+                            }//end for(Rubrique rubrique:rap.getLignes()){
 		    	}//end for(RemboursementAvance rem:eltvar.getAvances())
 		    	//Traitement Acompte en cours
 		    	for(Acompte acompte:eltvar.getAcomptes()){
-		    		LigneElementVariable ligne = null;
+		            LigneElementVariable ligne = null;
 		    	    if(variablecache.containsKey(acompte.getVariable().getCode())){
 		    	    	ligne = variablecache.get(acompte.getVariable().getCode());
 		    	    	ligne.setValeur(acompte.getMontant() + ligne.getValeur());
@@ -1589,16 +1605,19 @@ public class MoteurPaieManagerImpl
 		    	    	ligne.setValeur(acompte.getMontant());
 		    	    }//end  if(variablecache.containsKey(V_ACOMPTE)){
 		    		//Mise a jour de la liste des variable
-		    		bulletin.getVariables().add(ligne);
+                            if(!bulletin.getVariables().contains(ligne)){
+                                bulletin.getVariables().add(ligne);
+                            }
 		    	}//end for(Acompte acompte:eltvar.getAcomptes())
 		    }//end if(eltsvariables!=null&&!eltsvariables.isEmpty())
+		    System.out.println(MoteurPaieManagerImpl.class.toString()+" ==================================== "+bulletin);
 		    if(bulletin.getId()>0){
-		    	dao.update("id", bulletin);
+		    	dao.update(bulletin.getId(), bulletin);
 		    }else {
 		    	dao.save(bulletin);
 		    }//end if(bulletin.getId()>0){
 		}//end for(Employe salarie:salaries)
-		return salaries;
+                return salaries;
     }//end private void creationBulletinPaiePeriode(PrepaSalaire entity){
 	
     /**

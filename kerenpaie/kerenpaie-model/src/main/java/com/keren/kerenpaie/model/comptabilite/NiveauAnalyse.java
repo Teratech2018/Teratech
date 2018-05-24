@@ -34,7 +34,7 @@ public class NiveauAnalyse extends BaseElement implements Serializable, Comparab
 	public NiveauAnalyse() {
 		// TODO Auto-generated constructor stub
 	}
-
+        
 	/**
 	 * @param id
 	 * @param designation
@@ -45,7 +45,11 @@ public class NiveauAnalyse extends BaseElement implements Serializable, Comparab
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	public NiveauAnalyse(NiveauAnalyse niveauAnalyse) {
+            super(niveauAnalyse.id, niveauAnalyse.designation, niveauAnalyse.moduleName);
+            this.code = niveauAnalyse.code;
+        }
+        
 
 	public String getCode() {
 		return code;

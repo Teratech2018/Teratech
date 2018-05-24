@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.keren.kerenpaie.core.ifaces.employes.EmployeManagerLocal;
 import com.keren.kerenpaie.core.ifaces.employes.EmployeManagerRemote;
@@ -22,6 +23,10 @@ import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.employes.Medaille;
 import com.keren.kerenpaie.model.structures.Departement;
 import com.megatim.common.annotations.OrderType;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @TransactionAttribute
 @Stateless(mappedName = "EmployeManager")
@@ -105,8 +110,55 @@ public class EmployeManagerImpl
 		}//end for(Employe emp:datas){
 		return output;
 	}
-	
-	
+
+    @Override
+    public void processBeforeUpdate(Employe entity) {
+        Employe old = dao.findByPrimaryKey("id", entity.getId());
+        if(entity.getCv()!=old.getCv()){
+            //Suppression de l'ancien CV
+             File cible = new File(FileHelper.getStaticDirectory()+File.separator+old.getCv());
+             cible.delete();
+        }//end if(entity.getCv()!=old.getCv())
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+        
     
+    @Override
+    public void processAfterUpdate(Employe entity) {
+        if(entity.getCv()==null||entity.getCv().trim().isEmpty()){
+            return ;
+        }//end if(entity.getCv()==null||entity.getCv().trim().isEmpty()){
+        File temporal = new File(FileHelper.getTemporalDirectory()+File.separator+entity.getCv());
+        if(temporal.exists()){
+            File cible = new File(FileHelper.getStaticDirectory()+File.separator+entity.getCv());
+            try {
+                FileHelper.moveFile(temporal, cible);
+            } catch (IOException ex) {
+                Logger.getLogger(EmployeManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }//end if(temporal.exists()){
+        super.processAfterUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void processAfterSave(Employe entity) {
+         if(entity.getCv()==null||entity.getCv().trim().isEmpty()){
+            return ;
+        }//end if(entity.getCv()==null||entity.getCv().trim().isEmpty()){
+        File temporal = new File(FileHelper.getTemporalDirectory()+File.separator+entity.getCv());
+        if(temporal.exists()){
+            File cible = new File(FileHelper.getStaticDirectory()+File.separator+entity.getCv());
+            try {
+                FileHelper.moveFile(temporal, cible);
+            } catch (IOException ex) {
+                Logger.getLogger(EmployeManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }//end if(temporal.exists()){
+        super.processAfterSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+	
+	
+         
 
 }

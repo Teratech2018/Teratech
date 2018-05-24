@@ -24,7 +24,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Mar 13 13:15:48 GMT+01:00 2018
  * 
  */
@@ -59,106 +60,144 @@ public class RappelRSImpl
     }
     
     @Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-			MetaData meta = MetaDataUtil.getMetaData(new Rappel(), new HashMap<String, MetaData>(),new ArrayList<String>());
-		    MetaColumn workbtn = new MetaColumn("button", "work1", "Valider", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'rappel','method':'engage'}");
-            workbtn.setStates(new String[]{"etabli"});
-            workbtn.setPattern("btn btn-success");
-            meta.getHeader().add(workbtn);                  
-            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-            meta.getHeader().add(stautsbar);
-		    return meta;
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public MetaData getMetaData(HttpHeaders headers) {
+        
+        // TODO Auto-generated method stub
+        try {
+                MetaData meta = MetaDataUtil.getMetaData(new Rappel(), new HashMap<String, MetaData>(),new ArrayList<String>());
+                MetaColumn workbtn = new MetaColumn("button", "work1", "Valider", false, "workflow", null);
+                workbtn.setValue("{'model':'kerenpaie','entity':'rappel','method':'engage'}");
+                workbtn.setStates(new String[]{"etabli"});
+                workbtn.setPattern("btn btn-success");
+                meta.getHeader().add(workbtn);                  
+                MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+                meta.getHeader().add(stautsbar);
+                        return meta;
+        } catch (InstantiationException e) {
+            
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+            return null;
+    }
     
     
 
-	@Override
-	protected void processBeforeDelete(Object entity) {
-		// TODO Auto-generated method stub
-		
-		super.processBeforeDelete(entity);
-	}
+    @Override
+    protected void processBeforeDelete(Object entity) {
+        
+        // TODO Auto-generated method stub
+        super.processBeforeDelete(entity);
+    }
 
-	@Override
-	protected void processBeforeSave(Rappel entity) {
-		// TODO Auto-generated method stub
-		if(entity.getEmploye()==null){
-			throw new KerenExecption("Le Salarié converné est obligatoire");
-		}else if(entity.getType()==null||entity.getType().isEmpty()){
-			throw new KerenExecption("Le Type de Rappel est obligatoire");
-		}else if(entity.getDebut()==null){
-			throw new KerenExecption("La Date de Debut est obligatoire");
-		}else if(entity.getFin()==null){
-			throw new KerenExecption("Le Date de Fin est obligatoire");
-		}
-		super.processBeforeSave(entity);
-	}
+    @Override
+    protected void processBeforeSave(Rappel entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getEmploye()==null){
+                throw new KerenExecption("Le Salarié converné est obligatoire");
+        }else if(entity.getType()==null||entity.getType().isEmpty()){
+                throw new KerenExecption("Le Type de Rappel est obligatoire");
+        }else if(entity.getDebut()==null){
+                throw new KerenExecption("La Date de Debut est obligatoire");
+        }else if(entity.getFin()==null){
+                throw new KerenExecption("Le Date de Fin est obligatoire");
+        }else if(entity.getDebut().after(entity.getFin())){
+                throw new KerenExecption("Le Date de debut ne peut etre superieur à  la date de fin");
+        }
+        
+        super.processBeforeSave(entity);
+    }
 
-	@Override
-	protected void processBeforeUpdate(Rappel entity) {
-		// TODO Auto-generated method stub
-		if(entity.getEmploye()==null){
-			throw new KerenExecption("Le Salarié converné est obligatoire");
-		}else if(entity.getType()==null||entity.getType().isEmpty()){
-			throw new KerenExecption("Le Type de Rappel est obligatoire");
-		}else if(entity.getDebut()==null){
-			throw new KerenExecption("La Date de Debut est obligatoire");
-		}else if(entity.getFin()==null){
-			throw new KerenExecption("Le Date de Fin est obligatoire");
-		}else if(entity.getState().equalsIgnoreCase("engage")){
-			throw new KerenExecption("Le Rappel a déjà fait l'objet d'un Engagement");
-		}
-		super.processBeforeUpdate(entity);
-	}
+    @Override
+    protected void processBeforeUpdate(Rappel entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getEmploye()==null){
+                throw new KerenExecption("Le Salarié converné est obligatoire");
+        }else if(entity.getType()==null||entity.getType().isEmpty()){
+                throw new KerenExecption("Le Type de Rappel est obligatoire");
+        }else if(entity.getDebut()==null){
+                throw new KerenExecption("La Date de Debut est obligatoire");
+        }else if(entity.getFin()==null){
+                throw new KerenExecption("Le Date de Fin est obligatoire");
+        }else if(entity.getState().equalsIgnoreCase("engage")){
+                throw new KerenExecption("Le Rappel a déjà fait l'objet d'un Engagement");
+        }else if(entity.getDebut().after(entity.getFin())){
+                throw new KerenExecption("Le Date de debut ne peut etre superieur à  la date de fin");
+        }
+        
+        super.processBeforeUpdate(entity);
+    }
 
-	@Override
-	public Rappel confirme(HttpHeaders headers, Rappel entity) {
-		// TODO Auto-generated method stub
-		if(entity.getEmploye()==null){
-			throw new KerenExecption("Le Salarié converné est obligatoire");
-		}else if(entity.getType()==null||entity.getType().isEmpty()){
-			throw new KerenExecption("Le Type de Rappel est obligatoire");
-		}else if(entity.getDebut()==null){
-			throw new KerenExecption("La Date de Debut est obligatoire");
-		}else if(entity.getFin()==null){
-			throw new KerenExecption("Le Date de Fin est obligatoire");
-		}else if(entity.getState().equalsIgnoreCase("engage")){
-			throw new KerenExecption("Le Rappel a déjà fait l'objet d'un Engagement");
-		}
-		validateRappel(entity);
-		return manager.confirme(entity,null);
-	}
-	
-	/**
-	 * 
-	 * @param entity
-	 */
-	private void validateRappel(Rappel entity){
-		if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-			throw new KerenExecption("Veuillez saisir au moins un Rappel");
-		}
-		int i=0;
-		for(LigneRappel rappel:entity.getLignes()){
-			i++;
-			if(rappel.getRubrique()==null){
-				throw new KerenExecption("La Rubrique de Paie est obligatoire  Ligne : "+i);
-			}else if(rappel.getMontant()==null){
-				throw new KerenExecption("La Montant Réel est obligatoire  Ligne : "+i);
-			}else if(rappel.getPercu()==null){
-				throw new KerenExecption("La Montant Perçu est obligatoire  Ligne : "+i);
-			}
-		}
-	}
+    @Override
+    public Rappel confirme(HttpHeaders headers, Rappel entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getEmploye()==null){
+                throw new KerenExecption("Le Salarié converné est obligatoire");
+        }else if(entity.getType()==null||entity.getType().isEmpty()){
+                throw new KerenExecption("Le Type de Rappel est obligatoire");
+        }else if(entity.getDebut()==null){
+                throw new KerenExecption("La Date de Debut est obligatoire");
+        }else if(entity.getFin()==null){
+                throw new KerenExecption("Le Date de Fin est obligatoire");
+        }else if(entity.getState().equalsIgnoreCase("engage")){
+                throw new KerenExecption("Le Rappel a déjà fait l'objet d'un Engagement");
+        }else if(entity.getDebut().after(entity.getFin())){
+                throw new KerenExecption("Le Date de debut ne peut etre superieur à  la date de fin");
+        }
+        
+        validateRappel(entity);
+        return manager.confirme(entity,null);
+    }
 
+    /**
+     * 
+     * @param entity
+     */
+    private void validateRappel(Rappel entity){
+        
+        if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+                throw new KerenExecption("Veuillez saisir au moins un Rappel");
+        }
+
+        int i=0;
+
+        for(LigneRappel rappel:entity.getLignes()){
+            i++;
+            if(rappel.getRubrique()==null){
+                    throw new KerenExecption("La Rubrique de Paie est obligatoire  Ligne : "+i);
+            }else if(rappel.getMontant()==null){
+                    throw new KerenExecption("La Montant Réel est obligatoire  Ligne : "+i);
+            }else if(rappel.getPercu()==null){
+                    throw new KerenExecption("La Montant Perçu est obligatoire  Ligne : "+i);
+            }else if(entity.getDebut().after(entity.getFin())){
+                throw new KerenExecption("Le Date de debut ne peut etre superieur à  la date de fin");
+            }
+        }
+    }
+        
+    @Override
+    public Rappel delete(Long id) {
+
+        // TODO Auto-generated method stub
+        Rappel entity = manager.find("id", id);
+
+        try{
+
+            //on supprimme l'objet
+            super.delete(id);
+
+        }catch(Exception ex){
+            throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+        }
+
+        return entity;
+    }
 }

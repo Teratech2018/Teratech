@@ -16,8 +16,6 @@ import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerLocal;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.rapports.ViewBulletinPaieDAOLocal;
-import com.keren.kerenpaie.model.employes.Employe;
-import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.rapports.ViewBulletinPaie;
 
 @TransactionAttribute
@@ -53,11 +51,13 @@ public class ViewBulletinPaieManagerImpl
 //        	
         	critere.setPeriode(CacheMemory.getPeriode());
         		  if(critere.getPeriode()!=null){
-                      System.out.println("ViewBulletinPaieManagerImpl.getCriteres() periode critere "+critere.getPeriode().getId());
                       container.addEq("periode.id", critere.getPeriode().getId());
-
-
                   }
+        		  if(critere.getBulletin()!=null){
+                      container.addEq("bulletin.id", critere.getBulletin().getId());
+                  }
+
+        		  System.out.println("ViewBulletinPaieManagerImpl.getCriteres() periode is"+critere.getPeriode().getId());
         		 datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
         		 System.out.println("ViewBulletinPaieManagerImpl.getCriteres() nombre selection "+datas.size());
 //              }else{ 

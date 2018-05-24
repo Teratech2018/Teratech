@@ -36,6 +36,7 @@ public class StartupBean {
     private States state;
     
     @PostConstruct
+    @SuppressWarnings("empty-statement")
     public void initialize() {
         state = States.BEFORESTARTED;
         // Perform intialization
@@ -46,7 +47,9 @@ public class StartupBean {
         eventManager.scheduleEventManager(today, EVENTDURATION);
         
         //Lancement du timer de traitement de mail
-        emailManager.scheduleEventManager(today, EMAILDURATION);
+        try{
+            emailManager.scheduleEventManager(today, EMAILDURATION);
+        }catch(Exception ex){;}
     }
     @PreDestroy
     public void terminate() {

@@ -51,10 +51,10 @@ public class Variable extends BaseElement implements Serializable, Comparable<Va
 	@Predicate(label="Report mensuel",type=Boolean.class,search=true)
 	private Boolean repmens = Boolean.TRUE;
 	
-	@Predicate(label="Type de variable",target="combobox",values="Variable système;Variable système calculée;Constante;Variable")
+	@Predicate(label="Type de variable",target="combobox",values="Variable système;Variable système calculée;Constante;Variable",search = true)
 	private String typevar = "0";
 	
-	@Predicate(label="Methode de variable",target="combobox",values="Constante;Automatique;Formule de calcul")
+	@Predicate(label="Methode de variable",target="combobox",values="Constante;Automatique;Formule de calcul",search = true)
 	private String methodcal = "0";
 	
 	@Predicate(label="Type de Formule",target="combobox",values="Expression Arithmetique;SI Expression",hidden="currentObject.methodcal!='2'")
@@ -262,7 +262,7 @@ public class Variable extends BaseElement implements Serializable, Comparable<Va
 	@Override
 	public int compareTo(Variable arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return code.compareTo(arg0.code);
 	}
 
 }

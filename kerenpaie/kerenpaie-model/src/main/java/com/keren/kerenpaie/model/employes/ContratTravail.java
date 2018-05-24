@@ -63,13 +63,13 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	@Predicate(label="Emploi",type=Fonction.class,target="many-to-one",optional=false,search=true)
 	private Fonction fonction ;
 	
+        @Predicate(label="Date fin période essai",type=Date.class,target="date",search=true)
+	@Temporal(TemporalType.DATE)
+	private Date fessai ;
+        
 	@Predicate(label="Date début période essai",type=Date.class,target="date",search=true)
 	@Temporal(TemporalType.DATE)
 	private Date dessai ;
-	
-	@Predicate(label="Date fin période essai",type=Date.class,target="date",search=true)
-	@Temporal(TemporalType.DATE)
-	private Date fessai ;
 	
 	@Predicate(label="Lieu d'affectation")
 	private String lieuaff ;
@@ -77,13 +77,13 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	@Predicate(label="Lieu de recrutement")
 	private String lieurecr ;
 	
+        @Predicate(label="Date d'arrêt de service",type=Date.class,target="date",search=true)
+	@Temporal(TemporalType.DATE)
+	private Date darret;
+        
 	@Predicate(label="Date de recrutement",type=Date.class,target="date",search=true)
 	@Temporal(TemporalType.DATE)
 	private Date drecurtement ;
-	
-	@Predicate(label="Date d'arrêt de service",type=Date.class,target="date",search=true)
-	@Temporal(TemporalType.DATE)
-	private Date darret;
 	
 	@Predicate(label="Ancienité gélée",type=Short.class,group=true,groupName="group1",groupLabel="Conditions particulières")
 	private Short gele = 0;
@@ -94,6 +94,7 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	@Predicate(label="Notes",type=String.class,target="textarea",group=true,groupName="group2",groupLabel="Notes")
 	private String commentaire ;
 	
+        @Predicate(label="Etat du Contrat",hide=true ,search=true, updatable = false)
 	private String state ="etabli";
 	/**
 	 * 
@@ -318,6 +319,8 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	public void setState(String state) {
 		this.state = state;
 	}
+        
+        
 
 	@Override
 	public String getEditTitle() {
@@ -388,7 +391,7 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	@Override
 	public int compareTo(ContratTravail arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return code.compareTo(arg0.code);
 	}
 
 }

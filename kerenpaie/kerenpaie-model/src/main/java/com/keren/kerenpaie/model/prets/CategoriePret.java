@@ -39,7 +39,7 @@ public class CategoriePret extends BaseElement implements Serializable, Comparab
 	private Rubrique rubrique ;
 	
 	@Predicate(label="Echéancier modifiable?",type=Boolean.class,search=true)
-	private Boolean gelee = Boolean.FALSE;
+	private Boolean gelee = false;
 
 	/**
 	 * 

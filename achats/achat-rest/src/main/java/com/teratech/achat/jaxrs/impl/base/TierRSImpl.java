@@ -65,4 +65,26 @@ public class TierRSImpl
         }
         return null;
     }
+
+    @Override
+    protected void processBeforeUpdate(Tier entity) {
+        for(int i=0 ;i<entity.getComptesbancaire().size();i++){
+           if(entity.getComptesbancaire().get(i).getId()<=0){
+               entity.getComptesbancaire().get(i).setId(-1);
+           }//end if(entity.getContacts().get(i).getId()<=0)
+        }//end for(int i=0 ;i<entity.getContacts().size();i++){
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processBeforeSave(Tier entity) {
+        for(int i=0 ;i<entity.getComptesbancaire().size();i++){
+           if(entity.getComptesbancaire().get(i).getId()<=0){
+               entity.getComptesbancaire().get(i).setId(-1);
+           }//end if(entity.getContacts().get(i).getId()<=0)
+        }//end for(int i=0 ;i<entity.getContacts().size();i++){
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

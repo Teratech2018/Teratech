@@ -30,10 +30,10 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	@Predicate(label="Code",optional=false,unique=true,search=true)
 	private String code;
 
-	@ManyToOne
-	@JoinColumn(name="DEP_ID")
-	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true)
-	private Departement departement ;
+//	@ManyToOne
+//	@JoinColumn(name="DEP_ID")
+//	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true)
+//	private Departement departement ;
 	
 	@Predicate(label="Nom du poste",optional=false,search=true)
 	private String intitule ;
@@ -90,13 +90,13 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 		this.code = code;
 	}
 
-	public Departement getDepartement() {
-		return departement;
-	}
-
-	public void setDepartement(Departement departement) {
-		this.departement = departement;
-	}
+//	public Departement getDepartement() {
+//		return departement;
+//	}
+//
+//	public void setDepartement(Departement departement) {
+//		this.departement = departement;
+//	}
 
 	public String getIntitule() {
 		return intitule;
@@ -147,7 +147,7 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenrh";
+		return "kerenpaie";
 	}
 
 	@Override

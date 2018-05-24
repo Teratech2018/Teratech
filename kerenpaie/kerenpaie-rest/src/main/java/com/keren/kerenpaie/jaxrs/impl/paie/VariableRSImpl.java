@@ -23,7 +23,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Mar 06 12:50:48 GMT+01:00 2018
  * 
  */
@@ -61,93 +62,123 @@ public class VariableRSImpl
     }
     
     @Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-    	MetaData meta = null;
-		try {
-			meta = MetaDataUtil.getMetaData(new Variable(), new HashMap<String, MetaData>()
-					, new ArrayList<String>());
-			MetaColumn workbtn = new MetaColumn("button", "work1", "Evaluer la Variable", false, "object", null);
-	        workbtn.setValue("{'model':'kerenpaie','entity':'variable','method':'evaluer',template:{'this':'object'}}");
-	        workbtn.setPattern("btn btn-primary");
-	        meta.getHeader().add(workbtn);  
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return meta;
-	}
+    public MetaData getMetaData(HttpHeaders headers) {
+        
+        // TODO Auto-generated method stub
+        MetaData meta = null;
 
-	@Override
-	protected void processBeforeDelete(Object key) {
-		Variable entity = manager.find("id", (Long) key);
-		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-			throw new KerenExecption("Le Nom de la Variable est obligatoire");
-		}else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
-			throw new KerenExecption("La Description de la Variable est obligatoire");
-		}else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
-			throw new KerenExecption("La Description de la Variable est obligatoire");
-		}else if(entity.getTypevar()==null||entity.getTypevar().trim().isEmpty()){
-			throw new KerenExecption("Le Type de la Variable est obligatoire");
-		}else if(entity.getMethodcal()==null||entity.getMethodcal().trim().isEmpty()){
-			throw new KerenExecption("La Methode de la Variable est obligatoire");
-		}
-		// TODO Auto-generated method stub
-		super.processBeforeDelete(entity);
-	}
+        try {
+                meta = MetaDataUtil.getMetaData(new Variable(), new HashMap<String, MetaData>()
+                                , new ArrayList<String>());
+                MetaColumn workbtn = new MetaColumn("button", "work1", "Evaluer la Variable", false, "object", null);
+                workbtn.setValue("{'model':'kerenpaie','entity':'variable','method':'evaluer',template:{'this':'object'}}");
+                workbtn.setPattern("btn btn-primary");
+                meta.getHeader().add(workbtn);  
 
-	@Override
-	protected void processBeforeSave(Variable entity) {
-		// TODO Auto-generated method stub
-		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-			throw new KerenExecption("Le Nom de la Variable est obligatoire");
-		}else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
-			throw new KerenExecption("La Description de la Variable est obligatoire");
-		}else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
-			throw new KerenExecption("La Description de la Variable est obligatoire");
-		}else if(entity.getTypevar()==null||entity.getTypevar().trim().isEmpty()){
-			throw new KerenExecption("Le Type de la Variable est obligatoire");
-		}else if(entity.getMethodcal()==null||entity.getMethodcal().trim().isEmpty()){
-			throw new KerenExecption("La Methode de la Variable est obligatoire");
-		}
-		super.processBeforeSave(entity);
-	}
+        } catch (InstantiationException e) {
 
-	@Override
-	protected void processBeforeUpdate(Variable entity) {
-		// TODO Auto-generated method stub
-		if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-			throw new KerenExecption("Le Nom de la Variable est obligatoire");
-		}else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
-			throw new KerenExecption("La Description de la Variable est obligatoire");
-		}else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
-			throw new KerenExecption("La Description de la Variable est obligatoire");
-		}else if(entity.getTypevar()==null||entity.getTypevar().trim().isEmpty()){
-			throw new KerenExecption("Le Type de la Variable est obligatoire");
-		}else if(entity.getMethodcal()==null||entity.getMethodcal().trim().isEmpty()){
-			throw new KerenExecption("La Methode de la Variable est obligatoire");
-		}
-		super.processBeforeUpdate(entity);
-	}
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
 
-	
-	@Override
-	public Variable evaluer(HttpHeaders headers, Variable entity) {
-		// TODO Auto-generated method stub
-	  try{
-		Double valeur = moteurmanager.eval(entity, null, null, null,entity.getSociete());
-		if(valeur<0){
-			throw new KerenExecption("Echec de validation de la variable Vérifiez que : <br/> Les variables existent <br/> L'expression arithmétique est bien formées");
-		}
-		return entity;
-	  }catch(KerenPaieManagerException ex){
-		  throw new KerenExecption(ex.getMessage());
-	  }
-	}
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return meta;
+    }
+
+    @Override
+    protected void processBeforeDelete(Object key) {
+        
+        Variable entity = manager.find("id", (Long) key);
+
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("Le Nom de la Variable est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+                throw new KerenExecption("La Description de la Variable est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+                throw new KerenExecption("La Description de la Variable est obligatoire");
+        }else if(entity.getTypevar()==null||entity.getTypevar().trim().isEmpty()){
+                throw new KerenExecption("Le Type de la Variable est obligatoire");
+        }else if(entity.getMethodcal()==null||entity.getMethodcal().trim().isEmpty()){
+                throw new KerenExecption("La Methode de la Variable est obligatoire");
+        }
+
+        // TODO Auto-generated method stub
+        super.processBeforeDelete(entity);
+    }
+
+    @Override
+    protected void processBeforeSave(Variable entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("Le Nom de la Variable est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+                throw new KerenExecption("La Description de la Variable est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+                throw new KerenExecption("La Description de la Variable est obligatoire");
+        }else if(entity.getTypevar()==null||entity.getTypevar().trim().isEmpty()){
+                throw new KerenExecption("Le Type de la Variable est obligatoire");
+        }else if(entity.getMethodcal()==null||entity.getMethodcal().trim().isEmpty()){
+                throw new KerenExecption("La Methode de la Variable est obligatoire");
+        }
+
+        super.processBeforeSave(entity);
+    }
+
+    @Override
+    protected void processBeforeUpdate(Variable entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("Le Nom de la Variable est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+                throw new KerenExecption("La Description de la Variable est obligatoire");
+        }else if(entity.getDescription()==null||entity.getDescription().trim().isEmpty()){
+                throw new KerenExecption("La Description de la Variable est obligatoire");
+        }else if(entity.getTypevar()==null||entity.getTypevar().trim().isEmpty()){
+                throw new KerenExecption("Le Type de la Variable est obligatoire");
+        }else if(entity.getMethodcal()==null||entity.getMethodcal().trim().isEmpty()){
+                throw new KerenExecption("La Methode de la Variable est obligatoire");
+        }
+
+        super.processBeforeUpdate(entity);
+    }
+
+
+    @Override
+    public Variable evaluer(HttpHeaders headers, Variable entity) {
+        
+      // TODO Auto-generated method stub
+      try{
+            Double valeur = moteurmanager.eval(entity, null, null, null,entity.getSociete());
+            if(valeur<0){
+                throw new KerenExecption("Echec de validation de la variable Vérifiez que : <br/> Les variables existent <br/> L'expression arithmétique est bien formées");
+            }
+            return entity;
+      }catch(KerenPaieManagerException ex){
+              throw new KerenExecption(ex.getMessage());
+      }
+    }
     
-    
+    @Override
+    public Variable delete(Long id) {
+
+        // TODO Auto-generated method stub
+        Variable entity = manager.find("id", id);
+
+        try{
+
+            //on supprimme l'objet
+            super.delete(id);
+
+        }catch(Exception ex){
+            throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+        }
+
+        return entity;
+    }
 
 }

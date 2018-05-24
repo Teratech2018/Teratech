@@ -110,7 +110,7 @@ public class EmailManagerImpl
     @Override
     public void ejbTimeout(Timer timer) {
         //To change body of generated methods, choose Tools | Templates.      
-        System.out.println(EmailManagerImpl.class.toString()+" =================================== Demarrage du Timer =====================");
+//        System.out.println(EmailManagerImpl.class.toString()+" =================================== Demarrage du Timer =====================");
         sendmailFromDB();
     }
 

@@ -12,6 +12,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.operations.ExprBesionManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.operations.ExprBesionRS;
 import com.teratech.achat.model.operations.ExprBesion;
+import com.teratech.achat.model.operations.LigneExprBesion;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -91,6 +92,11 @@ public class ExprBesionRSImpl
         }else if(entity.getBesions()==null || entity.getBesions().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un besion");
         }
+         for(int i=0 ;i<entity.getBesions().size();i++){
+             if(entity.getBesions().get(i).getId()<=0){
+                 entity.getBesions().get(i).setId(-1);
+             }//end if(entity.getBesions().get(i).getId()<=0){
+        }//end for(int i=0 ;i<entity.getBesions().size();i++){
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -105,6 +111,9 @@ public class ExprBesionRSImpl
         }else if(entity.getBesions()==null || entity.getBesions().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un besion");
         }
+        for(int i=0 ;i<entity.getBesions().size();i++){
+             entity.getBesions().get(i).setId(-1);
+        }//end for(int i=0 ;i<entity.getBesions().size();i++){
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 

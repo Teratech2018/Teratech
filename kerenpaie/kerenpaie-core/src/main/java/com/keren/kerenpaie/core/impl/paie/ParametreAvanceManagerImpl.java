@@ -162,18 +162,31 @@ public class ParametreAvanceManagerImpl
     	return false ;
     }
 
-    /**
-     * 
-     * @param lignes
-     * @param fonction
-     * @return
-     */
-    private Boolean contains(List<LignePonderationTypeContrat> lignes , TypeContrat fonction){    	
-    	for(LignePonderationTypeContrat pon:lignes){
-    		if(pon.getFonction().compareTo(fonction)==0){
-    			return true;
-    		}
-    	}
-    	return false ;
+    @Override
+    public void processBeforeUpdate(ParametreAvance entity) {
+        
+        for(int i=0;i<entity.getTypescontrats().size();i++){
+            entity.getTypescontrats().get(i).setId(-1);
+        }
+        
+        for(int i=0;i<entity.getFonctions().size();i++){
+            entity.getFonctions().get(i).setId(-1);
+        }
+        
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void processBeforeSave(ParametreAvance entity) {
+        
+        for(int i=0;i<entity.getTypescontrats().size();i++){
+            entity.getTypescontrats().get(i).setId(-1);
+        }
+        
+        for(int i=0;i<entity.getFonctions().size();i++){
+            entity.getFonctions().get(i).setId(-1);
+        }
+        
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 }

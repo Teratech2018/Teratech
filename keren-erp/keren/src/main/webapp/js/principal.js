@@ -2560,12 +2560,14 @@ $scope.gererChangementFichier3 = function(event,model){
              for(var i = 0 ; i < metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                    var thElem = document.createElement('th');
-                   thElem.appendChild(document.createTextNode(metaData.columns[i].fieldLabel));
+                   thElem.setAttribute("ng-click","tableSorter('"+model+"' , '"+metaData.columns[i].fieldName+"')");
+                   //Span Glyphicon
+                   thElem.innerHTML = metaData.columns[i].fieldLabel+" <span ng-show=down('"+metaData.columns[i].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.columns[i].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
                    trElem.appendChild(thElem);
                    fieldnames.push(metaData.columns[i].fieldName);
                    columnNumber++;
-                 }
-             }
+                 }//end if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i]
+             }//end for(var i = 0 ; i < metaData.columns.length;i++){
              //Traitement  des champs des groupes
              if(metaData.groups&&metaData.groups.length>0){
                  for(var i=0;i<metaData.groups.length;i++){
@@ -2574,7 +2576,8 @@ $scope.gererChangementFichier3 = function(event,model){
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                               var thElem = document.createElement('th');
-                              thElem.appendChild(document.createTextNode(metaData.groups[i].columns[j].fieldLabel));
+                              thElem.setAttribute("ng-click","tableSorter('"+model+"' , '"+metaData.groups[i].columns[j].fieldName+"')");
+                              thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel+" <span ng-show=down('"+metaData.groups[i].columns[j].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
                               trElem.appendChild(thElem);
                               fieldnames.push(metaData.groups[i].columns[j].fieldName);
                               columnNumber++;
@@ -2614,7 +2617,7 @@ $scope.gererChangementFichier3 = function(event,model){
                    aElem.appendChild(document.createTextNode("Ajouter un element"));
                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
-                   }            
+                   }//end if($scope.windowType=="view"){           
                }//end if(metaData.createonfield==true)
              
              //Construction du corps du tableau
@@ -2630,7 +2633,7 @@ $scope.gererChangementFichier3 = function(event,model){
                          tdElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
                          if(metaData.columns[i].type=='number'){
                             tdElem.setAttribute('class','text-right');
-                         }
+                         }//end if(metaData.columns[i].type=='number'){
                      }else if(metaData.columns[i].type=='object'){
                           //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
                           tdElem.appendChild(document.createTextNode("{{item."+metaData.columns[i].fieldName+"['designation']}}"));
@@ -2771,6 +2774,30 @@ $scope.gererChangementFichier3 = function(event,model){
              return divElem;
         };
         
+        /**
+         * 
+         * @param {type} model
+         * @param {type} fieldname
+         * @returns {undefined}
+         */
+        $scope.tableSorter = function(model , fieldname){
+//            console.log("$scope.tableSorter = function(model , fieldname) ============ model : "+model+" ========= champs : "+fieldname);
+            var part = model.split(".");
+            var datas = $scope.getParentModel(model);
+             if($scope.currentSort.column==fieldname){
+                 $scope.currentSort.reverse = !$scope.currentSort.reverse;
+             }else{
+                 $scope.currentSort.column = fieldname;
+                 $scope.currentSort.reverse = false;
+             }//end if($scope.currentSort.column==fieldname)
+//             console.log("$scope.listeSorter = function(fieldname)============= column : "+$scope.currentSort.column+"  reverse : "+$scope.currentSort.reverse);
+             datas[part[part.length-1]] = $filter('orderBy')(datas[part[part.length-1]],fieldname,$scope.currentSort.reverse);
+//             if($scope.currentSort.reverse==true){
+//                  datas[part[part.length-1]] = $filter('orderBy')( datas[part[part.length-1]],"-"+fieldname,false);
+//             }else {
+//                    datas[part[part.length-1]] = $filter('orderBy')( datas[part[part.length-1]],fieldname,false);
+//             }//end if($scope.currentSort.reverse==true)
+        };
         $scope.oneToManyComponentEditable = function(model , labelText , entityName ,metaData,field,index,modelpath){
               
 //             $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);
@@ -2796,7 +2823,9 @@ $scope.gererChangementFichier3 = function(event,model){
              for(var i = 0 ; i < metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                    var thElem = document.createElement('th');
-                   thElem.appendChild(document.createTextNode(metaData.columns[i].fieldLabel));
+                    thElem.setAttribute("ng-click","tableSorter('"+model+"' , '"+metaData.columns[i].fieldName+"')");
+                   //Span Glyphicon
+                   thElem.innerHTML = metaData.columns[i].fieldLabel+" <span ng-show=down('"+metaData.columns[i].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.columns[i].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
                    trElem.appendChild(thElem);
                    fieldnames.push(metaData.columns[i].fieldName);
                    columnNumber++;
@@ -2810,8 +2839,10 @@ $scope.gererChangementFichier3 = function(event,model){
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                               var thElem = document.createElement('th');
-                              thElem.appendChild(document.createTextNode(metaData.groups[i].columns[j].fieldLabel));
-                              trElem.appendChild(thElem);
+                               thElem.setAttribute("ng-click","tableSorter('"+model+"' , '"+metaData.groups[i].columns[j].fieldName+"')");
+                               //Span Glyphicon
+                               thElem.innerHTML = metaData.columns[i].fieldLabel+" <span ng-show=down('"+metaData.groups[i].columns[j].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
+                               trElem.appendChild(thElem);
                               fieldnames.push(metaData.groups[i].columns[j].fieldName);
                               columnNumber++;
                             }//end  if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search)
@@ -3279,7 +3310,9 @@ $scope.gererChangementFichier3 = function(event,model){
              for(var i = 0 ; i < metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                    var thElem = document.createElement('th');
-                   thElem.appendChild(document.createTextNode(metaData.columns[i].fieldLabel));
+                   thElem.setAttribute("ng-click","tableSorter('"+model+"' , '"+metaData.columns[i].fieldName+"')");
+                   //Span Glyphicon
+                   thElem.innerHTML = metaData.columns[i].fieldLabel+" <span ng-show=down('"+metaData.columns[i].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.columns[i].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
                    trElem.appendChild(thElem);
                    fieldnames.push(metaData.columns[i].fieldName);
                    columnNumber++;
@@ -3293,7 +3326,9 @@ $scope.gererChangementFichier3 = function(event,model){
                           for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
                             if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
                               var thElem = document.createElement('th');
-                              thElem.appendChild(document.createTextNode(metaData.groups[i].columns[j].fieldLabel));
+                              thElem.setAttribute("ng-click","tableSorter('"+model+"' , '"+metaData.groups[i].columns[j].fieldName+"')");
+                               //Span Glyphicon
+                              thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel+" <span ng-show=down('"+metaData.groups[i].columns[j].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
                               trElem.appendChild(thElem);
                               fieldnames.push(metaData.groups[i].columns[j].fieldName);
                               columnNumber++;
@@ -3496,6 +3531,8 @@ $scope.gererChangementFichier3 = function(event,model){
          * @returns {undefined}
          */
         $scope.editPanelHeader = function(model , metaData,index,extern){
+            //Recuperation du model
+            var data = $scope.getCurrentModel(model);
             if(metaData && metaData.header && metaData.header.length>0){
                 var divElem = document.createElement('div');
                 divElem.setAttribute('class','panel panel-default col-sm-12  col-md-12');
@@ -3537,13 +3574,13 @@ $scope.gererChangementFichier3 = function(event,model){
                 
                 //Creation de workflow
                 if(staturbar!=null){
-                    if(metaData.states && metaData.states.length>0){
+                    if(data.states && data.states.length>0){
                         var statusElem = document.createElement('ul');
                         statusElem.setAttribute("class","nav navbar-nav navbar-right right-menu-bar");
-                        for(var i=0 ; i<metaData.states.length;i++){
+                        for(var i=0 ; i<data.states.length;i++){
                             var liElem = document.createElement('li');
-                            if($scope.currentObject && $scope.currentObject[staturbar.fieldName]
-                                    && $scope.currentObject[staturbar.fieldName]==metaData.states[i].code){
+                            if(data && data[staturbar.fieldName]
+                                    && data[staturbar.fieldName]==data.states[i].code){
                                liElem.setAttribute('style','display: inline-block;background-color:#337ab7;height: 30px;font-size: 85%;border-top-right-radius:  50%;border-bottom-right-radius: 50%;padding-left: 5px;padding-right: 5px;');
                            }else{
                                liElem.setAttribute('style','display: inline-block;background-color:#d9d9d9;height: 30px;font-size: 85%;border-top-right-radius:  50%;border-bottom-right-radius: 50%;padding-left: 5px;padding-right: 5px;');
@@ -3552,13 +3589,13 @@ $scope.gererChangementFichier3 = function(event,model){
                             var spanElem = document.createElement('span');
                             liElem.appendChild(spanElem);
                             spanElem.setAttribute('class','workflow');
-                             if($scope.currentObject && $scope.currentObject[staturbar.fieldName]
-                                    && $scope.currentObject[staturbar.fieldName]==metaData.states[i].code){
+                             if(data && data[staturbar.fieldName]
+                                    && data[staturbar.fieldName]==data.states[i].code){
                                  spanElem.setAttribute('style','color: white;');
                              }else{
                                  spanElem.setAttribute('style','color: black;');
                              }
-                            spanElem.appendChild(document.createTextNode(metaData.states[i].intitule));
+                            spanElem.appendChild(document.createTextNode(data.states[i].intitule));
                         }//end for(var i=0 ; i<metaData.states.length;i++)
                         header.appendChild(statusElem);
                     }//end if(metaData.states && metaData.states.length>0)
@@ -3901,7 +3938,7 @@ $scope.gererChangementFichier3 = function(event,model){
          * @returns {Element|principal_L470.principalAnonym$31.controller.$scope.aceEditorComponent.divElem|principal_L351.principalAnonym$23.controller.$scope.richEditorComponent.divElem|undefined|principal_L470.principalAnonym$31.controller.$scope.richEditorComponent.divElem}
          */
          $scope.getIhmComponent = function(model , field , entityName , metaDataName,index,modelpath){
-               console.log("$scope.getIhmComponent = function(model , field , entityName , metaDataName) === "+field.fieldName+" ===== "+field.target+" ===== "+field.type+" == "+index);
+//               console.log("$scope.getIhmComponent = function(model , field , entityName , metaDataName) === "+field.fieldName+" ===== "+field.target+" ===== "+field.type+" == "+index);
                if(field.type=='empty'){
                    return $scope.emptyComponentBuilder(model+'.'+field.fieldName, field , field.fieldLabel , field.fieldName , 'empty');
                }else if(field.type=='string'){
@@ -6894,7 +6931,7 @@ $scope.gererChangementFichier3 = function(event,model){
                            }//end if(!currentObject[metaData.columns[i].fieldName]){
                        }//end if(!metaData.columns[i].optional || metaData.columns[i].min)
                        //Construction des champs pour unicite
-                       if(metaData.columns[i].unique){
+                       if(metaData.columns[i].unique==true){
                            var pred = new Object();
                            pred.fieldLabel = metaData.columns[i].fieldLabel;
                            pred.fieldName = metaData.columns[i].fieldName;
@@ -6933,22 +6970,25 @@ $scope.gererChangementFichier3 = function(event,model){
                                         }//end if(array[i].id=='load')
                                     }//end for(var i=0 ; i<array.length;i++){
                                 }//end if(angular.isObject(currentObject[key])){
-                                if(!metaData.groups[i].columns[j].optional || metaData.groups[i].columns[j].min){
+                                if(metaData.groups[i].columns[j].optional==false || metaData.groups[i].columns[j].min>0){
+                                      if(!currentObject[metaData.groups[i].columns[j].fieldName]){
+                                         champs.push(metaData.groups[i].columns[j].fieldLabel);
+                                      }//end if(!currentObject[metaData.columns[i].fieldName]){
+                                     // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
+                                }//end if(!metaData.groups[i].columns[j].optional || metaDat
+                                //Construction des champs pour unicite
+                                if(metaData.groups[i].columns[j].unique==true){
                                      var pred = new Object();
                                       pred.fieldLabel = metaData.groups[i].columns[j].fieldLabel;
                                       pred.fieldName = metaData.groups[i].columns[j].fieldName;
                                       pred.value = currentObject[metaData.groups[i].columns[j].fieldName];
                                       $scope.uniqueContraints.push(pred);
-                                      // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
-                                }//end if(!metaData.groups[i].columns[j].optional || metaDat
-                                //Construction des champs pour unicite
-                                if(metaData.groups[i].columns[j].unique){
-                                    $scope.uniqueContraints.push(metaData.groups[i].columns[j].fieldLabel);
+                                      
                                 }//end if(metaData.groups[i].columns[j].unique){
                            }//end for(var j=0 ; j<metaData.groups[i].columns.length;j++){
                         }//end if(metaData.groups[i].columns){
-                    }
-                 }
+                    }//end for(var i=0;i<metaData.groups.length;i++){
+                 }//end if(metaData.groups){
             }
             return champs;
 
@@ -8845,11 +8885,16 @@ $scope.gererChangementFichier3 = function(event,model){
       $scope.globaltablecolumnsorter = function(column){
           $scope.datas = $filter('orderBy')($scope.datas,column,false); 
       };
+      $scope.currentSort ={
+          column:null,
+          reverse:false
+      };
       /**
          Algorithme de creation du tableau     
        **/
          $scope.tableListComponent = function(metaData){
-            
+            $scope.currentSort.column =null;
+            $scope.currentSort.reverse = false;
              var tableElem = document.createElement('table');
              tableElem.setAttribute('class' , 'table table-sm table-striped table-hover');
              tableElem.setAttribute('style' , 'margin-top: -10px;');
@@ -8882,7 +8927,8 @@ $scope.gererChangementFichier3 = function(event,model){
                             &&(metaData.columns[i].search==true)){
                       if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'){  //&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'
                             var thElem = document.createElement('th');
-                            thElem.innerHTML = metaData.columns[i].fieldLabel;
+                            thElem.innerHTML = metaData.columns[i].fieldLabel+" <span ng-show=down('"+metaData.columns[i].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.columns[i].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
+                            thElem.setAttribute("ng-click","listeSorter('"+metaData.columns[i].fieldName+"')");
                             rheadElem.appendChild(thElem);
                             fieldnames.push( metaData.columns[i].fieldName);
                             if(metaData.columns[i].type=='number'){
@@ -8907,7 +8953,8 @@ $scope.gererChangementFichier3 = function(event,model){
                                       &&(metaData.groups[i].columns[j].search==true)){
                                  if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'){   //&&metaData.groups[i].columns[j].type.type!='textarea'&&metaData.groups[i].columns[j].type.type!='richeditor'
                                     var thElem = document.createElement('th');
-                                    thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel;
+                                    thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel+" <span ng-show=down('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-down' aria-hidden='true' ></span> <span ng-show=up('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
+                                    thElem.setAttribute("ng-click","listeSorter('"+metaData.groups[i].columns[j].fieldName+"')");
                                     rheadElem.appendChild(thElem);
                                     fieldnames.push(metaData.groups[i].columns[j].fieldName);
                                     if(metaData.groups[i].columns[j].type=='number'){
@@ -9012,8 +9059,45 @@ $scope.gererChangementFichier3 = function(event,model){
             if(numeric_fields>0){
                 tableElem.appendChild(footerElem);
             }//end if(numeric_fields>0)
-             var divElem = document.createElement('div');            
+//             var divElem = document.createElement('div');            
             return tableElem;
+         };
+         /**
+          * 
+          * @param {type} fieldname
+          * @returns {Boolean}
+          */
+         $scope.up = function(fieldname){
+//             console.log("$scope.up = function(fieldname) ======================= "+fieldname);
+             return $scope.currentSort.column==fieldname&&$scope.currentSort.reverse==false;
+         };
+         /**
+          * 
+          * @param {type} fieldname
+          * @returns {Boolean}
+          */
+         $scope.down = function(fieldname){
+//             console.log("$scope.down = function(fieldname) ======================= "+fieldname);
+              return $scope.currentSort.column==fieldname&&$scope.currentSort.reverse==true;
+         };
+         /**
+          * 
+          * @returns {undefined}
+          */
+         $scope.listeSorter = function(fieldname){
+             if($scope.currentSort.column==fieldname){
+                 $scope.currentSort.reverse = !$scope.currentSort.reverse;
+             }else{
+                 $scope.currentSort.column = fieldname;
+                 $scope.currentSort.reverse = false;
+             }//end if($scope.currentSort.column==fieldname)
+//             console.log("$scope.listeSorter = function(fieldname)============= column : "+$scope.currentSort.column+"  reverse : "+$scope.currentSort.reverse);
+             $scope.datas = $filter('orderBy')($scope.datas,fieldname,$scope.currentSort.reverse);
+//             if($scope.currentSort.reverse==true){
+//                 $scope.datas = $filter('orderBy')($scope.datas,fieldname,false);
+//             }else {
+//                   $scope.datas = $filter('orderBy')($scope.datas,fieldname,false);
+//             }//end if($scope.currentSort.reverse==true)
          };
            /**
            * Tree view Builder
@@ -9478,7 +9562,7 @@ $scope.gererChangementFichier3 = function(event,model){
                      if(items.eq(i).attr("id")=="viewmodeid"){
                            items.eq(i).replaceWith($scope.viewModeBuilder());
                      }  //end  if(items.eq(i).attr("id")=="viewmodeid"){
-                }
+                }//end for(var i=0; i<items.length;i++){
                 var divElem = document.createElement("div");
                 divElem.setAttribute("class","panel-body container-body-panel");
                 divElem.setAttribute("id","datatable");
@@ -9486,12 +9570,11 @@ $scope.gererChangementFichier3 = function(event,model){
                 divElem.appendChild($scope.tableListComponent(metaData));
                 //Insertion du tableau
                 var items = listElem.find("div");
-                for(var i=0; i<items.length;i++){
-                     
+                for(var i=0; i<items.length;i++){                     
                      if(items.eq(i).attr("id")=="datatable"){
                            items.eq(i).replaceWith(divElem);
-                     }  
-                }
+                     }//end if(items.eq(i).attr("id")=="datatable"){  
+                }//end for(var i=0; i<items.length;i++){    
 
                 return listElem;
           };

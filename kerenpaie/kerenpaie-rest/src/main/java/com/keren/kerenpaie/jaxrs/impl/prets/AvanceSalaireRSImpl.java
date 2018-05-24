@@ -22,7 +22,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Mar 13 13:15:47 GMT+01:00 2018
  * 
  */
@@ -57,155 +58,186 @@ public class AvanceSalaireRSImpl
     }
     
     @Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-			   MetaData meta = MetaDataUtil.getMetaData(new AvanceSalaire(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			    MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
-	            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'echeancier'}");
-	            workbtn.setStates(new String[]{"etabli"});
-	            workbtn.setPattern("btn btn-info");
-	            meta.getHeader().add(workbtn);
-	            workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
-	            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'confirme'}");
-	            workbtn.setStates(new String[]{"etabli"});
-	            workbtn.setPattern("btn btn-success");
-	            meta.getHeader().add(workbtn);
-	            workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
-	            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'annule'}");
-	            workbtn.setStates(new String[]{"etabli"});
-	            workbtn.setPattern("btn btn-danger");
-	            meta.getHeader().add(workbtn);	           
-	            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-	            meta.getHeader().add(stautsbar);
-			    return meta;
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public MetaData getMetaData(HttpHeaders headers) {
 
-	@Override
-	protected void processBeforeDelete(Object id) {
-		// TODO Auto-generated method stub
-		AvanceSalaire entity = manager.find("id", (Long) id);
-		if(entity.getState().equalsIgnoreCase("confirme")){
-			throw new KerenExecption("Avance déjà validée");
-		}else if(entity.getState().equalsIgnoreCase("encours")){
-			throw new KerenExecption("Avance déjà en cours de remboursement");
-		}else if(entity.getState().equalsIgnoreCase("termine")){
-			throw new KerenExecption("Avance déjà remboursée");
-		}else if(entity.getState().equalsIgnoreCase("annule")){
-			throw new KerenExecption("Avance déjà annulée");
-		}
-		super.processBeforeDelete(id);
-	}
+        // TODO Auto-generated method stub
+        try {
+                   MetaData meta = MetaDataUtil.getMetaData(new AvanceSalaire(), new HashMap<String, MetaData>(),new ArrayList<String>());
+                    MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
+            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'echeancier'}");
+            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setPattern("btn btn-info");
+            meta.getHeader().add(workbtn);
+            workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
+            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'confirme'}");
+            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setPattern("btn btn-success");
+            meta.getHeader().add(workbtn);
+            workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
+            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'annule'}");
+            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setPattern("btn btn-danger");
+            meta.getHeader().add(workbtn);	           
+            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+            meta.getHeader().add(stautsbar);
+                    return meta;
+        } catch (InstantiationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        } catch (IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
 
-	@Override
-	protected void processBeforeSave(AvanceSalaire entity) {
-		// TODO Auto-generated method stub
-		if(entity.getRubrique()==null){
-			throw new KerenExecption("La rubrique de paie est obligatoire");
-		}else if(entity.getDate()==null){
-			throw new KerenExecption("La Date de l'avance est obligatoire");
-		}else if(entity.getEmploye()==null){
-			throw new KerenExecption("Le salarié concerné est obligatoire");
-		}else if(entity.getDuree()==null||entity.getDuree()<=0){
-			throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
-		}else if(entity.getMontant()==null||entity.getMontant()<=0){
-			throw new KerenExecption("Le montant de l'avance est obligatoire");
-		}
-		super.processBeforeSave(entity);
-	}
+        return null;
+    }
 
-	@Override
-	protected void processBeforeUpdate(AvanceSalaire entity) {
-		// TODO Auto-generated method stub
-		if(entity.getRubrique()==null){
-			throw new KerenExecption("La rubrique de paie est obligatoire");
-		}else if(entity.getDate()==null){
-			throw new KerenExecption("La Date de l'avance est obligatoire");
-		}else if(entity.getEmploye()==null){
-			throw new KerenExecption("Le salarié concerné est obligatoire");
-		}else if(entity.getDuree()==null||entity.getDuree()<=0){
-			throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
-		}else if(entity.getMontant()==null||entity.getMontant()<=0){
-			throw new KerenExecption("Le montant de l'avance est obligatoire");
-		}
-		super.processBeforeUpdate(entity);
-	}
+    @Override
+    protected void processBeforeDelete(Object id) {
+        
+        // TODO Auto-generated method stub
+        AvanceSalaire entity = manager.find("id", (Long) id);
+        
+        if(entity.getState().equalsIgnoreCase("confirme")){
+                throw new KerenExecption("Avance déjà validée");
+        }else if(entity.getState().equalsIgnoreCase("encours")){
+                throw new KerenExecption("Avance déjà en cours de remboursement");
+        }else if(entity.getState().equalsIgnoreCase("termine")){
+                throw new KerenExecption("Avance déjà remboursée");
+        }else if(entity.getState().equalsIgnoreCase("annule")){
+                throw new KerenExecption("Avance déjà annulée");
+        }
+        
+        super.processBeforeDelete(id);
+    }
 
-	@Override
-	public AvanceSalaire generereglements(HttpHeaders headers, AvanceSalaire entity) {
-		// TODO Auto-generated method stub
-		if(entity.getRubrique()==null){
-			throw new KerenExecption("La rubrique de paie est obligatoire");
-		}else if(entity.getDate()==null){
-			throw new KerenExecption("La Date de l'avance est obligatoire");
-		}else if(entity.getEmploye()==null){
-			throw new KerenExecption("Le salarié concerné est obligatoire");
-		}else if(entity.getDuree()==null||entity.getDuree()<=0){
-			throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
-		}else if(entity.getMontant()==null||entity.getMontant()<=0){
-			throw new KerenExecption("Le montant de l'avance est obligatoire");
-		}else if(entity.getId()<=0){
-			throw new KerenExecption("Veuillez d'abord enregistrer cette entité");
-		}else if(entity.getRemboursements()!=null&&!entity.getRemboursements().isEmpty()){
-			throw new KerenExecption("Des remboursements existe déjà pour cette avance");
-		}
-		return manager.generereglement(entity);
-	}
+    @Override
+    protected void processBeforeSave(AvanceSalaire entity) {
 
-	@Override
-	public AvanceSalaire confirme(HttpHeaders headers, AvanceSalaire entity) {
-		// TODO Auto-generated method stub
-		if(entity.getRubrique()==null){
-			throw new KerenExecption("La rubrique de paie est obligatoire");
-		}else if(entity.getDate()==null){
-			throw new KerenExecption("La Date de l'avance est obligatoire");
-		}else if(entity.getEmploye()==null){
-			throw new KerenExecption("Le salarié concerné est obligatoire");
-		}else if(entity.getDuree()==null||entity.getDuree()<=0){
-			throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
-		}else if(entity.getMontant()==null||entity.getMontant()<=0){
-			throw new KerenExecption("Le montant de l'avance est obligatoire");
-		}else if(entity.getId()<=0){
-			throw new KerenExecption("Veuillez d'abord enregistrer cette entité");
-		}else if(entity.getRemboursements()==null||entity.getRemboursements().isEmpty()){
-			throw new KerenExecption("Aucun remboursement pour cette avance <br/> Veuillez procèder à la génération des remboursements");
-		}
-		return manager.confirme(entity);
-	}
+        // TODO Auto-generated method stub
+        if(entity.getRubrique()==null){
+                throw new KerenExecption("La rubrique de paie est obligatoire");
+        }else if(entity.getDate()==null){
+                throw new KerenExecption("La Date de l'avance est obligatoire");
+        }else if(entity.getEmploye()==null){
+                throw new KerenExecption("Le salarié concerné est obligatoire");
+        }else if(entity.getDuree()==null||entity.getDuree()<=0){
+                throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
+        }else if(entity.getMontant()==null||entity.getMontant()<=0){
+                throw new KerenExecption("Le montant de l'avance est obligatoire");
+        }
+        
+        entity.setState("etabli");
+        super.processBeforeSave(entity);
+    }
 
-	@Override
-	public AvanceSalaire annule(HttpHeaders headers, AvanceSalaire entity) {
-		// TODO Auto-generated method stub
-		if(entity.getRubrique()==null){
-			throw new KerenExecption("La rubrique de paie est obligatoire");
-		}else if(entity.getDate()==null){
-			throw new KerenExecption("La Date de l'avance est obligatoire");
-		}else if(entity.getEmploye()==null){
-			throw new KerenExecption("Le salarié concerné est obligatoire");
-		}else if(entity.getDuree()==null||entity.getDuree()<=0){
-			throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
-		}else if(entity.getMontant()==null||entity.getMontant()<=0){
-			throw new KerenExecption("Le montant de l'avance est obligatoire");
-		}else if(entity.getId()<=0){
-			throw new KerenExecption("Veuillez d'abord enregistrer cette entité");
-		}else if(entity.getState()=="etabli"){
-			throw new KerenExecption("Cette avance n'a fait l'objet d'aucune validation");
-		}else if(entity.getState()=="termine"){
-			throw new KerenExecption("Le remboursement de cette avance est déjà terminée");
-		}else if(entity.getState()=="annule"){
-			throw new KerenExecption("Cette avance a déjà fait l'objet d'aucune annulation");
-		}
-		return manager.annule(entity);
-	}
+    @Override
+    protected void processBeforeUpdate(AvanceSalaire entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getRubrique()==null){
+                throw new KerenExecption("La rubrique de paie est obligatoire");
+        }else if(entity.getDate()==null){
+                throw new KerenExecption("La Date de l'avance est obligatoire");
+        }else if(entity.getEmploye()==null){
+                throw new KerenExecption("Le salarié concerné est obligatoire");
+        }else if(entity.getDuree()==null||entity.getDuree()<=0){
+                throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
+        }else if(entity.getMontant()==null||entity.getMontant()<=0){
+                throw new KerenExecption("Le montant de l'avance est obligatoire");
+        }
+        
+        super.processBeforeUpdate(entity);
+    }
+
+    @Override
+    public AvanceSalaire generereglements(HttpHeaders headers, AvanceSalaire entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getRubrique()==null){
+                throw new KerenExecption("La rubrique de paie est obligatoire");
+        }else if(entity.getDate()==null){
+                throw new KerenExecption("La Date de l'avance est obligatoire");
+        }else if(entity.getEmploye()==null){
+                throw new KerenExecption("Le salarié concerné est obligatoire");
+        }else if(entity.getDuree()==null||entity.getDuree()<=0){
+                throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
+        }else if(entity.getMontant()==null||entity.getMontant()<=0){
+                throw new KerenExecption("Le montant de l'avance est obligatoire");
+        }else if(entity.getId()<=0){
+                throw new KerenExecption("Veuillez d'abord enregistrer cette entité");
+        }else if(entity.getRemboursements()!=null&&!entity.getRemboursements().isEmpty()){
+                throw new KerenExecption("Des remboursements existe déjà pour cette avance");
+        }
+        
+        return manager.generereglement(entity);
+    }
+
+    @Override
+    public AvanceSalaire confirme(HttpHeaders headers, AvanceSalaire entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getRubrique()==null){
+                throw new KerenExecption("La rubrique de paie est obligatoire");
+        }else if(entity.getDate()==null){
+                throw new KerenExecption("La Date de l'avance est obligatoire");
+        }else if(entity.getEmploye()==null){
+                throw new KerenExecption("Le salarié concerné est obligatoire");
+        }else if(entity.getDuree()==null||entity.getDuree()<=0){
+                throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
+        }else if(entity.getMontant()==null||entity.getMontant()<=0){
+                throw new KerenExecption("Le montant de l'avance est obligatoire");
+        }else if(entity.getId()<=0){
+                throw new KerenExecption("Veuillez d'abord enregistrer cette entité");
+        }else if(entity.getRemboursements()==null||entity.getRemboursements().isEmpty()){
+                throw new KerenExecption("Aucun remboursement pour cette avance <br/> Veuillez procèder à la génération des remboursements");
+        }
+
+        return manager.confirme(entity);
+    }
+
+    @Override
+    public AvanceSalaire annule(HttpHeaders headers, AvanceSalaire entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getRubrique()==null){
+                throw new KerenExecption("La rubrique de paie est obligatoire");
+        }else if(entity.getDate()==null){
+                throw new KerenExecption("La Date de l'avance est obligatoire");
+        }else if(entity.getEmploye()==null){
+                throw new KerenExecption("Le salarié concerné est obligatoire");
+        }else if(entity.getDuree()==null||entity.getDuree()<=0){
+                throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
+        }else if(entity.getMontant()==null||entity.getMontant()<=0){
+                throw new KerenExecption("Le montant de l'avance est obligatoire");
+        }else if(entity.getId()<=0){
+                throw new KerenExecption("Veuillez d'abord enregistrer cette entité");
+        }else if(entity.getState()=="etabli"){
+                throw new KerenExecption("Cette avance n'a fait l'objet d'aucune validation");
+        }else if(entity.getState()=="termine"){
+                throw new KerenExecption("Le remboursement de cette avance est déjà terminée");
+        }else if(entity.getState()=="annule"){
+                throw new KerenExecption("Cette avance a déjà fait l'objet d'aucune annulation");
+        }
+
+        return manager.annule(entity);
+    }
     
-    
+    @Override
+    public AvanceSalaire delete(Long id) {
 
+        // TODO Auto-generated method stub
+        AvanceSalaire entity = manager.find("id", id);
+
+        try{
+
+            //on supprimme l'objet
+            super.delete(id);
+
+        }catch(Exception ex){
+            throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+        }
+
+        return entity;
+    }
 }

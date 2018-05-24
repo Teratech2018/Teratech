@@ -9,7 +9,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.base.PaysManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.base.PaysRS;
-import com.teratech.achat.model.base.Civilite;
 import com.teratech.achat.model.base.Pays;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,5 +64,27 @@ public class PaysRSImpl
         }
         return null;
     }
+
+    @Override
+    protected void processBeforeUpdate(Pays entity) {
+        for(int i=0;i<entity.getEtats().size();i++){
+            if(entity.getEtats().get(i).getId()<=0){
+                entity.getEtats().get(i).setId(-1);
+            }//end if(entity.getEtats().get(i).getId()<=0){
+        }//end for(int i=0;i<entity.getEtats().size();i++){
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processBeforeSave(Pays entity) {
+        for(int i=0;i<entity.getEtats().size();i++){
+            if(entity.getEtats().get(i).getId()<=0){
+                entity.getEtats().get(i).setId(-1);
+            }//end if(entity.getEtats().get(i).getId()<=0){
+        }//end for(int i=0;i<entity.getEtats().size();i++){
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
 }

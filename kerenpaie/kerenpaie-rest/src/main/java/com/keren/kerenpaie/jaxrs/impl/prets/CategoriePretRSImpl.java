@@ -19,7 +19,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Mar 13 13:15:47 GMT+01:00 2018
  * 
  */
@@ -54,18 +55,38 @@ public class CategoriePretRSImpl
     }
     
     @Override
-	public MetaData getMetaData(HttpHeaders headers) {
-		// TODO Auto-generated method stub
-		try {
-			return MetaDataUtil.getMetaData(new CategoriePret(), new HashMap<String, MetaData>(),new ArrayList<String>());
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public MetaData getMetaData(HttpHeaders headers) {
 
+        // TODO Auto-generated method stub
+        try {
+                return MetaDataUtil.getMetaData(new CategoriePret(), new HashMap<String, MetaData>(),new ArrayList<String>());
+        } catch (InstantiationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        } catch (IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+        return null;
+    }
+    
+    @Override
+    protected void processBeforeSave(CategoriePret entity) {
+
+        // TODO Auto-generated method stub
+        if(entity.getGelee() == null){
+            entity.setGelee(false);
+        }
+
+        super.processBeforeSave(entity);
+    }
+
+    @Override
+    protected void processBeforeUpdate(CategoriePret entity) {
+        
+        // TODO Auto-generated method stub
+        if(entity.getGelee() == null){
+            entity.setGelee(false);
+        }
+    }
 }

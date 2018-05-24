@@ -33,5 +33,5 @@ public class NiveauAnalyseManagerImpl
     public String getEntityIdName() {
         return "id";
     }
-
+    
 }

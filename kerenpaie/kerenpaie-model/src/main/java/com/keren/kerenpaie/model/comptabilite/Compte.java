@@ -27,12 +27,12 @@ import com.megatim.common.annotations.Predicate;
 @Table(name="T_Compte")
 public class Compte extends BaseElement implements Serializable, Comparable<Compte> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -9208634470819249675L;
-	
-	@Predicate(label = "N° de compte",unique = true,optional = false,updatable = false,search = true)
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -9208634470819249675L;
+
+    @Predicate(label = "N° de compte",unique = true,optional = false,updatable = false,search = true)
     private String code ;
     
     @Predicate(label = "Intitulé",search = true)
@@ -50,7 +50,7 @@ public class Compte extends BaseElement implements Serializable, Comparable<Comp
     @JoinColumn(name = "TAXE_ID")
     private Taxe taxe ;
     
-   @Predicate(label = "Report-à-nouveau",target = "combobox",values = "Aucune;Solde;Detail",search = false)
+    @Predicate(label = "Report-à-nouveau",target = "combobox",values = "Aucune;Solde;Detail",search = false)
     private String reportdesanouveau = "0";
    
     @Predicate(label = "Lettrage",target = "combobox",values = "Automatique;Manuel")

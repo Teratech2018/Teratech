@@ -12,6 +12,8 @@ import com.teratech.achat.jaxrs.ifaces.comptabilite.CompteRS;
 import com.teratech.achat.jaxrs.impl.base.CiviliteRSImpl;
 import com.teratech.achat.model.base.Civilite;
 import com.teratech.achat.model.comptabilite.Compte;
+import com.teratech.achat.model.comptabilite.CompteAnalytique;
+import com.teratech.achat.model.comptabilite.SectionAnalytique;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -66,5 +68,27 @@ public class CompteRSImpl
         }
         return null;
     }
+
+    @Override
+    protected void processBeforeUpdate(Compte entity) {
+        for(int i=0 ; i<entity.getAnalytiques().size();i++){
+            if(entity.getAnalytiques().get(i).getId()<=0){
+                entity.getAnalytiques().get(i).setId(-1);
+            }//end  if(entity.getAnalytiques().get(i).getId()<=0){
+        }//end for(int i=0 ; i<entity.getAnalytiques().size();i++)
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processBeforeSave(Compte entity) {
+         for(int i=0 ; i<entity.getAnalytiques().size();i++){
+            if(entity.getAnalytiques().get(i).getId()<=0){
+                entity.getAnalytiques().get(i).setId(-1);
+            }//end  if(entity.getAnalytiques().get(i).getId()<=0){
+        }//end for(int i=0 ; i<entity.getAnalytiques().size();i++)
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
 }

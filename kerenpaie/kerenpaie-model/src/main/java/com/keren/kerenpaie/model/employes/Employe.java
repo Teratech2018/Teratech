@@ -7,7 +7,6 @@ package com.keren.kerenpaie.model.employes;
 
 import com.core.base.BaseElement;
 import com.keren.kerenpaie.model.comptabilite.Compte;
-import com.keren.kerenpaie.model.comptabilite.CompteBancaire;
 import com.keren.kerenpaie.model.paie.ProfilPaie;
 import com.keren.kerenpaie.model.paie.Rubrique;
 import com.keren.kerenpaie.model.structures.Departement;
@@ -175,6 +174,9 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@JoinColumn(name="FON_ID")
 	@Predicate(label="Fonction",type=Fonction.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private Fonction fonction;
+        
+        @Predicate(label = "Curriculum Vitae",target = "file",group=true,groupName="group2",groupLabel="Informations professionnelles")
+        private String cv ;
 	
 	@Predicate(label="Numéro de compte bancaire",group=true,groupName="group3",groupLabel="Comptabilité")
 	private String comptebancaire ;
@@ -342,6 +344,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.vehicule = employ.vehicule;
 		this.alimentaire = employ.alimentaire;
 		this.noel = employ.noel;
+                this.cv = employ.cv;
 //		if(employ.departement!=null){
 //			this.departement = new Departement(employ.departement);
 //		}
@@ -650,8 +653,14 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	public void setNbrejours(Double nbrejours) {
 		this.nbrejours = nbrejours;
 	}
-	
-	
+
+        public String getCv() {
+            return cv;
+        }
+
+        public void setCv(String cv) {
+            this.cv = cv;
+        }
 
 //	public List<CompteBancaire> getComptesbancaire() {
 //		return comptesbancaire;
@@ -908,5 +917,13 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
         //To change body of generated methods, choose Tools | Templates.
         return matricule.compareTo(o.matricule);
     }
+
+	@Override
+	public String[] searchFields() {
+		// TODO Auto-generated method stub
+		return new String[]{"nom","matricule"};
+	}
+	
+	
     
 }

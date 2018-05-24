@@ -53,7 +53,7 @@ public class AvanceSalaire extends BaseElement implements Serializable, Comparab
 	@Predicate(label="Montant",type=Double.class,optional=false,search=true)
 	private Double montant=0.0;
 	
-	@Predicate(label="Durée du remboursement",type=Short.class,optional=false,search=true)
+	@Predicate(label="Durée du remboursement (en Mois)",type=Short.class,optional=false,search=true)
 	private Short duree = 0;
 	
 	@Predicate(label="C",target="textarea",group=true,groupName="group2",groupLabel="Commentaire")

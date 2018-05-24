@@ -49,11 +49,11 @@ public class ExerciceComptable extends BaseElement implements Serializable,Compa
     @Predicate(label = "EXERCICE OUVERT",search = true,colsequence = 2,type = Boolean.class,hide=true)
     private Boolean  ouvert = false ;
     
-    @Predicate(label = "DATE DE DEBUT",type = Date.class,target = "date",optional = false,updatable = false,search = true,colsequence = 3)
+    @Predicate(label = "DATE DE DEBUT",type = Date.class,target = "date",optional = false,updatable = false,search = true,colsequence = 4)
     @Temporal(TemporalType.DATE)
     private Date debut ;
     
-    @Predicate(label = "DATE DE FIN",type = Date.class,target = "date",optional = false,updatable = false,search = true,colsequence = 4)
+    @Predicate(label = "DATE DE FIN",type = Date.class,target = "date",optional = false,updatable = false,search = true,colsequence = 3)
     @Temporal(TemporalType.DATE)
     private Date fin ;
     

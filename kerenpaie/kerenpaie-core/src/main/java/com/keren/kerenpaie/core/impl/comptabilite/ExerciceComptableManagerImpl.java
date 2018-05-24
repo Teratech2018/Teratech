@@ -17,6 +17,7 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.kerenpaie.core.ifaces.comptabilite.ExerciceComptableManagerLocal;
 import com.keren.kerenpaie.core.ifaces.comptabilite.ExerciceComptableManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.comptabilite.ExerciceComptableDAOLocal;
+import com.keren.kerenpaie.dao.ifaces.comptabilite.PeriodePaieDAOLocal;
 import com.keren.kerenpaie.model.comptabilite.ExerciceComptable;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.megatim.common.annotations.OrderType;
@@ -30,6 +31,9 @@ public class ExerciceComptableManagerImpl
 
     @EJB(name = "ExerciceComptableDAO")
     protected ExerciceComptableDAOLocal dao;
+    
+    @EJB(name = "PeriodePaieDAO")
+    protected PeriodePaieDAOLocal periodepaiedao;
 
     public ExerciceComptableManagerImpl() {
     }
@@ -85,19 +89,36 @@ public class ExerciceComptableManagerImpl
 	}
 
 	@Override
-	public void processBeforeSave(ExerciceComptable entity) {
-		// TODO Auto-generated method stub
-		if(entity.getPeriodes()==null||entity.getPeriodes().isEmpty()){
-			
-		}//end if(entity.getPeriodes()==null||entity.getPeriodes().isEmpty())
-		super.processBeforeSave(entity);
-	}
+        public void processAfterUpdate(ExerciceComptable entity) {
 
-	@Override
-	public void processBeforeUpdate(ExerciceComptable entity) {
-		// TODO Auto-generated method stub
-		super.processBeforeUpdate(entity);
-	}
+             for(PeriodePaie aas:entity.getPeriodes()){
+
+                aas.setExercice(entity);
+
+                if(aas.getId()>0){
+                    periodepaiedao.update(aas.getId(), aas);
+                }else {
+                    periodepaiedao.save(aas);
+                }
+            }
+            super.processAfterUpdate(entity);
+        }
+
+        @Override
+        public void processAfterSave(ExerciceComptable entity) {
+            entity = dao.findByPrimaryKey("code", entity.getCode());
+
+            for(PeriodePaie aas:entity.getPeriodes()){
+                aas.setExercice(entity);
+
+                if(aas.getId()>0){
+                    periodepaiedao.update(aas.getId(), aas);
+                }else {
+                    periodepaiedao.save(aas);
+                }
+            }
+            super.processAfterSave(entity);
+        }
     
 	/**
 	 * Construit la liste des periode de paie pour l'exercices

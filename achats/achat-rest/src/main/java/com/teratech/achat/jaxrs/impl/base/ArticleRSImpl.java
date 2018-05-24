@@ -64,6 +64,26 @@ public class ArticleRSImpl
         }
         return null;
     }
+
+    @Override
+    protected void processBeforeUpdate(Article entity) {
+        for(int i=0;i<=entity.getStockages().size();i++){
+            if(entity.getStockages().get(i).getId()<=0){
+                entity.getStockages().get(i).setId(-1);
+            }//end if(entity.getStockages().get(i).getId()<=0){
+        }//end for(int i=0;i<=entity.getStockages().size();i++){
+        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processBeforeSave(Article entity) {
+        for(int i=0;i<=entity.getStockages().size();i++){
+            if(entity.getStockages().get(i).getId()<=0){
+                entity.getStockages().get(i).setId(-1);
+            }//end if(entity.getStockages().get(i).getId()<=0){
+        }//end for(int i=0;i<=entity.getStockages().size();i++){
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 

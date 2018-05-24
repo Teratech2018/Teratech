@@ -82,10 +82,10 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
     @JoinColumn(name = "DEV_ID")
     private Devise devise ;
     
-   @Predicate(label = "Socièté mère" , type = Societe.class,target="many-to-one")
+   /*@Predicate(label = "Socièté mère" , type = Societe.class,target="many-to-one")
    @ManyToOne
    @JoinColumn(name = "SOCP_ID")
-    private Societe societeMere ;
+    private Societe societeMere ;*/
 
    @Predicate(label = "Compte de Regroupement" , type = Compte.class,target="many-to-one",group=true,groupName="comptabilite",groupLabel="Comptabilité")
    @ManyToOne
@@ -159,7 +159,7 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
 	this.siteWeb = siteWeb;
 	this.registre = registre;
 	this.devise = devise;
-	this.societeMere = societeMere;
+	//this.societeMere = societeMere;
 	this.regroupement = regroupement;
 	this.avance = avance;
 	this.journal = journal;
@@ -320,13 +320,13 @@ public String getImage() {
       this.intitule = intitule;
   }
 
-  public Societe getSocieteMere() {
+  /*public Societe getSocieteMere() {
       return societeMere;
   }
 
   public void setSocieteMere(Societe societeMere) {
       this.societeMere = societeMere;
-  }
+  }*/
 
  
   

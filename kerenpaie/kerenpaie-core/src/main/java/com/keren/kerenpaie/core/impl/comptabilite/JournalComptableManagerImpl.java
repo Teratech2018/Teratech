@@ -16,6 +16,7 @@ import com.keren.kerenpaie.core.ifaces.comptabilite.JournalComptableManagerRemot
 import com.keren.kerenpaie.dao.ifaces.comptabilite.JournalComptableDAOLocal;
 import com.keren.kerenpaie.model.comptabilite.JournalComptable;
 import com.megatim.common.annotations.OrderType;
+import java.util.ArrayList;
 
 @TransactionAttribute
 @Stateless(mappedName = "JournalComptableManager")
@@ -50,19 +51,31 @@ public class JournalComptableManagerImpl
 	public List<JournalComptable> filter(List<Predicat> predicats, Map<String, OrderType> orders,
 			Set<String> properties, int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
-		return super.filter(predicats, orders, properties, firstResult, maxResult);
+		List<JournalComptable> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+                List<JournalComptable> result = new ArrayList<JournalComptable>();
+                for(JournalComptable data:datas){
+                    result.add(new JournalComptable(data));
+                }
+                return result ;
 	}
 
 	@Override
 	public JournalComptable find(String propertyName, Long entityID) {
 		// TODO Auto-generated method stub
-		return super.find(propertyName, entityID);
+		JournalComptable data = super.find(propertyName, entityID);
+                JournalComptable result = new JournalComptable(data);
+                return result;
 	}
 
 	@Override
 	public List<JournalComptable> findAll() {
 		// TODO Auto-generated method stub
-		return super.findAll();
+		List<JournalComptable> datas = super.findAll();
+                List<JournalComptable> result = new ArrayList<JournalComptable>();
+                for(JournalComptable data:datas){
+                    result.add(new JournalComptable(data));
+                }
+                return result ;
 	}
     
     

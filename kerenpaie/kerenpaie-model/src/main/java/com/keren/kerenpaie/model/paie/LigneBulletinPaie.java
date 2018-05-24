@@ -175,7 +175,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	@Override
 	public int compareTo(LigneBulletinPaie o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return rubrique.compareTo(o.rubrique);
 	}
 
 }

@@ -446,7 +446,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@Override
 	public int compareTo(Rubrique arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return code.compareTo(arg0.code);
 	}
 
 }
