@@ -4,9 +4,7 @@
 package com.keren.kerenpaie.model.presences;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -16,7 +14,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
-import com.core.base.State;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.megatim.common.annotations.Predicate;
 

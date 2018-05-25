@@ -159,6 +159,7 @@ public class MoteurPaieManagerImpl
     			}//end for(BulletinPaie bulletin : bulletins){
     		}//end for(Employe salarie : salaries)
     	}//end if(salaries!=null && !salaries.isEmpty()){
+        
 		return entity;
 	}
 	
@@ -188,48 +189,48 @@ public class MoteurPaieManagerImpl
     @Override
 	public BulletinPaie eval(BulletinPaie bulletin) {
 		// TODO Auto-generated method stub
-    	//Salaire de base brut
-    	Double salbasebrut = 0.0;
-    	//Salaire de base cotisable
-    	Double salcot = 0.0;
-    	//Salaire de base taxable
-    	Double salTaxable = 0.0;
-    	//Initialisation du cache
-    	executorCache = new HashMap<String , LigneElementVariable>();    	
-		Employe salarie = employedao.findByPrimaryKey("id", bulletin.getEmploye().getId());
-		if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
-			salarie.getStructure().getPlanifications().size();
-		}//end if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
-		ContratTravail contrat = null;
-		//Traitement du contrat de travail
-		for(ContratTravail cont:salarie.getContrats()){
-			if(cont.getState().trim().equalsIgnoreCase("confirme")){
-				contrat = cont;
-			}//end if(cont.getState().trim().equalsIgnoreCase("confirme"))
-		}//end for(ContratTravail cont:salarie.getContrats())
-    	Rubrique rubrique =null;
-    	/**
-    	 * Phase 1 Traitement des rubriques qui participe au
-    	 * 1- SALCO
-    	 * 2 - SBB
-    	 * 3-SALTAX
-    	 */
-    	short index = 0;
-    	/**
-    	 * Calcul des Elements variables
-    	 */
-    	for(LigneElementVariable ligne:bulletin.getVariables()){
-    		if(ligne.getValeur()!=null&&ligne.getValeur().compareTo(0.0)>0){
-    			executorCache.put(ligne.getVariable().getCode(), ligne);
-    			continue;
-    		}//end if(ligne.getValeur().compareTo(0.0)>0){
-    		String codeVar = ligne.getVariable().getCode();
-    		Double valeur = eval(ligne.getVariable(),salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
-	    	ligne.setValeur(valeur);    		
-    		executorCache.put(ligne.getVariable().getCode(), ligne);
-    	}//end for(LigneElementVariable ligne:bulletin.getVariables())
-    	//Traitement des rubrique de type
-    	for(LigneBulletinPaie ligne:bulletin.getLignes()){
+            //Salaire de base brut
+            Double salbasebrut = 0.0;
+            //Salaire de base cotisable
+            Double salcot = 0.0;
+            //Salaire de base taxable
+            Double salTaxable = 0.0;
+            //Initialisation du cache
+            executorCache = new HashMap<String , LigneElementVariable>();    	
+            Employe salarie = employedao.findByPrimaryKey("id", bulletin.getEmploye().getId());
+            if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
+                    salarie.getStructure().getPlanifications().size();
+            }//end if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
+            ContratTravail contrat = null;
+            //Traitement du contrat de travail
+            for(ContratTravail cont:salarie.getContrats()){
+                    if(cont.getState().trim().equalsIgnoreCase("confirme")){
+                            contrat = cont;
+                    }//end if(cont.getState().trim().equalsIgnoreCase("confirme"))
+            }//end for(ContratTravail cont:salarie.getContrats())
+            Rubrique rubrique =null;
+            /**
+             * Phase 1 Traitement des rubriques qui participe au
+             * 1- SALCO
+             * 2 - SBB
+             * 3-SALTAX
+             */
+            short index = 0;
+            /**
+             * Calcul des Elements variables
+             */
+            for(LigneElementVariable ligne:bulletin.getVariables()){
+                    if(ligne.getValeur()!=null&&ligne.getValeur().compareTo(0.0)>0){
+                            executorCache.put(ligne.getVariable().getCode(), ligne);
+                            continue;
+                    }//end if(ligne.getValeur().compareTo(0.0)>0){
+                    String codeVar = ligne.getVariable().getCode();
+                    Double valeur = eval(ligne.getVariable(),salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
+                    ligne.setValeur(valeur);    		
+                    executorCache.put(ligne.getVariable().getCode(), ligne);
+            }//end for(LigneElementVariable ligne:bulletin.getVariables())
+            //Traitement des rubrique de type
+    	   for(LigneBulletinPaie ligne:bulletin.getLignes()){
     		rubrique = ligne.getRubrique();
 //    		if(ligne.getValeur()!=null&&ligne.getValeur().compareTo(0.0)>0){
 //    			Double valeur = ligne.getValeur();
@@ -267,49 +268,49 @@ public class MoteurPaieManagerImpl
 				salcot += ligne.getTauxsal();
 			}//end if(rubrique.getCotisablesal().equals(Boolean.TRUE))
 		}//end for(LigneBulletinPaie ligne:bulletin.getLignes())
-    	/**
-    	 * Mise a jour du SBB SALCO et SALTAX
-    	 */
-    	if(executorCache!=null){
-    		if(executorCache.get("SBB")!=null){
-    			executorCache.get("SBB").setValeur(salbasebrut);
-    		}//end if(executorCache.get("SBB")!=null){
-    		if(executorCache.get("SALCO")!=null){
-    			executorCache.get("SALCO").setValeur(salcot);
-    		}//end if(executorCache.get("SALCO")!=null){
-    		if(executorCache.get("SALTAX")!=null){
-    			executorCache.get("SALTAX").setValeur(salTaxable);
-    		}//end if(executorCache.get("SALTAX")!=null){
-    	}//end if(executorCache!=null){
-    	
-    	//Mise a jour des Variables base sur des variables SBB SALCO SALTAX
-    	/**
-    	 * 
-    	 */
-    	for(LigneBulletinPaie ligne:bulletin.getLignes()){
-    		if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
-    			rubrique = rubriquedao.findByPrimaryKey("id", ligne.getRubrique().getId());
-    			Double valeur = eval(rubrique,salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
-//    			System.out.println(MoteurPaieManagerImpl.class.toString()+" =========== "+ligne.getRubrique()+" ==== "+ligne.getRubrique().getFormule()+" ==== "+valeur);
-    			ligne.setValeur(valeur);	
-    			if(ligne.getRubrique().getTauxsal()!=null){
-    				ligne.setTauxsal(valeur*ligne.getRubrique().getTauxsal()/100);
-    			}//end if(ligne.getRubrique().getTauxsal()!=null)
-    			if(ligne.getRubrique().getTauxpat()!=null){
-    				ligne.setTauxpat(valeur*ligne.getRubrique().getTauxpat()/100);
-    			}//end if(ligne.getRubrique().getTauxpat()!=null){
-    		}//end if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
-    	}//end for(LigneElementVariable ligne:bulletin.getVariables())
-    	//Mise a jour du Bulletin
-    	bulletin = dao.update(bulletin.getId(), bulletin);
-    	BulletinPaie result = new BulletinPaie(bulletin);
-    	for(LigneElementVariable ligne:bulletin.getVariables()){
-    		result.getVariables().add(new LigneElementVariable(ligne));
-    	}//end for(LigneElementVariable ligne:bulletin.getVariables()){
-    	for(LigneBulletinPaie ligne:bulletin.getLignes()){
-    		result.getLignes().add(new LigneBulletinPaie(ligne));
-    	}//end for(LigneBulletinPaie ligne:bulletin.getLignes()){
-    	return result;
+                /**
+                 * Mise a jour du SBB SALCO et SALTAX
+                 */
+                if(executorCache!=null){
+                        if(executorCache.get("SBB")!=null){
+                                executorCache.get("SBB").setValeur(salbasebrut);
+                        }//end if(executorCache.get("SBB")!=null){
+                        if(executorCache.get("SALCO")!=null){
+                                executorCache.get("SALCO").setValeur(salcot);
+                        }//end if(executorCache.get("SALCO")!=null){
+                        if(executorCache.get("SALTAX")!=null){
+                                executorCache.get("SALTAX").setValeur(salTaxable);
+                        }//end if(executorCache.get("SALTAX")!=null){
+                }//end if(executorCache!=null){
+
+                //Mise a jour des Variables base sur des variables SBB SALCO SALTAX
+                /**
+                 * 
+                 */
+                for(LigneBulletinPaie ligne:bulletin.getLignes()){
+                        if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
+                                rubrique = rubriquedao.findByPrimaryKey("id", ligne.getRubrique().getId());
+                                Double valeur = eval(rubrique,salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
+        //    			System.out.println(MoteurPaieManagerImpl.class.toString()+" =========== "+ligne.getRubrique()+" ==== "+ligne.getRubrique().getFormule()+" ==== "+valeur);
+                                ligne.setValeur(valeur);	
+                                if(ligne.getRubrique().getTauxsal()!=null){
+                                        ligne.setTauxsal(valeur*ligne.getRubrique().getTauxsal()/100);
+                                }//end if(ligne.getRubrique().getTauxsal()!=null)
+                                if(ligne.getRubrique().getTauxpat()!=null){
+                                        ligne.setTauxpat(valeur*ligne.getRubrique().getTauxpat()/100);
+                                }//end if(ligne.getRubrique().getTauxpat()!=null){
+                        }//end if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
+                }//end for(LigneElementVariable ligne:bulletin.getVariables())
+                //Mise a jour du Bulletin
+                bulletin = dao.update(bulletin.getId(), bulletin);
+                BulletinPaie result = new BulletinPaie(bulletin);
+                for(LigneElementVariable ligne:bulletin.getVariables()){
+                        result.getVariables().add(new LigneElementVariable(ligne));
+                }//end for(LigneElementVariable ligne:bulletin.getVariables()){
+                for(LigneBulletinPaie ligne:bulletin.getLignes()){
+                        result.getLignes().add(new LigneBulletinPaie(ligne));
+                }//end for(LigneBulletinPaie ligne:bulletin.getLignes()){
+                return result;
 	}
     
         
@@ -375,54 +376,12 @@ public class MoteurPaieManagerImpl
 	 */
 	private  Double eval(String codeVar,Employe salarie,PeriodePaie periode,ContratTravail contrat,Societe structure){		
 		//Cache des variable calcule
-		Map<String, Double> map =calculHeures(periode, salarie, structure);
-		//Salaire categoriel
-		map.put("SALCATEGO", salaireCategoriel(salarie,contrat));
-		//Salaire de base
-		map.put("SALBASE", salaireBase(salarie, contrat));
-		//Type de Contrat
-		map.put("TYPECONTRAT", Double.parseDouble(contrat.getType().getCategorie()));
-		//Nombre d'enfants 
-		Double value = 0.0;
-		for(Famille fam : salarie.getFamilles()){
-			if(fam.getEligible()==Boolean.TRUE){
-				   value  +=1;
-			}//end if(fam.getEligible()==Boolean.TRUE)				   
-		}//end for(Famille fam : salarie.getFamilles()){
-		map.put("NBENFT21", value);
-		//Nombre total d'enfant
-		value = 0.0;
-		for(Famille fam : salarie.getFamilles()){
-		   if(fam.getQualite().trim().equalsIgnoreCase("0")){
-			   value  +=1;
-		   }//end if(fam.getEligible()==Boolean.TRUE)
-		}//end for(Famille fam : salarie.getFamilles()){
-		map.put("NBENFT", value);
-		//Ancienite gele
-		map.put("ANCIENITEGELE", contrat.getGele()==null ? 0.0 : Double.parseDouble(contrat.getGele().toString()));
-		////Type 0=Agent local et 1 = fonctionnaire
-		map.put("TYPEAGENT",Double.parseDouble(salarie.getStatut()));
-	    //HANDICAPE
-		map.put("HANDICAPE", (salarie.getHandicape()==null||salarie.getHandicape().equals(Boolean.FALSE)) ? 0.0:1.0);
-		//SEXE
-		map.put("SEXE",(salarie.getGenre()!=null ? Double.parseDouble(salarie.getGenre()):0.0));
-		//Categorie
-		map.put("CATEGORIE", Double.parseDouble(contrat.getCategorie().getCode().toString()));
-		//Indice de solde
-		map.put("INDICE", contrat.getIndice()==null ?  0.0 : Double.parseDouble(contrat.getIndice().toString()));
-		//Employé Affecté
-		map.put("AFFECTE", salarie.getAffecte()==null || salarie.getAffecte().equals(Boolean.FALSE) ? 0.0 : 1.0);
-		//Avantage en eau
-		map.put("EAU", salarie.getEau()==null||salarie.getEau().equals(Boolean.FALSE) ? 0.0:1.0);
-		//Avantage en electricite
-		map.put("ELECTRICITE", salarie.getElectricite()==null||salarie.getElectricite().equals(Boolean.FALSE) ? 0.0:1.0);
-		//Avantage en vehicule
-		map.put("VEHICULE", salarie.getVehicule()==null||salarie.getVehicule().equals(Boolean.FALSE)? 0.0:1.0);
+		Map<String, Double> map = calculHeures(periode, salarie, structure);		
 		Double valeur = 0.0;		
 		if(codeVar.trim().equalsIgnoreCase("SALCATEGO")){//Salaire Categorie
-			return map.get("SALCATEGO");
+			return salaireCategoriel(salarie,contrat);
 		}else if(codeVar.trim().equalsIgnoreCase("SALBASE")){//Salarie de Base 			
-			return map.get("SALBASE");
+			return salaireBase(salarie, contrat);
 		}else if(codeVar.trim().equalsIgnoreCase("HPAYEES")){//Nombre Heure Payés dans la période
 			return map.get("HMOIS") - map.get("NHABS") + map.get("NHABSPAYE");
 		}else if(codeVar.trim().equalsIgnoreCase("HTRAV")){//Nombre Heure Travaillées dans la periode
@@ -452,35 +411,48 @@ public class MoteurPaieManagerImpl
 		}else if(codeVar.trim().equalsIgnoreCase("JTRAVPAYE")){//Nombres de jours travaillé dans la periode
 			return map.get("JTRAV") - map.get("NJABS") + map.get("NJABSPAYE");
 		}else if(codeVar.trim().equalsIgnoreCase("TYPECONTRAT")){//Categorie contrat du salarié 0 = CDD 1=CDI 2=Fonctionnaire détaché 3=Temporaire 4=Stagiaires 5=Autres
-			return map.get("TYPECONTRAT");
+			return Double.parseDouble(contrat!=null ? contrat.getType().getCategorie():"0.0");
 		}else if(codeVar.trim().equalsIgnoreCase("HCONGE")){//Nombre heure congé sur une periode
 			
-		}else if(codeVar.trim().equalsIgnoreCase("NBENFT21")){			
-			return map.get("NBENFT21");
-		}else if(codeVar.trim().equalsIgnoreCase("NBENFT")){			
-			return map.get("NBENFT");
+		}else if(codeVar.trim().equalsIgnoreCase("NBENFT21")){	
+                        Double value = 0.0;
+                        for(Famille fam : salarie.getFamilles()){
+                           if(fam.getQualite().trim().equalsIgnoreCase("0")&&fam.getEligible().equals(Boolean.TRUE)){
+                                   value  +=1;
+                           }//end if(fam.getEligible()==Boolean.TRUE)
+                        }//end for(Famille fam : salarie.getFamilles()){
+			return value;
+		}else if(codeVar.trim().equalsIgnoreCase("NBENFT")){	
+                    //Nombre total d'enfant
+                        Double value = 0.0;
+                        for(Famille fam : salarie.getFamilles()){
+                           if(fam.getQualite().trim().equalsIgnoreCase("0")){
+                                   value  +=1;
+                           }//end if(fam.getEligible()==Boolean.TRUE)
+                        }//end for(Famille fam : salarie.getFamilles()){
+                        return value;
 		}else if(codeVar.trim().equalsIgnoreCase("ANCIENITEGELE")){
-			return map.get("ANCIENITEGELE");
+			return contrat!=null&&contrat.getGele()==null ? 0.0 : Double.parseDouble(contrat.getGele().toString());
 		}else if(codeVar.trim().equalsIgnoreCase("TYPEAGENT")){//0=Agent local et 1 = fonctionnaire
-			return map.get("TYPEAGENT");
+			return Double.parseDouble(salarie.getStatut());
 		}else if(codeVar.trim().equalsIgnoreCase("HANDICAPE")){//0 = Agent non handicape 1 - agent handicapé
-			return map.get("HANDICAPE");
+			return (salarie.getHandicape()==null||salarie.getHandicape().equals(Boolean.FALSE)) ? 0.0:1.0;
 		}else if(codeVar.trim().equalsIgnoreCase("SEXE")){//O:Masculin 1:Feminin
-			return map.get("SEXE");
+			return (salarie.getGenre()!=null ? Double.parseDouble(salarie.getGenre()):0.0);
 		}else if(codeVar.trim().equalsIgnoreCase("CATEGORIE")){//Categorie du Salarie
-			return map.get("CATEGORIE");
+			return Double.parseDouble(contrat!=null ? contrat.getCategorie().getCode().toString():"0.0");
 		}else if(codeVar.trim().equalsIgnoreCase("ECHELON")){//Echelon du salarie
 			
 		}else if(codeVar.trim().equalsIgnoreCase("INDICE")){//Indice de solde du salarie
-			return map.get("INDICE");
+			return contrat!=null&&contrat.getIndice()==null ?  0.0 : Double.parseDouble(contrat.getIndice().toString());
 		}else if(codeVar.equalsIgnoreCase("AFFECTE")){//0 : employé non affecté 1:Employe affecte
-			return map.get("AFFECTE");
+			return salarie.getAffecte()==null || salarie.getAffecte().equals(Boolean.FALSE) ? 0.0 : 1.0;
 		}else if(codeVar.trim().equalsIgnoreCase("EAU")){//Employé en eau 0 = non 1=Oui
-			return map.get("EAU");	
+			return salarie.getEau()==null||salarie.getEau().equals(Boolean.FALSE) ? 0.0:1.0;	
 		}else if(codeVar.trim().equalsIgnoreCase("ELECTRICITE")){//Employé ayant des avantage en electricite 0 = non 1=Oui
-			return map.get("ELECTRICITE");	
+			return salarie.getElectricite()==null||salarie.getElectricite().equals(Boolean.FALSE) ? 0.0:1.0;	
 		}else if(codeVar.trim().equalsIgnoreCase("VEHICULE")){//Employé Vehiculé 0 = non 1=Oui
-			return map.get("VEHICULE");
+			return salarie.getVehicule()==null||salarie.getVehicule().equals(Boolean.FALSE)? 0.0:1.0;
 		}else if(codeVar.trim().equalsIgnoreCase("LOGEMENT")){//Employé Logé 0 = non 1=Oui
 			return salarie.getLogement()==null||salarie.getLogement()==Boolean.FALSE ? 0.0 : 1.0;
 		}else if(codeVar.trim().equalsIgnoreCase("MANAGERE")){//Employé avantage ménagères 0 = non 1=Oui
@@ -494,7 +466,10 @@ public class MoteurPaieManagerImpl
 		}else if(codeVar.trim().equalsIgnoreCase("TAUXSYNDICAL")){//Taux de retenue syndical
 			return salarie.getTauxsyndical()==null ? 0.0 : salarie.getTauxsyndical();
 		}else if(codeVar.trim().equalsIgnoreCase("ANCIEN")){
-			int months = DateHelper.numberOfMonth(contrat.getDrecurtement(), periode.getDfin());
+			int months = 0;
+                        if(contrat!=null&&contrat.getDrecurtement()!=null){
+                            months = DateHelper.numberOfMonth(contrat.getDrecurtement(), periode.getDfin());
+                        }//end if(contrat!=null&&contrat.getDrecurtement()!=null){
 			return Double.parseDouble(Integer.toString(months));
 		}else if(codeVar.trim().equalsIgnoreCase("RETRAITECOMPL")){//Retraite complementaire
 			return salarie.getRetraitcomplementaire()==null ? 0.0 : salarie.getRetraitcomplementaire();
@@ -527,33 +502,40 @@ public class MoteurPaieManagerImpl
 		Calendar c = Calendar.getInstance();
 		c.setTime(jour);
 		if(c.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY){
-			if(weekDay.get("Lundi").getOuvert().equals(Boolean.TRUE)){
+			if(weekDay.get("Lundi")!=null&&weekDay.get("Lundi").getOuvert()!=null
+                                &&weekDay.get("Lundi").getOuvert().equals(Boolean.TRUE)){
 				heure += weekDay.get("Lundi").getHeures();
-			}
+			}//end if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
 		}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.TUESDAY){
-			if(weekDay.get("Mardi").getOuvert().equals(Boolean.TRUE)){
-				heure += weekDay.get("Lundi").getHeures();
-			}
+			if(weekDay.get("Mardi")!=null&&weekDay.get("Mardi").getOuvert()!=null
+                                &&weekDay.get("Mardi").getOuvert().equals(Boolean.TRUE)){
+				heure += weekDay.get("Mardi").getHeures();
+			}//end if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
 		}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.WEDNESDAY){
-			if(weekDay.get("Mercredi").getOuvert().equals(Boolean.TRUE)){
-				heure += weekDay.get("Lundi").getHeures();
-			}
+			if(weekDay.get("Mercredi")!=null&&weekDay.get("Mercredi").getOuvert()!=null
+                                &&weekDay.get("Mercredi").getOuvert().equals(Boolean.TRUE)){
+				heure += weekDay.get("Mercredi").getHeures();
+			}//end if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
 		}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY){
-			if(weekDay.get("Jeudi").getOuvert().equals(Boolean.TRUE)){
-				heure += weekDay.get("Lundi").getHeures();
-			}
+			if(weekDay.get("Jeudi")!=null&&weekDay.get("Jeudi").getOuvert()!=null
+                                &&weekDay.get("Jeudi").getOuvert().equals(Boolean.TRUE)){
+				heure += weekDay.get("Jeudi").getHeures();
+			}//end if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
 		}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.FRIDAY){
-			if(weekDay.get("Vendredi").getOuvert().equals(Boolean.TRUE)){
-				heure += weekDay.get("Lundi").getHeures();
-			}
+			if(weekDay.get("Vendredi")!=null&&weekDay.get("Vendredi").getOuvert()!=null
+                                &&weekDay.get("Vendredi").getOuvert().equals(Boolean.TRUE)){
+				heure += weekDay.get("Vendredi").getHeures();
+			}//end if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
 		}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
-			if(weekDay.get("Samedi").getOuvert().equals(Boolean.TRUE)){
-				heure += weekDay.get("Lundi").getHeures();
-			}
+			if(weekDay.get("Samedi")!=null&&weekDay.get("Samedi").getOuvert()!=null
+                                &&weekDay.get("Samedi").getOuvert().equals(Boolean.TRUE)){
+				heure += weekDay.get("Samedi").getHeures();
+			}//end if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
 		}else if(c.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY){
-			if(weekDay.get("Dimanche").getOuvert().equals(Boolean.TRUE)){
-				heure += weekDay.get("Lundi").getHeures();
-			}
+			if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
+                                &&weekDay.get("Dimanche").getOuvert().equals(Boolean.TRUE)){
+				heure += weekDay.get("Dimanche").getHeures();
+			}//end if(weekDay.get("Dimanche")!=null&&weekDay.get("Dimanche").getOuvert()!=null
 		}//end if(c.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY){
 		return heure;
 	}
@@ -665,6 +647,7 @@ public class MoteurPaieManagerImpl
 					heure += weekDay.get("Dimanche").getHeures();
 				}//end if(weekDay.get("Dimanche")!=null && weekDay.get("Dimanche").getOuvert()!=null
 			}//end if(c.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY){
+                        begin = DateHelper.next(begin, 1);
 		}while(begin.compareTo(periode.getDfin())<0);
 		return heure ;
 	}
@@ -693,6 +676,9 @@ public class MoteurPaieManagerImpl
 		//Traitement des parametrae avanceeés
 		//Calcul du salaire categorie
 		Double valeur = 0.0;
+                if(contrat==null){
+                    return valeur;
+                }//end if(contrat==null){
 		RestrictionsContainer  container = RestrictionsContainer.newInstance();
 		container.addEq("state", "active");
 		List<ParametreAvance> parametres = parametreavancedao.filter(container.getPredicats(), null, null, 0, -1);
@@ -1461,12 +1447,7 @@ public class MoteurPaieManagerImpl
 	 * @param entity
 	 */
     private List<Employe> creationBulletinPaiePeriode(PrepaSalaire entity){
-        //Cache des lignes du bulletion de paie
-    	HashMap<String, LigneBulletinPaie> datacache = new HashMap<String, LigneBulletinPaie>();    	
-    	/**
-    	 * Cache des variables de paie
-    	 */
-    	HashMap<String, LigneElementVariable> variablecache = new HashMap<String, LigneElementVariable>();
+        
     	
     	//Verification de l'existance d'une variable ACOMPTE    	
 		List<Employe> salaries = new ArrayList<Employe>();
@@ -1478,6 +1459,12 @@ public class MoteurPaieManagerImpl
 		}//end if(entity.getPorte().trim().equalsIgnoreCase("0"))
 		//Construction des Bulletin
 		for(Employe salarie:salaries){
+                        //Cache des lignes du bulletion de paie
+                        HashMap<String, LigneBulletinPaie> datacache = new HashMap<String, LigneBulletinPaie>();    	
+                        /**
+                         * Cache des variables de paie
+                         */
+                        HashMap<String, LigneElementVariable> variablecache = new HashMap<String, LigneElementVariable>();
 			if(salarie.getProfilpaie()==null){
 				throw new KerenExecption("Le salarié "+salarie.getDesignation()+" n'a pas de Profil de Paie lié");
 			}//end if(salarie.getProfilpaie()==null)
@@ -1487,12 +1474,15 @@ public class MoteurPaieManagerImpl
 			List<BulletinPaie> bulletins = dao.filter(container.getPredicats(),null,null, 0, -1);
 			BulletinPaie bulletin =null;
 			if(bulletins!=null&&!bulletins.isEmpty()){
-				bulletin = bulletins.get(0);
+				//Suppressions des anciens bulletins de paie
+                            for(BulletinPaie bul:bulletins){
+                                dao.delete(bul.getId());
+                            }//end for(BulletinPaie bul:bulletins){
 			}//end if(bulletins!=null&&!bulletins.isEmpty()){
+                        bulletin = new BulletinPaie(salarie.getNom(), salarie, null, entity.getPeriode());
 //			if(bulletin!=null){
 //				continue;
 //			}//end if(bulletin!=null){
-			bulletin = new BulletinPaie(salarie.getNom(), salarie, null, entity.getPeriode());
 			ProfilPaie profil = profildao.findByPrimaryKey("id", salarie.getProfilpaie().getId());
 			//Construction de la liste des variables de paie
 			container = RestrictionsContainer.newInstance();
@@ -1515,8 +1505,9 @@ public class MoteurPaieManagerImpl
 					ligne = datacache.get(rubrique.getCode());
 					//ligne.setValeur(eval(rubrique,salarie) + ligne.getValeur());
 				}else{
-					ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
+                                        ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
 					//ligne.setValeur(eval(rubrique,salarie));
+                                        datacache.put(rubrique.getCode(), ligne);					
 				}//end if(datacache.containsKey(rubrique.getCode())){
                                 if(!bulletin.getLignes().contains(ligne)){
                                     bulletin.getLignes().add(ligne);
@@ -1533,6 +1524,7 @@ public class MoteurPaieManagerImpl
 					}else{
 						ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
 						//ligne.setValeur(eval(rubrique,salarie));
+                                                datacache.put(rubrique.getCode(), ligne);
 					}//end if(datacache.containsKey(rubrique.getCode())){	
                                         if(!bulletin.getLignes().contains(ligne)){
                                             bulletin.getLignes().add(ligne);
@@ -1556,6 +1548,7 @@ public class MoteurPaieManagerImpl
 					}else{
 						ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
 						ligne.setValeur(rem.getMontant());
+                                                datacache.put(rubrique.getCode(), ligne);					
 					}//end if(datacache.containsKey(rubrique.getCode())){
                                         if(!bulletin.getLignes().contains(ligne)){
                                             bulletin.getLignes().add(ligne);
@@ -1571,6 +1564,7 @@ public class MoteurPaieManagerImpl
                             }else{
                                     ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
                                     ligne.setValeur(rem.getMontant());
+                                    datacache.put(rubrique.getCode(), ligne);					
                             }//end if(datacache.containsKey(rubrique.getCode())){	
                             if(!bulletin.getLignes().contains(ligne)){
                                 bulletin.getLignes().add(ligne);
@@ -1587,6 +1581,7 @@ public class MoteurPaieManagerImpl
                                 }else{
                                         ligne = new LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
                                         ligne.setValeur(lign.getMontant());
+                                        datacache.put(rubrique.getCode(), ligne);					
                                 }//end if(datacache.containsKey(rubrique.getCode())){	
                                 if(!bulletin.getLignes().contains(ligne)){
                                     bulletin.getLignes().add(ligne);
@@ -1610,11 +1605,11 @@ public class MoteurPaieManagerImpl
                             }
 		    	}//end for(Acompte acompte:eltvar.getAcomptes())
 		    }//end if(eltsvariables!=null&&!eltsvariables.isEmpty())
-		    System.out.println(MoteurPaieManagerImpl.class.toString()+" ==================================== "+bulletin);
 		    if(bulletin.getId()>0){
 		    	dao.update(bulletin.getId(), bulletin);
 		    }else {
 		    	dao.save(bulletin);
+//                        System.out.println(MoteurPaieManagerImpl.class.toString()+" ==================================== "+bulletin);
 		    }//end if(bulletin.getId()>0){
 		}//end for(Employe salarie:salaries)
                 return salaries;

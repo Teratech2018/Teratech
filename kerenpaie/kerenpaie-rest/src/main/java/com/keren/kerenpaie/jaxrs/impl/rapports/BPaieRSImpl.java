@@ -22,7 +22,6 @@ import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.rapports.BPaieRS;
 import com.keren.kerenpaie.model.rapports.BPaie;
-import com.keren.kerenpaie.model.rapports.LivrePaie;
 import com.keren.kerenpaie.model.rapports.ViewBulletinPaie;
 import com.keren.kerenpaie.tools.report.ReportHelper;
 import com.keren.kerenpaie.tools.report.ReportsName;
@@ -31,13 +30,15 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.HttpHeaders;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.base.JRBaseParameter;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Fri Apr 06 09:41:44 WAT 2018
  * 
  */
@@ -71,8 +72,15 @@ public class BPaieRSImpl
 	public String getModuleName() {
         return ("kerenpaie");
     }
-    
+
     @Override
+    public MetaData getMetaData(HttpHeaders headers) {
+        return getMetaData(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+        
+        
     public MetaData getMetaData() {
         try {
         	MetaData meta = MetaDataUtil.getMetaData(new BPaie(), new HashMap<String, MetaData>(),new ArrayList<String>());

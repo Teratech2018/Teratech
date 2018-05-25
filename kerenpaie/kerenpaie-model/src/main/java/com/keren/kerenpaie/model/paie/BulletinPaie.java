@@ -57,8 +57,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	private PeriodePaie periode ;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
-	@JoinColumn(name="LIBUPA_ID")
-        
+	@JoinColumn(name="LIBUPA_ID")        
 	@Predicate(label="Lignes",type=LigneBulletinPaie.class,target="one-to-many",updatable=false,editable=false,group=true,groupName="group1",groupLabel="VALEURS DE RUBRIQUES",edittable=true)
 	private List<LigneBulletinPaie> lignes = new ArrayList<LigneBulletinPaie>();
 	

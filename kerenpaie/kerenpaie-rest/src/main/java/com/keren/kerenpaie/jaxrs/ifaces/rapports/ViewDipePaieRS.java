@@ -16,19 +16,15 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Interface du service JAX-RS
+ * Interface du service JAX-RS
+
  * @since Thu Apr 19 10:00:59 WAT 2018
  * 
  */
 public interface ViewDipePaieRS
     extends GenericService<ViewDipePaie, Long>
 {
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("meta")
-	public MetaData getMetaData();
-
-
+	
 	@GET
 	@Produces({"text/plain" })
 	@Path("builddipemagnetique")

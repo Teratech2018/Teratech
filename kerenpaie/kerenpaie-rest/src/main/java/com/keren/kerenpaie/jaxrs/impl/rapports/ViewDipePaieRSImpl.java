@@ -68,7 +68,13 @@ public class ViewDipePaieRSImpl extends AbstractGenericService<ViewDipePaie, Lon
 		return ("kerenpaie");
 	}
 
-	@Override
+    @Override
+    public MetaData getMetaData(HttpHeaders headers) {
+        return getMetaData(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+        
+	
 	public MetaData getMetaData() {
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new ViewDipePaie(), new HashMap<String, MetaData>(),

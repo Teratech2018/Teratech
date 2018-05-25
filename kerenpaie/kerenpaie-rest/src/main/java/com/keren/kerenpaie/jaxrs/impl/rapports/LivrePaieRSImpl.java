@@ -30,13 +30,15 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.HttpHeaders;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.base.JRBaseParameter;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Fri Apr 06 09:41:44 WAT 2018
  * 
  */
@@ -70,24 +72,34 @@ public class LivrePaieRSImpl
 	public String getModuleName() {
         return ("kerenpaie");
     }
-    
+
     @Override
+    public MetaData getMetaData(HttpHeaders headers) {
+        return getMetaData(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+     *
+     * @return
+     */
+    
     public MetaData getMetaData() {
         try {
         	MetaData meta = MetaDataUtil.getMetaData(new LivrePaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
 		    MetaColumn workbtn = new MetaColumn("button", "work2", "Livre de Paie", false, "report", null);
-          workbtn.setValue("{'model':'kerenpaie','entity':'livrepaie','method':'buildlivrepaie','template':{'this':'object'}}");
-          workbtn.setStates(new String[]{"etabli"});
-          workbtn.setPattern("btn btn-primary");
-//          meta.getHeader().add(workbtn);
-////          workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
-////          workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
-////          workbtn.setStates(new String[]{"etabli"});
-////          workbtn.setPattern("btn btn-danger");
-          meta.getHeader().add(workbtn);	           
-          MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-          meta.getHeader().add(stautsbar);
-		    return meta;
+                workbtn.setValue("{'model':'kerenpaie','entity':'livrepaie','method':'buildlivrepaie','template':{'this':'object'}}");
+                workbtn.setStates(new String[]{"etabli"});
+                workbtn.setPattern("btn btn-primary");
+  //          meta.getHeader().add(workbtn);
+  ////          workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
+  ////          workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
+  ////          workbtn.setStates(new String[]{"etabli"});
+  ////          workbtn.setPattern("btn btn-danger");
+                meta.getHeader().add(workbtn);	           
+                MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+                meta.getHeader().add(stautsbar);
+                System.out.println(LivrePaieRSImpl.class.toString()+".getMetaData() ========= "+meta);
+		return meta;
         } catch (InstantiationException ex) {
             Logger.getLogger(LivrePaieRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {

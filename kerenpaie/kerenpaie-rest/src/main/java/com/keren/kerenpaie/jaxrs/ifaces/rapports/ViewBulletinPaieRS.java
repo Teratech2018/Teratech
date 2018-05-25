@@ -20,7 +20,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
- * Interface du service JAX-RS
+ * Interface du service JAX-RS
+
  * @since Fri Apr 06 09:41:44 WAT 2018
  * 
  */
@@ -28,10 +29,10 @@ public interface ViewBulletinPaieRS
     extends GenericService<ViewBulletinPaie, Long>
 {
 
-	@GET
-    @Produces({MediaType.APPLICATION_JSON})
-    @Path("meta")
-    public MetaData getMetaData();
+//	@GET
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Path("meta")
+//    public MetaData getMetaData();
     
     /**
      * 

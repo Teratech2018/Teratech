@@ -19,10 +19,8 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
-import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.rapports.ViewBulletinPaieRS;
-import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.rapports.ViewBulletinPaie;
 import com.keren.kerenpaie.tools.KerenPaieManagerException;
 import com.keren.kerenpaie.tools.report.ReportHelper;
@@ -30,7 +28,6 @@ import com.keren.kerenpaie.tools.report.ReportsName;
 import com.keren.kerenpaie.tools.report.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 import net.sf.jasperreports.engine.JRException;
@@ -38,7 +35,8 @@ import net.sf.jasperreports.engine.base.JRBaseParameter;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Fri Apr 06 09:41:44 WAT 2018
  * 
  */
@@ -77,8 +75,15 @@ public class ViewBulletinPaieRSImpl
 	public String getModuleName() {
         return ("kerenpaie");
     }
-    
+
     @Override
+    public MetaData getMetaData(HttpHeaders headers) {
+        return getMetaData(); //To change body of generated methods, choose Tools | Templates.
+    }
+        
+        
+    
+//    @Override
     public MetaData getMetaData() {
         try {
         	MetaData meta = MetaDataUtil.getMetaData(new ViewBulletinPaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
