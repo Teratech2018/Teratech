@@ -352,7 +352,7 @@ angular.module("mainApp")
            	 $scope.tableheaderselected = !$scope.tableheaderselected;
          
 	     	 for(var i=0 ; i<$scope.modules.length;i++){
-	     	    module = $scope.modules[i];	     	 	 		  
+	     	   var  module = $scope.modules[i];	     	 	 		  
 	     	 	module.selected = $scope.tableheaderselected;
 	     	 }//end for(var i=0 ; i<$scope.modules.length;i++){
                  
@@ -603,6 +603,8 @@ angular.module("mainApp")
           //Liste des predicats
           $scope.predicats = new Array();
           $scope.searchCriteria = new String();
+          $scope.temporalSearchCriteria = new String();
+          $scope.temporalPredicats = new Array();
           $scope.suffixedittitle = 'Nouveau';
           $scope.enablefollowerpanel = false;
           $scope.activefollower = false;
@@ -5724,13 +5726,13 @@ $scope.gererChangementFichier3 = function(event,model){
                   if(angular.isDefined(metaData.columns[i].search)
                             &&(metaData.columns[i].search==true)){
                       if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'){  
-                        var thElem = document.createElement('th');
-                        thElem.innerHTML = metaData.columns[i].fieldLabel;
-                        rheadElem.appendChild(thElem);
-                       }
-                     }
-                }
-            }
+                            var thElem = document.createElement('th');
+                            thElem.innerHTML = metaData.columns[i].fieldLabel;
+                            rheadElem.appendChild(thElem);
+                       }//end if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'
+                  }//end if(angular.isDefined(metaData.columns[i].search)
+                }//end for(var i=0 ; i< metaData.columns.length;i++){
+            }//end if(metaData.columns){
             //Traitement des groups
             if(metaData.groups){
                 //Cas des columns
@@ -5744,12 +5746,12 @@ $scope.gererChangementFichier3 = function(event,model){
                                     var thElem = document.createElement('th');
                                     thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel;
                                     rheadElem.appendChild(thElem);
-                                }
-                            }
+                                }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i]
+                            }//end if(angular.isDefined(metaData.groups[i].columns[j].search)
                         }//end For
                     }//Fin traitement des colommes
-                }
-            }
+                }//end for(var i=0 ; i<metaData.groups.length;i++)
+            }//end if(metaData.groups){
 
             //Creation du corps du tableau
             var tbodyElem = document.createElement('tbody');
@@ -5917,6 +5919,8 @@ $scope.gererChangementFichier3 = function(event,model){
          */
         $scope.listDialogBuilder = function(model,index,modelpath){
 //            $scope.innerWindowType = true;
+             $scope.temporalSearchCriteria = new String();
+              $scope.temporalPredicats = new Array();
             //var parts = model.split(".");  
              var status = $scope.buildFilter(model);
             if(status==false){
@@ -5956,17 +5960,26 @@ $scope.gererChangementFichier3 = function(event,model){
                              bodyID = "modalbody1";
                          }else if(endIndex==4){
                              bodyID = "modalbody2";
-                         }
+                         }//end if(endIndex==1){
                          viewElem.setAttribute('id' , bodyID);
                          var searchElem = document.createElement("div");
-                         searchElem.innerHTML = "<nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-12 col-md-12  container-heading-panel'> </div> <div class='col-sm-12 col-md-12  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='listfiltercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn  pull-left' style='display: inline-block;width: 100%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 97%;'> <button type='button' class='btn btn-search btn-sm btn-default'  ng-click='listsearchAction("+angular.toJson(model)+")'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{temporalPagination.currentPage}}-{{temporalPagination.endIndex}} / {{temporalPagination.totalPages}} </span> <button type='button'  class='btn btn-default btn-sm' ng-click='temporalPagination.previous_2()'  ng-disabled='!temporalPagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='temporalPagination.next_2()' ng-disabled='!temporalPagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> </div> </div> </nav>";
+                         searchElem.innerHTML = "<nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-12 col-md-12  container-heading-panel'> </div> <div class='col-sm-12 col-md-12  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='listfiltercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'><span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtermtmtbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>Filtres</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterMtmActionsId'> <li> <a href='#'> <!-- <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> --> <span> <input type='text' style='border: none;'> <input type='checkbox' name='name' ng-model='checkbox01'> </span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='temporalSearchCriteria' class='form-control input-sm' style='width: 97%;'> <button type='button' class='btn btn-search btn-sm btn-default'  ng-click=listsearchAction('"+model+"')> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{temporalPagination.currentPage}}-{{temporalPagination.endIndex}} / {{temporalPagination.totalPages}} </span> <button type='button'  class='btn btn-default btn-sm' ng-click='temporalPagination.previous_2()'  ng-disabled='!temporalPagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='temporalPagination.next_2()' ng-disabled='!temporalPagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> </div> </div> </nav>";
                          viewElem.appendChild(searchElem);
                          //Construction de la partie recherche
                          var editPanel =  $scope.listPanelDialogComponent(metaData,index);
                          var bodyElem = document.createElement('div');
                          bodyElem.setAttribute('style','overflow: auto;margin-top: -20px;');
                          bodyElem.appendChild(editPanel);
-                         viewElem.appendChild(bodyElem);           
+                         viewElem.appendChild(bodyElem);  
+                         var filter = $scope.filterOptionsComponent(metaData,"filterMtmActionsId");                         
+                         //Insertion de la zone de filter
+                         var items = angular.element(searchElem).find('ul');
+                         for(var i=0; i<items.length;i++){               
+                             if(items.eq(i).attr("id")=="filterMtmActionsId"){
+                                   items.eq(i).replaceWith(filter);                                  
+                             } //end if(items.eq(i).attr("id")=="filterMtmActionsId"){
+                         }//end for(var i=0; i<items.length;i++){      
+                         
                          //Construction du footer
                          var footerDiv = document.createElement('div');
                          footerDiv.setAttribute('class' , 'modal-footer');
@@ -6023,9 +6036,7 @@ $scope.gererChangementFichier3 = function(event,model){
                              } else if(items.eq(i).attr("id")==footerID){
                                  items.eq(i).replaceWith(footerDiv);
                              }//end if(items.eq(i).attr("id")=="modalbody")
-                         }//end for(var i=0; i<items.length;i++) 
-
-
+                         }//end for(var i=0; i<items.length;i++)
                          items = $(document).find("h4");
                          for(var i=0; i<items.length;i++){               
                              if(items.eq(i).attr("id")==titleID){
@@ -7930,14 +7941,30 @@ $scope.gererChangementFichier3 = function(event,model){
 //                } 
           };
 
-          $scope.searchCriteriaBuilder = function(){
-            $scope.searchCriteria = new String();
-            for(var i=0; i<$scope.predicats.length;i++){
-                if($scope.predicats[i].value){
-                  var oredicat = $scope.predicats[i].fieldName+" "+$scope.predicats[i].type+" "+$scope.predicats[i].value;
-                   $scope.searchCriteria = $scope.searchCriteria+" "+oredicat+" ;"
+/**
+ * 
+ * @param {type} elementID
+ * @returns {undefined}
+ */
+          $scope.searchCriteriaBuilder = function(elementID){
+              console.log("$scope.searchCriteriaBuilder = function(elementID) ================== "+$scope.temporalPredicats.length+" === "+elementID);
+              if(!angular.isDefined(elementID)){
+                $scope.searchCriteria = new String();
+                for(var i=0; i<$scope.predicats.length;i++){
+                    if($scope.predicats[i].value){
+                      var oredicat = $scope.predicats[i].fieldName+" "+$scope.predicats[i].type+" "+$scope.predicats[i].value;
+                       $scope.searchCriteria = $scope.searchCriteria+" "+oredicat+" ;"
+                    }
                 }
-            }
+              }else {
+                  $scope.temporalSearchCriteria = new String();                  
+                for(var i=0; i<$scope.temporalPredicats.length;i++){
+                    if($scope.temporalPredicats[i].value){
+                      var oredicat = $scope.temporalPredicats[i].fieldName+" "+$scope.temporalPredicats[i].type+" "+$scope.temporalPredicats[i].value;
+                       $scope.temporalSearchCriteria = $scope.temporalSearchCriteria+" "+oredicat+" ;"
+                    }
+                }
+              }//end if(!angular.isDefined(elementID))
           };
 
          /**
@@ -8108,6 +8135,12 @@ $scope.gererChangementFichier3 = function(event,model){
            //Cas des canaux
            $("#followermenuid").replaceWith(ulElem);
          };
+         /**
+          * 
+          * @param {type} type
+          * @param {type} id
+          * @returns {undefined}
+          */
          $scope.deletefollower = function(type , id){
              if(type=='abonnes'){
                  $scope.dataCache['follower'].abonnes.splice(id ,1);
@@ -8174,45 +8207,24 @@ $scope.gererChangementFichier3 = function(event,model){
          */
          $scope.listsearchAction = function(model){
              var metaData = $scope.getCurrentMetaData(model);  
-//             console.log("$scope.listsearchAction = "+angular.toJson(metaData.searchfields));
-             if(metaData){
+//             console.log("$scope.listsearchAction LEVEL 1 = "+angular.toJson(metaData.searchfields)+" ==================== "+model);
+             if(metaData){                           
                      var part = model.split(".");
-                     var predicat = new Object();
-                     predicat['fieldName'] = 'designation';
-                     if(metaData.searchfields&&metaData.searchfields.length>0){
-                         predicat['fieldName'] = metaData.searchfields[0];
-                     }//end if(metaData.searchfields&&metaData.searchfields.length>0)
-                     predicat['fieldLabel'] = "null";
-                     predicat['fieldValue'] = $scope.searchCriteria; 
-                     predicat['type'] = 'EQUAL';
-                     predicat['searchfields'] = new Array();                     
-                     var predicats = new Array();
-                     predicats.push(predicat);
-                     $http.defaults.headers.common['predicats']= angular.toJson(predicats);
+                     $http.defaults.headers.common['predicats']= angular.toJson($scope.temporalPredicats);                     
                      $scope.temporalPagination.currentPage=1;
-                     $scope.temporalPagination.beginIndex=0;
+                     $scope.temporalPagination.module = metaData.moduleName;
+                     $scope.temporalPagination.model = metaData.entityName;
                      var url = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(metaData.moduleName)+"/"+angular.lowercase(metaData.entityName)+"/count";
-                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+//                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                      $http.get(url)
                              .then(function(response){
-                                 var result = response.data.value;
-//                                 console.log("Vous avez cliquez sur ..."+model+" ==== "+$scope.searchCriteria+" === "+result);
-                                 if(result<=0){
-                                     $scope.dataCache[metaData.entityName] = new Array();
-                                     commonsTools.hideDialogLoading();
-                                 }
-                                 if(result<$scope.temporalPagination.totalPages){
-                                     $scope.temporalPagination.endIndex=result;
-                                 }
-                                 var url2 = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(metaData.moduleName)+"/"+angular.lowercase(metaData.entityName)+"/filter/0/"+$scope.temporalPagination.pageSize;
-                                 $http.get(url2)
-                                         .then(function(response){
-                                             $scope.dataCache[metaData.entityName] = response.data;
-                                             commonsTools.hideDialogLoading();
-                                         },function(error){
-                                               commonsTools.hideDialogLoading();
-                                               commonsTools.showMessageDialog(error);
-                                         });
+                                 var itemscount = response.data.value;
+                                 $scope.temporalPagination.totalPages = response.data.value;
+                                 $scope.temporalPagination.endIndex = $scope.temporalPagination.pageSize;
+                                 if(itemscount<$scope.temporalPagination.pageSize){
+                                    $scope.temporalPagination.endIndex = itemscount;
+                                 }//end if(itemscount<$scope.temporalPagination.pageSize){
+                                 $scope.getData2("dataCache."+metaData.entityName,metaData.entityName,metaData.moduleName);//                              
                              },function(error){
                                 commonsTools.hideDialogLoading();
                                 commonsTools.showMessageDialog(error);
@@ -9393,38 +9405,52 @@ $scope.gererChangementFichier3 = function(event,model){
          };
       
          /**
-             Fonction de construction du filtre de recherche
-         **/
-         $scope.filterOptionsComponent = function(metaData){
+          * Fonction de construction du filtre de recherche
+          * @param {type} metaData
+          * @param {type} elementID: porte de l'element
+          * @returns {unresolved}
+          */
+         $scope.filterOptionsComponent = function(metaData,elementID){
                if($scope.currentAction&&angular.isString($scope.currentAction)){
                    $scope.currentAction = angular.fromJson($scope.currentAction);
-               }
-               $scope.desablecreate = metaData.desablecreate || !$scope.canCreate();
-               $scope.desableupdate = !$scope.canUpdate();
-               $scope.desabledelete = !$scope.canDelete();
-               $scope.desableprint = !$scope.canPrint();
-//               console.log("$scope.filterOptionsComponent  desablecreate = "+angular.toJson($scope.metaData));
-               //Initialisation de la lisif(!$scope.predicats){
-               var ulElem = document.createElement('ul');
+               }//end if($scope.currentAction&&angular.isString($scope.currentAction)){
+                var ulElem = document.createElement('ul');
                ulElem.setAttribute('class','dropdown-menu');
                ulElem.setAttribute('role' , 'menu');
                ulElem.setAttribute('aria-labelledby' , 'filterbtn');
-               ulElem.setAttribute('id' , 'filterActionsId');
                ulElem.setAttribute('ng-repeat' , ' obj in metaData');
-               
+               if(!angular.isDefined(elementID)){
+                    $scope.desablecreate = metaData.desablecreate || !$scope.canCreate();
+                    $scope.desableupdate = !$scope.canUpdate();
+                    $scope.desabledelete = !$scope.canDelete();
+                    $scope.desableprint = !$scope.canPrint();
+                    ulElem.setAttribute('id' , 'filterActionsId');               
+                }else {
+                    ulElem.setAttribute('id' , elementID);                   
+                }//end if(!angular.isDefined(porte)){
+//               console.log("$scope.filterOptionsComponent  desablecreate = "+angular.toJson($scope.metaData));
+               //Initialisation de la lisif(!$scope.predicats){
+              
                 var j = 0 ;
                for(var i=0 ; i< metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search)
-                        &&(metaData.columns[i].search==true)){
-                  
+                        &&(metaData.columns[i].search==true)){                  
                      var predicat = new Object();
                      predicat['fieldName'] = metaData.columns[i].fieldName;
                      predicat['fieldLabel'] = metaData.columns[i].fieldLabel;
-                     predicat['value'] = angular.isDefined($scope.predicats[j]) ? $scope.predicats[j].value : null; 
+                     if(!angular.isDefined(elementID)){
+                         predicat['value'] = angular.isDefined($scope.predicats[j]) ? $scope.predicats[j].value : null; 
+                     }else{
+                        predicat['value'] = angular.isDefined($scope.temporalPredicats[j]) ? $scope.temporalPredicats[j].value : null;  
+                     }//end if(!angular.isDefined(elementID)){
                      predicat['type'] = 'EQUAL';
                      predicat['target'] = 'string';
                      predicat['searchfields'] = metaData.columns[i].searchfields;
-                     $scope.predicats[j] = predicat;
+                     if(!angular.isDefined(elementID)){
+                          $scope.predicats[j] = predicat;
+                     }else{
+                         $scope.temporalPredicats[j] =predicat;
+                     }//end if(!angular.isDefined(elementID)){                    
                      //if($scope.predicats)
                      var liElem = document.createElement('li');
                      liElem.setAttribute('role' , 'presentation');
@@ -9478,11 +9504,15 @@ $scope.gererChangementFichier3 = function(event,model){
                              }else if(metaData.columns[i].type!='object'){
                                  predicat['target'] = 'object';
                                  inputElem.setAttribute('type' , 'text');                                 
-                             }
-
-                            inputElem.setAttribute('ng-model' , 'predicats['+j+'].value');
-                            inputElem.setAttribute('ng-change' , 'searchCriteriaBuilder()');
-                            inputElem.setAttribute('placeholder' , metaData.columns[i].fieldLabel);
+                             }//end if(metaData.columns[i].type=='string'){  
+                             if(!angular.isDefined(elementID)){
+                                  inputElem.setAttribute('ng-change' , "searchCriteriaBuilder()");
+                                  inputElem.setAttribute('ng-model', 'predicats['+j+'].value'); 
+                             }else{
+                                  inputElem.setAttribute('ng-change' , "searchCriteriaBuilder('"+elementID+"')");
+                                  inputElem.setAttribute('ng-model', 'temporalPredicats['+j+'].value');
+                             }//end if(!angular.isDefined(elementID)){
+                           inputElem.setAttribute('placeholder' , metaData.columns[i].fieldLabel);
                          }
                              j++;
                       
