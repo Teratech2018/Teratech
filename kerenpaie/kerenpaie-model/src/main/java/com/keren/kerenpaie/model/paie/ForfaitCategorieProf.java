@@ -103,6 +103,12 @@ public class ForfaitCategorieProf extends BaseElement implements Serializable, C
 		this.mesure = forfait.mesure;
 	}
 	
+	public ForfaitCategorieProf(Fonction forfait) {
+		this.categorie = forfait;
+		this.valeur =new Double(0);
+		this.mesure = "0";
+	}
+	
 	
 
 	public Fonction getCategorie() {

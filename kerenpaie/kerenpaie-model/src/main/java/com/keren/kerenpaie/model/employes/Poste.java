@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.keren.kerenpaie.model.structures.Departement;
 import com.megatim.common.annotations.Predicate;
 
 /**

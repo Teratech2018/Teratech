@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.keren.kerenpaie.model.employes.Employe;
+import com.keren.kerenpaie.model.employes.Poste;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -42,9 +42,9 @@ public class Departement extends BaseElement implements Serializable, Comparable
 	private Departement parent ;
 	
 	@ManyToOne
-	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Responsable",type=Employe.class,target="many-to-one",search=true)
-	private Employe responsable ;
+	@JoinColumn(name="POSTE_ID")
+	@Predicate(label="Responsable",type=Poste.class,target="many-to-one",search=true)
+	private Poste poste ;
 	
 	@Predicate(label="Type",search=true,target="combobox",values="Antenne;Direction;Sous-direction;Services;Bureau")
 	private String type ="0";
@@ -74,8 +74,8 @@ public class Departement extends BaseElement implements Serializable, Comparable
 		this.code = dep.code;
 		this.nom = dep.nom;
 		this.actif = dep.actif;
-		if(dep.responsable!=null){
-			this.responsable = new Employe(dep.responsable);
+		if(dep.poste!=null){
+			this.poste = new Poste(dep.poste);
 		}
 		if(dep.parent!=null){
 			this.parent = new Departement(dep.parent);
@@ -99,12 +99,14 @@ public class Departement extends BaseElement implements Serializable, Comparable
 		this.nom = nom;
 	}
 
-	public Employe getResponsable() {
-		return responsable;
+	
+
+	public Poste getPoste() {
+		return poste;
 	}
 
-	public void setResponsable(Employe responsable) {
-		this.responsable = responsable;
+	public void setPoste(Poste poste) {
+		this.poste = poste;
 	}
 
 	public Departement getParent() {

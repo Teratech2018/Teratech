@@ -178,4 +178,11 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 		return rubrique.compareTo(o.rubrique);
 	}
 
+    @Override
+    public String toString() {
+        return "LigneBulletinPaie{" + "rubrique=" + rubrique + ", valeur=" + valeur + ", tauxsal=" + tauxsal + ", tauxpat=" + tauxpat + '}';
+    }
+        
+        
+
 }

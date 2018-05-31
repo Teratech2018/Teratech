@@ -17,25 +17,24 @@ and open the template in the editor.
         </div>
         <div id="navbar" class="navbar-collapse collapse ">
           <ul class="nav navbar-nav navbar-left left-menu-bar"> 
-               <li>
-                 <a href="#" ng-click="discussionModule()">{{'Discussions' | translate}}</a> 
+               <li   ng-class="{'active':'discussion'==moduleValue}">
+                 <a href="#" ng-click="discussionModule()"  data-toggle="tooltip" data-placement="bottom" title="{{'DISCUSION_DESC' | translate}}">{{'Discussions' | translate}}</a> 
               </li>   
-              <li>
-                 <a href="#"  ng-click="calendrierModule()">{{'Calendrier' | translate}}</a> 
+              <li   ng-class="{'active':'calendar'==moduleValue}">
+                 <a href="#"  ng-click="calendrierModule()"  data-toggle="tooltip" data-placement="bottom" title="{{'CALENDAR_DESC' | translate}}">{{'Calendrier' | translate}}</a> 
               </li>   
           </ul>
           <ul class="nav navbar-nav "  ng-repeat=" module in modules">
-            <li><a href="#"  ng-click="getModule(module)">{{module.label}}</a></li>
-            <!-- <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li> -->
+              <li ng-class="{'active':module.name==currentModule.name}">
+                  <a  href="#"  ng-click="getModule(module)"   data-toggle="tooltip" data-placement="bottom" title="{{module.shortDescription | translate}}" >{{module.label}}</a>
+              </li>           
           </ul>
           <ul class="nav navbar-nav navbar-left left-menu-bar"> 
-              <li ng-hide="hideApplicationModule()">
-                 <a href="#"  ng-click="applicationModule()">Applications</a> 
+              <li ng-hide="hideApplicationModule()" ng-class="{'active':'application'==currentModule.name}">
+                 <a href="#"  ng-click="applicationModule()"  data-toggle="tooltip" data-placement="bottom" title="{{'APPLI_DESC' | translate}}">Applications</a> 
               </li>   
-              <li ng-hide="hideConfiguration()">
-                 <a href="#"  ng-click="configurationModuleAction()">Configuration</a> 
+              <li ng-hide="hideConfiguration()"  ng-class="{'active':'configuration'==currentModule.name}">
+                 <a href="#"  ng-click="configurationModuleAction()"  data-toggle="tooltip" data-placement="bottom" title="{{'CONFIG_DESC' | translate}}">Configuration</a> 
               </li>   
           </ul>
           

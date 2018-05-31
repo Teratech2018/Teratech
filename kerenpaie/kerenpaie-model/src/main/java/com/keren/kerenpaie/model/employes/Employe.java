@@ -47,27 +47,26 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	 */
 	private static final long serialVersionUID = 341452139435806032L;
 
-	@Predicate(label="Photo",target="image")
+	@Predicate(label="Photo",target="image", sequence=1)
 	private String image;
-	
-	@Predicate(label="Handicapé(e)?",type=Boolean.class)
-	private Boolean handicape = Boolean.FALSE;	
-	
-	
-	@Predicate(label="Nom" ,search=true,optional=false,nullable=false)
+		
+	@Predicate(label="Nom" ,search=true,optional=false,nullable=false, sequence=3)
 	private String nom ;
 	
-	@Predicate(label="Matricule",search=true,optional=false,nullable=false,unique=true)
+	@Predicate(label="Matricule",search=true,optional=false,nullable=false,unique=true, sequence=5)
     private String matricule ;    
     
-	@Predicate(label="Genre",target="combobox",values="Masculin;Feminin")
+	@Predicate(label="Genre",target="combobox",values="Masculin;Feminin" , sequence=4)
     private String genre ="0";
 	
-	@Predicate(label="Statut",type=String.class,target="combobox",values="Agent local;Agent public")
+	@Predicate(label="Statut",type=String.class,target="combobox",values="Agent local;Agent public" ,optional=false , sequence=6)
 	private String statut ="0";
 	
-	@Predicate(label="N. Dipe")
+	@Predicate(label="N. Dipe" , sequence=7)
 	private String dipe;
+	@Predicate(label="Handicapé(e)?",type=Boolean.class, sequence=8)
+	private Boolean handicape = Boolean.FALSE;	
+	
 	
 	@Predicate(label="N. d'assurance social",group=true,groupName="group1",groupLabel="Informations Personelles")
 	private String numsec ;
@@ -859,7 +858,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "EMPLOYES";
+		return "Liste Des Employés";
 	}
 
 	@Override

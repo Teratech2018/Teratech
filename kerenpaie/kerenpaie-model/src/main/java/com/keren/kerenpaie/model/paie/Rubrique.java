@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.keren.kerenpaie.model.comptabilite.Compte;
 import com.keren.kerenpaie.model.structures.Societe;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -45,7 +46,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true)
 	private String type ="0";
 	
-	@Predicate(label="Nature de rubrique",target="combobox",values="Salaire;Prime;Indemnité;Charge sociale;Charge fiscale;Charge parafiscale;Autre retenue",search=true)
+	@Predicate(label="Nature de rubrique",target="combobox",values="Salaire;Prime;Indemnité;Charge sociale;Charge fiscale;Charge parafiscale;Autre retenue",search=true,observable=true)
 	private String nature ="0";	
 
 	@Predicate(label="Impression sur le bulletin",target="combobox",values="Jamais;Toujours;si non nul")
@@ -59,62 +60,68 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 //	@Predicate(label="Compte",type=Compte.class,target="many-to-one",search=true)
 //	private Compte compte ;
 	
-	@Predicate(label="Taux salarial(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul")
+	@Predicate(label="Taux salarial(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=1)
 	private Double tauxsal =0.0;
 	
+	@Predicate(label="Taux patronal(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=3)
+	private Double tauxpat=0.0;
 
-	@Predicate(label="Base",target="textarea",group=true,groupName="group1",groupLabel="Elements de calcul",search=true,hidden="currentObject.mode!='3'")
+	@Predicate(label="Base",group=true,groupName="group1",groupLabel="Elements de calcul",search=true, sequence=7)
 	private String formule;	
 	
-	@Predicate(label="Taux patronal(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul")
-	private Double tauxpat=0.0;
+	@Predicate(label="Taux plafond avantage (%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=5)
+	private Double tauxplaf=0.0;
 	
-	@Predicate(label="Participe au acompte de salaire?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Participe au acompte de salaire?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=4)
 	private Boolean acomptesal = Boolean.FALSE;
 	
-	@Predicate(label="Participe au salaire brut?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Participe au salaire brut?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=9)
 	private Boolean brutsal = Boolean.FALSE;
 	
-	@Predicate(label="Participe au salaire des congés?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Participe au salaire des congés?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=6)
 	private Boolean congesal = Boolean.FALSE;
 	
-	@Predicate(label="Participe à la base cotisable?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Participe à la base cotisable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=2)
 	private Boolean cotisablesal = Boolean.FALSE;
 	
-	@Predicate(label="Rubrique Proraté?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Rubrique Proraté?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
 	private Boolean proratesal = Boolean.FALSE;
 	
-	@Predicate(label="Participe à la base Taxable?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Participe à la base Taxable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=11)
 	private Boolean basetaxablesal = Boolean.FALSE;
 	
-	@Predicate(label="Participe à la base exceptionnelle?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Participe à la base exceptionnelle?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=10)
 	private Boolean baseexcepsal = Boolean.FALSE;
 	
-	@Predicate(label="Taux taxable(%)",type=Double.class,group=true,groupName="group2",groupLabel="Prise en compte",search=true ,hidden="currentObject.basetaxablesal==false")
+	@Predicate(label="Taux taxable(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul",search=true ,hidden="currentObject.basetaxablesal==false", sequence=13)
 	private Double tauxtax = 0.0;
 	
-	@Predicate(label="Participe au rappel de salaire?",type=Boolean.class,group=true,groupName="group2",groupLabel="Prise en compte")
+	@Predicate(label="Participe au rappel de salaire?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=12)
 	private Boolean rappelsal = Boolean.FALSE;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="RUBR_ID")
-	@Predicate(label="RU",type=ForfaitCategorieProf.class,target="one-to-many",group=true,groupName="group3",groupLabel="Définition des forfaits",hidden="currentObject.mode!='0'")
+	@Predicate(label="RU",type=ForfaitCategorieProf.class,target="one-to-many",group=true,groupName="group3",groupLabel="Définition des forfaits",
+	hidden="currentObject.mode!='0'", sequence=13,edittable=true)
+	@Observer(observable="mode",source="method:generatecategorieprof",parameters="mode")
 	private List<ForfaitCategorieProf> forfaitscatprof = new ArrayList<ForfaitCategorieProf>();
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="RUBR_ID")
-	@Predicate(label="RU",type=ForfaitCategorie.class,target="one-to-many",group=true,groupName="group3",groupLabel="Définition des forfaits",hidden="currentObject.mode!='1'")
+	@Predicate(label="RU",type=ForfaitCategorie.class,target="one-to-many",group=true,groupName="group3",groupLabel="Définition des forfaits",
+	hidden="currentObject.mode!='1'", sequence=14,edittable=true)
+	@Observer(observable="mode",source="method:generatecategorie",parameters="mode")
 	private List<ForfaitCategorie> forfaitscat = new ArrayList<ForfaitCategorie>();
 	
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="RUBR_ID")
-	@Predicate(label="RU",type=ForfaitSpecialite.class,target="one-to-many",group=true,groupName="group3",groupLabel="Définition des forfaits",hidden="currentObject.mode!='2'")
+	@Predicate(label="RU",type=ForfaitSpecialite.class,target="one-to-many",group=true,groupName="group3",groupLabel="Définition des forfaits",hidden="currentObject.mode!='2'", sequence=15)
 	private List<ForfaitSpecialite> forfaitsspe = new ArrayList<ForfaitSpecialite>();
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="RUBR_ID")
-	@Predicate(label="RU",type=CompteRubrique.class,target="one-to-many",group=true,groupName="group4",groupLabel="Informations Comptable",edittable=true)
+	@Predicate(label="RU",type=CompteRubrique.class,target="one-to-many",group=true,groupName="group4",groupLabel="Informations Comptable",edittable=true, sequence=16)
 	private List<CompteRubrique> comptes = new ArrayList<CompteRubrique>();
 	
 	
@@ -190,6 +197,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.formule = rubrique.formule;
 		this.tauxtax = rubrique.tauxtax;
 		this.tauxsal = rubrique.tauxsal;
+		this.tauxplaf=rubrique.tauxplaf;
 		this.tauxpat = rubrique.tauxpat;
 		this.acomptesal = rubrique.acomptesal;
 		this.brutsal = rubrique.brutsal;
@@ -384,6 +392,14 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 
 	public Boolean getBasetaxablesal() {
 		return basetaxablesal;
+	}
+
+	public Double getTauxplaf() {
+		return tauxplaf;
+	}
+
+	public void setTauxplaf(Double tauxplaf) {
+		this.tauxplaf = tauxplaf;
 	}
 
 	public void setBasetaxablesal(Boolean basetaxablesal) {

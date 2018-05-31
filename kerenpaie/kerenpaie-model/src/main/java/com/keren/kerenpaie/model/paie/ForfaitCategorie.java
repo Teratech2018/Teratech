@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.keren.kerenpaie.model.employes.Categorie;
+import com.keren.kerenpaie.model.employes.Fonction;
 import com.keren.kerenpaie.model.structures.Departement;
 import com.keren.kerenpaie.model.structures.Societe;
 import com.megatim.common.annotations.Predicate;
@@ -91,6 +92,12 @@ public class ForfaitCategorie extends BaseElement implements Serializable, Compa
 //		this.societe = forfait.societe;
 		this.valeur = forfait.valeur;
 		this.mesure = forfait.mesure;
+	}
+	
+	public ForfaitCategorie(Categorie forfait) {
+		this.categorie = forfait;
+		this.valeur = new Double(0);
+		this.mesure = "0";
 	}
 	
 	

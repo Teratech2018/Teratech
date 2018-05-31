@@ -67,7 +67,13 @@ angular.module("mainApp").config(['$translateProvider',
             CALENDARVIEW:'Calendar Views',
             DASHBORDVIEW:'Dashboards',
             Editique:'Editique',
-            TERME:'Translated terms'
+            TERME:'Translated terms',
+            EXPORTBD:'Export schema',
+            DBSAVE:'Backup Data', 
+            CALENDAR_DESC:'Event Management',
+            APPLI_DESC:'Application Management',
+            CONFIG_DESC:'Platform Administration',
+            DISCUSION_DESC:'Collaborative platform'
         });
         $translateProvider.translations('fr',{
             PJ:'Pièce(s) Jointe(s)',
@@ -91,8 +97,13 @@ angular.module("mainApp").config(['$translateProvider',
             LISTVIEW:'Vues Liste',
             CALENDARVIEW:'Vues Calendaires',
             DASHBORDVIEW:'Tableaux de bord',
-            TERME:'Termes traduits'
-            
+            TERME:'Termes traduits',
+            EXPORTBD:'Exporter le schema',
+            DBSAVE:'Sauvegarde Données' ,
+            CALENDAR_DESC:'Gestion des événements',
+            APPLI_DESC:'Gestion des Applications',
+            CONFIG_DESC:'Administration de la plateforme',
+            DISCUSION_DESC:'Plateforme collaborative'
         });
         $translateProvider.preferredLanguage('fr');
     }]);
@@ -168,6 +179,11 @@ angular.module("mainApp")
                           {id:-6,name:"calendarview" , label:"CALENDARVIEW",icon:"glyphicon glyphicon-align-justify",entityName:"CalendarRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
                           {id:-7,name:"dashboardview" , label:"DASHBORDVIEW",icon:"glyphicon glyphicon-align-justify",entityName:"DashboardRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
                           {id:-8,name:"reportview" , label:"Editique",icon:"glyphicon glyphicon-align-justify",entityName:"ReportRecord",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}
+                       ]},
+                       {id:-5 , name:"sauvegarde_conf",label:"DBSAVE",icon:"glyphicon glyphicon-hdd",showmenu:true,
+                           actions:[
+                              {id:-100,name:"progra_save" , label:"Configuration",icon:"glyphicon glyphicon-time",entityName:"Canal",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                              {id:-2,name:"export_bd" , label:"EXPORTBD",icon:"glyphicon glyphicon-save-file",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}                          
                        ]}
                  ]
 
@@ -315,6 +331,26 @@ angular.module("mainApp")
              
     	}//end if(angular.isDefined(module))
     };
+    /**
+     * 
+     * @param {type} module
+     * @returns {String}
+     */
+    $scope.getModuleClass = function(module){
+        console.log("$scope.getModuleClass = function(module) ========= "+module+" ===== "+$scope.currentModule.name+" test==");
+        if($scope.currentModule.name==module.name){
+            return "activemodule";
+        }
+        return "";
+    };
+    
+    $scope.getMenuClass = function(module){
+        console.log("$scope.getMenuClass = function(module) ========= "+module+" ===== "+$scope.currentAction.name+" test==");
+        if($scope.currentAction.name==module.name){
+            return "activemenu";
+        }
+        return "";
+    };
     /**  
        Fonction de traitement de l'action
        courant()
@@ -417,8 +453,7 @@ angular.module("mainApp")
     /**
       Module des Discussion
     **/
-    $scope.discussionModule = function(){
-         
+    $scope.discussionModule = function(){         
         //Hide the calendar panel
         $scope.showCalendar = false ;
         //Hide the discussion
@@ -2800,20 +2835,31 @@ $scope.gererChangementFichier3 = function(event,model){
 //                    datas[part[part.length-1]] = $filter('orderBy')( datas[part[part.length-1]],fieldname,false);
 //             }//end if($scope.currentSort.reverse==true)
         };
+        /**
+         * 
+         * @param {type} model
+         * @param {type} labelText
+         * @param {type} entityName
+         * @param {type} metaData
+         * @param {type} field
+         * @param {type} index
+         * @param {type} modelpath
+         * @returns {unresolved}
+         */
         $scope.oneToManyComponentEditable = function(model , labelText , entityName ,metaData,field,index,modelpath){
               
 //             $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);
 //              console.log("$scope.oneToManyComponent = === "+model+"==="+labelText+" == "+"=== "+entityName+" == "+index); 
              $scope.dataCache[modelpath+"_field"] = field;
-             var divElem = document.createElement('div');
-             divElem.setAttribute('class' , 'table-responsive');
+//             var divElem = document.createElement('div');
+//             divElem.setAttribute('class' , 'table-responsive');
              //Ajout d'un champs input de type hidden pour stocker le model
              var inputHidden = document.createElement('input');
              ///inputHidden.setAttribute('type' , 'hidden')
              //inputHidden.setAttribute('id',)
              var tableElem = document.createElement('table');
              tableElem.setAttribute('class','table table-sm table-striped table-bordered table-hover table-condensed');
-             divElem.appendChild(tableElem);
+//             divElem.appendChild(tableElem);
              var theadElem = document.createElement('thead');
              tableElem.appendChild(theadElem);
              var trElem = document.createElement('tr');
@@ -2868,36 +2914,18 @@ $scope.gererChangementFichier3 = function(event,model){
                     tdElem.appendChild(aElem);
                     aElem.setAttribute('href' , '#');
                     //Diseable si ajout impossible               
-                   aElem.setAttribute('disabled' , 'disabled');
-//                   aElem.setAttribute('data-toggle' , "modal");
-//                   if(nextIndex==1){
-//                       aElem.setAttribute('data-target', '#myModal');   
-//                   }else if( nextIndex==2){
-//                       aElem.setAttribute('data-target', '#globalModal');
-//                   }else if( nextIndex==3){
-//                       aElem.setAttribute('data-target', '#myModal1');
-//                   }else if( nextIndex==4){
-//                       aElem.setAttribute('data-target', '#myModal2');
-//                   }//end if(index==1)           
-                   aElem.setAttribute('ng-click' , "addnewLine('"+model+"')");                      
-                   aElem.appendChild(document.createTextNode("Ajouter un element"));
-                   if($scope.windowType=="view"){
+                    aElem.setAttribute('disabled' , 'disabled');
+                    aElem.setAttribute('ng-click' , "addnewLine('"+model+"')");                      
+                    aElem.appendChild(document.createTextNode("Ajouter un element"));
+                    if($scope.windowType=="view"){
                        aElem.setAttribute('disabled' , 'disabled');                  
-                   }//end if($scope.windowType=="view"){            
+                    }//end if($scope.windowType=="view"){            
                }//end if(metaData.createonfield==true)               
              //Construction du corps du tableau
              trElem = document.createElement('tr');
              trElem.setAttribute('style' ,"cursor: pointer;");
              tbodyElem.appendChild(trElem);
              trElem.setAttribute('ng-repeat' , 'item in '+model);
-//             trElem.setAttribute('ng-show','editRow(item)');
-//             trElem.setAttribute('ng-include','getTemplate(item)');
-//               var includeelem = document.createElement("ng-include");
-//               includeelem.setAttribute("src","display");
-//               trElem.appendChild(includeelem);
-             //alert(metaData.columns.length);     
-//             trElem.appendChild($scope.displayTemplate(metaData,model,modelpath));
-//             trElem.appendChild($scope.editTemplate(metaData,model,modelpath));
              var key = commonsTools.keygenerator(modelpath);
              $scope.dataCache["row"+key] = null;
              $scope.displayTemplate(metaData,model,modelpath,trElem,"row"+key,index);
@@ -2942,10 +2970,10 @@ $scope.gererChangementFichier3 = function(event,model){
             }//end if(field.customfooter)
            
             if(field.hide){
-               divElem.setAttribute('ng-hide',true);
+               tableElem.setAttribute('ng-hide',true);
             }//end if(field.hide)
             if(field.hidden!=null&&field.hidden.length>0){
-                   divElem.setAttribute('ng-hide',field.hidden);
+                   tableElem.setAttribute('ng-hide',field.hidden);
             }//end if(field.hidden!=null&&field.hidden.length==0)
             //Traitement des observable
             if(field.observable==true){
@@ -2969,7 +2997,7 @@ $scope.gererChangementFichier3 = function(event,model){
 //             divElem0.appendChild(divElem);
 //             console.log(divElem0.innerHTML);
              
-             return divElem;
+             return tableElem;
         };
         
         /**
@@ -2988,6 +3016,7 @@ $scope.gererChangementFichier3 = function(event,model){
         };
         /**
          * 
+         * @param {type} model
          * @returns {undefined}
          */
         $scope.addnewLine = function(model){
@@ -3003,6 +3032,12 @@ $scope.gererChangementFichier3 = function(event,model){
         /**
          * 
          * @param {type} item
+         * @param {type} fieldname
+         * @param {type} key
+         * @param {type} model
+         * @param {type} modelpath
+         * @param {type} index
+         * @param {type} col
          * @returns {undefined}
          */
         $scope.getTemplate = function(item,fieldname,key,model,modelpath,index,col){
@@ -3014,7 +3049,7 @@ $scope.gererChangementFichier3 = function(event,model){
             if(oldItem!=null){
                 oldId = "td"+Math.abs(oldItem.id)+"_"+oldfieldname;
             }//end if(oldItem!=null)
-            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
+//            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
@@ -5692,13 +5727,37 @@ $scope.gererChangementFichier3 = function(event,model){
             });
         };
         
-        
-        /**
+          /**
           * 
-          * @param {type} metaData
-          * @returns {Element}
+          * @param {type} model
+          * @param {type} fieldname
+          * @returns {undefined}
           */
-          $scope.listPanelDialogComponent = function(metaData){
+          $scope.manyToManyListSorter = function(entityName , fieldname){
+//            console.log("$scope.tableSorter = function(model , fieldname) ============ model : "+model+" ========= champs : "+fieldname);
+             var datas = $scope.dataCache;
+             if($scope.currentSort.column==fieldname){
+                 $scope.currentSort.reverse = !$scope.currentSort.reverse;
+             }else{
+                 $scope.currentSort.column = fieldname;
+                 $scope.currentSort.reverse = false;
+             }//end if($scope.currentSort.column==fieldname)
+//             console.log("$scope.listeSorter = function(fieldname)============= column : "+$scope.currentSort.column+"  reverse : "+$scope.currentSort.reverse);
+             datas[entityName] = $filter('orderBy')(datas[entityName],fieldname,$scope.currentSort.reverse);
+//             if($scope.currentSort.reverse==true){
+//                  datas[part[part.length-1]] = $filter('orderBy')( datas[part[part.length-1]],"-"+fieldname,false);
+//             }else {
+//                    datas[part[part.length-1]] = $filter('orderBy')( datas[part[part.length-1]],fieldname,false);
+//             }//end if($scope.currentSort.reverse==true)
+        };
+        
+       /**
+        * 
+        * @param {type} metaData
+        * @param {type} index
+        * @returns {unresolved}
+        */
+          $scope.listPanelDialogComponent = function(metaData,index){
              //console.log("$scope.listPanelDialogComponent = "+fieldName)
 //             $scope.innerWindowType = true;
               $scope.dataCache.selectedObjects = new Array();
@@ -5727,7 +5786,8 @@ $scope.gererChangementFichier3 = function(event,model){
                             &&(metaData.columns[i].search==true)){
                       if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'){  
                             var thElem = document.createElement('th');
-                            thElem.innerHTML = metaData.columns[i].fieldLabel;
+                            thElem.setAttribute('ng-click' , "manyToManyListSorter('"+metaData.entityName+"','"+metaData.columns[i].fieldName+"')");
+                            thElem.innerHTML = metaData.columns[i].fieldLabel+" <span ng-show=down('"+metaData.columns[i].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.columns[i].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
                             rheadElem.appendChild(thElem);
                        }//end if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'
                   }//end if(angular.isDefined(metaData.columns[i].search)
@@ -5744,7 +5804,8 @@ $scope.gererChangementFichier3 = function(event,model){
                                  if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'
                                          &&metaData.groups[i].columns[j].type.type!='textarea'&&metaData.groups[i].columns[j].type.type!='richeditor'){   
                                     var thElem = document.createElement('th');
-                                    thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel;
+                                    thElem.setAttribute('ng-click' , "manyToManyListSorter('"+metaData.entityName+"','"+metaData.groups[i].columns[j].fieldName+"')");
+                                    thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel+" <span ng-show=down('"+metaData.groups[i].columns[j].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
                                     rheadElem.appendChild(thElem);
                                 }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i]
                             }//end if(angular.isDefined(metaData.groups[i].columns[j].search)
@@ -6052,6 +6113,8 @@ $scope.gererChangementFichier3 = function(event,model){
              
 
          };
+         
+       
          /**
           * 
           * @param {type} metaData

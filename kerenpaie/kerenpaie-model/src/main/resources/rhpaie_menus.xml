@@ -17,7 +17,7 @@
 	 <menu id="rh_paie_salaire" label="Administration de la paie" parent="rh_paie" gyphycon="glyphicon glyphicon-folder-open"/>
 	 <menuitem id="rh_paie_2_1" label="Eléments Salaires" parent_ref="rh_paie_salaire" entity_ref="ElementSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-unchecked" modal="false" />
 	 <menuitem id="rh_paie_2" label="Ouvrir une periode" parent_ref="rh_paie_salaire" entity_ref="PeriodePaieOpen" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true" />
-	 <menuitem id="rh_paie_4" label="Préparation des salaires" parent_ref="rh_paie_salaire" entity_ref="PrepaSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true" />
+	 <menuitem id="rh_paie_4" label="Préparation des salaires" parent_ref="rh_paie_salaire" entity_ref="PrepaSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true"  link="rh_paie_5_2"/>
 	 <menuitem id="rh_paie_5_1" label="Traitement des salaires" parent_ref="rh_paie_salaire" entity_ref="TraitSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true" link="rh_paie_5_2"/>
 	 <menuitem id="rh_paie_5_2" label="Salaires" parent_ref="rh_paie_salaire"  entity_ref="BulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
 	 	 

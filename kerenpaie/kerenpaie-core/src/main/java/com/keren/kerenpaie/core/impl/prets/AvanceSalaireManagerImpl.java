@@ -114,7 +114,8 @@ public class AvanceSalaireManagerImpl
 			remdao.save(rem);
 		}//end for(int i=1;i<entity.getDuree();i++){
 		//Chargement de l'entity
-		return find("id", entity.getId());
+                entity = find("id", entity.getId());
+		return new AvanceSalaire(entity);
 	}
 
 	@Override
