@@ -109,7 +109,7 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
      * @param moduleName 
      */
     public DocumentAchat(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.date = date;
         this.fornisseur = fornisseur;
@@ -124,7 +124,7 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
      * @param da 
      */
     public DocumentAchat(DocumentAchat da) {
-        super(da.id, da.designation, da.moduleName);
+        super(da.id, da.designation, da.moduleName,da.compareid);
         this.code = da.code;
         this.date = da.date;
         if(da.fornisseur!=null){

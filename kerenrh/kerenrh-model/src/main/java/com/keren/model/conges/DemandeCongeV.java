@@ -90,7 +90,7 @@ public class DemandeCongeV extends BaseElement  implements Serializable,Comparab
 	 * @param moduleName
 	 */
 	public DemandeCongeV(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state="valider";
 	}
@@ -99,7 +99,7 @@ public class DemandeCongeV extends BaseElement  implements Serializable,Comparab
 	 * @param dc
 	 */
 	public DemandeCongeV(DemandeCongeV dc) {
-		super(dc.id, dc.designation, dc.moduleName);
+		super(dc.id, dc.designation, dc.moduleName,dc.compareid);
 		this.employe = new Employe(dc.employe);
 		this.type = new TypeConge(dc.type);
 		if(dc.getDepartement()!=null){

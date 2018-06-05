@@ -74,7 +74,7 @@ public class Recrutement extends BaseElement implements Comparable<Recrutement>,
 	 * @param moduleName
 	 */
 	public Recrutement(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -94,7 +94,7 @@ public class Recrutement extends BaseElement implements Comparable<Recrutement>,
 	public Recrutement(long id, String designation, String moduleName, CandidatureSpontane candidature,
 			BesionRecrutement besion, EtapeRecrutement etape, String niveau, String note,
 			List<DetailRecrutement> details) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.candidature = candidature;
 		this.besion = besion;
 		this.etape = etape;
@@ -104,7 +104,7 @@ public class Recrutement extends BaseElement implements Comparable<Recrutement>,
 	}
 	
 	public Recrutement(Recrutement recru) {
-		super(recru.id, recru.designation, recru.moduleName);
+		super(recru.id, recru.designation, recru.moduleName,recru.compareid);
 		if(recru.candidature!=null){
 			this.candidature = new CandidatureSpontane(recru.candidature);
 		}

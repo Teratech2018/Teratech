@@ -81,7 +81,7 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 	 * @param moduleName
 	 */
 	public Bonification(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -100,7 +100,7 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 
 	public Bonification(long id, String designation, String moduleName, Employe salarie, String code,
 			Echelon categorieA, Echelon categorieN, Date denreg, Date deffet) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie = salarie;
 		this.code = code;
 		this.echelonA = categorieA;
@@ -114,7 +114,7 @@ public class Bonification extends BaseElement implements Serializable, Comparabl
 	 * @param reclassement
 	 */
 	public Bonification(Bonification reclassement) {
-		super(reclassement.id, reclassement.designation, reclassement.moduleName);
+		super(reclassement.id, reclassement.designation, reclassement.moduleName,reclassement.compareid);
 		if(reclassement.salarie!=null){
 			this.salarie = new Employe(reclassement.salarie);
 		}

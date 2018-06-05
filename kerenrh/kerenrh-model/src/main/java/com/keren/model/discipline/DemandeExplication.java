@@ -102,7 +102,7 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 	 * @param moduleName
 	 */
 	public DemandeExplication(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state ="etabli";
 	}
@@ -123,7 +123,7 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
      */
 	public DemandeExplication(long id, String designation, String moduleName, Employe auteur, String reference,
 			Employe destinataire, TypeDemande type, Date daten, Date dated, String motif) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.auteur = auteur;
 		this.reference = reference;
 		this.destinataire = destinataire;
@@ -139,7 +139,7 @@ public class DemandeExplication extends BaseElement implements Serializable, Com
 	 * @param dmde
 	 */
 	public DemandeExplication(DemandeExplication dmde) {
-		super(dmde.id, dmde.designation, dmde.moduleName);
+		super(dmde.id, dmde.designation, dmde.moduleName,dmde.compareid);
 		if(dmde.auteur!=null){
 			this.auteur = new Employe(dmde.auteur);
 		}

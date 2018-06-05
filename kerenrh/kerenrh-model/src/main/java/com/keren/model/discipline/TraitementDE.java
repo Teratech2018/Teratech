@@ -82,7 +82,7 @@ public class TraitementDE extends BaseElement implements Serializable, Comparabl
 	 * @param moduleName
 	 */
 	public TraitementDE(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -102,7 +102,7 @@ public class TraitementDE extends BaseElement implements Serializable, Comparabl
 	 */
 	public TraitementDE(long id, String designation, String moduleName, DemandeExplication demande, Date dateavis,
 			Employe superieur, Poste poste, String sanction, String motivation) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.demande = demande;
 		this.dateavis = dateavis;
 		this.superieur = superieur;
@@ -112,7 +112,7 @@ public class TraitementDE extends BaseElement implements Serializable, Comparabl
 	}
 
 	public TraitementDE(TraitementDE trait) {
-		super(trait.id, trait.designation, trait.moduleName);
+		super(trait.id, trait.designation, trait.moduleName,trait.compareid);
 		if(trait.demande!=null){
 			this.demande = new DemandeExplication(trait.demande);
 		}

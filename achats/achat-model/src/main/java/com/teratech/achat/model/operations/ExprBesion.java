@@ -81,7 +81,7 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
      * @param moduleName 
      */
     public ExprBesion(String code, Tier utilisateur, Date dateExpr, String motivation, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.utilisateur = utilisateur;
         this.dateExpr = dateExpr;
@@ -93,7 +93,7 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
      * @param expr 
      */
     public ExprBesion(ExprBesion expr) {
-        super(expr.id, expr.designation, expr.moduleName);
+        super(expr.id, expr.designation, expr.moduleName,expr.compareid);
         this.code = expr.code;
         if(expr.utilisateur!=null){
             this.utilisateur = new Tier(expr.utilisateur);

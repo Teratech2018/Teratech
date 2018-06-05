@@ -24,7 +24,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.keren.model.employes.Employe;
 import com.keren.model.structures.Pays;
 import com.keren.model.structures.Ville;
@@ -120,7 +119,7 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 	 * @param moduleName
 	 */
 	public OrdreMission(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -149,7 +148,7 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 			Pays pays, Mission mission, Employe salarie, Date ddepart, Employe hierarchie, Date dretour,
 			CategorieMission categorie, String description, List<FraisMission> frais, List<Escale> escales,
 			List<Employe> resources) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.numero = numero;
 		this.ville = ville;
 		this.motif = motif;
@@ -167,7 +166,7 @@ public class OrdreMission extends BaseElement implements Serializable, Comparabl
 	}
 
 	public OrdreMission(OrdreMission ordre) {
-		super(ordre.id, ordre.designation, ordre.moduleName);
+		super(ordre.id, ordre.designation, ordre.moduleName,ordre.compareid);
 		this.numero = ordre.numero;
 		this.ville = ordre.ville;
 		this.motif = ordre.motif;

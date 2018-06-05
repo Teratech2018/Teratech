@@ -42,7 +42,7 @@ public class UniteAchat extends BaseElement implements Serializable,Comparable<U
     }
 
     public UniteAchat(String code, Boolean actif, UniteGestion unite, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.actif = actif;
         this.unite = unite;

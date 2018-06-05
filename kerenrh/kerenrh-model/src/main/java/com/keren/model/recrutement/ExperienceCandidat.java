@@ -55,7 +55,7 @@ public class ExperienceCandidat extends BaseElement implements Serializable, Com
 	 * @param moduleName
 	 */
 	public ExperienceCandidat(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -75,7 +75,7 @@ public class ExperienceCandidat extends BaseElement implements Serializable, Com
 
 	public ExperienceCandidat(long id, String designation, String moduleName, String type, String fonction, Short duree,
 			String entrep, String description) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.type = type;
 		this.fonction = fonction;
 		this.duree = duree;
@@ -88,7 +88,7 @@ public class ExperienceCandidat extends BaseElement implements Serializable, Com
 	 * @param exp
 	 */
 	public ExperienceCandidat(ExperienceCandidat exp) {
-		super(exp.id, exp.designation, exp.moduleName);
+		super(exp.id, exp.designation, exp.moduleName,exp.compareid);
 		this.type = exp.type;
 		this.fonction = exp.fonction;
 		this.duree = exp.duree;

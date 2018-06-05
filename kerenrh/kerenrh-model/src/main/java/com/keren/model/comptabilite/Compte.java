@@ -76,12 +76,12 @@ public class Compte extends BaseElement implements Serializable, Comparable<Comp
 	 * @param moduleName
 	 */
 	public Compte(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public Compte(Compte compte) {
-        super(compte.id, compte.designation, compte.moduleName);
+        super(compte.id, compte.designation, compte.moduleName,compte.compareid);
         this.code = compte.code;
         this.libele = compte.libele;
         

@@ -82,7 +82,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	 * @param moduleName
 	 */
 	public BulletinPaie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -110,7 +110,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	public BulletinPaie(long id, String designation, String moduleName, String code, Employe employe, Date dpayement,
 			PeriodePaie periode, Short nbrejrstra, Categorie categorie, Double salbrut, Echelon echelon, Double salcot,
 			Short ancienite, Double saltax, Short nbreenfts, List<LigneBulletinPaie> lignes, String state) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.employe = employe;
 		this.dpayement = dpayement;
@@ -136,7 +136,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	 */
 	public BulletinPaie(String code, Employe employe, Date dpayement,
 			PeriodePaie periode) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.code = code;
 		this.employe = employe;
 		this.dpayement = dpayement;
@@ -144,7 +144,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	}
 
 	public BulletinPaie(BulletinPaie bulletin) {
-		super(bulletin.id, bulletin.designation, bulletin.moduleName);
+		super(bulletin.id, bulletin.designation, bulletin.moduleName,bulletin.compareid);
 		this.code = bulletin.code;
 		if(bulletin.employe!=null){
 			this.employe = new Employe(bulletin.employe);

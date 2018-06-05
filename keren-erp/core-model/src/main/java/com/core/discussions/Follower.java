@@ -79,7 +79,7 @@ public class Follower extends BaseElement implements Serializable,Comparable<Fol
     }
 
     public Follower(Date date, String body, Utilisateur sender, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.date = date;
         this.body = body;
         this.sender = sender;
@@ -90,7 +90,7 @@ public class Follower extends BaseElement implements Serializable,Comparable<Fol
     * @param data 
     */
      public Follower(Follower data) {
-        super(data.id, data.designation, data.moduleName);
+        super(data.id, data.designation, data.moduleName,data.compareid);
         this.date = data.date;
         this.body = data.body;
         this.noteinterne = data.isNoteinterne();

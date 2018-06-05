@@ -85,7 +85,7 @@ public class MenuGroupActions extends BaseElement implements Serializable,Compar
      * @param group 
      */
     public MenuGroupActions(MenuGroupActions group) {
-        super(group.getId(), group.getDesignation(), group.getModuleName());
+        super(group.getId(), group.getDesignation(), group.getModuleName(),group.compareid);
         this.icon = group.icon;
         this.name = group.name;
         this.label = group.label;  

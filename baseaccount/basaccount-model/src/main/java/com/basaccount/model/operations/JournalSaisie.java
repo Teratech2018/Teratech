@@ -86,7 +86,7 @@ public class JournalSaisie extends BaseElement implements Serializable,Comparabl
      * @param moduleName 
      */
     public JournalSaisie(String code, ExerciceComptable exercice, Date debut, Date fin, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.exercice = exercice;
         this.debut = debut;
@@ -94,7 +94,7 @@ public class JournalSaisie extends BaseElement implements Serializable,Comparabl
     }
 
     public JournalSaisie(JournalSaisie journal) {
-        super(journal.id, journal.designation, journal.moduleName);
+        super(journal.id, journal.designation, journal.moduleName,journal.compareid);
         this.code = journal.code;
         this.exercice = journal.exercice;
         this.debut = journal.debut;

@@ -72,7 +72,7 @@ public class IndiceSolde extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public IndiceSolde(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -92,7 +92,7 @@ public class IndiceSolde extends BaseElement implements Serializable, Comparable
  */
 	public IndiceSolde(long id, String designation, String moduleName, String code, String mode, Rubrique rubrique,
 			Date debut, Date fin, List<LigneIndiceSolde> indicessolde, List<LigneConvension> convensions) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 //		this.mode = mode;
 		this.rubrique = rubrique;
@@ -107,7 +107,7 @@ public class IndiceSolde extends BaseElement implements Serializable, Comparable
 	 * @param indice
 	 */
 	public IndiceSolde(IndiceSolde indice) {
-		super(indice.id, indice.designation, indice.moduleName);
+		super(indice.id, indice.designation, indice.moduleName,indice.compareid);
 		this.code = indice.code;
 //		this.mode = indice.mode;
 		if(indice.rubrique!=null){

@@ -50,14 +50,14 @@ public class Region extends BaseElement implements Serializable,Comparable<Regio
 	 */
 
 	public Region(long id, String designation, String moduleName, String code, String intitule) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 	}
 
 
 	public Region(Region reg) {
-		super(reg.id, reg.designation, reg.moduleName);
+		super(reg.id, reg.designation, reg.moduleName,reg.compareid);
 		this.code = reg.code;
 		this.intitule = reg.intitule;
 	}

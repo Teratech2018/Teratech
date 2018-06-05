@@ -23,7 +23,6 @@ import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
-import com.keren.model.employes.Employe;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -89,7 +88,7 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public SeanceFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -109,7 +108,7 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 
 	public SeanceFormation(long id, String designation, String moduleName, String code, Date date, String hdebut,
 			String hfin, List<Formateur> formateurs, String cours, List<ParticipantSeance> participants) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.date = date;
 		this.hdebut = hdebut;
@@ -124,7 +123,7 @@ public class SeanceFormation extends BaseElement implements Serializable, Compar
 	 * @param seance
 	 */
 	public SeanceFormation(SeanceFormation seance) {
-		super(seance.id, seance.designation, seance.moduleName);
+		super(seance.id, seance.designation, seance.moduleName,seance.compareid);
 		this.code = seance.code;
 		this.date = seance.date;
 		this.hdebut = seance.hdebut;

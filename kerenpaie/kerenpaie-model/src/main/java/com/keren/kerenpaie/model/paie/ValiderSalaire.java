@@ -65,7 +65,7 @@ public class ValiderSalaire extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public ValiderSalaire(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -82,13 +82,13 @@ public class ValiderSalaire extends BaseElement implements Serializable, Compara
 	 */
 	public ValiderSalaire(long id, String designation, String moduleName, PeriodePaie periode, String porte,
 			List<Employe> concernes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		
 	}
 	
 	public ValiderSalaire(ValiderSalaire prepa) {
-		super(prepa.id, prepa.designation, prepa.moduleName);
+		super(prepa.id, prepa.designation, prepa.moduleName,prepa.compareid);
 		if(prepa.periode!=null){
 			this.periode = new PeriodePaie(prepa.periode);
 		}

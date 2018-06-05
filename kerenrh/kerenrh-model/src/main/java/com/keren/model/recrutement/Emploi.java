@@ -50,7 +50,7 @@ public class Emploi extends BaseElement implements Serializable, Comparable<Empl
 	 * @param moduleName
 	 */
 	public Emploi(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -65,14 +65,14 @@ public class Emploi extends BaseElement implements Serializable, Comparable<Empl
 	 */
 
 	public Emploi(long id, String designation, String moduleName, String code, String intitule, String description) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 		this.description = description;
 	}
 	
 	public Emploi(Emploi emploi) {
-		super(emploi.id, emploi.designation, emploi.moduleName);
+		super(emploi.id, emploi.designation, emploi.moduleName,emploi.compareid);
 		this.code = emploi.code;
 		this.intitule = emploi.intitule;
 		this.description = emploi.description;

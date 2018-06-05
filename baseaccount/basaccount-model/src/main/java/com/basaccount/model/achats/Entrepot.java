@@ -136,7 +136,7 @@ public class Entrepot extends BaseElement implements Serializable,Comparable<Ent
      * @param moduleName 
      */
     public Entrepot(String code, String intitule, String adresse1, String adresse2, String cp, String ville, Region region, Pays pays, Tier responsable, String tel, String mobile, String email, String commentaire, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.intitule = intitule;
         this.adresse1 = adresse1;
@@ -153,7 +153,7 @@ public class Entrepot extends BaseElement implements Serializable,Comparable<Ent
     }
     
     public Entrepot(Entrepot entr) {
-        super(entr.id, entr.designation, entr.moduleName);
+        super(entr.id, entr.designation, entr.moduleName,entr.compareid);
         this.code = entr.code;
         this.principal = entr.principal;
         this.intitule = entr.intitule;

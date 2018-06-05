@@ -70,14 +70,14 @@ public class Taxe extends BaseElement implements Serializable,Comparable<Taxe>{
      * @param moduleName 
      */
     public Taxe(String code, String label, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.label = label;
     }
 
     
     public Taxe(Taxe taxe) {
-        super(taxe.id, taxe.designation, taxe.moduleName);
+        super(taxe.id, taxe.designation, taxe.moduleName,taxe.compareid);
         this.code = taxe.code;
         this.label = taxe.label;
         this.porte = taxe.getPorte();

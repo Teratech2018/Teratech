@@ -58,7 +58,7 @@ public class Banque extends BaseElement implements Serializable, Comparable<Banq
 	 * @param moduleName
 	 */
 	public Banque(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	

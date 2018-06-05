@@ -46,7 +46,7 @@ public class ImportModel extends BaseElement implements Serializable,Comparable<
      * @param moduleName 
      */
     public ImportModel(String file, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.file = file;
     }
 

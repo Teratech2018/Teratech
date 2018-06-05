@@ -29,7 +29,7 @@ public class UniteGestion extends BaseElement implements Serializable,Comparable
     }
 
     public UniteGestion(String code, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
     }
 

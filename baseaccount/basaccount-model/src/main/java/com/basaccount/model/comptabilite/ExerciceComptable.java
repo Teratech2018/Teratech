@@ -62,7 +62,7 @@ public class ExerciceComptable extends BaseElement implements Serializable,Compa
      * @param moduleName 
      */
     public ExerciceComptable(String code, Date debut, Date fin, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.debut = debut;
         this.fin = fin;

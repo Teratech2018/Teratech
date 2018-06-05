@@ -76,7 +76,7 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 	 * @param moduleName
 	 */
 	public Formation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -95,7 +95,7 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 
 	public Formation(long id, String designation, String moduleName, String code, ModuleFormation module,
 			ThemeFormation theme, LignePlanningFormation plan, List<SeanceFormation> seances, String note) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.module = module;
 		this.theme = theme;
@@ -105,7 +105,7 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 	}
 	
 	public Formation(Formation formation) {
-		super(formation.id, formation.designation, formation.moduleName);
+		super(formation.id, formation.designation, formation.moduleName,formation.compareid);
 		this.code = formation.code;
 		if(formation.module!=null){
 			this.module = new ModuleFormation(formation.module);
@@ -126,7 +126,7 @@ public class Formation extends BaseElement implements Serializable, Comparable<F
 	 * @param plan
 	 */
 	public Formation(LignePlanningFormation plan){
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.code = plan.getModule().getDesignation();
 		if(plan.getModule()!=null){
 			this.module = new ModuleFormation(plan.getModule());

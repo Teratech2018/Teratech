@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -74,7 +73,7 @@ public class PlanningFormation extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public PlanningFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -92,7 +91,7 @@ public class PlanningFormation extends BaseElement implements Serializable, Comp
 
 	public PlanningFormation(long id, String designation, String moduleName, String code, String intitule,
 			BesionFormation besion, String periode, Short places) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 		this.besion = besion;
@@ -105,7 +104,7 @@ public class PlanningFormation extends BaseElement implements Serializable, Comp
 	 * @param planning
 	 */
 	public PlanningFormation(PlanningFormation planning) {
-		super(planning.id, planning.designation, planning.moduleName);
+		super(planning.id, planning.designation, planning.moduleName,planning.compareid);
 		this.code = planning.code;
 		this.intitule = planning.intitule;
 		if(planning.besion!=null){

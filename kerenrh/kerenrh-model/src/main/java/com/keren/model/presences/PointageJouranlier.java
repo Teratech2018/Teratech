@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
@@ -73,7 +72,7 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 	 * @param moduleName
 	 */
 	public PointageJouranlier(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state = "etabli";
 	}
@@ -92,7 +91,7 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 	 */
 	public PointageJouranlier(long id, String designation, String moduleName, String code, Date date,
 			FichePointage fiche, List<LignePointage> lignes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.datepointage = date;
 		this.fiche = fiche;
@@ -105,7 +104,7 @@ public class PointageJouranlier extends BaseElement implements Serializable, Com
 	 * @param p
 	 */
 	public PointageJouranlier(PointageJouranlier p) {
-		super(p.id, p.designation, p.moduleName);
+		super(p.id, p.designation, p.moduleName,p.compareid);
 		this.code = p.code;
 		this.datepointage = p.datepointage;
 		state = p.state;

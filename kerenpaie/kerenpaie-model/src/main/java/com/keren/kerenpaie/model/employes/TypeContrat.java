@@ -43,7 +43,7 @@ public class TypeContrat extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public TypeContrat(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -57,7 +57,7 @@ public class TypeContrat extends BaseElement implements Serializable, Comparable
 	 */
 
 	public TypeContrat(long id, String designation, String moduleName, String code, String categorie) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.categorie = categorie;
 	}
@@ -67,7 +67,7 @@ public class TypeContrat extends BaseElement implements Serializable, Comparable
 	 * @param typecontrat
 	 */
 	public TypeContrat(TypeContrat typecontrat) {
-		super(typecontrat.id, typecontrat.designation, typecontrat.moduleName);
+		super(typecontrat.id, typecontrat.designation, typecontrat.moduleName,typecontrat.compareid);
 		this.code = typecontrat.code;		
 		this.categorie = typecontrat.categorie;
 	}

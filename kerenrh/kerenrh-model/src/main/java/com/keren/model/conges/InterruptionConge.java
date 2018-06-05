@@ -89,7 +89,7 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public InterruptionConge(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state = "etabli";
 	}
@@ -110,7 +110,7 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 	 */
 	public InterruptionConge(long id, String designation, String moduleName, Employe employe, Date date,
 			DemandeConge conge, Date dateconge, Short dureeconge, Short joursr) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.employe = employe;
 		this.date = date;
 		this.conge = conge;
@@ -121,7 +121,7 @@ public class InterruptionConge extends BaseElement implements Serializable, Comp
 	}
 	 
 	public InterruptionConge(InterruptionConge cg) {
-		super(cg.id, cg.designation, cg.moduleName);
+		super(cg.id, cg.designation, cg.moduleName,cg.compareid);
 		if(cg.employe!=null){
 			this.employe = new Employe(cg.employe);
 		}

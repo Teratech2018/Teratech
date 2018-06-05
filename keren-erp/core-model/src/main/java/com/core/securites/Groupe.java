@@ -67,13 +67,13 @@ public class Groupe extends BaseElement implements Serializable,Comparable<Group
      * @param moduleName 
      */
     public Groupe(String code, MenuModule module, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.module = module;
     }
     
      public Groupe(Groupe groupe) {
-        super(groupe.id, groupe.designation, groupe.moduleName);
+        super(groupe.id, groupe.designation, groupe.moduleName,groupe.compareid);
         this.code = groupe.code;
         //this.module = groupe.module;
     }

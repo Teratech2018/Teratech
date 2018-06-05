@@ -196,7 +196,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
     }
 
     public Employe(String matricule, String nom, String prenom, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.matricule = matricule;
         this.nom = nom;
         
@@ -212,7 +212,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
      * @param employ
      */
     public Employe(Employe employ) {
-		super(employ.id, employ.designation, employ.moduleName);
+		super(employ.id, employ.designation, employ.moduleName,employ.compareid);
 		this.image = employ.image;
 		this.nom = employ.nom;
 		this.matricule = employ.matricule;

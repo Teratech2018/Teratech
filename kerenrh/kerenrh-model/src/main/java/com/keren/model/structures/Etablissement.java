@@ -48,7 +48,7 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public Etablissement(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -63,14 +63,14 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 	 */
 
 	public Etablissement(long id, String designation, String moduleName, String code, String tel, String adresse) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.tel = tel;
 		this.adresse = adresse;
 	}
 	
 	public Etablissement(Etablissement school) {
-		super(school.id, school.designation, school.moduleName);
+		super(school.id, school.designation, school.moduleName,school.compareid);
 		this.code = school.code;
 		this.tel = school.tel;
 		this.adresse = school.adresse;

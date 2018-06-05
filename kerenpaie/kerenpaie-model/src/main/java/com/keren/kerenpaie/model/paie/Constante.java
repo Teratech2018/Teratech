@@ -39,7 +39,7 @@ public class Constante extends BaseElement implements Serializable, Comparable<C
 	 * @param moduleName
 	 */
 	public Constante(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	

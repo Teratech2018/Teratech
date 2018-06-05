@@ -52,7 +52,7 @@ public class ActionMission extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public ActionMission(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -69,7 +69,7 @@ public class ActionMission extends BaseElement implements Serializable, Comparab
 
 	public ActionMission(long id, String designation, String moduleName, String code, IndicateurPerformance indicateur,
 			String objectif, String resultat) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.indicateur = indicateur;
 		this.objectif = objectif;
@@ -77,7 +77,7 @@ public class ActionMission extends BaseElement implements Serializable, Comparab
 	}
 	
 	public ActionMission(ActionMission action) {
-		super(action.id, action.designation, action.moduleName);
+		super(action.id, action.designation, action.moduleName,action.compareid);
 		this.code = action.code;
 		this.indicateur = action.indicateur;
 		this.objectif = action.objectif;

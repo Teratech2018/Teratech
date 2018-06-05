@@ -75,7 +75,7 @@ public class Retard extends BaseElement implements Serializable, Comparable<Reta
 	 * @param moduleName
 	 */
 	public Retard(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state ="etabli";
 	}
@@ -94,7 +94,7 @@ public class Retard extends BaseElement implements Serializable, Comparable<Reta
  */
 	public Retard(long id, String designation, String moduleName, Employe employe, String heurearrive,
 			String heuredepart, Boolean absent, Boolean absencepaye) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.employe = employe;
 		this.heurearrive = heurearrive;
 		this.heuredepart = heuredepart;
@@ -108,7 +108,7 @@ public class Retard extends BaseElement implements Serializable, Comparable<Reta
 	 * @param lign
 	 */
 	public Retard(Retard lign) {
-		super(lign.id, lign.designation, lign.moduleName);
+		super(lign.id, lign.designation, lign.moduleName,lign.compareid);
 		if(lign.employe!=null){
 			this.employe = new Employe(lign.employe);
 		}
@@ -125,7 +125,7 @@ public class Retard extends BaseElement implements Serializable, Comparable<Reta
 	 * @param lign
 	 */
 	public Retard(LigneFichePointage lign) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		if(lign.getEmploye()!=null){
 			this.employe = new Employe(lign.getEmploye());
 		}//end if(lign.getEmploye()!=null){

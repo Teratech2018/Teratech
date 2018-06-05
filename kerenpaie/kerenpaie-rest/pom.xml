@@ -17,7 +17,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-         <serveur.jboss.repertoire.deploiement.war>D:\jboss-as-7.1.1.Final\standalone\deployments\kerenpaie.war</serveur.jboss.repertoire.deploiement.war>
+        <serveur.jboss.repertoire.deploiement.war>D:\jboss-as-7.1.1.Final\standalone\deployments\kerenpaie.war</serveur.jboss.repertoire.deploiement.war>
         <repertoire.target.generation.war>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenpaie\kerenpaie-rest\target\kerenpaie.war</repertoire.target.generation.war>
     </properties>
 
@@ -128,7 +128,8 @@
                     </execution>
                 </executions>
             </plugin>
-               <!-- Ant run maven plugin -->
+
+            <!-- Ant run maven plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>

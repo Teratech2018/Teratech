@@ -68,7 +68,7 @@ public class LigneAppeloffre extends BaseElement implements Serializable,Compara
      * @param moduleName 
      */
     public LigneAppeloffre(Article article, Double quantite, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.article = article;
         this.quantite = quantite;
     }

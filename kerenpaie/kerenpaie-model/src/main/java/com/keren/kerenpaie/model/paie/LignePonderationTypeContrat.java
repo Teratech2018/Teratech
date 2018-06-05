@@ -49,7 +49,7 @@ public class LignePonderationTypeContrat extends BaseElement implements Serializ
 	 * @param moduleName
 	 */
 	public LignePonderationTypeContrat(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -63,7 +63,7 @@ public class LignePonderationTypeContrat extends BaseElement implements Serializ
 	 */
 
 	public LignePonderationTypeContrat(long id, String designation, String moduleName, TypeContrat fonction, Double taux) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.fonction = fonction;
 		this.taux = taux;
 	}
@@ -74,7 +74,7 @@ public class LignePonderationTypeContrat extends BaseElement implements Serializ
 	 * @param taux
 	 */
 	public LignePonderationTypeContrat(TypeContrat fonction, Double taux) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.fonction = fonction;
 		this.taux = taux;
 	}
@@ -84,7 +84,7 @@ public class LignePonderationTypeContrat extends BaseElement implements Serializ
 	 * @param ponderation
 	 */
 	public LignePonderationTypeContrat(LignePonderationTypeContrat ponderation) {
-		super(ponderation.id, ponderation.designation, ponderation.moduleName);
+		super(ponderation.id, ponderation.designation, ponderation.moduleName,ponderation.compareid);
 		if(ponderation.fonction!=null){
 			this.fonction = new TypeContrat(ponderation.fonction);
 		}

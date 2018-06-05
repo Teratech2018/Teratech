@@ -69,7 +69,7 @@ public class AffectationCandidat extends BaseElement implements Serializable, Co
 	 * @param moduleName
 	 */
 	public AffectationCandidat(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -86,7 +86,7 @@ public class AffectationCandidat extends BaseElement implements Serializable, Co
 
 	public AffectationCandidat(long id, String designation, String moduleName, Emploi emploi, Ville lieu, Short place,
 			String motivation) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.emploi = emploi;
 		this.lieu = lieu;
 		this.place = place;
@@ -98,7 +98,7 @@ public class AffectationCandidat extends BaseElement implements Serializable, Co
 	 * @param besion
 	 */
 	public AffectationCandidat(AffectationCandidat besion) {
-		super(besion.id, besion.designation, besion.moduleName);
+		super(besion.id, besion.designation, besion.moduleName,besion.compareid);
 		this.emploi = besion.emploi;
 		this.lieu = besion.lieu;
 		this.place = besion.place;

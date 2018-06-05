@@ -111,7 +111,7 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
      * @param moduleName 
      */
     public AppelOffre(String code, String reference, Tier responsable, Date deadline, Date datecommande, String condition, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.reference = reference;
         this.responsable = responsable;
@@ -121,7 +121,7 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
     }
     
      public AppelOffre(AppelOffre ap) {
-        super(ap.id, ap.designation, ap.moduleName);
+        super(ap.id, ap.designation, ap.moduleName,ap.compareid);
         this.code = ap.code;
         this.reference = ap.reference;
         if(ap.responsable!=null){

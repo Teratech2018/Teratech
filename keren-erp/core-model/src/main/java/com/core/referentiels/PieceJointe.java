@@ -63,7 +63,7 @@ public class PieceJointe extends BaseElement implements Serializable,Comparable<
      * @param moduleName 
      */
     public PieceJointe(String filename, String attachename, String serial, long entityid, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.filename = filename;
         this.attachename = attachename;
         this.entityserial = serial;
@@ -75,7 +75,7 @@ public class PieceJointe extends BaseElement implements Serializable,Comparable<
      * @param pj 
      */
     public PieceJointe(PieceJointe pj) {
-        super(pj.id, pj.designation, pj.moduleName);
+        super(pj.id, pj.designation, pj.moduleName,pj.compareid);
         this.filename = pj.filename;
         this.attachename = pj.attachename;
         this.entityserial = pj.serial;
@@ -91,7 +91,7 @@ public class PieceJointe extends BaseElement implements Serializable,Comparable<
      * @param moduleName 
      */
     public PieceJointe(String filename, String attachename, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.filename = filename;
         this.attachename = attachename;
     }

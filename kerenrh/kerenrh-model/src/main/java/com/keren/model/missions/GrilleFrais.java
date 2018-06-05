@@ -54,7 +54,7 @@ public class GrilleFrais extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public GrilleFrais(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -71,7 +71,7 @@ public class GrilleFrais extends BaseElement implements Serializable, Comparable
 
 	public GrilleFrais(long id, String designation, String moduleName, String code, Fonction fonction, Double interne,
 			Double externe) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.fonction = fonction;
 		this.interne = interne;
@@ -79,7 +79,7 @@ public class GrilleFrais extends BaseElement implements Serializable, Comparable
 	}
 	
 	public GrilleFrais(GrilleFrais grille) {
-		super(grille.id, grille.designation, grille.moduleName);
+		super(grille.id, grille.designation, grille.moduleName,grille.compareid);
 		this.code = grille.code;
 		if(grille.fonction!=null){
 			this.fonction = new Fonction(grille.fonction);

@@ -43,7 +43,7 @@ public class Ville extends BaseElement implements Serializable, Comparable<Ville
 	 * @param moduleName
 	 */
 	public Ville(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -57,13 +57,13 @@ public class Ville extends BaseElement implements Serializable, Comparable<Ville
 	 */
 
 	public Ville(long id, String designation, String moduleName, String code, String type) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.type = type;
 	}
 	
 	public Ville(Ville ville) {
-		super(ville.id, ville.designation, ville.moduleName);
+		super(ville.id, ville.designation, ville.moduleName,ville.compareid);
 		this.code = ville.code;
 		this.type = ville.type;
 	}

@@ -93,7 +93,7 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 	 * @param moduleName
 	 */
 	public Avancement(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -112,7 +112,7 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 
 	public Avancement(long id, String designation, String moduleName, Employe salarie, String code,
 			Categorie categorieA, Categorie categorieN, Date denreg, Date deffet) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie = salarie;
 		this.code = code;
 		this.categorieA = categorieA;
@@ -126,7 +126,7 @@ public class Avancement extends BaseElement implements Serializable, Comparable<
 	 * @param reclassement
 	 */
 	public Avancement(Avancement reclassement) {
-		super(reclassement.id, reclassement.designation, reclassement.moduleName);
+		super(reclassement.id, reclassement.designation, reclassement.moduleName,reclassement.compareid);
 		if(reclassement.salarie!=null){
 			this.salarie = new Employe(reclassement.salarie);
 		}

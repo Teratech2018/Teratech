@@ -1,0 +1,492 @@
+@media all and (min-width: 300px) and (max-width:400px){
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px yellow;*/
+		width:100%;
+		margin-bottom:30px;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+	
+	#titrePart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		display:inline-block;
+		text-align:center;
+		
+	}
+	
+	#titrePart02{
+		/*border:solid 1px red;*/
+		width:100%;
+		display:inline-block;
+		text-align:center;
+		
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#emailInputEtLogoContent{
+		width:100%;
+	}
+	
+	#passwordInputEtLogoContent{
+		width:100%;
+	}
+	
+	#connexionbouttonContent{
+		width:100%;
+	}
+}
+
+@media all and (min-width: 400px) and (max-width:500px){
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:30px;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+	
+	#titrePart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		display:inline-block;
+		text-align:center;
+		
+	}
+	
+	#titrePart02{
+		/*border:solid 1px red;*/
+		width:100%;
+		display:inline-block;
+		text-align:center;
+		
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#emailInputEtLogoContent{
+		width:100%;
+	}
+	
+	#passwordInputEtLogoContent{
+		width:100%;
+	}
+	
+	#connexionbouttonContent{
+		width:100%;
+	}
+	
+}
+
+@media all and (min-width: 500px) and (max-width:767px){
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		padding-left:0px;
+		margin-bottom:80px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+	
+	#titrePart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		display:inline-block;
+		text-align:center;
+		
+	}
+	
+	#titrePart02{
+		/*border:solid 1px red;*/
+		width:100%;
+		display:inline-block;
+		text-align:center;
+		
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#emailInputEtLogoContent{
+		width:100%;
+	}
+	
+	#passwordInputEtLogoContent{
+		width:100%;
+	}
+	
+	#connexionbouttonContent{
+		width:100%;
+	}
+}
+
+@media all and (min-width: 768px) and (max-width: 800px){
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+}
+
+@media all and (min-width: 800px) and (max-width: 900px){
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+}
+
+@media all and (min-width: 900px) and (max-width: 1024px){
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+}
+
+@media all and (min-width: 1024px) and (max-width: 1100px) {
+	
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+}
+
+@media all and (min-width: 1100px) and (max-width: 1152px) {
+	
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+}
+
+@media all and (min-width: 1152px) and (max-width: 1280px) {
+	
+	body{
+		overflow-x:hidden;
+		overflow-y:hidden;
+	}
+	
+	#loginPageContent{
+		overflow:auto;
+		text-align:center;
+	}
+	
+	#loginPanelPart01{
+		/*border:solid 1px red;*/
+		width:100%;
+		padding-left:0px;
+	}
+	
+	#loginPanelPart02{
+		display:none;
+	}
+	
+	#loginPanelPart03{
+		/*border:solid 1px red;*/
+		width:100%;
+		margin-bottom:20px;
+	}
+	
+	#loginPanelPart01Division02{
+		margin-left:0px;
+	}
+	
+	#footerContent{
+		display:none;
+	}
+}
+
+@media all and (min-width: 1280px) and (max-width: 1359px) {
+	
+}
+
+@media all and (min-width: 1360px) and (max-width: 1366px) {
+	
+}
+
+@media all and (min-width: 1366px) and (max-width: 1400px) {
+	
+}
+
+@media all and (min-width: 1440px) and (max-width: 1599px) {
+	
+}
+
+@media all and (min-width: 1600px) and (max-width: 1679px) {
+	
+}
+
+@media all and (min-width: 1680px) and (max-width: 1919px) {
+}
+	
+@media all and (min-width: 1920px) {
+	
+}
+
+
+
+	/* MON BUSINESS */
+	#pageBisenessBodyItemAccueilInfoArtiste{
+		margin-top:-12%;
+	}
+	
+	#pageBisenessEnteteContent{
+		/*border:solid 1px red;*/
+		width:100%;
+		background-color:#333333;
+	}
+	
+	/*STATION MUSIQUE*/
+	#PageArtisteStationMusiquePart1Zone2Content{
+		margin-top:-29%;
+	}
+	
+	#PageArtisteStationMusiquePart3Content{
+		/*border:solid 1px orange;*/
+		height:630px;
+		padding-top:16px;
+	}
+	
+	.musicSlideVideoOptionsContent{
+		/*border:solid 1px orange;*/
+		width:13.2%;
+	}
+		
+	.musicSlideVideoItemBodyContent{
+		/*border:solid 1px orange;*/
+		width:95%;
+		height:370px;
+		overflow:hidden;
+	}
+	
+	.musicItemGeneralPart2ContentZone2{
+		/*border:solid 1px orange;*/
+		font-size:100%;
+	}
+	
+	/* TV */
+	.pageVideosInfosEnteteContent{
+		margin-top:-62%;
+	}
+	/******************************/

@@ -52,7 +52,7 @@ public class DetailRecrutement extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public DetailRecrutement(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -68,14 +68,14 @@ public class DetailRecrutement extends BaseElement implements Serializable, Comp
 
 	public DetailRecrutement(long id, String designation, String moduleName, EtapeRecrutement etape, String niveau,
 			String note) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.etape = etape;
 		this.niveau = niveau;
 		this.note = note;
 	}
 	
 	public DetailRecrutement(DetailRecrutement detail) {
-		super(detail.id, detail.designation, detail.moduleName);
+		super(detail.id, detail.designation, detail.moduleName,detail.compareid);
 		this.etape = detail.etape;
 		this.niveau = detail.niveau;
 		this.note = detail.note;

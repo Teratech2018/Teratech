@@ -62,7 +62,7 @@ public class ForfaitSpecialite extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public ForfaitSpecialite(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -80,14 +80,14 @@ public class ForfaitSpecialite extends BaseElement implements Serializable, Comp
 
 	public ForfaitSpecialite(long id, String designation, String moduleName, Specialite categorie, Societe societe,
 			Departement service, Double valeur, String mesure) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.categorie = categorie;
         this.valeur = valeur;
 		this.mesure = mesure;
 	}
 
 	public ForfaitSpecialite(ForfaitSpecialite forfait) {
-		super(forfait.id, forfait.designation, forfait.moduleName);
+		super(forfait.id, forfait.designation, forfait.moduleName,forfait.compareid);
 		this.categorie = forfait.categorie;
 //		this.societe = forfait.societe;
 		this.valeur = forfait.valeur;

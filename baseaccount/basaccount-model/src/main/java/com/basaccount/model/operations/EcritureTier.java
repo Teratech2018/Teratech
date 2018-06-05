@@ -79,7 +79,7 @@ public class EcritureTier extends BaseElement implements Serializable,Comparable
      * @param moduleName 
      */
     public EcritureTier(Date dateEcriture, String refPiece, String libelle, Tier compte, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.dateEcriture = dateEcriture;
         this.refPiece = refPiece;
         this.libelle = libelle;
@@ -90,7 +90,7 @@ public class EcritureTier extends BaseElement implements Serializable,Comparable
      * @param data 
      */
     public EcritureTier(EcritureTier data) {
-        super(data.id, data.designation, data.moduleName);
+        super(data.id, data.designation, data.moduleName,data.compareid);
         this.dateEcriture = data.dateEcriture;
         this.refPiece = data.refPiece;
         this.libelle = data.libelle;

@@ -67,7 +67,7 @@ public class ReponseDE extends BaseElement implements Serializable, Comparable<R
 	 * @param moduleName
 	 */
 	public ReponseDE(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -83,14 +83,14 @@ public class ReponseDE extends BaseElement implements Serializable, Comparable<R
      */
 	public ReponseDE(long id, String designation, String moduleName, DemandeExplication demande, Date dater,
 			String resume) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.demande = demande;
 		this.dater = dater;
 		this.resume = resume;
 	}
 	
 	public ReponseDE(ReponseDE rep) {
-		super(rep.id, rep.designation, rep.moduleName);
+		super(rep.id, rep.designation, rep.moduleName,rep.compareid);
 		if(rep.demande!=null){
 			this.demande = new DemandeExplication(rep.demande);
 		}

@@ -37,7 +37,7 @@ public class ClotureJournal extends BaseElement implements Serializable,Comparab
      * @param moduleName 
      */
     public ClotureJournal(JournalSaisie journal, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.journal = journal;
     }
 

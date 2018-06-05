@@ -43,7 +43,7 @@ public class TypeCaisse extends BaseElement implements Serializable, Comparable<
 	 * @param moduleName
 	 */
 	public TypeCaisse(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -57,7 +57,7 @@ public class TypeCaisse extends BaseElement implements Serializable, Comparable<
 	 */
 
 	public TypeCaisse(long id, String designation, String moduleName, String code, String intitule) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 	}
@@ -67,7 +67,7 @@ public class TypeCaisse extends BaseElement implements Serializable, Comparable<
 	 * @param type
 	 */
 	public TypeCaisse(TypeCaisse type) {
-		super(type.id, type.designation, type.moduleName);
+		super(type.id, type.designation, type.moduleName,type.compareid);
 		this.code = type.code;
 		this.intitule = type.intitule;
 	}

@@ -62,7 +62,7 @@ public class Departement extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public Departement(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -70,7 +70,7 @@ public class Departement extends BaseElement implements Serializable, Comparable
 	
 	
 	public Departement(Departement dep) {
-		super(dep.id, dep.designation, dep.moduleName);
+		super(dep.id, dep.designation, dep.moduleName,dep.compareid);
 		this.code = dep.code;
 		this.nom = dep.nom;
 		this.actif = dep.actif;

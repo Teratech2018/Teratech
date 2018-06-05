@@ -106,7 +106,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 	 * @param moduleName
 	 */
 	public LignePlanningFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state = "etabli";
 	}
@@ -128,7 +128,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 
 	public LignePlanningFormation(long id, String designation, String moduleName, Short num, ModuleFormation module,
 			PlanningFormation planning, Date ddebut, Date dfin, Short places, Pays pays, List<Employe> cibles) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.num = num;
 		this.module = module;
 //		this.planning = planning;
@@ -140,7 +140,7 @@ public class LignePlanningFormation extends BaseElement implements Serializable,
 	}
 	
 	public LignePlanningFormation(LignePlanningFormation ligne) {
-		super(ligne.id, ligne.designation, ligne.moduleName);
+		super(ligne.id, ligne.designation, ligne.moduleName,0L);
 		this.num = ligne.num;
 		if(ligne.module!=null){
 			this.module = new ModuleFormation(ligne.module);

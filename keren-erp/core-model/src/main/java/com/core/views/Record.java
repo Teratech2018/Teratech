@@ -75,7 +75,7 @@ public class Record extends BaseElement implements Serializable,Comparable<Recor
      * @param moduleName 
      */
     public Record(String code, String titre, String modele, short sequence, String script, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.titre = titre;
         this.modele = modele;

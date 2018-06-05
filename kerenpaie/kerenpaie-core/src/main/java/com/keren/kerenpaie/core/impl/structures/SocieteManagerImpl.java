@@ -18,6 +18,7 @@ import com.keren.kerenpaie.dao.ifaces.structures.SocieteDAOLocal;
 import com.keren.kerenpaie.model.structures.Planification;
 import com.keren.kerenpaie.model.structures.Societe;
 import com.megatim.common.annotations.OrderType;
+import java.util.HashMap;
 
 @TransactionAttribute
 @Stateless(mappedName = "SocieteManager")
@@ -104,21 +105,21 @@ public class SocieteManagerImpl
         // TODO Auto-generated method stub
         if(entity.getPlanifications()==null||entity.getPlanifications().isEmpty()){
             
-            Planification lundi = new Planification("Lundi", true, 8.0);
+            Planification lundi = new Planification("0", false, 8.0);
             entity.getPlanifications().add(lundi);
-            lundi = new Planification("Mardi", true, 8.0);
+            lundi = new Planification("1", false, 8.0);
             entity.getPlanifications().add(lundi);
-            lundi = new Planification("Mercredi", true, 8.0);
+            lundi = new Planification("2", false, 8.0);
             entity.getPlanifications().add(lundi);
-            lundi = new Planification("Jeudi", true, 8.0);
+            lundi = new Planification("3", false, 8.0);
             entity.getPlanifications().add(lundi);
-            lundi = new Planification("Vendredi", true, 8.0);
+            lundi = new Planification("4", false, 8.0);
             entity.getPlanifications().add(lundi);
-            lundi = new Planification("Samedi", true, 8.0);
+            lundi = new Planification("5", false, 8.0);
             entity.getPlanifications().add(lundi);
-            lundi = new Planification("Dimanche", true, 8.0);
+            lundi = new Planification("6", false, 8.0);
             entity.getPlanifications().add(lundi);
-                
+             
         }//end if(entity.getPlanifications()==null||entity.getPlanifications().isEmpty()){
         
         super.processBeforeSave(entity);
@@ -126,26 +127,39 @@ public class SocieteManagerImpl
 
     @Override
     public void processBeforeUpdate(Societe entity) {
-        
+         Map<String,Planification> map = new HashMap<String,Planification>();
+         for(Planification plan:entity.getPlanifications()){
+             map.put(plan.getCode(), plan);
+         }//end for(Planification plan:entity.getPlanifications()){
         // TODO Auto-generated method stub
-        if(entity.getPlanifications()==null||entity.getPlanifications().isEmpty()){
-
-            Planification lundi = new Planification("Lundi", true, 8.0);
-            entity.getPlanifications().add(lundi);
-            lundi = new Planification("Mardi", true, 8.0);
-            entity.getPlanifications().add(lundi);
-            lundi = new Planification("Mercredi", true, 8.0);
-            entity.getPlanifications().add(lundi);
-            lundi = new Planification("Jeudi", true, 8.0);
-            entity.getPlanifications().add(lundi);
-            lundi = new Planification("Vendredi", true, 8.0);
-            entity.getPlanifications().add(lundi);
-            lundi = new Planification("Samedi", true, 8.0);
-            entity.getPlanifications().add(lundi);
-            lundi = new Planification("Dimanche", true, 8.0);
-            entity.getPlanifications().add(lundi);
-
-        }//end if(entity.getPlanifications()==null||entity.getPlanifications().isEmpty()){
+            Planification lundi = new Planification("0", false, 8.0);
+            if(!map.containsKey(lundi.getCode())){
+                entity.getPlanifications().add(lundi);
+            }//end if(entity.getPlanifications().contains(lundi)){
+            lundi = new Planification("1", false, 8.0);
+           if(!map.containsKey(lundi.getCode())){
+                entity.getPlanifications().add(lundi);
+            }//end if(entity.getPlanifications().contains(lundi)){
+            lundi = new Planification("2", false, 8.0);
+            if(!map.containsKey(lundi.getCode())){
+                entity.getPlanifications().add(lundi);
+            }//end if(entity.getPlanifications().contains(lundi)){
+            lundi = new Planification("3", false, 8.0);
+            if(!map.containsKey(lundi.getCode())){
+                entity.getPlanifications().add(lundi);
+            }//end if(entity.getPlanifications().contains(lundi)){
+            lundi = new Planification("4", false, 8.0);
+            if(!map.containsKey(lundi.getCode())){
+                entity.getPlanifications().add(lundi);
+            }//end if(entity.getPlanifications().contains(lundi)){
+            lundi = new Planification("5", false, 8.0);
+            if(!map.containsKey(lundi.getCode())){
+                entity.getPlanifications().add(lundi);
+            }//end if(entity.getPlanifications().contains(lundi)){
+            lundi = new Planification("6", false, 8.0);
+            if(!map.containsKey(lundi.getCode())){
+                entity.getPlanifications().add(lundi);
+            }//end if(entity.getPlanifications().contains(lundi)){
 
         super.processBeforeUpdate(entity);
     }

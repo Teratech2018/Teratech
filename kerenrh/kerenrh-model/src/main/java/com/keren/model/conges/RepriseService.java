@@ -72,7 +72,7 @@ public class RepriseService extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public RepriseService(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state = "etabli";
 	}
@@ -91,7 +91,7 @@ public class RepriseService extends BaseElement implements Serializable, Compara
 	 */
 	public RepriseService(long id, String designation, String moduleName, String code, Date date, Employe employe,
 			DemandeConge conge) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.date = date;
 		this.employe = employe;
@@ -100,7 +100,7 @@ public class RepriseService extends BaseElement implements Serializable, Compara
 	}
 	
 	public RepriseService(RepriseService reprise) {
-		super(reprise.id, reprise.designation, reprise.moduleName);
+		super(reprise.id, reprise.designation, reprise.moduleName,reprise.compareid);
 		this.code = reprise.code;
 		this.date = reprise.date;
 		state = reprise.state;

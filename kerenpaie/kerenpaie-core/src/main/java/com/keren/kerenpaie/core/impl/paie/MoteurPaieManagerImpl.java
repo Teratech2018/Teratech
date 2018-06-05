@@ -195,6 +195,8 @@ public class MoteurPaieManagerImpl
             Double salcot = 0.0;
             //Salaire de base taxable
             Double salTaxable = 0.0;
+            //Salaire de base Exceptionel
+            Double salbaseexcep = 0.0;
             //Initialisation du cache
             executorCache = new HashMap<String , LigneElementVariable>();    	
             Employe salarie = employedao.findByPrimaryKey("id", bulletin.getEmploye().getId());
@@ -211,9 +213,10 @@ public class MoteurPaieManagerImpl
             Rubrique rubrique =null;
             /**
              * Phase 1 Traitement des rubriques qui participe au
-             * 1- SALCO
-             * 2 - SBB
-             * 3-SALTAX
+             * 1- SALCO : Salaire cotisable
+             * 2 - SBB:Salaire de base brut
+             * 3-SALTAX : Salaire taxable
+             * 4-SBEX:Salaire de base Exceptionnel
              */
             short index = 0;
             /**
@@ -252,6 +255,9 @@ public class MoteurPaieManagerImpl
 			if(rubrique.getCotisablesal()!=null && rubrique.getCotisablesal().equals(Boolean.TRUE)){
 				salcot += ligne.getTauxsal();
 			}//end if(rubrique.getCotisablesal().equals(Boolean.TRUE))
+                        if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
+                                salbaseexcep+= ligne.getTauxsal();
+                        }//end if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
     			continue;
     		}//end if(ligne.getValeur().compareTo(0.0)>0){  
     		rubrique = rubriquedao.findByPrimaryKey("id", ligne.getRubrique().getId());
@@ -276,6 +282,9 @@ public class MoteurPaieManagerImpl
 			if(rubrique.getCotisablesal()!=null && rubrique.getCotisablesal().equals(Boolean.TRUE)){
 				salcot += ligne.getTauxsal();
 			}//end if(rubrique.getCotisablesal().equals(Boolean.TRUE))
+                        if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
+                                salbaseexcep+= ligne.getTauxsal();
+                        }//end if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
 		}//end for(LigneBulletinPaie ligne:bulletin.getLignes())
                 /**
                  * Mise a jour du SBB SALCO et SALTAX
@@ -290,6 +299,9 @@ public class MoteurPaieManagerImpl
                         if(executorCache.get("SALTAX")!=null){
                                 executorCache.get("SALTAX").setValeur(salTaxable);
                         }//end if(executorCache.get("SALTAX")!=null){
+                        if(executorCache.get("SBEX")!=null){
+                                executorCache.get("SBEX").setValeur(salbaseexcep);
+                        }//end if(executorCache.get("SBEX")!=null){
                 }//end if(executorCache!=null){
 
                 //Mise a jour des Variables base sur des variables SBB SALCO SALTAX
@@ -506,7 +518,22 @@ public class MoteurPaieManagerImpl
 		//Construction du cache devant contenir
 		Map<String, Planification> weekDay = new HashMap<String, Planification>();
 		for(Planification plan:structure.getPlanifications()){
-			weekDay.put(plan.getCode(), plan);
+                       if(plan.getCode().trim().equalsIgnoreCase("0")){
+                           weekDay.put("Lundi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("1")){
+                           weekDay.put("Mardi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("2")){
+                           weekDay.put("Mercredi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("3")){
+                           weekDay.put("Jeudi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("4")){
+                           weekDay.put("Vendredi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("5")){
+                           weekDay.put("Samedi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("6")){
+                           weekDay.put("Dimanche", plan);
+                       }//end if(plan.getCode().trim().equalsIgnoreCase("0")){
+			
 		}//end for(Planification plan:structure.getPlanifications()){
 		Calendar c = Calendar.getInstance();
 		c.setTime(jour);
@@ -614,7 +641,22 @@ public class MoteurPaieManagerImpl
 		//Construction du cache devant contenir
 		Map<String, Planification> weekDay = new HashMap<String, Planification>();
 		for(Planification plan:structure.getPlanifications()){
-			weekDay.put(plan.getCode(), plan);
+                       if(plan.getCode().trim().equalsIgnoreCase("0")){
+                           weekDay.put("Lundi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("1")){
+                           weekDay.put("Mardi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("2")){
+                           weekDay.put("Mercredi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("3")){
+                           weekDay.put("Jeudi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("4")){
+                           weekDay.put("Vendredi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("5")){
+                           weekDay.put("Samedi", plan);
+                       }else if(plan.getCode().trim().equalsIgnoreCase("6")){
+                           weekDay.put("Dimanche", plan);
+                       }//end if(plan.getCode().trim().equalsIgnoreCase("0")){
+			
 		}//end for(Planification plan:structure.getPlanifications()){
 		Date begin = periode.getDdebut();
 		do{

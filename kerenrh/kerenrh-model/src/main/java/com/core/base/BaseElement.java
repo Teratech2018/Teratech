@@ -7,6 +7,7 @@ package com.core.base;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -74,17 +75,18 @@ public class BaseElement implements Serializable{
      * 
      * @param id
      * @param designation
-     * @param moduleName 
+     * @param moduleName
+     * @param compareid 
      */
-    public BaseElement(long id, String designation, String moduleName) {
+    public BaseElement(long id, String designation, String moduleName,long compareid) {
         this.id = id;
         this.designation = designation;
         this.moduleName = moduleName;
-        this.compareid = id ;
+        this.compareid = compareid;
     }
 
     public long getCompareid() {
-        return id;
+        return compareid;
     }
 
     public void setCompareid(long compareid) {

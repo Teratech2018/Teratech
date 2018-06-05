@@ -69,7 +69,7 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public FichePointage(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -88,7 +88,7 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
  */
 	public FichePointage(long id, String designation, String moduleName, String code, Boolean actif, String intitule,
 			String porte, Departement departement, List<LigneFichePointage> lignes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.actif = actif;
 		this.intitule = intitule;
@@ -102,7 +102,7 @@ public class FichePointage extends BaseElement implements Serializable, Comparab
 	 * @param fiche
 	 */
 	public FichePointage(FichePointage fiche) {
-		super(fiche.id, fiche.designation, fiche.moduleName);
+		super(fiche.id, fiche.designation, fiche.moduleName,fiche.compareid);
 		this.code = fiche.code;
 		this.actif = fiche.actif;
 		this.intitule = fiche.intitule;
