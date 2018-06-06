@@ -79,7 +79,7 @@ public class Sanction extends BaseElement implements Serializable, Comparable<Sa
 	 * @param moduleName
 	 */
 	public Sanction(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -99,7 +99,7 @@ public class Sanction extends BaseElement implements Serializable, Comparable<Sa
 
 	public Sanction(long id, String designation, String moduleName, String sanction, String reference,
 			DemandeExplication demande, Date dateeffet, Employe concerne, String compterendu) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.sanction = sanction;
 		this.reference = reference;
 		this.demande = demande;
@@ -113,7 +113,7 @@ public class Sanction extends BaseElement implements Serializable, Comparable<Sa
 	 * @param san
 	 */
 	public Sanction(Sanction san) {
-		super(san.id, san.designation, san.moduleName);
+		super(san.id, san.designation, san.moduleName,san.compareid);
 		this.sanction = san.sanction;
 		this.reference = san.reference;		
 		this.dateeffet = san.dateeffet;

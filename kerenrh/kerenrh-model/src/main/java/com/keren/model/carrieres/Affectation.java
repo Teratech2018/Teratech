@@ -100,7 +100,7 @@ public class Affectation extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public Affectation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -124,7 +124,7 @@ public class Affectation extends BaseElement implements Serializable, Comparable
 	public Affectation(long id, String designation, String moduleName, Employe salarie, String code, Poste posteA,
 			Poste posteN, Fonction fonctionA, Fonction fonctionN, String lieuA, String lieuN, Date deffet,
 			Date decision) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie = salarie;
 		this.code = code;
 		this.posteA = posteA;
@@ -138,7 +138,7 @@ public class Affectation extends BaseElement implements Serializable, Comparable
 	}
 	
 	public Affectation(Affectation affect) {
-		super(affect.id, affect.designation, affect.moduleName);
+		super(affect.id, affect.designation, affect.moduleName,affect.compareid);
 		if(affect.salarie!=null){
 			this.salarie = new Employe(affect.salarie);
 		}

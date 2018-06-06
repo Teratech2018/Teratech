@@ -51,7 +51,7 @@ public class CategorieModule extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public CategorieModule(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -66,7 +66,7 @@ public class CategorieModule extends BaseElement implements Serializable, Compar
 	 */
 
 	public CategorieModule(long id, String designation, String moduleName, String code, String intitule, String note) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 		this.note = note;
@@ -77,7 +77,7 @@ public class CategorieModule extends BaseElement implements Serializable, Compar
 	 * @param cate
 	 */
 	public CategorieModule(CategorieModule cate) {
-		super(cate.id, cate.designation, cate.moduleName);
+		super(cate.id, cate.designation, cate.moduleName,cate.compareid);
 		this.code = cate.code;
 		this.intitule = cate.intitule;
 		this.note = cate.note;

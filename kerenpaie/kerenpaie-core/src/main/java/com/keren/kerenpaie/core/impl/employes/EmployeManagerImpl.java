@@ -112,8 +112,16 @@ public class EmployeManagerImpl
 	}
 
     @Override
+    public void processBeforeSave(Employe entity) {
+        System.out.println(EmployeManagerImpl.class.toString()+" ================= "+entity);         
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+        
+    @Override
     public void processBeforeUpdate(Employe entity) {
         Employe old = dao.findByPrimaryKey("id", entity.getId());
+        System.out.println(EmployeManagerImpl.class.toString()+" ================= "+entity);
         if(entity.getCv()!=old.getCv()){
             //Suppression de l'ancien CV
              File cible = new File(FileHelper.getStaticDirectory()+File.separator+old.getCv());
@@ -143,7 +151,7 @@ public class EmployeManagerImpl
 
     @Override
     public void processAfterSave(Employe entity) {
-         if(entity.getCv()==null||entity.getCv().trim().isEmpty()){
+        if(entity.getCv()==null||entity.getCv().trim().isEmpty()){
             return ;
         }//end if(entity.getCv()==null||entity.getCv().trim().isEmpty()){
         File temporal = new File(FileHelper.getTemporalDirectory()+File.separator+entity.getCv());

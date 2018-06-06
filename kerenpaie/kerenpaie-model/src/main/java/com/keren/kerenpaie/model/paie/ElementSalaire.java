@@ -85,7 +85,7 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public ElementSalaire(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -108,7 +108,7 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	public ElementSalaire(long id, String designation, String moduleName, String type, Employe employe, Double valeur,
 			List<Rubrique> rubriques, Boolean eau, Boolean logement, Boolean electricite, Boolean vehicule,
 			Boolean alimentaire) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.type = type;
 		this.employe = employe;
 		this.valeur = valeur;
@@ -121,7 +121,7 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	}
 	
 	public ElementSalaire(ElementSalaire elt) {
-		super(elt.id, elt.designation, elt.moduleName);
+		super(elt.id, elt.designation, elt.moduleName,elt.compareid);
 		this.type = elt.type;
 		if(elt.employe!=null){
 			this.employe = new Employe(elt.employe);

@@ -62,7 +62,7 @@ public class LigneConvension extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public LigneConvension(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -79,7 +79,7 @@ public class LigneConvension extends BaseElement implements Serializable, Compar
 
 	public LigneConvension(long id, String designation, String moduleName, Categorie categorie, Echelon echelon,
 			Double salbase, String state) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.categorie = categorie;
 		this.echelon = echelon;
 		this.salbase = salbase;
@@ -93,7 +93,7 @@ public class LigneConvension extends BaseElement implements Serializable, Compar
 	 * @param salbase
 	 */
 	public LigneConvension(Categorie categorie, Echelon echelon,Double salbase) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.categorie = categorie;
 		this.echelon = echelon;
 		this.salbase = salbase;
@@ -106,7 +106,7 @@ public class LigneConvension extends BaseElement implements Serializable, Compar
 	 * @param ligne
 	 */
 	public LigneConvension(LigneConvension ligne) {
-		super(ligne.id, ligne.designation, ligne.moduleName);
+		super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
 		if(ligne.categorie!=null){
 			this.categorie = new Categorie(ligne.categorie);
 		}

@@ -77,7 +77,7 @@ public class Variable extends BaseElement implements Serializable, Comparable<Va
 	 * @param moduleName
 	 */
 	public Variable(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -99,7 +99,7 @@ public class Variable extends BaseElement implements Serializable, Comparable<Va
 	 */
 	public Variable(long id, String designation, String moduleName, String code, Societe societe, String description,
 			Boolean repannuel, Boolean repmens, String typevar, String methodcal, String formule) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.societe = societe;
 		this.description = description;
@@ -115,7 +115,7 @@ public class Variable extends BaseElement implements Serializable, Comparable<Va
 	 * @param var
 	 */
 	public Variable(Variable var) {
-		super(var.id, var.designation, var.moduleName);
+		super(var.id, var.designation, var.moduleName,var.compareid);
 		this.code = var.code;
 		if(var.societe!=null){
 			this.societe = new Societe(var.societe);

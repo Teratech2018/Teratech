@@ -47,7 +47,7 @@ public class TraitSalaire extends BaseElement implements Serializable, Comparabl
 	 * @param moduleName
 	 */
 	public TraitSalaire(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -64,13 +64,13 @@ public class TraitSalaire extends BaseElement implements Serializable, Comparabl
 	 */
 	public TraitSalaire(long id, String designation, String moduleName, PeriodePaie periode, String porte,
 			List<Employe> concernes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		
 	}
 	
 	public TraitSalaire(TraitSalaire prepa) {
-		super(prepa.id, prepa.designation, prepa.moduleName);
+		super(prepa.id, prepa.designation, prepa.moduleName,prepa.compareid);
 		if(prepa.periode!=null){
 			this.periode = new PeriodePaie(prepa.periode);
 		}

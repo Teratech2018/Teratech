@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+import com.keren.kerenpaie.model.structures.Departement;
 import com.megatim.common.annotations.Predicate;
+import javax.persistence.Lob;
 
 /**
  * @author BEKO
@@ -29,13 +31,13 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	@Predicate(label="Code",optional=false,unique=true,search=true)
 	private String code;
 
-//	@ManyToOne
-//	@JoinColumn(name="DEP_ID")
-//	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true)
-//	private Departement departement ;
-	
 	@Predicate(label="Nom du poste",optional=false,search=true)
 	private String intitule ;
+	
+	@ManyToOne
+	@JoinColumn(name="DEP_ID")
+	@Predicate(label="Département",type=Departement.class,target="many-to-one",search=true)
+	private Departement departement ;
 	
 	@ManyToOne
 	@JoinColumn(name="FON_ID")
@@ -47,6 +49,7 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	private Boolean responsable = Boolean.FALSE;
 	
 	@Predicate(label="Description",group=true,groupName="group1",groupLabel="Description du poste",target="textarea")
+        @Lob
 	private String description ;
 	/**
 	 * 
@@ -61,14 +64,14 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	 * @param moduleName
 	 */
 	public Poste(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public Poste(Poste poste) {
-		super(poste.id, poste.designation, poste.moduleName);
+		super(poste.id, poste.designation, poste.moduleName,poste.compareid);
 		this.code = poste.code;
 //		if(poste.departement!=null){
 //			this.departement = new Departement(poste.departement);
@@ -89,13 +92,13 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 		this.code = code;
 	}
 
-//	public Departement getDepartement() {
-//		return departement;
-//	}
-//
-//	public void setDepartement(Departement departement) {
-//		this.departement = departement;
-//	}
+	public Departement getDepartement() {
+		return departement;
+	}
+
+	public void setDepartement(Departement departement) {
+		this.departement = departement;
+	}
 
 	public String getIntitule() {
 		return intitule;

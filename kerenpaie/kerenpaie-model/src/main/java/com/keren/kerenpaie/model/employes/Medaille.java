@@ -53,7 +53,7 @@ public class Medaille extends BaseElement implements Serializable, Comparable<Me
 	 * @param moduleName
 	 */
 	public Medaille(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -70,7 +70,7 @@ public class Medaille extends BaseElement implements Serializable, Comparable<Me
 
 	public Medaille(long id, String designation, String moduleName, String code, String type, String description,
 			Date recu) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.type = type;
 		this.description = description;
@@ -86,7 +86,7 @@ public class Medaille extends BaseElement implements Serializable, Comparable<Me
 	 */
 	public Medaille(String code, String type, String description,
 			Date recu) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.code = code;
 		this.type = type;
 		this.description = description;
@@ -94,7 +94,7 @@ public class Medaille extends BaseElement implements Serializable, Comparable<Me
 	}
 
 	public Medaille(Medaille medaille) {
-		super(medaille.id, medaille.designation, medaille.moduleName);
+		super(medaille.id, medaille.designation, medaille.moduleName,medaille.compareid);
 		this.code = medaille.code;
 		this.type = medaille.type;
 		this.description = medaille.description;

@@ -55,14 +55,14 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 	 * @param moduleName
 	 */
 	public Categorie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public Categorie(Categorie cat) {
-		super(cat.id, cat.designation, cat.moduleName);
+		super(cat.id, cat.designation, cat.moduleName,cat.compareid);
 		this.code = cat.code;
 		this.type = cat.type;		
 	}

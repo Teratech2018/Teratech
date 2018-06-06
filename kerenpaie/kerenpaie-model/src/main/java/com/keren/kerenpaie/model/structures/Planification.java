@@ -24,7 +24,7 @@ public class Planification extends BaseElement implements Serializable, Comparab
 	 */
 	private static final long serialVersionUID = 5991012280225727402L;
 
-	@Predicate(label="JOUR",optional=false,search=true)
+	@Predicate(label="JOUR",target = "combobox",values = "Lundi;Mardi;Mercredi;Jeudi;Vendredi;Samedi;Dimanche",optional=false,search=true)
 	private String code;
 	
 	@Predicate(label="Est Ouvert?",type=Boolean.class,optional=false,search=true)
@@ -45,20 +45,20 @@ public class Planification extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public Planification(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public Planification(long id, String designation, String moduleName, Boolean ouvert, Double heures) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.ouvert = ouvert;
 		this.heures = heures;
 	}
 	
 	public Planification(String jour, Boolean ouvert, Double heures) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.code = jour;
 		this.ouvert = ouvert;
 		this.heures = heures;
@@ -73,7 +73,7 @@ public class Planification extends BaseElement implements Serializable, Comparab
 	 * @param heures
 	 */
 	public Planification(Planification plan) {
-		super(plan.id, plan.designation, plan.moduleName);
+		super(plan.id, plan.designation, plan.moduleName,plan.compareid);
 		this.ouvert = plan.ouvert;
 		this.heures = plan.heures;
 		this.code = plan.code;
@@ -108,7 +108,7 @@ public class Planification extends BaseElement implements Serializable, Comparab
 	@Override
 	public int compareTo(Planification arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return code.compareTo(arg0.code);
 	}
 
 	@Override

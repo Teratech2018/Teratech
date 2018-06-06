@@ -127,7 +127,7 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
   public Societe(long id, String designation, String moduleName, String image, String code, String intitule,
 		String adresse, String telephone, String ville, String fax, String codePostal, String courriel, Pays pays,
 		String numFiscal, String siteWeb, String registre, Devise devise, Societe societeMere) {
-	super(id, designation, moduleName);
+	super(id, designation, moduleName,0L);
 	this.image = image;
 	this.code = code;
 	this.intitule = intitule;
@@ -146,7 +146,7 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
 }
 
 public Societe(Societe societe) {
-	super(societe.id, societe.designation, societe.moduleName);
+	super(societe.id, societe.designation, societe.moduleName,societe.compareid);
       this.image = societe.image;
       this.code = societe.code;
       this.intitule = societe.designation;

@@ -76,7 +76,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public ElementVariable(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -94,12 +94,12 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 	public ElementVariable(long id, String designation, String moduleName, Employe salarie, RemboursementAvance avance,
 			RemboursementPret pret, Acompte acompte, Rappel rappel) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie0 = salarie;		
 	}
 	
 	public ElementVariable(ElementVariable elem) {
-		super(elem.id, elem.designation, elem.moduleName);
+		super(elem.id, elem.designation, elem.moduleName,elem.compareid);
 		if(elem.salarie0!=null){
 			this.salarie0 = new Employe(elem.salarie0);
 		}		

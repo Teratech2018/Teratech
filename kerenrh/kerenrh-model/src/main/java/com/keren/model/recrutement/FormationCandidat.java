@@ -61,7 +61,7 @@ public class FormationCandidat extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public FormationCandidat(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -78,7 +78,7 @@ public class FormationCandidat extends BaseElement implements Serializable, Comp
 
 	public FormationCandidat(long id, String designation, String moduleName, String type, NiveauEtude niveau,
 			Specialite specialite, Etablissement ecole) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.type = type;
 		this.niveau = niveau;
 		this.specialite = specialite;
@@ -86,7 +86,7 @@ public class FormationCandidat extends BaseElement implements Serializable, Comp
 	}
 	
 	public FormationCandidat(FormationCandidat formation) {
-		super(formation.id, formation.designation, formation.moduleName);
+		super(formation.id, formation.designation, formation.moduleName,formation.compareid);
 		this.type = formation.type;
 		this.niveau = formation.niveau;
 		this.specialite = formation.specialite;

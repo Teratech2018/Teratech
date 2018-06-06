@@ -130,7 +130,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
     }
 
     public Article(String image, String code, String intitule, FamilleArticle famille, String codebarre, Double puachat, UniteAchat uniteachat, Double puvente, UniteGestion unitevente, String reference, Article substitut, Double poidnet, Double poidbrut, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.image = image;
         this.code = code;
         this.intitule = intitule;
@@ -152,7 +152,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
      * @param art 
      */
     public Article(Article art) {
-        super(art.id, art.designation, art.moduleName);
+        super(art.id, art.designation, art.moduleName,art.compareid);
         this.image = art.image;
         this.code = art.code;
         this.intitule = art.intitule;

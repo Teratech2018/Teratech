@@ -80,7 +80,7 @@ public class LienEmplacement extends BaseElement implements Serializable,Compara
      * @param moduleName 
      */
     public LienEmplacement(Emplacement emplacement, Double stock, Double prevision, Double terme, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.emplacement = emplacement;
         this.stock = stock;
         this.prevision = prevision;
@@ -92,7 +92,7 @@ public class LienEmplacement extends BaseElement implements Serializable,Compara
      * @param empl 
      */
     public LienEmplacement(LienEmplacement empl) {
-        super(empl.id, empl.designation, empl.moduleName);
+        super(empl.id, empl.designation, empl.moduleName,empl.compareid);
         this.emplacement = new Emplacement(empl.emplacement);
         this.stock = empl.stock;
         this.prevision = empl.prevision;

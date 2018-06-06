@@ -43,7 +43,7 @@ public class ClotureExerciceComptable extends BaseElement implements Serializabl
      * @param moduleName 
      */
     public ClotureExerciceComptable(ExerciceComptable exercice, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.exercice = exercice;
     }
 

@@ -64,7 +64,7 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public ParametreAvance(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -80,7 +80,7 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 
 	public ParametreAvance(long id, String designation, String moduleName, String type,
 			List<LignePonderationSalaire> fonctions, List<LignePonderationTypeContrat> typescontrats) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.type = type;
 		this.fonctions = fonctions;
 		this.typescontrats = typescontrats;
@@ -91,7 +91,7 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	 * @param pa
 	 */
 	public ParametreAvance(ParametreAvance pa) {
-		super(pa.id, pa.designation, pa.moduleName);
+		super(pa.id, pa.designation, pa.moduleName,pa.compareid);
 		this.type = pa.type;
 		this.code = pa.code;
 		this.state = pa.state;

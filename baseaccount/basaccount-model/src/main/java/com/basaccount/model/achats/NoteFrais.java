@@ -111,7 +111,7 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
      * @param moduleName 
      */
     public NoteFrais(String code, Tier fournisseur, Date date, Compte compte, Date decheance, String memo, JournalComptable journal, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.fournisseur = fournisseur;
         this.date = date;
@@ -126,7 +126,7 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
      * @param note 
      */
     public NoteFrais(NoteFrais note) {
-        super(note.id, note.designation, note.moduleName);
+        super(note.id, note.designation, note.moduleName,note.compareid);
         this.code = note.code;
         if(note.fournisseur!=null){
             this.fournisseur = new Tier(note.fournisseur);

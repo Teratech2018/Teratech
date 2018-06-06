@@ -92,7 +92,7 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public Retrogradation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 		state ="etabli";
 	}
@@ -112,7 +112,7 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 
 	public Retrogradation(long id, String designation, String moduleName, Employe salarie, String code,
 			Categorie categorieA, Categorie categorieN, Date denreg, Date deffet) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie = salarie;
 		this.code = code;
 		this.categorieA = categorieA;
@@ -126,7 +126,7 @@ public class Retrogradation extends BaseElement implements Serializable, Compara
 	 * @param reclassement
 	 */
 	public Retrogradation(Retrogradation reclassement) {
-		super(reclassement.id, reclassement.designation, reclassement.moduleName);
+		super(reclassement.id, reclassement.designation, reclassement.moduleName,reclassement.compareid);
 		if(reclassement.salarie!=null){
 			this.salarie = new Employe(reclassement.salarie);
 		}

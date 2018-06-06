@@ -69,7 +69,7 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public ResultatMission(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -94,7 +94,7 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 	public ResultatMission(long id, String designation, String moduleName, String code, Date dcreation, String intitule,
 			Date dvalidation, String type, Date dapprob, CategorieMission categorie, Date dcloture, Date ddebut,
 			Date dfin, Double cout) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.dcreation = dcreation;
 		this.intitule = intitule;
@@ -102,7 +102,7 @@ public class ResultatMission extends BaseElement implements Serializable, Compar
 	}
 	
 	public ResultatMission(ResultatMission mission) {
-		super(mission.id, mission.designation, mission.moduleName);
+		super(mission.id, mission.designation, mission.moduleName,mission.compareid);
 		this.code = mission.code;
 		this.dcreation = mission.dcreation;
 		this.intitule = mission.intitule;

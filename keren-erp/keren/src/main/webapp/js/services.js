@@ -101,6 +101,13 @@ angular.module("mainApp")
            findById:function(id){
                  return restResource.get({id:id,path:'byid',propertyname:'id'});
            },
+            /**
+              find entity in the back data store with a specific ID
+              @entity: id : id of the entity to find
+            **/
+           findByCompareid:function(id){
+                 return restResource.get({id:id,path:'byid',propertyname:'compareid'});
+           },
            /**
             * Retourn un boolean 
             * true : la contrainte d'unicite est verifier
@@ -116,10 +123,10 @@ angular.module("mainApp")
             */
            uniqueProperties:function(properties){
                $http.defaults.headers.common['properties']=angular.toJson(properties);
-               //console.log(" uniqueProperties == "+angular.toJson(properties));
+//               console.log(" uniqueProperties:function(properties) ========= == "+angular.toJson(properties));
                 if(angular.isDefined(restResource)){
                     return  restResource.query({path:'unique'});
-                 }
+                }//end if(angular.isDefined(restResource))
            },
            /**
               find all entities in the back data store 
@@ -134,6 +141,13 @@ angular.module("mainApp")
             **/
            findByStringProperty:function(propertyName , value){
                     return restResource.query({path:'bystringproperty',propertyname:propertyName,value:value});
+           },
+            /**
+              find entity in the back data store with a specific ID
+              @entity: id : id of the entity to find
+            **/
+           findByLongProperty:function(propertyName , value){
+                    return restResource.query({path:'bylongproperty',propertyname:propertyName,value:value});
            },
            /**
               find entities which match a specific criteria in the back data store 

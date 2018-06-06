@@ -38,7 +38,7 @@ public class PeriodePaieClose extends BaseElement implements Serializable, Compa
 	 * @param moduleName
 	 */
 	public PeriodePaieClose(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	

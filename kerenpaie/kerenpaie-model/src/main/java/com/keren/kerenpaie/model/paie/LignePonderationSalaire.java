@@ -48,7 +48,7 @@ public class LignePonderationSalaire extends BaseElement implements Serializable
 	 * @param moduleName
 	 */
 	public LignePonderationSalaire(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -62,7 +62,7 @@ public class LignePonderationSalaire extends BaseElement implements Serializable
 	 */
 
 	public LignePonderationSalaire(long id, String designation, String moduleName, Fonction fonction, Double taux) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.fonction = fonction;
 		this.taux = taux;
 	}
@@ -73,7 +73,7 @@ public class LignePonderationSalaire extends BaseElement implements Serializable
 	 * @param taux
 	 */
 	public LignePonderationSalaire(Fonction fonction, Double taux) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.fonction = fonction;
 		this.taux = taux;
 	}
@@ -83,7 +83,7 @@ public class LignePonderationSalaire extends BaseElement implements Serializable
 	 * @param ponderation
 	 */
 	public LignePonderationSalaire(LignePonderationSalaire ponderation) {
-		super(ponderation.id, ponderation.designation, ponderation.moduleName);
+		super(ponderation.id, ponderation.designation, ponderation.moduleName,ponderation.compareid);
 		if(ponderation.fonction!=null){
 			this.fonction = new Fonction(ponderation.fonction);
 		}

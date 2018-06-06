@@ -107,7 +107,7 @@ public class EcritureComptable extends BaseElement implements Serializable,Compa
      * @param moduleName 
      */
     public EcritureComptable(String libelle, Compte compte, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.libelle = libelle;
         this.compte = compte;
     }
@@ -125,7 +125,7 @@ public class EcritureComptable extends BaseElement implements Serializable,Compa
      * @param moduleName 
      */
     public EcritureComptable(Date dateEcriture, String refPiece, String libelle, JournalComptable journal, Compte compte, Tier tier, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.dateEcriture = dateEcriture;
         this.refPiece = refPiece;
         this.libelle = libelle;
@@ -139,7 +139,7 @@ public class EcritureComptable extends BaseElement implements Serializable,Compa
      * @param ecriture 
      */
     public EcritureComptable(EcritureComptable ecriture) {
-        super(ecriture.id, ecriture.designation, ecriture.moduleName);
+        super(ecriture.id, ecriture.designation, ecriture.moduleName,ecriture.compareid);
         this.dateEcriture = ecriture.dateEcriture;
         this.refPiece = ecriture.refPiece;
         this.libelle = ecriture.libelle;

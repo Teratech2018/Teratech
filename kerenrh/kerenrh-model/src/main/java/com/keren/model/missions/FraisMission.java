@@ -56,7 +56,7 @@ public class FraisMission extends BaseElement implements Serializable, Comparabl
 	 * @param moduleName
 	 */
 	public FraisMission(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -74,7 +74,7 @@ public class FraisMission extends BaseElement implements Serializable, Comparabl
 
 	public FraisMission(long id, String designation, String moduleName, CategorieFrais categorie, String type,
 			String groupe, String mode, Double montant) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.categorie = categorie;
 		this.type = type;
 		this.groupe = groupe;
@@ -83,7 +83,7 @@ public class FraisMission extends BaseElement implements Serializable, Comparabl
 	}
 	
 	public FraisMission(FraisMission frais) {
-		super(frais.id, frais.designation, frais.moduleName);
+		super(frais.id, frais.designation, frais.moduleName,frais.compareid);
 		if(frais.categorie!=null){
 			this.categorie = new CategorieFrais(frais.categorie);
 		}

@@ -77,7 +77,7 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	 * @param moduleName
 	 */
 	public Acompte(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -94,7 +94,7 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 
 	public Acompte(long id, String designation, String moduleName, Employe employe, Date effet, Double montant,
 			String description) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.employe = employe;
 		this.effet = effet;
 		this.montant = montant;
@@ -106,7 +106,7 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	 * @param acompte
 	 */
 	public Acompte(Acompte acompte) {
-		super(acompte.id, acompte.designation, acompte.moduleName);
+		super(acompte.id, acompte.designation, acompte.moduleName,acompte.compareid);
 		if(acompte.employe!=null){
 			this.employe = new Employe(acompte.employe);
 		}

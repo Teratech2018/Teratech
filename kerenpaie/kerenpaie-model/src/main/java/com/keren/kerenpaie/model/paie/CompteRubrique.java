@@ -66,7 +66,7 @@ public class CompteRubrique extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public CompteRubrique(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -84,7 +84,7 @@ public class CompteRubrique extends BaseElement implements Serializable, Compara
 
 	public CompteRubrique(long id, String designation, String moduleName, Societe agence, Compte chargesalarial,
 			Compte comptetiersal, Compte chargepatronal, Compte chargetierpatronal) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.agence = agence;
 		this.chargesalarial = chargesalarial;
 		this.tiersal = comptetiersal;
@@ -93,7 +93,7 @@ public class CompteRubrique extends BaseElement implements Serializable, Compara
 	}
 
 	public CompteRubrique(CompteRubrique rub) {
-		super(rub.id, rub.designation, rub.moduleName);
+		super(rub.id, rub.designation, rub.moduleName,rub.compareid);
 		if(rub.agence!=null){
 			this.agence = new Societe(rub.agence);
 		}

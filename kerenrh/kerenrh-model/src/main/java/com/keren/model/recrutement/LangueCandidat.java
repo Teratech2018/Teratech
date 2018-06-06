@@ -43,7 +43,7 @@ public class LangueCandidat extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public LangueCandidat(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -58,13 +58,13 @@ public class LangueCandidat extends BaseElement implements Serializable, Compara
 	 */
 
 	public LangueCandidat(long id, String designation, String moduleName, String langue, String niveau) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.langue = langue;
 		this.niveau = niveau;
 	}
 	
 	public LangueCandidat(LangueCandidat langue) {
-		super(langue.id, langue.designation, langue.moduleName);
+		super(langue.id, langue.designation, langue.moduleName,langue.compareid);
 		this.langue = langue.langue;
 		this.niveau = langue.niveau;
 	}

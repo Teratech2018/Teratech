@@ -94,10 +94,7 @@ public class EmployeRSImpl
 
         // TODO Auto-generated method stub
         Employe entity = manager.find("id", id);
-
-        try{
-
-            //on supprimme l'objet
+        try{          //on supprimme l'objet
             super.delete(id);
 
         }catch(Exception ex){

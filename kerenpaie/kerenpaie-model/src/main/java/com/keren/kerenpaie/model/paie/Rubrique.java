@@ -130,7 +130,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	}
 
 	public Rubrique(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -162,7 +162,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 			String label, String type, Compte compte, String formule, Double tauxtax, Double tauxsal, Double tauxpat,
 			Boolean acomptesal, Boolean brutsal, Boolean congesal, Boolean cotisablesal, Boolean proratesal,
 			Boolean baseexcepsal, Boolean rappelsal) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.societe = societe;
 		this.porte = porte;
@@ -183,7 +183,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	}
 
 	public Rubrique(Rubrique rubrique) {
-		super(rubrique.id, rubrique.designation, rubrique.moduleName);
+		super(rubrique.id, rubrique.designation, rubrique.moduleName,rubrique.compareid);
 		this.code = rubrique.code;
 		if(rubrique.societe!=null){
 			this.societe = new Societe(rubrique.societe);

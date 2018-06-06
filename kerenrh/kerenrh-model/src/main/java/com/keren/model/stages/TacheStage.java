@@ -49,7 +49,7 @@ public class TacheStage extends BaseElement implements Serializable, Comparable<
 	 * @param moduleName
 	 */
 	public TacheStage(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -64,14 +64,14 @@ public class TacheStage extends BaseElement implements Serializable, Comparable<
 	 */
 
 	public TacheStage(long id, String designation, String moduleName, String code, String diff, String propo) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.diff = diff;
 		this.propo = propo;
 	}
 	
 	public TacheStage(TacheStage tache) {
-		super(tache.id, tache.designation, tache.moduleName);
+		super(tache.id, tache.designation, tache.moduleName,tache.compareid);
 		this.code = tache.code;
 		this.diff = tache.diff;
 		this.propo = tache.propo;

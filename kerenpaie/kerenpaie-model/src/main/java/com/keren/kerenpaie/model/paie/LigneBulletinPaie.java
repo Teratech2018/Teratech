@@ -53,7 +53,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public LigneBulletinPaie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -71,7 +71,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	 */
 	public LigneBulletinPaie(long id, String designation, String moduleName, Rubrique rubrique, Double valeur,
 			Double tauxsal, Double tauxpat) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.rubrique = rubrique;
 		this.valeur = valeur;
 		this.tauxsal = tauxsal;
@@ -87,7 +87,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	 */
 	public LigneBulletinPaie(Rubrique rubrique, Double valeur,
 			Double tauxsal, Double tauxpat) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.rubrique = rubrique;
 		this.valeur = valeur;
 		this.tauxsal = tauxsal;
@@ -99,7 +99,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	 * @param ligne
 	 */
 	public LigneBulletinPaie(LigneBulletinPaie ligne) {
-		super(ligne.id, ligne.designation, ligne.moduleName);
+		super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
 		if(ligne.rubrique!=null){
 			this.rubrique = new Rubrique(ligne.rubrique);
 		}

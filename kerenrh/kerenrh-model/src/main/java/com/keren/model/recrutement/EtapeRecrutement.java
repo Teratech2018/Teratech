@@ -61,7 +61,7 @@ public class EtapeRecrutement extends BaseElement implements Serializable, Compa
 	 * @param moduleName
 	 */
 	public EtapeRecrutement(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -79,7 +79,7 @@ public class EtapeRecrutement extends BaseElement implements Serializable, Compa
      */
 	public EtapeRecrutement(long id, String designation, String moduleName, String code, Boolean dernier, Short sequ,
 			Departement departement, String note) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.dernier = dernier;
 		this.sequ = sequ;
@@ -92,7 +92,7 @@ public class EtapeRecrutement extends BaseElement implements Serializable, Compa
 	 * @param etape
 	 */
 	public EtapeRecrutement(EtapeRecrutement etape) {
-		super(etape.id, etape.designation, etape.moduleName);
+		super(etape.id, etape.designation, etape.moduleName,etape.compareid);
 		this.code = etape.code;
 		this.dernier = etape.dernier;
 		this.sequ = etape.sequ;

@@ -49,7 +49,7 @@ public class MembreConseil extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public MembreConseil(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -63,13 +63,13 @@ public class MembreConseil extends BaseElement implements Serializable, Comparab
 	 */
 
 	public MembreConseil(long id, String designation, String moduleName, Employe employe, String qualite) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.employe = employe;
 		this.qualite = qualite;
 	}
 	
 	public MembreConseil(MembreConseil mem) {
-		super(mem.id, mem.designation, mem.moduleName);
+		super(mem.id, mem.designation, mem.moduleName,mem.compareid);
 		if(mem.employe!=null){
 			this.employe = new Employe(mem.employe);
 		}

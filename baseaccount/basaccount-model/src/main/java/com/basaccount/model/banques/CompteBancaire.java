@@ -41,7 +41,7 @@ public class CompteBancaire extends BaseElement implements Serializable,Comparab
      * @param moduleName 
      */
     public CompteBancaire(String numero, Banque banque, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.numero = numero;
         this.banque = banque;
     }

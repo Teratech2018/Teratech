@@ -70,7 +70,7 @@ public class JournalComptable extends BaseElement implements Serializable,Compar
     
     public JournalComptable(long id, String designation, String moduleName, String code, String type, String label,
 			Boolean analytique, Societe societe, Boolean active) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.type = type;
 		this.label = label;
@@ -80,7 +80,7 @@ public class JournalComptable extends BaseElement implements Serializable,Compar
 	}
     
     public JournalComptable(JournalComptable journal) {
-		super(journal.id, journal.designation, journal.moduleName);
+		super(journal.id, journal.designation, journal.moduleName,journal.compareid);
 		this.code = journal.code;
 		this.type = journal.type;
 		this.label = journal.label;

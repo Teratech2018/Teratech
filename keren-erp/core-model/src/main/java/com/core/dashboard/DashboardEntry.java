@@ -45,13 +45,13 @@ public class DashboardEntry extends BaseElement implements Serializable,Comparab
      * @param moduleName 
      */
     public DashboardEntry(String code, String type, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.type = type;
     }
     
     public DashboardEntry(DashboardEntry entry) {
-        super(entry.id, entry.designation, entry.moduleName);
+        super(entry.id, entry.designation, entry.moduleName,entry.compareid);
         this.code = entry.code;
         this.type = entry.type;
         this.label = entry.label;

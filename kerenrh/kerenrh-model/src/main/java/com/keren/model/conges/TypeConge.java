@@ -47,14 +47,14 @@ public class TypeConge extends BaseElement implements Serializable, Comparable<T
 	 * @param moduleName
 	 */
 	public TypeConge(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public TypeConge(TypeConge type) {
-		super(type.id, type.designation, type.moduleName);
+		super(type.id, type.designation, type.moduleName,type.compareid);
 		this.code = type.code;
 		this.nbrejours = type.nbrejours;
 		this.nature = type.nature;

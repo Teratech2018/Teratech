@@ -45,13 +45,13 @@ public class GroupeDetail extends BaseElement implements Serializable,Comparable
      * @param moduleName 
      */
     public GroupeDetail(MenuAction menuAction, String level, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.menuAction = menuAction;
         this.habilitation = level;
     }
     
     public GroupeDetail(GroupeDetail groupe) {
-        super(groupe.id, groupe.designation, groupe.moduleName);
+        super(groupe.id, groupe.designation, groupe.moduleName,groupe.compareid);
         //this.menuAction = groupe.menuAction;
         this.habilitation = groupe.habilitation;
     }

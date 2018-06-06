@@ -64,7 +64,7 @@ public class Terme extends BaseElement implements Serializable,Comparable<Terme>
      * @param moduleName 
      */
     public Terme(String orign, String traduc, Langue langue, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.orign = orign;
         this.traduc = traduc;
         this.langue = langue;

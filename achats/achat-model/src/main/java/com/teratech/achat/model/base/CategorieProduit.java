@@ -44,7 +44,7 @@ public class CategorieProduit extends BaseElement implements Serializable,Compar
      * @param moduleName 
      */
     public CategorieProduit(String code, Boolean suiviestock, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.suiviestock = suiviestock;
     }

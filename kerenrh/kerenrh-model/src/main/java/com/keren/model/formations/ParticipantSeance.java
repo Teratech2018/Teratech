@@ -48,7 +48,7 @@ public class ParticipantSeance extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public ParticipantSeance(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -62,7 +62,7 @@ public class ParticipantSeance extends BaseElement implements Serializable, Comp
 	 */
 
 	public ParticipantSeance(long id, String designation, String moduleName, Employe salarie, Boolean present) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie = salarie;
 		this.present = present;
 	}
@@ -73,7 +73,7 @@ public class ParticipantSeance extends BaseElement implements Serializable, Comp
 	 * @param present
 	 */
 	public ParticipantSeance(Employe salarie, Boolean present) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.salarie = salarie;
 		this.present = present;
 	}
@@ -83,7 +83,7 @@ public class ParticipantSeance extends BaseElement implements Serializable, Comp
 	 * @param part
 	 */
 	public ParticipantSeance(ParticipantSeance part) {
-		super(part.id, part.designation, part.moduleName);
+		super(part.id, part.designation, part.moduleName,part.compareid);
 		if(part.salarie!=null){
 			this.salarie = new Employe(part.salarie);
 		}

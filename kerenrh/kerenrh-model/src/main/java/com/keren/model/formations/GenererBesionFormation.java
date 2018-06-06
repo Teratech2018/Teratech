@@ -55,7 +55,7 @@ public class GenererBesionFormation extends BaseElement implements Serializable,
 	 * @param moduleName
 	 */
 	public GenererBesionFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -72,7 +72,7 @@ public class GenererBesionFormation extends BaseElement implements Serializable,
 
 	public GenererBesionFormation(long id, String designation, String moduleName, Societe structure, String code,
 			String intitule, List<DemandeFormation> demandes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.structure = structure;
 		this.code = code;
 		this.intitule = intitule;
@@ -80,7 +80,7 @@ public class GenererBesionFormation extends BaseElement implements Serializable,
 	}
 	
 	public GenererBesionFormation(GenererBesionFormation bes) {
-		super(bes.id, bes.designation, bes.moduleName);
+		super(bes.id, bes.designation, bes.moduleName,bes.compareid);
 		this.structure = bes.structure;
 		this.code = bes.code;
 		this.intitule = bes.intitule;

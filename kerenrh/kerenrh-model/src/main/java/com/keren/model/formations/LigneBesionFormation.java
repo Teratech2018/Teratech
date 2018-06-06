@@ -55,7 +55,7 @@ public class LigneBesionFormation extends BaseElement implements Serializable, C
 	 * @param moduleName
 	 */
 	public LigneBesionFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -72,7 +72,7 @@ public class LigneBesionFormation extends BaseElement implements Serializable, C
 
 	public LigneBesionFormation(long id, String designation, String moduleName, String code, String description,
 			Poste poste, Short places) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.description = description;
 		this.poste = poste;
@@ -84,7 +84,7 @@ public class LigneBesionFormation extends BaseElement implements Serializable, C
 	 * @param ligne
 	 */
 	public LigneBesionFormation(LigneBesionFormation ligne) {
-		super(ligne.id, ligne.designation, ligne.moduleName);
+		super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
 		this.code = ligne.code;
 		this.description = ligne.description;
 		if(ligne.poste!=null){
@@ -94,7 +94,7 @@ public class LigneBesionFormation extends BaseElement implements Serializable, C
 	}
 	
 	public LigneBesionFormation(DemandeFormation dmde) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.code = dmde.getObjet();
 		this.description = dmde.getMotif();		
 	    this.poste = new Poste(dmde.getDemandeur().getPoste());		

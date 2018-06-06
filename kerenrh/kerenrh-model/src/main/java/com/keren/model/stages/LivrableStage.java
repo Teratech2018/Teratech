@@ -48,7 +48,7 @@ public class LivrableStage extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public LivrableStage(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -63,14 +63,14 @@ public class LivrableStage extends BaseElement implements Serializable, Comparab
 	 */
 
 	public LivrableStage(long id, String designation, String moduleName, String code, Double diff, String propo) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.quantite = diff;
 		this.propo = propo;
 	}
 	
 	public LivrableStage(LivrableStage tache) {
-		super(tache.id, tache.designation, tache.moduleName);
+		super(tache.id, tache.designation, tache.moduleName,tache.compareid);
 		this.code = tache.code;
 		this.quantite = tache.quantite;
 		this.propo = tache.propo;

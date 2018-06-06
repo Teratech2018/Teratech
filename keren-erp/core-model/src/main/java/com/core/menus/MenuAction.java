@@ -121,7 +121,7 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
      * @param menu 
      */
     public MenuAction(MenuAction menu) {
-        super(menu.id, menu.designation, menu.moduleName);
+        super(menu.id, menu.designation, menu.moduleName,menu.compareid);
         this.name = menu.name;
         this.label = menu.label;
         this.entityName = menu.entityName;
@@ -166,7 +166,7 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
      * @param moduleName 
      */
     public MenuAction(String name, String label, String entityName, String model, MenuGroupActions menu, String icon, FormRecord formView, TreeRecord treeView, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.name = name;
         this.label = label;
         this.entityName = entityName;

@@ -41,7 +41,7 @@ public class Dashboard extends BaseElement implements Serializable,Comparable<Da
      * @param moduleName 
      */
     public Dashboard(String label, String code, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.label = label;
         this.code = code;
     }

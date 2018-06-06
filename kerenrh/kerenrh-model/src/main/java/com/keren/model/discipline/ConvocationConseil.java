@@ -78,7 +78,7 @@ public class ConvocationConseil extends BaseElement implements Serializable, Com
 	 * @param moduleName
 	 */
 	public ConvocationConseil(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -97,7 +97,7 @@ public class ConvocationConseil extends BaseElement implements Serializable, Com
 
 	public ConvocationConseil(long id, String designation, String moduleName, String code, String reference, Date date,
 			Employe emetteur, List<DemandeExplication> demandes, List<MembreConseil> membres) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.reference = reference;
 		this.date = date;
@@ -107,7 +107,7 @@ public class ConvocationConseil extends BaseElement implements Serializable, Com
 	}
 	
 	public ConvocationConseil(ConvocationConseil cc) {
-		super(cc.id, cc.designation, cc.moduleName);
+		super(cc.id, cc.designation, cc.moduleName,cc.compareid);
 		this.code = cc.code;
 		this.reference = cc.reference;
 		this.date = cc.date;

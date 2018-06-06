@@ -106,7 +106,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
      * @param moduleName 
      */
     public LigneDocumentAchat(Article article, Date prevue, Double quantite, Double puht, Double totalht, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.article = article;
         this.prevue = prevue;
         this.quantite = quantite;
@@ -119,7 +119,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
      * @param ligne 
      */
     public LigneDocumentAchat(LigneDocumentAchat ligne) {
-        super(ligne.id, ligne.designation, ligne.moduleName);
+        super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
         if(ligne.article!=null){
             this.article = new Article(ligne.article);
         }

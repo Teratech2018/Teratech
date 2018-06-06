@@ -75,7 +75,7 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
      * @param moduleName 
      */
     public Lot(String code, Double quantite, Date peremption, Date fabrication, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.quantite = quantite;
         this.peremption = peremption;
@@ -83,7 +83,7 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
     }
     
      public Lot(Lot lot) {
-        super(lot.id, lot.designation, lot.moduleName);
+        super(lot.id, lot.designation, lot.moduleName,lot.compareid);
         this.code = lot.code;
         this.quantite = lot.quantite;
         this.peremption = lot.peremption;

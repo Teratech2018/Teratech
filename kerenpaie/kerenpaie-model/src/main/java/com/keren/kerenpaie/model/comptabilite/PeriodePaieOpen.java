@@ -38,7 +38,7 @@ public class PeriodePaieOpen extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public PeriodePaieOpen(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	

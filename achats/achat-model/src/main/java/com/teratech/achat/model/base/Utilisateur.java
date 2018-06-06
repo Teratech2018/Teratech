@@ -94,7 +94,7 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
      * @param moduleName 
      */
     public Utilisateur(String image, String intitule, String courriel, Societe societeCourante, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.image = image;
         this.intitule = intitule;
         this.courriel = courriel;
@@ -106,7 +106,7 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
      * @param user 
      */
    public Utilisateur(Utilisateur user) {
-        super(user.id, user.designation, user.moduleName);
+        super(user.id, user.designation, user.moduleName , user.compareid);
         this.image = user.image;
         this.intitule = user.intitule;
         this.courriel = user.courriel;

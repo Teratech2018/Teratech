@@ -90,7 +90,7 @@ public class KMessage extends BaseElement implements Serializable,Comparable<KMe
      * @param message 
      */
     public KMessage(KMessage message) {
-        super(message.id, message.designation, message.moduleName);
+        super(message.id, message.designation, message.moduleName,message.compareid);
         this.date = message.date;
         this.body = message.body;
         this.status = message.isStatus();
@@ -123,7 +123,7 @@ public class KMessage extends BaseElement implements Serializable,Comparable<KMe
      * @param moduleName 
      */
     public KMessage(Date date, String body, Utilisateur sender, Canal canal, Utilisateur reciever, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.date = date;
         this.body = body;
         this.sender = sender;

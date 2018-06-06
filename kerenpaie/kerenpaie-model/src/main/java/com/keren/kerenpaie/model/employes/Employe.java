@@ -54,12 +54,12 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	private String nom ;
 	
 	@Predicate(label="Matricule",search=true,optional=false,nullable=false,unique=true, sequence=5)
-    private String matricule ;    
+        private String matricule ;    
     
-	@Predicate(label="Genre",target="combobox",values="Masculin;Feminin" , sequence=4)
-    private String genre ="0";
+	@Predicate(label="Genre",target="combobox",values="Masculin;Feminin" , sequence=4,search = true)
+        private String genre ="0";
 	
-	@Predicate(label="Statut",type=String.class,target="combobox",values="Agent local;Agent public" ,optional=false , sequence=6)
+	@Predicate(label="Statut",type=String.class,target="combobox",values="Agent local;Agent public" ,optional=false , sequence=6,search = true)
 	private String statut ="0";
 	
 	@Predicate(label="N. Dipe" , sequence=7)
@@ -278,7 +278,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
     }
 
     public Employe(String matricule, String nom, String prenom, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.matricule = matricule;
         this.nom = nom;
         
@@ -294,7 +294,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
      * @param employ
      */
     public Employe(Employe employ) {
-		super(employ.id, employ.designation, employ.moduleName);
+		super(employ.id, employ.designation, employ.moduleName,employ.compareid);
 		this.image = employ.image;
 		this.nom = employ.nom;
 		this.matricule = employ.matricule;
@@ -365,10 +365,10 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 			this.structure = new Societe(employ.structure);
 		}
 		this.nbrejours = employ.nbrejours;
-        this.comptebancaire = employ.comptebancaire;
-        if(employ.profilpaie!=null){
-        	this.profilpaie = new ProfilPaie(employ.profilpaie);
-        }
+                this.comptebancaire = employ.comptebancaire;
+                if(employ.profilpaie!=null){
+                        this.profilpaie = new ProfilPaie(employ.profilpaie);
+                }//end if(employ.profilpaie!=null){
 	}
     
     
@@ -922,7 +922,12 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		// TODO Auto-generated method stub
 		return new String[]{"nom","matricule"};
 	}
+
+    @Override
+    public String toString() {
+        return "Employe{" + "compareid=" + compareid + ", matricule=" + matricule + ", genre=" + genre + ", statut=" + statut + ", dipe=" + dipe + ", handicape=" + handicape + ", numsec=" + numsec + ", nationalite=" + nationalite + ", contribuable=" + contribuable + ", cni=" + cni + ", datedelivrance=" + datedelivrance + ", lieudelivrance=" + lieudelivrance + ", etatcivil=" + etatcivil + ", passeport=" + passeport + ", nbreenfants=" + nbreenfants + ", naissance=" + naissance + ", lieudenaiss=" + lieudenaiss + ", adresse1=" + adresse1 + ", adresse2=" + adresse2 + ", modile=" + modile + ", mail=" + mail + ", region=" + region + ", departementsoc=" + departementsoc + ", structure=" + structure + ", categorie=" + categorie + ", echelon=" + echelon + ", indice=" + indice + ", poste=" + poste + ", departement=" + departement + ", specialite=" + specialite + ", lieuaffectation=" + lieuaffectation + ", lieurecrut=" + lieurecrut + ", fonction=" + fonction + ", cv=" + cv + ", comptebancaire=" + comptebancaire + ", profilpaie=" + profilpaie + ", compte=" + compte + ", nbrejours=" + nbrejours + ", familles=" + familles + ", contrats=" + contrats + ", syndique=" + syndique + ", affecte=" + affecte + ", anciennite=" + anciennite + ", tauxsyndical=" + tauxsyndical + ", idemlogement=" + idemlogement + ", retraitcomplementaire=" + retraitcomplementaire + ", anciennitegele=" + anciennitegele + ", salbase=" + salbase + ", cmplsalaire=" + cmplsalaire + ", noel=" + noel + ", eau=" + eau + ", logement=" + logement + ", electricite=" + electricite + ", menagere=" + menagere + ", vehicule=" + vehicule + ", alimentaire=" + alimentaire + ", rubriques=" + rubriques + ", medailles=" + medailles + '}';
+    }
 	
 	
-    
+        
 }

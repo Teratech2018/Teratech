@@ -60,7 +60,7 @@ public class Syndicat extends BaseElement implements Serializable, Comparable<Sy
 	 * @param moduleName
 	 */
 	public Syndicat(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -77,7 +77,7 @@ public class Syndicat extends BaseElement implements Serializable, Comparable<Sy
 
 	public Syndicat(long id, String designation, String moduleName, String code, Compte comptetier,
 			TypeCaisse typecaisse, Societe structure) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.comptetier = comptetier;
 		this.typecaisse = typecaisse;
@@ -89,7 +89,7 @@ public class Syndicat extends BaseElement implements Serializable, Comparable<Sy
 	 * @param syndicat
 	 */
 	public Syndicat(Syndicat syndicat) {
-		super(syndicat.id, syndicat.designation, syndicat.moduleName);
+		super(syndicat.id, syndicat.designation, syndicat.moduleName,syndicat.compareid);
 		this.code = syndicat.code;
 		if(syndicat.comptetier!=null){
 			this.comptetier = new Compte(syndicat.comptetier);

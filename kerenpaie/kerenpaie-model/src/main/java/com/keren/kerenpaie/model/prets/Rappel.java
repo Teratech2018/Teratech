@@ -77,7 +77,7 @@ public class Rappel extends BaseElement implements Serializable, Comparable<Rapp
 	 * @param moduleName
 	 */
 	public Rappel(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -95,7 +95,7 @@ public class Rappel extends BaseElement implements Serializable, Comparable<Rapp
 
 	public Rappel(long id, String designation, String moduleName, Employe employe, String type, Date debut, Date fin,
 			List<LigneRappel> lignes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.employe = employe;
 		this.type = type;
 		this.debut = debut;
@@ -108,7 +108,7 @@ public class Rappel extends BaseElement implements Serializable, Comparable<Rapp
 	 * @param rappel
 	 */
 	public Rappel(Rappel rappel) {
-		super(rappel.id, rappel.designation, rappel.moduleName);
+		super(rappel.id, rappel.designation, rappel.moduleName,rappel.compareid);
 		if(rappel.employe!=null){
 			this.employe = new Employe(rappel.employe);
 		}

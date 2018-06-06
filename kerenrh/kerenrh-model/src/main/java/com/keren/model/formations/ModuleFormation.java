@@ -63,7 +63,7 @@ public class ModuleFormation extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public ModuleFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -82,7 +82,7 @@ public class ModuleFormation extends BaseElement implements Serializable, Compar
 
 	public ModuleFormation(long id, String designation, String moduleName, String code, CategorieModule categorie,
 			String intitule, ThemeFormation theme, Short heures, Double cout) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.categorie = categorie;
 		this.intitule = intitule;
@@ -92,7 +92,7 @@ public class ModuleFormation extends BaseElement implements Serializable, Compar
 	}
 	
 	public ModuleFormation(ModuleFormation module) {
-		super(module.id, module.designation, module.moduleName);
+		super(module.id, module.designation, module.moduleName,module.compareid);
 		this.code = module.code;
 		this.categorie = module.categorie;
 		this.intitule = module.intitule;

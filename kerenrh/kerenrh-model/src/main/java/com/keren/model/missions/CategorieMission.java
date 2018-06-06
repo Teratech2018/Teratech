@@ -45,7 +45,7 @@ public class CategorieMission extends BaseElement implements Serializable, Compa
 	 * @param moduleName
 	 */
 	public CategorieMission(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -59,7 +59,7 @@ public class CategorieMission extends BaseElement implements Serializable, Compa
 	 */
 
 	public CategorieMission(long id, String designation, String moduleName, String code, String intitule) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 	}
@@ -69,7 +69,7 @@ public class CategorieMission extends BaseElement implements Serializable, Compa
 	 * @param cate
 	 */
 	public CategorieMission(CategorieMission cate) {
-		super(cate.id, cate.designation, cate.moduleName);
+		super(cate.id, cate.designation, cate.moduleName,cate.getCompareid());
 		this.code = cate.code;
 		this.intitule = cate.intitule;
 	}

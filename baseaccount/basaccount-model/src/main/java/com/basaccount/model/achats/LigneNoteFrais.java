@@ -39,7 +39,7 @@ public class LigneNoteFrais extends BaseElement implements Serializable,Comparab
     }
 
     public LigneNoteFrais(Compte compte, String libelle, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.compte = compte;
         this.libelle = libelle;
     }
@@ -49,7 +49,7 @@ public class LigneNoteFrais extends BaseElement implements Serializable,Comparab
      * @param ligne 
      */
     public LigneNoteFrais(LigneNoteFrais ligne) {
-        super(ligne.id, ligne.designation, ligne.moduleName);
+        super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
         if(ligne.compte!=null){
             this.compte = new Compte(ligne.compte);
         }
