@@ -7764,7 +7764,7 @@ $scope.gererChangementFichier3 = function(event,model){
            * Dupliquer the current object
            * @returns {undefined}
            */
-          $scope.dupliquerAction = function(){
+          $scope.dupliquerAction = function(){ 
               $scope.dataCache['resources'] = new Array();
                $scope.dataCache['names'] = new Array();
                $scope.windowType = 'new';               
