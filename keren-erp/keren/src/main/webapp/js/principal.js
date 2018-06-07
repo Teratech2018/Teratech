@@ -258,12 +258,12 @@ angular.module("mainApp")
      $scope.hideConfiguration = function(){
          if(!$rootScope.globals.user){
              return true;
-         }
+         }//end if(!$rootScope.globals.user)
          if($rootScope.globals.user.adminlevel==0||$rootScope.globals.user.adminlevel==1){
              return true;
          }else{
              return false;
-         }
+         }//end if($rootScope.globals.user.adminlevel==0||
      };
      /**
       * Chargement des modules de l'utilisateur
@@ -310,17 +310,17 @@ angular.module("mainApp")
     **/
     $scope.getModule = function(module){      
     	if(angular.isDefined(module)){    		
-             $scope.currentModule = module;
-             $scope.enabledVerticalMenu = false;
-             $scope.moduleValue = "others";
-             //Notification du changement du module
-             $rootScope.$broadcast("currentModule" , {module:$scope.currentModule , verticalMenu:$scope.enabledVerticalMenu});
-             if(angular.isDefined(module.groups) && (module.groups.length > 0)){
-                //Chargement de l'action par defaut
+            $scope.currentModule = module;
+            $scope.enabledVerticalMenu = false;
+            $scope.moduleValue = "others";
+            //Notification du changement du module
+            $rootScope.$broadcast("currentModule" , {module:$scope.currentModule , verticalMenu:$scope.enabledVerticalMenu});
+            if(angular.isDefined(module.groups) && (module.groups.length > 0)){
+               //Chargement de l'action par defaut
                 $scope.enabledVerticalMenu = true;
                 //$scope.getSelectAction(module.groups[0].actions[0]);           
                 $scope.getSelectAction($scope.currentModule.groups[0].actions[0]);             
-            }//end if(angular.isDefined(module.groups) && (module.groups.length > 0))             
+              }//end if(angular.isDefined(module.groups) && (module.groups.length > 0))             
               //Hide the calendar panel
                $scope.showCalendar = false ;
                //Hide the discussion
@@ -7677,7 +7677,8 @@ $scope.gererChangementFichier3 = function(event,model){
                                                     //$scope.listFramePanelBuilder(metaData);
 //                                                    $scope.loadData();
 //                                                    $scope.reset();
-                                                     $scope.windowType = 'view';
+                                                      $scope.predicats = new Array();                                                    
+                                                    $scope.windowType = 'view';
                                                     $scope.selectedObjects = [];     
                                                     $scope.currentObject = data;
                                                     var index = commonsTools.getIndex($scope.datas,$scope.currentObject);
@@ -7694,6 +7695,16 @@ $scope.gererChangementFichier3 = function(event,model){
                                                             $scope.exportbtnlabel = "Installer";
                                                         }//end if($scope.currentObject.active){
                                                     }//end if($scope.showApplication==true){
+                                                    //Mise a jour de la pagination
+                                                    restService.count($scope.predicats)
+                                                          .$promise.then(function(data){                                                               
+                                                               $scope.pagination.totalPages = data.value ;    
+                                                               $scope.pagination.currentPage= $scope.pagination.totalPages;
+                                                          }
+                                                          , function(error){
+                                                              commonsTools.hideDialogLoading();
+                                                              commonsTools.showMessageDialog(error);
+                                                          });  
                                                     $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success"); 
                                                     if($scope.dataCache['resources']&&$scope.dataCache['resources'].length>0){
                                                         for(var i=0 ; i<$scope.dataCache['resources'].length;i++){
@@ -8067,7 +8078,7 @@ $scope.gererChangementFichier3 = function(event,model){
           $scope.annulerAction = function(){
              //console.log("Vous avez cliquez sur annulerAction");
              $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-             $scope.enablefollowerpanel = false;
+             $scope.enablefollowerpanel = false;           
              try{                
                  if(angular.isDefined($scope.currentObject)){
                     restService.cancel($scope.currentObject);                      
@@ -8076,7 +8087,7 @@ $scope.gererChangementFichier3 = function(event,model){
                  $scope.reset(); 
                  $scope.dataCache['resources'] = new Array();
                  $scope.dataCache['names'] = new Array();
-                 
+                 $scope.pagination.currentPage = $scope.pagination.beginIndex+1;
                  $scope.displayListPanel();
 
              }catch(ex){

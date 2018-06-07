@@ -5,6 +5,7 @@
  */
 package com.core.login;
 
+import com.kerem.security.DESEncrypter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.security.auth.login.LoginContext;
@@ -30,6 +31,7 @@ public class LoginRSImpl implements LoginRS{
              if(auth.getUsername()==null||auth.getPassword()==null){
                  throw new LoginException("Unknow username or password");
              }
+//             auth.setPassword(DESEncrypter.getInstance().encryptText(auth.getPassword()));
              CurrentUser.setAuth(auth);
              //To change body of generated methods, choose Tools | Templates.
              KerenCallbackHandler handler = new KerenCallbackHandler();
@@ -37,8 +39,8 @@ public class LoginRSImpl implements LoginRS{
              LoginContext lc = new LoginContext("keren-auth", handler);
              lc.login();
              //Mise a jour du champs
-             System.out.println("YOUPI VOUS ETES AUTHENTIFIE EN TANT QUE "+auth.getUsername());
-         
+             System.out.println("YOUPI VOUS ETES AUTHENTIFIE EN TANT QUE "+auth.getUsername()+" ==== Password : "+auth.getPassword()+" === Crypt Password : "+DESEncrypter.getInstance().encryptText(auth.getPassword()));
+             
     }
 
     /**
@@ -57,4 +59,12 @@ public class LoginRSImpl implements LoginRS{
             }
         }
     }
+
+    @Override
+    public String getPassword(Credential auth) {
+        //To change body of generated methods, choose Tools | Templates.
+        return DESEncrypter.getInstance().encryptText(auth.getPassword());
+    }
+    
+   
 }

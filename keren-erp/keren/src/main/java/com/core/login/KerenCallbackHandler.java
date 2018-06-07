@@ -5,6 +5,7 @@
  */
 package com.core.login;
 
+import com.kerem.security.DESEncrypter;
 import java.io.IOException;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -36,8 +37,9 @@ public class KerenCallbackHandler implements CallbackHandler{
                     NameCallback nc = (NameCallback) callbacks[i];
                     nc.setName(auth.getUsername());
                 }else if(callbacks[i] instanceof PasswordCallback){
-                    PasswordCallback pc = (PasswordCallback) callbacks[i];
-                    pc.setPassword(auth.getPassword().toCharArray());
+                    PasswordCallback pc = (PasswordCallback) callbacks[i];  
+                    System.out.println(KerenCallbackHandler.class.toString()+" ===============================  password : "+auth.getPassword()+" ============== crypte : "+DESEncrypter.getInstance().encryptText(auth.getPassword()));
+                    pc.setPassword(DESEncrypter.getInstance().encryptText(auth.getPassword()).toCharArray());
                 }
             }
         }

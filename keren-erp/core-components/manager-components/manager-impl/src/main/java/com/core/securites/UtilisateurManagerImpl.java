@@ -19,6 +19,7 @@ import com.core.menus.MenuGroupActionsDAOLocal;
 import com.core.menus.MenuModule;
 import com.core.menus.MenuModuleDAOLocal;
 import com.kerem.commons.KerenSession;
+import com.kerem.security.DESEncrypter;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,7 +82,8 @@ public class UtilisateurManagerImpl
         List<Utilisateur> resultats = new ArrayList<Utilisateur>();
         if(datas!=null){
             for(Utilisateur u : datas){
-                resultats.add(new Utilisateur(u));
+                Utilisateur user = new Utilisateur(u);
+                resultats.add(user);
             }
         }
         return resultats;
@@ -98,7 +100,8 @@ public class UtilisateurManagerImpl
         List<Utilisateur> resultats = new ArrayList<Utilisateur>();
         if(datas!=null){
             for(Utilisateur u : datas){
-                resultats.add(new Utilisateur(u));
+                Utilisateur user = new Utilisateur(u);
+                resultats.add(user);
             }
         }
         return resultats;
@@ -111,6 +114,7 @@ public class UtilisateurManagerImpl
         Utilisateur result = new Utilisateur(user);
         result.setSocieteCourante(user.getSocieteCourante());
         result.setSocieteAutorisees(user.getSocieteAutorisees());
+//        result.setPassword(DESEncrypter.getInstance().decryptText(user.getPassword()));
         if(user.getAutorisations()!=null){
             for(Groupe grp : user.getAutorisations()){
                 Groupe gr = new Groupe(grp);
