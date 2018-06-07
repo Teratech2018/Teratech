@@ -20,6 +20,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -163,13 +165,17 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     @Override
     public T find(String propertyName, PK id) {
         //To change body of generated methods, choose Tools | Templates.
+        System.out.println(AbstractGenericService.class.toString()+" === propertyName : "+propertyName+" ==============  ID : "+id);   
         return getManager().find(propertyName, id);
     }
 
     @Override
     public boolean unique(String propertyName, String value){
+//        System.out.println(AbstractGenericService.class.getCanonicalName()+" ====  === property : "+propertyName+" === value:"+value);       
+        if(value==null){
+            return true;
+        }//end if(value==null){
         List result = findByUniqueProperty(propertyName,value);
-         //System.out.println(AbstractGenericService.class.getCanonicalName()+" ==== "+result+" === property : "+propertyName+" === value:"+value);       
         return (result==null||result.isEmpty());
     }
 
@@ -179,11 +185,11 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         Gson gson =new Gson();
         //Type predType = ;
         List contraints = gson.fromJson(headers.getRequestHeader("properties").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
-        //System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("properties").get(0));            
+//        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("properties").get(0));            
         if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){
                 FilterPredicat contraint = (FilterPredicat) obj;
-                if(!unique(contraint.getFieldName(), contraint.getFieldValue())){
+                if(!unique(contraint.getFieldName(), contraint.getValue())){
                     results.add(contraint);
                 }
             }
@@ -249,24 +255,15 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         List contraints = new ArrayList();
         if(headers.getRequestHeader("predicats")!=null){
             contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
-        }        
+        } //end if(headers.getRequestHeader("predicats")!=null){       
 //        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
         if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){
                 FilterPredicat filter = (FilterPredicat) obj ;
                 if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
-                        &&filter.getFieldValue()!=null&&!filter.getFieldValue().isEmpty()){
-                    if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
-                        container.addEq(filter.getFieldName(), filter.getFieldValue());
-                    }else{
-                          container.addEq(filter.getFieldName()+"."+filter.getSearchfields()[0], filter.getFieldValue());
-//                        for(String fieldname:filter.getSearchfields()){
-//                            if(fieldname!=null&&!fieldname.trim().isEmpty()){
-//                                container.addEq(filter.getFieldName()+"."+fieldname, filter.getFieldValue());
-//                            }//end if(fieldname!=null&&!fieldname.trim().isEmpty())
-//                        }//end for(String fieldname:filter.getSearchfields())
-                    }
+                        &&filter.getValue()!=null&&!filter.getValue().isEmpty()){
+                        container = addPredicate(container,filter);
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
@@ -274,6 +271,39 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }
 
+    /**
+     * 
+     * @param container
+     * @param filter
+     * @return 
+     */
+    private RestrictionsContainer addPredicate(RestrictionsContainer container , FilterPredicat filter){
+//        System.out.println(AbstractGenericService.class.toString()+".addPredicate === "+" == "+filter);       
+        if(filter.getTarget().trim().equalsIgnoreCase("boolean")){
+            BooleanPredicatBuilder predicat = new BooleanPredicatBuilder(null);
+            container = predicat.buildPredicate(container, filter);
+        }else if(filter.getTarget().trim().equalsIgnoreCase("date")){
+            DatePredicatBuilder predicat = new DatePredicatBuilder(null); 
+            container = predicat.buildPredicate(container, filter);
+        }else if(filter.getTarget().trim().equalsIgnoreCase("number")){
+              NumberPredicatBuilder predicat = new NumberPredicatBuilder(null);
+              container = predicat.buildPredicate(container, filter);
+        }else {
+           StringPredicatBuilder predicat = new StringPredicatBuilder(null);
+           container = predicat.buildPredicate(container, filter);
+        }//end if(filter.getTarget().trim().equalsIgnoreCase("boolean")){
+        return container;
+    }
+    /**
+     * 
+     * @param predicats
+     * @param orders
+     * @param properties
+     * @param hints
+     * @param firstResult
+     * @param maxResult
+     * @return 
+     */
     @Override
     public List<T> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, Map<String, Object> hints, int firstResult, int maxResult) {
         //To change body of generated methods, choose Tools | Templates.
@@ -288,28 +318,19 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         List contraints = new ArrayList();
         if(headers.getRequestHeader("predicats")!=null){
             contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
-        }
-        
+        }//end if(headers.getRequestHeader("predicats")!=null){        
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
          if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){
                 FilterPredicat filter = (FilterPredicat) obj ;
                 if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
-                        &&filter.getFieldValue()!=null&&!filter.getFieldValue().isEmpty()){
-                    if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
-                        container.addEq(filter.getFieldName(), filter.getFieldValue());
-                    }else{
-                          container.addEq(filter.getFieldName()+"."+filter.getSearchfields()[0], filter.getFieldValue());
-//                        for(String fieldname:filter.getSearchfields()){
-//                            if(fieldname!=null&&!fieldname.trim().isEmpty()){
-//                                container.addEq(filter.getFieldName()+"."+fieldname, filter.getFieldValue());
-//                            }//end if(fieldname!=null&&!fieldname.trim().isEmpty())
-//                        }//end for(String fieldname:filter.getSearchfields())
-                    }
+                        &&filter.getValue()!=null&&!filter.getValue().isEmpty()){
+                      container = addPredicate(container, filter);
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
+//        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
     }
 
@@ -440,5 +461,251 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         //To change body of generated methods, choose Tools | Templates.
         File file = new File(temporalfile);        
         return getPdf(file);
+    }
+    
+     abstract class AbstractPredicateBuilder{
+        
+        protected AbstractPredicateBuilder next ;
+
+        /**
+         * 
+         * @param next 
+         */
+        public AbstractPredicateBuilder(AbstractPredicateBuilder next) {
+            this.next = next;
+        }
+        
+        
+        /**
+         * Build the predicate 
+         * @param container
+         * @param filter
+         * @return 
+         */
+        public abstract RestrictionsContainer buildPredicate(RestrictionsContainer container,FilterPredicat filter);
+        
+        /**
+         * 
+         * @return 
+         */
+        public AbstractPredicateBuilder next(){return next;}
+    }
+    
+    class BooleanPredicatBuilder extends AbstractPredicateBuilder{
+
+        /**
+         * 
+         * @param next 
+         */
+        public BooleanPredicatBuilder(AbstractPredicateBuilder next) {
+            super(next);
+        }
+
+        @Override
+        public RestrictionsContainer buildPredicate(RestrictionsContainer container, FilterPredicat filter) {
+            //To change body of generated methods, choose Tools | Templates.
+            Boolean value = new Boolean(filter.getValue());
+            if(filter.getType().equalsIgnoreCase("==")||filter.getType().equalsIgnoreCase("EQUAL")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addEq(filter.getFieldName(), value);
+                }else{
+                      container.addEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("!=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addNotEq(filter.getFieldName(), value);
+                }else{
+                      container.addNotEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }//end if(filter.getType().equalsIgnoreCase("==")){
+            return container;
+        }
+        
+    }
+    
+    class DatePredicatBuilder extends AbstractPredicateBuilder{
+
+        /**
+         * 
+         * @param next 
+         */
+        public DatePredicatBuilder(AbstractPredicateBuilder next) {
+            super(next);
+        }
+
+        @Override
+        public RestrictionsContainer buildPredicate(RestrictionsContainer container, FilterPredicat filter) {
+            //To change body of generated methods, choose Tools | Templates.
+            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+            Date value;
+            try {
+                value = formater.parse(filter.getValue());
+            } catch (ParseException ex) {
+                value = new Date();
+            }//end try {
+            if(filter.getType().equalsIgnoreCase("==")||filter.getType().equalsIgnoreCase("EQUAL")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addEq(filter.getFieldName(), value);
+                }else{
+                      container.addEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("!=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addNotEq(filter.getFieldName(), value);
+                }else{
+                      container.addNotEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("<=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLe(filter.getFieldName(), value);
+                }else{
+                      container.addLe(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase(">=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addGe(filter.getFieldName(), value);
+                }else{
+                      container.addGe(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("<")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLt(filter.getFieldName(), value);
+                }else{
+                      container.addLt(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase(">")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addGt(filter.getFieldName(), value);
+                }else{
+                      container.addGt(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }//end if(filter.getType().equalsIgnoreCase("==")){
+            return container;
+        }
+        
+    }
+    
+    class NumberPredicatBuilder extends AbstractPredicateBuilder{
+
+        /**
+         * 
+         * @param next 
+         */
+        public NumberPredicatBuilder(AbstractPredicateBuilder next) {
+            super(next);
+        }
+
+        @Override
+        public RestrictionsContainer buildPredicate(RestrictionsContainer container, FilterPredicat filter) {
+            //To change body of generated methods, choose Tools | Templates.
+            String value = filter.getValue();
+            if(filter.getType().equalsIgnoreCase("==")||filter.getType().equalsIgnoreCase("EQUAL")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addEq(filter.getFieldName(), value);
+                }else{
+                      container.addEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("!=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addNotEq(filter.getFieldName(), value);
+                }else{
+                      container.addNotEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("<=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLe(filter.getFieldName(), value);
+                }else{
+                      container.addLe(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase(">=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addGe(filter.getFieldName(), value);
+                }else{
+                      container.addGe(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("<")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLt(filter.getFieldName(), value);
+                }else{
+                      container.addLt(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase(">")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addGt(filter.getFieldName(), value);
+                }else{
+                      container.addGt(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("LIKE")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLike(filter.getFieldName(), filter.getValue());
+                }else{
+                      container.addLike(filter.getFieldName()+"."+filter.getSearchfields()[0], filter.getValue());                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }//end if(filter.getType().equalsIgnoreCase("==")){
+            return container;
+        }
+        
+    }
+    
+     class StringPredicatBuilder extends AbstractPredicateBuilder{
+
+        /**
+         * 
+         * @param next 
+         */
+        public StringPredicatBuilder(AbstractPredicateBuilder next) {
+            super(next);
+        }
+
+        @Override
+        public RestrictionsContainer buildPredicate(RestrictionsContainer container, FilterPredicat filter) {
+            //To change body of generated methods, choose Tools | Templates.
+            String value = filter.getValue();
+            if(filter.getType().equalsIgnoreCase("==")||filter.getType().equalsIgnoreCase("EQUAL")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addEq(filter.getFieldName(), value);
+                }else{
+                      container.addEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("!=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addNotEq(filter.getFieldName(), value);
+                }else{
+                      container.addNotEq(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("<=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLe(filter.getFieldName(), value);
+                }else{
+                      container.addLe(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase(">=")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addGe(filter.getFieldName(), value);
+                }else{
+                      container.addGe(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("<")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLt(filter.getFieldName(), value);
+                }else{
+                      container.addLt(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase(">")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addGt(filter.getFieldName(), value);
+                }else{
+                      container.addGt(filter.getFieldName()+"."+filter.getSearchfields()[0], value);                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }else if(filter.getType().equalsIgnoreCase("LIKE")){
+                if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+                    container.addLike(filter.getFieldName(), filter.getValue());
+                }else{
+                      container.addLike(filter.getFieldName()+"."+filter.getSearchfields()[0], filter.getValue());                       
+                }//end if(filter.getSearchfields()==null||filter.getSearchfields().length<=0){
+            }//end if(filter.getType().equalsIgnoreCase("==")){
+            return container;
+        }
+        
     }
 }

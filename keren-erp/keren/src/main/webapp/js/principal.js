@@ -347,7 +347,8 @@ angular.module("mainApp")
     
     $scope.getMenuClass = function(module){
 //        console.log("$scope.getMenuClass = function(module) ========= "+module+" ===== "+$scope.currentAction.name+" test==");
-        if($scope.currentAction.name==module.name){
+        if(angular.isDefined(module) 
+                 && $scope.currentAction.name==module.name){
             return "activemenu";
         }//end if($scope.currentAction.name==module.name){
         return "";

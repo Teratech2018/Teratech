@@ -40,7 +40,7 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
     @Predicate(label = "ACTIF",colsequence = 100,sequence = 2)
     private Boolean actif = Boolean.FALSE; 
     
-    @Predicate(label = "NOM" ,nullable = false ,optional = false,min = 4,unique = true,updatable = false,search = true,sequence = 3)
+    @Predicate(label = "LOGIN" ,nullable = false ,optional = false,min = 4,unique = true,updatable = false,search = true,sequence = 3)
     private String intitule ;     
     
     @Predicate(label = "ADRESSE ELECTRONIQUE",target = "email",unique = false,optional = false,search = true,sequence = 4)
