@@ -71,8 +71,7 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
      * 
      * @param entities 
      */
-    public  void save(List<T> entities){
-        
+    public  void save(List<T> entities){        
         if(entities==null||entities.isEmpty())
              return ;
         processBeforeSave(entities);
@@ -80,8 +79,7 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
         for(T entity : entities){
             
              getDao().save(entity);
-        }
-        
+        }        
         processAfterSave(entities);
     }
 
@@ -108,8 +106,7 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
      * 
      * @param entities 
      */
-    public void update(Map<PK,T> entities){
-        
+    public void update(Map<PK,T> entities){        
         if(entities==null||entities.isEmpty())
             return ;
         Set<PK> keys = entities.keySet();
@@ -169,11 +166,9 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
      * @param properties	Ensemble des proprietes a charger en EAGER
      * @return	Objet recherche
      */
-    public List<T> findByUniqueProperty(String propertyName, Object propertyValue, Set<String> properties) {
-        
+    public List<T> findByUniqueProperty(String propertyName, Object propertyValue, Set<String> properties) {        
        // retourne une entité basé sur la clé métier
-       return getDao().findByProperty(propertyName, propertyValue, properties );
-       
+       return getDao().findByProperty(propertyName, propertyValue, properties );       
     }
    
     
@@ -188,22 +183,17 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
     */
     public <Y extends Comparable<Y>> List<T> filterOnEqualProperties(Map<String, Y> criteriasProperties, Set<String> properties, int firstResult, int maxResult) {
                 // Conteneur de restrictions
-		RestrictionsContainer restrictionsContainer = RestrictionsContainer.newInstance();
-		
+		RestrictionsContainer restrictionsContainer = RestrictionsContainer.newInstance();		
 		// Si la MAP des proprietes est non vide
-		if(criteriasProperties != null && !criteriasProperties.isEmpty()) {
-			
+		if(criteriasProperties != null && !criteriasProperties.isEmpty()) {			
 			// Obtention des entrees
-			Set<Entry<String, Y>> entries = criteriasProperties.entrySet();
-			
+			Set<Entry<String, Y>> entries = criteriasProperties.entrySet();			
 			// Parcours
-			for (Entry<String, Y> entry : entries) {
-				
+			for (Entry<String, Y> entry : entries) {				
 				// Predicat d'egalite
 				restrictionsContainer.addEq(entry.getKey(), entry.getValue());
 			}
-		}
-		
+		}		
 		// Filtre
 		return getDao().filter(restrictionsContainer.getPredicats(), null, properties, firstResult, maxResult);
     }

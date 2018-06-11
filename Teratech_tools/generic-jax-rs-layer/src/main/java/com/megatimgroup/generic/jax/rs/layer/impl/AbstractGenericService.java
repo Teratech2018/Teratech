@@ -165,7 +165,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     @Override
     public T find(String propertyName, PK id) {
         //To change body of generated methods, choose Tools | Templates.
-        System.out.println(AbstractGenericService.class.toString()+" === propertyName : "+propertyName+" ==============  ID : "+id);   
+//        System.out.println(AbstractGenericService.class.toString()+" === propertyName : "+propertyName+" ==============  ID : "+id);   
         return getManager().find(propertyName, id);
     }
 
