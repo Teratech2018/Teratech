@@ -115,9 +115,9 @@ public class Groupe extends BaseElement implements Serializable,Comparable<Group
 
     @Override
     public long getCompareid() {
-        if(module!=null){
-            return module.getId();
-        }
+//        if(module!=null){
+//            return module.getId();
+//        }
         return super.getCompareid(); //To change body of generated methods, choose Tools | Templates.
     }
 

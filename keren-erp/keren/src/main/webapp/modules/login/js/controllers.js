@@ -31,7 +31,7 @@ angular.module('keren.core.login')
                             var urlPath = "http://"+$location.host()+":"+$location.port()+"/keren/auth/login/crypto"; 
                             $http.post(urlPath ,{username:$scope.username,password:$scope.password})
                                     .then(function(response){
-                                        console.log("$scope.login = function() remember == encrypt pwd : "+response.data);                            
+//                                        console.log("$scope.login = function() remember == encrypt pwd : "+response.data);                            
                                         authenticationService.setCredentials($scope.username,response.data,$scope.remember);
                                     },function(error){
                                         commonsTools.notifyWindow("Echec authentification" ,"<br/>"+"Echec de recupération des paramètres ","danger");

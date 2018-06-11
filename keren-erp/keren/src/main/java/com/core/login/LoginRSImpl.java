@@ -25,12 +25,13 @@ public class LoginRSImpl implements LoginRS{
     /**
      * 
      * @param auth 
+     * @throws javax.security.auth.login.LoginException 
      */
      @Override
     public void login(Credential auth)  throws LoginException{
              if(auth.getUsername()==null||auth.getPassword()==null){
                  throw new LoginException("Unknow username or password");
-             }
+             }//end if(auth.getUsername()==null||auth.getPassword()==null){
 //             auth.setPassword(DESEncrypter.getInstance().encryptText(auth.getPassword()));
              CurrentUser.setAuth(auth);
              //To change body of generated methods, choose Tools | Templates.
@@ -39,7 +40,7 @@ public class LoginRSImpl implements LoginRS{
              LoginContext lc = new LoginContext("keren-auth", handler);
              lc.login();
              //Mise a jour du champs
-             System.out.println("YOUPI VOUS ETES AUTHENTIFIE EN TANT QUE "+auth.getUsername()+" ==== Password : "+auth.getPassword()+" === Crypt Password : "+DESEncrypter.getInstance().encryptText(auth.getPassword()));
+//             System.out.println("YOUPI VOUS ETES AUTHENTIFIE EN TANT QUE "+auth.getUsername()+" ==== Password : "+auth.getPassword()+" === Crypt Password : "+DESEncrypter.getInstance().encryptText(auth.getPassword()));
              
     }
 
@@ -50,14 +51,14 @@ public class LoginRSImpl implements LoginRS{
     @Override
     public void logout(Credential aut) {
          //To change body of generated methods, choose Tools | Templates.
-        System.out.println("Good By Mr  : "+aut.getUsername());
+//        System.out.println("Good By Mr  : "+aut.getUsername());
         if(lc!=null){
             try {
                 lc.logout();
             } catch (LoginException ex) {
                 Logger.getLogger(LoginRSImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }//end if(lc!=null){
     }
 
     @Override

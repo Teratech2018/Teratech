@@ -1290,6 +1290,7 @@ angular.module("mainApp")
                }//end if(!angular.isDefined(array)){
                for(var i= 0 ; i<array.length;i++){
                    if(array[i].compareid == item.compareid){
+//                       console.log("principals.$scope.containsObject = function(array , item) ==== item : "+angular.toJson(item)+" === selected items : "+angular.toJson(array));
                       return true;
                    }//end if(array[i].compareid == item.compareid){
                }//end for(var i= 0 ; i<array.length;i++)
@@ -1341,7 +1342,7 @@ angular.module("mainApp")
               //Verifier que 
               if(!$scope.dataCache.selectedObjects){
                   $scope.dataCache.selectedObjects = new Array();
-              }
+              }//end if(!$scope.dataCache.selectedObjects){
               item.selected = !item.selected;
 
               if(item.selected){
@@ -1351,7 +1352,7 @@ angular.module("mainApp")
                 }else{
                     
                     item.selected = !item.selected; 
-                    var message ="Vous avez selectionné 2 lignes referencant la mÃªme entité";
+                    var message ="Vous avez selectionné deux lignes referencant la même entitée";
                     commonsTools.notifyWindow("Double selection " ,"<br/>"+message,"warning");
                 }
               }else{
@@ -4189,7 +4190,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                    if(type=='list'){                                    
                                       content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>{{'Filtres' | translate}}</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()'>{{'Creer' | translate}}</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desableupdate'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>{{'Importer' | translate}}</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel | translate}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel | translate}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> <div id='viewmodeid'></div></span>  </div> </div> </nav> </div><div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'> <table class='table table-striped table-hover table-responsive table-sm  table-header'  style='margin-top: -10px;' id='table'> <thead> <tr id='rowheader'> <th><input type='checkbox' ng-model='tableheaderselected' ng-click='onCheckboxClick()'></th> <th>Module Name</th> <th>Module Description</th> </tr> </thead> <tbody id='tablebody'> <tr  ng-repeat=' module in modules' > <td><input type='checkbox' ng-model='module.selected'  ng-click='onRowCheckboxClick(module)'></td> <td>{{module.name}}</td> <td>{{module.shortDescription}}</td> </tr> </tbody> </table>  </div> </div>"     ;
                                    }else if(type=='detail'){
-                                     content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'     ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>{{'Enregistrer' | translate}}</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()'>{{'Quitter' | translate}}</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> {{'PJ' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Ajouter' | translate}} </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableupdateedit'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel | translate}} </a> </li> <li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='addElementAction()'> {{'Creer' | translate}} </a> </li> <li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='dupliquerAction()'> {{'Dupliquer' | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}} </a> </li> <li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel | translate}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> Abonnée(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnées </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
+                                     content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'     ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>{{'Enregistrer' | translate}}</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()'>{{'Quitter' | translate}}</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> {{'PJ' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Ajouter' | translate}} </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableupdateedit'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='dupliquerAction()'> {{'Dupliquer' | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='addElementAction()'> {{'Creer' | translate}} </a> </li><li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel | translate}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> Abonnée(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnées </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
                                    }else if(type=="report"){ 
                                        content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' ng-hide='hideannuler'>{{'Quitter' | translate}}</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
                                    }else if(type=="calendar"){ 
@@ -5185,17 +5186,17 @@ $scope.gererChangementFichier3 = function(event,model){
                     aElem.appendChild(document.createTextNode('{{deletebtnlabel | translate}}')) ;
                     liElem.appendChild(aElem);
                 }else{
-                    //Create
+                    //Update
                     var liElem = document.createElement('li');
                     liElem.setAttribute('role','presentation');
                     liElem.setAttribute('ng-hide','desableupdateedit');
                     ulElem.appendChild(liElem);
-                    var aElem = document.createElement('a');
+                    aElem = document.createElement('a');
                     aElem.setAttribute('role','menuitem');
                     aElem.setAttribute('tabindex','-1');
                     aElem.setAttribute('href','#');
-                    aElem.setAttribute('ng-click','addElementAction()');
-                    aElem.appendChild(document.createTextNode("{{'Creer' | translate}}")) ;
+                    aElem.setAttribute('ng-click','updateAction()');
+                    aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
                     liElem.appendChild(aElem);
                     //Duplacate
                     var liElem = document.createElement('li');
@@ -5221,17 +5222,17 @@ $scope.gererChangementFichier3 = function(event,model){
 //                   aElem.setAttribute('ng-click','installAction()');
 //                   aElem.appendChild(document.createTextNode('{{exportbtnlabel | translate}}')) ;
 //                   liElem.appendChild(aElem);
-                   //Bloc 2
+                    //Create
                     liElem = document.createElement('li');
                     liElem.setAttribute('role','presentation');
                     liElem.setAttribute('ng-hide','desableupdateedit');
                     ulElem.appendChild(liElem);
-                    aElem = document.createElement('a');
+                    var aElem = document.createElement('a');
                     aElem.setAttribute('role','menuitem');
                     aElem.setAttribute('tabindex','-1');
                     aElem.setAttribute('href','#');
-                    aElem.setAttribute('ng-click','updateAction()');
-                    aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
+                    aElem.setAttribute('ng-click','addElementAction()');
+                    aElem.appendChild(document.createTextNode("{{'Creer' | translate}}")) ;
                     liElem.appendChild(aElem);
                      //Bloc 3
                     liElem = document.createElement('li');
@@ -6098,7 +6099,7 @@ $scope.gererChangementFichier3 = function(event,model){
                              footerID = "modalfooter1";
                          }else if(endIndex==4){
                              footerID = "modalfooter2";
-                         }
+                         }//end if(endIndex==1)
                          footerDiv.setAttribute('id' , footerID);
                          var buttonElem = document.createElement('button');
                          footerDiv.appendChild(buttonElem);
@@ -6124,7 +6125,7 @@ $scope.gererChangementFichier3 = function(event,model){
                              titleID = "modaltitle1";
                          }else if(endIndex==4){
                              titleID = "modaltitle2";
-                         }
+                         }//end if(endIndex==1){
                          titleheader.setAttribute('id',titleID);
                          titleheader.appendChild(document.createTextNode(metaData.listTitle));
                           //console.log(viewElem.innerHTML);
@@ -7300,6 +7301,7 @@ $scope.gererChangementFichier3 = function(event,model){
         */
        $scope.buildFilter = function(model){
          try{
+           var metaData = $scope.getCurrentMetaData(model);
            var key = commonsTools.keygenerator(model);              
            if($scope.filtertemplate[key]){
                var filtres = angular.fromJson($scope.filtertemplate[key]);
@@ -7309,6 +7311,8 @@ $scope.gererChangementFichier3 = function(event,model){
                    predicat["fieldName"] = filtres[i].fieldName;
                    predicat["fieldLabel"] = null ;
                    predicat["type"]="==";
+                   var field = $scope.getField(metaData,filtres[i].fieldName);
+                   predicat["target"] = field.type;
                    if(filtres[i].operator!=null){
                        predicat["type"]=filtres[i].operator ;
                    }//end if(filtres[i].operator!=null){
@@ -7364,21 +7368,21 @@ $scope.gererChangementFichier3 = function(event,model){
                           }//end if(obj && obj[filtres[i].searchfield]){
                      }//end if(part[0]=="object")
                  }else if(part[0]=="user"){
-                     var obj = $scope.currentUser[part[1]];
+                      var obj = $scope.currentUser[part[1]];
                       if(obj && obj[filtres[i].searchfield]){
                            value=obj[filtres[i].searchfield];
                        }else if(angular.isDefined(filtres[i].optional)&&filtres[i].optional==false){
                           commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
                           return false;
-                       }
+                       }//end if(obj && obj[filtres[i].searchfield]){
                  }else if(part.length<=1&&part.length>0){
                      value=part[0];
                  }//end else if(part[0]=="object")
-                   predicat["fieldValue"]=value;
+                   predicat["value"]=value;
                    predicats.push(predicat);
+//                   console.log("$scope.buildFilter ======================= key : "+key+" ==== predicate : "+angular.toJson(predicats)+" === model:"+model+" ==== Champs : "+angular.toJson(field));
                }//end for(var i=0;i<filtres.length;i++)
                $http.defaults.headers.common['predicats']= angular.toJson(predicats); 
-//               console.log("$scope.buildFilter ======================= key : "+key+" ==== predicate : "+angular.toJson(predicats)+" === model:"+model);
                return true;                  
            }else{
                predicats = new Array();
@@ -7459,7 +7463,7 @@ $scope.gererChangementFichier3 = function(event,model){
                               }//end if(observable)
                           }else{         
                                 $scope.listDialogBuilder(model,index,modelpath);
-                                 var modalID = "";
+                                var modalID = "";
                                 var endIndex = index;
                                 if(endIndex==1){
                                     modalID = "myModal";
@@ -7469,7 +7473,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                      modalID = "myModal1";
                                 }else if(endIndex==4){
                                      modalID = "myModal2";
-                                }
+                                }//end if(endIndex==1)
                                 $("#"+modalID).modal("toggle");
                                 $("#"+modalID).modal("show");
                          }//end if(data.value<=$scope.pagination.pageSize)
@@ -7492,22 +7496,21 @@ $scope.gererChangementFichier3 = function(event,model){
             var parts = model.split(".");
             if(parts.length>1){
                 $scope.dataCache[""+parts[1]+""] = new Array();                
-               //var obj = array[array.length-1];              
-                               
+                    //var obj = array[array.length-1];                   
                     $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");               
                      //Chargement des donnï¿½es
                      var urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                      $http.get(urlPath).then( 
                        function(response){
                             //alert("Data: "+response.data+" === "+model);   
-                            var parts = model.split(".");
-                            if(parts.length>1){
+                             var parts = model.split(".");
+                             if(parts.length>1){
 //                                    $scope.dataCache[""+parts[1]+""] = new Array();
                                 //var data = $scope.dataCache[""+parts[1]+""];
                                 for(var i=0;i<response.data.length;i++){
                                     $scope.dataCache[""+parts[1]+""].push(response.data[i]);
-                                }                        
-                            }
+                                }//end for(var i=0;i<response.data.length;i++){                        
+                             }//end if(parts.length>1){
                              //console.log($scope.dataCache[""+parts[1]+""]);
                              $timeout(function() {
                                 $('.selectpicker').selectpicker('refresh');
@@ -7534,14 +7537,18 @@ $scope.gererChangementFichier3 = function(event,model){
            $scope.currentObject = {};
            $scope.resourcesCache = {};    
 //           $scope.dataCache = {};
-          if($scope.selectedObjects){
+           if($scope.selectedObjects){
              for(var i=0;i<$scope.selectedObjects.length;i++){
                 $scope.selectedObjects[i].selected = false;
-             }
-          }
-          $scope.selectedObjects = [];
+             }//end for(var i=0;i<$scope.selectedObjects.length;i++){
+           }//end if($scope.selectedObjects){
+           $scope.selectedObjects = [];
         };
         
+        /**
+         * 
+         * @returns {undefined}
+         */
         $scope.addNewCalendar = function(){
            $scope.windowType = 'new';
            //Mise a jour des tempons
@@ -7584,12 +7591,12 @@ $scope.gererChangementFichier3 = function(event,model){
                          $scope.pagination.currentPage = $scope.pagination.beginIndex+1;
                      }else{
                          $scope.pagination.currentPage = 0;
-                     }                 
+                     }//end if($scope.pagination.totalPages>0)                 
                      if(validate.length>0){
                         var message = "";
                         for(var i=0; i<validate.length;i++){
                             message = message+"<br/>"+validate[i];
-                        }
+                        }//end for(var i=0; i<validate.length;i++)
                         $scope.hideDialogLoading();
                         $scope.notifyWindow("Les champs suivants sont incorrects" ,message,"danger");                        
                      }else{
@@ -7644,8 +7651,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                                            $scope.displayEditPanel();
                                                         $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","warning");
                                                     });
-                                            }//end for(var i=0 ; i<$scope.dataCache['resources'].length;i++)
-                                               
+                                            }//end for(var i=0 ; i<$scope.dataCache['resources'].length;i++)                                               
                                         }else{
                                              $scope.displayEditPanel();
                                         }//end if($scope.dataCache['resource']&&$scope.dataCache['resource'].length>0)
@@ -7723,13 +7729,13 @@ $scope.gererChangementFichier3 = function(event,model){
                                                                       if(i==($scope.dataCache['resources'].length-1)){
                                                                         $scope.dataCache['resources'] = new Array();
                                                                         $scope.dataCache['names'] = new Array();
-                                                                      }
+                                                                      }//end if(i==($scope.dataCache['resources'].length-1))
                                                                       $scope.displayEditPanel();
                                                                 },function(error){
                                                                     if(i==($scope.dataCache['resources'].length-1)){
                                                                         $scope.dataCache['resources'] = new Array();
                                                                         $scope.dataCache['names'] = new Array();
-                                                                      }
+                                                                    }//end if(i==($scope.dataCache['resources'].length-1))
                                                                     $scope.displayEditPanel();
                                                                     $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","success");
                                                                 });
@@ -7767,6 +7773,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 }catch(ex){
                     //$scope.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
                      $scope.hideDialogLoading();
+                     commonsTools.showMessageDialog(ex);
                      //console.log(ex.message);
                 }        
             
@@ -8002,15 +8009,12 @@ $scope.gererChangementFichier3 = function(event,model){
           /**
            impoort
           **/
-          $scope.importAction = function(){        
-                        
+          $scope.importAction = function(){                     
               console.log("Vous avez cliquez sur  Import ");
           };
 
-          $scope.exportAction = function(){
-             
-                 console.log("Vous avez cliquez sur  Export ");
-             
+          $scope.exportAction = function(){             
+                 console.log("Vous avez cliquez sur  Export ");             
           };
           
          
@@ -8034,7 +8038,7 @@ $scope.gererChangementFichier3 = function(event,model){
               }else{
                   //Non installer on va proceder a la desinstallation
                   $scope.installApplication();
-              }
+              }//end if($scope.currentObject.active)
           };
 
 /**
@@ -8071,7 +8075,7 @@ $scope.gererChangementFichier3 = function(event,model){
              }else if(type=="tree"){
                  $scope.previousType="list";
                  $scope.listFramePanelBuilder($scope.metaData);
-             }
+             }//end if(type=="calendar"){
          };
           /**
             Annulation de la saisie
@@ -8136,16 +8140,16 @@ $scope.gererChangementFichier3 = function(event,model){
                     if($scope.predicats[i].value){
                       var oredicat = $scope.predicats[i].fieldName+" "+$scope.predicats[i].type+" "+$scope.predicats[i].value;
                        $scope.searchCriteria = $scope.searchCriteria+" "+oredicat+" ;"
-                    }
-                }
+                    }//end if($scope.predicats[i].value){
+                }//end for(var i=0; i<$scope.predicats.length;i++){
               }else {
                   $scope.temporalSearchCriteria = new String();                  
                 for(var i=0; i<$scope.temporalPredicats.length;i++){
                     if($scope.temporalPredicats[i].value){
                       var oredicat = $scope.temporalPredicats[i].fieldName+" "+$scope.temporalPredicats[i].type+" "+$scope.temporalPredicats[i].value;
                        $scope.temporalSearchCriteria = $scope.temporalSearchCriteria+" "+oredicat+" ;"
-                    }
-                }
+                    }//end if($scope.temporalPredicats[i].value){
+                }//end for(var i=0; i<$scope.temporalPredicats.length;i++){
               }//end if(!angular.isDefined(elementID))
           };
 
@@ -8254,7 +8258,7 @@ $scope.gererChangementFichier3 = function(event,model){
              //Construction des menus
              if($scope.dataCache['follower'].abonnes.length>0){
                  for(var i=0;i<$scope.dataCache['follower'].abonnes.length;i++){
-                     var abonne = $scope.dataCache['follower'].abonnes[i];
+                        var abonne = $scope.dataCache['follower'].abonnes[i];
                         lielem = document.createElement("li");
                         ulElem.appendChild(lielem);
                         lielem.setAttribute("role","presentation");
@@ -9984,7 +9988,7 @@ $scope.gererChangementFichier3 = function(event,model){
                             $scope.updatebtnlabel ='Mise Ã  jour';
                             $scope.deletebtnlabel='Supprimer';
                             $scope.showApplication = true;
-                        }  
+                        }  //end if($scope.currentModule.name=='application')
                 }else if($scope.currentModule.hasmenu==false){
                     alert("Vous avez cliquez sur un module sans menu ....");
                 }
