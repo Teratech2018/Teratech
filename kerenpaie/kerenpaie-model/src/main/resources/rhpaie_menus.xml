@@ -83,4 +83,6 @@
 	 <menuitem id="rh_paie_33" label="Regions" parent_ref="rh_paie_config" entity_ref="Region" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="rh_paie_34" label="Departement" parent_ref="rh_paie_config" entity_ref="DepartementSoc" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="rh_paie_35" label="Pays" parent_ref="rh_paie_config" entity_ref="Pays" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
-</keren>
+	 <menuitem id="rh_paie_36" label="Banque" parent_ref="rh_paie_config" entity_ref="Banque" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 
+	 </keren>

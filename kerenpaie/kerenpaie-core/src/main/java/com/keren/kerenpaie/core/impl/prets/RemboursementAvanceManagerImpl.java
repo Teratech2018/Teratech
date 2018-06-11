@@ -13,13 +13,16 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.KerenExecption;
 import com.keren.kerenpaie.core.ifaces.prets.RemboursementAvanceManagerLocal;
 import com.keren.kerenpaie.core.ifaces.prets.RemboursementAvanceManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.comptabilite.PeriodePaieDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.ElementVariableDAOLocal;
+import com.keren.kerenpaie.dao.ifaces.prets.AvanceSalaireDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.prets.RemboursementAvanceDAOLocal;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.paie.ElementVariable;
+import com.keren.kerenpaie.model.prets.AvanceSalaire;
 import com.keren.kerenpaie.model.prets.RemboursementAvance;
 import com.megatim.common.annotations.OrderType;
 
@@ -38,6 +41,9 @@ public class RemboursementAvanceManagerImpl
     
     @EJB(name = "ElementVariableDAO")
     protected ElementVariableDAOLocal variabledao;
+    
+    @EJB(name = "AvanceSalaireDAO")
+    protected AvanceSalaireDAOLocal avancedao;
     
     
     public RemboursementAvanceManagerImpl() {
@@ -137,7 +143,28 @@ public class RemboursementAvanceManagerImpl
         entity.setState("confirme");
 
         dao.update(entity.getId(), entity);	
-
+        
+        // mis à jour de l'avance
+        int remvalide =0;
+        int remconfirme=0;
+        int remrefuse=0;
+        AvanceSalaire avance = avancedao.findByPrimaryKey("id",entity.getAvance().getId());
+        for(RemboursementAvance rem : avance.getRemboursements()){
+        	if(rem.getState().equals("etabli")){
+        		remvalide=remvalide+1;
+        	}else if(rem.getState().equals("confirme")){
+        		remconfirme=remconfirme+1;
+        	}else{
+        		remrefuse=remrefuse+1;
+        	}
+        }
+        if(remvalide!=0){
+        	avance.setState("encours");
+        	avancedao.update(avance.getId(), avance);
+        }else{
+        	avance.setState("termine");
+        	avancedao.update(avance.getId(), avance);
+        }
         return entity;
     }
 
@@ -149,4 +176,12 @@ public class RemboursementAvanceManagerImpl
         dao.update(entity.getId(), entity);
         return entity;
     }
+    
+    @Override
+	public void processBeforeDelete(RemboursementAvance entity) {
+		 if(!entity.getState().equals("etabli")){
+	           throw new KerenExecption("Ce Remboursement ne peut être Supprimer");
+	    }
+		super.processBeforeDelete(entity);
+	}
 }

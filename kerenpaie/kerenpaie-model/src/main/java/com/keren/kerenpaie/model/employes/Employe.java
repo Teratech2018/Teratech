@@ -6,6 +6,7 @@
 package com.keren.kerenpaie.model.employes;
 
 import com.core.base.BaseElement;
+import com.keren.kerenpaie.model.comptabilite.Banque;
 import com.keren.kerenpaie.model.comptabilite.Compte;
 import com.keren.kerenpaie.model.paie.ProfilPaie;
 import com.keren.kerenpaie.model.paie.Rubrique;
@@ -146,6 +147,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private Echelon echelon ;
 	
+	@Predicate(label="Indice" ,type=Short.class,group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private Short indice = 0 ;
 	
 	@ManyToOne
@@ -179,6 +181,11 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	
 	@Predicate(label="Numéro de compte bancaire",group=true,groupName="group3",groupLabel="Comptabilité")
 	private String comptebancaire ;
+	
+	@ManyToOne
+	@JoinColumn(name="BQ_ID")
+	@Predicate(label="Banque" ,type=Banque.class,target="many-to-one",group=true,groupName="group3",groupLabel="Comptabilité" , optional=false)
+	private Banque banque ;
 	
 	@ManyToOne
 	@JoinColumn(name="PRPA_ID")
@@ -289,7 +296,15 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
     
     
 
-    /**
+    public Banque getBanque() {
+		return banque;
+	}
+
+	public void setBanque(Banque banque) {
+		this.banque = banque;
+	}
+
+	/**
      * 
      * @param employ
      */
@@ -312,6 +327,10 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.numsec = employ.numsec;
 		if(employ.nationalite!=null){
 			this.nationalite = employ.nationalite;
+		}
+		
+		if(employ.banque!=null){
+			this.banque = employ.banque;
 		}
 		this.specialite = employ.specialite;
 		this.affecte = employ.affecte;
@@ -368,18 +387,18 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
                 this.comptebancaire = employ.comptebancaire;
                 if(employ.profilpaie!=null){
                         this.profilpaie = new ProfilPaie(employ.profilpaie);
-                }//end if(employ.profilpaie!=null){
+                }
 	}
     
     
 
-	public Short getIndice() {
-		return indice;
-	}
+    public Short getIndice() {
+            return indice;
+    }
 
-	public void setIndice(Short indice) {
-		this.indice = indice;
-	}
+    public void setIndice(Short indice) {
+            this.indice = indice;
+    }
 
 	public String getMatricule() {
         return matricule;
@@ -922,12 +941,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		// TODO Auto-generated method stub
 		return new String[]{"nom","matricule"};
 	}
-
-    @Override
-    public String toString() {
-        return "Employe{" + "compareid=" + compareid + ", matricule=" + matricule + ", genre=" + genre + ", statut=" + statut + ", dipe=" + dipe + ", handicape=" + handicape + ", numsec=" + numsec + ", nationalite=" + nationalite + ", contribuable=" + contribuable + ", cni=" + cni + ", datedelivrance=" + datedelivrance + ", lieudelivrance=" + lieudelivrance + ", etatcivil=" + etatcivil + ", passeport=" + passeport + ", nbreenfants=" + nbreenfants + ", naissance=" + naissance + ", lieudenaiss=" + lieudenaiss + ", adresse1=" + adresse1 + ", adresse2=" + adresse2 + ", modile=" + modile + ", mail=" + mail + ", region=" + region + ", departementsoc=" + departementsoc + ", structure=" + structure + ", categorie=" + categorie + ", echelon=" + echelon + ", indice=" + indice + ", poste=" + poste + ", departement=" + departement + ", specialite=" + specialite + ", lieuaffectation=" + lieuaffectation + ", lieurecrut=" + lieurecrut + ", fonction=" + fonction + ", cv=" + cv + ", comptebancaire=" + comptebancaire + ", profilpaie=" + profilpaie + ", compte=" + compte + ", nbrejours=" + nbrejours + ", familles=" + familles + ", contrats=" + contrats + ", syndique=" + syndique + ", affecte=" + affecte + ", anciennite=" + anciennite + ", tauxsyndical=" + tauxsyndical + ", idemlogement=" + idemlogement + ", retraitcomplementaire=" + retraitcomplementaire + ", anciennitegele=" + anciennitegele + ", salbase=" + salbase + ", cmplsalaire=" + cmplsalaire + ", noel=" + noel + ", eau=" + eau + ", logement=" + logement + ", electricite=" + electricite + ", menagere=" + menagere + ", vehicule=" + vehicule + ", alimentaire=" + alimentaire + ", rubriques=" + rubriques + ", medailles=" + medailles + '}';
-    }
 	
 	
-        
+    
 }

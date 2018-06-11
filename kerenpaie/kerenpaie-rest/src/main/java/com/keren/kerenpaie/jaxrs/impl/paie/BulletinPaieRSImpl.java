@@ -1,4 +1,3 @@
-
 package com.keren.kerenpaie.jaxrs.impl.paie;
 
 import java.io.FileNotFoundException;
@@ -24,12 +23,17 @@ import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.rapports.ViewBulletinPaieManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.BulletinPaieRS;
+import com.keren.kerenpaie.jaxrs.impl.rapports.BPaieRSImpl;
 import com.keren.kerenpaie.jaxrs.impl.rapports.ViewBulletinPaieRSImpl;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
-import com.keren.kerenpaie.model.rapports.ViewBulletinPaie;
+import com.keren.kerenpaie.model.paie.LigneBulletinPaie;
+import com.keren.kerenpaie.model.paie.LigneElementVariable;
+import com.keren.kerenpaie.model.paie.Parametres;
+import com.keren.kerenpaie.model.rapports.BPaie;
 import com.keren.kerenpaie.tools.KerenPaieManagerException;
 import com.keren.kerenpaie.tools.report.ReportHelper;
 import com.keren.kerenpaie.tools.report.ReportsName;
+import com.keren.kerenpaie.tools.report.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -157,7 +161,7 @@ public class BulletinPaieRSImpl
 			throw new KerenExecption("Ce bulletin est nulle <br/> ");
 		} // end if(entity.getState().trim().equalsIgnoreCase("valide")){
 		try {
-			return this.buildPdfReport(bulletin);
+			return this.buildPdfReportLot(bulletin);
 		} catch (KerenPaieManagerException ex) {
 			throw new KerenExecption(ex.getMessage());
 		}
@@ -174,9 +178,11 @@ public class BulletinPaieRSImpl
         // On positionne la locale
         params.put(JRBaseParameter.REPORT_LOCALE, Locale.FRENCH);
         // Construction du Bundle
-        ResourceBundle bundle = ReportHelper.getInstace();
+        //ResourceBundle bundle = ReportHelper.getInstace();
         // Ajout du bundle dans les parametres
-        params.put(JRBaseParameter.REPORT_RESOURCE_BUNDLE, bundle);
+       // params.put(JRBaseParameter.REPORT_RESOURCE_BUNDLE, bundle);
+        params.put(ReportsParameter.SUBREPORT_DIR, ReportHelper.reportFileChemin);
+        
 
         return params;
     }
@@ -186,10 +192,56 @@ public class BulletinPaieRSImpl
     public Response buildPdfReport(BulletinPaie bulletin) {
         try {
         	 bulletin.setPeriode(CacheMemory.getPeriode());
-        	  List<ViewBulletinPaie> records =viewmanager.getCriteres(new ViewBulletinPaie(bulletin));
+        	//  List<ViewBulletinPaie> records =viewmanager.getCriteres(new ViewBulletinPaie(bulletin));
+        	  List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+        	  Parametres p = new Parametres();
+           	  Double cp =0.0;
+        	  Double csgain = 0.0 ;
+        	  Double csretenue = 0.0 ;
+        	  Double net =0.0;
+        	  Double netimposable=0.0;
+        	  Double salco =0.0;
+        	  Double saltax =0.0;
+        	  for(LigneElementVariable variable : bulletin.getVariables()){
+        		  if(variable.getVariable().getCode().equals("SBB")){
+        			  p.setSb(variable.getValeur());
+        		  }
+        		  if(variable.getVariable().getCode().equals("SOMEA")){
+        			  p.setAvnat(variable.getValeur());
+        		  }
+        		  if(variable.getVariable().getCode().equals("SALCO")){
+        			  salco=salco+variable.getValeur();
+        			  
+        		  }
+        		  if(variable.getVariable().getCode().equals("SALTAX")){
+        			  saltax=saltax+variable.getValeur();
+        			  
+        		  }
+        	  }
+ 
+        	  for(LigneBulletinPaie lignes :bulletin.getLignes()){
+        		  if(lignes.getRubrique().getType().equals("0")){
+        			  csgain=csgain+lignes.getTauxsal();
+        		  }
+        		  
+        		  if(lignes.getRubrique().getType().equals("1")){
+        			  csretenue=csretenue+lignes.getTauxsal();
+        		  }
+        		
+        		  cp=cp+lignes.getTauxpat();
+        	  }
+        	  net=csgain-csretenue;
+        	  netimposable=saltax-p.getAvnat();
+        	  
+        	  p.setCp(cp);
+        	  p.setCs(csretenue);
+        	  p.setNetapayer(net);
+        	  p.setNi(netimposable);
+        	  bulletin.setParametre(p);
+        	  datas.add(bulletin);
               String URL = ReportHelper.templateURL+ReportsName.BULLETIN_PAIE.getName();
-              Map parameters = new HashMap();
-              return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+              Map parameters = this.getReportParameters();
+              return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ViewBulletinPaieRSImpl.class.getName()).log(Level.SEVERE, null, ex);
             Response.serverError().build();
@@ -199,6 +251,79 @@ public class BulletinPaieRSImpl
  
         return Response.noContent().build();
     }
+    
+	public Response buildPdfReportLot(BulletinPaie entity) {
+		entity.setPeriode(CacheMemory.getPeriode());
+
+		if (entity.getPeriode() == null) {
+			throw new KerenExecption("Bien vouloir renseigner les paramètres d'impression <br/> ");
+		}
+		System.out.println("LivrePaieRSImpl.buildLivrePaie() debut execution report" + entity.getPeriode().getCode());
+		try {
+			List<BulletinPaie> records = manager.getCriteres(entity);
+			Double cp = 0.0;
+			Double csgain = 0.0;
+			Double csretenue = 0.0;
+			Double net = 0.0;
+			Double netimposable = 0.0;
+			Double salco = 0.0;
+			  Double saltax =0.0;
+			Parametres p = new Parametres();
+			 List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+			for(BulletinPaie bulletin : records){
+				p = new Parametres();
+				System.out.println("BPaieRSImpl.buildBPaie() varaible "+bulletin.getVariables().size());
+				for (LigneElementVariable variable : bulletin.getVariables()) {
+					if (variable.getVariable().getCode().equals("SBB")) {
+						p.setSb(variable.getValeur());
+					}
+					if (variable.getVariable().getCode().equals("SOMEA")) {
+						p.setAvnat(variable.getValeur());
+					}
+					if (variable.getVariable().getCode().equals("SALCO")) {
+						salco = salco + variable.getValeur();
+	
+					}
+					if(variable.getVariable().getCode().equals("SALTAX")){
+	        			  saltax=saltax+variable.getValeur();
+	        			  
+	        		  }
+				}
+				System.out.println("BPaieRSImpl.buildBPaie() ligne bull "+bulletin.getLignes().size());
+				for (LigneBulletinPaie lignes : bulletin.getLignes()) {
+					if (lignes.getRubrique().getType().equals("0")) {
+						csgain = csgain + lignes.getTauxsal();
+					}
+	
+					if (lignes.getRubrique().getType().equals("1")) {
+						csretenue = csretenue + lignes.getTauxsal();
+					}
+	
+					cp = cp + lignes.getTauxpat();
+				}
+				net=csgain-csretenue;
+	        	netimposable=saltax-p.getAvnat();
+	        	  
+	
+				p.setCp(cp);
+				p.setCs(csretenue);
+				p.setNetapayer(net);
+				p.setNi(netimposable);
+				bulletin.setParametre(p);
+				datas.add(bulletin);
+			}
+			String URL = ReportHelper.templateURL + ReportsName.BULLETIN_PAIE.getName();
+			Map parameters = this.getReportParameters();
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(BPaieRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(BPaieRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return Response.noContent().build();
+	}
 
 
 }

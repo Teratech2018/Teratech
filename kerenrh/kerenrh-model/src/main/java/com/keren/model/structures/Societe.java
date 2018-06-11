@@ -13,6 +13,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 /**
  * @author BEKO
@@ -77,7 +82,12 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
    @Predicate(label = "Socièté mère" , type = Societe.class,target="many-to-one")
    @ManyToOne
    @JoinColumn(name = "SOCP_ID")
-    private Societe societeMere ;
+    private Societe societeMere ;   
+   
+   @OneToMany(cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
+   @JoinColumn(name="SOC_ID")
+   @Predicate(label="Planification",type=Planification.class,target="one-to-many",group=true,groupLabel="Planification",groupName="aplan",edittable=true)
+   private List<Planification> planifications = new ArrayList<Planification>();
 
    
    /**
@@ -158,7 +168,7 @@ public Societe(Societe societe) {
       this.courriel = societe.courriel;
       if(societe.pays!=null){
     	  this.pays = new Pays(societe.pays);
-      }
+      }//end if(societe.pays!=null){
       this.numFiscal = societe.numFiscal;
       this.siteWeb = societe.siteWeb;
       this.registre = societe.registre;
@@ -291,8 +301,13 @@ public Societe(Societe societe) {
       this.societeMere = societeMere;
   }
 
- 
-  
+    public List<Planification> getPlanifications() {
+        return planifications;
+    }
+
+    public void setPlanifications(List<Planification> planifications) {
+        this.planifications = planifications;
+    } 
   
 
 //  public Societe getSocieteMere() {

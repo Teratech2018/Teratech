@@ -45,10 +45,10 @@ public class Variable extends BaseElement implements Serializable, Comparable<Va
 	@Predicate(label="Description",search=true)
 	private String description;
 	
-	@Predicate(label="Report du cumul a la cloture",type=Boolean.class,search=true)
+	@Predicate(label="Report du cumul a la cloture",type=Boolean.class)
 	private Boolean repannuel = Boolean.FALSE;
 	
-	@Predicate(label="Report mensuel",type=Boolean.class,search=true)
+	@Predicate(label="Report mensuel",type=Boolean.class)
 	private Boolean repmens = Boolean.TRUE;
 	
 	@Predicate(label="Type de variable",target="combobox",values="Variable système;Variable système calculée;Constante;Variable")

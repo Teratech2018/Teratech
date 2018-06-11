@@ -262,7 +262,9 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		if(employ.compte!=null){
 			this.compte = new Compte(employ.compte);
 		}
-		this.structure = employ.structure;
+                if(employ.structure!=null){
+                    this.structure = new Societe(employ.structure);
+                }
 		this.nbrejours = employ.nbrejours;
 
 	}

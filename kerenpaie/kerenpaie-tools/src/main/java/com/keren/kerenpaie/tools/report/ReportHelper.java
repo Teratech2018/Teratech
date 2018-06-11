@@ -17,7 +17,7 @@ public class ReportHelper {
     /**
      * Chemin de base des report
      */
-    public static final String reportFileChemin = System.getProperty("user.dir") + File.separator + "reports/";
+	 public static final String reportFileChemin = FileHelper.getReportsDirectory()+File.separator+"rhpaie"+File.separator;
     
     public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"rhpaie"+File.separator;
     /**

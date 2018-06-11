@@ -32,7 +32,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	 */
 	private static final long serialVersionUID = 6956286092155176573L;
 	
-	@Predicate(label="Code",optional=false,search=true)
+	@Predicate(label="Code",optional=false,search=true,unique=true)
 	private String code ;
 	
 	@ManyToOne
@@ -40,7 +40,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@Predicate(label="Dossier de Paie",type=Societe.class,target="many-to-one",search=false)
 	private Societe societe ;
 	
-	@Predicate(label="Description",optional=true,search=true)
+	@Predicate(label="Description",optional=true,search=true,unique=true)
 	private String label;
 
 	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true)
@@ -60,32 +60,34 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 //	@Predicate(label="Compte",type=Compte.class,target="many-to-one",search=true)
 //	private Compte compte ;
 	
-	@Predicate(label="Taux salarial(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=1)
+	@Predicate(label="Base",group=true,groupName="group1",groupLabel="Elements de calcul",search=true, sequence=1)
+	private String formule;	
+	@Predicate(label="Taux salarial(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=9)
 	private Double tauxsal =0.0;
 	
 	@Predicate(label="Taux patronal(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=3)
 	private Double tauxpat=0.0;
 
-	@Predicate(label="Base",group=true,groupName="group1",groupLabel="Elements de calcul",search=true, sequence=7)
-	private String formule;	
-	
-	@Predicate(label="Taux plafond avantage (%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=5)
+	@Predicate(label="Taux plafond avantage (%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=7,hidden="currentObject.avantagenat==false||currentObject.avantagenat==null")
 	private Double tauxplaf=0.0;
 	
-	@Predicate(label="Participe au acompte de salaire?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=4)
+	//@Predicate(label="Participe au acompte de salaire?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=4)
 	private Boolean acomptesal = Boolean.FALSE;
 	
-	@Predicate(label="Participe au salaire brut?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=9)
+	@Predicate(label="Participe au salaire brut?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=5)
 	private Boolean brutsal = Boolean.FALSE;
 	
-	@Predicate(label="Participe au salaire des congés?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=6)
+	//@Predicate(label="Participe au salaire des congés?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=6)
 	private Boolean congesal = Boolean.FALSE;
 	
-	@Predicate(label="Participe à la base cotisable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=2)
+	@Predicate(label="Participe à la base cotisable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=13)
 	private Boolean cotisablesal = Boolean.FALSE;
 	
-	@Predicate(label="Rubrique Proraté?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
+	//@Predicate(label="Rubrique Proraté?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
 	private Boolean proratesal = Boolean.FALSE;
+	
+	@Predicate(label="Avantage en Nature?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
+    private Boolean avantagenat = Boolean.FALSE;
 	
 	@Predicate(label="Participe à la base Taxable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=11)
 	private Boolean basetaxablesal = Boolean.FALSE;
@@ -93,10 +95,10 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@Predicate(label="Participe à la base exceptionnelle?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=10)
 	private Boolean baseexcepsal = Boolean.FALSE;
 	
-	@Predicate(label="Taux taxable(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul",search=true ,hidden="currentObject.basetaxablesal==false", sequence=13)
+	@Predicate(label="Taux taxable(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul",search=true ,hidden="currentObject.basetaxablesal==false || currentObject.basetaxablesal==null", sequence=2)
 	private Double tauxtax = 0.0;
 	
-	@Predicate(label="Participe au rappel de salaire?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=12)
+	//@Predicate(label="Participe au rappel de salaire?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=12)
 	private Boolean rappelsal = Boolean.FALSE;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
@@ -207,6 +209,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.baseexcepsal = rubrique.baseexcepsal;
 		this.basetaxablesal = rubrique.basetaxablesal;
 		this.rappelsal = rubrique.rappelsal;
+		this.avantagenat = rubrique.avantagenat;
 		this.mode = rubrique.mode;
 		this.nature = rubrique.nature;
 	}
@@ -408,6 +411,14 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	
 	
 
+	public Boolean getAvantagenat() {
+		return avantagenat;
+	}
+
+	public void setAvantagenat(Boolean avantagenat) {
+		this.avantagenat = avantagenat;
+	}
+
 	public List<CompteRubrique> getComptes() {
 		return comptes;
 	}
@@ -462,7 +473,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	@Override
 	public int compareTo(Rubrique arg0) {
 		// TODO Auto-generated method stub
-		return code.compareTo(arg0.code);
+		return 0;
 	}
 
 }

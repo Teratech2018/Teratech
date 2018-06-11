@@ -99,6 +99,7 @@
     <class>com.keren.model.missions.OrdreMission</class>
     <class>com.keren.model.carrieres.Cessation</class>
     <class>com.keren.model.presences.Retard</class>
+    <class>com.keren.model.structures.Planification</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

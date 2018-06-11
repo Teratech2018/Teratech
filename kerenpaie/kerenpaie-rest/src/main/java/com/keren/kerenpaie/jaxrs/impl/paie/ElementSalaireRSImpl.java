@@ -105,7 +105,8 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&&(entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		super.processBeforeSave(entity);
@@ -124,7 +125,8 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&&(entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		super.processBeforeUpdate(entity);
@@ -143,7 +145,8 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&&(entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		return manager.actif(entity);

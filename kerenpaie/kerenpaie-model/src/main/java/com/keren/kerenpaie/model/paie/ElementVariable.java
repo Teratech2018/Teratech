@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -62,6 +63,20 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	
 	@OneToMany(mappedBy="eltVariable",fetch=FetchType.LAZY)
 	private List<Rappel> rappels = new ArrayList<Rappel>() ;
+	
+	@Column(name="CPP")
+	private Short congePrisPeriode = 0 ;
+	
+	@Column(name="CCP")
+	private Short cumulCongePris = 0 ;
+	
+	@Column(name="CAP")
+	private Short congeAcquisPeriode = 0 ;
+	
+	@Column(name="CCA")
+	private Short cumulCongeAcquis = 0 ;
+	
+	
 	
 	/**
 	 * 
@@ -169,6 +184,40 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 	public void setRappels(List<Rappel> rappels) {
 		this.rappels = rappels;
+	}
+	
+	
+
+	public Short getCongePrisPeriode() {
+		return congePrisPeriode;
+	}
+
+	public void setCongePrisPeriode(Short congePrisPeriode) {
+		this.congePrisPeriode = congePrisPeriode;
+	}
+
+	public Short getCumulCongePris() {
+		return cumulCongePris;
+	}
+
+	public void setCumulCongePris(Short cumulCongePris) {
+		this.cumulCongePris = cumulCongePris;
+	}
+
+	public Short getCongeAcquisPeriode() {
+		return congeAcquisPeriode;
+	}
+
+	public void setCongeAcquisPeriode(Short congeAcquisPeriode) {
+		this.congeAcquisPeriode = congeAcquisPeriode;
+	}
+
+	public Short getCumulCongeAcquis() {
+		return cumulCongeAcquis;
+	}
+
+	public void setCumulCongeAcquis(Short cumulCongeAcquis) {
+		this.cumulCongeAcquis = cumulCongeAcquis;
 	}
 
 	@Override

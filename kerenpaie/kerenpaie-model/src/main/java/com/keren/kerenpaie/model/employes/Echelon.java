@@ -117,6 +117,11 @@ public class Echelon extends BaseElement implements Comparable<Echelon>, Seriali
 		// TODO Auto-generated method stub
 		return code;
 	}
+
+	@Override
+	public String toString() {
+		return "Echelon [code=" + code + ", actif=" + actif + ", description=" + description + "]";
+	}
 	
 	
 

@@ -72,6 +72,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 //	@Predicate(label="Elements Variables",type=ElementVariable.class,target="one-to-many",group=true,groupName="group3",groupLabel="Elements Variables")
 	private List<ElementVariable> variables = new ArrayList<ElementVariable>();
 	
+        @Predicate(label = "Statut",search = true,hide = true)
 	private String state="etabli";
 	/**
 	 * 

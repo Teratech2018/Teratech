@@ -38,7 +38,7 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	
 	@ManyToOne
 	@JoinColumn(name="SYND_ID")
-	@Predicate(label="Syndicat",type=Syndicat.class,target="many-to-one",optional=false,hidden="currentObject.type!='3'")
+	@Predicate(label="Syndicat",type=Syndicat.class,target="many-to-one",optional=true,hidden="currentObject.type!='3'")
 	private Syndicat syndicat ;
 
 	@Predicate(label="Valeur",type=Double.class,hidden="currentObject.type==6||currentObject.type==7",search=true)
@@ -68,6 +68,11 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 	
 	@Predicate(label="Nourriture",type=Boolean.class,group=true,groupName="group1",groupLabel="Avantages",hidden="currentObject.type!=7")
 	private Boolean alimentaire = Boolean.FALSE;
+	
+	@Predicate(label="Menagère",type=Boolean.class,group=true,groupName="group1",groupLabel="Avantages",hidden="currentObject.type!=7")
+	private Boolean menagere = Boolean.FALSE;
+	
+	
 	
 	private String state = "etabli";
 	
@@ -126,6 +131,9 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 		if(elt.employe!=null){
 			this.employe = new Employe(elt.employe);
 		}
+		if(elt.getSyndicat()!=null){
+			this.syndicat= new Syndicat(elt.syndicat);
+		}
 		this.valeur = elt.valeur;
 //		this.rubriques = rubriques;
 		this.eau = elt.eau;
@@ -134,6 +142,7 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 		this.vehicule = elt.vehicule;
 		this.alimentaire = elt.alimentaire;
 		this.state = elt.state;
+		this.menagere=elt.menagere;
 	}
 	
 	
@@ -243,6 +252,14 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 		return employe.getDesignation();
 	}
 
+	public Syndicat getSyndicat() {
+		return syndicat;
+	}
+
+	public void setSyndicat(Syndicat syndicat) {
+		this.syndicat = syndicat;
+	}
+
 	@Override
 	public boolean isCreateonfield() {
 		// TODO Auto-generated method stub
@@ -272,6 +289,14 @@ public class ElementSalaire extends BaseElement implements Serializable, Compara
 		state = new State("inactive", "Inactif");
 		states.add(state);
 		return states;
+	}
+
+	public Boolean getMenagere() {
+		return menagere;
+	}
+
+	public void setMenagere(Boolean menagere) {
+		this.menagere = menagere;
 	}
 
 	@Override

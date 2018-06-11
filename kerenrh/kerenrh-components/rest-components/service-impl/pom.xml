@@ -17,9 +17,9 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        <serveur.jboss.repertoire.deploiement.war>C:\Users\ABEGA ABEGA SERGE\Documents\JBOSS KORIS ERP\jboss-as-7.1.1.Final.Serge\jboss-as-7.1.1.Final\standalone\deployments\kerenrh.war</serveur.jboss.repertoire.deploiement.war>
-        <repertoire.target.generation.war>E:\wamp\www\FS\datas\121220171544445357\[SOURCES]\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\rest-components\service-impl\target\kerenrh.war</repertoire.target.generation.war>-->
-    </properties>
+        <serveur.jboss.repertoire.deploiement.war>D:\jboss-as-7.1.1.Final\standalone\deployments\kerenrh.war</serveur.jboss.repertoire.deploiement.war>
+        <repertoire.target.generation.war>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenrh\kerenrh-components\rest-components\service-impl\target\kerenrh.war</repertoire.target.generation.war>
+  </properties>
 
     <dependencies>
         <dependency>
@@ -124,7 +124,7 @@
                 </executions>
             </plugin>
             <!-- Ant run maven plugin -->
-<!--            <plugin>
+           <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -142,7 +142,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+       </plugin> 
         </plugins>
          <finalName>kerenrh</finalName>
     </build>

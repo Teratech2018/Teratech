@@ -24,6 +24,11 @@ import com.megatim.common.annotations.Predicate;
 @Table(name="T_CAT")
 public class Categorie extends BaseElement implements Serializable, Comparable<Categorie> {
 
+	@Override
+	public String toString() {
+		return "Categorie [code=" + code + ", type=" + type + ", echelons=" + echelons + "]";
+	}
+
 	/**
 	 * 
 	 */
