@@ -637,8 +637,9 @@ public class MoteurPaieManagerImpl
 		Double hAbsPaye = 0.0;
 		//Total des retard non justifié
 		Double hRet = 0.0 ;
-		
-		Map<String, Double> map = new HashMap<String, Double>();		
+		//Map contenant le calcul des differents heures
+		Map<String, Double> map = new HashMap<String, Double>();
+                
 		if(periode!=null){		
 			RestrictionsContainer container = RestrictionsContainer.newInstance();
 			container.addGe("datepointage", periode.getDdebut());

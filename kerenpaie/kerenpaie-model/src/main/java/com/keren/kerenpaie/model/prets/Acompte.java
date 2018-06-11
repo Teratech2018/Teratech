@@ -19,7 +19,6 @@ import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.paie.ElementVariable;
-import com.keren.kerenpaie.model.paie.Rubrique;
 import com.keren.kerenpaie.model.paie.Variable;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
@@ -58,6 +57,7 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	@Predicate(label=" ",target="textarea",group=true,groupName="grou1",groupLabel="Commentaire")
 	private String description ;
 	
+        @Predicate(label = "Statut",search = true,hide = true)
 	private String state="etabli";
 	
 	@ManyToOne
@@ -238,14 +238,24 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
 		List<State> states = new ArrayList<State>();
-		State state = new State("etabli", "Brouillon");
-		states.add(state);
-		state = new State("confirme", "Validée");
-		states.add(state);
-		state = new State("paye", "Payée");
-		states.add(state);
-		state = new State("annule", "Annulée");
-		states.add(state);
+                if(state==null){
+                    return states;
+                }//end if(state==null){
+                if(state.equalsIgnoreCase("etabli")){
+                    State state = new State("etabli", "Brouillon");
+                    states.add(state);		
+                }else if(state.equalsIgnoreCase("confirme")){
+                    State state = new State("confirme", "Validée");
+                    states.add(state);
+		    state = new State("annule", "Annulée");
+		    states.add(state);
+                }else if(state.equalsIgnoreCase("paye")){
+                    State state = new State("paye", "Payée");
+                    states.add(state);		
+                }else if(state.equalsIgnoreCase("annule")){
+                    State state = new State("annule", "Annulée");
+		    states.add(state);		
+                }//end if(state.equalsIgnoreCase("etabli")){
 		return states;
 	}
 

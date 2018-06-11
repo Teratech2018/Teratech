@@ -15,8 +15,6 @@ import com.keren.kerenpaie.core.ifaces.prets.AcompteManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.prets.AcompteRS;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.prets.Acompte;
-import com.keren.kerenpaie.model.prets.DemandePret;
-import com.keren.kerenpaie.model.prets.RemboursementPret;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -77,12 +75,12 @@ public class AcompteRSImpl
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Payer", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'paye'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);	           
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
@@ -186,7 +184,7 @@ public class AcompteRSImpl
                 throw new KerenExecption("Le montant de l'acompte est obligatoire");
         }else if(entity.getState().equalsIgnoreCase("paye")){
                 throw new KerenExecption("Acompte déjà Payée");
-        }else if(!entity.getState().equalsIgnoreCase("annule")){
+        }else if(entity.getState().equalsIgnoreCase("annule")){
                 throw new KerenExecption("Acompte déjà Annulée");
         }
 

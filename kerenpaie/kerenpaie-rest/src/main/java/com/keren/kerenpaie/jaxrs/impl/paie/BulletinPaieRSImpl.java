@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +28,6 @@ import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.paie.LigneBulletinPaie;
 import com.keren.kerenpaie.model.paie.LigneElementVariable;
 import com.keren.kerenpaie.model.paie.Parametres;
-import com.keren.kerenpaie.model.rapports.BPaie;
 import com.keren.kerenpaie.tools.KerenPaieManagerException;
 import com.keren.kerenpaie.tools.report.ReportHelper;
 import com.keren.kerenpaie.tools.report.ReportsName;
@@ -44,7 +42,8 @@ import net.sf.jasperreports.engine.base.JRBaseParameter;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Thu Mar 08 12:34:28 GMT+01:00 2018
  * 
  */

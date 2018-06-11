@@ -3594,6 +3594,11 @@ $scope.gererChangementFichier3 = function(event,model){
                 header.appendChild(ulElem);
                 var staturbar = null;
                 for(var i=0 ; i<metaData.header.length;i++){
+//                    console.log("principal.$scope.editPanelHeader = function(model , metaData,index,extern) =============== "+angular.toJson(metaData.header[i])+" ===== state : "+data.state+" ==== indexof : "+commonsTools.containsLiteral(metaData.header[i].states,data.state));
+                    if(metaData.header[i].target=='workflow' 
+                            && commonsTools.containsLiteral(metaData.header[i].states,data.state)==false){
+                                                    continue;
+                    }//end if(metaData.header[i].target=='workflow'){
                     if(metaData.header[i].type!='workflow'){
                       var liElem =document.createElement('li');
                       ulElem.appendChild(liElem);
@@ -3634,12 +3639,12 @@ $scope.gererChangementFichier3 = function(event,model){
                             var spanElem = document.createElement('span');
                             liElem.appendChild(spanElem);
                             spanElem.setAttribute('class','workflow');
-                             if(data && data[staturbar.fieldName]
-                                    && data[staturbar.fieldName]==data.states[i].code){
-                                 spanElem.setAttribute('style','color: white;');
-                             }else{
-                                 spanElem.setAttribute('style','color: black;');
-                             }
+                            if(data && data[staturbar.fieldName]
+                                   && data[staturbar.fieldName]==data.states[i].code){
+                                spanElem.setAttribute('style','color: white;');
+                            }else{
+                                spanElem.setAttribute('style','color: black;');
+                            }//end if(data && data[staturbar.fieldName]
                             spanElem.appendChild(document.createTextNode(data.states[i].intitule));
                         }//end for(var i=0 ; i<metaData.states.length;i++)
                         header.appendChild(statusElem);

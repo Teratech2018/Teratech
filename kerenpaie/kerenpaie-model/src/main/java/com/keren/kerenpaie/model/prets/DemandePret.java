@@ -68,11 +68,11 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	private Double quotite=0.0;
 	
 	@Predicate(label="c",target="textarea",group=true,groupName="group2",groupLabel="Commentaire")
-    private String commentaire ;
+        private String commentaire ;
     
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="demande")
 	@Predicate(label="Rem",type=RemboursementPret.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group1",groupLabel="Remboursments")
-    private List<RemboursementPret> remboursements = new ArrayList<RemboursementPret>();
+        private List<RemboursementPret> remboursements = new ArrayList<RemboursementPret>();
     
 	@Predicate(label="Status",hide=true ,search=true)
 	private String state="etabli";

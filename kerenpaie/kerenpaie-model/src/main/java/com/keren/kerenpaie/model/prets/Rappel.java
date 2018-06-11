@@ -58,6 +58,7 @@ public class Rappel extends BaseElement implements Serializable, Comparable<Rapp
 	@Predicate(label="Ligne",type=LigneRappel.class,target="one-to-many",group=true,groupName="group1",groupLabel="Rappels")
 	private List<LigneRappel> lignes = new ArrayList<LigneRappel>();
 	
+        @Predicate(label = "Statut",search = true,hide=true)
 	private String state ="etabli";
 	
 	@ManyToOne

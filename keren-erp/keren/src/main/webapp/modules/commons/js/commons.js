@@ -275,7 +275,19 @@ angular.module('keren.core.commons')
                             }
                         }
                  },
-
+                 containsLiteral:function(array , value){
+                     console.log("commonTool.containsLiteral:function(array , value) =============== tab : "+angular.toJson(array)+" ===== state : "+value);
+                     if(!angular.isDefined(value)||value==null
+                             || !angular.isDefined(array)||array==null){
+                         return false ;
+                     }//end if(!angular.isDefined(value)){  
+                     for(var i=0 ; i<array.length;i++){
+                         if(array[i]==value){
+                             return true;
+                         }
+                     }//end for(var i=0 ; i<array.length;i++){
+                     return false;
+                 },
                 /**
                  Create a empty object base of the metaData
                  @metaData : the description of the object

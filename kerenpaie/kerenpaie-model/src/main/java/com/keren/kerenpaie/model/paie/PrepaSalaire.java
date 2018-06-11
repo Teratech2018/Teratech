@@ -38,7 +38,7 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	private String porte ="0";
 	
 	@ManyToMany
-	@Predicate(label="EM",type=Employe.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0'")
+	@Predicate(label="EM",type=Employe.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0' || temporalData.porte==null")
 	private List<Employe> concernes = new ArrayList<Employe>();
 	
 	/**
