@@ -65,7 +65,7 @@ public class ParametreAvanceRSImpl
                     meta = MetaDataUtil.getMetaData(new ParametreAvance(), new HashMap<String, MetaData>(), new ArrayList<String>());
                     MetaColumn workbtn = new MetaColumn("button", "work1", "Générer La Pondération", false, "workflow", null);
                     workbtn.setValue("{'model':'kerenpaie','entity':'parametreavance','method':'genere'}");
-                    workbtn.setStates(new String[]{"etabli"});
+                    workbtn.setStates(new String[]{"etabli","active"});
                     workbtn.setPattern("btn btn-primary");
                     meta.getHeader().add(workbtn);  
                             workbtn = new MetaColumn("button", "work1", "Activer", false, "workflow", null);
@@ -75,7 +75,7 @@ public class ParametreAvanceRSImpl
                     meta.getHeader().add(workbtn);   
                     workbtn = new MetaColumn("button", "work2", "Désactiver", false, "workflow", null);
                     workbtn.setValue("{'model':'kerenpaie','entity':'parametreavance','method':'inactif'}");
-                    workbtn.setStates(new String[]{"etabli"});
+                    workbtn.setStates(new String[]{"active"});
                     workbtn.setPattern("btn btn-danger");
                     meta.getHeader().add(workbtn);   
                     MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);

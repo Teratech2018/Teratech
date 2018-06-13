@@ -70,7 +70,7 @@ public class ElementSalaireRSImpl
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Désactiver", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'elementsalaire','method':'inactive'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"active"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
@@ -165,7 +165,8 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&& (entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		return manager.inactif(entity);

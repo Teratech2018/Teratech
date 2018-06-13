@@ -76,6 +76,35 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@Column(name="CCA")
 	private Short cumulCongeAcquis = 0 ;
 	
+	@Column(name="CSBB")
+	private Double cumulSBB = 0.0;
+	
+	@Column(name="CSTA")
+	private Double cumulSTA = 0.0 ;
+	
+	@Column(name="CSCO")
+	private Double cumulSCO = 0.0;
+	
+	@Column(name="CSEX")
+	private Double cumulSEX = 0.0;
+	
+	@Column(name="CCSA")
+	private Double cumlChargeSal = 0.0 ;
+	
+	@Column(name="CCPA")
+	private Double cumulChargePat = 0.0;
+	
+	@Column(name="CANA")
+	private Double cumulAvantageNat = 0.0;
+	
+	@Column(name="CHT")
+	private Double cumulHeureTrav = 0.0 ;
+	
+	@Column(name="CJT")
+	private Double cumulJourTrav = 0.0 ;
+	
+	@Column(name="CHS")
+	private Double cumulHeureSup = 0.0;
 	
 	
 	/**
@@ -218,6 +247,87 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 	public void setCumulCongeAcquis(Short cumulCongeAcquis) {
 		this.cumulCongeAcquis = cumulCongeAcquis;
+	}	
+	
+
+	public Double getCumulSBB() {
+		return cumulSBB;
+	}
+
+	public void setCumulSBB(Double cumulSBB) {
+		this.cumulSBB = cumulSBB;
+	}
+
+	public Double getCumulSTA() {
+		return cumulSTA;
+	}
+
+	public void setCumulSTA(Double cumulSTA) {
+		this.cumulSTA = cumulSTA;
+	}
+
+	public Double getCumulSCO() {
+		return cumulSCO;
+	}
+
+	public void setCumulSCO(Double cumulSCO) {
+		this.cumulSCO = cumulSCO;
+	}
+
+	public Double getCumulSEX() {
+		return cumulSEX;
+	}
+
+	public void setCumulSEX(Double cumulSEX) {
+		this.cumulSEX = cumulSEX;
+	}
+
+	public Double getCumlChargeSal() {
+		return cumlChargeSal;
+	}
+
+	public void setCumlChargeSal(Double cumlChargeSal) {
+		this.cumlChargeSal = cumlChargeSal;
+	}
+
+	public Double getCumulChargePat() {
+		return cumulChargePat;
+	}
+
+	public void setCumulChargePat(Double cumulChargePat) {
+		this.cumulChargePat = cumulChargePat;
+	}
+
+	public Double getCumulAvantageNat() {
+		return cumulAvantageNat;
+	}
+
+	public void setCumulAvantageNat(Double cumulAvantageNat) {
+		this.cumulAvantageNat = cumulAvantageNat;
+	}
+
+	public Double getCumulHeureTrav() {
+		return cumulHeureTrav;
+	}
+
+	public void setCumulHeureTrav(Double cumulHeureTrav) {
+		this.cumulHeureTrav = cumulHeureTrav;
+	}
+
+	public Double getCumulJourTrav() {
+		return cumulJourTrav;
+	}
+
+	public void setCumulJourTrav(Double cumulJourTrav) {
+		this.cumulJourTrav = cumulJourTrav;
+	}
+
+	public Double getCumulHeureSup() {
+		return cumulHeureSup;
+	}
+
+	public void setCumulHeureSup(Double cumulHeureSup) {
+		this.cumulHeureSup = cumulHeureSup;
 	}
 
 	@Override

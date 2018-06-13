@@ -11,12 +11,14 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.Query;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerem.commons.DateHelper;
 import com.kerem.core.KerenExecption;
+import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerLocal;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.comptabilite.PeriodePaieDAOLocal;
@@ -37,6 +39,7 @@ import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.employes.Famille;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.paie.Convension;
+import com.keren.kerenpaie.model.paie.Cumul;
 import com.keren.kerenpaie.model.paie.ElementVariable;
 import com.keren.kerenpaie.model.paie.ForfaitCategorie;
 import com.keren.kerenpaie.model.paie.ForfaitCategorieProf;
@@ -63,6 +66,7 @@ import com.keren.kerenpaie.model.prets.RemboursementPret;
 import com.keren.kerenpaie.model.structures.Planification;
 import com.keren.kerenpaie.model.structures.Societe;
 import com.keren.kerenpaie.tools.KerenPaieManagerException;
+import javax.persistence.TemporalType;
 
 @TransactionAttribute
 @Stateless(mappedName = "BulletinPaieManager")
@@ -141,238 +145,251 @@ public class MoteurPaieManagerImpl
     @Override
 	public PrepaSalaire preparerPaie(PrepaSalaire entity) {
 		// TODO Auto-generated method stub
-    	/**
-    	 * Etape 1 - Generation des bulletion de paie pour la periode
-    	 */
-    	List<Employe> salaries = creationBulletinPaiePeriode(entity);
-    	/**
-    	 * Evaluation des bulletin de paie générer
-    	 */
-    	if(salaries!=null && !salaries.isEmpty()){
-    		for(Employe salarie : salaries){
-    			RestrictionsContainer container = RestrictionsContainer.newInstance();
-    			container.addEq("employe", salarie);
-    			container.addEq("periode", entity.getPeriode());
-    			List<BulletinPaie> bulletins = dao.filter(container.getPredicats(), null, null, 0, -1);
-    			for(BulletinPaie bulletin : bulletins){
-    				eval(bulletin);
-    			}//end for(BulletinPaie bulletin : bulletins){
-    		}//end for(Employe salarie : salaries)
-    	}//end if(salaries!=null && !salaries.isEmpty()){
-        
+                /**
+                 * Etape 1 - Generation des bulletion de paie pour la periode
+                 */
+                List<Employe> salaries = creationBulletinPaiePeriode(entity);
+                /**
+                 * Evaluation des bulletin de paie générer
+                 */
+                if(salaries!=null && !salaries.isEmpty()){
+                        for(Employe salarie : salaries){
+                                RestrictionsContainer container = RestrictionsContainer.newInstance();
+                                container.addEq("employe", salarie);
+                                container.addEq("periode", entity.getPeriode());
+                                List<BulletinPaie> bulletins = dao.filter(container.getPredicats(), null, null, 0, -1);
+                                for(BulletinPaie bulletin : bulletins){
+                                        eval(bulletin);
+                                }//end for(BulletinPaie bulletin : bulletins){
+                        }//end for(Employe salarie : salaries)
+                }//end if(salaries!=null && !salaries.isEmpty()){
+                CacheMemory.setPeriode(entity.getPeriode());
 		return entity;
 	}
 	
     @Override
-	public ValiderSalaire validerSalaire(ValiderSalaire entity) {
-		// TODO Auto-generated method stub
-    	/**
-    	 * Identifications des bulletions concernés par la validation
-    	 */
-    	List<BulletinPaie> bulletins = null;
-    	if(entity.getPorte().trim().equalsIgnoreCase("0")){
-    		PeriodePaie periode = periodedao.findByPrimaryKey("id", entity.getPeriode().getId());
-    		bulletins = periode.getSalaires();
-    	}else if(entity.getPorte().trim().equalsIgnoreCase("1")){
-    		bulletins = entity.getConcernes();
-    	}//end if(entity.getPorte().trim().equalsIgnoreCase("0")){
-    	//Recalcul des Bulletins concernes
-    	for(BulletinPaie bulletin:bulletins){
-    		//Mise a jour de l'etat du bulletin
-    		bulletin.setState("valide");
-    		bulletin.setDpayement(entity.getDate());
-    		bulletin = eval(bulletin);
-    	}//end for(BulletinPaie bulletin:bulletins){    	
-		return entity;
-	}
+    public ValiderSalaire validerSalaire(ValiderSalaire entity) {
+            // TODO Auto-generated method stub
+            /**
+             * Identifications des bulletions concernés par la validation
+             */
+            List<BulletinPaie> bulletins = null;
+            if(entity.getPorte().trim().equalsIgnoreCase("0")){
+                    PeriodePaie periode = periodedao.findByPrimaryKey("id", entity.getPeriode().getId());
+                    bulletins = periode.getSalaires();
+            }else if(entity.getPorte().trim().equalsIgnoreCase("1")){
+                    bulletins = entity.getConcernes();
+            }//end if(entity.getPorte().trim().equalsIgnoreCase("0")){
+            //Recalcul des Bulletins concernes
+            for(BulletinPaie bulletin:bulletins){
+                    //Mise a jour de l'etat du bulletin
+                    bulletin.setState("valide");
+                    bulletin.setDpayement(entity.getDate());
+                    bulletin = eval(bulletin);
+            }//end for(BulletinPaie bulletin:bulletins){  
+            CacheMemory.setPeriode(entity.getPeriode());            
+            return entity;
+    }
     
     @Override
-	public BulletinPaie eval(BulletinPaie bulletin) {
-		// TODO Auto-generated method stub
-            //Salaire de base brut
-            Double salbasebrut = 0.0;
-            //Salaire de base cotisable
-            Double salcot = 0.0;
-            //Salaire de base taxable
-            Double salTaxable = 0.0;
-            //Salaire de base Exceptionel
-            Double salbaseexcep = 0.0;
-            //Charge patronal
-            Double chargepat = 0.0;
-            //Charge Sallarial
-            Double chargeSal = 0.0;
-            //Montant des avantages en natures
-            Double mtAvant = 0.0;
-            //Initialisation du cache
-            executorCache = new HashMap<String , LigneElementVariable>();    	
-            Employe salarie = employedao.findByPrimaryKey("id", bulletin.getEmploye().getId());
-            if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
-                    salarie.getStructure().getPlanifications().size();
-            }//end if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
-            ContratTravail contrat = null;
-            //Traitement du contrat de travail
-            for(ContratTravail cont:salarie.getContrats()){
-                    if(cont.getState().trim().equalsIgnoreCase("confirme")){
-                            contrat = cont;
-                    }//end if(cont.getState().trim().equalsIgnoreCase("confirme"))
-            }//end for(ContratTravail cont:salarie.getContrats())
-            Rubrique rubrique =null;
+    public BulletinPaie eval(BulletinPaie bulletin) {
+            // TODO Auto-generated method stub
+        //Salaire de base brut
+        Double salbasebrut = 0.0;
+        //Salaire de base cotisable
+        Double salcot = 0.0;
+        //Salaire de base taxable
+        Double salTaxable = 0.0;
+        //Salaire de base Exceptionel
+        Double salbaseexcep = 0.0;
+        //Charge patronal
+        Double chargepat = 0.0;
+        //Charge Sallarial
+        Double chargeSal = 0.0;
+        //Montant des avantages en natures
+        Double mtAvant = 0.0;
+        //Initialisation du cache
+        executorCache = new HashMap<String , LigneElementVariable>();    	
+        Employe salarie = employedao.findByPrimaryKey("id", bulletin.getEmploye().getId());
+        if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
+                salarie.getStructure().getPlanifications().size();
+        }//end if(salarie.getStructure()!=null && salarie.getStructure().getPlanifications()!=null){
+        ContratTravail contrat = null;
+        //Traitement du contrat de travail
+        for(ContratTravail cont:salarie.getContrats()){
+                if(cont.getState().trim().equalsIgnoreCase("confirme")){
+                        contrat = cont;
+                }//end if(cont.getState().trim().equalsIgnoreCase("confirme"))
+        }//end for(ContratTravail cont:salarie.getContrats())
+        Rubrique rubrique =null;
+        /**
+         * Phase 1 Traitement des rubriques qui participe au
+         * 1- SALCO : Salaire cotisable
+         * 2 - SBB:Salaire de base brut
+         * 3-SALTAX : Salaire taxable
+         * 4-SBEX:Salaire de base Exceptionnel
+         */
+        short index = 0;
+        /**
+         * Calcul des Elements variables
+         */
+        for(LigneElementVariable ligne:bulletin.getVariables()){
+                if(ligne.getValeur()!=null&&ligne.getValeur().compareTo(0.0)>0){
+                        executorCache.put(ligne.getVariable().getCode(), ligne);
+                        continue;
+                }//end if(ligne.getValeur().compareTo(0.0)>0){
+                String codeVar = ligne.getVariable().getCode();
+                Double valeur = eval(ligne.getVariable(),salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
+                ligne.setValeur(valeur+ligne.getValeur());    		
+                executorCache.put(ligne.getVariable().getCode(), ligne);
+        }//end for(LigneElementVariable ligne:bulletin.getVariables())
+        //Traitement des rubrique de type
+       for(LigneBulletinPaie ligne:bulletin.getLignes()){
+            rubrique = ligne.getRubrique();
+            if(ligne.getValeur()!=null&&ligne.getValeur().compareTo(0.0)>0){
+                    Double valeur = ligne.getValeur();
+                    if(ligne.getRubrique().getTauxsal()!=null){
+                                                    ligne.setTauxsal(ligne.getValeur()*ligne.getRubrique().getTauxsal()/100);
+                                            }//end if(ligne.getRubrique().getTauxsal()!=null)
+                                            if(ligne.getRubrique().getTauxpat()!=null){
+                                                    ligne.setTauxpat(ligne.getValeur()*ligne.getRubrique().getTauxpat()/100);
+                                            }//end if(ligne.getRubrique().getTauxpat()!=null){
+                                            //Cumul
+                                            if(rubrique.getBasetaxablesal()!=null && rubrique.getBasetaxablesal().equals(Boolean.TRUE)){
+                                                    if(rubrique.getTauxtax()!=null){
+                                                            salTaxable += ligne.getValeur()*rubrique.getTauxtax()/100;
+                                                    }//end if(rubrique.getTauxtax()!=null){
+                                            }//end if(rubrique.getBasetaxablesal().equals(Boolean.TRUE))
+                                            if(rubrique.getBrutsal()!=null && rubrique.getBrutsal().equals(Boolean.TRUE)){
+                                                    salbasebrut += ligne.getTauxsal();
+                                            }//end if(rubrique.getBrutsal().equals(Boolean.TRUE)){
+                                            if(rubrique.getCotisablesal()!=null && rubrique.getCotisablesal().equals(Boolean.TRUE)){
+                                                    salcot += ligne.getTauxsal();
+                                            }//end if(rubrique.getCotisablesal().equals(Boolean.TRUE))
+                                if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
+                                        salbaseexcep+= ligne.getTauxsal();
+                                }//end if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
+                                if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
+                                       mtAvant += ligne.getTauxsal();
+                                }//end if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
+                                            continue;
+            }//end if(ligne.getValeur().compareTo(0.0)>0){  
+            rubrique = rubriquedao.findByPrimaryKey("id", ligne.getRubrique().getId());
+                    Double valeur = eval(rubrique,salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
+                    ligne.setValeur(valeur+ligne.getValeur());	
+                    if(ligne.getRubrique().getTauxsal()!=null){
+                            ligne.setTauxsal(ligne.getValeur()*ligne.getRubrique().getTauxsal()/100);
+                    }//end if(ligne.getRubrique().getTauxsal()!=null)
+                    if(ligne.getRubrique().getTauxpat()!=null){
+                            ligne.setTauxpat(ligne.getValeur()*ligne.getRubrique().getTauxpat()/100);
+                    }//end if(ligne.getRubrique().getTauxpat()!=null){
+                    //Cummul
+                    //Cumul
+                    if(rubrique.getBasetaxablesal()!=null && rubrique.getBasetaxablesal().equals(Boolean.TRUE)){
+                            if(rubrique.getTauxtax()!=null){
+                                    salTaxable += ligne.getValeur()*rubrique.getTauxtax()/100;
+                            }//end if(rubrique.getTauxtax()!=null){
+                    }//end if(rubrique.getBasetaxablesal().equals(Boolean.TRUE))
+                    if(rubrique.getBrutsal()!=null && rubrique.getBrutsal().equals(Boolean.TRUE)){
+                            salbasebrut += ligne.getTauxsal();
+                    }//end if(rubrique.getBrutsal().equals(Boolean.TRUE)){
+                    if(rubrique.getCotisablesal()!=null && rubrique.getCotisablesal().equals(Boolean.TRUE)){
+                            salcot += ligne.getTauxsal();
+                    }//end if(rubrique.getCotisablesal().equals(Boolean.TRUE))
+        if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
+                salbaseexcep+= ligne.getTauxsal();
+        }//end if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
+        if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
+                       mtAvant += ligne.getTauxsal();
+             }//end if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
+            }//end for(LigneBulletinPaie ligne:bulletin.getLignes())
             /**
-             * Phase 1 Traitement des rubriques qui participe au
-             * 1- SALCO : Salaire cotisable
-             * 2 - SBB:Salaire de base brut
-             * 3-SALTAX : Salaire taxable
-             * 4-SBEX:Salaire de base Exceptionnel
+             * Mise a jour du SBB SALCO et SALTAX
              */
-            short index = 0;
-            /**
-             * Calcul des Elements variables
-             */
+            if(executorCache!=null){
+                    if(executorCache.get("SBB")!=null){
+                            executorCache.get("SBB").setValeur(salbasebrut);
+                            bulletin.setSalaireBrut(salbasebrut);
+                    }//end if(executorCache.get("SBB")!=null){
+                    if(executorCache.get("SALCO")!=null){
+                            executorCache.get("SALCO").setValeur(salcot);
+                            bulletin.setSalaireCotisable(salcot);
+                    }//end if(executorCache.get("SALCO")!=null){
+                    if(executorCache.get("SALTAX")!=null){
+                            executorCache.get("SALTAX").setValeur(salTaxable);
+                            bulletin.setSalaireTaxable(salTaxable);
+                    }//end if(executorCache.get("SALTAX")!=null){
+                    if(executorCache.get("SBEX")!=null){
+                            executorCache.get("SBEX").setValeur(salbaseexcep);
+                            bulletin.setSalaireExcep(salbaseexcep);;
+                    }//end if(executorCache.get("SBEX")!=null){
+                    if(executorCache.get("MTAVANT")!=null){//MTAVANT = Total Montant des avantages en nature
+                            executorCache.get("MTAVANT").setValeur(mtAvant);
+                            bulletin.setAvantageNature(mtAvant);
+                    }//end if(executorCache.get("MTAVANT")!=null){
+            }//end if(executorCache!=null){
+
+            //Mise a jour des Variables 
             for(LigneElementVariable ligne:bulletin.getVariables()){
-                    if(ligne.getValeur()!=null&&ligne.getValeur().compareTo(0.0)>0){
-                            executorCache.put(ligne.getVariable().getCode(), ligne);
-                            continue;
-                    }//end if(ligne.getValeur().compareTo(0.0)>0){
-                    String codeVar = ligne.getVariable().getCode();
-                    Double valeur = eval(ligne.getVariable(),salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
-                    ligne.setValeur(valeur+ligne.getValeur());    		
-                    executorCache.put(ligne.getVariable().getCode(), ligne);
-            }//end for(LigneElementVariable ligne:bulletin.getVariables())
-            //Traitement des rubrique de type
-    	   for(LigneBulletinPaie ligne:bulletin.getLignes()){
-    		rubrique = ligne.getRubrique();
-    		if(ligne.getValeur()!=null&&ligne.getValeur().compareTo(0.0)>0){
-    			Double valeur = ligne.getValeur();
-                        if(ligne.getRubrique().getTauxsal()!=null){
-							ligne.setTauxsal(ligne.getValeur()*ligne.getRubrique().getTauxsal()/100);
-						}//end if(ligne.getRubrique().getTauxsal()!=null)
-						if(ligne.getRubrique().getTauxpat()!=null){
-							ligne.setTauxpat(ligne.getValeur()*ligne.getRubrique().getTauxpat()/100);
-						}//end if(ligne.getRubrique().getTauxpat()!=null){
-			    			//Cumul
-						if(rubrique.getBasetaxablesal()!=null && rubrique.getBasetaxablesal().equals(Boolean.TRUE)){
-							if(rubrique.getTauxtax()!=null){
-								salTaxable += ligne.getValeur()*rubrique.getTauxtax()/100;
-							}//end if(rubrique.getTauxtax()!=null){
-						}//end if(rubrique.getBasetaxablesal().equals(Boolean.TRUE))
-						if(rubrique.getBrutsal()!=null && rubrique.getBrutsal().equals(Boolean.TRUE)){
-							salbasebrut += ligne.getTauxsal();
-						}//end if(rubrique.getBrutsal().equals(Boolean.TRUE)){
-						if(rubrique.getCotisablesal()!=null && rubrique.getCotisablesal().equals(Boolean.TRUE)){
-							salcot += ligne.getTauxsal();
-						}//end if(rubrique.getCotisablesal().equals(Boolean.TRUE))
-			            if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
-			                    salbaseexcep+= ligne.getTauxsal();
-			            }//end if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
-			            if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
-			            	   mtAvant += ligne.getTauxsal();
-			            }//end if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
-			    			continue;
-    		}//end if(ligne.getValeur().compareTo(0.0)>0){  
-    		rubrique = rubriquedao.findByPrimaryKey("id", ligne.getRubrique().getId());
-			Double valeur = eval(rubrique,salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
-			ligne.setValeur(valeur+ligne.getValeur());	
-			if(ligne.getRubrique().getTauxsal()!=null){
-				ligne.setTauxsal(ligne.getValeur()*ligne.getRubrique().getTauxsal()/100);
-			}//end if(ligne.getRubrique().getTauxsal()!=null)
-			if(ligne.getRubrique().getTauxpat()!=null){
-				ligne.setTauxpat(ligne.getValeur()*ligne.getRubrique().getTauxpat()/100);
-			}//end if(ligne.getRubrique().getTauxpat()!=null){
-			//Cummul
-			//Cumul
-			if(rubrique.getBasetaxablesal()!=null && rubrique.getBasetaxablesal().equals(Boolean.TRUE)){
-				if(rubrique.getTauxtax()!=null){
-					salTaxable += ligne.getValeur()*rubrique.getTauxtax()/100;
-				}//end if(rubrique.getTauxtax()!=null){
-			}//end if(rubrique.getBasetaxablesal().equals(Boolean.TRUE))
-			if(rubrique.getBrutsal()!=null && rubrique.getBrutsal().equals(Boolean.TRUE)){
-				salbasebrut += ligne.getTauxsal();
-			}//end if(rubrique.getBrutsal().equals(Boolean.TRUE)){
-			if(rubrique.getCotisablesal()!=null && rubrique.getCotisablesal().equals(Boolean.TRUE)){
-				salcot += ligne.getTauxsal();
-			}//end if(rubrique.getCotisablesal().equals(Boolean.TRUE))
-            if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
-                    salbaseexcep+= ligne.getTauxsal();
-            }//end if(rubrique.getBaseexcepsal()!=null && rubrique.getBaseexcepsal().equals(Boolean.TRUE)){
-            if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
-	         	   mtAvant += ligne.getTauxsal();
-	         }//end if(rubrique.getAvantagenat()!=null && rubrique.getAvantagenat().equals(Boolean.TRUE)){
-		}//end for(LigneBulletinPaie ligne:bulletin.getLignes())
-                /**
-                 * Mise a jour du SBB SALCO et SALTAX
-                 */
-                if(executorCache!=null){
-                        if(executorCache.get("SBB")!=null){
-                                executorCache.get("SBB").setValeur(salbasebrut);
-                                bulletin.setSalaireBrut(salbasebrut);
-                        }//end if(executorCache.get("SBB")!=null){
-                        if(executorCache.get("SALCO")!=null){
-                                executorCache.get("SALCO").setValeur(salcot);
-                                bulletin.setSalaireCotisable(salcot);
-                        }//end if(executorCache.get("SALCO")!=null){
-                        if(executorCache.get("SALTAX")!=null){
-                                executorCache.get("SALTAX").setValeur(salTaxable);
-                                bulletin.setSalaireTaxable(salTaxable);
-                        }//end if(executorCache.get("SALTAX")!=null){
-                        if(executorCache.get("SBEX")!=null){
-                                executorCache.get("SBEX").setValeur(salbaseexcep);
-                                bulletin.setSalaireExcep(salbaseexcep);;
-                        }//end if(executorCache.get("SBEX")!=null){
-                        if(executorCache.get("MTAVANT")!=null){//MTAVANT = Total Montant des avantages en nature
-                        	executorCache.get("MTAVANT").setValeur(mtAvant);
-                        	bulletin.setAvantageNature(mtAvant);
-                        }//end if(executorCache.get("MTAVANT")!=null){
-                }//end if(executorCache!=null){
-                
-                //Mise a jour des Variables 
-                for(LigneElementVariable ligne:bulletin.getVariables()){
-                	if(ligne.getValeur()==0||ligne.getValeur().compareTo(0.0)<=0){
-                		Double valeur = eval(ligne.getVariable(), bulletin.getEmploye(), bulletin.getPeriode(),contrat, salarie.getStructure());
-                		ligne.setValeur(valeur);
-                	}//end if(ligne.getValeur()==0||ligne.getValeur().compareTo(0.0)<=0){
-                	if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIEN")){
-                		bulletin.setAnciennite(ligne.getValeur());
-                	}else if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIENITEGELE")){
-                		bulletin.setAncienniteGelee(ligne.getValeur());
-                	}else if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIENITEGELE")){
-                		bulletin.setAncienniteGelee(ligne.getValeur());
-                	}else if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIENITEGELE")){
-                		bulletin.setAncienniteGelee(ligne.getValeur());
-                	}   
-                }//end for(LigneElementVariable ligne:bulletin.getVariables()){
-                //Mise a jour des Variables base sur des variables SBB SALCO SALTAX
-                /**
-                 * 
-                 */
-                for(LigneBulletinPaie ligne:bulletin.getLignes()){
-                        if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
+                    if(ligne.getValeur()==0||ligne.getValeur().compareTo(0.0)<=0){
+                            Double valeur = eval(ligne.getVariable(), bulletin.getEmploye(), bulletin.getPeriode(),contrat, salarie.getStructure());
+                            ligne.setValeur(valeur);
+                    }//end if(ligne.getValeur()==0||ligne.getValeur().compareTo(0.0)<=0){
+                    if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIEN")){
+                            bulletin.setAnciennite(ligne.getValeur());
+                    }else if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIENITEGELE")){
+                            bulletin.setAncienniteGelee(ligne.getValeur());
+                    }else if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIENITEGELE")){
+                            bulletin.setAncienniteGelee(ligne.getValeur());
+                    }else if(ligne.getVariable().getCode().equalsIgnoreCase("ANCIENITEGELE")){
+                            bulletin.setAncienniteGelee(ligne.getValeur());
+                    }   
+            }//end for(LigneElementVariable ligne:bulletin.getVariables()){
+            //Mise a jour des Variables base sur des variables SBB SALCO SALTAX
+            /**
+             * 
+             */
+            for(LigneBulletinPaie ligne:bulletin.getLignes()){
+                    if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
 //                                rubrique = rubriquedao.findByPrimaryKey("id", ligne.getRubrique().getId());
-                                Double valeur = eval(ligne.getRubrique(),salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
-        //    			System.out.println(MoteurPaieManagerImpl.class.toString()+" =========== "+ligne.getRubrique()+" ==== "+ligne.getRubrique().getFormule()+" ==== "+valeur);
-                                ligne.setValeur(valeur);	
-                                if(ligne.getRubrique().getTauxsal()!=null){
-                                        ligne.setTauxsal(valeur*ligne.getRubrique().getTauxsal()/100);
-                                }//end if(ligne.getRubrique().getTauxsal()!=null)
-                                if(ligne.getRubrique().getTauxpat()!=null){
-                                        ligne.setTauxpat(valeur*ligne.getRubrique().getTauxpat()/100);
-                                }//end if(ligne.getRubrique().getTauxpat()!=null){
-                        }//end if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
-                        chargepat += ligne.getTauxpat();
-                        chargeSal += ligne.getTauxsal();
-                }//end for(LigneElementVariable ligne:bulletin.getVariables())
-                //Mise a jour du Bulletin
-                bulletin.setChargePatronale(chargepat);
-                bulletin.setChargeSalariale(chargeSal);
-                bulletin = dao.update(bulletin.getId(), bulletin);
-                BulletinPaie result = new BulletinPaie(bulletin);
-                for(LigneElementVariable ligne:bulletin.getVariables()){                	   	
-                        result.getVariables().add(new LigneElementVariable(ligne));
-                }//end for(LigneElementVariable ligne:bulletin.getVariables()){
-                for(LigneBulletinPaie ligne:bulletin.getLignes()){
-                        result.getLignes().add(new LigneBulletinPaie(ligne));
-                }//end for(LigneBulletinPaie ligne:bulletin.getLignes()){
-                return result;
-	}
+                            Double valeur = eval(ligne.getRubrique(),salarie,bulletin.getPeriode(),contrat,salarie.getStructure());
+    //    			System.out.println(MoteurPaieManagerImpl.class.toString()+" =========== "+ligne.getRubrique()+" ==== "+ligne.getRubrique().getFormule()+" ==== "+valeur);
+                            ligne.setValeur(valeur);	
+                            if(ligne.getRubrique().getTauxsal()!=null){
+                                    ligne.setTauxsal(valeur*ligne.getRubrique().getTauxsal()/100);
+                            }//end if(ligne.getRubrique().getTauxsal()!=null)
+                            if(ligne.getRubrique().getTauxpat()!=null){
+                                    ligne.setTauxpat(valeur*ligne.getRubrique().getTauxpat()/100);
+                            }//end if(ligne.getRubrique().getTauxpat()!=null){
+                    }//end if(ligne.getValeur()==null||ligne.getValeur().compareTo(0.0)<=0){
+                    chargepat += ligne.getTauxpat();
+                    chargeSal += ligne.getTauxsal();
+            }//end for(LigneElementVariable ligne:bulletin.getVariables())
+            //Mise a jour du Bulletin
+            bulletin.setChargePatronale(chargepat);
+            bulletin.setChargeSalariale(chargeSal);
+            //Calcul des cumul echeance n-1
+            Cumul cumul = getCumulSalaireBase(bulletin);
+            bulletin.setCumulAvantageNature(cumul.getCumulAvantageNature());
+            bulletin.setCumulChargePatronale(cumul.getCumulChargePatronale());
+            bulletin.setCumulChargeSalariale(cumul.getCumulChargeSalariale());
+            bulletin.setCumulHeureTravailles(cumul.getCumulHeureTravailles());
+            bulletin.setCumulHeuresSup(cumul.getCumulHeuresSup());
+            bulletin.setCumulSalaireBrut(cumul.getCumulSalaireBrut());
+            bulletin.setCumulSalaireCotisable(cumul.getCumulSalaireCotisable());
+            bulletin.setCumulSalaireExcep(cumul.getCumulSalaireExcep());
+            bulletin.setCumulSalaireTaxable(cumul.getCumulSalaireTaxable());
+            //Mise a jour Bulletin
+            bulletin = dao.update(bulletin.getId(), bulletin);
+            BulletinPaie result = new BulletinPaie(bulletin);
+            for(LigneElementVariable ligne:bulletin.getVariables()){                	   	
+                    result.getVariables().add(new LigneElementVariable(ligne));
+            }//end for(LigneElementVariable ligne:bulletin.getVariables()){
+            for(LigneBulletinPaie ligne:bulletin.getLignes()){
+                    result.getLignes().add(new LigneBulletinPaie(ligne));
+            }//end for(LigneBulletinPaie ligne:bulletin.getLignes()){            
+            return result;
+    }
     
     
     
@@ -1771,5 +1788,25 @@ public class MoteurPaieManagerImpl
     	return datas.size()>0 ? datas.get(0):null;
     }
 
-	
+    /**
+     * 
+     * @param periode
+     * @return
+     */
+	private Cumul getCumulSalaireBase(BulletinPaie bulletion){
+		
+		String QUERY = "SELECT new com.keren.kerenpaie.model.paie.Cumul("
+				+ "sum(c.salaireBrut),"
+				+ "sum(c.salaireTaxable),"
+				+ "sum(c.salaireCotisable),"
+				+ "sum(c.salaireExcep),"
+				+ "sum(c.chargeSalariale),"
+				+ "sum(c.chargePatronale),"
+				+ "sum(c.avantageNature))"
+				+ " FROM BulletinPaie c WHERE c.periode.exercice.id = "+bulletion.getPeriode().getExercice().getId()+" "
+			    + " AND c.periode.ddebut < ?1";
+		Query requete = dao.getEntityManager().createQuery(QUERY);
+                requete.setParameter(1, bulletion.getPeriode().getDdebut(), TemporalType.DATE);
+                return (Cumul) requete.getResultList().get(0);
+	}
 }

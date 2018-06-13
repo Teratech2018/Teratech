@@ -86,60 +86,79 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	
 
 	@Column(name="SBB")
+        @Predicate(label = "Salaire Brut",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double salaireBrut = 0.0 ;
 	
 	@Column(name="STA")
+        @Predicate(label = "Salaire Taxable",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double salaireTaxable =0.0;
 	
 	@Column(name="SCO")
+        @Predicate(label = "Salaire Cotisable",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double salaireCotisable = 0.0;
 	
 	@Column(name="SEX")
+        @Predicate(label = "Salaire Exceptionel",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double salaireExcep = 0.0 ;
 	
 	@Column(name="ANC")
+        @Predicate(label = "Anciennité",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double anciennite =0.0;
 	
 	@Column(name="ANG")
+        @Predicate(label = "Anciennité Gélée",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double ancienniteGelee =0.0;
 	
 	@Column(name="CPA")
+        @Predicate(label = "Charge Patronale",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double chargePatronale = 0.0 ;
 	
 	@Column(name="CSA")
+        @Predicate(label = "Charge Salariale",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double chargeSalariale = 0.0 ;
 	
 	@Column(name="ANA")
+        @Predicate(label = "Avantage en nature",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double avantageNature = 0.0;
 	
 	@Column(name="CPR")
+        @Predicate(label = "Congés Pris",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double congespris = 0.0;
 	
 	@Column(name="CRE")
+        @Predicate(label = "Solde Congé",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double congesRestant = 0.0 ;
 	
 	@Column(name="CAC")
+        @Predicate(label = "Congés Acquis",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double congesAcquis = 0.0 ;	
 	
 	@Column(name="CSB")
+        @Predicate(label = "Cumul Salaire de Base",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireBrut = 0.0;
 	
 	@Column(name="CST")
+        @Predicate(label = "Cumul Salaire Taxable",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireTaxable = 0.0 ;
 
 	@Column(name="CSC")
+        @Predicate(label = "Cumul Salaire Cotisable",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireCotisable = 0.0 ;
 
 	@Column(name="CSE")
+        @Predicate(label = "Cumul Salaire Exceptionnel",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireExcep = 0.0 ;
 	
 	@Column(name="CCS")
+        @Predicate(label = "Cumul Charges Salariale",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulChargeSalariale = 0.0;
 	
 	@Column(name="CCP")
+        @Predicate(label = "Cumul Charges Patronale",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulChargePatronale = 0.0;
 	
 	@Column(name="CAN")
+        @Predicate(label = "Cumul Avantages en Nature",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulAvantageNature = 0.0;
 	
 	@Column(name="CHT")

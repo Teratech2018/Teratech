@@ -94,7 +94,7 @@ public class ElementSalaireManagerImpl
 	@Override
 	public ElementSalaire actif(ElementSalaire entity) {
 		// TODO Auto-generated method stub
-		Employe salarie = employedao.findByPrimaryKey("id", entity.getId());
+		Employe salarie = employedao.findByPrimaryKey("id", entity.getEmploye().getId());
 		Short key = Short.parseShort(entity.getType());
 		switch (key) {
 		case 0:
@@ -123,9 +123,21 @@ public class ElementSalaireManagerImpl
 			}//end for(Rubrique rubri:entity.getRubriques())
 			break;
 		case 7:			
-			salarie.setEau(entity.getEau());salarie.setElectricite(entity.getElectricite());
-			salarie.setAlimentaire(entity.getAlimentaire());salarie.setLogement(entity.getLogement());
-			salarie.setVehicule(entity.getVehicule());
+			if(entity.getEau()==Boolean.TRUE){
+                                salarie.setEau(true);
+                        }//end if(entity.getEau()==Boolean.TRUE){
+                        if(entity.getElectricite()==Boolean.TRUE){
+                            salarie.setElectricite(true);
+                        }//end if(entity.getElectricite()==Boolean.TRUE){
+                        if(entity.getAlimentaire()==Boolean.TRUE){
+                            salarie.setAlimentaire(true);
+                        }//end if(entity.getAlimentaire()==Boolean.TRUE){
+                        if(entity.getLogement()==Boolean.TRUE){
+                            salarie.setLogement(true);
+                        }//end if(entity.getLogement()==Boolean.TRUE){
+                        if(entity.getVehicule()==Boolean.TRUE){
+                            salarie.setVehicule(true);
+                        }//end if(entity.getVehicule()==Boolean.TRUE){
 			break;
 		case 8:			
 			salarie.setNoel(entity.getValeur());
@@ -144,44 +156,56 @@ public class ElementSalaireManagerImpl
 	@Override
 	public ElementSalaire inactif(ElementSalaire entity) {
 		// TODO Auto-generated method stub
-		Employe salarie = employedao.findByPrimaryKey("id", entity.getId());
+		Employe salarie = employedao.findByPrimaryKey("id", entity.getEmploye().getId());
 		Short key = Short.parseShort(entity.getType());
 		switch (key) {
-		case 0:
-			salarie.setSalbase(null);
-			break;
-		case 1:
-			salarie.setIdemlogement(null);
-			break;
-		case 2:
-			salarie.setAnciennitegele(null);
-			break;
-		case 3:			
-			salarie.setTauxsyndical(null);
-			break;
-		case 4:			
-			salarie.setRetraitcomplementaire(null);
-			break;
-		case 5:			
-			salarie.setCmplsalaire(null);
-			break;
-		case 6:			
-			for(Rubrique rubri:entity.getRubriques()){
-				if(salarie.getRubriques().contains(rubri)){
-					salarie.getRubriques().remove(rubri);
-				}//end if(!salarie.getRubriques().contains(rubri)){
-			}//end for(Rubrique rubri:entity.getRubriques())
-			break;
-		case 7:			
-			salarie.setEau(!entity.getEau());salarie.setElectricite(!entity.getElectricite());
-			salarie.setAlimentaire(!entity.getAlimentaire());salarie.setLogement(!entity.getLogement());
-			salarie.setVehicule(!entity.getVehicule());
-			break;
-		case 8:			
-			salarie.setNoel(null);
-			break;
-		default:
-			break;
+                    case 0:
+                            salarie.setSalbase(null);
+                            break;
+                    case 1:
+                            salarie.setIdemlogement(null);
+                            break;
+                    case 2:
+                            salarie.setAnciennitegele(null);
+                            break;
+                    case 3:			
+                            salarie.setTauxsyndical(null);
+                            break;
+                    case 4:			
+                            salarie.setRetraitcomplementaire(null);
+                            break;
+                    case 5:			
+                            salarie.setCmplsalaire(null);
+                            break;
+                    case 6:			
+                            for(Rubrique rubri:entity.getRubriques()){
+                                if(salarie.getRubriques().contains(rubri)){
+                                        salarie.getRubriques().remove(rubri);
+                                }//end if(!salarie.getRubriques().contains(rubri)){
+                            }//end for(Rubrique rubri:entity.getRubriques())
+                            break;
+                    case 7:			
+                            if(entity.getEau()==Boolean.TRUE){
+                                salarie.setEau(false);
+                            }//end if(entity.getEau()==Boolean.TRUE){
+                            if(entity.getElectricite()==Boolean.TRUE){
+                                salarie.setElectricite(false);
+                            }//end if(entity.getElectricite()==Boolean.TRUE){
+                            if(entity.getAlimentaire()==Boolean.TRUE){
+                                salarie.setAlimentaire(false);
+                            }//end if(entity.getAlimentaire()==Boolean.TRUE){
+                            if(entity.getLogement()==Boolean.TRUE){
+                                salarie.setLogement(false);
+                            }//end if(entity.getLogement()==Boolean.TRUE){
+                            if(entity.getVehicule()==Boolean.TRUE){
+                                salarie.setVehicule(false);
+                            }//end if(entity.getVehicule()==Boolean.TRUE){
+                            break;
+                    case 8:			
+                            salarie.setNoel(null);
+                            break;
+                    default:
+                            break;
 		}
 		entity.setState("inactive");
 		//Mise a jour de l'employé

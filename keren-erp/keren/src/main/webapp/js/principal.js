@@ -8817,7 +8817,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                       }else{
                                            commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve l'action : "+data.name,"danger");
 //                                           commonsTools.hideDialogLoading();
-                                      }
+                                      }//end if(datas && datas.length>0){
                                       
                                   },function(error){
 //                                      commonsTools.hideDialogLoading();
@@ -8864,7 +8864,12 @@ $scope.gererChangementFichier3 = function(event,model){
                       if(data.model&&data.entity&&data.method){
 //                           var template = $scope.templateDataBuilder(data['template']);
                            commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                           var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;                        
+                           var data = $scope.currentObject;
+                           if(extern==true){
+                               data = $scope.temporalData;
+                           }//end if(extern==true){
+//                           console.log("$scope.buttonAction = function(data,type,states,index,extern) ================== innerWindow : "+$scope.innerWindowType+" ====== Type Window : "+$scope.windowType+" ===== extern : "+extern+" === data : "+angular.toJson(data));
+                            var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;                        
                             $http.put(url,$scope.currentObject, {responseType: 'arraybuffer'})
                               .then(function(response){
                                     var contentElem = $scope.viewSelector("report");
@@ -10145,7 +10150,6 @@ $scope.gererChangementFichier3 = function(event,model){
                      $scope.updateApplication();
                 }else{
                     //Create differ
-                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     //Initialisation de l'url
                     restService.url(angular.lowercase($scope.currentAction.entityName),angular.lowercase($scope.currentAction.model));
                     //Chargement des metaData
@@ -10162,6 +10166,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           var method = angular.lowercase($scope.currentAction.method);
                           var templateID = null;                         
                           templateID =$scope.currentAction.dashboard.id;
+                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                           //end if($scope.currentAction.dashboard)
                           var url = "http://"+$location.host()+":"+$location.port()+"/"+model+"/"+entity+"/"+method+"/"+templateID;
                           $http.get(url)
@@ -10177,7 +10182,8 @@ $scope.gererChangementFichier3 = function(event,model){
                                     return ;
                     }//end if(mode.length>0 && mode[0]=='dashboard')
                     $scope.hideannuler=false;
-                    if(!$scope.currentAction.modal){                            
+                    if(!$scope.currentAction.modal){                           
+                            commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                             restService.getMetaData($scope.currentAction).$promise
                                     .then(function(metaData){
 //                                        console.log("Chargement MetaData "+angular.toJson(metaData));
@@ -10212,7 +10218,11 @@ $scope.gererChangementFichier3 = function(event,model){
                                         commonsTools.hideDialogLoading();
                                         commonsTools.showMessageDialog(error);
                                     });                            
-                        }else if($scope.currentAction.modal){                           
+                        }else if($scope.currentAction.modal){  
+                               if($scope.windowType!='list'){
+                                   $scope.listFramePanelBuilder($scope.metaData);
+                               }//end if($scope.windowType!='list')
+                               commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                                restService.getMetaData($scope.currentAction).$promise
                                     .then(function(metaData){  
                                         if(!$scope.metaData){
@@ -10240,6 +10250,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                         if(angular.isString($scope.currentAction)){
                                             $scope.currentAction = angular.fromJson($scope.currentAction);
                                         }//end if(angular.isString($scope.currentAction)){
+                                        
                                         $scope.editDialogBuilderExtern(metaData,index,$scope.currentAction.link);
 //                                        console.log("Chargement MetaData apres $scope.editDialogBuilderExtern(metaData)"); 
                                         $scope.currentAction = $scope.dataCache['currentAction'];
@@ -10276,34 +10287,34 @@ $scope.gererChangementFichier3 = function(event,model){
            */
           $scope.$on("currentActionUpdate" , function(event , args){
                if(args.action){
-                $scope.dataCache['currentObject'] = $scope.currentObject;
-                $scope.dataCache['currentAction'] = $scope.currentAction;
-                $scope.viewmode = args.action.viewMode;   
-                $scope.calendarrecord = args.action.calendar;
-                $scope.currentAction = args.action;
-                var template = args.template;
-                var index = args.index;
-//                console.log("$scope.$on(currentActionUpdate , function(event , args) ===== "+);
-                $scope.enabledVerticalMenu = args.verticalMenu;
-                $scope.reset();
-                $scope.initAction(template,index);
-              }
+                    $scope.dataCache['currentObject'] = $scope.currentObject;
+                    $scope.dataCache['currentAction'] = $scope.currentAction;
+                    $scope.viewmode = args.action.viewMode;   
+                    $scope.calendarrecord = args.action.calendar;
+                    $scope.currentAction = args.action;
+                    var template = args.template;
+                    var index = args.index;
+    //                console.log("$scope.$on(currentActionUpdate , function(event , args) ===== "+);
+                    $scope.enabledVerticalMenu = args.verticalMenu;
+                    $scope.reset();
+                    $scope.initAction(template,index);
+              }//end if(args.action){
            });
            /**
             * 
             */
             $scope.$on("currentActionUpdateModal" , function(event , args){
               if(args.action){
-                $scope.dataCache['currentObject'] = $scope.currentObject;
-                $scope.dataCache['currentAction'] = $scope.currentAction;
-                $scope.currentAction = args.action;
-                $scope.currentAction.modal =true ;
-                var index = args.index;
-                $scope.enabledVerticalMenu = args.verticalMenu;
-                var template = args.template;
-                $scope.reset();
-                $scope.initAction(template,index);
-              }
+                    $scope.dataCache['currentObject'] = $scope.currentObject;
+                    $scope.dataCache['currentAction'] = $scope.currentAction;
+                    $scope.currentAction = args.action;
+                    $scope.currentAction.modal =true ;
+                    var index = args.index;
+                    $scope.enabledVerticalMenu = args.verticalMenu;
+                    var template = args.template;
+                    $scope.reset();
+                    $scope.initAction(template,index);
+              }//end if(args.action){
            });
            /**
             * Reception des evenement de d'edition des etats
