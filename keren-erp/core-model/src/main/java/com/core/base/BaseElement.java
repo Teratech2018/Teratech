@@ -47,6 +47,8 @@ public class BaseElement implements Serializable{
     
     protected boolean desabledelete = false ;
     
+    protected boolean desableupdate = false ;
+    
     //Unique number for entity identifier
     protected String serial ;
     
@@ -201,6 +203,16 @@ public class BaseElement implements Serializable{
     public void setActivatefollower(boolean activatefollower) {
         this.activatefollower = activatefollower;
     }
+
+    public boolean isDesableupdate() {
+        return desableupdate;
+    }
+
+    public void setDesableupdate(boolean desableupdate) {
+        this.desableupdate = desableupdate;
+    }
+    
+    
    
     /**
      * 

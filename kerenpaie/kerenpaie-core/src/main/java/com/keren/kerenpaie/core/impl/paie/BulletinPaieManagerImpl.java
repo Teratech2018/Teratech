@@ -140,6 +140,7 @@ public class BulletinPaieManagerImpl extends AbstractGenericManager<BulletinPaie
 			if (critere.getPeriode() != null) {
 				container.addEq("periode.id", critere.getPeriode().getId());
 			}
+		}
 			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 
 			for (BulletinPaie b : datas) {
@@ -154,7 +155,6 @@ public class BulletinPaieManagerImpl extends AbstractGenericManager<BulletinPaie
 
 				records.add(data);
 			}
-		}
 
 		return records;
 	}

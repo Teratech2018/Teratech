@@ -97,7 +97,7 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
      * @param moduleName 
      */
     public LigneInventaire(Article article, Double stockdispo, Double stockconstate, Double stockecart, Double puht, Double puajuste, Emplacement localisation, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.article = article;
         this.stockdispo = stockdispo;
         this.stockconstate = stockconstate;
@@ -112,7 +112,7 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
      * @param ligne 
      */
      public LigneInventaire(LigneInventaire ligne) {
-        super(ligne.id, ligne.designation, ligne.moduleName);
+        super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
         if(ligne.getArticle()!=null){
             this.article = new Article(ligne.article);
         }
@@ -135,7 +135,7 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
       * @param art 
       */
      public LigneInventaire(LArticleEmplacementLot art) {
-        super(-1, art.getDesignation(), art.getModuleName());
+        super(-1, art.getDesignation(), art.getModuleName(),0L);
         this.article = art.getArticle();
         this.stockdispo = art.getLien().getStock();
         this.puht = art.getArticle().getPuvente();

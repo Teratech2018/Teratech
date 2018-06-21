@@ -37,7 +37,7 @@ public class Civilite extends BaseElement implements Serializable,Comparable<Civ
      * @param moduleName 
      */
     public Civilite(String code, String shortcut, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.shortcut = shortcut;
     }

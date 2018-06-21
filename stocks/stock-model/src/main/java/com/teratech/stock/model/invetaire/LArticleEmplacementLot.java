@@ -74,7 +74,7 @@ public class LArticleEmplacementLot extends BaseElement implements Serializable,
      * @param moduleName 
      */
     public LArticleEmplacementLot(Article article, LienEmplacement lien, Emplacement emplacement, Entrepot entrepot, Double stock, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.article = article;
         this.lien = lien;
         this.emplacement = emplacement;
@@ -87,7 +87,7 @@ public class LArticleEmplacementLot extends BaseElement implements Serializable,
      * @param lart 
      */
     public LArticleEmplacementLot(LArticleEmplacementLot lart) {
-        super(lart.id, lart.designation, lart.moduleName);
+        super(lart.id, lart.designation, lart.moduleName,lart.compareid);
         if(lart.article!=null){
             this.article = new Article(lart.article);
         }

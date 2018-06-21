@@ -571,7 +571,7 @@ angular.module("mainApp")
      * @returns {undefined}
      */
     $scope.tchatwindow = function(item){
-        var zoneid = "zone"+item.id
+        var zoneid = "zone"+item.id;
     };
     
     /**
@@ -1157,20 +1157,26 @@ angular.module("mainApp")
           */
          $scope.canCreate = function(){
 //             console.log("$scope.canCreate = function() =================== "+angular.toJson($scope.currentAction));
-             if($scope.currentAction){
+             if($scope.metaData.desablecreate==true){
+                 return false;
+             }else if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
              }//end if($scope.currentAction){ 
              return false ;
          };
          
          $scope.canDelete = function(){
-             if($scope.currentAction){
+             if($scope.metaData.desabledelete==true){
+                 return false;
+             }else if($scope.currentAction){
                  return ($scope.currentAction.securitylevel==0);
              }
              return false;
          };
          $scope.canUpdate = function(){
-             if($scope.currentAction){
+             if($scope.metaData.desableupdate==true){
+                 return false;
+             }else if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
              }//end if($scope.currentAction){
              return false ;
@@ -8864,13 +8870,13 @@ $scope.gererChangementFichier3 = function(event,model){
                       if(data.model&&data.entity&&data.method){
 //                           var template = $scope.templateDataBuilder(data['template']);
                            commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                           var data = $scope.currentObject;
+                           var entity = $scope.currentObject;
                            if(extern==true){
-                               data = $scope.temporalData;
+                               entity = $scope.temporalData;
                            }//end if(extern==true){
 //                           console.log("$scope.buttonAction = function(data,type,states,index,extern) ================== innerWindow : "+$scope.innerWindowType+" ====== Type Window : "+$scope.windowType+" ===== extern : "+extern+" === data : "+angular.toJson(data));
                             var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;                        
-                            $http.put(url,$scope.currentObject, {responseType: 'arraybuffer'})
+                            $http.put(url,entity, {responseType: 'arraybuffer'})
                               .then(function(response){
                                     var contentElem = $scope.viewSelector("report");
 //                               console.log(angular.toJson("$scope.addDialogAction ====== "+angular.toJson(response)));
@@ -9208,7 +9214,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+"}}";
                         }//end if(metaData.columns[i].type=='object'){
                         if(metaData.columns[i].type=='number'){
-                            thElem.setAttribute('class','text-right');
+                            thElem.setAttribute('class','text-center');
                         }
                         rbodyElem.appendChild(thElem);
                      }
@@ -9233,7 +9239,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                       thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+"}}";                                      
                                     }
                                     if(metaData.groups[i].columns[j].type=='number'){
-                                        thElem.setAttribute('class','text-right');
+                                        thElem.setAttribute('class','text-center');
                                     }
                                     rbodyElem.appendChild(thElem);
                                 }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
@@ -9261,7 +9267,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 if(total){                    
                     numeric_fields++ ;
                     thElem.appendChild(document.createTextNode(total));
-                    thElem.setAttribute('class','text-right');
+                    thElem.setAttribute('class','text-center');
                 }//end if(total)
             }//end for(var i=0;i<fieldnames.length;i++){
             if(numeric_fields>0){

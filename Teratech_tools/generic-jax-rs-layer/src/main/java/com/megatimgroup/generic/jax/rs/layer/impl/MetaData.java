@@ -29,6 +29,10 @@ public class MetaData implements Serializable,Comparable<MetaData>{
     
     private boolean desablecreate = false;
     
+    private boolean desabledelete = false ;
+    
+    private boolean desableupdate = false ;
+    
     private List<MetaColumn> header = new ArrayList<MetaColumn>();
     
     private List<MetaColumn> columns = new ArrayList<MetaColumn>();
@@ -74,6 +78,8 @@ public class MetaData implements Serializable,Comparable<MetaData>{
         this.moduleName = meta.moduleName;
         this.createonfield = meta.createonfield;
         this.desablecreate = meta.desablecreate;
+        this.desabledelete = meta.desabledelete;
+        this.desableupdate = meta.desableupdate;
         this.activefilelink = meta.activefilelink;
         this.footerScript = meta.footerScript;
         this.searchfields = meta.searchfields;
@@ -147,6 +153,22 @@ public class MetaData implements Serializable,Comparable<MetaData>{
     public void setDesablecreate(boolean desablecreate) {
         this.desablecreate = desablecreate;
     }
+
+    public boolean isDesabledelete() {
+        return desabledelete;
+    }
+
+    public void setDesabledelete(boolean desabledelete) {
+        this.desabledelete = desabledelete;
+    }
+
+    public boolean isDesableupdate() {
+        return desableupdate;
+    }
+
+    public void setDesableupdate(boolean desableupdate) {
+        this.desableupdate = desableupdate;
+    }   
 
     public List<MetaColumn> getHeader() {
         return header;

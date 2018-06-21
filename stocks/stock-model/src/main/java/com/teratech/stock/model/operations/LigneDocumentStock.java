@@ -92,7 +92,7 @@ public class LigneDocumentStock extends BaseElement implements Serializable,Comp
      * @param moduleName 
      */
     public LigneDocumentStock(Article article, UniteGestion unite, Double puht, Double quantite, Double punet, String code, Date peremption, Date fabrication, Double totalht, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.article = article;
         this.unite = unite;
         this.puht = puht;
@@ -106,7 +106,7 @@ public class LigneDocumentStock extends BaseElement implements Serializable,Comp
     
    
 public LigneDocumentStock(LigneDocumentStock ligne) {
-        super(ligne.id, ligne.designation, ligne.moduleName);
+        super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
         this.article = new Article(ligne.article);
         this.unite = ligne.unite;
         this.puht = ligne.puht;

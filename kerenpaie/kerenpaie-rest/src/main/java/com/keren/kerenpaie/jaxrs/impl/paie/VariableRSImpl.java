@@ -72,7 +72,7 @@ public class VariableRSImpl
                                 , new ArrayList<String>());
                 MetaColumn workbtn = new MetaColumn("button", "work1", "Evaluer la Variable", false, "object", null);
                 workbtn.setValue("{'model':'kerenpaie','entity':'variable','method':'evaluer',template:{'this':'object'}}");
-                workbtn.setPattern("btn btn-primary");
+//                workbtn.setPattern("btn btn-default");
                 meta.getHeader().add(workbtn);  
 
         } catch (InstantiationException e) {

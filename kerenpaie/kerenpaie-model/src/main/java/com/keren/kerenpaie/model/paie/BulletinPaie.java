@@ -26,7 +26,7 @@ import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.employes.Categorie;
 import com.keren.kerenpaie.model.employes.Echelon;
 import com.keren.kerenpaie.model.employes.Employe;
-import com.megatim.common.annotations.Observer;
+import com.keren.kerenpaie.model.rapports.LivrePaie;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -93,6 +93,10 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
         @Predicate(label = "Salaire Taxable",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double salaireTaxable =0.0;
 	
+        @Column(name = "TAAV")
+         @Predicate(label = "Taxe sur Avantages",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
+        private Double taxeAvantages = 0.0 ;
+        
 	@Column(name="SCO")
         @Predicate(label = "Salaire Cotisable",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double salaireCotisable = 0.0;
@@ -173,6 +177,15 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	private Parametres parametre ;
 	
 	private String state = "etabli";
+	
+	@Transient
+	private String netLettre = "";
+	
+	@Transient
+	private Double netapayer = 0.0;
+	
+	@Transient
+	private String lastperiode ; 	
 	
 	/**
 	 * 
@@ -267,6 +280,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		salaireCotisable = bulletin.salaireCotisable;
 		salaireExcep = bulletin.salaireExcep ;
 		anciennite =bulletin.anciennite;
+                this.taxeAvantages = bulletin.taxeAvantages;
 		ancienniteGelee =bulletin.ancienniteGelee;
 		chargePatronale = bulletin.chargePatronale ;
 		chargeSalariale = bulletin.chargeSalariale ;
@@ -283,8 +297,15 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		cumulAvantageNature = bulletin.cumulAvantageNature;
 		cumulHeureTravailles = bulletin.cumulHeureTravailles;
 		cumulHeuresSup = bulletin.cumulHeuresSup;
+		this.netLettre= bulletin.netLettre;
+		this.netapayer=bulletin.netapayer; 	 	
 	}
-	
+	public BulletinPaie(LivrePaie livre) {
+		super();
+		if(this.periode!=null){
+		this.periode= new PeriodePaie(livre.getPeriode());
+		}
+	}
 	
 	
 	public String getCode() {
@@ -327,6 +348,14 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	public void setLignes(List<LigneBulletinPaie> lignes) {
 		this.lignes = lignes;
 	}
+
+    public Double getTaxeAvantages() {
+        return taxeAvantages;
+    }
+
+    public void setTaxeAvantages(Double taxeAvantages) {
+        this.taxeAvantages = taxeAvantages;
+    }
 	
 	
 
@@ -477,6 +506,30 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 	public void setSalaireCotisable(Double salaireCotisable) {
 		this.salaireCotisable = salaireCotisable;
+	}
+
+	public String getNetLettre() {
+		return netLettre;
+	}
+
+	public void setNetLettre(String netLettre) {
+		this.netLettre = netLettre;
+	}
+
+	public Double getNetapayer() {
+		return netapayer;
+	}
+
+	public void setNetapayer(Double netapayer) {
+		this.netapayer = netapayer;
+	}
+
+	public String getLastperiode() {
+		return lastperiode;
+	}
+
+	public void setLastperiode(String lastperiode) {
+		this.lastperiode = lastperiode;
 	}
 
 	public Double getSalaireExcep() {

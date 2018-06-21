@@ -22,16 +22,17 @@
 	 <menuitem id="rh_paie_5_2" label="Salaires" parent_ref="rh_paie_salaire"  entity_ref="BulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
 	 	 
 	  <reportRecord  id="rh_paie_rapport_all" label="Generer les Bulletin" action_ref="rh_paie_5_2"  extern="true">
-	      <search entity="ViewBulletinPaie" module="kerenpaie" method="pdf">
+	      <search entity="BulletinPaie" module="kerenpaie" method="pdf">
 		     <field name="Nationalité"/>
              <field name="Matricule"/>			 
 		  </search>	     
 	 </reportRecord>
-	 <menuitem id="rh_paie_6" label="Validation des salaires" parent_ref="rh_paie_salaire" entity_ref="ValiderSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-edit" modal="true" />
-	 <reportRecord  id="rhpaie_brouillard01" label="Brouillard des salaires" action_ref="rh_paie_5_2"  extern="true">
-	      <search entity="BrouillardSalaire" module="kerenpaie" method="brouillard">		    		 
+	  <reportRecord  id="rhpaie_brouillard01" label="Livre de Paie" action_ref="rh_paie_5_2"  extern="true">
+	      <search entity="BulletinPaie" module="kerenpaie" method="livrepaie">		    		 
 		  </search>	     
 	 </reportRecord>
+	 <menuitem id="rh_paie_6" label="Validation des salaires" parent_ref="rh_paie_salaire" entity_ref="ValiderSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-edit" modal="true" />
+	
 	 <menuitem id="rh_paie_6_1" label="Transfert Comptabilité" parent_ref="rh_paie_salaire" entity_ref="ValiderSalaire" model_ref="kerenpaie" gyphycon="	glyphicon glyphicon-download-alt" modal="true" />
 	 <menuitem id="rh_paie_3" label="Fermer une periode" parent_ref="rh_paie_salaire" entity_ref="PeriodePaieClose" model_ref="kerenpaie" gyphycon="icon icon-envelope" modal="true" />
 	 <menu id="rh_paie_element" label="Elements de salaire" parent="rh_paie" gyphycon="glyphicon glyphicon-scale"/>
@@ -54,12 +55,7 @@
 	 <menuitem id="rh_paie_rapport_3" label="Generer le Dipe Magnetique" parent_ref="rh_paie_rapport" entity_ref="ViewDipePaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-qrcode" modal="true" />
 	 <menuitem id="rh_paie_rapport_4" label="Brouillard de paie" parent_ref="rh_paie_rapport" entity_ref="ViewBulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-list-alt" modal="true" />
 	 <menuitem id="rh_paie_rapport_5" label="Etat des cotisations" parent_ref="rh_paie_rapport" entity_ref="ViewBulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-list-alt" modal="true" />
-	   <reportRecord  id="rh_paie_rapport_EDT" label="Generer les Bulletin" action_ref="rh_paie_rapport_0"  extern="true">
-	      <search entity="ViewBulletinPaie" module="kerenpaie" method="pdf">
-		     <field name="Nationalité"/>
-             <field name="Matricule"/>			 
-		  </search>	     
-	 </reportRecord>
+	 
 	 
 	 <menu id="rh_paie_compta" label="Comptabilité" parent="rh_paie" gyphycon="glyphicon glyphicon-retweet"/>
 	 <menuitem id="rh_paie_18" label="Plan comptable" parent_ref="rh_paie_compta" entity_ref="Compte" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />

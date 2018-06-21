@@ -92,7 +92,7 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
      * @param moduleName 
      */
     public DocumentStock(String code, Date date, Emplacement depot, String reference, String commentaire, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.date = date;
         this.emplacement = depot;
@@ -105,7 +105,7 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
      * @param doc 
      */
     public DocumentStock(DocumentStock doc) {
-        super(doc.id, doc.designation, doc.moduleName);
+        super(doc.id, doc.designation, doc.moduleName,doc.compareid);
         this.code = doc.code;
         this.date = doc.date;
         if(doc.getEmplacement()!=null){

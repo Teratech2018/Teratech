@@ -187,7 +187,9 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@JoinColumn(name="EMP_ID")
 	@Predicate(label="Familles",group=true,groupName="group5",groupLabel="Familles",type=Famille.class,target="one-to-many")
 	private List<Famille> familles = new ArrayList<Famille>();
-	
+	@Temporal(TemporalType.DATE)
+	//@Predicate(label="Date de naissance",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations Personelles")
+	private Date embauche ;
 
     public Employe(String matricule, String nom, String prenom) {
         this.matricule = matricule;
@@ -266,6 +268,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
                     this.structure = new Societe(employ.structure);
                 }
 		this.nbrejours = employ.nbrejours;
+		this.embauche=employ.embauche;
 
 	}
 
@@ -359,6 +362,14 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 
 	public String getContribuable() {
 		return contribuable;
+	}
+
+	public Date getEmbauche() {
+		return embauche;
+	}
+
+	public void setEmbauche(Date embauche) {
+		this.embauche = embauche;
 	}
 
 	public void setContribuable(String contribuable) {

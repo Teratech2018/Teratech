@@ -268,6 +268,26 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	
+
+	@Override
+	public boolean isDesablecreate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isDesabledelete() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isDesableupdate() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)

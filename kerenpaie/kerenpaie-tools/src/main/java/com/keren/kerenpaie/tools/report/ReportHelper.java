@@ -3,7 +3,11 @@
  */
 package com.keren.kerenpaie.tools.report;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ResourceBundle;
 
 import com.kerem.core.FileHelper;
@@ -20,6 +24,8 @@ public class ReportHelper {
 	 public static final String reportFileChemin = FileHelper.getReportsDirectory()+File.separator+"rhpaie"+File.separator;
     
     public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"rhpaie"+File.separator;
+    
+    public static final String reportimages = FileHelper.getReportsDirectory()+File.separator+"rhpaie"+File.separator+"images"+File.separator+"logo.png";
     /**
      * Chemin de base des report
      */
@@ -87,6 +93,18 @@ public class ReportHelper {
             new ReportHelper();
         }
         return bundle;
+    }
+    public static byte[] getBytes() throws IOException
+    {
+    	InputStream stream = new FileInputStream(reportimages);
+       try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+          byte[] buffer = new byte[1024];
+          for (int len = 0; (len = stream.read(buffer)) != -1;) {
+             os.write(buffer, 0, len);
+          }
+          os.flush();
+          return os.toByteArray();
+       }
     }
 
 }

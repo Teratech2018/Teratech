@@ -134,12 +134,6 @@ public class LivrePaie extends BaseElement implements Serializable, Comparable<L
 		return 0;
 	}
 
-	@Override
-	public boolean isDesablecreate() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 	
 
 }

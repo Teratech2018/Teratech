@@ -18,8 +18,10 @@ import com.keren.kerenpaie.dao.ifaces.employes.EmployeDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.ElementSalaireDAOLocal;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.paie.ElementSalaire;
+import com.keren.kerenpaie.model.paie.LigneAvantage;
 import com.keren.kerenpaie.model.paie.Rubrique;
 import com.megatim.common.annotations.OrderType;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 
 @TransactionAttribute
 @Stateless(mappedName = "ElementSalaireManager")
@@ -77,6 +79,9 @@ public class ElementSalaireManagerImpl
 		for(Rubrique rubr:data.getRubriques()){
 			result.getRubriques().add(new Rubrique(rubr));
 		}
+                for(LigneAvantage ligne:data.getAvantages()){
+                    result.getAvantages().add(new LigneAvantage(ligne));
+                }
 		return result;
 	}
 
@@ -122,22 +127,34 @@ public class ElementSalaireManagerImpl
 				}//end if(!salarie.getRubriques().contains(rubri)){
 			}//end for(Rubrique rubri:entity.getRubriques())
 			break;
-		case 7:			
-			if(entity.getEau()==Boolean.TRUE){
-                                salarie.setEau(true);
+		case 7:	
+                      for(LigneAvantage ligne : entity.getAvantages()){
+			if(ligne.getType().equalsIgnoreCase("0")&&ligne.getStatut()==Boolean.TRUE){
+                                salarie.setEau(ligne.getStatut());salarie.setEauMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
                         }//end if(entity.getEau()==Boolean.TRUE){
-                        if(entity.getElectricite()==Boolean.TRUE){
-                            salarie.setElectricite(true);
-                        }//end if(entity.getElectricite()==Boolean.TRUE){
-                        if(entity.getAlimentaire()==Boolean.TRUE){
-                            salarie.setAlimentaire(true);
-                        }//end if(entity.getAlimentaire()==Boolean.TRUE){
-                        if(entity.getLogement()==Boolean.TRUE){
-                            salarie.setLogement(true);
+                         if(ligne.getType().equalsIgnoreCase("1")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setLogement(ligne.getStatut());
+                            salarie.setLogeMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
                         }//end if(entity.getLogement()==Boolean.TRUE){
-                        if(entity.getVehicule()==Boolean.TRUE){
-                            salarie.setVehicule(true);
+                        if(ligne.getType().equalsIgnoreCase("2")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setElectricite(ligne.getStatut());
+                            salarie.setElecMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                        }//end if(entity.getElectricite()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("3")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setMenagere(ligne.getStatut());
+                            salarie.setMenMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setMenNbre(ligne.getQuantite());
+                        }//end if(entity.getAlimentaire()==Boolean.TRUE){                       
+                        if(ligne.getType().equalsIgnoreCase("4")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setVehicule(ligne.getStatut());
+                            salarie.setVehMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setVehNbre(ligne.getQuantite());
                         }//end if(entity.getVehicule()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("5")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setAlimentaire(ligne.getStatut());
+                            salarie.setAliMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                        }//end if(entity.getElectricite()==Boolean.TRUE){
+                      }//end for(LigneAvantage ligne : entity.getAvantages()){
 			break;
 		case 8:			
 			salarie.setNoel(entity.getValeur());
@@ -185,21 +202,34 @@ public class ElementSalaireManagerImpl
                             }//end for(Rubrique rubri:entity.getRubriques())
                             break;
                     case 7:			
-                            if(entity.getEau()==Boolean.TRUE){
-                                salarie.setEau(false);
-                            }//end if(entity.getEau()==Boolean.TRUE){
-                            if(entity.getElectricite()==Boolean.TRUE){
-                                salarie.setElectricite(false);
-                            }//end if(entity.getElectricite()==Boolean.TRUE){
-                            if(entity.getAlimentaire()==Boolean.TRUE){
-                                salarie.setAlimentaire(false);
-                            }//end if(entity.getAlimentaire()==Boolean.TRUE){
-                            if(entity.getLogement()==Boolean.TRUE){
-                                salarie.setLogement(false);
-                            }//end if(entity.getLogement()==Boolean.TRUE){
-                            if(entity.getVehicule()==Boolean.TRUE){
-                                salarie.setVehicule(false);
-                            }//end if(entity.getVehicule()==Boolean.TRUE){
+                             for(LigneAvantage ligne : entity.getAvantages()){
+			if(ligne.getType().equalsIgnoreCase("0")&&ligne.getStatut()==Boolean.TRUE){
+                                salarie.setEau(ligne.getStatut()==Boolean.TRUE ? Boolean.FALSE:ligne.getStatut());
+                                salarie.setEauMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                        }//end if(entity.getEau()==Boolean.TRUE){
+                         if(ligne.getType().equalsIgnoreCase("1")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setLogement(ligne.getStatut()==Boolean.TRUE ? Boolean.FALSE:ligne.getStatut());
+                            salarie.setLogeMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                        }//end if(entity.getLogement()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("2")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setElectricite(ligne.getStatut()==Boolean.TRUE ? Boolean.FALSE:ligne.getStatut());
+                            salarie.setElecMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                        }//end if(entity.getElectricite()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("3")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setMenagere(ligne.getStatut()==Boolean.TRUE ? Boolean.FALSE:ligne.getStatut());
+                            salarie.setMenMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setMenNbre(ligne.getQuantite());
+                        }//end if(entity.getAlimentaire()==Boolean.TRUE){                       
+                        if(ligne.getType().equalsIgnoreCase("4")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setVehicule(ligne.getStatut()==Boolean.TRUE ? Boolean.FALSE:ligne.getStatut());
+                            salarie.setVehMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setVehNbre(ligne.getQuantite());
+                        }//end if(entity.getVehicule()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("5")&&ligne.getStatut()==Boolean.TRUE){
+                            salarie.setAlimentaire(ligne.getStatut()==Boolean.TRUE ? Boolean.FALSE:ligne.getStatut());
+                            salarie.setAliMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                        }//end if(entity.getElectricite()==Boolean.TRUE){
+                      }//end for(LigneAvantage ligne : entity.getAvantages()){
                             break;
                     case 8:			
                             salarie.setNoel(null);

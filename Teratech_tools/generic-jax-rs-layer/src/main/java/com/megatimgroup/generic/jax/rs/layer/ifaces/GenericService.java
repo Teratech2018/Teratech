@@ -86,6 +86,7 @@ public interface GenericService<T ,PK extends Serializable> {
         @Path("map")
 	public void update(Map<PK,T> entities);
         
+               
 	/**
 	 * Methode generique de suppression d'une entite
 	 * @param id	Identifiant de l'entite a supprimer

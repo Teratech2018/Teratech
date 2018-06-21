@@ -191,9 +191,9 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 FilterPredicat contraint = (FilterPredicat) obj;
                 if(!unique(contraint.getFieldName(), contraint.getValue())){
                     results.add(contraint);
-                }
-            }
-        }
+                }//end if(!unique(contraint.getFieldName(), contraint.getValue()))
+            }//end for(Object obj : contraints){
+        }//end if(contraints!=null&&!contraints.isEmpty())
         return results;
     }    
     
@@ -349,7 +349,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     @Override
     public  MetaData getMetaData(@Context HttpHeaders headers){
         return new MetaData();
-    }   
+    }
     
     @SuppressWarnings("empty-statement")
     protected void processBeforeSave(T entity) {

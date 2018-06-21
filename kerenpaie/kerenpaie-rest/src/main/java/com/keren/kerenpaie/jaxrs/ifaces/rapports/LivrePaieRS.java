@@ -19,6 +19,6 @@ public interface LivrePaieRS extends GenericService<LivrePaie, Long> {
 
 	@PUT
 	@Produces({ "application/pdf" })
-	@Path("buildlivrepaie")
+	@Path("pdf")
 	public Response buildLivrePaie(LivrePaie livre);
 }

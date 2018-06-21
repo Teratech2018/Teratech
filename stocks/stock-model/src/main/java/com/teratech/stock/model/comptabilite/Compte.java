@@ -81,7 +81,7 @@ public class Compte extends BaseElement implements Serializable,Comparable<Compt
      * @param moduleName 
      */
     public Compte(String code, String libele, Societe societe, Taxe taxe, String note, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.libele = libele;
         this.societe = societe;
@@ -90,7 +90,7 @@ public class Compte extends BaseElement implements Serializable,Comparable<Compt
     }
 
     public Compte(Compte compte) {
-        super(compte.id, compte.designation, compte.moduleName);
+        super(compte.id, compte.designation, compte.moduleName,compte.compareid);
         this.code = compte.code;
         this.libele = compte.libele;
         this.societe = compte.societe;

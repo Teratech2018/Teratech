@@ -68,6 +68,7 @@
     <class>com.keren.kerenpaie.model.conges.DemandeConge</class>
     <class>com.keren.kerenpaie.model.conges.TypeConge</class>
     <class>com.keren.kerenpaie.model.presences.LignePointage</class>
+    <class>com.keren.kerenpaie.model.paie.LigneAvantage</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

@@ -121,6 +121,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Adresse électronique",target="email",group=true,groupName="group1",groupLabel="Informations Personelles")
 	private String mail ;
 	
+	
 	@ManyToOne
 	@JoinColumn(name="REG_ID")
 	@Predicate(label="Région d'origine",type=Region.class,target="many-to-one",group=true,groupName="group1",groupLabel="Informations Personelles")
@@ -171,6 +172,10 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Lieu de recrutement",group=true,groupName="group2",groupLabel="Informations professionnelles")
 	private String lieurecrut;
 	
+	@Temporal(TemporalType.DATE)
+	@Predicate(label="Date d'embauche",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations professionnelles")
+	private Date embauche ;
+	
 	@ManyToOne
 	@JoinColumn(name="FON_ID")
 	@Predicate(label="Fonction",type=Fonction.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
@@ -213,15 +218,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@OneToMany(mappedBy="employe",fetch=FetchType.LAZY)
 	@Predicate(label="Contrat de tarvail",type=ContratTravail.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group41",groupLabel="Contrats de Travail")
     private List<ContratTravail> contrats = new ArrayList<ContratTravail>();
-    
-
-	@Predicate(label="Employe syndiqué?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean  syndique = Boolean.FALSE; 
-	
-	@Predicate(label="Employe affecté?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean  affecte = Boolean.FALSE;
-    
-	
+    	
 	@Predicate(label="Anciennité?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
     private Double anciennite =0.0;
     
@@ -253,21 +250,43 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
     @Predicate(label="Avantage Eau?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
     private Boolean eau = Boolean.FALSE;
     
+    private Boolean eauMode = Boolean.FALSE;//True Espece False : Nature
+    
     @Predicate(label="Avantage Logement?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
     private Boolean logement = Boolean.FALSE;
+    
+    private Boolean logeMode = Boolean.FALSE;//True Espece False : Nature
     
     @Predicate(label="Avantage Electricité?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
     private Boolean electricite = Boolean.FALSE;
     
+    private Boolean elecMode = Boolean.FALSE;//True Espece False : Nature
+    
     @Predicate(label="Avantage Ménagères?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
     private Boolean menagere = Boolean.FALSE;
+    
+    private Boolean menMode = Boolean.FALSE;//True Espece False : Nature
+    
+    private Short menNbre = 0 ;
     
     @Predicate(label="Avantage Vehicule?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
     private Boolean vehicule = Boolean.FALSE; 
     
+    private Boolean vehMode = Boolean.FALSE;//True Espece False : Nature
+    
+    private Short vehNbre = 0 ;
+    
     @Predicate(label="Avantage Alimentaire?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
     private Boolean alimentaire = Boolean.FALSE;
+    @Predicate(label="Employe syndiqué?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+    private Boolean  syndique = Boolean.FALSE; 
+	
+	@Predicate(label="Employe affecté?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+    private Boolean  affecte = Boolean.FALSE;
+    
    
+    private Boolean aliMode = Boolean.FALSE;//True Espece False : Nature
+    
     @ManyToMany
     @JoinTable(name="T_EMRUP",joinColumns=@JoinColumn(name="EMPL_ID"),inverseJoinColumns=@JoinColumn(name="RUBR_ID"))
     @Predicate(label="Rubriques?",type=Rubrique.class,editable=false,updatable=false,target="many-to-many-list",group=true,groupName="group401",groupLabel="Rubriques Complémentaires")
@@ -277,6 +296,34 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
     @JoinColumn(name="EMPL_ID")
     @Predicate(label="Medialles",type=Medaille.class,target="one-to-many",edittable=true,group=true,groupName="group6",groupLabel="Médailles")
     private List<Medaille> medailles = new ArrayList<Medaille>();
+    
+    @Predicate(label = "Congé Exceptionel(Ans)",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés")
+    @Column(name = "COEX")
+    private Double congeExceptionel = 0.0 ;
+    
+    @Predicate(label = "Congé Acquis / Periode",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés")
+    @Column(name = "COPE")
+    private Double congePeriode = 0.0 ;
+    
+//    @Predicate(label = "Congé Acquis /Enfant Mineur",type = Short.class,group = true,groupName = "group400",groupLabel = "Gongés")
+//    @Column(name = "COMA")
+//    private Short congeMaternel = 0 ;
+//    
+//    @Predicate(label = "Congé Exceptionel(Ans)",type = Short.class,group = true,groupName = "group400",groupLabel = "Gongés")
+//    @Column(name = "AUCO")
+//    private Short augConge = 0 ;
+//    
+//    @Column(name = "POCO")
+//    @Predicate(label = "Congé Exceptionel(Ans)",type = Short.class,group = true,groupName = "group400",groupLabel = "Gongés")
+//    private Short porteConge = 0 ;
+    
+    @Column(name = "COAC")
+    @Predicate(label = "Congé Acquis",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés",editable = false)
+    private Double congesAcquis = 0.0 ;
+    
+    @Column(name = "CORE")
+    @Predicate(label = "Congé Restant",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés",editable = false)
+    private Double congeRestant = 0.0 ;
     
     public Employe(String matricule, String nom, String prenom) {
         this.matricule = matricule;
@@ -356,11 +403,18 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.mail = employ.mail;
 		this.region = employ.region;
 		this.eau = employ.eau;
+                this.eauMode = employ.eauMode;
 		this.logement = employ.logement;
+                this.logeMode = employ.logeMode;
 		this.electricite = employ.electricite;
+                this.elecMode = employ.elecMode;
 		this.menagere = employ.menagere;
+                this.menMode = employ.menMode;
+                this.menNbre = employ.menNbre;
 		this.vehicule = employ.vehicule;
+                this.aliMode = employ.aliMode;
 		this.alimentaire = employ.alimentaire;
+		this.embauche=employ.embauche;
 		this.noel = employ.noel;
                 this.cv = employ.cv;
 //		if(employ.departement!=null){
@@ -680,6 +734,72 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
             this.cv = cv;
         }
 
+    public Boolean getEauMode() {
+        return eauMode;
+    }
+
+    public void setEauMode(Boolean eauMode) {
+        this.eauMode = eauMode;
+    }
+
+    public Boolean getLogeMode() {
+        return logeMode;
+    }
+
+    public void setLogeMode(Boolean logeMode) {
+        this.logeMode = logeMode;
+    }
+
+    public Boolean getElecMode() {
+        return elecMode;
+    }
+
+    public void setElecMode(Boolean elecMode) {
+        this.elecMode = elecMode;
+    }
+
+    public Boolean getMenMode() {
+        return menMode;
+    }
+
+    public void setMenMode(Boolean menMode) {
+        this.menMode = menMode;
+    }
+
+    public Short getMenNbre() {
+        return menNbre;
+    }
+
+    public void setMenNbre(Short menNbre) {
+        this.menNbre = menNbre;
+    }
+
+    public Boolean getVehMode() {
+        return vehMode;
+    }
+
+    public void setVehMode(Boolean vehMode) {
+        this.vehMode = vehMode;
+    }
+
+    public Short getVehNbre() {
+        return vehNbre;
+    }
+
+    public void setVehNbre(Short vehNbre) {
+        this.vehNbre = vehNbre;
+    }
+
+    public Boolean getAliMode() {
+        return aliMode;
+    }
+
+    public void setAliMode(Boolean aliMode) {
+        this.aliMode = aliMode;
+    }
+        
+        
+
 //	public List<CompteBancaire> getComptesbancaire() {
 //		return comptesbancaire;
 //	}
@@ -868,6 +988,64 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 		this.rubriques = rubriques;
 	}
 
+    public Double getCongeExceptionel() {
+        return congeExceptionel;
+    }
+
+    public void setCongeExceptionel(Double congeExceptionel) {
+        this.congeExceptionel = congeExceptionel;
+    }
+
+    public Double getCongePeriode() {
+        return congePeriode;
+    }
+
+    public void setCongePeriode(Double congePeriode) {
+        this.congePeriode = congePeriode;
+    }
+
+//    public Short getCongeMaternel() {
+//        return congeMaternel;
+//    }
+//
+//    public void setCongeMaternel(Short congeMaternel) {
+//        this.congeMaternel = congeMaternel;
+//    }
+//
+//    public Short getAugConge() {
+//        return augConge;
+//    }
+//
+//    public void setAugConge(Short augConge) {
+//        this.augConge = augConge;
+//    }
+//
+//    public Short getPorteConge() {
+//        return porteConge;
+//    }
+//
+//    public void setPorteConge(Short porteConge) {
+//        this.porteConge = porteConge;
+//    }
+
+    public Double getCongesAcquis() {
+        return congesAcquis;
+    }
+
+    public void setCongesAcquis(Double congesAcquis) {
+        this.congesAcquis = congesAcquis;
+    }
+
+    public Double getCongeRestant() {
+        return congeRestant;
+    }
+
+    public void setCongeRestant(Double congeRestant) {
+        this.congeRestant = congeRestant;
+    }
+        
+        
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -928,6 +1106,14 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 
 	public void setProfilpaie(ProfilPaie profilpaie) {
 		this.profilpaie = profilpaie;
+	}
+
+	public Date getEmbauche() {
+		return embauche;
+	}
+
+	public void setEmbauche(Date embauche) {
+		this.embauche = embauche;
 	}
 
 	@Override

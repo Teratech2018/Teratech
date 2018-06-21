@@ -147,7 +147,7 @@ public class EventRSImpl
         }//end if(ids.size()>0)
         List<Event> datas = manager.getDao().getEntityManager().createQuery(requete).getResultList();
         List<Event> output = new ArrayList<Event>();
-        System.out.println(EventRSImpl.class.toString()+" =========================== "+datas.size()+" === "+requete);
+//        System.out.println(EventRSImpl.class.toString()+" =========================== "+datas.size()+" === "+requete);
         for(Event evt:datas){
             output.add(new Event(evt));
         }//end for(Event evt:datas){

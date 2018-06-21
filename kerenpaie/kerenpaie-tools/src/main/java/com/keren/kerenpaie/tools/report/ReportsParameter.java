@@ -18,6 +18,8 @@ public class ReportsParameter {
     
     public static final String SUBREPORT_DIR ="SUBREPORT_DIR";
     
+    public static final String REPORT_IMAGE_REPOSITORY="REPORT_IMAGE_REPOSITORY";
+    
     // paramètres de paie
 //    public static final String SBB="SBB";
 //    public static final String SBBAN="SBBAN";

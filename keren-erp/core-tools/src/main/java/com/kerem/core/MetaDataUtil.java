@@ -83,6 +83,8 @@ public class MetaDataUtil {
         metaData.setModuleName(meta.getModuleName());
         metaData.setCreateonfield(meta.isCreateonfield()); 
         metaData.setDesablecreate(meta.isDesablecreate());
+        metaData.setDesabledelete(meta.isDesabledelete());
+        metaData.setDesableupdate(meta.isDesableupdate());
         metaData.setActivefilelink(meta.isActivefilelink());
         metaData.setStates(meta.getStates());
         metaData.setActivatefollower(meta.isActivatefollower());
@@ -145,6 +147,8 @@ public class MetaDataUtil {
         metaData.setModuleName(((BaseElement)obj).getModuleName());
         metaData.setCreateonfield(((BaseElement)obj).isCreateonfield()); 
         metaData.setDesablecreate(((BaseElement)obj).isDesablecreate());
+        metaData.setDesabledelete(((BaseElement)obj).isDesabledelete());
+        metaData.setDesableupdate(((BaseElement)obj).isDesableupdate());
         metaData.setActivefilelink(((BaseElement)obj).isActivefilelien());
         metaData.setFooterScript(((BaseElement)obj).getFooterScript());
         metaData.setActivatefollower(((BaseElement)obj).isActivatefollower());
@@ -664,6 +668,8 @@ public class MetaDataUtil {
         metaData.setModuleName(((BaseElement)obj).getModuleName());
         metaData.setCreateonfield(((BaseElement)obj).isCreateonfield()); 
         metaData.setDesablecreate(((BaseElement)obj).isDesablecreate());
+        metaData.setDesabledelete(((BaseElement)obj).isDesabledelete());
+        metaData.setDesableupdate(((BaseElement)obj).isDesableupdate());        
         metaData.setActivefilelink(((BaseElement)obj).isActivefilelien());
         metaData.setFooterScript(((BaseElement)obj).getFooterScript());
         metaData.setActivatefollower(((BaseElement)obj).isActivatefollower());

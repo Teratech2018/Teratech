@@ -60,7 +60,7 @@ public class CompteAnalytique extends BaseElement implements Serializable,Compar
     }
     
      public CompteAnalytique(CompteAnalytique compte) {
-        super(compte.id, compte.designation, compte.moduleName);
+        super(compte.id, compte.designation, compte.moduleName,compte.compareid);
         this.code = compte.code;
         this.label = compte.label;
         type = compte.type;
@@ -83,7 +83,7 @@ public class CompteAnalytique extends BaseElement implements Serializable,Compar
      * @param moduleName 
      */
     public CompteAnalytique(String code, String label, String classe, NiveauAnalyse niveau, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.label = label;
         this.classe = classe;

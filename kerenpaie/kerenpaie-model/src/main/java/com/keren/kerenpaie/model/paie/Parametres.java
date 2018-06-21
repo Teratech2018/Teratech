@@ -9,115 +9,85 @@ package com.keren.kerenpaie.model.paie;
  */
 public class Parametres {
 	
-	private double sb ;
-	private double sban ;
-	private double cs ;
-	private double csan ;
-	private double cp ;
-	private double cpan ;
-	private double avnat ;
-	private double avnatan ;
-	private double ni ;
-	private double nian ;
-	private double ht ;
-	private double htan ;
-	private double hs ;
-	private double hsan ;
-	private double netapayer ;
+	private double salbase ;
+	private double primeanciennete ;
+	private double rappel ;
+	private double pvid ;
+	private double irpp ;
+	private double cf ;
+	private double cac ;
+	private double rav ;
+	private double tdl ;
+	
+	private double salnetn1 ;
 	
 	
-	public double getSb() {
-		return sb;
+	
+	
+	public double getSalbase() {
+		return salbase;
 	}
-	public void setSb(double sb) {
-		this.sb = sb;
+	public void setSalbase(double salbase) {
+		this.salbase = salbase;
 	}
-	public double getSban() {
-		return sban;
+	public double getPrimeanciennete() {
+		return primeanciennete;
 	}
-	public void setSban(double sban) {
-		this.sban = sban;
+	public void setPrimeanciennete(double primeanciennete) {
+		this.primeanciennete = primeanciennete;
 	}
-	public double getCs() {
-		return cs;
+	public double getRappel() {
+		return rappel;
 	}
-	public void setCs(double cs) {
-		this.cs = cs;
+	public void setRappel(double rappel) {
+		this.rappel = rappel;
 	}
-	public double getCsan() {
-		return csan;
+	public double getPvid() {
+		return pvid;
 	}
-	public void setCsan(double csan) {
-		this.csan = csan;
+	public void setPvid(double pvid) {
+		this.pvid = pvid;
 	}
-	public double getCp() {
-		return cp;
+	public double getIrpp() {
+		return irpp;
 	}
-	public void setCp(double cp) {
-		this.cp = cp;
+	public void setIrpp(double irpp) {
+		this.irpp = irpp;
 	}
-	public double getCpan() {
-		return cpan;
+	public double getCf() {
+		return cf;
 	}
-	public void setCpan(double cpan) {
-		this.cpan = cpan;
+	public void setCf(double cf) {
+		this.cf = cf;
+	}
+	public double getCac() {
+		return cac;
+	}
+	public void setCac(double cac) {
+		this.cac = cac;
+	}
+	public double getRav() {
+		return rav;
+	}
+	public void setRav(double rav) {
+		this.rav = rav;
+	}
+	public double getTdl() {
+		return tdl;
+	}
+	public void setTdl(double tdl) {
+		this.tdl = tdl;
+	}
+	public double getSalnetn1() {
+		return salnetn1;
+	}
+	public void setSalnetn1(double salnetn1) {
+		this.salnetn1 = salnetn1;
 	}
 	
 	
-	public double getNi() {
-		return ni;
-	}
-	public void setNi(double ni) {
-		this.ni = ni;
-	}
-	public double getNian() {
-		return nian;
-	}
-	public void setNian(double nian) {
-		this.nian = nian;
-	}
-	public double getHt() {
-		return ht;
-	}
-	public void setHt(double ht) {
-		this.ht = ht;
-	}
-	public double getHtan() {
-		return htan;
-	}
-	public void setHtan(double htan) {
-		this.htan = htan;
-	}
-	public double getHs() {
-		return hs;
-	}
-	public double getAvnat() {
-		return avnat;
-	}
-	public void setAvnat(double avnat) {
-		this.avnat = avnat;
-	}
-	public double getAvnatan() {
-		return avnatan;
-	}
-	public void setAvnatan(double avnatan) {
-		this.avnatan = avnatan;
-	}
-	public void setHs(double hs) {
-		this.hs = hs;
-	}
-	public double getHsan() {
-		return hsan;
-	}
-	public void setHsan(double hsan) {
-		this.hsan = hsan;
-	}
-	public double getNetapayer() {
-		return netapayer;
-	}
-	public void setNetapayer(double netapayer) {
-		this.netapayer = netapayer;
-	}
+	
+	
 	
 	
 

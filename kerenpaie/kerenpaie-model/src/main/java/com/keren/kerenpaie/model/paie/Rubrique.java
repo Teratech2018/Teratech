@@ -87,7 +87,10 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 	private Boolean proratesal = Boolean.FALSE;
 	
 	@Predicate(label="Avantage en Nature?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
-    private Boolean avantagenat = Boolean.FALSE;
+        private Boolean avantagenat = Boolean.FALSE;
+	
+	@Predicate(label="Nature Avantage",type=String.class,target = "combobox",values = "Eau;Logement;Electricité;Domestiques;Vehicules;Nourriture",group=true,groupName="group1",groupLabel="Elements de calcul",search=true ,hidden="currentObject.avantagenat==false || currentObject.avantagenat==null", sequence=2)
+	private String natureAv = "0";
 	
 	@Predicate(label="Participe à la base Taxable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=11)
 	private Boolean basetaxablesal = Boolean.FALSE;
@@ -182,6 +185,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.proratesal = proratesal;
 		this.baseexcepsal = baseexcepsal;
 		this.rappelsal = rappelsal;
+		
 	}
 
 	public Rubrique(Rubrique rubrique) {
@@ -349,7 +353,15 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 
 	public void setRappelsal(Boolean rappelsal) {
 		this.rappelsal = rappelsal;
-	}	
+	}
+
+        public String getNatureAv() {
+            return natureAv;
+        }
+
+        public void setNatureAv(String natureAv) {
+            this.natureAv = natureAv;
+        }       
 
 	public List<ForfaitCategorie> getForfaitscat() {
 		return forfaitscat;
@@ -391,7 +403,14 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.mode = mode;
 	}
 	
-	
+
+//	public Double getTauxava() {
+//		return tauxava;
+//	}
+//
+//	public void setTauxava(Double tauxava) {
+//		this.tauxava = tauxava;
+//	}
 
 	public Boolean getBasetaxablesal() {
 		return basetaxablesal;
