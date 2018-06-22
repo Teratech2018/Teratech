@@ -276,7 +276,7 @@ angular.module('keren.core.commons')
                         }
                  },
                  containsLiteral:function(array , value){
-                     console.log("commonTool.containsLiteral:function(array , value) =============== tab : "+angular.toJson(array)+" ===== state : "+value);
+//                     console.log("commonTool.containsLiteral:function(array , value) =============== tab : "+angular.toJson(array)+" ===== state : "+value);
                      if(!angular.isDefined(value)||value==null
                              || !angular.isDefined(array)||array==null){
                          return false ;

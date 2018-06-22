@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name = "T_CONTACT")
 public class Contact extends BaseElement implements Serializable,Comparable<Contact>{
 
-    @Predicate(label = "Nom",search = true)
+    @Predicate(label = "Nom",search = true,optional = false)
     private String nom ;
     
     @Predicate(label = "Civilité" ,search = true,type = Civilite.class,target = "many-to-one")
@@ -35,7 +35,7 @@ public class Contact extends BaseElement implements Serializable,Comparable<Cont
     @Predicate(label = "Courriel",search = true)
     private String courriel;
     
-    @Predicate(label = "Téléphone",search = true)
+    @Predicate(label = "Téléphone",search = true,optional = false)
     private String tel ;
     
     @Predicate(label = "Mobile",search = true)
