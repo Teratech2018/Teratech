@@ -386,34 +386,38 @@ angular.module('keren.core.calendar')
                           }//end for(var i=0 ;i<participants.length;i++)
                       }//end if(participants)
                       $scope.selectedEvent.participants = datas;
-//                     $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-//                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
-//                    if($scope.dataCache.crrentRappel.titre==null||$scope.dataCache.crrentRappel.quantite==null
-//                            ||$scope.dataCache.crrentRappel.unite==null){
-//                            //console.log(angular.toJson($scope.dataCache.crrentRappel));
-//                            $scope.hideDialogLoading();
-//                    }else{
-//                        $http.post(url,$scope.dataCache.crrentRappel).then(
-//                                function(response){
-//                                    $http.get(url).then(
-//                                        function(response){
-//                                            $scope.dataCache.rappels = response.data;
-//                                            $('.selectpicker').selectpicker('refresh');
-//                                            //console.log(angular.toJson($scope.dataCache.users));
-//                                            $scope.hideDialogLoading();
-//                                        },
-//                                        function(errror){
-//                                            $scope.hideDialogLoading();
-//                                            commonsTools.showMessageDialog(error);
-//                                        });
-//                                },
-//                                function(error){
-//                                    $scope.hideDialogLoading();
-//                                    commonsTools.showMessageDialog(error);
-//                                }
-//                             );
-//                  }
+
                   $('#myModal00').modal('hide');
+                };
+                $scope.addRappel = function(){
+                    $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
+                    if($scope.dataCache.crrentRappel.titre==null||$scope.dataCache.crrentRappel.quantite==null
+                            ||$scope.dataCache.crrentRappel.unite==null){
+                            //console.log(angular.toJson($scope.dataCache.crrentRappel));
+                            $scope.hideDialogLoading();
+                    }else{
+                        $http.post(url,$scope.dataCache.crrentRappel).then(
+                                function(response){
+                                    $http.get(url).then(
+                                        function(response){
+                                            $scope.dataCache.rappels = response.data;
+                                            $('.selectpicker').selectpicker('refresh');
+                                            //console.log(angular.toJson($scope.dataCache.users));
+                                            $scope.hideDialogLoading();
+                                             $('#myModal002').modal('hide');
+                                        },
+                                        function(error){
+                                            $scope.hideDialogLoading();
+                                            commonsTools.showMessageDialog(error);
+                                        });
+                                },
+                                function(error){
+                                    $scope.hideDialogLoading();
+                                    commonsTools.showMessageDialog(error);
+                                }
+                             );
+                  }
                 };
                 /**
                  * 

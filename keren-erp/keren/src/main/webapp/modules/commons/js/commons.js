@@ -1364,11 +1364,76 @@ angular.module('keren.core.commons')
                     }
                 }
                 return key;
-            }
-                //end  Fields validations
-            };
+            },
+            /**
+            * 
+            * @param {type} metaData
+            * @returns {undefined}
+            */
+           createImportEntity:function(metaData){
+               var entity = new Object();
+               entity.fichier = null;
+               entity.fields = new Array();
+               entity.className = metaData.className;
+               entity.format ='cvs';
+               entity.separator = ',';
+               /**
+                * Traitement des champs columns
+                */
+               for(var i=0 ; i<metaData.columns.length;i++){
+                   var ele = metaData.columns[i];
+                   if(ele.search==true){
+                        var field = new Object();
+                        field.id = -1 ;
+                        field.selected = false ;
+                        field.code = ele.fieldName;                        
+                        if(ele.type=='object'){
+                            if(angular.isDefined(ele.importfield) && 
+                                    ele.importfield!=""){
+                                field.code = field.code+"."+ele.importfield; 
+                                field.className = ele.metaData.className;
+//                                console.log("commonsTools.createImportEntity ========================= type : "+angular.toJson(ele));                        
+                            }//end if(angular.isDefined(field.importfield) &&
+                        }//end if(field.type=='object'){
+                        field.description = ele.fieldLabel;
+                        field.optional = !ele.optional;
+                        field.selected = field.optional;
+                        entity.fields.push(field);
+                   }//end if(ele.search==true){
+               }//end for(var i=0 ; i<metaData.columns.length;i++){
+               /**
+                * Traitement des groups
+                */
+               for(var i=0 ; i<metaData.groups.length;i++){
+                   for(var j=0 ;j<metaData.groups[i].columns.length;j++){
+                       var ele = metaData.groups[i].columns[j];
+                       if(ele.search==true){
+                            var field = new Object();
+                            field.id = -1 ;
+                            field.selected = false ;
+                            field.code = ele.fieldName;
+//                             console.log("commonsTools.createImportEntity ========================= type : "+ele.type+" ===== importfield : "+ele.importfield+" filed code : "+field.code);
+                            if(ele.type=='object'){
+                                if(angular.isDefined(ele.importfield) && 
+                                        ele.importfield!=""){
+                                    field.code = field.code+"."+ele.importfield;  
+                                    field.className = ele.metaData.className;
+//                                    console.log("commonsTools.createImportEntity ========================= type : "+angular.toJson(ele));
+                                }//end if(angular.isDefined(field.importfield) &&
+                            }//end if(field.type=='object'){
+                            field.description = ele.fieldLabel;
+                            field.optional = !ele.optional;
+                            field.selected = field.optional;
+                            entity.fields.push(field);
+                       }//end if(ele.search==true){
+                   }//end for(var j=0 ;j<metaData.groups[i].columns.length;j++){
+               }//end for(var i=0 ; i<metaData.groups.length;i++){
+               return entity;
+           }
+
+       };
             
-        });
+ });
 /**
  * Tools for Rest
  */
@@ -1539,7 +1604,6 @@ angular.module('keren.core.commons')
                        transformRequest: angular.identity});
                
            }
-
      };
 });
 //Javascript observer design pattern implementations
@@ -1616,5 +1680,5 @@ Observer.prototype = {
      */
     notify:function(event , parameters){
         return this;
-    }
+    }   
 };
