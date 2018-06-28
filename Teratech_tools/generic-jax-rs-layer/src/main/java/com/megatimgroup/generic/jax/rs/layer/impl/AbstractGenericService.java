@@ -20,7 +20,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -160,7 +159,17 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
              }
          }
     }
-    
+
+    @Override
+    public void importData(ImportData entity){
+        try {    
+            Object data = Class.forName(entity.getClassName());
+            System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== "+data);
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
     
 
     @Override

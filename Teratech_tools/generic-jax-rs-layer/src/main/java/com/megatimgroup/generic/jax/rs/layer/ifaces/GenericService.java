@@ -9,7 +9,7 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.megatim.common.annotations.OrderType;
 import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
-import com.megatimgroup.generic.jax.rs.layer.impl.KerenEntity;
+import com.megatimgroup.generic.jax.rs.layer.impl.ImportData;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 import java.io.Serializable;
@@ -76,6 +76,16 @@ public interface GenericService<T ,PK extends Serializable> {
         @Path("{id}")
 	public T update(@PathParam("id") PK id, T entity);
 	
+        /**
+         * 
+         * @param entity :Entity describing the import meta data
+         */
+        @PUT
+        @Produces({MediaType.APPLICATION_JSON})
+        @Consumes({MediaType.APPLICATION_JSON})  
+        @Path("import")
+        public void importData(ImportData entity);
+        
         /**
 	 * Methode generique de mise a jour d'une entite
          * @param entities
@@ -153,6 +163,7 @@ public interface GenericService<T ,PK extends Serializable> {
         @Produces({MediaType.APPLICATION_JSON})
         @Path("meta")
         public MetaData getMetaData(@Context HttpHeaders headers);
+        
         
         /**
          * Constructeur de METADATA de l'Import
@@ -255,8 +266,8 @@ public interface GenericService<T ,PK extends Serializable> {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("count")
-    public RSNumber count(@Context HttpHeaders headers );
-    
+    public RSNumber count(@Context HttpHeaders headers );    
+     
     /**
 	 * Methode de filtre sur la base du critere d'egalite et de conjonction des proprietes
 	 * @param criteriasProperties	MAP des proprietes de recheche

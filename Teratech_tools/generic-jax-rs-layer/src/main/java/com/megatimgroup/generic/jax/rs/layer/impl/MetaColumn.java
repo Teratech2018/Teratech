@@ -17,6 +17,8 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
 
     private String type ;
     
+    private String importfield = null;
+    
     private boolean search = Boolean.FALSE;    
      
     private String target ;
@@ -72,6 +74,8 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     private String method = null;
     
     private String frozen = null;
+    
+    
     /**
      * 
      */
@@ -126,6 +130,7 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.edittable = column.edittable;
         this.method = column.method;
         this.frozen = column.frozen;
+        this.importfield = column.importfield;
     }
 
     public short getSequence() {
@@ -373,6 +378,14 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     @Override
     public String toString() {
         return "MetaColumn{" + "type=" + type + ", search=" + search + ", fieldName=" + fieldName + ", fieldLabel=" + fieldLabel + ", target=" + target + ", values=" + value + ", metaData=" + metaData + '}';
+    }
+
+    public String getImportfield() {
+        return importfield;
+    }
+
+    public void setImportfield(String importfield) {
+        this.importfield = importfield;
     }
     
     

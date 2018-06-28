@@ -48,6 +48,8 @@ public class MetaData implements Serializable,Comparable<MetaData>{
     private boolean activatefollower = false ;
     
     private String[] searchfields = null;
+    
+    private String className ;
 
     /**
      * 
@@ -83,6 +85,7 @@ public class MetaData implements Serializable,Comparable<MetaData>{
         this.activefilelink = meta.activefilelink;
         this.footerScript = meta.footerScript;
         this.searchfields = meta.searchfields;
+        this.className = meta.className;
         if(meta.states!=null){
             for(State state:meta.states){
                 states.add(new State(state));
@@ -219,6 +222,16 @@ public class MetaData implements Serializable,Comparable<MetaData>{
     public void setSearchfields(String[] searchfields) {
         this.searchfields = searchfields;
     }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+    
+    
 
     @Override
     public Object clone() throws CloneNotSupportedException {
