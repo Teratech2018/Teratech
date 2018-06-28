@@ -60,7 +60,7 @@ public class PeriodePaieCloseRSImpl
 
         // TODO Auto-generated method stub
         try {
-                return MetaDataUtil.getMetaData(new PeriodePaieOpen(), new HashMap<String, MetaData>()
+                return MetaDataUtil.getMetaData(new PeriodePaieClose(), new HashMap<String, MetaData>()
                                 , new ArrayList<String>());
         } catch (InstantiationException e) {
                 // TODO Auto-generated catch block

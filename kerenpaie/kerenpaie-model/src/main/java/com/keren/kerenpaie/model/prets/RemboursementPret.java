@@ -286,7 +286,7 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	@Override
 	public boolean isDesableupdate() {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 	/* (non-Javadoc)

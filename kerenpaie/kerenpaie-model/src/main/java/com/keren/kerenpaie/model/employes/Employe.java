@@ -74,7 +74,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	
 	@ManyToOne
 	@JoinColumn(name="PAYS_ID")
-	@Predicate(label="Nationalité",type=Pays.class,group=true,groupName="group1",groupLabel="Informations Personelles")
+	@Predicate(label="Nationalité",type=Pays.class,group=true,groupName="group1",groupLabel="Informations Personelles",importfield = "code")
 	private Pays nationalite ;
 	
 	@Predicate(label="N. contribuable",group=true,groupName="group1",groupLabel="Informations Personelles")
@@ -124,7 +124,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	
 	@ManyToOne
 	@JoinColumn(name="REG_ID")
-	@Predicate(label="Région d'origine",type=Region.class,target="many-to-one",group=true,groupName="group1",groupLabel="Informations Personelles")
+	@Predicate(label="Région d'origine",type=Region.class,target="many-to-one",group=true,groupName="group1",groupLabel="Informations Personelles",importfield = "code")
 	private Region region ;
 	
 	@ManyToOne
@@ -140,12 +140,12 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 
 	@ManyToOne
 	@JoinColumn(name="CAT_ID")
-	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
+	@Predicate(label="Catégories" ,type=Categorie.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles",importfield = "code")
 	private Categorie categorie ;
 	
 	@ManyToOne
 	@JoinColumn(name="ECH_ID")
-	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles")
+	@Predicate(label="Echelon" ,type=Echelon.class,target="many-to-one",group=true,groupName="group2",groupLabel="Informations professionnelles",importfield = "code")
 	private Echelon echelon ;
 	
 	@Predicate(label="Indice" ,type=Short.class,group=true,groupName="group2",groupLabel="Informations professionnelles")

@@ -17,8 +17,8 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <serveur.jboss.repertoire.deploiement.war>D:\DEV_TOOLS\SA\jboss-as-7.1.1.Final\standalone\deployments\kerenpaie.war</serveur.jboss.repertoire.deploiement.war>
-        <repertoire.target.generation.war>D:\WORKSPACE\KEREN\RH-PAIE\src\koriserp\kerenpaie\kerenpaie-rest\target\kerenpaie.war</repertoire.target.generation.war>
+        <serveur.jboss.repertoire.deploiement.war>D:\jboss-as-7.1.1.Final\standalone\deployments\kerenpaie.war</serveur.jboss.repertoire.deploiement.war>
+        <repertoire.target.generation.war>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerenpaie\kerenpaie-rest\target\kerenpaie.war</repertoire.target.generation.war>
     </properties>
 
     <dependencies>

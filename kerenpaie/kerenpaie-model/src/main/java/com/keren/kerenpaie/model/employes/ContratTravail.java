@@ -37,17 +37,17 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Salarié",type=Employe.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Salarié",type=Employe.class,target="many-to-one",optional=false,search=true,importfield = "matricule")
 	private Employe employe ;
 	
 	@ManyToOne
 	@JoinColumn(name="CATE_ID")
-	@Predicate(label="Catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Catégorie",type=Categorie.class,target="many-to-one",optional=false,search=true,importfield = "code")
 	private Categorie categorie;
 
 	@ManyToOne
 	@JoinColumn(name="ECHE_ID")
-	@Predicate(label="Echelon",type=Echelon.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Echelon",type=Echelon.class,target="many-to-one",optional=false,search=true,importfield = "code")
 	private Echelon echelon ;
 	
 	@ManyToOne

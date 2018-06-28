@@ -181,13 +181,13 @@ public class RemboursementAvance extends BaseElement implements Serializable, Co
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Remboursement Prêt";
+		return "Remboursement d'Avance";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Remboursements Prêts";
+		return "Remboursements des Avances";
 	}
 
 	@Override
