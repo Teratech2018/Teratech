@@ -2,6 +2,7 @@
 package com.keren.kerenpaie.core.impl.paie;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
@@ -21,30 +23,29 @@ import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
 import com.keren.kerenpaie.model.paie.LigneBulletinPaie;
 import com.keren.kerenpaie.model.paie.LigneElementVariable;
+import com.keren.kerenpaie.model.rapports.BPaie;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
 @Stateless(mappedName = "BulletinPaieManager")
-public class BulletinPaieManagerImpl
-    extends AbstractGenericManager<BulletinPaie, Long>
-    implements BulletinPaieManagerLocal, BulletinPaieManagerRemote
-{
+public class BulletinPaieManagerImpl extends AbstractGenericManager<BulletinPaie, Long>
+		implements BulletinPaieManagerLocal, BulletinPaieManagerRemote {
 
-    @EJB(name = "BulletinPaieDAO")
-    protected BulletinPaieDAOLocal dao;
+	@EJB(name = "BulletinPaieDAO")
+	protected BulletinPaieDAOLocal dao;
 
-    public BulletinPaieManagerImpl() {
-    }
+	public BulletinPaieManagerImpl() {
+	}
 
-    @Override
-    public GenericDAO<BulletinPaie, Long> getDao() {
-        return dao;
-    }
+	@Override
+	public GenericDAO<BulletinPaie, Long> getDao() {
+		return dao;
+	}
 
-    @Override
-    public String getEntityIdName() {
-        return "id";
-    }
+	@Override
+	public String getEntityIdName() {
+		return "id";
+	}
 
 	@Override
 	public BulletinPaie delete(Long id) {
@@ -59,13 +60,13 @@ public class BulletinPaieManagerImpl
 		// TODO Auto-generated method stub
 		PeriodePaie periode = CacheMemory.getPeriode();
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		if(periode!=null){
+		if (periode != null) {
 			container.addEq("periode", periode);
-		}//end if(periode!=null)
+		} // end if(periode!=null)
 		predicats.addAll(container.getPredicats());
 		List<BulletinPaie> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<BulletinPaie> result = new ArrayList<BulletinPaie>();
-		for(BulletinPaie data:datas){
+		for (BulletinPaie data : datas) {
 			result.add(new BulletinPaie(data));
 		}
 		return result;
@@ -76,26 +77,86 @@ public class BulletinPaieManagerImpl
 		// TODO Auto-generated method stub
 		BulletinPaie data = super.find(propertyName, entityID);
 		BulletinPaie result = new BulletinPaie(data);
-		for(LigneBulletinPaie ligne:data.getLignes()){
+		for (LigneBulletinPaie ligne : data.getLignes()) {
 			result.getLignes().add(new LigneBulletinPaie(ligne));
-		}//end for(LigneBulletinPaie ligne:data.getLignes())
-		for(LigneElementVariable ligne:data.getVariables()){
+		} // end for(LigneBulletinPaie ligne:data.getLignes())
+		for (LigneElementVariable ligne : data.getVariables()) {
 			result.getVariables().add(new LigneElementVariable(ligne));
-		}//end for(LigneElementVariable ligne:data.getVariables())
+		} // end for(LigneElementVariable ligne:data.getVariables())
 		return result;
 	}
 
 	@Override
 	public List<BulletinPaie> findAll() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 		List<BulletinPaie> datas = super.findAll();
 		List<BulletinPaie> result = new ArrayList<BulletinPaie>();
-		for(BulletinPaie data:datas){
+		for (BulletinPaie data : datas) {
 			result.add(new BulletinPaie(data));
 		}
 		return result;
 	}
-    
-    
+
+	@Override
+	public List<BulletinPaie> getCriteres(BPaie critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+		List<BulletinPaie> records = new ArrayList<>();
+		if (critere != null) {
+
+			critere.setPeriode(CacheMemory.getPeriode());
+			if (critere.getPeriode() != null) {
+				container.addEq("periode.id", critere.getPeriode().getId());
+			}
+			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+
+			for (BulletinPaie b : datas) {
+				BulletinPaie result =  super.find("id", b.getId());
+				BulletinPaie data = new BulletinPaie(result);
+				for (LigneBulletinPaie ligne : result.getLignes()) {
+					data.getLignes().add(new LigneBulletinPaie(ligne));
+				} // end for(LigneBulletinPaie ligne:data.getLignes())
+				for (LigneElementVariable ligne : result.getVariables()) {
+					data.getVariables().add(new LigneElementVariable(ligne));
+				} // end for(LigneElementVariable ligne:data.getVariables())
+
+				records.add(data);
+			}
+		}
+
+		return records;
+	}
+	
+	@Override
+	public List<BulletinPaie> getCriteres(BulletinPaie critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+		List<BulletinPaie> records = new ArrayList<>();
+		if (critere != null) {
+
+			critere.setPeriode(CacheMemory.getPeriode());
+			if (critere.getPeriode() != null) {
+				container.addEq("periode.id", critere.getPeriode().getId());
+			}
+		}
+			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+
+			for (BulletinPaie b : datas) {
+				BulletinPaie result =  super.find("id", b.getId());
+				BulletinPaie data = new BulletinPaie(result);
+				for (LigneBulletinPaie ligne : result.getLignes()) {
+					data.getLignes().add(new LigneBulletinPaie(ligne));
+				} // end for(LigneBulletinPaie ligne:data.getLignes())
+				for (LigneElementVariable ligne : result.getVariables()) {
+					data.getVariables().add(new LigneElementVariable(ligne));
+				} // end for(LigneElementVariable ligne:data.getVariables())
+
+				records.add(data);
+			}
+
+		return records;
+	}
 
 }

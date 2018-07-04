@@ -78,7 +78,7 @@ public class AvanceSalaire extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public AvanceSalaire(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -97,7 +97,7 @@ public class AvanceSalaire extends BaseElement implements Serializable, Comparab
 
 	public AvanceSalaire(long id, String designation, String moduleName, Rubrique rubrique, Employe employe, Date date,
 			Double montant, Short duree, String commentaire) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.rubrique = rubrique;
 		this.employe = employe;
 		this.date = date;
@@ -107,7 +107,7 @@ public class AvanceSalaire extends BaseElement implements Serializable, Comparab
 	}
 	
 	public AvanceSalaire(AvanceSalaire avance) {
-		super(avance.id, avance.designation, avance.moduleName);
+		super(avance.id, avance.designation, avance.moduleName,avance.compareid);
 		if(avance.rubrique!=null){
 			this.rubrique = new Rubrique(avance.rubrique);
 		}

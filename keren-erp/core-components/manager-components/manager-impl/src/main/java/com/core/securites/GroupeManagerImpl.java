@@ -57,6 +57,7 @@ public class GroupeManagerImpl
     public Groupe find(String propertyName, Long entityID) {
          //To change body of generated methods, choose Tools | Templates.
         Groupe data =  super.find(propertyName, entityID);
+//        System.out.println(GroupeManagerImpl.class.toString()+" ============ :::: propertyName : "+propertyName+" ==== entityID : "+entityID+" ==== "+data);
         Groupe result = new Groupe(data);
         result.setModule(new MenuModule(data.getModule()));
         //Si aucun droits n'est cree initiliaisation des droits
@@ -75,10 +76,10 @@ public class GroupeManagerImpl
                     if(actions!=null){
                         for(MenuAction act : actions){
                             droits.add(new GroupeDetail(new MenuAction(act), "0"));
-                        }
-                    }
-                }
-            }
+                        }//end for(MenuAction act : actions){
+                    }//end if(actions!=null){
+                }//end for(MenuGroupActions menu : menus){
+            }//end if(menus!=null){
             result.setModule(new MenuModule(data.getModule()));
             result.setDroits(droits);
         }else{
@@ -87,9 +88,9 @@ public class GroupeManagerImpl
                 GroupeDetail d = new GroupeDetail(detail);
                 d.setMenuAction(new MenuAction(detail.getMenuAction()));
                 droits.add(d);
-            }
+            }//end for(GroupeDetail detail : data.getDroits()){
             result.setDroits(droits);
-        }
+        }//end if(data.getDroits()==null||data.getDroits().isEmpty()){
         return result ;
         
     }
@@ -107,14 +108,14 @@ public class GroupeManagerImpl
     @Override
     public List<Groupe> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
         List<Groupe> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
-         List<Groupe> resultats = new ArrayList<Groupe>();
+        List<Groupe> resultats = new ArrayList<Groupe>();
         if(datas!=null){
             for(Groupe gr : datas){
                 Groupe g = new Groupe(gr);
                 g.setModule(new MenuModule(gr.getModule()));
                 resultats.add(g);
-            }
-        }
+            }//end for(Groupe gr : datas){
+        }//end if(datas!=null)
         return resultats;
     }
 
@@ -127,8 +128,8 @@ public class GroupeManagerImpl
                 Groupe g = new Groupe(gr);
                 g.setModule(new MenuModule(gr.getModule()));
                 resultats.add(g);
-            }
-        }
+            }//end for(Groupe gr : datas)
+        }//end if(datas!=null)
         return resultats;
     }
 
@@ -149,28 +150,27 @@ public class GroupeManagerImpl
              return droits;
          }
         //Si aucun droits n'est cree initiliaisation des droits         
-            //Chargement des menu concernant le module
-            RestrictionsContainer container = RestrictionsContainer.newInstance();
-            container.addEq("module.id", data.getId());
-            List<MenuGroupActions> menus = menudao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-            if(menus!=null){
-                long index = 1;
-                for(MenuGroupActions menu : menus){
-                    //Chargement des actions specifiques a un menus
-                    container = RestrictionsContainer.newInstance();
-                    container.addEq("menu.id", menu.getId());
-                    List<MenuAction> actions = menuitemdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-                    if(actions!=null){
-                        for(MenuAction act : actions){
-                            GroupeDetail detail = new GroupeDetail(new MenuAction(act), "0");
-                            detail.setId(-index);
-                            droits.add(detail);
-                            index ++;
-                        }//end for(MenuAction act : actions){
-                    }//end if(actions!=null){
-                }//end for(MenuGroupActions menu : menus){
-            }  //end if(menus!=null){          
-       
+        //Chargement des menu concernant le module
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("module.id", data.getId());
+        List<MenuGroupActions> menus = menudao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+        if(menus!=null){
+            long index = 1;
+            for(MenuGroupActions menu : menus){
+                //Chargement des actions specifiques a un menus
+                container = RestrictionsContainer.newInstance();
+                container.addEq("menu.id", menu.getId());
+                List<MenuAction> actions = menuitemdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+                if(actions!=null){
+                    for(MenuAction act : actions){
+                        GroupeDetail detail = new GroupeDetail(new MenuAction(act), "0");
+                        detail.setId(-index);
+                        droits.add(detail);
+                        index ++;
+                    }//end for(MenuAction act : actions){
+                }//end if(actions!=null){
+            }//end for(MenuGroupActions menu : menus){
+        }  //end if(menus!=null){      
         return droits ;
     }
     

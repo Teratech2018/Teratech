@@ -80,7 +80,7 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public RemboursementPret(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -99,7 +99,7 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 
 	public RemboursementPret(long id, String designation, String moduleName, CategoriePret pret, Societe societe,
 			Date date, Double montant, Boolean actif, DemandePret demande) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.pret = pret;
 		this.societe = societe;
 		this.date = date;
@@ -113,7 +113,7 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	 * @param pret
 	 */
 	public RemboursementPret(RemboursementPret pret) {
-		super(pret.id, pret.designation, pret.moduleName);
+		super(pret.id, pret.designation, pret.moduleName,pret.compareid);
 		if(pret.pret!=null){
 			this.pret = new CategoriePret(pret.pret);
 		}
@@ -265,6 +265,26 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 
 	@Override
 	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+
+	@Override
+	public boolean isDesablecreate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isDesabledelete() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isDesableupdate() {
 		// TODO Auto-generated method stub
 		return false;
 	}

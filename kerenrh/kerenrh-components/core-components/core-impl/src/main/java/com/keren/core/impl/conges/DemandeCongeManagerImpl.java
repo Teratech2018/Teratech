@@ -12,15 +12,12 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
-import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.kerem.core.KerenExecption;
 import com.keren.core.ifaces.conges.DemandeCongeManagerLocal;
 import com.keren.core.ifaces.conges.DemandeCongeManagerRemote;
 import com.keren.dao.ifaces.conges.DemandeCongeCDAOLocal;
 import com.keren.dao.ifaces.conges.DemandeCongeDAOLocal;
 import com.keren.model.conges.DemandeConge;
-import com.keren.model.conges.DemandeCongeC;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -71,24 +68,20 @@ public class DemandeCongeManagerImpl
     }
 
     @Override
-    public DemandeConge find(String propertyName, Long entityID) {
-        
+    public DemandeConge find(String propertyName, Long entityID) {        
         // TODO Auto-generated method stub
         DemandeConge dmde = super.find(propertyName, entityID);
         return new DemandeConge(dmde);
     }
 
     @Override
-    public List<DemandeConge> findAll() {
-        
+    public List<DemandeConge> findAll() {        
         //on applique le critrere et recupere les resultats
         List<DemandeConge> datas = super.findAll();
-        List<DemandeConge> output = new ArrayList<DemandeConge>();
-        
+        List<DemandeConge> output = new ArrayList<DemandeConge>();        
         for(DemandeConge dc:datas){
             output.add(new DemandeConge(dc));
-        }
-        
+        }        
         return output;
     }
 
@@ -103,8 +96,7 @@ public class DemandeCongeManagerImpl
     }
 
     @Override
-    public DemandeConge confirmer(DemandeConge dmde) {
-        
+    public DemandeConge confirmer(DemandeConge dmde) {        
         if(dmde.getState().equals("etabli")){
             dmde.setState("confirmer");
             dmde = dao.update(dmde.getId(), dmde);
@@ -114,11 +106,9 @@ public class DemandeCongeManagerImpl
     }
 	
     @Override
-    public DemandeConge delete(Long id) {    
-        
+    public DemandeConge delete(Long id) {        
         DemandeConge data = super.delete(id);
-        DemandeConge result = new DemandeConge(data);    
-        
+        DemandeConge result = new DemandeConge(data);        
         return result;
     }
 	

@@ -70,7 +70,7 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 	 * @param moduleName
 	 */
 	public LigneFichePointage(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 //		state ="etabli";
 	}
@@ -89,7 +89,7 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
  */
 	public LigneFichePointage(long id, String designation, String moduleName, Employe employe, String heurearrive,
 			String heuredepart, Boolean absent, Boolean absencepaye) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.employe = employe;
 		this.heurearrive = heurearrive;
 		this.heuredepart = heuredepart;
@@ -104,7 +104,7 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 	 * @param employe
 	 */
 	public LigneFichePointage(Employe employe) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.employe = employe;		
 	}
 	
@@ -113,7 +113,7 @@ public class LigneFichePointage extends BaseElement implements Serializable, Com
 	 * @param lign
 	 */
 	public LigneFichePointage(LigneFichePointage lign) {
-		super(lign.id, lign.designation, lign.moduleName);
+		super(lign.id, lign.designation, lign.moduleName,lign.compareid);
 		if(lign.employe!=null){
 			this.employe = new Employe(lign.employe);
 		}//end if(lign.employe!=null){

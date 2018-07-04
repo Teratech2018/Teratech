@@ -74,7 +74,7 @@ public class RemboursementAvance extends BaseElement implements Serializable, Co
 	 * @param moduleName
 	 */
 	public RemboursementAvance(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -92,7 +92,7 @@ public class RemboursementAvance extends BaseElement implements Serializable, Co
 
 	public RemboursementAvance(long id, String designation, String moduleName, AvanceSalaire avance, Societe societe,
 			Date date, Double montant, Boolean actif) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.avance = avance;
 		this.societe = societe;
 		this.date = date;
@@ -101,7 +101,7 @@ public class RemboursementAvance extends BaseElement implements Serializable, Co
 	}
 	
 	public RemboursementAvance(RemboursementAvance rem) {
-		super(rem.id, rem.designation, rem.moduleName);
+		super(rem.id, rem.designation, rem.moduleName,rem.compareid);
 		if(rem.avance!=null){
 			this.avance = new AvanceSalaire(rem.avance);
 		}
@@ -181,13 +181,13 @@ public class RemboursementAvance extends BaseElement implements Serializable, Co
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Remboursement Prêt";
+		return "Remboursement d'Avance";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Remboursements Prêts";
+		return "Remboursements des Avances";
 	}
 
 	@Override

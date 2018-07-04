@@ -84,13 +84,13 @@ public class PieceComptable extends BaseElement implements Serializable,Comparab
      * @param moduleName 
      */
     public PieceComptable(String libelle, JournalComptable journal, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.libelle = libelle;
         this.journal = journal;
     }
 
     public PieceComptable(PieceComptable piece) {
-        super(piece.id, piece.designation, piece.moduleName);
+        super(piece.id, piece.designation, piece.moduleName,piece.compareid);
         this.code = piece.code;
         this.libelle = piece.libelle;
         this.journal = piece.journal;

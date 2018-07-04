@@ -91,7 +91,7 @@ public class Canal extends BaseElement implements Serializable,Comparable<Canal>
      * @param moduleName 
      */
     public Canal(String image, String code, String description, String publication, String confidentialite, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.image = image;
         this.code = code;
         this.description = description;
@@ -100,7 +100,7 @@ public class Canal extends BaseElement implements Serializable,Comparable<Canal>
     }
     
      public Canal(Canal canal) {
-        super(canal.id, canal.designation, canal.moduleName);
+        super(canal.id, canal.designation, canal.moduleName,canal.compareid);
         this.image = canal.image;
         this.code = canal.code;
         this.description = canal.description;

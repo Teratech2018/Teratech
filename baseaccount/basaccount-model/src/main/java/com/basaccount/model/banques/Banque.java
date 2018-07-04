@@ -64,7 +64,7 @@ public class Banque extends BaseElement implements Serializable,Comparable<Banqu
      * @param moduleName 
      */
     public Banque(String code, String label, String adresse, String tel, String fax, String courriel, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.label = label;
         this.adresse = adresse;

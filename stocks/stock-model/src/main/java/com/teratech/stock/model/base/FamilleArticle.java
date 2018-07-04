@@ -114,7 +114,7 @@ public class FamilleArticle extends BaseElement implements Serializable,Comparab
      * @param moduleName 
      */
     public FamilleArticle(String code, String intitule, UniteAchat unitevente, UniteGestion unite, FamilleArticle centralisateur, CategorieProduit categorie, Pays pays, String codefiscal, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.intitule = intitule;
         this.unitevente = unitevente;

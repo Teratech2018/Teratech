@@ -120,7 +120,7 @@ public class Tier extends BaseElement implements Serializable,Comparable<Tier>{
      * @param tier
      */
     public Tier(Tier tier) {
-        super(tier.id, tier.designation, tier.moduleName);
+        super(tier.id, tier.designation, tier.moduleName,tier.compareid);
         this.image = tier.image;
         this.active = tier.getActive();
         this.code = tier.code;
@@ -145,7 +145,7 @@ public class Tier extends BaseElement implements Serializable,Comparable<Tier>{
     }
     
      public Tier(String image, String code, String type, String label, String classe, String adresse, String poste, String tel, String mobile, String fax, String courriel, Civilite civilite, Compte compte, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.image = image;
         this.code = code;
         this.type = type;

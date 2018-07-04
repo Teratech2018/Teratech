@@ -78,7 +78,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 	 * @param moduleName
 	 */
 	public Convension(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -98,7 +98,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 
 	public Convension(long id, String designation, String moduleName, String code, String label, String version,
 			Rubrique rubrique, Date debut, Date fin, List<LigneConvension> lignes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.label = label;
 		this.version = version;
@@ -113,7 +113,7 @@ public class Convension extends BaseElement implements Comparable<Convension>, S
 	 * @param convension
 	 */
 	public Convension(Convension convension) {
-		super(convension.id, convension.designation, convension.moduleName);
+		super(convension.id, convension.designation, convension.moduleName,convension.compareid);
 		this.code = convension.code;
 		this.label = convension.label;
 		this.version = convension.version;

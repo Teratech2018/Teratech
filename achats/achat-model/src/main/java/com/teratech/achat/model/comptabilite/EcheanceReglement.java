@@ -59,7 +59,7 @@ public class EcheanceReglement extends BaseElement implements Serializable,Compa
      * @param moduleName 
      */
     public EcheanceReglement(Date date, ModeReglement mode, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.date = date;
         this.mode = mode;
     }

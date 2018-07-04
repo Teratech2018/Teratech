@@ -49,14 +49,14 @@ public class Echelon extends BaseElement implements Comparable<Echelon>, Seriali
 	 * @param moduleName
 	 */
 	public Echelon(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public Echelon(Echelon echel) {
-		super(echel.id, echel.designation, echel.moduleName);
+		super(echel.id, echel.designation, echel.moduleName,echel.compareid);
 		this.code = echel.code;
 		this.actif = echel.actif;
 		this.description = echel.description;

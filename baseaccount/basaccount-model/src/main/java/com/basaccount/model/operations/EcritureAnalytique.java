@@ -79,7 +79,7 @@ public class EcritureAnalytique extends BaseElement implements Serializable,Comp
      * @param moduleName 
      */
     public EcritureAnalytique(Date dateEcriture, String refPiece, String libelle, CompteAnalytique compte, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.dateEcriture = dateEcriture;
         this.refPiece = refPiece;
         this.libelle = libelle;
@@ -91,7 +91,7 @@ public class EcritureAnalytique extends BaseElement implements Serializable,Comp
      * @param data 
      */
     public EcritureAnalytique(EcritureAnalytique data) {
-        super(data.id, data.designation, data.moduleName);
+        super(data.id, data.designation, data.moduleName,data.compareid);
         this.dateEcriture = data.dateEcriture;
         this.refPiece = data.refPiece;
         this.libelle = data.libelle;

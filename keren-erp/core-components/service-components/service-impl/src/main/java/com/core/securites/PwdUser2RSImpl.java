@@ -7,6 +7,7 @@ package com.core.securites;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
+import com.kerem.security.DESEncrypter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -46,11 +47,11 @@ public class PwdUser2RSImpl extends AbstractGenericService<PwdUser2, Long> imple
      */
     @Override
     public PwdUser2 save(PwdUser2 entity) {
-//        System.out.println(PwdUserRSImpl.class.toString()+" ===== "+entity);
+        System.out.println(PwdUserRSImpl.class.toString()+" ===== =========================================================new : "+entity.getNewpassword()+" ===== old : "+entity.getOldpassword());
         //To change body of generated methods, choose Tools | Templates.
         Utilisateur user = usermanager.find("id", entity.getCle());        
         if(entity.getOldpassword().equalsIgnoreCase(user.getPassword())){
-            user.setPassword(entity.getNewpassword());
+            user.setPassword(DESEncrypter.getInstance().encryptText(entity.getNewpassword().trim()));
             user = usermanager.update(user.getId(), user);
         }else{
             throw new WebApplicationException("Mot de passe actuelle incorrect",Response.notModified("Mot de passe actuelle incorrect").build());

@@ -1,18 +1,12 @@
 
 package com.keren.kerenpaie.core.impl.paie;
 
-import java.awt.Container;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
-import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.kerem.core.KerenExecption;
 import com.keren.kerenpaie.core.ifaces.paie.PrepaSalaireManagerLocal;
 import com.keren.kerenpaie.core.ifaces.paie.PrepaSalaireManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.employes.EmployeDAOLocal;
@@ -22,19 +16,9 @@ import com.keren.kerenpaie.dao.ifaces.paie.PrepaSalaireDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.ProfilPaieDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.VariableDAOLocal;
 import com.keren.kerenpaie.model.employes.Employe;
-import com.keren.kerenpaie.model.paie.BulletinPaie;
-import com.keren.kerenpaie.model.paie.ElementVariable;
-import com.keren.kerenpaie.model.paie.LigneBulletinPaie;
-import com.keren.kerenpaie.model.paie.LigneElementVariable;
 import com.keren.kerenpaie.model.paie.PrepaSalaire;
-import com.keren.kerenpaie.model.paie.ProfilPaie;
 import com.keren.kerenpaie.model.paie.Rubrique;
 import com.keren.kerenpaie.model.paie.Variable;
-import com.keren.kerenpaie.model.prets.Acompte;
-import com.keren.kerenpaie.model.prets.LigneRappel;
-import com.keren.kerenpaie.model.prets.Rappel;
-import com.keren.kerenpaie.model.prets.RemboursementAvance;
-import com.keren.kerenpaie.model.prets.RemboursementPret;
 
 @TransactionAttribute
 @Stateless(mappedName = "PrepaSalaireManager")

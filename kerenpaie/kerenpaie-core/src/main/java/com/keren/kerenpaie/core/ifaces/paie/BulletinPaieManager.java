@@ -1,8 +1,11 @@
 
 package com.keren.kerenpaie.core.ifaces.paie;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.keren.kerenpaie.model.paie.BulletinPaie;
+import com.keren.kerenpaie.model.rapports.BPaie;
 
 
 /**
@@ -15,5 +18,9 @@ public interface BulletinPaieManager
 {
 
     public final static String SERVICE_NAME = "BulletinPaieManager";
+    
+    public List<BulletinPaie> getCriteres(BPaie critere);
+    
+    public List<BulletinPaie> getCriteres(BulletinPaie critere);
 
 }

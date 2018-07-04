@@ -48,7 +48,7 @@ public class DashboardContainer extends BaseElement implements Serializable ,Com
      * @param moduleName 
      */
     public DashboardContainer(String label, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.label = label;
     }
 

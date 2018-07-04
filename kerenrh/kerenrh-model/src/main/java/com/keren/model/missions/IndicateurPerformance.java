@@ -43,7 +43,7 @@ public class IndicateurPerformance extends BaseElement implements Serializable, 
 	 * @param moduleName
 	 */
 	public IndicateurPerformance(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -57,13 +57,13 @@ public class IndicateurPerformance extends BaseElement implements Serializable, 
 	 */
 
 	public IndicateurPerformance(long id, String designation, String moduleName, String code, String type) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.type = type;
 	}
 	
 	public IndicateurPerformance(IndicateurPerformance indicateur) {
-		super(indicateur.id, indicateur.designation, indicateur.moduleName);
+		super(indicateur.id, indicateur.designation, indicateur.moduleName,indicateur.compareid);
 		this.code = indicateur.code;
 		this.type = indicateur.type;
 	}

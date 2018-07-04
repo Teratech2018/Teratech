@@ -54,7 +54,7 @@ public class CategoriePret extends BaseElement implements Serializable, Comparab
 	 * @param moduleName
 	 */
 	public CategoriePret(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -71,7 +71,7 @@ public class CategoriePret extends BaseElement implements Serializable, Comparab
 
 	public CategoriePret(long id, String designation, String moduleName, String code, Short duree, Rubrique rubrique,
 			Boolean gelee) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.duree = duree;
 		this.rubrique = rubrique;
@@ -83,7 +83,7 @@ public class CategoriePret extends BaseElement implements Serializable, Comparab
 	 * @param cat
 	 */
 	public CategoriePret(CategoriePret cat) {
-		super(cat.id, cat.designation, cat.moduleName);
+		super(cat.id, cat.designation, cat.moduleName,cat.compareid);
 		this.code = cat.code;
 		this.duree = cat.duree;
 		if(cat.rubrique!=null){

@@ -66,7 +66,7 @@ public class CategorieFrais extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public CategorieFrais(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -84,7 +84,7 @@ public class CategorieFrais extends BaseElement implements Serializable, Compara
 
 	public CategorieFrais(long id, String designation, String moduleName, String code, String intitule, String type,
 			Compte compte, List<GrilleFrais> grille) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 		this.type = type;
@@ -93,7 +93,7 @@ public class CategorieFrais extends BaseElement implements Serializable, Compara
 	}
 	
 	public CategorieFrais(CategorieFrais frais) {
-		super(frais.id, frais.designation, frais.moduleName);
+		super(frais.id, frais.designation, frais.moduleName,frais.compareid);
 		this.code = frais.code;
 		this.intitule = frais.intitule;
 		this.type = frais.type;

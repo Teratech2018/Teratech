@@ -60,7 +60,7 @@ public class LigneThemeFormation extends BaseElement implements Serializable, Co
 	 * @param moduleName
 	 */
 	public LigneThemeFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -78,7 +78,7 @@ public class LigneThemeFormation extends BaseElement implements Serializable, Co
 
 	public LigneThemeFormation(long id, String designation, String moduleName, String code, String intitule,
 			CategorieModule categorie, Short heures, Double cout) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 		this.categorie = categorie;
@@ -86,8 +86,12 @@ public class LigneThemeFormation extends BaseElement implements Serializable, Co
 		this.cout = cout;
 	}
 	
+        /**
+         * 
+         * @param theme 
+         */
 	public LigneThemeFormation(LigneThemeFormation theme) {
-		super(theme.id, theme.designation, theme.moduleName);
+		super(theme.id, theme.designation, theme.moduleName,theme.compareid);
 		this.code = theme.code;
 		this.intitule = theme.intitule;
 		this.categorie = theme.categorie;

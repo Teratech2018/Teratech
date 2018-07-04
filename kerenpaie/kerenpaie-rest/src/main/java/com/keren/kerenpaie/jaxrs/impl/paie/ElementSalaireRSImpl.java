@@ -8,20 +8,24 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.ElementSalaireManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.ElementSalaireRS;
 import com.keren.kerenpaie.model.paie.ElementSalaire;
+import com.keren.kerenpaie.model.paie.LigneAvantage;
 import com.keren.kerenpaie.model.paie.ParametreAvance;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import java.util.List;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Fri Mar 23 14:48:54 GMT+01:00 2018
  * 
  */
@@ -70,7 +74,7 @@ public class ElementSalaireRSImpl
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Désactiver", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'elementsalaire','method':'inactive'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"active"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
@@ -105,7 +109,8 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&&(entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		super.processBeforeSave(entity);
@@ -124,7 +129,8 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&&(entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		super.processBeforeUpdate(entity);
@@ -143,7 +149,8 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&&(entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		return manager.actif(entity);
@@ -162,11 +169,35 @@ public class ElementSalaireRSImpl
 			if(entity.getValeur()==null||entity.getValeur()<=0){
 				throw new KerenExecption("La Valeur  est Obligatoire");
 			}//end if(entity.getValeur()==null||entity.getValeur()<=0)
-		}else if(entity.getRubriques()==null||entity.getRubriques().isEmpty()){
+		}else if(Short.parseShort(entity.getType())==6
+				&& (entity.getRubriques()==null||entity.getRubriques().isEmpty())){
 			throw new KerenExecption("Veuillez fournir au moins une Rubrique de paie");
 		}
 		return manager.inactif(entity);
 	}
+
+    @Override
+    public List<LigneAvantage> getAvantages(HttpHeaders headers) {
+         Gson gson =new Gson();
+        String type = gson.fromJson(headers.getRequestHeader("type").get(0),String.class);
+        List<LigneAvantage> avantages = new ArrayList<LigneAvantage>();
+        //To change body of generated methods, choose Tools | Templates.
+        if(type.equalsIgnoreCase("7")){
+            LigneAvantage ligne = new LigneAvantage("0", Boolean.FALSE, "0", Short.valueOf("1"));
+            avantages.add(ligne);
+            ligne = new LigneAvantage("1", Boolean.FALSE, "0", Short.valueOf("1"));
+            avantages.add(ligne);
+            ligne = new LigneAvantage("2", Boolean.FALSE, "0", Short.valueOf("1"));
+            avantages.add(ligne);
+            ligne = new LigneAvantage("3", Boolean.FALSE, "0", Short.valueOf("1"));
+            avantages.add(ligne);
+            ligne = new LigneAvantage("4", Boolean.FALSE, "0", Short.valueOf("1"));
+            avantages.add(ligne);
+            ligne = new LigneAvantage("5", Boolean.FALSE, "0", Short.valueOf("1"));
+            avantages.add(ligne);
+        }//end if(type.equalsIgnoreCase("7")){
+        return avantages;
+    }
     
     
 }

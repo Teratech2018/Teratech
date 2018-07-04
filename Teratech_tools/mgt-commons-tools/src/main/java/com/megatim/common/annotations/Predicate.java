@@ -87,4 +87,6 @@ public @interface Predicate {
      * @return 
      */
     String frozen() default "";
+    
+    String importfield() default "";
 }

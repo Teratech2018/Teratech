@@ -56,7 +56,7 @@ public class ThemeFormation extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public ThemeFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -72,14 +72,14 @@ public class ThemeFormation extends BaseElement implements Serializable, Compara
 
 	public ThemeFormation(long id, String designation, String moduleName, String code, String intitule,
 			List<LigneThemeFormation> lignes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.intitule = intitule;
 		this.lignes = lignes;
 	}
 	
 	public ThemeFormation(ThemeFormation theme) {
-		super(theme.id, theme.designation, theme.moduleName);
+		super(theme.id, theme.designation, theme.moduleName,theme.compareid);
 		this.code = theme.code;
 		this.intitule = theme.intitule;
 //		this.lignes = lignes;

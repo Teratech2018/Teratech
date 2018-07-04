@@ -60,7 +60,7 @@ public class LigneExprBesion extends BaseElement implements Serializable,Compara
      * @param moduleName 
      */
     public LigneExprBesion(Article article, Double quantite, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.article = article;
         this.quantite = quantite;
     }

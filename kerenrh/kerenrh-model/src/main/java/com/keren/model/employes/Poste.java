@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.keren.model.structures.Departement;
 import com.megatim.common.annotations.Predicate;
+import javax.persistence.Lob;
 
 /**
  * @author BEKO
@@ -48,6 +49,7 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 
 	
 	@Predicate(label="Description",group=true,groupName="group1",groupLabel="Description du poste",target="textarea")
+        @Lob
 	private String description ;
 	/**
 	 * 
@@ -62,14 +64,14 @@ public class Poste extends BaseElement implements Serializable, Comparable<Poste
 	 * @param moduleName
 	 */
 	public Poste(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public Poste(Poste poste) {
-		super(poste.id, poste.designation, poste.moduleName);
+		super(poste.id, poste.designation, poste.moduleName,poste.compareid);
 		this.code = poste.code;
 //		if(poste.departement!=null){
 //			this.departement = new Departement(poste.departement);

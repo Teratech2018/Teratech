@@ -56,8 +56,8 @@ public class EventManagerImpl
         if(event.getParticipants()!=null){
             for(Utilisateur u : event.getParticipants()){
                 result.getParticipants().add(new Utilisateur(u));                
-            }
-        }
+            }//end for(Utilisateur u : event.getParticipants()){
+        }//end if(event.getParticipants()!=null){
         return result;
     }
 

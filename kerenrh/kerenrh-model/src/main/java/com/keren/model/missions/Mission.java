@@ -17,11 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -110,7 +108,7 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 	 * @param moduleName
 	 */
 	public Mission(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -135,7 +133,7 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 	public Mission(long id, String designation, String moduleName, String code, Date dcreation, String intitule,
 			Date dvalidation, String type, Date dapprob, CategorieMission categorie, Date dcloture, Date ddebut,
 			Date dfin, Double cout) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.dcreation = dcreation;
 		this.intitule = intitule;
@@ -150,7 +148,7 @@ public class Mission extends BaseElement implements Serializable, Comparable<Mis
 	}
 	
 	public Mission(Mission mission) {
-		super(mission.id, mission.designation, mission.moduleName);
+		super(mission.id, mission.designation, mission.moduleName,mission.compareid);
 		this.code = mission.code;
 		this.dcreation = mission.dcreation;
 		this.intitule = mission.intitule;

@@ -41,7 +41,7 @@ public class PwdUser2 extends BaseElement implements Serializable,Comparable<Pwd
      * @param moduleName 
      */
     public PwdUser2(String user, String password, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.oldpassword = user;
         this.newpassword = password;
     }

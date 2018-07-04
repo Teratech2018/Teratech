@@ -67,12 +67,12 @@ public class CompteAnalytique extends BaseElement implements Serializable, Compa
 	 * @param moduleName
 	 */
 	public CompteAnalytique(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public CompteAnalytique(CompteAnalytique compte) {
-        super(compte.id, compte.designation, compte.moduleName);
+        super(compte.id, compte.designation, compte.moduleName,compte.compareid);
         this.code = compte.code;
         this.label = compte.label;
         type = compte.type;

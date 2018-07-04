@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.print.attribute.standard.JobOriginatingUserName;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.core.base.BaseElement;
@@ -68,11 +67,14 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
     @JoinColumn(name = "PAYS_ID")
     private Pays pays ;
     
+    @Predicate(label = "Site Web",target = "url",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
+    private String siteWeb ;
+    
     @Predicate(label = "Numéro fiscal",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
     private String numFiscal ;
     
-    @Predicate(label = "Site Web",target = "url",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
-    private String siteWeb ;
+    @Predicate(label = "CNPS",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
+    private String cnps ;
     
     @Predicate(label = "Registre du commerce",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
     private String registre ;
@@ -142,9 +144,9 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
   */
   public Societe(long id, String designation, String moduleName, String image, String code, String intitule,
 		String adresse, String telephone, String ville, String fax, String codePostal, String courriel, Pays pays,
-		String numFiscal, String siteWeb, String registre, Devise devise, Societe societeMere, Compte regroupement,
+		String cnps,String numFiscal, String siteWeb, String registre, Devise devise, Societe societeMere, Compte regroupement,
 		Compte avance, JournalComptable journal) {
-	super(id, designation, moduleName);
+	super(id, designation, moduleName,0L);
 	this.image = image;
 	this.code = code;
 	this.intitule = intitule;
@@ -155,7 +157,8 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
 	this.codePostal = codePostal;
 	this.courriel = courriel;
 	this.pays = pays;
-	this.numFiscal = numFiscal;
+	this.cnps = cnps;
+        this.numFiscal = numFiscal;
 	this.siteWeb = siteWeb;
 	this.registre = registre;
 	this.devise = devise;
@@ -170,7 +173,7 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
    * @param societe
    */
   public Societe(Societe societe) {
-		super(societe.id, societe.designation, societe.moduleName);
+		super(societe.id, societe.designation, societe.moduleName,societe.compareid);
 		this.image = societe.image;
 		this.code = societe.code;
 		this.intitule = societe.intitule;
@@ -183,6 +186,7 @@ public class Societe extends BaseElement implements Serializable, Comparable<Soc
 		if(societe.pays!=null){
 			this.pays = new Pays(societe.pays);
 		}
+                this.cnps = cnps;
 		this.numFiscal = societe.numFiscal;
 		this.siteWeb = societe.siteWeb;
 		this.registre = societe.registre;
@@ -280,6 +284,14 @@ public String getImage() {
       this.pays = pays;
   }
 
+    public String getCnps() {
+        return cnps;
+    }
+
+    public void setCnps(String cnps) {
+        this.cnps = cnps;
+    }
+  
   public String getNumFiscal() {
       return numFiscal;
   }
@@ -345,14 +357,9 @@ public String getImage() {
 }
 
 
-
-
 public void setPlanifications(List<Planification> planifications) {
 	this.planifications = planifications;
 }
-
-
-
 
 public Compte getRegroupement() {
 	return regroupement;

@@ -129,7 +129,7 @@ public class Stage extends BaseElement implements Serializable, Comparable<Stage
 	 * @param moduleName
 	 */
 	public Stage(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -160,7 +160,7 @@ public class Stage extends BaseElement implements Serializable, Comparable<Stage
 			Etablissement ecole, Departement departement, Specialite specialite, BesionStage besion, NiveauEtude niveau,
 			String theme, Date ddebut, Date dfin, Employe encadreur, Double transport, String mail, String tel,
 			String portable) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.nom = nom;
 		this.type = type;
@@ -180,7 +180,7 @@ public class Stage extends BaseElement implements Serializable, Comparable<Stage
 	}
 	
 	public Stage(Stage stage) {
-		super(stage.id, stage.designation, stage.moduleName);
+		super(stage.id, stage.designation, stage.moduleName,stage.compareid);
 		this.code = stage.code;
 		this.nom = stage.nom;
 		this.type = stage.type;

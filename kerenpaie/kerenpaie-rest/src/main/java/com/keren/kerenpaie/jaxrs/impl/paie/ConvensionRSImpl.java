@@ -68,7 +68,7 @@ public class ConvensionRSImpl
                         , new ArrayList<String>());
         MetaColumn workbtn = new MetaColumn("button", "work1", "Générer La Grille", false, "workflow", null);
         workbtn.setValue("{'model':'kerenpaie','entity':'convension','method':'genere'}");
-        workbtn.setStates(new String[]{"etabli"});
+        workbtn.setStates(new String[]{"etabli","actif"});
         workbtn.setPattern("btn btn-primary");
         meta.getHeader().add(workbtn);  
         workbtn = new MetaColumn("button", "work1", "Activer", false, "workflow", null);
@@ -78,7 +78,7 @@ public class ConvensionRSImpl
         meta.getHeader().add(workbtn);   
         workbtn = new MetaColumn("button", "work2", "Désactiver", false, "workflow", null);
         workbtn.setValue("{'model':'kerenpaie','entity':'convension','method':'inactif'}");
-        workbtn.setStates(new String[]{"etabli"});
+        workbtn.setStates(new String[]{"actif"});
         workbtn.setPattern("btn btn-danger");
         meta.getHeader().add(workbtn);   
         MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);

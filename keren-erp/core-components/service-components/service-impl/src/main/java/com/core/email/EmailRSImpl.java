@@ -55,7 +55,7 @@ public class EmailRSImpl
                 throw new KerenExecption("Adresse du destinataire introuvable!");
             }else if(mail.getSubject()==null||mail.getSubject().trim().isEmpty()){
                  throw new KerenExecption("L'objet du mail introuvable!");
-            }
+            }//end if(mail.getCible()==null||mail.getCible().trim().isEmpty()){
             manager.sendmail(mail);
             return mail;
         } catch (MessagingException ex) {

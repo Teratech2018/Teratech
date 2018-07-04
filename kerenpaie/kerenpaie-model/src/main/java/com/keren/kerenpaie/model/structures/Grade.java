@@ -40,7 +40,7 @@ public class Grade extends BaseElement implements Serializable, Comparable<Grade
 	 * @param moduleName
 	 */
 	public Grade(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	

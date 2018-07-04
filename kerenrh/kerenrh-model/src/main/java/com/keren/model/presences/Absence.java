@@ -80,7 +80,7 @@ public class Absence extends BaseElement implements Serializable, Comparable<Abs
 	 * @param moduleName
 	 */
 	public Absence(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -102,7 +102,7 @@ public class Absence extends BaseElement implements Serializable, Comparable<Abs
 	public Absence(long id, String designation, String moduleName, Employe employe, Date datepointage,
 			String heurearrive, String heuredepart, Boolean absent, Boolean absencepaye, PointageJouranlier pointage,
 			String state) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.employe = employe;
 		this.datepointage = datepointage;
 		this.heurearrive = heurearrive;
@@ -114,7 +114,7 @@ public class Absence extends BaseElement implements Serializable, Comparable<Abs
 	}
 	
 	public Absence(Absence absence) {
-		super(absence.id, absence.designation, absence.moduleName);
+		super(absence.id, absence.designation, absence.moduleName,absence.compareid);
 		if(absence.employe!=null){
 			this.employe = new Employe(absence.employe);
 		}

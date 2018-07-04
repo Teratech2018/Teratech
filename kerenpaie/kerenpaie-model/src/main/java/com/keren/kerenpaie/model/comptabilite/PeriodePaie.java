@@ -72,6 +72,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 //	@Predicate(label="Elements Variables",type=ElementVariable.class,target="one-to-many",group=true,groupName="group3",groupLabel="Elements Variables")
 	private List<ElementVariable> variables = new ArrayList<ElementVariable>();
 	
+        @Predicate(label = "Statut",search = true,hide = true)
 	private String state="etabli";
 	/**
 	 * 
@@ -86,7 +87,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public PeriodePaie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -104,7 +105,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 
 	public PeriodePaie(long id, String designation, String moduleName, String code, Boolean actif, Societe societe,
 			Date ddebut, Date dfin) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.actif = actif;
 		this.societe = societe;
@@ -113,7 +114,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 	}
 	
 	public PeriodePaie(PeriodePaie periode) {
-		super(periode.id, periode.designation, periode.moduleName);
+		super(periode.id, periode.designation, periode.moduleName,periode.compareid);
 		this.code = periode.code;
 		this.actif = periode.actif;
 		if(periode.societe!=null){

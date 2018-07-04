@@ -8,16 +8,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
-import com.kerem.core.KerenExceptionLevel;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.comptabilite.PeriodePaieManagerRemote;
 import com.keren.kerenpaie.core.ifaces.prets.RemboursementAvanceManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.prets.RemboursementAvanceRS;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
-import com.keren.kerenpaie.model.prets.Rappel;
 import com.keren.kerenpaie.model.prets.RemboursementAvance;
-import com.keren.kerenpaie.model.prets.RemboursementPret;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;

@@ -85,7 +85,7 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	 * @param moduleName
 	 */
 	public DemandeFormation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -104,7 +104,7 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 
 	public DemandeFormation(long id, String designation, String moduleName, Employe demandeur, String objet, Societe structure,
 			Date date, String motif, String decision) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.demandeur = demandeur;
 		this.objet = objet;
 		this.structure = structure;
@@ -114,7 +114,7 @@ public class DemandeFormation extends BaseElement implements Serializable, Compa
 	}
 	
 	public DemandeFormation(DemandeFormation formation) {
-		super(formation.id, formation.designation, formation.moduleName);
+		super(formation.id, formation.designation, formation.moduleName,formation.compareid);
 		if(formation.demandeur!=null){
 			this.demandeur = new Employe(formation.demandeur);
 		}

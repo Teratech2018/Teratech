@@ -54,7 +54,7 @@ public class Famille extends BaseElement implements Serializable, Comparable<Fam
 	 * @param moduleName
 	 */
 	public Famille(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -62,7 +62,7 @@ public class Famille extends BaseElement implements Serializable, Comparable<Fam
 	
 
 	public Famille(Famille famille) {
-		super(famille.id, famille.designation, famille.moduleName);
+		super(famille.id, famille.designation, famille.moduleName,famille.compareid);
 		this.intitule = famille.intitule;
 		this.qualite = famille.qualite;
 		this.naissance = famille.naissance;

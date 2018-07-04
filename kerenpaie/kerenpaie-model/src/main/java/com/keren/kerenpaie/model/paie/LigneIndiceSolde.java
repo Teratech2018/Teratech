@@ -69,7 +69,7 @@ public class LigneIndiceSolde extends BaseElement implements Serializable, Compa
 	 * @param moduleName
 	 */
 	public LigneIndiceSolde(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -86,7 +86,7 @@ public class LigneIndiceSolde extends BaseElement implements Serializable, Compa
 
 	public LigneIndiceSolde(long id, String designation, String moduleName, Short indice, TypeContrat contrat,
 			Grade grade, Double salbase) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.indice = indice;
 		this.contrat = contrat;
 		this.grade = grade;
@@ -101,7 +101,7 @@ public class LigneIndiceSolde extends BaseElement implements Serializable, Compa
 	 * @param salbase
 	 */
 	public LigneIndiceSolde(Short indice, TypeContrat contrat,	Grade grade, Double salbase) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		this.indice = indice;
 		this.contrat = contrat;
 		this.grade = grade;
@@ -113,7 +113,7 @@ public class LigneIndiceSolde extends BaseElement implements Serializable, Compa
 	 * @param ligne
 	 */
 	public LigneIndiceSolde(LigneIndiceSolde ligne) {
-		super(ligne.id, ligne.designation, ligne.moduleName);
+		super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
 		this.indice = ligne.indice;
 		this.contrat = ligne.contrat;
 		this.grade = ligne.grade;

@@ -68,11 +68,11 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	private Double quotite=0.0;
 	
 	@Predicate(label="c",target="textarea",group=true,groupName="group2",groupLabel="Commentaire")
-    private String commentaire ;
+        private String commentaire ;
     
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="demande")
 	@Predicate(label="Rem",type=RemboursementPret.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group1",groupLabel="Remboursments")
-    private List<RemboursementPret> remboursements = new ArrayList<RemboursementPret>();
+        private List<RemboursementPret> remboursements = new ArrayList<RemboursementPret>();
     
 	@Predicate(label="Status",hide=true ,search=true)
 	private String state="etabli";
@@ -89,7 +89,7 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public DemandePret(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -113,7 +113,7 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	public DemandePret(long id, String designation, String moduleName, CategoriePret typepret, Employe employe,
 			Date dpret, Date drembour, Double montantsol, Double montantpro, Short duree, Double quotite,
 			String commentaire, List<RemboursementPret> remboursements) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.typepret = typepret;
 		this.employe = employe;
 		this.dpret = dpret;
@@ -131,7 +131,7 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	 * @param pret
 	 */
 	public DemandePret(DemandePret pret) {
-		super(pret.id, pret.designation, pret.moduleName);
+		super(pret.id, pret.designation, pret.moduleName,pret.compareid);
 		if(pret.typepret!=null){
 			this.typepret = new CategoriePret(pret.typepret);
 		}

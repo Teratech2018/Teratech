@@ -66,7 +66,7 @@ public class ForfaitCategorieProf extends BaseElement implements Serializable, C
 	 * @param moduleName
 	 */
 	public ForfaitCategorieProf(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -84,7 +84,7 @@ public class ForfaitCategorieProf extends BaseElement implements Serializable, C
 
 	public ForfaitCategorieProf(long id, String designation, String moduleName, Fonction categorie, Societe societe,
 			Departement service, Double valeur, String mesure) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.categorie = categorie;
 //		this.societe = societe;
 		this.service = service;
@@ -93,7 +93,7 @@ public class ForfaitCategorieProf extends BaseElement implements Serializable, C
 	}
 
 	public ForfaitCategorieProf(ForfaitCategorieProf forfait) {
-		super(forfait.id, forfait.designation, forfait.moduleName);
+		super(forfait.id, forfait.designation, forfait.moduleName,forfait.compareid);
 		this.categorie = forfait.categorie;
 //		this.societe = forfait.societe;
 		if(forfait.service!=null){
@@ -101,6 +101,12 @@ public class ForfaitCategorieProf extends BaseElement implements Serializable, C
 		}
 		this.valeur = forfait.valeur;
 		this.mesure = forfait.mesure;
+	}
+	
+	public ForfaitCategorieProf(Fonction forfait) {
+		this.categorie = forfait;
+		this.valeur =new Double(0);
+		this.mesure = "0";
 	}
 	
 	

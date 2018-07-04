@@ -51,11 +51,14 @@ public String getEntityIdName() {
 
     @Override
     public void processAfterUpdate(ContratTravail entity) {
-        // TODO Auto-generated method stub
-        Employe employe = entity.getEmploye();
-        employe.setCategorie(entity.getCategorie());
-        employe.setEchelon(entity.getEchelon());
-        employedao.update(employe.getId(),employe);
+//        // TODO Auto-generated method stub
+//        Employe employe = entity.getEmploye();
+//        employe.setCategorie(entity.getCategorie());
+//        employe.setEchelon(entity.getEchelon());
+//        employedao.update(employe.getId(),employe);
+        // update special
+        this.updatedateembaucheemplye();
+        System.out.println("ContratTravailManagerImpl.processBeforeSave()");
         super.processAfterUpdate(entity);
     }
 
@@ -65,8 +68,25 @@ public String getEntityIdName() {
         Employe employe = entity.getEmploye();
         employe.setCategorie(entity.getCategorie());
         employe.setEchelon(entity.getEchelon());
+        employe.setEmbauche(entity.getDrecurtement());
         employedao.update(employe.getId(),employe);
+        
+        
+      
         super.processBeforeSave(entity);
+    }
+    
+    
+    public void updatedateembaucheemplye(){
+    	List<ContratTravail> contrat =this.findAll();
+    	for(ContratTravail t: contrat){
+			Employe employe = t.getEmploye();
+			employe.setCategorie(t.getCategorie());
+			employe.setEchelon(t.getEchelon());
+			employe.setEmbauche(t.getDrecurtement());
+			employedao.update(t.getId(), employe);  
+    	}
+    	System.out.println("ContratTravailManagerImpl.updatedateembaucheemplye() finir...");
     }
 
     @Override

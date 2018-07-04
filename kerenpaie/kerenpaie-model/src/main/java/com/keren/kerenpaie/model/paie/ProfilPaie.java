@@ -68,7 +68,7 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 	 * @param moduleName
 	 */
 	public ProfilPaie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -87,7 +87,7 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 
 	public ProfilPaie(long id, String designation, String moduleName, String code, String label, Societe societe,
 			Boolean actif, String state, List<Rubrique> rubriques) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.label = label;
 		this.societe = societe;
@@ -97,7 +97,7 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 	}
 	
 	public ProfilPaie(ProfilPaie profil) {
-		super(profil.id, profil.designation, profil.moduleName);
+		super(profil.id, profil.designation, profil.moduleName,profil.compareid);
 		this.code = profil.code;
 		this.label = profil.label;
 		if(profil.societe!=null){

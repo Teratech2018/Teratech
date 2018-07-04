@@ -75,7 +75,7 @@ public class IndiceSoldeRSImpl
             meta.getHeader().add(workbtn);   
             workbtn = new MetaColumn("button", "work2", "Désactiver", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'indicesolde','method':'inactif'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"active"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);   
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);

@@ -67,7 +67,7 @@ public class ValiderSalaireRSImpl
 		MetaData meta =null;
 		try {
 			meta = MetaDataUtil.getMetaData(new ValiderSalaire(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			MetaColumn workbtn = new MetaColumn("button", "work1", "Imprimer le brouillard des salaires", false, "workflow", null);
+			MetaColumn workbtn = new MetaColumn("button", "work1", "Imprimer le brouillard des salaires", false, "report", null);
 	        workbtn.setValue("{'model':'kerenpaie','entity':'validersalaire','method':'imprimerbrouillard'}");
 	        workbtn.setStates(new String[]{"etabli"});
 	        workbtn.setPattern("btn btn-success");

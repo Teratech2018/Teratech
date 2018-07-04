@@ -27,7 +27,7 @@ public class BaseElement implements Serializable{
     //@Predicate(label = "id" , nullable = false,optional = false,type = Long.class)
     protected long id =-1;
     
-    protected long compareid ;
+    protected long compareid  ;
     
     protected String designation ;
     
@@ -46,6 +46,8 @@ public class BaseElement implements Serializable{
     protected boolean desablecreate = false ;
     
     protected boolean desabledelete = false ;
+    
+    protected boolean desableupdate = false ;
     
     //Unique number for entity identifier
     protected String serial ;
@@ -70,21 +72,22 @@ public class BaseElement implements Serializable{
     public BaseElement() {
     }
 
-    /**
-     * 
-     * @param id
-     * @param designation
-     * @param moduleName 
-     */
-    public BaseElement(long id, String designation, String moduleName) {
+   /**
+    * 
+    * @param id
+    * @param designation
+    * @param moduleName
+    * @param comparedid 
+    */
+    public BaseElement(long id, String designation, String moduleName,long comparedid) {
         this.id = id;
         this.designation = designation;
         this.moduleName = moduleName;
-        this.compareid = id ;
+        this.compareid = comparedid ;
     }
 
     public long getCompareid() {
-        return id;
+        return compareid;
     }
 
     public void setCompareid(long compareid) {
@@ -200,6 +203,16 @@ public class BaseElement implements Serializable{
     public void setActivatefollower(boolean activatefollower) {
         this.activatefollower = activatefollower;
     }
+
+    public boolean isDesableupdate() {
+        return desableupdate;
+    }
+
+    public void setDesableupdate(boolean desableupdate) {
+        this.desableupdate = desableupdate;
+    }
+    
+    
    
     /**
      * 

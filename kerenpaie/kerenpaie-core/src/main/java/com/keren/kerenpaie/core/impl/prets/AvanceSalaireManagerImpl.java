@@ -13,6 +13,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerem.commons.DateHelper;
+import com.kerem.core.KerenExecption;
 import com.keren.kerenpaie.core.ifaces.prets.AvanceSalaireManagerLocal;
 import com.keren.kerenpaie.core.ifaces.prets.AvanceSalaireManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.prets.AvanceSalaireDAOLocal;
@@ -114,7 +115,8 @@ public class AvanceSalaireManagerImpl
 			remdao.save(rem);
 		}//end for(int i=1;i<entity.getDuree();i++){
 		//Chargement de l'entity
-		return find("id", entity.getId());
+                entity = find("id", entity.getId());
+		return new AvanceSalaire(entity);
 	}
 
 	@Override
@@ -132,7 +134,17 @@ public class AvanceSalaireManagerImpl
 		AvanceSalaire data =dao.update(entity.getId(), entity);
 		 return new AvanceSalaire(data);
 	}
+
+	@Override
+	public void processBeforeDelete(AvanceSalaire entity) {
+		 if(!entity.getState().equals("etabli")){
+	           throw new KerenExecption("Cet Avance ne peut être Supprimer");
+	    }
+		super.processBeforeDelete(entity);
+	}
     
+	
+	
     
 
 }

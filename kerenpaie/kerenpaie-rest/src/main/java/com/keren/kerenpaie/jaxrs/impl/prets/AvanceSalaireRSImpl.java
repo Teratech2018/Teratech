@@ -12,9 +12,7 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.prets.AvanceSalaireManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.prets.AvanceSalaireRS;
-import com.keren.kerenpaie.model.prets.Acompte;
 import com.keren.kerenpaie.model.prets.AvanceSalaire;
-import com.keren.kerenpaie.model.prets.RemboursementPret;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -65,7 +63,7 @@ public class AvanceSalaireRSImpl
                    MetaData meta = MetaDataUtil.getMetaData(new AvanceSalaire(), new HashMap<String, MetaData>(),new ArrayList<String>());
                     MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'echeancier'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"etabli","confirme"});
             workbtn.setPattern("btn btn-info");
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
@@ -75,7 +73,7 @@ public class AvanceSalaireRSImpl
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
             workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'annule'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);	           
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
@@ -145,10 +143,14 @@ public class AvanceSalaireRSImpl
                 throw new KerenExecption("La durée du remboursement de l'avance est obligatoire");
         }else if(entity.getMontant()==null||entity.getMontant()<=0){
                 throw new KerenExecption("Le montant de l'avance est obligatoire");
-        }
+        }else if(!entity.getState().equals("etabli")){
+            throw new KerenExecption("Cet Avance ne peut être modifier");
+    }
         
         super.processBeforeUpdate(entity);
     }
+    
+    
 
     @Override
     public AvanceSalaire generereglements(HttpHeaders headers, AvanceSalaire entity) {
@@ -191,7 +193,9 @@ public class AvanceSalaireRSImpl
                 throw new KerenExecption("Veuillez d'abord enregistrer cette entité");
         }else if(entity.getRemboursements()==null||entity.getRemboursements().isEmpty()){
                 throw new KerenExecption("Aucun remboursement pour cette avance <br/> Veuillez procèder à la génération des remboursements");
-        }
+        }else if(!entity.getState().equals("etabli")){
+            throw new KerenExecption("Cette avance a déjà fait l'objet d'une confirmation !!");
+    }
 
         return manager.confirme(entity);
     }

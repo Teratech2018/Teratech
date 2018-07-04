@@ -44,7 +44,7 @@ public class SectionAnalytique extends BaseElement implements Serializable,Compa
      * @param moduleName 
      */
     public SectionAnalytique(CompteAnalytique compte, Double quantite, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.compte = compte;
         this.quantite = quantite;
     }
@@ -54,7 +54,7 @@ public class SectionAnalytique extends BaseElement implements Serializable,Compa
      * @param section 
      */
     public SectionAnalytique(SectionAnalytique section) {
-        super(section.id, section.designation, section.moduleName);
+        super(section.id, section.designation, section.moduleName,section.compareid);
         this.compte = new CompteAnalytique(section.compte);
         this.type = section.getType();
         this.quantite = section.quantite;

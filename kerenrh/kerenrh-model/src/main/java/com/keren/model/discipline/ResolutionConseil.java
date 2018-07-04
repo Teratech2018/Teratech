@@ -73,7 +73,7 @@ public class ResolutionConseil extends BaseElement implements Serializable, Comp
 	 * @param moduleName
 	 */
 	public ResolutionConseil(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -91,7 +91,7 @@ public class ResolutionConseil extends BaseElement implements Serializable, Comp
 
 	public ResolutionConseil(long id, String designation, String moduleName, String code, Date datetenue,
 			ConvocationConseil convocation, String lieutenue, List<LigneResolution> lignes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.datetenue = datetenue;
 		this.convocation = convocation;
@@ -104,7 +104,7 @@ public class ResolutionConseil extends BaseElement implements Serializable, Comp
 	 * @param re
 	 */
 	public ResolutionConseil(ResolutionConseil re) {
-		super(re.id, re.designation, re.moduleName);
+		super(re.id, re.designation, re.moduleName,re.compareid);
 		this.code = re.code;
 		this.datetenue = re.datetenue;
 		if(re.convocation!=null){

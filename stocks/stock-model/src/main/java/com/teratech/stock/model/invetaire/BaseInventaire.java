@@ -82,7 +82,7 @@ public class BaseInventaire extends BaseElement implements Serializable,Comparab
      * @param moduleName 
      */
     public BaseInventaire(String code, Date date, Entrepot fentrepot, Emplacement femplacement, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.dateinventaire = date;
         this.fentrepot = fentrepot;
@@ -94,7 +94,7 @@ public class BaseInventaire extends BaseElement implements Serializable,Comparab
      * @param base 
      */
     public BaseInventaire(BaseInventaire base) {
-        super(base.id, base.designation, base.moduleName);
+        super(base.id, base.designation, base.moduleName,base.compareid);
         this.code = base.code;
         this.dateinventaire =base.dateinventaire;
         if(base.fentrepot!=null){

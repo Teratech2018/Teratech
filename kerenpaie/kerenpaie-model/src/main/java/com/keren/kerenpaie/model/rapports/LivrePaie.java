@@ -49,7 +49,7 @@ public class LivrePaie extends BaseElement implements Serializable, Comparable<L
 	 * @param moduleName
 	 */
 	public LivrePaie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -66,16 +66,16 @@ public class LivrePaie extends BaseElement implements Serializable, Comparable<L
 	 */
 	public LivrePaie(long id, String designation, String moduleName, PeriodePaie periode, String model,
 			List<Employe> concernes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		this.model = model;
 	}
 	
 	public LivrePaie(LivrePaie prepa) {
-		super(prepa.id, prepa.designation, prepa.moduleName);
+		super(prepa.id, prepa.designation, prepa.moduleName,prepa.compareid);
 		if(prepa.periode!=null){
 			this.periode = new PeriodePaie(prepa.periode);
-		}
+		}//end if(prepa.periode!=null){
 		this.model = prepa.model;
 	}
 	
@@ -132,12 +132,6 @@ public class LivrePaie extends BaseElement implements Serializable, Comparable<L
 	public int compareTo(LivrePaie o) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public boolean isDesablecreate() {
-		// TODO Auto-generated method stub
-		return true;
 	}
 
 	

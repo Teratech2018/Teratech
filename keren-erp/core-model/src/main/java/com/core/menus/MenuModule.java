@@ -112,7 +112,7 @@ public class MenuModule extends BaseElement implements Serializable,Comparable<M
      * @param moduleName 
      */
     public MenuModule(String icon, String name, String label, String entityName, String model, String shortDescription, String autor, String version, String longDescription, FormRecord formView, TreeRecord treeView, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.icon = icon;
         this.name = name;
         this.label = label;
@@ -130,7 +130,7 @@ public class MenuModule extends BaseElement implements Serializable,Comparable<M
  * @param module 
  */  
 public MenuModule(MenuModule module) {
-        super(module.id, module.designation, module.moduleName);
+        super(module.id, module.designation, module.moduleName,module.compareid);
         this.icon = module.icon;
         this.name = module.name;
         this.label = module.label;

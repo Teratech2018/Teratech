@@ -38,7 +38,7 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	private String porte ="0";
 	
 	@ManyToMany
-	@Predicate(label="EM",type=Employe.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0'")
+	@Predicate(label="EM",type=Employe.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0' || temporalData.porte==null")
 	private List<Employe> concernes = new ArrayList<Employe>();
 	
 	/**
@@ -54,7 +54,7 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	 * @param moduleName
 	 */
 	public PrepaSalaire(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -71,14 +71,14 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	 */
 	public PrepaSalaire(long id, String designation, String moduleName, PeriodePaie periode, String porte,
 			List<Employe> concernes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		this.porte = porte;
 		this.concernes = concernes;
 	}
 	
 	public PrepaSalaire(PrepaSalaire prepa) {
-		super(prepa.id, prepa.designation, prepa.moduleName);
+		super(prepa.id, prepa.designation, prepa.moduleName,prepa.compareid);
 		if(prepa.periode!=null){
 			this.periode = new PeriodePaie(prepa.periode);
 		}
@@ -117,13 +117,13 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Impression du Broulliard de Paie";
+		return "Préparation  de la Paie";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Impression du Broulliard de Paie";
+		return "Préparation  de la Paie";
 	}
 
 	@Override

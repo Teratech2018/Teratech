@@ -6,7 +6,7 @@
 angular.module('keren.core.login' , ['ngResource','ngCookies','keren.core.commons']);
 
 angular.module('keren.core.login')
-        .controller('loginCtrl' , function($rootScope,$scope,$location,authenticationService,commonsTools){
+        .controller('loginCtrl' , function($rootScope,$scope,$location,$http,authenticationService,commonsTools){
             $scope.dataLoading = true ;
             $scope.username = null;
             $scope.password = null;
@@ -28,8 +28,16 @@ angular.module('keren.core.login')
                 //console.log("Authentication Login methode === "+$scope.username+" === "+$scope.password);
                 authenticationService.login($scope.username,$scope.password)
                         .then(function(response){
-//                            console.log("$scope.login = function() remember == "+angular.toJson(response));
-                            authenticationService.setCredentials($scope.username,$scope.password,$scope.remember);
+                            var urlPath = "http://"+$location.host()+":"+$location.port()+"/keren/auth/login/crypto"; 
+                            $http.post(urlPath ,{username:$scope.username,password:$scope.password})
+                                    .then(function(response){
+//                                        console.log("$scope.login = function() remember == encrypt pwd : "+response.data);                            
+                                        authenticationService.setCredentials($scope.username,response.data,$scope.remember);
+                                    },function(error){
+                                        commonsTools.notifyWindow("Echec authentification" ,"<br/>"+"Echec de recupération des paramètres ","danger");
+                                        $rootScope.$broadcast("login" , {username:$scope.username , password:$scope.password});
+                                    });
+                            
                             //$location.path('/authenticate');
 //                            console.log("Authentication Success === "+response);
                         },function(error){

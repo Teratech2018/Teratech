@@ -101,7 +101,7 @@ public class AcompteManagerImpl
 		// TODO Auto-generated method stub
 		entity.setState("confirme");
 		dao.update(entity.getId(), entity);
-		return entity;
+		return new Acompte(entity);
 	}
 	
     
@@ -131,8 +131,8 @@ public class AcompteManagerImpl
 //		element.getAcomptes().add(entity);
 		entity.setEltVariable(element);
 		entity.setState("paye");
-		dao.update(entity.getId(), entity);		
-		return entity;
+		entity = dao.update(entity.getId(), entity);		
+		return new Acompte(entity);//entity;
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class AcompteManagerImpl
 		// TODO Auto-generated method stub
 		entity.setState("annule");
 		dao.update(entity.getId(), entity);
-		return entity;
+		return new Acompte(entity);
 	}
 
 }

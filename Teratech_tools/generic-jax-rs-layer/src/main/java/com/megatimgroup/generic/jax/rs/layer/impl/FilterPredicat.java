@@ -6,6 +6,7 @@
 package com.megatimgroup.generic.jax.rs.layer.impl;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -22,7 +23,9 @@ public class FilterPredicat implements Serializable{
     
     private String type ;
     
-    private String fieldValue ;
+    private String target ;
+    
+    private String value ;
     
     private String[] searchfields = null ;
     
@@ -44,7 +47,7 @@ public class FilterPredicat implements Serializable{
     public FilterPredicat(String fieldName, String oper, String value) {
         this.fieldName = fieldName;
         this.type = oper;
-        this.fieldValue = value;
+        this.value = value;
     }
     
     /**
@@ -54,9 +57,10 @@ public class FilterPredicat implements Serializable{
     public FilterPredicat(FilterPredicat filter) {
         this.fieldName = filter.fieldName;
         this.type = filter.type;
-        this.fieldValue = filter.fieldValue;
+        this.value = filter.value;
         this.fieldLabel = filter.fieldLabel;
         this.searchfields = filter.searchfields;
+        this.target = filter.target;
     }
 
     public String getFieldName() {
@@ -75,12 +79,12 @@ public class FilterPredicat implements Serializable{
         this.type = type;
     }
 
-    public String getFieldValue() {
-        return fieldValue;
+    public String getValue() {
+        return value;
     }
 
-    public void setFieldValue(String fieldValue) {
-        this.fieldValue = fieldValue;
+    public void setValue(String fieldValue) {
+        this.value = fieldValue;
     }   
 
     public String getFieldLabel() {
@@ -99,11 +103,19 @@ public class FilterPredicat implements Serializable{
         this.searchfields = searchfields;
     }
 
-    @Override
-    public String toString() {
-        return "FilterPredicat{" + "fieldName=" + fieldName + ", fieldLabel=" + fieldLabel + ", type=" + type + ", fieldValue=" + fieldValue + ", searchfields=" + searchfields + '}';
+    public String getTarget() {
+        return target;
     }
 
-        
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    @Override
+    public String toString() {
+        return "FilterPredicat{" + "fieldName=" + fieldName + ", fieldLabel=" + fieldLabel + ", type=" + type + ", target=" + target + ", value=" + value + ", searchfields=" + Arrays.toString(searchfields) + '}';
+    }
+    
+    
     
 }

@@ -48,7 +48,7 @@ public class Pays extends BaseElement implements Serializable, Comparable<Pays> 
 	 * @param moduleName
 	 */
 	public Pays(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -63,14 +63,14 @@ public class Pays extends BaseElement implements Serializable, Comparable<Pays> 
   * @param code
   */
 	public Pays(long id, String designation, String moduleName, String image, String intitule, String code) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.image = image;
 		this.intitule = intitule;
 		this.code = code;
 	}
 	
 	public Pays(Pays pays) {
-		super(pays.id, pays.designation, pays.moduleName);
+		super(pays.id, pays.designation, pays.moduleName,pays.compareid);
 		this.image = pays.image;
 		this.intitule = pays.intitule;
 		this.code = pays.code;

@@ -48,7 +48,7 @@ public class LigneElementVariable extends BaseElement implements Serializable, C
 	 * @param moduleName
 	 */
 	public LigneElementVariable(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -59,7 +59,7 @@ public class LigneElementVariable extends BaseElement implements Serializable, C
 	 * @param variable
 	 */
 	public LigneElementVariable(LigneElementVariable variable) {
-		super(variable.id, variable.designation, variable.moduleName);
+		super(variable.id, variable.designation, variable.moduleName,variable.compareid);
 		if(variable.variable!=null){
 			this.variable = new Variable(variable.variable);//.code;
 		}

@@ -65,7 +65,7 @@
 	 <menuitem id="rh_admin_18" label="Echélon" parent_ref="rh_admin_config" entity_ref="Echelon" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="rh_admin_19" label="Structure entreprise" parent_ref="rh_admin_config" entity_ref="DepartementSoc" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="rh_admin_20" label="Organigramme" parent_ref="rh_admin_config" entity_ref="DConge" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
-	 <menuitem id="rh_admin_20_1" label="Département Administrative" parent_ref="rh_admin_config" entity_ref="Departement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_admin_20_1" label="Département Administratif" parent_ref="rh_admin_config" entity_ref="Departement" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="rh_admin_21" label="Postes" parent_ref="rh_admin_config" entity_ref="Poste" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="rh_admin_22" label="Fonctions" parent_ref="rh_admin_config" entity_ref="Fonction" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="rh_admin_23" label="niveau d'etude" parent_ref="rh_admin_config" entity_ref="NiveauEtude" model_ref="kerenrh" gyphycon="glyphicon glyphicon-th" modal="false" />

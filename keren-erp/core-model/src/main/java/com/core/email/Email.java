@@ -57,7 +57,7 @@ public class Email extends BaseElement implements Serializable,Comparable<Email>
      * @param from 
      */
     public Email(String from , String to,String subject, String text) {
-        super(-1, null, null);
+        super(-1, null, null,0L);
         this.subject = subject;
         this.text = text;
         this.source = from;
@@ -76,7 +76,7 @@ public class Email extends BaseElement implements Serializable,Comparable<Email>
      * @param moduleName 
      */
     public Email(String subject, String text, String from, Date sentDate, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.subject = subject;
         this.text = text;
         this.source = from;

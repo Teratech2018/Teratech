@@ -58,7 +58,7 @@ public class Deploiement extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public Deploiement(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -75,7 +75,7 @@ public class Deploiement extends BaseElement implements Serializable, Comparable
 
 	public Deploiement(long id, String designation, String moduleName, Employe salarie, Ville ville, Date ddebut,
 			Date dfin) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie = salarie;
 		this.ville = ville;
 		this.ddebut = ddebut;
@@ -87,10 +87,10 @@ public class Deploiement extends BaseElement implements Serializable, Comparable
 	 * @param deploie
 	 */
 	public Deploiement(Deploiement deploie) {
-		super(deploie.id, deploie.designation, deploie.moduleName);
+		super(deploie.id, deploie.designation, deploie.moduleName,deploie.compareid);
 		if(deploie.salarie!=null){
 			this.salarie = new Employe(deploie.salarie);
-		}
+		}//end if(deploie.salarie!=null){
 		this.ville = deploie.ville;
 		this.ddebut = deploie.ddebut;
 		this.dfin = deploie.dfin;

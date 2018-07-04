@@ -50,7 +50,7 @@ public class DashboardField extends BaseElement implements Serializable,Comparab
      * @param moduleName 
      */
     public DashboardField(String fieldName, double fieldValue, String fieldLabel, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
         this.fieldLabel = fieldLabel;

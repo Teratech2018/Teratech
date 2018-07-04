@@ -54,7 +54,7 @@ public class LigneRappel extends BaseElement implements Serializable, Comparable
 	 * @param moduleName
 	 */
 	public LigneRappel(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -71,7 +71,7 @@ public class LigneRappel extends BaseElement implements Serializable, Comparable
  */
 	public LigneRappel(long id, String designation, String moduleName, Rubrique rubrique, Double montant, Double percu,
 			Double solde) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.rubrique = rubrique;
 		this.montant = montant;
 		this.percu = percu;
@@ -83,7 +83,7 @@ public class LigneRappel extends BaseElement implements Serializable, Comparable
 	 * @param ligne
 	 */
 	public LigneRappel(LigneRappel ligne) {
-		super(ligne.id, ligne.designation, ligne.moduleName);
+		super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
 		if(ligne.rubrique!=null){
 			this.rubrique = new Rubrique(ligne.rubrique);
 		}

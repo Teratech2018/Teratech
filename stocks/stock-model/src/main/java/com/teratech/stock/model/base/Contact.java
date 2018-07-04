@@ -61,7 +61,7 @@ public class Contact extends BaseElement implements Serializable,Comparable<Cont
      * @param moduleName 
      */
     public Contact(String nom, Civilite civilite, String poste, String courriel, String tel, String mobile, String note, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.nom = nom;
         this.civilite = civilite;
         this.poste = poste;

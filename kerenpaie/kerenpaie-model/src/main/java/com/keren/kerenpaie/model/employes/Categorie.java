@@ -24,6 +24,11 @@ import com.megatim.common.annotations.Predicate;
 @Table(name="T_CAT")
 public class Categorie extends BaseElement implements Serializable, Comparable<Categorie> {
 
+	@Override
+	public String toString() {
+		return "Categorie [code=" + code + ", type=" + type + ", echelons=" + echelons + "]";
+	}
+
 	/**
 	 * 
 	 */
@@ -53,14 +58,14 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 	 * @param moduleName
 	 */
 	public Categorie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public Categorie(Categorie cat) {
-		super(cat.id, cat.designation, cat.moduleName);
+		super(cat.id, cat.designation, cat.moduleName,cat.compareid);
 		this.code = cat.code;
 		this.type = cat.type;
 	}

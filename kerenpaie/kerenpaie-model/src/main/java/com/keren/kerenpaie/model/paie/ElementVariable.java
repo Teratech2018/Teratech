@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -63,6 +64,49 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@OneToMany(mappedBy="eltVariable",fetch=FetchType.LAZY)
 	private List<Rappel> rappels = new ArrayList<Rappel>() ;
 	
+	@Column(name="CPP")
+	private Short congePrisPeriode = 0 ;
+	
+	@Column(name="CCP")
+	private Short cumulCongePris = 0 ;
+	
+	@Column(name="CAP")
+	private Short congeAcquisPeriode = 0 ;
+	
+	@Column(name="CCA")
+	private Short cumulCongeAcquis = 0 ;
+	
+	@Column(name="CSBB")
+	private Double cumulSBB = 0.0;
+	
+	@Column(name="CSTA")
+	private Double cumulSTA = 0.0 ;
+	
+	@Column(name="CSCO")
+	private Double cumulSCO = 0.0;
+	
+	@Column(name="CSEX")
+	private Double cumulSEX = 0.0;
+	
+	@Column(name="CCSA")
+	private Double cumlChargeSal = 0.0 ;
+	
+	@Column(name="CCPA")
+	private Double cumulChargePat = 0.0;
+	
+	@Column(name="CANA")
+	private Double cumulAvantageNat = 0.0;
+	
+	@Column(name="CHT")
+	private Double cumulHeureTrav = 0.0 ;
+	
+	@Column(name="CJT")
+	private Double cumulJourTrav = 0.0 ;
+	
+	@Column(name="CHS")
+	private Double cumulHeureSup = 0.0;
+	
+	
 	/**
 	 * 
 	 */
@@ -76,7 +120,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public ElementVariable(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -94,12 +138,12 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 	public ElementVariable(long id, String designation, String moduleName, Employe salarie, RemboursementAvance avance,
 			RemboursementPret pret, Acompte acompte, Rappel rappel) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.salarie0 = salarie;		
 	}
 	
 	public ElementVariable(ElementVariable elem) {
-		super(elem.id, elem.designation, elem.moduleName);
+		super(elem.id, elem.designation, elem.moduleName,elem.compareid);
 		if(elem.salarie0!=null){
 			this.salarie0 = new Employe(elem.salarie0);
 		}		
@@ -169,6 +213,121 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 	public void setRappels(List<Rappel> rappels) {
 		this.rappels = rappels;
+	}
+	
+	
+
+	public Short getCongePrisPeriode() {
+		return congePrisPeriode;
+	}
+
+	public void setCongePrisPeriode(Short congePrisPeriode) {
+		this.congePrisPeriode = congePrisPeriode;
+	}
+
+	public Short getCumulCongePris() {
+		return cumulCongePris;
+	}
+
+	public void setCumulCongePris(Short cumulCongePris) {
+		this.cumulCongePris = cumulCongePris;
+	}
+
+	public Short getCongeAcquisPeriode() {
+		return congeAcquisPeriode;
+	}
+
+	public void setCongeAcquisPeriode(Short congeAcquisPeriode) {
+		this.congeAcquisPeriode = congeAcquisPeriode;
+	}
+
+	public Short getCumulCongeAcquis() {
+		return cumulCongeAcquis;
+	}
+
+	public void setCumulCongeAcquis(Short cumulCongeAcquis) {
+		this.cumulCongeAcquis = cumulCongeAcquis;
+	}	
+	
+
+	public Double getCumulSBB() {
+		return cumulSBB;
+	}
+
+	public void setCumulSBB(Double cumulSBB) {
+		this.cumulSBB = cumulSBB;
+	}
+
+	public Double getCumulSTA() {
+		return cumulSTA;
+	}
+
+	public void setCumulSTA(Double cumulSTA) {
+		this.cumulSTA = cumulSTA;
+	}
+
+	public Double getCumulSCO() {
+		return cumulSCO;
+	}
+
+	public void setCumulSCO(Double cumulSCO) {
+		this.cumulSCO = cumulSCO;
+	}
+
+	public Double getCumulSEX() {
+		return cumulSEX;
+	}
+
+	public void setCumulSEX(Double cumulSEX) {
+		this.cumulSEX = cumulSEX;
+	}
+
+	public Double getCumlChargeSal() {
+		return cumlChargeSal;
+	}
+
+	public void setCumlChargeSal(Double cumlChargeSal) {
+		this.cumlChargeSal = cumlChargeSal;
+	}
+
+	public Double getCumulChargePat() {
+		return cumulChargePat;
+	}
+
+	public void setCumulChargePat(Double cumulChargePat) {
+		this.cumulChargePat = cumulChargePat;
+	}
+
+	public Double getCumulAvantageNat() {
+		return cumulAvantageNat;
+	}
+
+	public void setCumulAvantageNat(Double cumulAvantageNat) {
+		this.cumulAvantageNat = cumulAvantageNat;
+	}
+
+	public Double getCumulHeureTrav() {
+		return cumulHeureTrav;
+	}
+
+	public void setCumulHeureTrav(Double cumulHeureTrav) {
+		this.cumulHeureTrav = cumulHeureTrav;
+	}
+
+	public Double getCumulJourTrav() {
+		return cumulJourTrav;
+	}
+
+	public void setCumulJourTrav(Double cumulJourTrav) {
+		this.cumulJourTrav = cumulJourTrav;
+	}
+
+	public Double getCumulHeureSup() {
+		return cumulHeureSup;
+	}
+
+	public void setCumulHeureSup(Double cumulHeureSup) {
+		this.cumulHeureSup = cumulHeureSup;
 	}
 
 	@Override

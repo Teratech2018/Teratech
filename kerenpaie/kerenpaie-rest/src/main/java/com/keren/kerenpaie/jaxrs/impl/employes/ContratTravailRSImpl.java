@@ -246,11 +246,16 @@ public class ContratTravailRSImpl
             if(entity.getIndice()==null||entity.getIndice()==0){
                 throw new KerenExecption("L'Indice de Solde du salarié est obligatoire");
             }
+        }else if(entity.getEmploye().getStatut().equalsIgnoreCase("1") 
+        		&& !entity.getType().getCategorie().equals("2")){
+        	 throw new KerenExecption("Un agent publique ne peut être lié qu'aux contrats de catégories Fonctionnaires détachés");
         }else if(entity.getDessai() != null && entity.getFessai() != null){
             
             if(entity.getDessai().after(entity.getFessai())){
                 throw new KerenExecption("La date d'essai de debut est incorrecte");
             }
+        }else if(entity.getState().equalsIgnoreCase("confirme")){
+        	throw new KerenExecption("Ce contrat à dejà fait l'objet d'un démarrage");
         }
         
         contratValidate(entity);

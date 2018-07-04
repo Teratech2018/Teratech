@@ -50,7 +50,7 @@ public class Formateur extends BaseElement implements Serializable, Comparable<F
 	 * @param moduleName
 	 */
 	public Formateur(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -67,7 +67,7 @@ public class Formateur extends BaseElement implements Serializable, Comparable<F
 
 	public Formateur(long id, String designation, String moduleName, String nom, String qualif, String adress,
 			String mail) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.nom = nom;
 		this.qualif = qualif;
 		this.adress = adress;
@@ -79,7 +79,7 @@ public class Formateur extends BaseElement implements Serializable, Comparable<F
 	 * @param formateur
 	 */
 	public Formateur(Formateur formateur) {
-		super(formateur.id, formateur.designation, formateur.moduleName);
+		super(formateur.id, formateur.designation, formateur.moduleName,formateur.compareid);
 		this.nom = formateur.nom;
 		this.qualif = formateur.qualif;
 		this.adress = formateur.adress;

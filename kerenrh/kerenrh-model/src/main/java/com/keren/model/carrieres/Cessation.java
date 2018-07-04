@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -72,7 +71,7 @@ public class Cessation extends BaseElement implements Serializable, Comparable<C
 	 * @param moduleName
 	 */
 	public Cessation(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -91,7 +90,7 @@ public class Cessation extends BaseElement implements Serializable, Comparable<C
 
 	public Cessation(long id, String designation, String moduleName, String code, Employe salarie, String type,
 			String cause, Date decision, String motif) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.salarie = salarie;
 		this.type = type;
@@ -105,7 +104,7 @@ public class Cessation extends BaseElement implements Serializable, Comparable<C
 	 * @param cessation
 	 */
 	public Cessation(Cessation cessation) {
-		super(cessation.id, cessation.designation, cessation.moduleName);
+		super(cessation.id, cessation.designation, cessation.moduleName,cessation.compareid);
 		this.code = cessation.code;
 		if(cessation.salarie!=null){
 			this.salarie = new Employe(cessation.salarie);

@@ -52,7 +52,7 @@ public class DepartementSoc extends BaseElement implements Comparable<Departemen
 	
 
 	public DepartementSoc(DepartementSoc dep) {
-		super(dep.id, dep.designation, dep.moduleName);
+		super(dep.id, dep.designation, dep.moduleName,dep.compareid);
 		this.code = dep.code;
 		this.nom = dep.nom;
 		this.region = dep.region;
@@ -67,7 +67,7 @@ public class DepartementSoc extends BaseElement implements Comparable<Departemen
 	 * @param moduleName
 	 */
 	public DepartementSoc(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	

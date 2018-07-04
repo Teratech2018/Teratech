@@ -62,7 +62,7 @@ public class BPaie extends BaseElement implements Serializable, Comparable<BPaie
 	 * @param moduleName
 	 */
 	public BPaie(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -79,13 +79,13 @@ public class BPaie extends BaseElement implements Serializable, Comparable<BPaie
 	 */
 	public BPaie(long id, String designation, String moduleName, PeriodePaie periode, String model,
 			List<Employe> concernes) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		this.porte = model;
 	}
 	
 	public BPaie(BPaie prepa) {
-		super(prepa.id, prepa.designation, prepa.moduleName);
+		super(prepa.id, prepa.designation, prepa.moduleName,prepa.compareid);
 		if(prepa.periode!=null){
 			this.periode = new PeriodePaie(prepa.periode);
 		}

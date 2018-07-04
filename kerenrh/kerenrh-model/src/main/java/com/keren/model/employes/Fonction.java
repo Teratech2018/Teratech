@@ -53,14 +53,14 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 	 * @param moduleName
 	 */
 	public Fonction(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 
 	public Fonction(Fonction fonc) {
-		super(fonc.id, fonc.designation, fonc.moduleName);
+		super(fonc.id, fonc.designation, fonc.moduleName,fonc.compareid);
 		this.code = fonc.code;
 		this.intitule = fonc.intitule;
 		this.type = fonc.type;

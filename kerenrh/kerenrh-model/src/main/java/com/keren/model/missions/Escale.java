@@ -52,7 +52,7 @@ public class Escale extends BaseElement implements Serializable, Comparable<Esca
 	 * @param moduleName
 	 */
 	public Escale(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -67,14 +67,14 @@ public class Escale extends BaseElement implements Serializable, Comparable<Esca
 	 */
 
 	public Escale(long id, String designation, String moduleName, Ville source, Ville cible, Double montant) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.source = source;
 		this.cible = cible;
 		this.montant = montant;
 	}
 	
 	public Escale(Escale escale) {
-		super(escale.id, escale.designation, escale.moduleName);
+		super(escale.id, escale.designation, escale.moduleName,escale.compareid);
 		this.source = escale.source;
 		this.cible = escale.cible;
 		this.montant = escale.montant;

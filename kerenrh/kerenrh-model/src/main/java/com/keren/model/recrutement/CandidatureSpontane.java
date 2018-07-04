@@ -103,7 +103,7 @@ public class CandidatureSpontane extends BaseElement implements Serializable, Co
 	 * @param moduleName
 	 */
 	public CandidatureSpontane(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -131,7 +131,7 @@ public class CandidatureSpontane extends BaseElement implements Serializable, Co
 			String nom, Ville residence, String statut, String quatier, Date naissa, String tel, String mail,
 			List<FormationCandidat> formations, List<ExperienceCandidat> experiences, List<LangueCandidat> langues,
 			String resume) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.objet = objet;
 		this.nationalite = nationalite;
 		this.nom = nom;
@@ -148,7 +148,7 @@ public class CandidatureSpontane extends BaseElement implements Serializable, Co
 	}
 
 	public CandidatureSpontane(CandidatureSpontane candidat) {
-		super(candidat.id, candidat.designation, candidat.moduleName);
+		super(candidat.id, candidat.designation, candidat.moduleName,candidat.compareid);
 		this.objet = candidat.objet;
 		if(candidat.nationalite!=null){
 			this.nationalite = new Pays(candidat.nationalite);

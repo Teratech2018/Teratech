@@ -65,7 +65,7 @@ public class DemandePretRSImpl
                 MetaData meta = MetaDataUtil.getMetaData(new DemandePret(), new HashMap<String, MetaData>(),new ArrayList<String>());
                 MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
                 workbtn.setValue("{'model':'kerenpaie','entity':'demandepret','method':'echeancier'}");
-                workbtn.setStates(new String[]{"etabli"});
+                workbtn.setStates(new String[]{"etabli","confirme"});
                 workbtn.setPattern("btn btn-info");
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
@@ -75,7 +75,7 @@ public class DemandePretRSImpl
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
                 workbtn.setValue("{'model':'kerenpaie','entity':'demandepret','method':'annule'}");
-                workbtn.setStates(new String[]{"etabli"});
+                workbtn.setStates(new String[]{"confirme"});
                 workbtn.setPattern("btn btn-danger");
                 meta.getHeader().add(workbtn);	           
                 MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);

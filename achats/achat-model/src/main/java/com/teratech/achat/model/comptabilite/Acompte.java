@@ -78,7 +78,7 @@ public class Acompte extends BaseElement implements Serializable,Comparable<Acom
      * @param moduleName 
      */
     public Acompte(Date date, String code, Compte compte, JournalComptable journal, ModeReglement mode, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.date = date;
         this.code = code;
         this.compte = compte;
@@ -87,7 +87,7 @@ public class Acompte extends BaseElement implements Serializable,Comparable<Acom
     }
     
     public Acompte(Acompte acompte) {
-        super(acompte.id, acompte.designation, acompte.moduleName);
+        super(acompte.id, acompte.designation, acompte.moduleName , acompte.compareid);
         this.date = acompte.date;
         this.code = acompte.code;
         if(acompte.compte!=null){

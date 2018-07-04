@@ -40,7 +40,13 @@ public interface BulletinPaieRS
 	@PUT
     @Produces({"application/pdf"})
     @Path("pdf")
-    public Response buildPdfReport(BulletinPaie bulletin);
+    public Response buildPdfReportLot(BulletinPaie bulletin);
+	
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("pdf")
+    public Response livrepaie(BulletinPaie bulletin);
+	
 	
 
 }

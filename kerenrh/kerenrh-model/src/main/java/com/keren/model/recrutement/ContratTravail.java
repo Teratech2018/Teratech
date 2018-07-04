@@ -114,7 +114,7 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	 * @param moduleName
 	 */
 	public ContratTravail(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -140,7 +140,7 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	public ContratTravail(long id, String designation, String moduleName, String code, Employe employe,
 			Categorie categorie, TypeContrat type, Echelon echelon, Fonction fonction, Date dessai, Date fessai,
 			String lieuaff, String lieurecr, Date drecurtement, Date darret) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.code = code;
 		this.employe = employe;
 		this.categorie = categorie;
@@ -157,7 +157,7 @@ public class ContratTravail extends BaseElement implements Serializable, Compara
 	}
 	
 	public ContratTravail(ContratTravail contrat) {
-		super(contrat.id, contrat.designation, contrat.moduleName);
+		super(contrat.id, contrat.designation, contrat.moduleName,contrat.compareid);
 		this.code = contrat.code;
 		if(contrat.employe!=null){
 			this.employe = new Employe(contrat.employe);

@@ -71,13 +71,13 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 	 */
 	public LigneResolution(long id, String designation, String moduleName, DemandeExplication demande,
 			String recommendation) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.demande = demande;
 		this.recommendation = recommendation;
 	}
 
 	public LigneResolution(DemandeExplication dmde) {
-		super(-1, null, null);
+		super(-1, null, null,0L);
 		
 	   this.demande = new DemandeExplication(dmde);
 	    
@@ -92,7 +92,7 @@ public class LigneResolution extends BaseElement implements Serializable,Compara
 	 * @param lign
 	 */
 	public LigneResolution(LigneResolution lign) {
-		super(lign.id, lign.designation, lign.moduleName);
+		super(lign.id, lign.designation, lign.moduleName,lign.compareid);
 		if(lign.demande!=null){
 			this.demande = new DemandeExplication(lign.demande);
 	    }

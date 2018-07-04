@@ -7,6 +7,7 @@ package com.core.securites;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
+import com.kerem.security.DESEncrypter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -44,11 +45,14 @@ public class PwdUserRSImpl extends AbstractGenericService<PwdUser, Long> impleme
      */
     @Override
     public PwdUser save(PwdUser entity) {
-//        System.out.println(PwdUserRSImpl.class.toString()+" ===== "+entity);
+        System.out.println(PwdUserRSImpl.class.toString()+" ========================================= pwd : "+entity.getPassword()+" ===== encrypte : "+DESEncrypter.getInstance().encryptText(entity.getPassword().trim()));
         //To change body of generated methods, choose Tools | Templates.
-        Utilisateur user = usermanager.find("id", entity.getCle());        
-        user.setPassword(entity.getPassword());
-        user = usermanager.update(user.getId(), user);           
+        Utilisateur user = usermanager.find("id", entity.getCle());    
+        if(!user.getPassword().equalsIgnoreCase(entity.getPassword())){
+            user.setPassword(DESEncrypter.getInstance().encryptText(entity.getPassword()));
+            user = usermanager.update(user.getId(), user);           
+        }//end if(user.getPassword().equalsIgnoreCase(entity.getPassword())){
+        
        return entity;
     }
     

@@ -105,7 +105,7 @@ public class Emplacement extends BaseElement implements Serializable,Comparable<
      * @param moduleName 
      */
     public Emplacement(String code, Entrepot edepot, Emplacement parent, Tier proprio, String couloir, String rayon, String hauteur, String codebarre, String commentaire, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.code = code;
         this.edepot = edepot;
         this.parent = parent;
@@ -118,7 +118,7 @@ public class Emplacement extends BaseElement implements Serializable,Comparable<
     }
     
     public Emplacement(Emplacement empl) {
-        super(empl.id, empl.designation, empl.moduleName);
+        super(empl.id, empl.designation, empl.moduleName,empl.compareid);
         this.code = empl.code;
         if(empl.getEdepot()!=null){
             this.edepot = new Entrepot(empl.edepot);
