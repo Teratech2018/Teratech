@@ -78,7 +78,12 @@ angular.module("mainApp").config(['$translateProvider',
             IMPORTDATA:'Import data to CVS format',
             Statut:'Status',
             Champ:'Field',
-            Obligatoire:'Mandatory'
+            Obligatoire:'Mandatory',
+            EXPORTDATA:'Data export',
+            Fermer:'Close',
+            VALIDATETITRE:'Validation report',
+            Ligne:'Line',
+            Valeur:'Value'
         });
         $translateProvider.translations('fr',{
             PJ:'Pièce(s) Jointe(s)',
@@ -109,7 +114,8 @@ angular.module("mainApp").config(['$translateProvider',
             APPLI_DESC:'Gestion des Applications',
             CONFIG_DESC:'Administration de la plateforme',
             DISCUSION_DESC:'Plateforme collaborative',
-            IMPORTDATA:'Importer les données au format CVS'
+            IMPORTDATA:'Importer les données au format CVS',
+            VALIDATETITRE:'Compte rendu validation'
         });
         $translateProvider.preferredLanguage('fr');
     }]);
@@ -4215,7 +4221,7 @@ $scope.gererChangementFichier3 = function(event,model){
                      for(var j=0 ; j<groups[i].metaArray.length;j++){
                             //Cas des données de type oneToManay et ManyToMany
                             var tableElem = null;
-      //                      console.log(angular.toJson(groups[i].metaArray));  
+                            console.log(angular.toJson(groups[i].metaArray));  
                             if(groups[i].metaArray[j].target == 'one-to-many'){
                                 tableElem = $scope.oneToManyComponent(model+'.'+groups[i].metaArray[j].fieldName 
                                                   , labelText 
@@ -4271,7 +4277,9 @@ $scope.gererChangementFichier3 = function(event,model){
                                        content ="<div class='panel panel-default container-panel  table-responsive'  id='innerpanel' style='height: 100%;width: 100%;'> <div class='container-heading-panel'> <nav id='listebar' class='navbar navbar-default container-heading-panel'  role='navigation'> <div class='col-sm-12  col-md-12  nav nav-justified navbar-nav container-heading-panel'> <div class='navbar-header col-sm-6 col-md-5  container-heading-panel'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{metaData.listTitle}}</a> </div> <div class='col-sm-6 col-md-7  container-heading-panel'> <form class='navbar-form navbar-search  navbar-right' role='Search' id='filtercontainer' style='width: 100%;' > <div class='input-group' style='width: 100%;'> <span class='input-group-btn pull-left'  style='display: inline-block;width: 20%;'> <button type='button' class='btn btn-search btn-sm btn-default dropdown-toggle' data-toggle='dropdown' id='filtertbtn' style='width: 100%;'> <span class='glyphicon glyphicon-filter'></span> <span class='label-icon'>{{'Filtres' | translate}}</span> <span class='caret'></span> </button> <ul class='dropdown-menu' role='menu'  id='filterActionsId'> <li> <a href='#'> <span class='glyphicon glyphicon-user'></span> <span class='label-icon'>Search By User</span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-book'></span> <span class='label-icon'>Search By Organization</span> </a> </li> </ul> </span> <span class='input-group-btn  pull-left' style='display: inline-block;width: 80%;'> <input type='text' ng-model='searchCriteria' class='form-control input-sm' style='width: 93%;'> <button type='button' class='btn btn-search btn-sm btn-default' ng-click='searchAction()'> <span class='glyphicon glyphicon-search'></span> </button> </span>  </div>  </form> </div> <br /><br /><br /> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreate'> <button type='button'  class='btn btn-primary btn-sm' ng-click='addElementAction()' ng-hide='true'>Creer</button> </div>  <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='true'> <button type='button'  class='btn btn-default btn-sm'  ng-click='importAction()'  id='importerbtn'>{{'Importer' | translate}}</button> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul id='print_menus' class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Imprimer </a> </li> </ul> </div>  <div class='btn-group  dropdown'    role='group'  aria-label='group 2' ng-hide='desableprint'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'  ng-show='showActions()'> Actions <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='exportAction()'>{{exportbtnlabel}}</a> </li> <li role='presentation' ng-hide='desableupdate'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel}}</a> </li> <li role='presentation'  ng-hide='desableAction'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteListAction()'>{{deletebtnlabel | translate}}</a> </li> </ul> </div>  <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.previous()'  ng-disabled='!pagination.hasprevious()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.next()' ng-disabled='!pagination.hasnext()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div><div id='viewmodeid'></div></span>  </div> </div> </nav> </div>   <div class='panel-body container-body-panel'  id='datatable' style='height: 82%;overflow: auto;margin-top: -10px;'><div class='col-sm-12  col-md-12' id='calendar' ui-calendar='uiConfig.calendar' ng-model='eventSources' calendar='myCalendar' ></div></div> </div>"
                                                
                                    }else if(type=="import"){
-                                       content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{'IMPORTDATA' | translate}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='panel panel-default col-sm-12  col-md-12' style='margin-top: 8px;margin-bottom: 0px;border-top: solid 1px #a8a8a8;background-color: #f0eeee;background-image: linear-gradient(to bottom, #fcfcfc, #dedede);' > <div class='collapse navbar-collapse'  style='position: center;' id='detail-panel-header'> <ul class='nav navbar-nav navbar-left left-menu-bar'> <button style='margin-right: 5px;' class='btn btn-default  btn-sm' href='#' ng-click='ValiderFileAction()'  ng-disabled='importData.fichier==null'>Valider</button> <button class='btn btn-default btn-sm' href='#'  ng-click='importFileAction()' ng-disabled='importData.fichier==null'>Importer</button> <button class='btn btn-default btn-sm' href='#'  ng-click='annulerAction()'>Annuler</button> </ul> </div> </div> </div> </nav>  <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -1.5%;' > <div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Fichier</label> <input type='file' ng-model='importData.fichier'  class='form-control' id='filename_pj'  placeholder='Selectionnez le fichier' ng-required='true'  onchange='angular.element(this).scope().gererChangementFichier4(event)'> </div> <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Format</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.format'> <option>cvs</option> <option>excel</option> </select> </div> </div> <div class='form-group  col-sm-6  col-md-6' ng-hide='isCVS()'> <label for='separator'>Separateur</label> <input type='text' class='form-control' ng-model='importData.separator' placeholder='Veuillez saisir le separateur'> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>{{'Statut' | translate}}</th> <th>{{'Champ'|translate}}</th> <th>{{'Description' | translate}}</th><th>{{'Obligatoire'|translate}}(?)</th></tr> </thead> <tbody> <tr  ng-repeat='row in importData.fields'> <td><input type='checkbox' name='' ng-model='row.selected'></td> <td>{{row.code}}</td> <td>{{row.description}}</td><td><input type='checkbox' name='' ng-model='row.optional' disabled='true'></td></tr> </tbody> </table> </div> </form> </div> </div>  </div> </div> ";
+                                       content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{'IMPORTDATA' | translate}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='panel panel-default col-sm-12  col-md-12' style='margin-top: 8px;margin-bottom: 0px;border-top: solid 1px #a8a8a8;background-color: #f0eeee;background-image: linear-gradient(to bottom, #fcfcfc, #dedede);' > <div class='collapse navbar-collapse'  style='position: center;' id='detail-panel-header'> <ul class='nav navbar-nav navbar-left left-menu-bar'> <button style='margin-right: 5px;' class='btn btn-default  btn-sm' href='#' ng-click='validerFileAction()'  ng-disabled='importData.fichier==null'>Valider</button> <button class='btn btn-default btn-sm' href='#'  ng-click='importFileAction()' ng-disabled='importData.fichier==null'>Importer</button> <button class='btn btn-default btn-sm' href='#'  ng-click='annulerAction()'>Annuler</button> </ul> </div> </div> </div> </nav>  <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -1.5%;' > <div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Fichier</label> <input type='file' ng-model='importData.fichier'  class='form-control' id='filename_pj'  placeholder='Selectionnez le fichier' ng-required='true'  onchange='angular.element(this).scope().gererChangementFichier4(event)'> </div> <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Format</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.format'> <option>cvs</option> <option>excel</option> </select> </div> </div> <div class='form-group  col-sm-6  col-md-6' ng-hide='isCVS()'> <label for='separator'>Separateur</label> <input type='text' class='form-control' ng-model='importData.separator' placeholder='Veuillez saisir le separateur'> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>{{'Statut' | translate}}</th> <th>{{'Champ'|translate}}</th> <th>{{'Description' | translate}}</th><th>{{'Obligatoire'|translate}}(?)</th></tr> </thead> <tbody> <tr  ng-repeat='row in importData.fields'> <td><input type='checkbox' name='' ng-model='row.selected'  disabled='false'></td> <td>{{row.code}}</td> <td>{{row.description}}</td><td><input type='checkbox' name='' ng-model='row.optional' disabled='true'></td></tr> </tbody> </table> </div> </form> </div> </div>  </div> </div> ";
+                                   }else if(type=="export"){
+                                       content = "<div class='modal-body' id='modalbody' style='padding:0;height:100%;'><div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'>{{'EXPORTDATA' | translate}}</a> </div> </nav>  <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -1.5%;' > <div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Type d'export</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.typeexport'> <option value='0'>Export personalisé</option> <option value='1'>Exporter toutes les données</option> </select> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Formats d'export</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.format'> <option>cvs</option> <option>excel</option> </select> </div> </div> </span> <div class='table-responsive' ng-hide='exportAll()'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Statut</th> <th>Champ</th> <th>Description</th> <th>Optional(?)</th> </tr> </thead> <tbody> <tr  ng-repeat='row in importData.fields'> <td><input type='checkbox' name='' ng-model='row.selected'></td> <td>{{row.code}}</td> <td>{{row.description}}</td> <td><input type='checkbox' name='' ng-model='row.optional' disabled='true'></td> </tr> </tbody> </table> </div> </form> </div> </div>  </div></div> ";
                                    }
                                    return angular.element(content);
                              };
@@ -4284,6 +4292,9 @@ $scope.gererChangementFichier3 = function(event,model){
     $scope.isCVS = function(){
         return $scope.importData.format!='cvs';
     };
+    $scope.exportAll = function(){
+        return $scope.importData.typeexport=='1';
+    }
  /**
            * 
            * @param {type} metaData
@@ -6616,6 +6627,123 @@ $scope.gererChangementFichier3 = function(event,model){
         
         /**
          * 
+         * @param {type} metaData
+         * @param {type} index
+         * @param {type} link
+         * @returns {undefined}
+         */
+         $scope.exportDialogBuilderExtern = function(index){           
+//           $scope.innerWindowType = true;
+           $scope.innerWindowType = 'new';           
+           var viewElem =  document.createElement('div'); //;
+           var bodyID = "";
+           var endIndex = index;
+           if(endIndex==1){
+               bodyID="modalbody";
+           }else if(endIndex==2){
+               bodyID="gmodalbody";
+           }else if(endIndex==3){
+               bodyID="modalbody1";
+           }else if(endIndex==4){
+               bodyID="modalbody2";
+           }//end if(endIndex==1)
+           viewElem.setAttribute('id' , bodyID);
+           viewElem.setAttribute("class","modal-body");
+           viewElem.setAttribute("style","height:100%;");
+           var content = $scope.viewSelector('export');
+//           var editPanel = angular.element(content);
+//           var compileFn = $compile(editPanel);
+//           compileFn($scope);
+           
+           viewElem.append(content);
+           //Construction du footer
+           var footerDiv = document.createElement('div');
+           footerDiv.setAttribute('class' , 'modal-footer');
+           var footerID = "";
+           if(endIndex==1){
+               footerID="modalfooter";
+           }else if(endIndex==2){
+               footerID="gmodalfooter";
+           }else if(endIndex==3){
+               footerID="modalfooter1";
+           }else if(endIndex==4){
+               footerID="modalfooter2";
+           }//end if(endIndex==1)
+           footerDiv.setAttribute('id' , footerID);
+//           console.log("$scope.editDialogBuilderExtern = function(metaData,index,link) ====== canupdate : "+$scope.canUpdate()+" ==== cancreate : "+$scope.canCreate())
+           if($scope.canUpdate()||$scope.canCreate()){
+                var buttonElem = document.createElement('button');
+                footerDiv.appendChild(buttonElem);
+                buttonElem.setAttribute('class' , 'btn btn-primary');
+                buttonElem.setAttribute('ng-click' , "exportDataAction()");
+                buttonElem.appendChild(document.createTextNode("{{'Exporter' | translate}}"));
+//                buttonElem.setAttribute("ng-hide",metaData.desablecreate);
+           }//end if($scope.windowType!='view'){                      
+           //Button annuler
+           buttonElem = document.createElement('button');
+           footerDiv.appendChild(buttonElem);
+           buttonElem.setAttribute('class' , 'btn btn-default');
+           buttonElem.setAttribute('data-dismiss' , "modal");
+           buttonElem.setAttribute('type' , 'button');
+           buttonElem.setAttribute('ng-click' , 'annulerAction2()');
+           buttonElem.appendChild(document.createTextNode("{{'Fermer' | translate}}"));
+           //Entete modal
+           var titleheader = document.createElement('h4');
+           titleheader.setAttribute('class','modal-title');
+           var titleID = "";
+           if(endIndex==1){
+               titleID="modaltitle";
+           }else if(endIndex==2){
+               titleID="gmodaltitle";
+           }else if(endIndex==3){
+               titleID="gmodaltitle1";
+           }else if(endIndex==4){
+               titleID="modaltitle2";
+           }//end if(endIndex==1){
+           titleheader.setAttribute('id',titleID);
+//           titleheader.appendChild(document.createTextNode(metaData.editTitle));
+            //console.log(viewElem.innerHTML);
+           var compileFn = $compile(content);
+           compileFn($scope);
+           var compileFoot = $compile(footerDiv);
+           compileFoot($scope);
+           var items = $(document).find("div");
+           for(var i=0; i<items.length;i++){               
+               if(items.eq(i).attr("id")==bodyID){
+                     items.eq(i).replaceWith(content);
+                      //console.log("$scope.editDialogBuilder = function(model , item , type) ::: "+$scope.currentMetaDataPath);
+               } else if(items.eq(i).attr("id")==footerID){
+                   items.eq(i).replaceWith(footerDiv);
+               }//end if(items.eq(i).attr("id")==bodyID){ 
+           }//end for(var i=0; i<items.length;i++){          
+           items = $(document).find("h4");
+           for(var i=0; i<items.length;i++){               
+               if(items.eq(i).attr("id")==titleID){
+                     items.eq(i).replaceWith(titleheader);
+                    // console.log("editDialogBuilderExtern :::: "+viewElem.innerHTML);                
+                    //console.log("$scope.editDialogBuilder = function(model , item , type) ::: "+$scope.currentObject.langue);          
+               } 
+           } 
+            $timeout(function() {
+                  $('.selectpicker').selectpicker('refresh');              
+              });
+             var modalID = "";
+             var endIndex = index;            
+             if(endIndex==1){
+                modalID = "myModal";
+             }else if(endIndex==2){
+                modalID = "globalModal";
+             }else if(endIndex==3){
+                modalID = "myModal1";
+             }else if(endIndex==4){
+                modalID = "myModal2";
+             }//end if(endIndex==1){
+            $("#"+modalID).modal("toggle");
+            $("#"+modalID).modal("show");
+        };
+       
+        /**
+         * 
          * @param {type} model
          * @param {type} item
          * @returns {undefined}
@@ -8205,6 +8333,7 @@ $scope.gererChangementFichier3 = function(event,model){
 //              console.log("Vous avez cliquez sur  Import "+angular.toJson($scope.importData));
           };
           
+          
           /**
            * Send the importData to the back end
            * @returns {undefined}
@@ -8218,20 +8347,210 @@ $scope.gererChangementFichier3 = function(event,model){
                 var url="http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.metaData.moduleName)+"/"+angular.lowercase($scope.metaData.entityName)+"/import";
                 $http.put(url,imp)
                         .then(function(response){
+                            var errors = commonsTools.converErrorsMap(response.data);
                             commonsTools.hideDialogLoading();
+                            if(errors.length>0){
+                                $scope.showValidationMessageDialog(errors);
+                            }//end if(errors.length>0){
                         },function(error){
                             commonsTools.hideDialogLoading();
                             commonsTools.showMessageDialog(error);
                         });
-                console.log("Vous avez cliquez sur  ImportFile "+angular.toJson(imp));
+                
              }else{
                  var message="Veuillez selectionner le fichier à importer";
                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
              }//end if($scope.importData.fichier!=null){
           };
+       /**
+        * 
+        * @returns {undefined}
+        */
+       $scope.validerFileAction = function(){
+             if($scope.importData.fichier!=null){
+                var imp = angular.copy($scope.importData);
+                var parts = $scope.importData.fichier.split('\\');
+                imp.fichier = parts[parts.length-1];
+                commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                var url="http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.metaData.moduleName)+"/"+angular.lowercase($scope.metaData.entityName)+"/validateimport";
+                $http.put(url,imp)
+                        .then(function(response){
+                            var errors = commonsTools.converErrorsMap(response.data);
+                            commonsTools.hideDialogLoading();
+                            if(errors.length>0){
+                                $scope.showValidationMessageDialog(errors);
+                            }else{
+                                commonsTools.notifyWindow("Statut opération" ,"<br/>La validation s'est déroulée avec success","success");
+                            }//end if(errors.length>0){
+                        },function(error){
+                            commonsTools.hideDialogLoading();
+                            commonsTools.showMessageDialog(error);
+                        });
+                
+             }else{
+                 var message="Veuillez selectionner le fichier à importer";
+                 commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
+             }//end if($scope.importData.fichier!=null){
+       };
+          /**
+           * 
+           * @returns {undefined}
+           */
+          $scope.showValidationMessageDialog = function(errors){
+//                    var errorobj = angular.fromJson(angular.toJson(error));
+//                    console.log(angular.toJson(error));
+                       var viewElem =  document.createElement('div'); //;
+                        viewElem.setAttribute('id' , 'gmodalbody');
+                        viewElem.setAttribute('style','margin:10px;');
+                        var tabelem = document.createElement('table');
+                        tabelem.setAttribute('class','table table-striped table-hover table-responsive table-sm');
+                        viewElem.appendChild(tabelem);
+                        var thead = document.createElement('thead');
+                        tabelem.appendChild(thead);
+                        var trelem = document.createElement('tr');
+                        trelem.setAttribute('class','table-header');
+                        thead.appendChild(trelem);
+                        var thelem = document.createElement('th');
+                        thelem.appendChild(document.createTextNode("{{'Ligne' | translate}}"));
+                        trelem.appendChild(thelem);
+                        thelem = document.createElement('th');                        
+                        thelem.appendChild(document.createTextNode("{{'Champ' | translate}}"));
+                        trelem.appendChild(thelem);
+                        thelem = document.createElement('th');
+                        thelem.appendChild(document.createTextNode("{{'Valeur' | translate}}"));
+                        trelem.appendChild(thelem);
+                        thelem = document.createElement('th');
+                        thelem.appendChild(document.createTextNode("{{'Message' | translate}}"));
+                        trelem.appendChild(thelem);
+                        //Traitement body
+                        var bodyelem = document.createElement('tbody');
+                        tabelem.appendChild(bodyelem);
+                        for(var i=0 ; i<errors.length;i++){
+                            var error = errors[i];
+                            trelem = document.createElement('tr');
+                            tabelem.appendChild(trelem);
+                            var thelem = document.createElement('td');
+                            thelem.appendChild(document.createTextNode(error['line']));
+                            trelem.appendChild(thelem);
+                            thelem = document.createElement('td');                        
+                            thelem.appendChild(document.createTextNode(error['field']));
+                            trelem.appendChild(thelem);
+                            thelem = document.createElement('td');
+                            thelem.appendChild(document.createTextNode(error['value']));
+                            trelem.appendChild(thelem);
+                            thelem = document.createElement('td');
+                            thelem.appendChild(document.createTextNode(error['message']));
+                            trelem.appendChild(thelem);
+                        }//end for(var i=0 ; i<errors.length;i++){
+                        //Construction du footer
+                        var footerDiv = document.createElement('div');
+                        footerDiv.setAttribute('class' , 'modal-footer');
+                        footerDiv.setAttribute('id' , 'gmodalfooter');
+                        //Button annuler
+                        var buttonElem = document.createElement('button');
+                        footerDiv.appendChild(buttonElem);
+                        buttonElem.setAttribute('class' , 'btn btn-default');
+                        buttonElem.setAttribute('data-dismiss' , "modal");
+                        buttonElem.setAttribute('type' , 'button');
+                        buttonElem.appendChild(document.createTextNode('Annuler'));
+                        //Entete modal
+                        var titleheader = document.createElement('h4');
+                        titleheader.setAttribute('class','modal-title');
+                        titleheader.setAttribute('id','gmodaltitle');
+                        titleheader.appendChild(document.createTextNode("{{'VALIDATETITRE' | translate}}"));                    
+                        var items = $(document).find("div");
+                        var compileFn = $compile(viewElem);
+                         compileFn($scope);
+                        for(var i=0; i<items.length;i++){               
+                            if(items.eq(i).attr("id")=="gmodalbody"){
+                                  items.eq(i).replaceWith(viewElem);                              
 
-          $scope.exportAction = function(){             
-                 console.log("Vous avez cliquez sur  Export ");             
+                            } else if(items.eq(i).attr("id")=="gmodalfooter"){
+                                items.eq(i).replaceWith(footerDiv);
+                            }//end if(items.eq(i).attr("id")=="gmodalbody"){
+                        }//end for(var i=0; i<items.length;i++){     
+                         var compileFn = $compile(titleheader);
+                         compileFn($scope);
+                        items = $(document).find("h4");
+                        for(var i=0; i<items.length;i++){               
+                            if(items.eq(i).attr("id")=="gmodaltitle"){
+                                  items.eq(i).replaceWith(titleheader);                                     
+                            }//end if(items.eq(i).attr("id")=="gmodaltitle"){ 
+                        } //end for(var i=0; i<items.length;i++){    
+                        //Appele de la fenetre modale
+                        $("#globalModal").modal("toggle");
+                        $("#globalModal").modal("show");
+                    
+                   
+            },
+          /**
+           * 
+           * @returns {undefined}
+           */
+          $scope.exportDataAction = function(){
+              $scope.importData.fichier = $scope.metaData.entityName;
+              if($scope.tableheaderselected==false && $scope.selectedObjects.length<=0){
+                  var message="Veuillez selectionner les données à exporter";
+                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
+              }else if($scope.importData.typeexport=="0" && $scope.exportFieldSelectd()==false){
+                  var message="Veuillez selectionner les champs concernés";
+                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
+              }else{
+                  $scope.importData.datas = new Array();
+                  if($scope.tableheaderselected==false){
+                      for(var i=0 ;i<$scope.selectedObjects.length;i++){
+                          $scope.importData.datas.push($scope.selectedObjects[i].id);
+                      }//end for(var i=0 ;i<$scope.selectedObjects.length;i++){
+                  }//end if($scope.tableheaderselected==false){
+                  commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");   
+                  var url="http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.metaData.moduleName)+"/"+angular.lowercase($scope.metaData.entityName)+"/export";
+                  $http.put(url,$scope.importData,{responseType: "arraybuffer"})
+                          .then(function(response){
+                                var linkElement = document.createElement('a');
+                                try{
+                                        var type = "cvs";
+                                        if($scope.importData.format=='excel'){
+                                            type = 'xlsx';
+                                        }//end if($scope.importData.format=='excel'){
+                                        var attachment = angular.lowercase($scope.metaData.entityName);
+                                        var today = new Date();
+                                        attachment +="_"+today.getTime()+"."+type;
+                                        var arrayBufferView = new Uint8Array(response.data );
+                                       var blob = new Blob( [ arrayBufferView ], { type: type } );
+                                       var urlCreator = window.URL || window.webkitURL;
+                                       var docUrl = urlCreator.createObjectURL( blob );
+                                       linkElement.setAttribute('href', docUrl);
+                                       linkElement.setAttribute("download", attachment);
+                                       linkElement.setAttribute("target", "_blank");
+                                       var clickEvent = new MouseEvent("click", {
+                                           "view": window,
+                                           "bubbles": true,
+                                           "cancelable": false
+                                       });
+                                       linkElement.dispatchEvent(clickEvent);
+                                } catch (ex) {
+                                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
+                               }
+                                commonsTools.hideDialogLoading();
+                          },function(error){
+                                commonsTools.hideDialogLoading();
+                               commonsTools.showMessageDialog(error);
+                            });
+              }//end if($scope.tableheaderselected==false && $scope.selectedObjects.length<=0){
+//              console.log("Vous avez cliquez sur  exportDataAction "+angular.toJson($scope.importData));
+          };
+          
+          $scope.exportFieldSelectd = function(){
+              for(var i=0 ; i<$scope.importData.fields.length;i++){
+                  if($scope.importData.fields[i].selected == true){
+                      return true ;
+                  }//end if($scope.importData.fields[i].selected == true){
+              }//end for(var i=0 ; i<$scope.importData.fields.length;i++){
+              return false ;
+          };
+          $scope.exportAction = function(){   
+                 $scope.importData = commonsTools.createImportEntity($scope.metaData);
+                 $scope.exportDialogBuilderExtern(1);             
           };
           
          
@@ -10351,6 +10670,8 @@ $scope.gererChangementFichier3 = function(event,model){
                
                 if($scope.currentAction.name=="application_update"){
                      $scope.updateApplication();
+                }else if($scope.currentAction.name=="export_bd"){
+                    
                 }else{
                     //Create differ
                     //Initialisation de l'url
@@ -10483,7 +10804,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                     });
                         }//end else if($scope.currentAction.modal)
                     
-                } 
+                }//end if($scope.currentAction.name=="application_update"){
          };
           /**
            * Reception du message de changement de l'action

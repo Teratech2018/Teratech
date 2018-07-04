@@ -216,6 +216,7 @@ public class Rubrique extends BaseElement implements Comparable<Rubrique>, Seria
 		this.avantagenat = rubrique.avantagenat;
 		this.mode = rubrique.mode;
 		this.nature = rubrique.nature;
+                this.natureAv = rubrique.natureAv;
 	}
 	public String getCode() {
 		return code;

@@ -140,4 +140,11 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 		return code.compareTo(o.code);
 	}
 
+    @Override
+    public String toString() {
+        return "Fonction{" + "code=" + code + ", intitule=" + intitule + '}';
+    }
+        
+        
+
 }

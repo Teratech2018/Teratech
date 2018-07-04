@@ -24,6 +24,18 @@ public class ImportLigne implements Serializable,Comparable<ImportLigne>{
     private Boolean optional = Boolean.TRUE;
     
     private String className ;
+    
+    private String pattern ;
+    
+    private int length =-1 ;
+    
+    private int min ;
+    
+    private int max ;
+    
+    private Boolean unique = Boolean.FALSE;
+    
+    private Boolean nullable = Boolean.TRUE;
 
     /**
      * 
@@ -91,12 +103,60 @@ public class ImportLigne implements Serializable,Comparable<ImportLigne>{
         this.className = className;
     }
 
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+
+    public Boolean getUnique() {
+        return unique;
+    }
+
+    public void setUnique(Boolean unique) {
+        this.unique = unique;
+    }
+
+    public Boolean getNullable() {
+        return nullable;
+    }
+
+    public void setNullable(Boolean nullable) {
+        this.nullable = nullable;
+    }
+
     @Override
     public String toString() {
-        return "ImportLigne{" + "id=" + id + ", selected=" + selected + ", code=" + code + ", description=" + description + ", optional=" + optional + ", className=" + className + '}';
+        return "ImportLigne{" + "id=" + id + ", selected=" + selected + ", code=" + code + ", description=" + description + ", optional=" + optional + ", className=" + className + ", pattern=" + pattern + ", length=" + length + ", min=" + min + ", max=" + max + ", unique=" + unique + ", nullable=" + nullable + '}';
     }
     
-      
+    
     
     @Override
     public int compareTo(ImportLigne o) {

@@ -148,7 +148,7 @@ public class BulletinPaieRSImpl
 	@Override
 	public Response printbulletin(HttpHeaders headers, BulletinPaie bulletin) {
 		bulletin.setPeriode(CacheMemory.getPeriode());
-		System.out.println("BulletinPaieRSImpl.printbulletin() periode"+bulletin.getPeriode());
+//		System.out.println("BulletinPaieRSImpl.printbulletin() periode"+bulletin.getPeriode());
 		// TODO Auto-generated method stub
 		if (bulletin.getPeriode()==null) {
 			throw new KerenExecption("Ce bulletin est nulle <br/> ");
@@ -175,7 +175,7 @@ public class BulletinPaieRSImpl
         try {
         	 bulletin.setPeriode(CacheMemory.getPeriode());
         	 List<BulletinPaie> records =new ArrayList<BulletinPaie>();
-        	 System.out.println("BulletinPaieRSImpl.buildPdfReport() bulletin select is "+bulletin.getEmploye().getNom());
+//        	 System.out.println("BulletinPaieRSImpl.buildPdfReport() bulletin select is "+bulletin.getEmploye().getNom());
         	 records.add(bulletin);
               String URL = ReportHelper.templateURL+ReportsName.BULLETIN_PAIE.getName();
               Map parameters = this.getReportParameters();

@@ -23,7 +23,11 @@ public class ImportData implements Serializable,Comparable<ImportData>{
     
     private List<ImportLigne> fields = new ArrayList<ImportLigne>();
     
+    private List<Long> datas = new ArrayList<>();
+    
     private String className ;
+    
+    private String typeexport = "0";
     
 
     public ImportData() {
@@ -79,13 +83,26 @@ public class ImportData implements Serializable,Comparable<ImportData>{
         this.separator = separator;
     }
 
+    public String getTypeexport() {
+        return typeexport;
+    }
+
+    public void setTypeexport(String typeexport) {
+        this.typeexport = typeexport;
+    }
+
+    public List<Long> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<Long> datas) {
+        this.datas = datas;
+    } 
+
     @Override
     public String toString() {
-        return "ImportData{" + "fichier=" + fichier + ", format=" + format + ", separator=" + separator + ", fields=" + fields + ", className=" + className + '}';
-    }
-    
-    
-      
+        return "ImportData{" + "fichier=" + fichier + ", format=" + format + ", separator=" + separator + ", fields=" + fields + ", datas=" + datas + ", className=" + className + ", typeexport=" + typeexport + '}';
+    }    
     
     @Override
     public int compareTo(ImportData o) {

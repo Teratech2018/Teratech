@@ -204,6 +204,14 @@ public class UploadFileRSImpl  implements UploadFileRS{
         }
     }
    
+    /**
+     * 
+     * @return 
+     */
+    @Override
+    public Response exportdatabase() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
   
      /**
 	 * header sample
@@ -252,6 +260,12 @@ public class UploadFileRSImpl  implements UploadFileRS{
 
 	}
 
+        /**
+         * 
+         * @param content
+         * @param filename
+         * @throws IOException 
+         */
         private void writeFile(InputStream content, String filename) throws IOException {
                 int read = 0;
                 byte[] bytes = new byte[1024];
@@ -290,4 +304,6 @@ public class UploadFileRSImpl  implements UploadFileRS{
             fichier.delete();
         }
     }    
+
+    
 }

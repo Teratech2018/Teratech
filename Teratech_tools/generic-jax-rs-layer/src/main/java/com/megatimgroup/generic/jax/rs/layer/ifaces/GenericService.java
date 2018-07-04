@@ -12,6 +12,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.ImportData;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
+import com.megatimgroup.mgt.commons.tools.ValidatorError;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -79,12 +81,30 @@ public interface GenericService<T ,PK extends Serializable> {
         /**
          * 
          * @param entity :Entity describing the import meta data
+     * @return 
          */
         @PUT
         @Produces({MediaType.APPLICATION_JSON})
         @Consumes({MediaType.APPLICATION_JSON})  
         @Path("import")
-        public void importData(ImportData entity);
+        public Map<Long,Map<String,List<ValidatorError>>> importData(ImportData entity);
+        
+        @PUT
+        @Produces({MediaType.APPLICATION_JSON})
+        @Consumes({MediaType.APPLICATION_JSON})  
+        @Path("validateimport")
+        public Map<Long,Map<String,List<ValidatorError>>> validateImportData(ImportData entity);
+        
+        /**
+         * 
+         * @param entity
+         * @return 
+         */
+        @PUT
+        @Produces({MediaType.APPLICATION_JSON})
+        @Consumes({MediaType.APPLICATION_JSON})  
+        @Path("export")
+        public Response exportData(@Context HttpHeaders headers ,ImportData entity);
         
         /**
 	 * Methode generique de mise a jour d'une entite

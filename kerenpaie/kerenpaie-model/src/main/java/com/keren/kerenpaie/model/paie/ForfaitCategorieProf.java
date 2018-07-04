@@ -183,7 +183,7 @@ public class ForfaitCategorieProf extends BaseElement implements Serializable, C
 	@Override
 	public int compareTo(ForfaitCategorieProf arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return arg0.getCategorie().compareTo(categorie);
 	}
 
 }

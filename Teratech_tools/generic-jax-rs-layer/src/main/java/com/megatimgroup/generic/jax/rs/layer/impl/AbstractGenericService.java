@@ -13,6 +13,10 @@ import com.google.gson.reflect.TypeToken;
 import com.megatim.common.annotations.OrderType;
 import com.megatimgroup.generic.jax.rs.layer.annot.AnnotationsProcessor;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
+import com.megatimgroup.mgt.commons.tools.CommonTools;
+import com.megatimgroup.mgt.commons.tools.FileHelper;
+import com.megatimgroup.mgt.commons.tools.RulesContainer;
+import com.megatimgroup.mgt.commons.tools.ValidatorError;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,10 +24,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -42,6 +52,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 /**
  *
@@ -161,16 +172,315 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     }
 
     @Override
-    public void importData(ImportData entity){
+    public Map<Long,Map<String,List<ValidatorError>>> importData(ImportData entity){
         try {    
-            Object data = Class.forName(entity.getClassName());
-            System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== "+data);
-            
-        } catch (ClassNotFoundException ex) {
+            String filename = getTemporalDirectory()+File.separator+entity.getFichier();
+            File file = new File(filename);
+             Class<?> data = Class.forName(entity.getClassName());
+             Map<Long,Map<String,List<ValidatorError>>> errorsmap = new HashMap<>();
+            if(file.exists()){
+                Map<Long , List<String>> datas = new HashMap<Long , List<String>>();
+                if(entity.getFormat().equalsIgnoreCase("cvs")){
+                    datas = FileHelper.cvsToJavaConverter(filename, entity.getSeparator());
+                }else {
+                    datas = FileHelper.excelToJavaConverter(filename);
+                }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
+                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
+               //Construction of RulesContainer
+                RulesContainer container = RulesContainer.newInstance();
+                for(ImportLigne ligne:entity.getFields()){
+                    if(!ligne.getNullable()){
+                        container.addNotNullRule(ligne.getCode(), null);
+                    }//endif(!ligne.getNullable()){
+                    if(ligne.getUnique()){
+                        container.addUniqueRule(entity.getClassName(), ligne.getCode(), null, getManager().getDao().getEntityManager());
+                    }//end if(ligne.getUnique()){
+                    if(ligne.getPattern()!=null && !ligne.getPattern().isEmpty()){
+                        container.addPatternRule(ligne.getCode(), ligne.getPattern(), null);
+                    }//end if(ligne.getPattern()!=null && !ligne.getPattern().isEmpty()){
+                    if(ligne.getMin()>0){
+                        container.addMinRule(ligne.getCode(), ligne.getMin(), null);
+                    }//end if(ligne.getMin()>0){
+                    if(ligne.getMax()>0){
+                        container.addMaxRule(ligne.getCode(), ligne.getMax(), null);
+                    }//end if(ligne.getMin()>0){
+                    if(ligne.getLength()>0){
+                        container.addLengthRule(ligne.getCode(), (short) ligne.getLength(), null);
+                    }//end if(ligne.getMin()>0){
+                }//end for(ImportLigne ligne:entity.getFields()){
+                //Validation des donnees
+                errorsmap = container.execute(datas);
+                if(errorsmap.isEmpty()){//Vlidation OK
+                    List entities = mapToJavaObject(entity.getClassName(), datas);
+                    if(entities!=null && !entities.isEmpty()){                        
+                            getManager().save(entities);                       
+                    }//end if(entities!=null && !entities.isEmpty()){
+                }//end if(errorsmap.isEmpty()){                
+            }//end if(file.exists())        
+            return errorsmap;
+        } catch (Exception ex) {
             Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
+            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).entity(ex.getMessage()).build());
         }
     }    
+
+    /**
+     * validate import data
+     * @param entity
+     * @return 
+     */
+    @Override
+    public  Map<Long, Map<String, List<ValidatorError>>> validateImportData(ImportData entity){
+            try {    
+            String filename = getTemporalDirectory()+File.separator+entity.getFichier();
+            File file = new File(filename);
+             Class<?> data = Class.forName(entity.getClassName());
+             Map<Long,Map<String,List<ValidatorError>>> errorsmap = new HashMap<>();
+            if(file.exists()){
+                Map<Long , List<String>> datas = new HashMap<Long , List<String>>();
+                if(entity.getFormat().equalsIgnoreCase("cvs")){
+                    datas = FileHelper.cvsToJavaConverter(filename, entity.getSeparator());
+                }else {
+                    datas = FileHelper.excelToJavaConverter(filename);
+                }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
+                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
+               //Construction of RulesContainer
+                RulesContainer container = RulesContainer.newInstance();
+                for(ImportLigne ligne:entity.getFields()){
+                    if(!ligne.getNullable()){
+                        container.addNotNullRule(ligne.getCode(), null);
+                    }//endif(!ligne.getNullable()){
+                    if(ligne.getUnique()){
+                        container.addUniqueRule(entity.getClassName(), ligne.getCode(), null, getManager().getDao().getEntityManager());
+                    }//end if(ligne.getUnique()){
+                    if(ligne.getPattern()!=null && !ligne.getPattern().isEmpty()){
+                        container.addPatternRule(ligne.getCode(), ligne.getPattern(), null);
+                    }//end if(ligne.getPattern()!=null && !ligne.getPattern().isEmpty()){
+                    if(ligne.getMin()>0){
+                        container.addMinRule(ligne.getCode(), ligne.getMin(), null);
+                    }//end if(ligne.getMin()>0){
+                    if(ligne.getMax()>0){
+                        container.addMaxRule(ligne.getCode(), ligne.getMax(), null);
+                    }//end if(ligne.getMin()>0){
+                    if(ligne.getLength()>0){
+                        container.addLengthRule(ligne.getCode(), (short) ligne.getLength(), null);
+                    }//end if(ligne.getMin()>0){
+                }//end for(ImportLigne ligne:entity.getFields()){
+                //Validation des donnees
+                errorsmap = container.execute(datas);                            
+            }//end if(file.exists())        
+            return errorsmap;
+        } catch (Exception ex) {
+            Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
+            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).entity(ex.getMessage()).build());
+        }
+    }
+
     
+    /**
+     * 
+     * @param object
+     * @param field
+     * @param value
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException 
+     */
+     private  void affect(T object ,Field field , String value) throws IllegalArgumentException, IllegalAccessException{
+        field.setAccessible(true);
+//        System.out.println(AbstractGenericService.class.toString()+".affect(T object ,Field field , String value) ==== field : "+field.getName()+" === value : "+value);
+        if(field.getType().equals(Boolean.class)){
+                field.setBoolean(object, true);
+        }else if(field.getType().equals(String.class)){
+                field.set(object, value);
+        }else if(field.getType().equals(Integer.class)){
+                field.setInt(object, Integer.valueOf(value));
+        }else if(field.getType().equals(Short.class)){
+                field.setShort(object, Short.valueOf(value));
+        }else if(field.getType().equals(Float.class)){
+                field.setFloat(object, Float.valueOf(value));
+        }else if(field.getType().equals(Double.class)){
+                field.setDouble(object, Double.valueOf(value));
+        }else if(field.getType().equals(Long.class)){
+                field.setLong(object, Long.valueOf(value));
+        }else if(field.getType().equals(BigDecimal.class)){
+                field.set(object, new BigDecimal(value));
+        }
+    }
+     
+     /**
+      * Get instance of T
+      * @return
+      * @throws InstantiationException
+      * @throws IllegalAccessException 
+      */
+     private T getInstance() throws InstantiationException, IllegalAccessException{
+         ParameterizedType superClass  = (ParameterizedType) getClass().getGenericSuperclass();
+         Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
+         return type.newInstance();
+     } 
+     
+     /**
+      * 
+      * @param classname
+      * @param data
+      * @return
+      * @throws ClassNotFoundException
+      * @throws IllegalArgumentException
+      * @throws IllegalAccessException 
+      */
+      private  List<T> mapToJavaObject(String classname , Map<Long,List<String>> data) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, InstantiationException{
+         List result = new ArrayList();        
+         List<String> fieldNames = data.get(0L);
+         for(long key:data.keySet()){
+           if(key>0){
+               //Creation instance of Object
+                T entityClass = getInstance();
+                //Construction du map des champs de l'object
+                Field[] fields = entityClass.getClass().getDeclaredFields();
+                Map<String, Field> map = new HashMap<String, Field>();
+                for(Field field : fields){
+                    map.put(field.getName(), field);
+                }//end for(Field field : fields){
+              List<String> values = data.get(key);
+              int index = 0;
+              for(String fieldname:fieldNames){
+                  fieldname = CommonTools.cvsString(fieldname);
+                  String[] names = fieldname.split(".");
+                  if(names.length==0){
+                      Field field = map.get(fieldname);
+//                     System.out.println(AbstractGenericService.class.toString()+".mapToJavaObject(EntityManager manager , String classname , Map<Long,List<String>> data) ============= fieldnames : "+map+" === fieldname : "+fieldname+" === map.get() : "+map.get(fieldname));
+                     if(field!=null){
+                         affect(entityClass, field, values.get(index));
+                     }//end if(field!=null){
+                  }else{//Object 
+                      Field field = map.get(names[0]);
+                      if(field!=null){                         
+                        Object value = CommonTools.getEntity(getManager().getDao().getEntityManager(), names[0], names[1], values.get(index), field);
+                        field.setAccessible(true);
+                        field.set(entityClass, value);
+                      }//end if(field!=null){
+                  }//end if(names.length==1){
+                  index++;
+              }//end for(String fieldname:fieldNames){
+              result.add(entityClass);
+           }//end if(key>0){  
+         }//end for(long key:data.keySet()){         
+         return result;
+    }
+    
+    @Override
+    public  Response exportData(@Context HttpHeaders headers ,ImportData entity){
+        try {
+            List<String> champs = getFields(entity);
+            List datas = new ArrayList<>();
+            if(entity.getDatas().isEmpty()){
+                datas = filter(headers, 0, -1);
+            }else{
+                for(Long id : entity.getDatas()){
+                    datas.add(getManager().find("id", (PK) id));
+                } //end for(Long id : entity.getDatas()){
+            }//end if(entity.getDatas().isEmpty()){
+            //Convert data to Map
+            Map<Long,List<String>> map = new HashMap<>();
+            map = objectToMapConverter(datas, champs);            
+            //Conversion en fichier excel ou cvs
+            Date today = new Date();
+            String filename = getTemporalDirectory()+File.separator+entity.getFichier().toLowerCase()+today.getTime();
+            if(entity.getFormat().equalsIgnoreCase("cvs")){
+                filename+=".cvs";
+            }else{
+                filename+=".xlsx";
+            }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
+            File file = null;
+            if(entity.getFormat().equalsIgnoreCase("cvs")){
+                file = FileHelper.mapToCVSConverter(map, ',', '"', filename);
+            }else{
+                file = FileHelper.mapToExcelConverter(map, filename);
+            }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
+           return CommonTools.getStream(file,file.getName());
+        } catch (Exception ex) {
+            Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.PRECONDITION_FAILED).entity(ex.getMessage()).build();
+        }
+        
+    }
+    
+    /**
+     * 
+     * @param datas
+     * @param fields
+     * @return 
+     * @throws java.lang.IllegalAccessException 
+     */
+    public  Map<Long,List<String>> objectToMapConverter(List<T> datas,List<String> fields) throws IllegalArgumentException, IllegalAccessException{
+        Map<Long,List<String>> result = new HashMap<Long,List<String>>();
+        result.put(0l, fields);
+        long index = 0L ;
+        for(T data :  datas){
+            index ++ ;
+            result.put(index, objectToListConverter(data, fields));
+        }//end for(Class<?> data :  datas)
+        return result;
+    }
+    
+   /**
+    * 
+    * @param clazz
+    * @param data
+    * @param fields
+    * @return
+    * @throws IllegalArgumentException
+    * @throws IllegalAccessException 
+    */
+    private  List<String> objectToListConverter(T data , List<String> fields) throws IllegalArgumentException, IllegalAccessException{
+        List<String> result = new ArrayList<>();
+        Field[] champs = data.getClass().getDeclaredFields();
+        for(Field ele : champs){
+            ele.setAccessible(true);
+            for(String field : fields){
+                String[] fieldPart = field.split(".");
+//                System.out.println(AbstractGenericService.class.toString()+".objectToListConverter(T data , List<String> fields) ========== field : "+field+" === "+fieldPart.length);
+                String key = field ;
+                if(fieldPart.length>0){
+                    key = fieldPart[0];
+                }//end if(fieldPart.length>0){
+                if(ele.getName().trim().equalsIgnoreCase(key)){
+                     Object value = ele.get(data);
+                    result.add(""+value);
+//                    System.out.println(AbstractGenericService.class.toString()+".objectToListConverter(T data , List<String> fields) ========== field : "+result);
+                }//end if(fieldPart.length==1){
+            }//end for(String field : fields){
+        }//end for(Field ele : champs){      
+        
+                
+        return result;
+    }
+    private List<String> getFields(ImportData entity){
+        List<String> fields = new ArrayList<>();
+        if(entity.getTypeexport().equalsIgnoreCase("0")){
+            for(ImportLigne ligne : entity.getFields()){
+                if(ligne.getSelected()==Boolean.TRUE){
+                    fields.add(ligne.getCode());
+                }//end if(ligne.getSelected()==Boolean.TRUE){
+            }//end for(ImportLigne ligne : entity.getFields()){
+        }else{
+            for(ImportLigne ligne : entity.getFields()){
+                fields.add(ligne.getCode());               
+            }//end for(ImportLigne ligne : entity.getFields()){
+        }//end if(entity.getTypeexport().equalsIgnoreCase("0")){
+        return fields ;
+    }
+    
+    
+    public static File getTemporalDirectory(){
+         File binDirectory = new File(System.getProperty("user.dir"));   
+         String TEMP_DIR = "standalone"+File.separator+"tmp"+File.separator+"keren";
+         File file = new File(binDirectory.getParent()+File.separator+TEMP_DIR);
+         if(!file.exists()){
+             file.mkdir();
+         }//end if(!file.exists())
+         return file;
+    }
 
     @Override
     public T find(String propertyName, PK id) {

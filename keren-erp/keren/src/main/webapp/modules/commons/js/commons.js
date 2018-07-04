@@ -165,6 +165,7 @@ angular.module('keren.core.commons')
 
                      },{
                         type:type,
+                        z_index: 5800,
                          animate: {
                            enter: 'animated fadeInRight',
                            exit: 'animated fadeOutRight'
@@ -696,6 +697,7 @@ angular.module('keren.core.commons')
                     }//end if(error.status==412)
                    
             },
+    
             /**
              * 
              * @param {type} idFileElement
@@ -959,7 +961,7 @@ angular.module('keren.core.commons')
                    if(angular.isNumber(expr)){
                        return expr;
                    }//end if(angular.isNumber(expr))
-                   console.log("getValue:function(expr,data) === "+expr);
+//                   console.log("getValue:function(expr,data) === "+expr);
                    var part = expr.split(".");
                    if(part.length==1){
                        if(angular.isNumber(data[expr])){
@@ -987,7 +989,7 @@ angular.module('keren.core.commons')
                             expEval +=this.getValue(expr[i],data);
                         }
                     }//end for(var i+0;i<expr.length;i++){
-                    console.log("sumListExpr:function(expr, datas)) === "+expEval+" === "+result);
+//                    console.log("sumListExpr:function(expr, datas)) === "+expEval+" === "+result);
                     var result = eval(expEval.toString());
                     return result;
                 }//end if(data && expr.length>0)
@@ -1366,6 +1368,31 @@ angular.module('keren.core.commons')
                 return key;
             },
             /**
+             * 
+             * @param {type} errors
+             * @returns {Array}
+             */
+            converErrorsMap : function(errors){
+                var array = new Array();
+                for(var key in errors){
+                    var data = errors[key];
+                    for(var key2 in data){
+                        var error = data[key2];
+                        var obj = new Object();
+                        obj['line'] = key;
+                        obj['field'] = key2;
+                        for(var key3 in error){
+//                            console.log("commons.converErrorsMap ========== key : "+key3+" ======= value : "+angular.toJson(error[key3]));
+                            var detail = error[key3];
+                            obj['value'] = detail['value'];
+                            obj['message'] = detail['message'];
+                        }//end for(var key3 in error){
+                        array.push(obj);
+                    }//end for(var key2 in data){
+                }//end for(var key in errors){
+                return array;
+            },
+            /**
             * 
             * @param {type} metaData
             * @returns {undefined}
@@ -1377,12 +1404,13 @@ angular.module('keren.core.commons')
                entity.className = metaData.className;
                entity.format ='cvs';
                entity.separator = ',';
+               entity.typeexport = '0';
                /**
                 * Traitement des champs columns
                 */
                for(var i=0 ; i<metaData.columns.length;i++){
                    var ele = metaData.columns[i];
-                   if(ele.search==true){
+                   /**if(ele.search==true)**/{
                         var field = new Object();
                         field.id = -1 ;
                         field.selected = false ;
@@ -1398,6 +1426,12 @@ angular.module('keren.core.commons')
                         field.description = ele.fieldLabel;
                         field.optional = !ele.optional;
                         field.selected = field.optional;
+                        field.pattern = ele.pattern;
+                        field.length = ele.length;
+                        field.min = ele.min;
+                        field.max = ele.max ;
+                        field.unique = ele.unique;
+                        field.nullable = ele.nullable;
                         entity.fields.push(field);
                    }//end if(ele.search==true){
                }//end for(var i=0 ; i<metaData.columns.length;i++){
@@ -1407,7 +1441,7 @@ angular.module('keren.core.commons')
                for(var i=0 ; i<metaData.groups.length;i++){
                    for(var j=0 ;j<metaData.groups[i].columns.length;j++){
                        var ele = metaData.groups[i].columns[j];
-                       if(ele.search==true){
+                       /**if(ele.search==true)**/{
                             var field = new Object();
                             field.id = -1 ;
                             field.selected = false ;
@@ -1424,6 +1458,12 @@ angular.module('keren.core.commons')
                             field.description = ele.fieldLabel;
                             field.optional = !ele.optional;
                             field.selected = field.optional;
+                            field.pattern = ele.pattern;
+                            field.length = ele.length;
+                            field.min = ele.min;
+                            field.max = ele.max ;
+                            field.unique = ele.unique;
+                            field.nullable = ele.nullable;
                             entity.fields.push(field);
                        }//end if(ele.search==true){
                    }//end for(var j=0 ;j<metaData.groups[i].columns.length;j++){
