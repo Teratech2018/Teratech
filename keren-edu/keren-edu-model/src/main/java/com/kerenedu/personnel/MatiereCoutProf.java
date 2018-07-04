@@ -63,7 +63,7 @@ public class MatiereCoutProf extends BaseElement implements Serializable, Compar
 
 
 	public MatiereCoutProf(MatiereCoutProf ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		
 		this.anneScolaire= new AnneScolaire(ins.anneScolaire);
 		this.matiere = new Matiere(ins.matiere);

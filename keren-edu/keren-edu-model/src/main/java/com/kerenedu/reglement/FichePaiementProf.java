@@ -68,7 +68,7 @@ public class FichePaiementProf extends BaseElement implements Serializable, Comp
 
 
 	public FichePaiementProf(FichePaiementProf ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.mois = ins.mois;
 		this.tplanif = ins.tplanif;
 		this.temarge=ins.temarge;

@@ -147,7 +147,7 @@ public class NoteSMS extends BaseElement implements Serializable, Comparable<Not
 
 
 	public NoteSMS(NoteSMS filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 		this.destMessage=filiere.destMessage;
 		this.libelle=filiere.libelle;

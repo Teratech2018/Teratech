@@ -13,8 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.Matiere;
-
+import com.kerenedu.configuration.MatiereDlt;
+import com.kerenedu.notes.CoefMatiereDetail;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -28,8 +28,8 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	
 	@ManyToOne
 	@JoinColumn(name = "MAT_ID")
-	@Predicate(label="MATIERE",updatable=true,type=Matiere.class , target="many-to-one",search=true , sequence=1	)
-	protected Matiere matiere;
+	@Predicate(label="MATIERE",updatable=true,type=MatiereDlt.class , target="many-to-one",search=true , sequence=1	)
+	protected CoefMatiereDetail matiere;
 	
 	@Column(name = "HEURE_DEBUT")
 	//@Temporal(javax.persistence.TemporalType.TIME)
@@ -42,7 +42,7 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	protected String heurefin;
 	
 	@Column(name = "STATUT")
-	@Predicate(label="STATUT ELEVE",optional=false,updatable=true,search=true, target="combobox", values="Validé;Non Validé" , sequence=3)
+	@Predicate(label="Validé ?",optional=false,updatable=true,search=true, target="combobox", values="Validé;Non Validé" , sequence=3)
 	protected String statut="0";
 
 
@@ -52,7 +52,7 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	}
 
 
-	public EmargementProfDetails(Matiere matiere, String heurefin, String heuredebut,String statut) {
+	public EmargementProfDetails(CoefMatiereDetail matiere, String heurefin, String heuredebut,String statut) {
 		super();
 		this.matiere = matiere;
 		this.heurefin = heurefin;
@@ -62,9 +62,9 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 
 
 	public EmargementProfDetails(EmargementProfDetails ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		
-		this.matiere= new Matiere(ins.matiere);
+		this.matiere= new CoefMatiereDetail(ins.matiere);
 		this.heurefin = ins.heurefin;
 		this.heuredebut = ins.heuredebut;
 		this.statut = ins.statut;
@@ -76,7 +76,7 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	public EmargementProfDetails(TrancheHoraireCours ins) {
 		
 		if(ins.matiere!=null){
-			this.matiere= new Matiere(ins.getMatiere().getMatiere());
+			this.matiere= new CoefMatiereDetail(ins.getMatiere());
 		}
 		this.heurefin = ins.getHeurefin();
 		this.heuredebut = ins.getHeuredebut();
@@ -128,7 +128,7 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 
 
 
-	public Matiere getMatiere() {
+	public CoefMatiereDetail getMatiere() {
 		return matiere;
 	}
 
@@ -163,7 +163,7 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	}
 
 
-	public void setMatiere(Matiere matiere) {
+	public void setMatiere(CoefMatiereDetail matiere) {
 		this.matiere = matiere;
 	}
 

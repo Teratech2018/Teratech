@@ -92,7 +92,7 @@ public class Presence extends BaseElement implements Serializable, Comparable<Pr
 
 
 	public Presence(Presence ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.datPrs = ins.datPrs;
 		this.hdebut = ins.hdebut;
 		this.hfin = ins.hfin;

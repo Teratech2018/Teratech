@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.notes.CoefMatiere;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -84,7 +83,7 @@ public class PlanifCoursRSImpl
 
     @Override
     public PlanifCours save(PlanifCours entity) {
-    	System.out.println("PlanifCoursRSImpl.save() je suis 11111111111111111");
+    	
         //To change body of generated methods, choose Tools | Templates.
     	CacheMemory.setClasse(entity.getClasse());
     	//todo save jours if is new
@@ -93,7 +92,7 @@ public class PlanifCoursRSImpl
     }
     
     private void todoWork(PlanifCours entity){
-    	System.out.println("PlanifCoursRSImpl.save() je suis 2222222222");
+    	
     	Classe classe = CacheMemory.getClasse();
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		 TrancheHoraireCours thc ;
@@ -117,9 +116,10 @@ public class PlanifCoursRSImpl
 //   					idx++;
    				}
    				 jc = new JoursCours(jour,listthc);
+   				jc.setAnneScolaire(CacheMemory.getCurrentannee());
    				 listjc.add(jc);
    			}
-   			System.out.println("PlanifCoursRSImpl.todoWork() nombre de jours 666666666666666"+listjc.size());
+   			
    			for(JoursCours jr : listjc){
    				List<TrancheHoraireCours> newTranche = new ArrayList<TrancheHoraireCours>();
    				newTranche.addAll(jr.getTranchehorairecours());

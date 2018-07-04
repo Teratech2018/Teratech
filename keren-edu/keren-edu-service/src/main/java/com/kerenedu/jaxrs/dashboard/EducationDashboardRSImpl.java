@@ -13,6 +13,8 @@ import com.core.views.DashboardRecord;
 import com.core.views.DashboardRecordManagerRemote;
 import com.kerem.core.DashboardUtil;
 import com.kerenedu.dashboard.EducationDashboard;
+import com.kerenedu.dashboard.ViewDashboard;
+import com.kerenedu.dashboard.ViewDashboardManagerRemote;
 import com.megatimgroup.generic.jax.rs.layer.annot.AnnotationsProcessor;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -28,7 +30,10 @@ public class EducationDashboardRSImpl implements EducationDashboardRSLocal,Educa
 
 
 	 @Manager(application = "kerencore", name = "DashboardRecordManagerImpl", interf = DashboardRecordManagerRemote.class)
-	    protected DashboardRecordManagerRemote dashboardmanager;
+	  protected DashboardRecordManagerRemote dashboardmanager;
+	 
+	 @Manager(application = "kereneducation", name = "ViewDashboardManagerImpl", interf = ViewDashboardManagerRemote.class)
+	    protected ViewDashboardManagerRemote manager;
 	    
 	    
 	    public EducationDashboardRSImpl() {
@@ -54,7 +59,8 @@ public class EducationDashboardRSImpl implements EducationDashboardRSLocal,Educa
 	            if(dashboard==null){
 	                return null;
 	            }
-	            return DashboardUtil.dashboardBuilder(new EducationDashboard(), dashboard);
+	            ViewDashboard view = manager.getdashboarddata().get(0);
+	            return DashboardUtil.dashboardBuilder( new EducationDashboard(view), dashboard);
 	        } catch (JAXBException ex) {
 	            Logger.getLogger(EducationDashboardRSImpl.class.getName()).log(Level.SEVERE, null, ex);
 	        } catch (IllegalArgumentException ex) {

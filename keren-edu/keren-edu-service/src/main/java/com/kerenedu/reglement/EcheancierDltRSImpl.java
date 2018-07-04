@@ -3,6 +3,7 @@ package com.kerenedu.reglement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
@@ -12,6 +13,7 @@ import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 
 /**
@@ -62,6 +64,24 @@ public class EcheancierDltRSImpl
    		}
    		return null;
    	}
+
+	@Override
+	public List<EcheancierDlt> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		String predicates = arg0.getRequestHeader("predicats").get(0);
+		System.out.println(EcheancierDltRSImpl.class.toString()+" =================  "+predicates);
+		return super.filter(arg0, arg1, arg2);
+	}
+
+	@Override
+	public RSNumber count(HttpHeaders arg0) {
+		// TODO Auto-generated method stub
+		String predicates = arg0.getRequestHeader("predicats").get(0);
+		System.out.println(EcheancierDltRSImpl.class.toString()+" =================  "+predicates);
+		return super.count(arg0);
+	}
+
+	
 
   
 

@@ -70,7 +70,7 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 
 
 	public AnneScolaire(AnneScolaire annee) {
-		super(annee.id, annee.designation, annee.moduleName);
+		super(annee.id, annee.designation, annee.moduleName,0L);
 		this.code = annee.code;
 		this.ddeb = annee.ddeb;
 		this.dfin = annee.dfin;
@@ -144,7 +144,7 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return ddeb+"-"+dfin;
+		return (new Long(code)-1)+" / "+code;
 	}
 
 

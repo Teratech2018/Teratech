@@ -4,7 +4,6 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,43 +30,44 @@ import com.megatim.common.annotations.Predicate;
 public class Service extends BaseElement implements Serializable, Comparable<Service> {
 	
 	
-	@ManyToMany(fetch = FetchType.LAZY )
-    @JoinColumn(name = "FILL_ID")
-	@Predicate(label = "Filiere concernées",target = "many-to-many-list",type = Filiere.class,search = true,sequence=1)
-	private List<Filiere> filiere = new ArrayList<Filiere>();
+	@Column(name = "TYPE_SERVICE")
+	@Predicate(label="Type Service",optional=false,updatable=true,search=false, target="combobox", values="Inscription;Iere Tranche;IIeme Tranche;IIeme Tranche;Autres" , sequence=1)
+	protected String type="0";
 	
 	@Column(name = "LIBELLE")	
-	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true, sequence=2,colsequence=1)
+	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true, sequence=2)
 	protected String libelle;
 	
 	@Column(name = "MNT" )	
-	@Predicate(label="MONTANT",optional=false,updatable=true,search=true, type=BigDecimal.class, sequence=3,colsequence=3)
-	protected BigDecimal zMnt;
+	@Predicate(label="MONTANT",optional=false,updatable=true,search=true, type=Double.class, sequence=3)
+	protected Double zMnt;
 	
 	@Column(name = "DELAI")
 	@Predicate(label="DELAI PAIEMENT",optional=false,updatable=true,search=true, type=Date.class,sequence=4, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date delai;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "FILL_ID")
+	@Predicate(label = ".",target = "many-to-many-list",type = Filiere.class,search = true,group=true,groupLabel="Filière concernés",
+			groupName="tab1")
+	private List<Filiere> filiere ;
 
 	
 
 	public Service() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
 	public Service(Service service) {
-		super(service.id, service.designation, service.moduleName);
-		this.filiere = service.filiere;
+		super(service.id, service.designation, service.moduleName,0L);
 		this.zMnt=service.zMnt;
 		this.delai=service.delai;
 		filiere= new ArrayList<Filiere>();
 		this.libelle=service.libelle;
+		this.type=service.getType();
 		
-//		for(FraisScolaire frais:service.fraisScolaire){
-//			fraisScolaire.add(new FraisScolaire(frais));
-//	    }
 	}
 
 			
@@ -86,13 +86,13 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Frais de scolarité /  Filiere";
+		return "Gestion des Services Scolaire";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Frais de scolarité / Filiere";
+		return "Gestion des Services Scolaire";
 	}
 
 	@Override
@@ -107,13 +107,13 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	}
 	
 
-	public BigDecimal getzMnt() {
+	public Double getzMnt() {
 
 		return zMnt;
 	}
 
 
-	public void setzMnt(BigDecimal zMnt) {
+	public void setzMnt(Double zMnt) {
 		this.zMnt = zMnt;
 	}
 
@@ -125,6 +125,16 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 
 	public void setDelai(Date delai) {
 		this.delai = delai;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 

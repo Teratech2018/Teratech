@@ -9,6 +9,7 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.CacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -25,7 +26,8 @@ public class CaisseRSImpl
     implements CaisseRS
 {
 
-    /**
+   
+	/**
      * On injecte un Gestionnaire d'entites
      * 
      */
@@ -63,5 +65,12 @@ public class CaisseRSImpl
    		}
    		return null;
    	}
+    
+    @Override
+   	protected void processBeforeSave(Caisse entity) {
+   		entity.setAnneScolaire(CacheMemory.getCurrentannee());
+   		super.processBeforeSave(entity);
+   	}
+
 
 }

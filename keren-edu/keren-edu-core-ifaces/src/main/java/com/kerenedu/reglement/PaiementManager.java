@@ -1,6 +1,8 @@
 
 package com.kerenedu.reglement;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 
@@ -14,5 +16,7 @@ public interface PaiementManager
 {
 
     public final static String SERVICE_NAME = "PaiementManager";
+    
+    public List<Paiement> getCriteres(Paiement critere);
 
 }

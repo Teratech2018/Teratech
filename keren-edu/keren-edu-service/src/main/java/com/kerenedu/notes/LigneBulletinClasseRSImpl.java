@@ -2,6 +2,7 @@
 package com.kerenedu.notes;
 
 import javax.ws.rs.Path;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;

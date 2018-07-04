@@ -21,7 +21,6 @@ import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -80,7 +79,7 @@ public class EmargementProf extends BaseElement implements Serializable, Compara
 
 
 	public EmargementProf(EmargementProf ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.anneScolaire= ins.anneScolaire;
 		this.classe = new Classe(ins.classe);
 		this.prof = new Professeur( ins.prof);
@@ -104,13 +103,13 @@ public class EmargementProf extends BaseElement implements Serializable, Compara
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Pointage des Cours ";
+		return "Emargement des Cours ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Pointage des Cours";
+		return "Emargement des Cours";
 	}
 
 	@Override

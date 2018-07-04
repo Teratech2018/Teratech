@@ -50,7 +50,7 @@ public class FraisScolaire extends BaseElement implements Serializable, Comparab
 
 
 	public FraisScolaire(FraisScolaire service) {
-		super(service.id, service.designation, service.moduleName);
+		super(service.id, service.designation, service.moduleName,0L);
 		this.libelle = service.libelle;
 		this.typeFrais=service.typeFrais;
 		this.dateLine=service.dateLine;

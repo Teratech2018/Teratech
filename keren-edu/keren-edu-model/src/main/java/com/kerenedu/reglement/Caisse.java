@@ -4,28 +4,15 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
-import com.kerenedu.configuration.Service;
-import com.kerenedu.inscription.Inscription;
-import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -37,27 +24,40 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_caisse")
 public class Caisse extends BaseElement implements Serializable, Comparable<Caisse> {
 
+	@Column(name = "Code")
+	@Predicate(label="Num Pièce",optional=false,updatable=true,search=false , sequence=1)
+	protected String code ;	
 	
 	@Column(name = "DATE_ENC")
-	@Predicate(label="DATE",optional=false,updatable=true,search=true, type=Date.class,sequence=1, target="date" , colsequence=1 )
+	@Predicate(label="Date",optional=false,updatable=true,search=true, type=Date.class,sequence=2, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datEnc;
+	
+	@Column(name = "NATURE")
+	@Predicate(label="Nature",optional=false,updatable=true,search=true, target="combobox", values="Recette;Depense" , sequence=3)
+	protected String nature="0";
+	
+//	@ManyToOne
+//    @JoinColumn(name = "TYPE_ID")
+//	//@Predicate(label="Type Dépense",updatable=true,type=TypeDepense.class , target="many-to-one",search=false, sequence=4)
+//    protected TypeDepense typeDepense;
+//	
 
 	@Column(name = "REVENU" )	
-	@Predicate(label="REVENU",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=2, colsequence=3)
-	protected Long zRevenu = new Long(0);
+	@Predicate(label="Recette",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=5,hidden="currentObject.nature=='1'")
+	protected Long zRevenu ;
 	
-	@Column(name = "DEPENSE")	
-	@Predicate(label="DEPENSE",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=3, colsequence=4)
-	protected Long zDepense =new Long(0);
+	@Column(name = "DEPENSE" )	
+	@Predicate(label="Dépense",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=6,hidden="currentObject.nature == null || currentObject.nature=='0'")
+	protected Long zdepense ;
+	
 	
 	@Column(name = "DESCRIPTION")
-	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true , sequence=2 , colsequence=4)
+	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true , sequence=7)
 	protected String description ;
 	
-	@ManyToOne
-	@JoinColumn(name = "PAI_ET_ID" )
-	protected Paiement paiement = new Paiement();
+	@Column(name = "PAI_ET_ID" )
+	protected Long paiement ;
 	
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire ;
@@ -71,26 +71,25 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 
 
 	public Caisse(Caisse ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.zRevenu = ins.zRevenu;
-		this.zDepense = ins.zDepense;
 		this.datEnc=ins.datEnc;
 		this.anneScolaire=ins.anneScolaire;
 		this.description=ins.description;
-		if(ins.paiement!=null){
-			this.paiement= new Paiement(ins.paiement);
-		}
-		
-		
+		this.paiement= ins.paiement;
+		this.zdepense=ins.zdepense;
+		this.nature=ins.nature;
+		this.code=ins.code;
 	}
 	
 	public Caisse(Paiement reglement){
-		this.zRevenu = reglement.zMnt;
-		this.zDepense = new Long(0);
+		this.zRevenu = reglement.zMntverser;
 		this.datEnc=new Date();
 		this.anneScolaire= reglement.service.anneScolaire;
-		this.description="Paiement "+reglement.service.getService().getLibelle()+"//Etudiant "+reglement.service.eleve.getEleve().getNom();
-		this.paiement= new Paiement(reglement);
+		this.description="Paiement "+reglement.service.getService().getLibelle()+"//Elève "+reglement.getEleve().getEleve().getNom();
+		this.paiement= reglement.getId();
+		this.nature="0";
+		this.code=reglement.getCode();
 	}
 
 	
@@ -111,13 +110,13 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion de la Caisse ";
+		return "Gestion des Dépenses et Recettes ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion de la Caisse ";
+		return "Gestion  des Dépenses et Recettes  ";
 	}
 
 	@Override
@@ -173,21 +172,6 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	}
 
 
-	/**
-	 * @return the zDepense
-	 */
-	public Long getzDepense() {
-		return zDepense;
-	}
-
-
-	/**
-	 * @param zDepense the zDepense to set
-	 */
-	public void setzDepense(Long zDepense) {
-		this.zDepense = zDepense;
-	
-	}
 
 
 	public void setAnneScolaire(String anneScolaire) {
@@ -203,12 +187,12 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	}
 
 
-	public Paiement getPaiement() {
+	public Long getPaiement() {
 		return paiement;
 	}
 
 
-	public void setPaiement(Paiement paiement) {
+	public void setPaiement(Long paiement) {
 		this.paiement = paiement;
 	}
 
@@ -219,6 +203,51 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+//
+//	@Override
+//	public boolean isCreateonfield() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+
+
+//	@Override
+//	public boolean isDesablecreate() {
+//		// TODO Auto-generated method stub
+//		return true;
+//	}
+
+
+	public String getNature() {
+		return nature;
+	}
+
+
+	public void setNature(String nature) {
+		this.nature = nature;
+	}
+
+
+	public Long getZdepense() {
+		return zdepense;
+	}
+
+
+	public void setZdepense(Long zdepense) {
+		this.zdepense = zdepense;
+	}
+
+
+	public String getCode() {
+		return code;
+	}
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 
 	
 	

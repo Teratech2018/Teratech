@@ -8,7 +8,7 @@ and open the template in the editor.
 <model-config xmlns:xsi="http://www.w3.org/2001/XMLSchema"
 	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
 	xmlns="http://www.megatimgroup.net/model-config">
-    <elements>
+<elements>
         <element type="com.kerenedu.school.Contacts"  idclass="long"  idname="id"   deseable="true" >
             <roles>
                 <role>ADMIN</role>
@@ -142,7 +142,7 @@ and open the template in the editor.
             </roles>           
         </element>
         
-          <element type="com.kerenedu.discipline.TypeAbscence"  idclass="long"  idname="id"   deseable="true" >
+         <element type="com.kerenedu.discipline.TypeAbscence"  idclass="long"  idname="id"   deseable="true" >
             <roles>
                 <role>ADMIN</role>
             </roles>           
@@ -418,6 +418,101 @@ and open the template in the editor.
 				</roles>
 			</element>
         
-        
+        	<element type="com.kerenedu.reglement.ConsultationPaie"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+			
+	        <element type="com.kerenedu.reglement.ConsultationEch"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        <element type="com.kerenedu.configuration.Cycle"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.school.Responsable"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        <element type="com.kerenedu.configuration.TypeDepense"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.model.report.ViewAnniversaire"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.model.report.ViewListeEleve"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.model.report.ViewBilanFinancier"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	          <element type="com.kerenedu.model.report.ViewRetardPaiement"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.model.report.ViewDltPaiement"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.model.report.ViewBilanFinancierEcole"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.dashboard.ViewDashboard"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	          <element type="com.kerenedu.configuration.EventEdu"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	          <element type="com.kerenedu.configuration.UserEducation"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	          <element type="com.kerenedu.configuration.RappelE"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	           <element type="com.kerenedu.configuration.MatiereDlt"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	       <element type="com.kerenedu.model.report.ViewNoteHelper"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	       
     </elements>
+    
 </model-config>
+ 	

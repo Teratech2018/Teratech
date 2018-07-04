@@ -2,7 +2,6 @@
 package com.kerenedu.configuration;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,11 +12,9 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
-import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionDAOLocal;
-import com.kerenedu.model.report.ViewBulletin;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute

@@ -4,29 +4,16 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.AnneScolaire;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.Service;
 import com.kerenedu.inscription.Inscription;
-import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -91,7 +78,7 @@ public class Retard extends BaseElement implements Serializable, Comparable<Reta
 
 
 	public Retard(Retard ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.service = new Service(ins.service) ;
 		this.matricule = ins.matricule;
 		this.eleve = ins.eleve;
@@ -102,27 +89,27 @@ public class Retard extends BaseElement implements Serializable, Comparable<Reta
 	
 	}
 	
-	public Retard(FichePaiement fiche) {
+	public Retard(FichePaiement fiche, Inscription eleve) {
 		this.service = new Service(fiche.service) ;
-		this.matricule = fiche.getEleve().getEleve().getMatricule();
-		this.eleve = fiche.getEleve().getEleve().getNom();
-		this.classe = fiche.getEleve().getClasse().getDesignation();
+		this.matricule = eleve.getEleve().getMatricule();
+		this.eleve = eleve.getEleve().getNom();
+		this.classe = eleve.getClasse().getDesignation();
 		this.montant = fiche.getZtotal();
 		this.montantregler = fiche.getMntpayer();
 		this.date =fiche.getService().getDelai();
 	
 	}
 	
-	public Retard(EcheancierDlt ech) {
-		this.service = new Service(ech.fiche.getService()) ;
-		this.matricule = ech.fiche.getEleve().getEleve().getMatricule();
-		this.eleve = ech.fiche.getEleve().getEleve().getNom();
-		this.classe = ech.fiche.getEleve().getClasse().getDesignation();
-		this.montant = ech.getMnt();
-		this.montantregler =ech.getMntpayer();
-		this.date =ech.getDateEch();
-	
-	}
+//	public Retard(EcheancierDlt ech, FichePaiement fiche) {
+//		this.service = new Service(fiche.getService()) ;
+////		this.matricule = fiche.getEleve().getEleve().getMatricule();
+////		this.eleve = fiche.getEleve().getEleve().getNom();
+////		this.classe = fiche.getEleve().getClasse().getDesignation();
+//		this.montant = ech.getMnt();
+//		this.montantregler =ech.getMntpayer();
+//		this.date =ech.getDateEch();
+//	
+//	}
 
 
 	

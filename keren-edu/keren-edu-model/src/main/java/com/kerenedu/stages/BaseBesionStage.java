@@ -83,7 +83,7 @@ public class BaseBesionStage extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public BaseBesionStage(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -106,7 +106,7 @@ public class BaseBesionStage extends BaseElement implements Serializable, Compar
 	 * @param dc
 	 */
 	public BaseBesionStage(BaseBesionStage bs) {
-		super(bs.id, bs.designation, bs.moduleName);
+		super(bs.id, bs.designation, bs.moduleName,0L);
 		this.reference = bs.reference;
 		this.nbreplace = bs.nbreplace;
 		this.demission = bs.demission;

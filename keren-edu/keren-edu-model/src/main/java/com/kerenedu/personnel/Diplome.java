@@ -34,7 +34,7 @@ public class Diplome extends BaseElement implements Serializable, Comparable<Dip
 
 
 	public Diplome(Diplome filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 		
 

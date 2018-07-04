@@ -4,17 +4,18 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
+import com.core.base.State;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -23,29 +24,33 @@ import com.megatim.common.annotations.Predicate;
  */
 
 @Table
-@Entity(name = "e_ech_dlt")
+@Entity(name = "e_p_ech_dlt")
 public class EcheancierDlt extends BaseElement implements Serializable, Comparable<EcheancierDlt> {
 
 	@Column(name = "DATE_ECH")
 	@Predicate(label="Date Echéance",optional=false,updatable=true,search=true, type=Date.class,sequence=1, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
-	protected Date dateEch = new Date();
+	protected Date dateEch ;
 	
 	@Column(name = "MNT" )	
-	@Predicate(label="Montant ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
+	@Predicate(label="Montant ",optional=false,updatable=false,search=true, type=Long.class ,sequence=2)
 	protected Long mnt;
 	
 	@Column(name = "MNT_PAYER" )	
-	@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
+	//@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
 	protected Long mntpayer = new Long(0);
 	
 	@Column(name = "SOLDE" )	
-	@Predicate(label="Solde ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
-	protected Long solde =new Long(0);;
+	//@Predicate(label="Solde ",optional=false,updatable=false,search=true, type=Long.class ,sequence=4)
+	protected Long solde =new Long(0);
 	
-	@ManyToOne
-	@JoinColumn(name = "FICHE_PAI_ID")
-	protected FichePaiement fiche = new FichePaiement();
+	@Predicate(label="ETAT ",optional=false,updatable=false,search=true, type=String.class ,sequence=5)
+	@Column(name = "ETAT" )	
+	private String state="etabli" ;
+	
+	// id fiche paiement concerné (service)
+	@Column(name = "ID_PAIE")
+	protected Long idPaie;
 	
 	
 
@@ -59,14 +64,13 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 
 
 	public EcheancierDlt(EcheancierDlt ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.dateEch = ins.dateEch;
 		this.mnt = ins.mnt;
 		this.mntpayer = ins.mntpayer;
 		this.solde = (ins.mnt-ins.mntpayer);
-		if(ins.fiche!=null){
-			this.fiche= new FichePaiement(ins.fiche);
-		}
+		this.idPaie= ins.idPaie;
+		this.state=ins.state;
 		
 	
 	}
@@ -104,7 +108,7 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getDesignation() {
 //		 TODO Auto-generated method stub
-		return fiche.getService().getDesignation()+"/"+mnt;
+		return id +"";
 	}
 
 
@@ -124,15 +128,6 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 		return mnt;
 	}
 
-
-	public FichePaiement getFiche() {
-		return fiche;
-	}
-
-
-	public void setFiche(FichePaiement fiche) {
-		this.fiche = fiche;
-	}
 
 
 	public Long getMntpayer() {
@@ -155,13 +150,42 @@ public class EcheancierDlt extends BaseElement implements Serializable, Comparab
 	}
 
 
+	public Long getIdPaie() {
+		return idPaie;
+	}
+
+
+	public void setIdPaie(Long idPaie) {
+		this.idPaie = idPaie;
+	}
+
+
 	public void setMnt(Long mnt) {
 		this.mnt = mnt;
 	}
 
 
 	
+	public String getState() {
+		return state;
+	}
 
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
+	@Override
+	public List<State> getStates() {
+		// TODO Auto-generated method stub
+		List<State> states = new ArrayList<State>();
+		State state = new State("etabli", "Encours");
+		states.add(state);
+		state = new State("Payer", "Payé");
+		states.add(state);
+		return states;
+	}
 		
 	
 

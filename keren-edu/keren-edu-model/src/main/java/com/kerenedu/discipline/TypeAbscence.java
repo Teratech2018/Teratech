@@ -52,7 +52,7 @@ public class TypeAbscence extends BaseElement implements Serializable, Comparabl
 
 
 	public TypeAbscence(TypeAbscence ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.code=ins.code;
 		this.libelle=ins.libelle;
 

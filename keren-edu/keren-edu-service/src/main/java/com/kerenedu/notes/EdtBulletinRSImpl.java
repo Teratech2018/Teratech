@@ -14,8 +14,10 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.core.ifaces.report.ViewNoteHelperManagerRemote;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionManagerRemote;
+import com.kerenedu.model.report.ViewNoteHelper;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -38,12 +40,15 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 
 	@Manager(application = "kereneducation", name = "BulletinHelperGenerateManagerImpl", interf = BulletinHelperGenerateManagerRemote.class)
 	protected BulletinHelperGenerateManagerRemote managerHelper;
-	
+
 	@Manager(application = "kereneducation", name = "ModelBulletinManagerImpl", interf = ModelBulletinManagerRemote.class)
 	protected ModelBulletinManagerRemote managerModel;
-	
+
 	@Manager(application = "kereneducation", name = "InscriptionManagerImpl", interf = InscriptionManagerRemote.class)
 	protected InscriptionManagerRemote managerinscrit;
+
+	@Manager(application = "kereneducation", name = "ViewNoteHelperManagerImpl", interf = ViewNoteHelperManagerRemote.class)
+	protected ViewNoteHelperManagerRemote managerNoteHelper;
 
 	public EdtBulletinRSImpl() {
 		super();
@@ -84,7 +89,6 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 	public EdtBulletin update(Long id, EdtBulletin entity) {
 		CacheMemory.setFiliere(entity.getFiliere());
 		CacheMemory.setClasse(entity.getClasse());
-		CacheMemory.setModelBulletin(entity.getModel());
 		return entity; // To change body of generated methods, choose Tools |
 						// Templates.
 	}
@@ -94,15 +98,15 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 		// To change body of generated methods, choose Tools | Templates.
 		CacheMemory.setFiliere(entity.getFiliere());
 		CacheMemory.setClasse(entity.getClasse());
-		CacheMemory.setModelBulletin(entity.getModel());
-		
-		ModelBulletin model = managerModel.find("id", entity.getModel().getId());
-		entity.setModel(model);
 
 		// generate bulletin
-		System.out.println("EdtBulletinRSImpl.save() ============ Début genration des bulletins ===== de la classe de :::======"+entity.getClasse().getLibelle());
+		System.out.println(
+				"EdtBulletinRSImpl.save() ============ Début genration des bulletins ===== de la classe de :::======"
+						+ entity.getClasse().getLibelle());
 		this.generateBulletin(entity);
-		System.out.println("EdtBulletinRSImpl.save() ============ Fin de la generation des bulletins =======de la classe de :::======"+entity.getClasse().getLibelle());
+		System.out.println(
+				"EdtBulletinRSImpl.save() ============ Fin de la generation des bulletins =======de la classe de :::======"
+						+ entity.getClasse().getLibelle());
 		// affectation des rangs enfonction des moyennes
 		return entity;
 	}
@@ -113,64 +117,55 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 		if (critere.getClasse() != null) {
 			container.addEq("classe.id", critere.getClasse().getId());
 		}
-		if (critere.getModel() != null) {
-			container.addEq("model.id", critere.getModel().getId());
-		}
-		if (critere.getFiliere() != null) {
-			container.addEq("classe.filiere.id", critere.getFiliere().getId());
-		}
+
 		datas = managerBul.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		System.out.println("EdtBulletinRSImpl.generateBulletin() Buletin dejà generé trouvée "+datas);
-		if (datas == null || datas.isEmpty()|| datas.size()==0) {
-			container = new RestrictionsContainer();
-			List<BulletinHelperGenerate> listNote = new ArrayList<BulletinHelperGenerate>();
-			List<Inscription> inscritClasse = new ArrayList<Inscription>();
-			List<Examen> examenlist = critere.getModel().getSequence();
-			container = new RestrictionsContainer();
-			if (critere.getClasse() != null) {
+		System.out.println("EdtBulletinRSImpl.generateBulletin() Buletin dejà generé trouvée " + datas);
+
+		// 0- supprimer les bulletin trouvé et regenerer
+		for (Bulletin b : datas) {
+			managerBul.delete(b.getId());
+		} // end for(Bulletin b : datas) to delete
+
+		// 1- recherche des élève ibscrit dans la classe
+		container = new RestrictionsContainer();
+		if (critere.getClasse() != null) {
+			container.addEq("classe.id", critere.getClasse().getId());
+		}
+		List<Inscription> eleves = managerinscrit.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+		System.out.println(
+				"EdtBulletinRSImpl.generateBulletin() nombre eleve de la classe ============== " + eleves.size());
+		if (eleves == null || eleves.isEmpty()) {
+			throw new KerenExecption("Aucun Eleve inscrit dans la classe choisis !!!");
+		}
+		// 2- recherche des note de chaque eleve en fonctioon du model de
+		// bulletin pour chaque examen
+
+			for (Inscription inscrit : eleves) {
+				container = RestrictionsContainer.newInstance();
 				container.addEq("classe.id", critere.getClasse().getId());
-			}
-			inscritClasse = managerinscrit.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-			System.out.println("EdtBulletinRSImpl.generateBulletin() nombre eleve de la classe ============== "+inscritClasse.size());
-			if(inscritClasse==null||inscritClasse.isEmpty()){
-				throw new KerenExecption("Aucun Eleve inscrit dans la classe choisit !!!");
-			}
-			
-			for(Inscription inscrit : inscritClasse){
-				Bulletin bulletin = new Bulletin();
+				container.addEq("eleve.id", inscrit.getId());
+			//	container.addEq("examen.id", examen.getId());
+				List<ViewNoteHelper> noteeleves = managerNoteHelper.filter(container.getPredicats(), null,
+						new HashSet<String>(), 0, -1);
 				List<LigneBulletinClasse> lignelist = new ArrayList<LigneBulletinClasse>();
-				container = new RestrictionsContainer();
-				for (Examen examen : examenlist) {
-					if (critere.getClasse() != null) {
-						container.addEq("classe.id", critere.getClasse().getId());
-					}
-					if (critere.getModel() != null) {
-						container.addEq("matiere.examen.id", examen.getId());
-					}
-					System.out.println("EdtBulletinRSImpl.generateBulletin()   Debut Traitement Bulettin eleve===== "+inscrit.getEleve().getNom());
+				Bulletin bulletin = new Bulletin();
+				for (ViewNoteHelper h : noteeleves) {
+					bulletin = new Bulletin(h);
+					LigneBulletinClasse ligne = new LigneBulletinClasse();
+					ligne = new LigneBulletinClasse(h);
+					ligne.setId(-1);
+					lignelist.add(ligne);
 
-					container.addEq("eleve.id", inscrit.getEleve().getId());
-					listNote = managerHelper.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-					System.out.println("EdtBulletinRSImpl.generateBulletin()  notes enregistrées pour eleve==== "+inscrit.getEleve().getNom()+" est de ===" +listNote.size());
-					if (listNote != null ||listNote.size()!=0) {
-
-						for (BulletinHelperGenerate h : listNote) {
-							 bulletin = new Bulletin(h, critere.getModel());
-							LigneBulletinClasse ligne = new LigneBulletinClasse();
-							ligne= new LigneBulletinClasse(h);
-							ligne.setId(-1);
-							lignelist.add(ligne);
-						}// fin for (BulletinHelperGenerate h : listNote)
-						
-					}//fin if (listNote != null || !listNote.isEmpty())
-				}//fin for (Examen examen : examenlist)
+				} // fin for (BulletinHelperGenerate h : listNote)
 				bulletin.setId(-1);
 				bulletin.setLignes(lignelist);
 				managerBul.save(bulletin);
-				System.out.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "+inscrit.getEleve().getNom());
-			}//fin for(Inscription inscrit : inscritClasse)
-			
-		}//if (datas == null || datas.isEmpty())
-	}
+				System.out.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "
+						+ inscrit.getEleve().getNom());
+			} // fin for(Inscription inscrit : eleves)
+
+	}// fin
+
+	// }//if (datas == null || datas.isEmpty())
 
 }

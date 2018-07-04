@@ -29,13 +29,13 @@ import com.megatim.common.annotations.Predicate;
  */
 
 @Table
-@Entity(name = "e_reglement")
+@Entity(name = "e_p_rgl")
 public class Reglement extends BaseElement implements Serializable, Comparable<Reglement> {
-
+	
 	@ManyToOne
 	@JoinColumn(name = "EL_ID" )
-	@Predicate(label="ETUDIANT",updatable=false,type=Inscription.class , target="many-to-one",search=true , sequence=1	)
-	protected Inscription eleve = new Inscription();
+	@Predicate(label="Elève",updatable=false,type=Inscription.class , target="many-to-one",search=true , sequence=1	)
+	protected Inscription eleve ;
 	
 	@Column(name = "APAYER" )	
 	@Predicate(label="Scolarite",updatable=false,search=true, type=Long.class ,sequence=2,editable=false )
@@ -52,29 +52,32 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 	@Observer(observable="eleve",source="field:zSolde")
 	protected Long solde;
 	
+	@Transient
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "FICHE_PAIE_ID")
 	@Predicate(updatable=true,type=FichePaiement.class , target="one-to-many",search=true , sequence=2,group=true,
-	groupLabel="Fiche Paiement", groupName="tab1", edittable=true)
+	groupLabel="Fiche Paiement", groupName="tab1")
 	protected List<FichePaiement> service = new ArrayList<FichePaiement>();
 	
+	@Transient
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "PAIE_ID")
-	@Predicate(updatable=true,type=Paiement.class , target="one-to-many",search=true , sequence=2,group=true,
-	groupLabel="Paiements", groupName="tab2")
-	protected List<Paiement> paiement = new ArrayList<Paiement>();
+	@Predicate(updatable=false,type=ConsultationPaie.class , target="one-to-many",search=true , sequence=2,group=true,editable=false,
+	groupLabel="Consulter les Paiements", groupName="tab2")
+	protected List<ConsultationPaie> paiement = new ArrayList<ConsultationPaie>();
 	
+	@Transient
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "Ech_ID")
-	@Predicate(updatable=true,type=Echeancier.class , target="one-to-many",search=true , sequence=2,group=true,
-	groupLabel="Echeancier", groupName="tab3")
-	protected List<Echeancier> echeance = new ArrayList<Echeancier>();
+//	@Predicate(updatable=false,type=ConsultationEch.class , target="one-to-many",search=true , sequence=2,group=true ,editable=false,
+//	groupLabel="Consulter les Echeances", groupName="tab3")
+	protected List<ConsultationEch> echeance = new ArrayList<ConsultationEch>();
 	
 	@Transient
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "RT_ID")
 	@Predicate(updatable=false,type=Retard.class , target="one-to-many",search=true , sequence=2,group=true,
-	groupLabel="Retards", groupName="tab4" ,editable=false)
+	groupLabel="Consulter les Retards", groupName="tab4" ,editable=false)
 	protected List<Retard> retard = new ArrayList<Retard>();
 	
 
@@ -89,12 +92,12 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 
 
 	public Reglement(Reglement ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.eleve = new Inscription(ins.eleve);
 		this.service= new ArrayList<FichePaiement>();
-		this.paiement= new ArrayList<Paiement>();
+		this.paiement= new ArrayList<ConsultationPaie>();
 		this.retard= new ArrayList<Retard>();
-		this.echeance= new ArrayList<Echeancier>();
+		this.echeance= new ArrayList<ConsultationEch>();
 		this.scolarite=ins.scolarite;
 		this.payer=ins.payer;
 		this.solde=ins.solde;
@@ -104,12 +107,12 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 	public Reglement(Inscription ins) {
 		this.eleve = new Inscription(ins);
 		this.service= new ArrayList<FichePaiement>();
-		this.paiement= new ArrayList<Paiement>();
+		this.paiement= new ArrayList<ConsultationPaie>();
 		this.retard= new ArrayList<Retard>();
-		this.echeance= new ArrayList<Echeancier>();
+		this.echeance= new ArrayList<ConsultationEch>();
 		this.scolarite= ins.getzMnt();
-		this.payer=ins.getzMntPaye();
-		this.solde=ins.getzSolde();
+		this.payer=(long) 0;
+		this.solde=this.scolarite-this.payer;
 
 	}
 
@@ -136,17 +139,17 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 	}
 
 
-	public List<Paiement> getPaiement() {
+	public List<ConsultationPaie> getPaiement() {
 		return paiement;
 	}
 
 
-	public List<Echeancier> getEcheance() {
+	public List<ConsultationEch> getEcheance() {
 		return echeance;
 	}
 
 
-	public void setEcheance(List<Echeancier> echeance) {
+	public void setEcheance(List<ConsultationEch> echeance) {
 		this.echeance = echeance;
 	}
 
@@ -201,7 +204,7 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 	}
 
 
-	public void setPaiement(List<Paiement> paiement) {
+	public void setPaiement(List<ConsultationPaie> paiement) {
 		this.paiement = paiement;
 	}
 
@@ -220,13 +223,13 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Paiements de l'étudiant ";
+		return "Paiement des Frais de ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Paiements des étudiants";
+		return " Paiement des Frais";
 	}
 
 	@Override

@@ -30,12 +30,12 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Sélectionner la Période concernée",type=Examen.class,target="many-to-one",optional=false, sequence=1)
+	@Predicate(label="Sélectionner la Séquence concernée",type=Examen.class,target="many-to-one",optional=false, sequence=2)
 	private Examen periode ;
 		
 	@ManyToOne
 	@JoinColumn(name="CLASSE_ID")
-	@Predicate(label="Sélectionner la Classe",type=Classe.class,target="many-to-one",optional=false , sequence=3,observable=true)
+	@Predicate(label="Sélectionner la Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1)
 	private Classe classe ;
 	
 	/**
@@ -51,7 +51,7 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	 * @param moduleName
 	 */
 	public TraitNote(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -68,14 +68,14 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	 */
 	public TraitNote(long id, String designation, String moduleName, Examen periode
 			,Filiere filiere, Classe classe,CoefMatiereDetail prof) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		this.classe = classe;
 		
 	}
 	
 	public TraitNote(TraitNote prepa) {
-		super(prepa.id, prepa.designation, prepa.moduleName);
+		super(prepa.id, prepa.designation, prepa.moduleName,0L);
 		if(prepa.periode!=null){
 			this.periode = new Examen(prepa.periode);
 		}

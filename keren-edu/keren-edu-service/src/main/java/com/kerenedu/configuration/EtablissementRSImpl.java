@@ -10,6 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -61,5 +62,23 @@ public class EtablissementRSImpl
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
    		} 
    	}
+
+	@Override
+	protected void processBeforeSave(Etablissement entity) {
+		  if(entity.getCyles()==null&& entity.getCyles().size()==0){
+              throw new KerenExecption("Renseigner les cycles de l'ecole");
+		  }
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+	protected void processBeforeUpdate(Etablissement entity) {
+		if(entity.getCyles()==null&& entity.getCyles().size()==0){
+            throw new KerenExecption("Renseigner les cycles de l'ecole");
+		 }
+		super.processBeforeUpdate(entity);
+	}
+    
+    
 
 }

@@ -43,7 +43,7 @@ public class TacheStage extends BaseElement implements Serializable, Comparable<
 
 
 	public TacheStage(TacheStage filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.difficultes = filiere.difficultes;
 		this.code=filiere.code;
 		this.propositions = filiere.propositions;

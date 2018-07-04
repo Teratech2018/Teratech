@@ -45,7 +45,7 @@ public class Reduction extends BaseElement implements Serializable, Comparable<R
 	}
 
 	public Reduction(Reduction reduction) {
-		super(reduction.id, reduction.designation, reduction.moduleName);
+		super(reduction.id, reduction.designation, reduction.moduleName,0L);
 		this.libelle = reduction.libelle;
 		this.zMnt = reduction.zMnt;
 		this.dpour = reduction.dpour;

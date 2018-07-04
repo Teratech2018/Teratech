@@ -5,19 +5,26 @@ package com.kerenedu.inscription;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.reglement.FichePaiement;
 import com.kerenedu.school.Eleve;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -29,21 +36,21 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_inscription")
 public class Inscription extends BaseElement implements Serializable, Comparable<Inscription> {
 
-	
+		
 	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1)
-	protected Classe classe = new Classe();
+	@Predicate(label="Classe",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1, observable=true)
+	protected Classe classe ;
 	
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
-	@Predicate(label="ETUDIANT",updatable=true,type=Eleve.class , target="many-to-one",search=true , sequence=2	)
-	protected Eleve eleve= new Eleve();
+	@Predicate(label="Elève",updatable=true,type=Eleve.class , target="many-to-one",search=true , sequence=2	)
+	protected Eleve eleve ;
 
 	
 	@Column(name = "STATUT")
-	@Predicate(label="STATUT ELEVE",optional=false,updatable=true,search=false, target="combobox", values="Redoublant(e);Non Redoublant(e)" , sequence=3)
+	@Predicate(label="Statut Elève",optional=false,updatable=true,search=false, target="combobox", values="Redoublant(e);Non Redoublant(e)" , sequence=3)
 	protected String satut="0";
 	
 	@Column(name = "DATE_INS")
@@ -54,9 +61,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Column(name = "MNT" )	
 	@Predicate(label="SCOLARITE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true ,sequence=5)
 	protected Long zMnt ;
-	
-	
-	
+		
 	@Column(name = "MNT_PAYE")	
 	@Predicate(label="PAYER",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=7)
 	protected Long zMntPaye;
@@ -64,6 +69,27 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Column(name = "SOLDE")	
 	@Predicate(label="SOLDE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=8)
 	protected Long zSolde ;
+	
+	@Column(name = "REMISE")	
+	@Predicate(label="REMISE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=9)
+	protected Long zRemise;
+	
+	@Column(name = "RISTOURNE")	
+	@Predicate(label="RISTOURNE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=9)
+	protected Long zRistourne;
+	
+	@Column(name = "TOTAL")	
+	@Predicate(label="TOTAL Frais",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=9)
+	protected Long zTotal;
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "FICHE_PAIE_ID")
+	@Predicate(updatable=true,type=FichePaiement.class , target="one-to-many",search=true , sequence=2,group=true,
+	groupLabel="Fiche Paiement", groupName="tab1")
+	@Observer(observable="classe",source="method:findserviceclasse")
+	protected List<FichePaiement> service ;
+	
+	
 	
 //	@ManyToOne
 //    @JoinColumn(name ="SERVICE_ID")
@@ -74,6 +100,9 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire ;
+	
+	@Column(name = "CYCLE_ID")
+	protected long cycle ;
 	
 //
 //	public Service getServiceList() {
@@ -87,23 +116,32 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 
 	public Inscription() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
 	public Inscription(Inscription ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.zMnt = ins.zMnt;
-		this.eleve = new Eleve(ins.eleve);
+		if(ins.eleve!=null){
+			this.eleve = new Eleve(ins.eleve);
+		}
+		
 		this.zMnt = ins.zMnt;
 		this.zMntPaye = ins.zMntPaye;
 		this.zSolde = ins.zSolde;
-		this.classe = new Classe(ins.classe);
+		this.zRemise=ins.zRemise;
+		this.zRistourne=ins.zRistourne;
+		this.zTotal=ins.zTotal;
+		if(ins.classe!=null){
+			this.classe = new Classe(ins.classe);	
+//			this.cycle=ins.getClasse().getCycle();
+		}
 		this.datIns=ins.datIns;
 		this.anneScolaire=ins.anneScolaire;
-	//	this.serviceList= new Service(ins.serviceList);
+		this.service= new ArrayList<FichePaiement>();
 		this.satut=ins.satut;
+	
 		
 		/*for(Service service:ins.serviceList){
 			serviceList.add(new Service(service));
@@ -199,7 +237,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Liste des Inscrists";
+		return "Liste des Elèves Inscrits";
 	}
 
 	@Override
@@ -238,8 +276,58 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	}
 
 
+	public List<FichePaiement> getService() {
+		return service;
+	}
+
+
+	public void setService(List<FichePaiement> service) {
+		this.service = service;
+	}
+
+
+	public Long getzRemise() {
+		return zRemise;
+	}
+
+
+	public void setzRemise(Long zRemise) {
+		this.zRemise = zRemise;
+	}
+
+
+	public Long getzRistourne() {
+		return zRistourne;
+	}
+
+
+	public long getCycle() {
+		return cycle;
+	}
+
+
+	public void setCycle(long cycle) {
+		this.cycle = cycle;
+	}
+
+
+	public void setzRistourne(Long zRistourne) {
+		this.zRistourne = zRistourne;
+	}
+
+
 	public void setSatut(String satut) {
 		this.satut = satut;
+	}
+
+
+	public Long getzTotal() {
+		return zTotal;
+	}
+
+
+	public void setzTotal(Long zTotal) {
+		this.zTotal = zTotal;
 	}
 	
 

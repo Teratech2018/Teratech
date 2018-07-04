@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
@@ -51,8 +52,12 @@ public class EtablissementManagerImpl
 	@Override
 	public Etablissement find(String propertyName, Long entityID) {
 		// TODO Auto-generated method stub
-		Etablissement elev = super.find(propertyName, entityID);
-		return new Etablissement(elev);
+		Etablissement data = super.find(propertyName, entityID);
+		Etablissement result = new Etablissement(data);
+		for(Cycle cycle:data.getCyles()){
+			result.getCyles().add(cycle);
+		}
+		return result;
 	}
 
 	@Override
@@ -60,8 +65,8 @@ public class EtablissementManagerImpl
 		// TODO Auto-generated method stub
 		List<Etablissement> datas = super.findAll();
 		List<Etablissement> result = new ArrayList<Etablissement>();
-		for(Etablissement elev:datas){
-			result.add(new Etablissement(elev));
+		for(Etablissement etbl : datas){
+			result.add(new Etablissement(etbl));
 		}
 		return result;
 	}

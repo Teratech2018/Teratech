@@ -20,7 +20,7 @@ import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.configuration.Matiere;
 import com.kerenedu.configuration.MatiereDAOLocal;
-import com.kerenedu.personnel.Professeur;
+import com.kerenedu.configuration.MatiereDlt;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -117,9 +117,10 @@ public class CoefMatiereDetailManagerImpl
 			if(result==null||result.isEmpty()||result.size()==0){
 				container = RestrictionsContainer.newInstance();
 				 container.addEq("filiere.id",classe.getFiliere().getId());
-				 List<Matiere> lisyMatiere = matieredao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+				 List<Matiere> matieres = matieredao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 				 long index = 1 ;
-				 for(Matiere mat:lisyMatiere){
+				List<MatiereDlt> lisyMatiere = matieres.get(0).getMatieres();
+				 for(MatiereDlt mat:lisyMatiere){
 					// listcmdlt = new ArrayList<CoefMatiereDetail>();
 					 CoefMatiereDetail cmatdlt= new CoefMatiereDetail(mat);	
 					 cmatdlt.setId(-index);					 

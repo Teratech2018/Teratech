@@ -105,7 +105,7 @@ public class ReglementProf extends BaseElement implements Serializable, Comparab
 
 
 	public ReglementProf(ReglementProf ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.prof = new Professeur(ins.prof);
 		this.ficheProf= new ArrayList<FichePaiementProf>();
 		this.paiement= new ArrayList<PaiementProf>();

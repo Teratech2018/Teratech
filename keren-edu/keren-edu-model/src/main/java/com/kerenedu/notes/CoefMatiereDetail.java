@@ -4,7 +4,6 @@
 package com.kerenedu.notes;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Matiere;
+import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
 
@@ -28,8 +27,8 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	@ManyToOne
 	@JoinColumn(name = "MATIERE_ID")
-	@Predicate(label = "Matiere", target = "many-to-one", type = Matiere.class, search = true, optional=false, editable = false, sequence = 1, colsequence = 1)
-	private Matiere matiere= new Matiere() ;
+	@Predicate(label = "Matiere", target = "many-to-one", type = MatiereDlt.class, search = true, optional=false, editable = false, sequence = 1, colsequence = 1)
+	private MatiereDlt matiere= new MatiereDlt() ;
 
 	@ManyToOne
 	@JoinColumn(name = "PROF_ID")
@@ -57,9 +56,14 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 	}
 
 	public CoefMatiereDetail(CoefMatiereDetail cmatdetail) {
-		super(cmatdetail.id, cmatdetail.designation, cmatdetail.moduleName);
-		this.matiere = new Matiere(cmatdetail.matiere);
-		this.proffesseur= new Professeur(cmatdetail.proffesseur);
+		super(cmatdetail.id, cmatdetail.designation, cmatdetail.moduleName,0L);
+		if(cmatdetail.matiere!=null){
+		  this.matiere = new MatiereDlt(cmatdetail.matiere);
+		}
+		if(cmatdetail.proffesseur!=null){
+			this.proffesseur= new Professeur(cmatdetail.proffesseur);
+		}
+		
 		this.coutheure=cmatdetail.coutheure;
 		this.heuretotal=cmatdetail.heuretotal;
 		this.coef = cmatdetail.coef;
@@ -69,9 +73,9 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	}
 
-	public CoefMatiereDetail(Matiere matiere) {
-		this.matiere = new Matiere(matiere);
-		this.coef = new Long(0);
+	public CoefMatiereDetail(MatiereDlt matiere) {
+		this.matiere = new MatiereDlt(matiere);
+		this.coef = (long) matiere.getCoeficient();
 		this.coutheure=new Long(0);
 		this.heuretotal=new Long(0);
 
@@ -117,11 +121,11 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 		this.proffesseur = proffesseur;
 	}
 
-	public Matiere getMatiere() {
+	public MatiereDlt getMatiere() {
 		return matiere;
 	}
 
-	public void setMatiere(Matiere matiere) {
+	public void setMatiere(MatiereDlt matiere) {
 		this.matiere = matiere;
 	}
 

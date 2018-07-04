@@ -11,8 +11,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
-import com.kerenedu.school.Eleve;
+import com.kerenedu.configuration.ServiceManagerRemote;
+import com.kerenedu.reglement.FichePaiement;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -36,6 +38,10 @@ public class InscriptionRSImpl
      */
     @Manager(application = "kereneducation", name = "InscriptionManagerImpl", interf = InscriptionManagerRemote.class)
     protected InscriptionManagerRemote manager;
+    
+    @Manager(application = "kereneducation", name = "ServiceManagerImpl", interf = ServiceManagerRemote.class)
+    protected ServiceManagerRemote managerService;
+
 
     public InscriptionRSImpl() {
         super();
@@ -66,7 +72,7 @@ public class InscriptionRSImpl
 			
 			MetaData meta =  MetaDataUtil.getMetaData(new Inscription(), new HashMap<String, MetaData>(),new ArrayList<String>());
 			meta.getHeader().add(col);
-			meta.getHeader().add(col2);
+//			meta.getHeader().add(col2);
   			return meta ;
   		}  catch (Exception e) {
    			// TODO Auto-generated catch block
@@ -78,6 +84,14 @@ public class InscriptionRSImpl
 	public List<Inscription> getEtudiantsInscrits() {
 		// TODO Auto-generated method stub
 		return findAll();
+	}
+
+	@Override
+	public List<FichePaiement> findmatierclasse(HttpHeaders headers) {
+		Gson gson = new Gson();
+		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		
+		return managerService.findmatierclasse(id);
 	}
 
 }

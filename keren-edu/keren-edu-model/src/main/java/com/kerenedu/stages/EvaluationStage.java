@@ -47,7 +47,7 @@ public class EvaluationStage extends BaseElement implements Serializable, Compar
 
 
 	public EvaluationStage(EvaluationStage filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.note = filiere.note;
 		this.critere=filiere.critere;
 		this.prof = new Professeur(filiere.prof);

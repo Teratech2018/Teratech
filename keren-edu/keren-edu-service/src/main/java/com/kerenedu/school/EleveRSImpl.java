@@ -3,16 +3,22 @@ package com.kerenedu.school;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kerem.core.MetaDataUtil;
+import com.megatim.common.annotations.Filter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 
 /**
@@ -45,8 +51,27 @@ public class EleveRSImpl
     public GenericManager<Eleve, Long> getManager() {
         return manager;
     }
+    
+    
 
-    public String getModuleName() {
+    @Override
+	public List<Eleve> filter(HttpHeaders arg0, int arg1, int arg2) {
+    	Gson gson = new Gson();
+    	List<Filter> filters = gson.fromJson(arg0.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
+		System.out.println("EleveRSImpl.filter()"+filters);
+		return super.filter(arg0, arg1, arg2);
+	}
+
+	@Override
+	public RSNumber count(HttpHeaders arg0) {
+		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+    	List<Filter> filters = gson.fromJson(arg0.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
+		System.out.println("EleveRSImpl.count()"+filters);
+		return super.count(arg0);
+	}
+
+	public String getModuleName() {
         return ("kereneducation");
     }
 
@@ -54,15 +79,18 @@ public class EleveRSImpl
 	public MetaData getMetaData(HttpHeaders headers) {
 		// TODO Auto-generated method stub
 		try {
-			MetaColumn col = new MetaColumn("button", "paiementfrais", "Paiement des frais", false, "action", null);
-			col.setValue("{'name':'keren_education_paie','template':{'eleve':'object'}}");
+			
+			MetaColumn col2 = new MetaColumn("button", "incription", "Inscription", false, "action", null);
+			col2.setValue("{'name':'keren_education_ins','template':{'eleve':'object'}}");
+			
+			MetaColumn col = new MetaColumn("button", "paiementfrais", "Scolarité", false, "action", null);
+			col.setValue("{'name':'keren_education_paie_dlt','template':{'eleve':'object'}}");
 
-			MetaColumn col2 = new MetaColumn("button", "abscence", "Abscence", false, "action", null);
-			col2.setValue("{'name':'keren_education_abs','template':{'eleveList':'object'}}");
+			
 			
 			MetaData meta =  MetaDataUtil.getMetaData(new Eleve(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			meta.getHeader().add(col);
 			meta.getHeader().add(col2);
+			meta.getHeader().add(col);
 			return meta;
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block

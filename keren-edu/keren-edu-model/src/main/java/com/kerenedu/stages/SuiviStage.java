@@ -87,7 +87,7 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 	 * @param moduleName
 	 */
 	public SuiviStage(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -95,7 +95,7 @@ public class SuiviStage extends BaseElement implements Serializable, Comparable<
 
 	
 	public SuiviStage(SuiviStage stage) {
-		super(stage.id, stage.designation, stage.moduleName);
+		super(stage.id, stage.designation, stage.moduleName,0L);
 		this.reference = stage.reference;
 		this.bstage = new BesionStage(stage.bstage);
 		this.service = new DivisionStage(stage.service);

@@ -41,7 +41,7 @@ public class NiveauScolaire extends BaseElement implements Serializable, Compara
 	}
 
 	public NiveauScolaire(NiveauScolaire niveauScolaire) {
-		super(niveauScolaire.id, niveauScolaire.designation, niveauScolaire.moduleName);
+		super(niveauScolaire.id, niveauScolaire.designation, niveauScolaire.moduleName,0L);
 		this.code = niveauScolaire.code;
 		this.description = niveauScolaire.description;
 		// TODO Auto-generated constructor stub

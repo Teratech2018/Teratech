@@ -58,10 +58,10 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label="DIPLOME",updatable=true,type=Diplome.class , target="many-to-one",search=false, sequence=10, optional=false)
     protected Diplome diplome;
 	
-	@ManyToOne
-    @JoinColumn(name = "STATUS_ID")
-	@Predicate(label="STATUS",updatable=true,type=StatusProf.class , target="many-to-one",search=false, sequence=10, optional=false)
-    protected StatusProf status;
+	
+    @Column(name = "STATUS_ID")
+	@Predicate(label="Type Contrat",optional=false,updatable=true,search=false, target="combobox", values="Vacataire;Permanent(e)" , sequence=7)
+    protected String status;
 	
 	@Column(name ="TELEPHONE")
 	@Predicate(label = "TELEPHONE",type = String.class,search = false, sequence=11,pattern="[0-9]")
@@ -94,7 +94,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	public Professeur(String image, String matricule, Date dateNais, String lNais, String nom,
 			String email, String prenon,String sexe, String sitFamiliale, String telPere, 
-			String emailPere, String telMere, String emailMere,StatusProf status, Diplome diplome,String contact) {
+			String emailPere, String telMere, String emailMere,String status, Diplome diplome,String contact) {
 		super();
 		this.image = image;
 		this.dateNais = dateNais;
@@ -109,16 +109,14 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 
 
 	public Professeur(Professeur eleve) {
-		super(eleve.id, eleve.designation, eleve.moduleName);
+		super(eleve.id, eleve.designation, eleve.moduleName,0L);
 		this.image = eleve.image;
 		this.dateNais = eleve.dateNais;
 		this.nom = eleve.nom;
 		this.email = eleve.email;
 		this.prenon =eleve. prenon;
 		this.sexe = eleve.sexe;
-		if(status!=null){
-		this.status = new StatusProf(eleve.status) ;
-		}
+		this.status =eleve.status ;
 		this.contact=eleve.contact;
 		if(diplome!=null){
 		this.diplome= new Diplome(eleve.diplome);
@@ -132,13 +130,13 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Edition des Professeurs";
+		return "Edition des Enseignants";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Professeurs";
+		return "Gestion des Enseignants";
 	}
 
 	@Override
@@ -233,12 +231,12 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	}
 
 
-	public StatusProf getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
 
-	public void setStatus(StatusProf status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

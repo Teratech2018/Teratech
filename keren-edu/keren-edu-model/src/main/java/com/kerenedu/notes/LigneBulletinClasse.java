@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.Matiere;
+import com.kerenedu.configuration.MatiereDlt;
+import com.kerenedu.model.report.ViewNoteHelper;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
 
@@ -30,8 +32,8 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 
 	@ManyToOne
     @JoinColumn(name = "MAT_ID")
-	@Predicate(label="Matiere",updatable=false,search=true ,type=Matiere.class , target="many-to-one", sequence=2,editable=false)
-    protected Matiere matiere;
+	@Predicate(label="Matiere",updatable=false,search=true ,type=MatiereDlt.class , target="many-to-one", sequence=2,editable=false)
+    protected MatiereDlt matiere;
 	
 	@ManyToOne
     @JoinColumn(name = "PROF_ID")
@@ -88,7 +90,7 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 	}
 
 
-	public LigneBulletinClasse(Matiere matiere, Professeur prof, Long note, Long moyenne, Long coef, Long pourcentage,
+	public LigneBulletinClasse(MatiereDlt matiere, Professeur prof, Long note, Long moyenne, Long coef, Long pourcentage,
 			Long rang, Long moyeClasse, Long extremeMin, Long extremeMax, String obs,long totaux) {
 		super();
 		this.matiere = matiere;
@@ -107,10 +109,10 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 
 
 	public LigneBulletinClasse(LigneBulletinClasse filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.obs = filiere.obs;
 		this.note=filiere.note;
-		this.matiere=new Matiere(filiere.matiere);
+		this.matiere=new MatiereDlt(filiere.matiere);
 		this.prof=new Professeur(filiere.prof);
 		this.moyenne = filiere.moyenne;
 		this.coef = filiere.coef;
@@ -127,7 +129,7 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 	public LigneBulletinClasse(BulletinHelperGenerate helper) {
 		this.obs = helper.getNote().getObs();
 		this.note=helper.getNote().getNote();
-		this.matiere=new Matiere(helper.getMatiere().getMatiere().getMatiere());
+		this.matiere=new MatiereDlt(helper.getMatiere().getMatiere().getMatiere());
 		this.prof=new Professeur(helper.getMatiere().getProf());
 		this.coef= helper.getMatiere().getMatiere().getCoef();
 		this.totaux=helper.getNote().getNote()*this.coef;
@@ -135,6 +137,20 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		this.extremeMin = helper.getExtremmemin();
 		this.extremeMax = helper.getExtrememax();
 		this.module= helper.getModule();
+
+
+	}
+	public LigneBulletinClasse(ViewNoteHelper helper) {
+		this.obs = helper.getObs();
+		this.note=helper.getNote();
+		this.matiere=new MatiereDlt(helper.getMatiere());
+		this.prof=new Professeur(helper.getMatiereNote().getProf());
+		this.coef= (long) helper.getMatiere().getCoeficient();
+		this.totaux=helper.getNote()*this.coef;
+		this.moyeClasse = helper.getMoyclasMat();
+		this.extremeMin = helper.getExtrememax();
+		this.extremeMax = helper.getExtrememax();
+		this.module= helper.getModel();
 
 
 	}
@@ -155,12 +171,12 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 
 
 
-	public Matiere getMatiere() {
+	public MatiereDlt getMatiere() {
 		return matiere;
 	}
 
 
-	public void setMatiere(Matiere matiere) {
+	public void setMatiere(MatiereDlt matiere) {
 		this.matiere = matiere;
 	}
 

@@ -13,7 +13,6 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.kerenedu.configuration.Appreciation;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute

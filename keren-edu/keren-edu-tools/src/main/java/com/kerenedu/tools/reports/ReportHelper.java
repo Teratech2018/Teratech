@@ -3,7 +3,11 @@
  */
 package com.kerenedu.tools.reports;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ResourceBundle;
 
 import com.kerem.core.FileHelper;
@@ -18,7 +22,9 @@ public class ReportHelper {
      * Chemin de base des report
      */
     //public static final String reportFileChemin = "src/main/resources/reports/";
-    public static final String reportFileChemin = System.getProperty("user.dir") + File.separator + "reports/";
+    public static final String reportFileChemin = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
+    
+    public static final String reportimages = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"logo.png";
     
     public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
     /**
@@ -91,6 +97,19 @@ public class ReportHelper {
             new ReportHelper();
         }
         return bundle;
+    }
+    
+    public static byte[] getBytes() throws IOException
+    {
+    	InputStream stream = new FileInputStream(reportimages);
+       try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+          byte[] buffer = new byte[1024];
+          for (int len = 0; (len = stream.read(buffer)) != -1;) {
+             os.write(buffer, 0, len);
+          }
+          os.flush();
+          return os.toByteArray();
+       }
     }
 
 }

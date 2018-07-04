@@ -56,7 +56,7 @@ public class NoteMail extends BaseElement implements Serializable, Comparable<No
 
 
 	public NoteMail(NoteMail filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 		this.Objet = filiere.Objet;
 		this.destMessage=filiere.destMessage;

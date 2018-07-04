@@ -71,7 +71,7 @@ public class ProfMatiereEns extends BaseElement implements Serializable, Compara
 
 
 	public ProfMatiereEns(ProfMatiereEns ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.anneScolaire= new AnneScolaire(ins.anneScolaire);
 		this.professeur = new Professeur(ins.professeur);;
 		this.filiere = new Filiere(ins.filiere);;

@@ -54,7 +54,7 @@ public class PlanifCours extends BaseElement implements Serializable, Comparable
 
 
 	public PlanifCours(PlanifCours ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.classe =  new Classe(ins.classe);
 		//this.jourscours = new ArrayList<JoursCours>();
 	

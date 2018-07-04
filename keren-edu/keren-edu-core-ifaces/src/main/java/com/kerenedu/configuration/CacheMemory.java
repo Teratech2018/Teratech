@@ -4,13 +4,20 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorCompletionService;
 
+import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.Etablissement;
+import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.PeriodeScolaire;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.notes.Examen;
 import com.kerenedu.notes.ModelBulletin;
 import com.kerenedu.personnel.Professeur;
+import com.kerenedu.reglement.Reglement;
 
 /**
  * @author BEKO
@@ -29,7 +36,14 @@ public class CacheMemory implements Serializable{
 	private static ModelBulletin modelBulletin = null ;
 	private static List<Inscription> listdestinataire = null;
 	
-	private static String currentannee= "2017";
+	private static Inscription incription =null;
+	
+	private static Reglement reglement =null;
+	
+	private static String currentannee = "2017";
+	private static long curentcycle=2;
+	private static long currentuser =1;
+	private static Etablissement currentSchool;
 	
 	private static Professeur prof = null;
 
@@ -103,6 +117,84 @@ public class CacheMemory implements Serializable{
 	public static synchronized void setExamen(Examen examen) {
 		CacheMemory.examen = examen;
 	}
+
+	public static Reglement getReglement() {
+		return reglement;
+	}
+
+	public static Inscription getIncription() {
+		return incription;
+	}
+
+	public static void setIncription(Inscription incription) {
+		CacheMemory.incription = incription;
+	}
+
+	public static long getCurentcycle() {
+		return curentcycle;
+	}
+
+	public static long getCurrentuser() {
+		return currentuser;
+	}
+
+	public static void setCurrentuser(long currentuser) {
+		CacheMemory.currentuser = currentuser;
+	}
+
+	public static void setCurentcycle(long curentcyclle) {
+		CacheMemory.curentcycle = curentcyclle;
+	}
+
+	public static void setReglement(Reglement reglement) {
+		CacheMemory.reglement = reglement;
+	}
+	
+	public static List<Predicat> defaultPredicats(){
+		List<Predicat> predicats = new ArrayList<Predicat>();
+	RestrictionsContainer container = RestrictionsContainer.newInstance();
+
+	if (CacheMemory.getCurrentannee() != null) {
+		container.addEq("anneScolaire",  CacheMemory.getCurrentannee());
+	}
+	predicats.addAll(container.getPredicats());
+	return predicats ;
+	}
+	
+	public static Etablissement getCurrentSchool() {
+		return currentSchool;
+	}
+
+	public static void setCurrentSchool(Etablissement currentSchool) {
+		CacheMemory.currentSchool = currentSchool;
+	}
+
+	public static List<Predicat> defaultPredicatsCycleAnnee(){
+		List<Predicat> predicats = new ArrayList<Predicat>();
+	RestrictionsContainer container = RestrictionsContainer.newInstance();
+	System.out.println("CacheMemory.defaultPredicatsCycleAnnee() current exercice is "+CacheMemory.getCurrentannee());
+	if (CacheMemory.getCurrentannee() != null) {
+		container.addEq("anneScolaire",  CacheMemory.getCurrentannee());
+	}
+	if (CacheMemory.getCurentcycle() != 0) {
+		container.addEq("cycle",  CacheMemory.getCurentcycle());
+	}
+	
+	predicats.addAll(container.getPredicats());
+	return predicats ;
+	}
+	
+	public static List<Predicat> defaultPredicatsCycle(){
+	List<Predicat> predicats = new ArrayList<Predicat>();
+	RestrictionsContainer container = RestrictionsContainer.newInstance();
+
+	if (CacheMemory.getCurentcycle() != 0) {
+		container.addEq("cycle",  CacheMemory.getCurentcycle());
+	}
+	predicats.addAll(container.getPredicats());
+	return predicats ;
+	}
+	
 	
 	
 	

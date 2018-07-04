@@ -64,7 +64,7 @@ public class PlageHoraire extends BaseElement implements Serializable, Comparabl
 
 
 	public PlageHoraire(PlageHoraire ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		
 		this.heurefin = ins.heurefin;
 		this.heuredebut = ins.heuredebut;

@@ -43,7 +43,7 @@ public class Contacts extends BaseElement implements Serializable, Comparable<Co
 	}
 
 	public Contacts(Contacts contacts) {
-		super(contacts.id, contacts.designation, contacts.moduleName);
+		super(contacts.id, contacts.designation, contacts.moduleName,0L);
 		this.adresse = contacts.adresse;
 		this.email = contacts.email;
 		this.ville = contacts.ville;

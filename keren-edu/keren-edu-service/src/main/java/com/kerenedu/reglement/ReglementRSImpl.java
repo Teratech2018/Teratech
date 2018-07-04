@@ -54,10 +54,19 @@ public class ReglementRSImpl
    		// TODO Auto-generated method stub
    		try {
    			MetaData meta = MetaDataUtil.getMetaData(new Reglement(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			MetaColumn workbtn = new MetaColumn("button", "work1", "Edition des Retards", false, "object", null);
-			workbtn.setValue("{'model':'kereneducation','entity':'paiement','method':'annuler','template':{'this':'object'}}");
-			workbtn.setStates(new String[] { "etabli" });
-			meta.getHeader().add(workbtn);
+   			MetaColumn col = new MetaColumn("button", "paiement", "Paiement des frais", false, "action", null);
+			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object.eleve'}}");
+			
+			MetaColumn col1 = new MetaColumn("button", "echeancier", "Echéancier de paiement", false, "action", null);
+			col1.setValue("{'name':'keren_education_paie_ech','template':{'eleve':'object'}}");
+			
+			meta.getHeader().add(col);
+			//meta.getHeader().add(col1);
+			
+//			MetaColumn workbtn = new MetaColumn("button", "work1", "Paiement des Frais", false, "object", null);
+//			workbtn.setValue("{'model':'kereneducation','entity':'paiement','method':'paiement','template':{'this':'object'}}");
+//			workbtn.setStates(new String[] { "etabli" });
+//			meta.getHeader().add(workbtn);
 			MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
 			meta.getHeader().add(stautsbar);
 			return meta;

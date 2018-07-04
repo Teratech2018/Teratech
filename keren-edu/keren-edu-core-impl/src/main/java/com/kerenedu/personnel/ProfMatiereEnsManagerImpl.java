@@ -18,7 +18,6 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
-import com.kerenedu.school.Contacts;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute

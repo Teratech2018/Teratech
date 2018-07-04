@@ -35,7 +35,7 @@ public class StatusProf extends BaseElement implements Serializable, Comparable<
 
 
 	public StatusProf(StatusProf filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 
 	}
@@ -52,13 +52,13 @@ public class StatusProf extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Matieres";
+		return "Gestion des Types de Contrats";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Matieres";
+		return "Types de Contrat";
 	}
 
 	@Override

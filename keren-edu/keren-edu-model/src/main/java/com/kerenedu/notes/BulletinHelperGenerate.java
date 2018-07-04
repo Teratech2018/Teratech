@@ -109,7 +109,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 
 	public BulletinHelperGenerate(BulletinHelperGenerate bulletin) {
-		super(bulletin.id, bulletin.designation,bulletin. moduleName);
+		super(bulletin.id, bulletin.designation,bulletin. moduleName,0L);
 		this.note = new NoteDetail(bulletin.note);
 		this.matiere = new MatiereNote(bulletin.matiere);
 		this.classe = new Classe(bulletin.classe);
