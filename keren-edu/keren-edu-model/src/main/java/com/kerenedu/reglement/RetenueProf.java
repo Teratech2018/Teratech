@@ -49,7 +49,7 @@ public class RetenueProf extends BaseElement implements Serializable, Comparable
 
 
 	public RetenueProf(RetenueProf ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.obs = ins.obs;
 		this.zMnt=ins.zMnt;
 		this.ficheprof= new FichePaiementProf(ins.ficheprof);

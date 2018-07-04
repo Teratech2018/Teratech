@@ -30,40 +30,40 @@ import com.megatim.common.annotations.Predicate;
 public class GroupeCours extends BaseElement implements Serializable, Comparable<GroupeCours> {
 	
 	@Column(name = "CODE", unique=true)	
-	@Predicate(label="CODE",optional=false,updatable=false,search=true , sequence=1, colsequence=1)
+	@Predicate(label="CODE",optional=false,updatable=true,search=true , sequence=1, colsequence=1)
 	protected String code;
 	
 	@Column(name = "LIBELLE")	
 	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true , sequence=2, colsequence=2)
 	protected String libelle;
 	
-	@Column(name = "COEF")	
-	@Predicate(label="Coeficient",optional=true,updatable=true,search=true , sequence=3, colsequence=3, editable=false)
-	protected String coef;
-	
-	@ManyToOne 
-    @JoinColumn(name = "UNITE_ID")
-	@Predicate(label = "Unité d'enseignement",target = "many-to-one",type = UniteEns.class,search = true  , sequence=4, colsequence=4)
-	private UniteEns unite = new UniteEns();
-	
-	@ManyToOne 
-    @JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "CLASSE",target = "many-to-one",type = Classe.class,search =false  , sequence=5, colsequence=5 , observable=true)
-	private Classe classe = new Classe();
-	
-	@Transient
-	@ManyToOne 
-    @JoinColumn(name ="FILIERE_ID")
-	@Predicate(label = "Filiere",target = "many-to-one",type = Filiere.class,search =false  , sequence=6,hide=true)
-	@Observer(observable="classe",source="field:filiere")
-	private Filiere filiere = new Filiere();
+//	@Column(name = "COEF")	
+//	@Predicate(label="Coeficient",optional=true,updatable=true,search=true , sequence=3, colsequence=3, editable=false)
+//	protected String coef;
+//	
+//	@ManyToOne 
+//    @JoinColumn(name = "UNITE_ID")
+//	@Predicate(label = "Unité d'enseignement",target = "many-to-one",type = UniteEns.class,search = true  , sequence=4, colsequence=4)
+//	private UniteEns unite = new UniteEns();
+//	
+//	@ManyToOne 
+//    @JoinColumn(name = "CLASSE_ID")
+//	@Predicate(label = "CLASSE",target = "many-to-one",type = Classe.class,search =false  , sequence=5, colsequence=5 , observable=true)
+//	private Classe classe = new Classe();
+//	
+//	@Transient
+//	@ManyToOne 
+//    @JoinColumn(name ="FILIERE_ID")
+//	@Predicate(label = "Filiere",target = "many-to-one",type = Filiere.class,search =false  , sequence=6,hide=true)
+//	@Observer(observable="classe",source="field:filiere")
+//	private Filiere filiere = new Filiere();
 	
 	
 	@ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "MATIERE_ID")
-	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = Matiere.class,search = false)
+	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = MatiereDlt.class,search = false)
 	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\"}]")
-	private List<Matiere> matiereList = new ArrayList<Matiere>();
+	private List<MatiereDlt> matiereList = new ArrayList<MatiereDlt>();
 	
 	
 
@@ -74,17 +74,10 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 
 
 	public GroupeCours(GroupeCours annee) {
-		super(annee.id, annee.designation, annee.moduleName);
+		super(annee.id, annee.designation, annee.moduleName,0L);
 		this.code = annee.code;
 		this.libelle = annee.libelle;
-		this.coef = annee.coef;
-		this.unite=new UniteEns(annee.unite);
-		this.classe=new Classe(annee.classe);
-		if(annee.filiere!=null){
-			this.filiere=new Filiere(annee.filiere);
-		}
-		
-		this.matiereList= new ArrayList<Matiere>();
+		this.matiereList= new ArrayList<MatiereDlt>();
 
 	}
 
@@ -102,42 +95,13 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 	}
 
 
-	public String getCoef() {
-		return coef;
-	}
 
-
-	public void setCoef(String coef) {
-		this.coef = coef;
-	}
-
-
-	public UniteEns getUnite() {
-		return unite;
-	}
-
-
-	public void setUnite(UniteEns unite) {
-		this.unite = unite;
-	}
-
-
-	public Classe getClasse() {
-		return classe;
-	}
-
-
-	public void setClasse(Classe classe) {
-		this.classe = classe;
-	}
-
-
-	public List<Matiere> getMatiereList() {
+	public List<MatiereDlt> getMatiereList() {
 		return matiereList;
 	}
 
 
-	public void setMatiereList(List<Matiere> matiereList) {
+	public void setMatiereList(List<MatiereDlt> matiereList) {
 		this.matiereList = matiereList;
 	}
 
@@ -171,17 +135,6 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		return code+"-"+libelle;
 	}
 
-
-
-	public Filiere getFiliere() {
-		return filiere;
-	}
-
-
-	public void setFiliere(Filiere filiere) {
-		
-		this.filiere = filiere;
-	}
 
 
 	public int compareTo(GroupeCours o) {

@@ -36,7 +36,7 @@ public class Profession extends BaseElement implements Serializable, Comparable<
 	}
 
 	public Profession(Profession profession) {
-		super(profession.id, profession.designation, profession.moduleName);
+		super(profession.id, profession.designation, profession.moduleName,0L);
 		this.code = profession.code;
 		this.description = profession.description;
 	}

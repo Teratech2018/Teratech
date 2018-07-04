@@ -22,7 +22,6 @@ import com.kerenedu.configuration.MatiereDAOLocal;
 import com.kerenedu.configuration.PeriodeScolaire;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionDAOLocal;
-import com.kerenedu.school.Eleve;
 import com.kerenedu.school.EleveDAOLocal;
 import com.megatim.common.annotations.OrderType;
 
@@ -97,8 +96,8 @@ public class NoteManagerImpl
 	 List<Inscription> listeleve = inscriptiondao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
   		if(note.getMatierelisttr()==null||note.getMatierelisttr().isEmpty()){
    			for(Matiere mt:lisyMatiere){
-   	   			MatiereNote mtrt = new MatiereNote(mt,listeleve);
-   	   			data.getMatierelisttr().add(mtrt);
+   	   		//	MatiereNote mtrt = new MatiereNote(mt,listeleve);
+   	   		//	data.getMatierelisttr().add(mtrt);
    	   		}
    		}else{
    			System.out.println("NoteManagerImpl.find() taile note detail list"+note.getMatierelisttr().size());

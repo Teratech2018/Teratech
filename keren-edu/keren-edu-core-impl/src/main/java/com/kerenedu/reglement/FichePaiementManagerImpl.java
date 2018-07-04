@@ -13,6 +13,8 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.inscription.Inscription;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -40,8 +42,18 @@ public class FichePaiementManagerImpl
     @Override
    	public List<FichePaiement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
-   		// TODO Auto-generated method stub
-   		List<FichePaiement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+    	Inscription ins = CacheMemory.getIncription();
+    	List<FichePaiement> datas = new ArrayList<FichePaiement>();
+    	if(ins!=null&&ins.getService().size()!=0){
+    		for(FichePaiement fiche : ins.getService()){
+    			if(fiche.getSolde()!=0){
+    				datas.add(fiche);
+    			}
+    		}
+//    		datas= ins.getService();
+    	}else{
+    		datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+    	}
    		List<FichePaiement> result = new ArrayList<FichePaiement>();
    		for(FichePaiement elev:datas){
    			result.add(new FichePaiement(elev));

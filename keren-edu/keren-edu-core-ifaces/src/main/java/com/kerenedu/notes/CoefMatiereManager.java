@@ -18,5 +18,7 @@ public interface CoefMatiereManager
     public final static String SERVICE_NAME = "CoefMatiereManager";
     
     public List<CoefMatiereDetail> findMatiereFiliere(Long id) ;
+    
+    public void generatecoefmat(CoefMatiereModal entity);
 
 }

@@ -5,9 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,8 +18,8 @@ import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.core.ifaces.report.ViewBulletinManagerRemote;
+import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
-import com.kerenedu.model.report.ViewBulletin;
 import com.kerenedu.tools.KerenEduManagerException;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
@@ -31,7 +29,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.base.JRBaseParameter;
 
 
 /**
@@ -139,17 +136,11 @@ public class BulletinRSImpl
      *
      * @return java.util.Map
      */
-    public Map getReportParameters() {
-        Map params = new HashMap();
-        // On positionne la locale
-        params.put(JRBaseParameter.REPORT_LOCALE, Locale.FRENCH);
-        // Construction du Bundle
-        ResourceBundle bundle = ReportHelper.getInstace();
-        // Ajout du bundle dans les parametres
-        params.put(JRBaseParameter.REPORT_RESOURCE_BUNDLE, bundle);
+	 public Map getReportParameters() {
+	   
 
-        return params;
-    }
+	        return ReportHelperTrt.getReportParameters();
+	    }
 
 
     @Override
@@ -157,7 +148,9 @@ public class BulletinRSImpl
         try {
         	  List<Bulletin> records =manager.getCriteres(bulletin);
               String URL = ReportHelper.templateURL+ReportsName.BULLETIN.getName();
+              System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
               Map parameters = new HashMap();
+              parameters= this.getReportParameters();
               return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);

@@ -17,8 +17,10 @@ import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.core.ifaces.report.ViewNoteHelperManagerRemote;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionManagerRemote;
+import com.kerenedu.model.report.ViewNoteHelper;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -47,6 +49,9 @@ public class TraitNoteRSImpl
     
     @Manager(application = "kereneducation", name = "MatiereNoteManagerImpl", interf = MatiereNoteManagerRemote.class)
     protected MatiereNoteManagerRemote managerNote;
+    
+    @Manager(application = "kereneducation", name = "ViewNoteHelperManagerImpl", interf = ViewNoteHelperManagerRemote.class)
+    protected ViewNoteHelperManagerRemote managerhelper;
     
     @Manager(application = "kereneducation", name = "InscriptionManagerImpl", interf = InscriptionManagerRemote.class)
     protected InscriptionManagerRemote managerEleve;
@@ -96,6 +101,7 @@ public class TraitNoteRSImpl
     	CacheMemory.setFiliere(entity.getClasse().getFiliere());
     	CacheMemory.setClasse(entity.getClasse());
     	CacheMemory.setExamen(entity.getPeriode());
+    	System.out.println("TraitNoteRSImpl.save() current exercice is "+CacheMemory.getCurrentannee());
     	RestrictionsContainer container = RestrictionsContainer.newInstance();
     	List<MatiereNote> datas = new ArrayList<MatiereNote>();
 		if(entity.getPeriode()!=null){
@@ -104,32 +110,36 @@ public class TraitNoteRSImpl
 		if(entity.getClasse()!=null){
 			container.addEq("classe.id", entity.getClasse().getId());
 		}//end if(classe!=null)
-		List<MatiereNote> results = managerNote.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		if(results==null||results.isEmpty()||results.size()==0){
-			// recherche de la liste des matiere de la classe
+		container = RestrictionsContainer.newInstance();
+		//1- rechercher les eleve de la classe
+		container = RestrictionsContainer.newInstance();
+		container.addEq("classe.id", CacheMemory.getClasse().getId());
+		List<Inscription> eleves = managerEleve.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+		
+		//2- les matiere de la classe
+		
+		container = RestrictionsContainer.newInstance();
+		if(entity.getClasse()!=null){
+			container.addEq("classe.id", entity.getClasse().getId());
+		}//end if(classe!=null)
+		List<CoefMatiereDetail> listMatieres = managerMatiere.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+		
+		// recherche des note dèja enregistrer pour chaque éleve 
+		for(CoefMatiereDetail mt : listMatieres ){
 			container = RestrictionsContainer.newInstance();
-			if(entity.getClasse()!=null){
-				container.addEq("classe.id", entity.getClasse().getId());
-			}//end if(classe!=null)
-			List<CoefMatiereDetail> listMatieres = managerMatiere.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-			// recherche des etudiants de la classe
-			container = RestrictionsContainer.newInstance();
-			if(entity.getClasse()!=null){
-				container.addEq("classe.id", entity.getClasse().getId());
-			}//end if(classe!=null)
-			List<Inscription> eleves = managerEleve.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-			if(listMatieres!=null&&eleves!=null){
-				for(CoefMatiereDetail mt:listMatieres){
+			container.addEq("classe.id", entity.getClasse().getId());
+			container.addEq("matiere.id", mt.getId());
+			container.addEq("examen.id",entity.getPeriode().getId());
+			List<ViewNoteHelper>notebd= managerhelper.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+			if(notebd==null||notebd.isEmpty()||notebd.size()==0){
 	   	   			MatiereNote mtrt = new MatiereNote(mt,entity.getPeriode(),eleves);
 	   	   			mtrt.setId(-1);
 	   	   			managerNote.save(mtrt);
-	   	   		}
-			}else{
-				throw new KerenExecption("ERROR: Aucun élève dans cette classe!!!!");
 			}
-			
-		}
-    	
+//			}else{
+////				throw new KerenExecption("ERROR: note dejà pris en compte!!!!");
+////			}
+		} 	
     	
         return entity; 
     }

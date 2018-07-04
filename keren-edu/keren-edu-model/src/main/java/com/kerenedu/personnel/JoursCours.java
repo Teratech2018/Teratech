@@ -69,7 +69,7 @@ public class JoursCours extends BaseElement implements Serializable, Comparable<
 
 
 	public JoursCours(JoursCours ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.journne = ins.journne;
 		if(ins.classe!=null){
 		this.classe=new Classe(ins.classe);

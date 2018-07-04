@@ -11,6 +11,11 @@ public enum ReportsName {
 
    
     CERTIFICAT_SCOLAIRE("ecertificatscolarite.jasper"),
+    FACTURE("efacture.jasper"),
+    ANNIVERSAIRE("eanniversaire.jasper"),
+    BILANFINANCIER("ebilanfinancier.jasper"),
+    BILANFINANCIERCLASSE("ebilanfinancierclasse.jasper"),
+    LINSTINGPAIEMENT("elistingpaiement.jasper"),
     BULLETIN("ebulletin.jasper");
 
     /**

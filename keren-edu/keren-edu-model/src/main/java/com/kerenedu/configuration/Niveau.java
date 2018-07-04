@@ -40,7 +40,7 @@ public class Niveau extends BaseElement implements Serializable, Comparable<Nive
 	}
 	
 	public Niveau(Niveau niveau) {
-		super(niveau.id, niveau.designation, niveau.moduleName);
+		super(niveau.id, niveau.designation, niveau.moduleName,0L);
 		this.code = niveau.code;
 		this.description = niveau.description;
 	}

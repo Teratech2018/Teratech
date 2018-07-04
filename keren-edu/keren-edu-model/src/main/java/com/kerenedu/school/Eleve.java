@@ -9,13 +9,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -36,92 +33,126 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	private String image ;
 	  
 	@Column(name = "MATRICULE")	
-	@Predicate(label="MATRICULE",optional=false,updatable=false,search=true, sequence=3, colsequence=1)
+	@Predicate(label="Matricule",optional=false,updatable=false,search=true, sequence=4, colsequence=1)
 	protected String matricule;
 	
 	@Column(name = "DATENAIS")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label="DATE NAISS.",optional=false,updatable=true,search=true, type=Date.class, target="date", sequence=6, colsequence=4)
+	@Predicate(label="Né(e) le.",optional=false,updatable=true,search=true, type=Date.class, target="date", sequence=8, colsequence=4)
 	protected Date dateNais ;
 	
 	@Column(name = "L_NAIS")
-	@Predicate(label="LIEU NAISSANCE",optional=false,updatable=true,search=true, sequence=7, colsequence=5)
+	@Predicate(label="à",optional=false,updatable=true,search=true, sequence=7, colsequence=5)
 	protected String lNais;
 	
 	@Column(name = "NOM")
-	@Predicate(label="NOM",optional=false,updatable=true,search=true, sequence=4, colsequence=2)
+	@Predicate(label="Nom",optional=false,updatable=true,search=true, sequence=3, colsequence=2)
 	protected String nom;
 
 	@Column(name = "EMAIL")
-	@Predicate(label="EMAIL",optional=true,updatable=true,search=false , target="email", sequence=8)
+	//@Predicate(label="Email",optional=true,updatable=true,search=false , target="email", sequence=6)
 	protected String email;
 	
 	@Column(name = "TEL")
-	@Predicate(label="TEL.",optional=true,updatable=true,search=false , sequence=9)
+//	@Predicate(label="TEL.",optional=true,updatable=true,search=false , sequence=9)
 	protected String telephone;
 	
 	
 	@Column(name = "PRENOM")
-	@Predicate(label="PRENOM",optional=false,updatable=true,search=true , sequence=5, colsequence=3)
+	@Predicate(label="Prenom",optional=false,updatable=true,search=true , sequence=5, colsequence=3)
 	protected String prenon;
 	
 	@Column(name = "SEXE")
-	@Predicate(label="SEXE",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=11)
+	@Predicate(label="Genre",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=11)
 	protected String sexe="0";
 
 	@Column(name = "SITFAMILIALE")
-	@Predicate(label="SITUATION FAMILIALE",optional=false,updatable=true,search=false, target="combobox", values="Celibataire;Marié(é)" , sequence=10)
+	//@Predicate(label="SITUATION FAMILIALE",optional=false,updatable=true,search=false, target="combobox", values="Celibataire;Marié(é)" , sequence=10)
 	protected String sitFamiliale="0";
 	
+	@ManyToOne
+    @JoinColumn(name = "NATIONALITE_ID")
+	@Predicate(label="Nationalité",updatable=true,type=Nationalite.class , target="many-to-one",search=false, sequence=12)
+    protected Nationalite nationalite;
+	
+	
 	@Column(name = "TEL_PERE")
-	@Predicate(label="TEL. PERE",optional=true,updatable=true,search=false ,target="tel", group=true, 
-			groupLabel="Tuteur", groupName="tab1")
+	@Predicate(label="WhatsApp/Tel Père",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String telPere;
 	
 	@Column(name = "EMAIL_PERE")
-	@Predicate(label="EMAIL PERE",optional=true,updatable=true,search=false , target="email" , group=true, 
-			groupLabel="Tuteur", groupName="tab1")
+	@Predicate(label="Email Père",optional=true,updatable=true,search=false , target="email" , group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String emailPere;
 	
 	@Column(name = "TEL_MERE")
-	@Predicate(label="TEL. MERE",optional=true,updatable=true,search=false ,target="tel", group=true, 
-			groupLabel="Tuteur", groupName="tab1")
+	@Predicate(label="WhatsApp/Tel Mère",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String telMere;
 	
 	
 	@Column(name = "EMAIL_MERE")
-	@Predicate(label="EMAIL MERE",optional=true,updatable=true,search=false, group=true, 
-			groupLabel="Tuteur", groupName="tab1" )
+	@Predicate(label="Email Mère",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
 	protected String emailMere;
 	
+	@Column(name = "TEL_TUTEUR")
+	@Predicate(label="WhatsApp/Tel Tuteur",optional=false,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	protected String telTuteur;
 	
+	
+	@Column(name = "EMAIL_TUTEUR")
+	@Predicate(label="Email Tuteur",optional=false,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
+	protected String emailTuteur;
+	
+
 	@ManyToOne
-    @JoinColumn(name = "NATIONALITE_ID")
-	@Predicate(label="NATIONALITE",updatable=true,type=Nationalite.class , target="many-to-one",search=false,  group=true, 
-	groupLabel="Informations Genérales", groupName="tab2")
-    protected Nationalite nationalite;
+    @JoinColumn(name = "RESP_ID")
+	@Predicate(label="Responsable de L'élève",updatable=true,type=Responsable.class , 
+	target="many-to-one",group = true,groupName = "tab1",groupLabel = "Parents/Tuteur",optional=false)
+    protected Responsable resp;
 	
 	@ManyToOne
     @JoinColumn(name = "NIVEAU_ID")
-	@Predicate(label="NIVEAU SCOLAIRE",updatable=true,type=NiveauScolaire.class , target="many-to-one",search=false,  group=true, 
-	groupLabel="Informations Genérales", groupName="tab2")
+//	@Predicate(label="NIVEAU SCOLAIRE",updatable=true,type=NiveauScolaire.class , target="many-to-one",search=false,  group=true, groupLabel="Informations Genérales", groupName="tab2")
     protected NiveauScolaire niveauScolaire;
 	
 	@ManyToOne // eleve ,etudiant..
     @JoinColumn(name = "PREFESSION_ID")
-	@Predicate(label="PROFESSION",updatable=true,type=Profession.class , target="many-to-one",search=false,  group=true, 
-	groupLabel="Informations Genérales", groupName="tab2")
+	//@Predicate(label="PROFESSION",updatable=true,type=Profession.class , target="many-to-one",search=false,  group=true, groupLabel="Informations Genérales", groupName="tab2")
     protected Profession profession;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "DOSSIER_MEDICALE_ID")
-	@Predicate(label = "Dossier Médical",group = true,groupName = "tab3",groupLabel = "Dossier Médical",target = "one-to-many",type = DossierMedical.class,search = false)
-	private List<DossierMedical> dossierMedical = new ArrayList<DossierMedical>();
+//	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+//    @JoinColumn(name = "DOSSIER_MEDICALE_ID")
+//	@Predicate(label = "Dossier Médical",group = true,groupName = "tab3",groupLabel = "Dossier Médical",target = "one-to-many",type = DossierMedical.class,search = false)
+//	private List<DossierMedical> dossierMedical = new ArrayList<DossierMedical>();
+//	
+	@Column(name = "ALLERTE_MEDICALE")
+	@Predicate(label="Allergie ",optional=false,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
+	protected String allerte;
+
+	@Column(name = "REFERENCE_HOPITAL")
+	@Predicate(label="Hopital de Reférence",optional=false,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
+	protected String referenceHopital;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name ="CONTACTS_ID")
-	@Predicate(label = "Contacts",group = true,groupName = "tab4",groupLabel = "Contacts",target = "one-to-many",type = Contacts.class,search = false)
-	private List<Contacts> contact = new ArrayList<Contacts>();
+	@Column(name = "ADR_HOP")
+	@Predicate(label=" Adresse Hopital",optional=false,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
+	protected String adressehop;
+	
+//	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+//    @JoinColumn(name ="CONTACTS_ID")
+//	//@Predicate(label = "Contacts",group = true,groupName = "tab4",groupLabel = "Localisation",target = "one-to-many",type = Contacts.class,search = false)
+//	private List<Contacts> contact = new ArrayList<Contacts>();
+//	
+	@Column(name = "QUARTIER")
+	@Predicate(label="Quartier",optional=false,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
+	protected String quartier;
+	
+	@Column(name = "BLOC")
+	@Predicate(label="Bolc/Rue",optional=false,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
+	protected String bloc;
+	
+	
+	private boolean inscrit=false;
+	
+	
 	
 	  private String state ="initial";
 	
@@ -133,10 +164,14 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	}
 	
 	
-	public Eleve(String image, String matricule, Date dateNais, String lNais, String nom, String email, String prenon,
-			String sexe, String sitFamiliale, String telPere, String emailPere, String telMere, String emailMere,
-			Nationalite nationalite, NiveauScolaire niveauScolaire, Profession profession,
-			List<DossierMedical> dossierMedical, List<Contacts> contact) {
+	
+
+
+	public Eleve(String image, String matricule, Date dateNais, String lNais, String nom, String email,
+			String telephone, String prenon, String sexe, String sitFamiliale, Nationalite nationalite, String telPere,
+			String emailPere, String telMere, String emailMere, String telTuteur, String emailTuteur,
+			NiveauScolaire niveauScolaire, Profession profession, List<DossierMedical> dossierMedical,
+			List<Contacts> contact, String quartier, String bloc, Responsable resp, String state) {
 		super();
 		this.image = image;
 		this.matricule = matricule;
@@ -144,23 +179,31 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		this.lNais = lNais;
 		this.nom = nom;
 		this.email = email;
+		this.telephone = telephone;
 		this.prenon = prenon;
 		this.sexe = sexe;
 		this.sitFamiliale = sitFamiliale;
+		this.nationalite = nationalite;
 		this.telPere = telPere;
 		this.emailPere = emailPere;
 		this.telMere = telMere;
 		this.emailMere = emailMere;
-		this.nationalite = nationalite;
+		this.telTuteur = telTuteur;
+		this.emailTuteur = emailTuteur;
 		this.niveauScolaire = niveauScolaire;
 		this.profession = profession;
-		this.dossierMedical= dossierMedical;
-		this.contact=contact;
+		this.quartier = quartier;
+		this.bloc = bloc;
+		this.resp = resp;
+		this.state = state;
 	}
 
 
+
+
+
 	public Eleve(Eleve eleve) {
-		super(eleve.id, eleve.designation, eleve.moduleName);
+		super(eleve.id, eleve.designation, eleve.moduleName,0L);
 		this.image = eleve.image;
 		this.matricule =eleve. matricule;
 		this.dateNais = eleve.dateNais;
@@ -177,10 +220,21 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		this.nationalite = eleve.nationalite;
 		this.niveauScolaire = eleve.niveauScolaire;
 		this.profession = eleve.profession;
-		this.dossierMedical= new ArrayList<DossierMedical>();
-		this.contact=new ArrayList<Contacts>();
+//		this.contact=new ArrayList<Contacts>();
 		this.telephone= eleve.telephone;
-	
+		this.allerte=eleve.allerte;
+		this.adressehop=eleve.adressehop;
+		this.referenceHopital=eleve.referenceHopital;
+		
+		this.emailTuteur = eleve.emailTuteur;
+		this.telTuteur=eleve.telTuteur;
+		if(eleve.resp!=null){
+		this.resp= eleve.resp;
+		}
+		this.quartier = eleve.quartier;
+		this.bloc = eleve.bloc;
+		this.resp = eleve.resp;
+		this.inscrit=eleve.inscrit;
 		
 		/*for(DossierMedical dos:eleve.dossierMedical){
 			dossierMedical.add(new DossierMedical(dos));
@@ -196,13 +250,13 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion Etudiants";
+		return "Gestion des Elèves";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Liste des Etudiants";
+		return "Liste des Elèves";
 	}
 
 	@Override
@@ -356,6 +410,22 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 
 
 
+	public boolean isInscrit() {
+		return inscrit;
+	}
+
+
+
+
+
+	public void setInscrit(boolean inscrit) {
+		this.inscrit = inscrit;
+	}
+
+
+
+
+
 	public void setTelPere(String telPere) {
 		this.telPere = telPere;
 	}
@@ -378,6 +448,26 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		return telMere;
 	}
 
+
+
+	public String getTelTuteur() {
+		return telTuteur;
+	}
+
+
+	public void setTelTuteur(String telTuteur) {
+		this.telTuteur = telTuteur;
+	}
+
+
+	public String getEmailTuteur() {
+		return emailTuteur;
+	}
+
+
+	public void setEmailTuteur(String emailTuteur) {
+		this.emailTuteur = emailTuteur;
+	}
 
 
 	public void setTelMere(String telMere) {
@@ -410,23 +500,53 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		this.sitFamiliale = sitFamiliale;
 	}
 
-	
-	public List<DossierMedical> getDossierMedical() {
-		return dossierMedical;
+//	
+//	public List<DossierMedical> getDossierMedical() {
+//		return dossierMedical;
+//	}
+//
+//	public void setDossierMedical(List<DossierMedical> dossierMedical) {
+//		this.dossierMedical = dossierMedical;
+//	}
+
+//	public List<Contacts> getContact() {
+//		return contact;
+//	}
+
+
+	public String getQuartier() {
+		return quartier;
 	}
 
-	public void setDossierMedical(List<DossierMedical> dossierMedical) {
-		this.dossierMedical = dossierMedical;
-	}
 
-	public List<Contacts> getContact() {
-		return contact;
+	public void setQuartier(String quartier) {
+		this.quartier = quartier;
 	}
 
 
-	public void setContact(List<Contacts> contact) {
-		this.contact = contact;
+	public String getBloc() {
+		return bloc;
 	}
+
+
+	public void setBloc(String bloc) {
+		this.bloc = bloc;
+	}
+
+
+	public Responsable getResp() {
+		return resp;
+	}
+
+
+	public void setResp(Responsable resp) {
+		this.resp = resp;
+	}
+
+
+//	public void setContact(List<Contacts> contact) {
+//		this.contact = contact;
+//	}
 	
 
 	public Date getDateNais() {
@@ -473,6 +593,54 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+	public String getAllerte() {
+		return allerte;
+	}
+
+
+
+
+
+	public void setAllerte(String allerte) {
+		this.allerte = allerte;
+	}
+
+
+
+
+
+	public String getReferenceHopital() {
+		return referenceHopital;
+	}
+
+
+
+
+
+	public void setReferenceHopital(String referenceHopital) {
+		this.referenceHopital = referenceHopital;
+	}
+
+
+
+
+
+	public String getAdressehop() {
+		return adressehop;
+	}
+
+
+
+
+
+	public void setAdressehop(String adressehop) {
+		this.adressehop = adressehop;
+	}
+
+
+
 
 
 	@Override

@@ -60,7 +60,7 @@ public class AvanceProf extends BaseElement implements Serializable, Comparable<
 
 
 	public AvanceProf(AvanceProf ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.code = ins.code;
 		this.datePaiement = ins.datePaiement;
 		this.typePaiment=ins.typePaiment;

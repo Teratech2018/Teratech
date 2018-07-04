@@ -18,8 +18,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.inscription.Inscription;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
@@ -30,50 +33,58 @@ import com.megatim.common.annotations.Predicate;
  */
 
 @Table
-@Entity(name = "e_echeance")
+@Entity(name = "e_p_ech")
 public class Echeancier extends BaseElement implements Serializable, Comparable<Echeancier> {
 
+
+	@Transient
+	@ManyToOne
+	@JoinColumn(name="CLASSE_ID")
+	@Predicate(label="Sélectionner la Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1 )
+	private Classe classe ;
+	
+	@Transient
+	@ManyToOne
+	@JoinColumn(name="ElEVE_ID")
+	@Predicate(label="Sélectionner la Eléve",type=Inscription.class,target="many-to-one",optional=false , sequence=2 )
+	@Filter(value="[{\"fieldName\":\"classe\",\"value\":\"object.classe\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner la classe\"}]")
+	private Inscription eleve ;
+	
 	@Column(name = "TYP_PLAN")
-	@Predicate(label="Type Planiffictaion",optional=false,updatable=true,search=false, target="combobox", values="Automatique;Manuelle" , sequence=1 )
+	@Predicate(label="Type Planiffictaion",optional=false,updatable=true,search=false, target="combobox", values="Automatique;Manuelle" , sequence=3  )
 	protected String typePlanif="0";
+	
+	@Column(name = "DATE_DEBUT")
+	@Predicate(label="Date Début",optional=false,updatable=true,search=true, type=Date.class,sequence=4, target="date" ,	hidden="currentObject.typePlanif=='1'")
+	@Temporal(javax.persistence.TemporalType.DATE)
+	protected Date dateDeb ;
+
+		
+	@Column(name = "Nombre Echéance")
+	@Predicate(label="Durée" , optional=false, updatable=true,search=false, type=Long.class, sequence=5 ,hidden="currentObject.typePlanif=='1'")
+	protected Long periode ;       
 	
 	@ManyToOne
 	@JoinColumn(name = "FICHE_PAI_ID")
-	@Predicate(label="SERVICE",updatable=true,type=FichePaiement.class ,optional=false, target="many-to-one",search=true , sequence=2)
-	@Filter(value = "[{\"fieldName\":\"typePaiment\",\"value\":\"echeancier\"}]")
-	protected FichePaiement service = new FichePaiement();
-	
+	@Predicate(label="SERVICE",updatable=true,type=FichePaiement.class ,optional=false, target="many-to-one",search=true , sequence=7,hidden="currentObject.eleve.id==null",observable=true)
+	@Filter(value = "[{\"fieldName\":\"eleve\",\"value\":\"object.eleve\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner un eleve\"}]")
+	protected FichePaiement service ;
 	
 	@Column(name = "TOTAL " )	
-	@Predicate(label="MONTANT ECH.",optional=true,search=false, type=Long.class ,sequence=3, editable=false)
+	@Predicate(label="TOTAL ECH.",optional=true,search=false, type=Long.class ,sequence=8, editable=false,hidden="currentObject.eleve.id==null")
 	@Observer(observable="service",source="field:ztotal")
-	protected Long ztotal= new Long(0);
+	protected Long ztotal ;
 	
 	
 	@Column(name = "TOTAL_ECH" )	
-	@Predicate(label="MONTANT TOTAL ",optional=true,search=true, type=Long.class ,sequence=4, editable=false)
-	protected Long mnttotal= new Long(0);
-	
-	@Column(name = "DATE_DEBUT")
-	//@Predicate(label="Date Début",optional=false,updatable=true,search=true, type=Date.class,sequence=5, target="date" )
-	@Temporal(javax.persistence.TemporalType.DATE)
-	protected Date dateDeb = new Date();
+	@Predicate(label="TOTAL PAYER ",optional=true,search=true, type=Long.class ,sequence=9, editable=false,hidden="currentObject.eleve.id==null")
+	protected Long mnttotal;
 
-		
-	@Column(name = "PERIODE")
-	//@Predicate(label="Période",optional=false,updatable=true,search=false, target="combobox", values="Annuel;Trimestriel;Mensuel" , sequence=6 ,
-	//hidden="temporalData.typePlanif=='0'")
-	protected String periode="0";
-	
-	@Column(name = "Nbre_ECH" )	
-	@Predicate(label="Nb Echéances ",optional=false,updatable=false,search=true,editable=false, type=Long.class ,sequence=7, hidden="temporalData.typePlanif=='0'")
-	protected Long znbreEch = new Long(0);
-	
 	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "ECH_ID")
-	@Predicate(updatable=true,type=EcheancierDlt.class , target="one-to-many",search=true ,group=true, groupLabel="Echeancier Détails", 
-	groupName="tab1",edittable=true,hidden="temporalData.typePlanif=='0'")
+	@Predicate(updatable=true,type=EcheancierDlt.class , target="one-to-many",search=true ,group=true, groupLabel="Echeancier Détails", groupName="tab1",edittable=true,hidden="currentObject.eleve.id==null")
+	@Observer(observable="service",source="method:generateecheance",parameters="periode,dateDeb,typePlanif")
 	protected List<EcheancierDlt> echeancedtl = new ArrayList<EcheancierDlt>();
 	
 	
@@ -85,15 +96,16 @@ public class Echeancier extends BaseElement implements Serializable, Comparable<
 
 
 	public Echeancier(Echeancier ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.dateDeb = ins.dateDeb;
-		this.znbreEch = ins.znbreEch;
 		this.periode=ins.periode;
 		this.service= new FichePaiement(ins.service);
 		this.typePlanif= ins.typePlanif;
 		this.periode=ins.periode;
 		this.mnttotal=ins.mnttotal;
 		this.echeancedtl= new ArrayList<EcheancierDlt>();
+//		this.classe=new Classe(ins.getService().getEleve().getClasse());
+//		this.eleve=new Inscription(ins.getService().getEleve());
 	
 	}
 
@@ -155,23 +167,12 @@ public class Echeancier extends BaseElement implements Serializable, Comparable<
 	}
 
 
-	public Long getZnbreEch() {
-		return znbreEch;
-	}
-
-
-	public void setZnbreEch(Long znbreEch) {
-	
-		this.znbreEch = znbreEch;
-	}
-
-
-	public String getPeriode() {
+	public Long getPeriode() {
 		return periode;
 	}
 
 
-	public void setPeriode(String periode) {
+	public void setPeriode(Long periode) {
 		this.periode = periode;
 	}
 
@@ -203,6 +204,26 @@ public class Echeancier extends BaseElement implements Serializable, Comparable<
 
 	public Long getZtotal() {
 		return ztotal;
+	}
+
+
+	public Classe getClasse() {
+		return classe;
+	}
+
+
+	public void setClasse(Classe classe) {
+		this.classe = classe;
+	}
+
+
+	public Inscription getEleve() {
+		return eleve;
+	}
+
+
+	public void setEleve(Inscription eleve) {
+		this.eleve = eleve;
 	}
 
 

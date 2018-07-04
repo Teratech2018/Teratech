@@ -51,7 +51,7 @@ public class LieuStage extends BaseElement implements Serializable, Comparable<L
 
 
 	public LieuStage(LieuStage filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 		this.code=filiere.code;
 		this.service = new ArrayList<DivisionStage>();

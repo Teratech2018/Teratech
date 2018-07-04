@@ -60,7 +60,7 @@ public class PaiementProf extends BaseElement implements Serializable, Comparabl
 
 
 	public PaiementProf(PaiementProf ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.code = ins.code;
 		this.datePaiement = ins.datePaiement;
 		this.typePaiment=ins.typePaiment;

@@ -51,7 +51,7 @@ public class Note extends BaseElement implements Serializable, Comparable<Note> 
 
 
 	public Note(Note filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.classe = new Classe(filiere.classe);
 		this.examen = new Examen(filiere.examen);;		
 		this.matierelisttr= new ArrayList<MatiereNote>();

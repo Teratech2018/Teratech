@@ -24,34 +24,34 @@ import com.megatim.common.annotations.Predicate;
 public class DossierMedical  extends BaseElement implements Serializable, Comparable<DossierMedical> {
 
 	@Column(name = "OBJET")
-	@Predicate(label="OBJET",optional=false,updatable=false,search=false)
+//	@Predicate(label="OBJET",optional=false,updatable=false,search=false)
 	protected String objet;
 
 	@Column(name = "ALLERTE_MEDICALE")
-	@Predicate(label="ALLERTE MEDICALE",optional=false,updatable=false,search=false)
+	@Predicate(label="Allergie ",optional=false,updatable=true)
 	protected String allerte;
 
 	@Column(name = "REFERENCE_HOPITAL")
-	@Predicate(label="REFERENCE HOPITAL",optional=false,updatable=false,search=true)
+	@Predicate(label="Hopital de Reférence",optional=false,updatable=true)
 	protected String referenceHopital;
 
 	@Column(name = "DATE_CONSULTATION")
-	@Predicate(label="DATE CONSULTATION",optional=false,updatable=false,search=true, type=Date.class, target="date")
+	//@Predicate(label="DATE CONSULTATION",optional=false,updatable=false,search=true, type=Date.class, target="date")
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date dateConsultation;
 	
 	@Column(name = "HEURE_ARRIVE")
 	@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="HEURE ARRIVE",optional=false,updatable=false,search=true, type=Long.class, target="time")
+	//@Predicate(label="HEURE ARRIVE",optional=false,updatable=false,search=true, type=Long.class, target="time")
 	protected Date heureArrive;
 	
 	@Column(name = "HEURE_DEPART")
 	@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="HEURE DEPART",optional=false,updatable=false,search=true, type=Long.class, target="time")
+	//@Predicate(label="HEURE DEPART",optional=false,updatable=false,search=true, type=Long.class, target="time")
 	protected Date heureDepart;
 	
 	@Column(name = "OBS")
-	@Predicate(group = true, groupName = "tab1", groupLabel = "Observation", target = "textarea", search = false)
+	@Predicate(label="Observation",optional=true,updatable=true,target="textarea")
 	protected String observation;
 
 
@@ -61,7 +61,7 @@ public class DossierMedical  extends BaseElement implements Serializable, Compar
 	}
 
 	public DossierMedical(DossierMedical dossierMedical) {
-		super(dossierMedical.id, dossierMedical.designation, dossierMedical.moduleName);
+		super(dossierMedical.id, dossierMedical.designation, dossierMedical.moduleName,0L);
 		
 		this.objet = dossierMedical.objet;
 		this.allerte = dossierMedical.allerte;
@@ -149,6 +149,14 @@ public class DossierMedical  extends BaseElement implements Serializable, Compar
 
 	public void setObservation(String observation) {
 		this.observation = observation;
+	}
+
+	public Date getHeureArrive() {
+		return heureArrive;
+	}
+
+	public Date getHeureDepart() {
+		return heureDepart;
 	}
 
 	public void setHeureArrive(Date heureArrive) {

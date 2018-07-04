@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.ViewHandler;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +20,8 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.inscription.Inscription;
+import com.kerenedu.model.report.ViewNoteHelper;
 import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
@@ -32,6 +33,11 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_bul")
 public class Bulletin extends BaseElement implements Serializable, Comparable<Bulletin> {
 	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3210923131046279039L;
 
 	@Column(name = "CODE")	
 	//@Predicate(label="LIBELLE",optional=false,updatable=false,search=true , sequence=1, colsequence=1)
@@ -205,7 +211,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 
 	public Bulletin(Bulletin bulletin) {
-		super(bulletin.id, bulletin.designation,bulletin. moduleName);
+		super(bulletin.id, bulletin.designation,bulletin. moduleName,0L);
 		this.code = bulletin.code;
 		this.eleve = new Eleve(bulletin.eleve);
 		this.model = new ModelBulletin(bulletin.model);
@@ -246,7 +252,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 
 	public Bulletin(BulletinHelperGenerate helper,ModelBulletin model) {
-		this.code = model.getLibelle();
+		this.code = model.getId()+"";
 		this.eleve = new Eleve(helper.getEleve());
 		this.model = new ModelBulletin(model);
 		this.lignes= new ArrayList<LigneBulletinClasse>();
@@ -275,6 +281,39 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.appre = "RAS";
 		this.sanction = "RAS";
 		this.inscription= helper.getInscription();
+		
+	}
+	
+	public Bulletin(ViewNoteHelper helper) {
+//		this.code = model.getId()+"";
+		this.eleve = new Eleve(helper.getEleve().getEleve());
+//		this.model = new ModelBulletin(model);
+		this.lignes= new ArrayList<LigneBulletinClasse>();
+		this.classe=new Classe(helper.getClasse());
+		this.tcoef= (long) helper.getMatiere().getCoeficient();
+		this.tpoint = new Long(0);
+		this.rang = new Long(0);
+		this.tcoef = new Long(0);
+		this.moypremier =helper.getMoyPremier();
+		this.moydernier =helper.getMoyDernnier();
+		this.nbreMoy = new Long(0);
+		this.moyenneClas = new Long(0);
+		this.txreusitte = new Long(0);
+		this.eType = new Long(0);
+		this.extrememax = new Long(0);
+		this.extremmemin = new Long(0);
+		this.moyenne=new Long(0);
+		this.nbreAbsNonJus = new Long(0);
+		this.nbreAbsJus = new Long(0);
+		this.avert = false;
+		this.blame = false;
+		this.conseil = false;
+		this.consigne = new Long(0);
+		this.exclusions = new Long(0);
+		this.retards = new Long(0);
+		this.appre = "RAS";
+		this.sanction = "RAS";
+		this.inscription= helper.getEleve();
 		
 	}
 
@@ -799,6 +838,15 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	public void setExtremmemin(Long extremmemin) {
 		this.extremmemin = extremmemin;
 	}
+
+	
+
+	@Override
+	public String getSerial() {
+		// TODO Auto-generated method stub
+		return Long.toString(serialVersionUID);
+	}
+
 
 
 	@Override

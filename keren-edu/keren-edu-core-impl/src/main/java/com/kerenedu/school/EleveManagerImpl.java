@@ -27,6 +27,9 @@ public class EleveManagerImpl
 
     @EJB(name = "EleveDAO")
     protected EleveDAOLocal dao;
+    
+    @EJB(name = "ResponsableDAO")
+    protected ResponsableDAOLocal daoresponsable;
 
     public EleveManagerImpl() {
     }
@@ -60,13 +63,10 @@ public class EleveManagerImpl
 		Eleve elev = super.find(propertyName, entityID);
 		Eleve data = new Eleve(elev);
 		
-		for(Contacts contacts: elev.getContact()){
-			data.getContact().add(new Contacts(contacts));
-   		}
+//		for(Contacts contacts: elev.getContact()){
+//			data.getContact().add(new Contacts(contacts));
+//   		}
 		
-		for(DossierMedical dossier: elev.getDossierMedical()){
-			data.getDossierMedical().add(new DossierMedical(dossier));
-   		}
 		return data;
 	}
 
@@ -103,6 +103,19 @@ public class EleveManagerImpl
 	        }
 	        return result;
 	    }
+
+	@Override
+	public void processBeforeSave(Eleve entity) {
+		//mis à jour du nombre d'enfant du responsable
+		Responsable resp = entity.getResp();
+		if(resp.getNe()==null){
+			resp.setNe((short)0);
+		}
+		Short neactuel= (short) (resp.getNe()+1);
+		resp.setNe(neactuel);
+		daoresponsable.update(resp.getId(), resp);
+		super.processBeforeSave(entity);
+	}
     
 
 }

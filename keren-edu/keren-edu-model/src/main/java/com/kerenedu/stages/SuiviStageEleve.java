@@ -97,7 +97,7 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 	 * @param moduleName
 	 */
 	public SuiviStageEleve(long id, String designation, String moduleName) {
-		super(id, designation, moduleName);
+		super(id, designation, moduleName,0L);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -121,7 +121,7 @@ public class SuiviStageEleve extends BaseElement implements Serializable, Compar
 	}
 	
 	public SuiviStageEleve(SuiviStageEleve sseleve) {
-		super(sseleve.id, sseleve.designation, sseleve.moduleName);
+		super(sseleve.id, sseleve.designation, sseleve.moduleName,0L);
 		this.eleve = new Eleve(sseleve.eleve);
 		this.prof = new Professeur(sseleve.prof);
 		this.debut = sseleve.debut;

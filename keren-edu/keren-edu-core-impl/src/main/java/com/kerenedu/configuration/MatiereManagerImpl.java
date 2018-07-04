@@ -9,11 +9,10 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.kerenedu.inscription.Inscription;
-import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -56,6 +55,9 @@ public class MatiereManagerImpl
    		// TODO Auto-generated method stub
    		Matiere elev = super.find(propertyName, entityID);
    		Matiere data = new Matiere(elev);
+   		for(MatiereDlt mat :elev.getMatieres()){
+   			data.getMatieres().add(mat);
+   		}
    		return data;
    	}
 
@@ -75,5 +77,18 @@ public class MatiereManagerImpl
    		Matiere elev = super.delete(id);
    		return new Matiere(elev);
    	}
+
+	@Override
+	public void processBeforeSave(Matiere entity) {
+	List<MatiereDlt> matdlt = new ArrayList<MatiereDlt>();
+		for(MatiereDlt mat : entity.getMatieres()){
+			mat.setId(-1);
+			matdlt.add(mat);
+		}
+		entity.setMatieres(matdlt);
+		
+		super.processBeforeSave(entity);
+	}
+   	
 
 }

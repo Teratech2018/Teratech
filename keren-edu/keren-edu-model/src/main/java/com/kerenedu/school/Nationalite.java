@@ -43,7 +43,7 @@ public class Nationalite extends BaseElement implements Serializable, Comparable
 	
 
 	public Nationalite(Nationalite nationalite) {
-		super(nationalite.id, nationalite.designation, nationalite.moduleName);
+		super(nationalite.id, nationalite.designation, nationalite.moduleName,0L);
 		this.code = nationalite.code;
 		this.description = nationalite.description;
 	}

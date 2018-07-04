@@ -5,9 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,13 +21,11 @@ import com.kerenedu.jaxrs.search.EleveSearchRSImpl;
 import com.kerenedu.model.report.ViewBulletin;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
-import com.kerenedu.tools.reports.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.base.JRBaseParameter;
 
 
 /**
@@ -92,19 +88,8 @@ public class ViewBulletinRSImpl
      * @return java.util.Map
      */
     public Map getReportParameters() {
-        Map params = new HashMap();
-        params.put(ReportsParameter.ETB,"UCAC");
-        params.put(ReportsParameter.ANNEE_SCOLAIRE, "2017");
-        params.put(ReportsParameter.REPORT_USER,"BEKO");
-
-        // On positionne la locale
-        params.put(JRBaseParameter.REPORT_LOCALE, Locale.FRENCH);
-        // Construction du Bundle
-        ResourceBundle bundle = ReportHelper.getInstace();
-        // Ajout du bundle dans les parametres
-        params.put(JRBaseParameter.REPORT_RESOURCE_BUNDLE, bundle);
-
-        return params;
+    
+        return ReportHelperTrt.getReportParameters();
     }
 
 
@@ -114,7 +99,7 @@ public class ViewBulletinRSImpl
         	  List<ViewBulletin> records =manager.getCriteres(eleveSearch);
               String URL = ReportHelper.templateURL+ReportsName.BULLETIN.getName();
               System.out.println("EleveSearchRSImpl.buildPdfReport() chemin file++++++ "+URL);
-              Map parameters = new HashMap();
+              Map parameters =this.getReportParameters();
               return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(EleveSearchRSImpl.class.getName()).log(Level.SEVERE, null, ex);

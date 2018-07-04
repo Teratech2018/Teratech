@@ -25,14 +25,15 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_bul_mod")
 public class ModelBulletin extends BaseElement implements Serializable, Comparable<ModelBulletin> {
 	
-
-	@Column(name = "CODE" ,unique=true)	
-	@Predicate(label="CODE",optional=false,updatable=false,search=true , sequence=1, colsequence=1)
-	protected String code;
 	
-	@Column(name = "LIBELLE" )	
-	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true , sequence=2, colsequence=2)
-	protected String libelle;
+	@Column(name = "LIBELLE")
+	@Predicate(label = "Libellé", search = true  , sequence=1, colsequence=1 ,updatable=true)
+	private String libelle  ;
+	
+	@Column(name = "TYPE_BULL")
+	@Predicate(label="Type Bulletin",optional=false,updatable=true,search=true, target="combobox", values="1ere Séquence;1er Trimestre;3éme Séquence;2éme Trimestre;5éme Séquence;3éme Trimestre" , sequence=2,colsequence=3)
+	protected String typebulletin="0";
+	
 	
 	@ManyToMany(fetch = FetchType.LAZY )
     @JoinColumn(name ="EXA_ID")
@@ -47,35 +48,13 @@ public class ModelBulletin extends BaseElement implements Serializable, Comparab
 
 
 	public ModelBulletin(ModelBulletin filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
-		this.libelle = filiere.libelle;
-		this.code=filiere.code;
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.sequence=new ArrayList<Examen>();
+		typebulletin=filiere.getTypebulletin();
+		this.libelle=filiere.libelle;
 		
 
 	}
-
-	public String getLibelle() {
-		return libelle;
-	}
-
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
-
-
-
-	
-	
-	public String getCode() {
-		return code;
-	}
-
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 
 	@Override
 	public String getEditTitle() {
@@ -91,11 +70,33 @@ public class ModelBulletin extends BaseElement implements Serializable, Comparab
 	}
 
 
+
+
+	public String getTypebulletin() {
+		return typebulletin;
+	}
+
+
+	public void setTypebulletin(String typebulletin) {
+		this.typebulletin = typebulletin;
+	}
+
+
 	/**
 	 * @param sequence the sequence to set
 	 */
 	public void setSequence(List<Examen> sequence) {
 		this.sequence = sequence;
+	}
+
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
 	}
 
 
@@ -114,10 +115,9 @@ public class ModelBulletin extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return libelle;
+		return typebulletin;
 	}
 
-	
 
 	public int compareTo(ModelBulletin o) {
 		// TODO Auto-generated method stub

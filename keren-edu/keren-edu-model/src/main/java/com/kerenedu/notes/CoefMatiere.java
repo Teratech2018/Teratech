@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
@@ -22,8 +24,8 @@ import com.megatim.common.annotations.Predicate;
  * @author ntchuente
  *
  */
-//@Table
-//@Entity(name = "e_coefmat")
+@Table
+@Entity(name = "e_coefmat")
 public class CoefMatiere extends BaseElement implements Serializable, Comparable<CoefMatiere> {
 	
 	/**
@@ -38,7 +40,7 @@ public class CoefMatiere extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name="CLASSE_ID")
-	@Predicate(label="Sélectionner la Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1 , observable=true)
+	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1 , observable=true, search=true)
 //	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez sélectionner la filiere\"}]")
 	private Classe classe ;
 		
@@ -58,7 +60,7 @@ public class CoefMatiere extends BaseElement implements Serializable, Comparable
 
 
 	public CoefMatiere(CoefMatiere annee) {
-		super(annee.id, annee.designation, annee.moduleName);
+		super(annee.id, annee.designation, annee.moduleName,0L);
 		this.classe = new Classe(annee.classe);
 		//this.filiere= new Filiere(annee.filiere);
 		this.matdetailList= new ArrayList<CoefMatiereDetail>();

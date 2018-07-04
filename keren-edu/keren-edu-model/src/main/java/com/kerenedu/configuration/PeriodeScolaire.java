@@ -30,22 +30,22 @@ public class PeriodeScolaire extends BaseElement implements Serializable, Compar
 	
 	@Column(name = "D_DEBUT" )	
 	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="DEBUT",optional=false,updatable=false,search=true, type=Date.class, target="date", sequence=2)
+	@Predicate(label="DEBUT",optional=false,updatable=false,search=true, type=Date.class, target="date", sequence=3)
 	protected String dDeb;
 	
 	@Column(name = "D_FIN" )	
 	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="FIN",optional=false,updatable=false,search=true, target="date", type=Date.class, sequence=3)
+	@Predicate(label="FIN",optional=false,updatable=false,search=true, target="date", type=Date.class, sequence=2)
 	protected String dFin;
 	
 	@Column(name = "D_DEBUT_SAI_NOTE")	
 	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="DEBUT SAISIR NOTES",optional=true,updatable=false,search=true, target="date", sequence=4)
+	@Predicate(label="DEBUT SAISIR NOTES",optional=true,updatable=false,search=true, target="date", sequence=5)
 	protected String dDebSai;
 	
 	@Column(name = "D_FIN_SAI_NOTE")	
 	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="FIN SAISIR NOTES",optional=true,updatable=false,search=true,target="date", sequence=5)
+	@Predicate(label="FIN SAISIR NOTES",optional=true,updatable=false,search=true,target="date", sequence=4)
 	protected String dFinSai;
 	
 	
@@ -55,7 +55,7 @@ public class PeriodeScolaire extends BaseElement implements Serializable, Compar
 	}
 
 	public PeriodeScolaire(PeriodeScolaire periode) {
-		super(periode.id, periode.designation, periode.moduleName);
+		super(periode.id, periode.designation, periode.moduleName,0L);
 		this.libelle = periode.libelle;
 		this.dDeb = periode.dDeb;
 		this.dFin = periode.dFin;

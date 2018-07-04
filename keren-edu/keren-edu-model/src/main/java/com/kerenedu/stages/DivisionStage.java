@@ -34,7 +34,7 @@ public class DivisionStage extends BaseElement implements Serializable, Comparab
 
 
 	public DivisionStage(DivisionStage filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 		
 

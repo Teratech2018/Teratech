@@ -10,14 +10,11 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
@@ -46,7 +43,13 @@ public class ReglementManagerImpl extends AbstractGenericManager<Reglement, Long
 	protected FichePaiementDAOLocal daofp;
 
 	@EJB(name = "EcheancierDltDAO")
-	protected EcheancierDltDAOLocal daoecheance;
+	protected EcheancierDltDAOLocal daoecheancedlt;
+
+	@EJB(name = "EcheancierDAO")
+	protected EcheancierDAOLocal daoecheance;
+	
+	@EJB(name = "PaiementDAO")
+	protected PaiementDAOLocal daopaiement;
 
 	public ReglementManagerImpl() {
 	}
@@ -66,12 +69,12 @@ public class ReglementManagerImpl extends AbstractGenericManager<Reglement, Long
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
 		Classe classe = CacheMemory.getClasse();
-
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
-
+		predicats= CriteriaFactory.defaultPredicats();
 		if (classe != null) {
 			container.addEq("eleve.classe.id", classe.getId());
 		}
+
 		predicats.addAll(container.getPredicats());
 
 		List<Reglement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
@@ -87,24 +90,21 @@ public class ReglementManagerImpl extends AbstractGenericManager<Reglement, Long
 		// TODO Auto-generated method stub
 		Reglement data = super.find(propertyName, entityID);
 		Reglement result = new Reglement(data);
-		for (FichePaiement fiche : data.getService()) {
-			result.getService().add(new FichePaiement(fiche));
-		}
-
-		for (Paiement paie : data.getPaiement()) {
-			result.getPaiement().add(new Paiement(paie));
-		}
-		Echeancier echier = new Echeancier();
-		for (Echeancier ech : data.getEcheance()) {
-			echier = new Echeancier(ech);
-			for (EcheancierDlt echdlt : ech.getEcheancedtl()) {
-				echier.getEcheancedtl().add(new EcheancierDlt(echdlt));
-			}
-			result.getEcheance().add(echier);
-		}
+		CacheMemory.setReglement(data);
+		CacheMemory.setIncription(data.getEleve());
+//
+//		for (FichePaiement fiche : data.getService()) {
+//			result.getService().add(new FichePaiement(fiche));
+//		}
+		// set les service de l'eleve
+		result.setService(this.getFichePaiement(data));
+		// recherche des paiement éffectué
+		result.setPaiement(this.getPaiement(data));
+		// recherche des echéance éffectué
+		//result.setEcheance(this.getEcheance(data));
 		// recherche des paiement ou echeance en retard
-		result.setRetard(this.getRetardPaiement(data));;
-		
+		result.setRetard(this.getRetardPaiement(data));
+
 		return result;
 
 	}
@@ -129,262 +129,204 @@ public class ReglementManagerImpl extends AbstractGenericManager<Reglement, Long
 
 	@Override
 	public void processBeforeSave(Reglement entity) {
-	//	entity = this._afterSaveOperation(entity);
+		// entity = this._afterSaveOperation(entity);
+		entity.setAnneScolaire(CacheMemory.getCurrentannee());
 		super.processBeforeSave(entity);
 	}
 
 	@Override
 	public void processBeforeUpdate(Reglement entity) {
 		entity = this._afterUpdateOperation(entity);
-
-		// Update solde
-		
-		// update caisse
-		
 		super.processBeforeUpdate(entity);
 	}
 
-//	private Reglement _afterSaveOperation(Reglement entity) {
+	@Override
+	public void processAfterUpdate(Reglement entity) {
+		// recherche de l'entite
+		Reglement reglement = find("id", entity.getId());
+		// Update solde
+		this._updateSodle(reglement);
+		// update caisse
+		//this._mouvementCaise(reglement);
+		super.processAfterUpdate(reglement);
+	}
+
+	private Reglement _afterUpdateOperation(Reglement entity) {
 //		List<FichePaiement> listFp = new ArrayList<FichePaiement>();
 //		List<Echeancier> echeance = new ArrayList<Echeancier>();
-//		Long scolarite = new Long(0);
-//		Long payer = new Long(0);
-//		Long solde = new Long(0);
-//		Long total = new Long(0);
-//		Double tva = new Double(0);
-//		Double remise = new Double(0);
-//		RestrictionsContainer container = RestrictionsContainer.newInstance();
-//		container.addEq("connected", true);
-//		List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0, -1);
-//		if (annee == null || annee.size() == 0) {
+//		Long payer = new Long(0);Long scolarite = new Long(0);	Long solde = new Long(0);
+//		Long total = new Long(0);Double tva = new Double(0);Double remise = new Double(0);
+//		String annee = CacheMemory.getCurrentannee();
+//		if (annee == null) {
 //			RuntimeException excep = new RuntimeException("Aucune Année Scolaire disponible !!!");
 //			throw new WebApplicationException(excep, Response.Status.NOT_MODIFIED);
 //		}
-//		entity.setAnneScolaire(annee.get(0).getCode());
+//		entity.setAnneScolaire(annee);
 //
 //		for (FichePaiement fp : entity.getService()) {
 //			total = fp.getzQte() * fp.getzMntHt();
-//			if (fp.getZtva() != null && fp.getZtva() != new Long(0)) {
-//				tva = (fp.getZtva().doubleValue() / 100 * total);
-//			}
-//			if (fp.getZremise() != null && fp.getZremise() != new Long(0)) {
-//				remise = (fp.getZremise().doubleValue() / 100 * total);
-//			}
-//			total = (total + tva.longValue()) - remise.longValue();
-//			fp.setEleve(entity.getEleve());
+////			if (fp.getZtva() != null && fp.getZtva() != new Long(0)) {
+////				tva = (fp.getZtva().doubleValue() / 100 * total);
+////			}
+////			if (fp.getZremise() != null && fp.getZremise() != new Long(0)) {
+////				remise = (fp.getZremise().doubleValue() / 100 * total);
+////			}
+//			total = entity.getEleve().getzTotal();
+//			//fp.setEleve(entity.getEleve());
 //			fp.setZtotal(total);
 //			scolarite = scolarite + fp.getZtotal();
+//			fp.setAnneScolaire(annee);
 //			listFp.add(fp);
 //		}
-//		for (Paiement p : entity.getPaiement()) {
-//			payer = payer + p.getzMnt();
-//			// mouvementer la caisse pour chaque paiement
-//			Caisse caisse = new Caisse(p);
-//			daocaisse.save(caisse);
-//		}
-//		// gestion des echeance
-//		Long montantEch = (long) 0;
-//		for (Echeancier ech : entity.getEcheance()) {
-//			for (EcheancierDlt echdlt : ech.getEcheancedtl()) {
-//				montantEch = montantEch + echdlt.getMnt();
-//			}
-//			ech.setMnttotal(montantEch);
-//			ech.setEcheancedtl(ech.getEcheancedtl());
-//			echeance.add(ech);
-//		}
+//
+//		
 //		solde = scolarite - payer;
 //		entity.setScolarite(scolarite);
 //		entity.setService(listFp);
-//		entity.setEcheance(echeance);
 //		entity.setPayer(payer);
 //		entity.setSolde(solde);
-//		Inscription ins = daoIns.findByPrimaryKey("id", entity.getEleve().getId());
-//		ins.setzMntPaye(entity.getPayer());
-//		ins.setzMnt(entity.getScolarite());
-//		ins.setzSolde(entity.getSolde());
-//		daoIns.update(ins.getId(), ins);
-//
-//		return entity;
-//
-//	}
 
-	private Reglement _afterUpdateOperation(Reglement entity) {
-		List<FichePaiement> listFp = new ArrayList<FichePaiement>();
-		List<Echeancier> echeance = new ArrayList<Echeancier>();
-		List<Caisse> caisselist = new ArrayList<Caisse>();
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		Long payer = new Long(0);
-		Long oldsolde = new Long(0);
-		Long newsolde = new Long(0);
-		
-		List<EcheancierDlt> listechdlt = new ArrayList<EcheancierDlt>();
-		List<Echeancier> listech = new ArrayList<Echeancier>();
-		Long scolarite = new Long(0);;
-		Long solde = new Long(0);
-		Long total = new Long(0);
-		Double tva = new Double(0);
-		Double remise = new Double(0);
-		String annee = CacheMemory.getCurrentannee();
-		if (annee == null) {
-			RuntimeException excep = new RuntimeException("Aucune Année Scolaire disponible !!!");
-			throw new WebApplicationException(excep, Response.Status.NOT_MODIFIED);
-		}
-		entity.setAnneScolaire(annee);
+		return entity;
 
-		for (FichePaiement fp : entity.getService()) {
-			total = fp.getzQte() * fp.getzMntHt();
-			if (fp.getZtva() != null && fp.getZtva() != new Long(0)) {
-				tva = (fp.getZtva().doubleValue() / 100 * total);
-			}
-			if (fp.getZremise() != null && fp.getZremise() != new Long(0)) {
-				remise = (fp.getZremise().doubleValue() / 100 * total);
-			}
-			total = (total + tva.longValue()) - remise.longValue();
-			fp.setEleve(entity.getEleve());
-			fp.setZtotal(total);
-			scolarite = scolarite + fp.getZtotal();
-			listFp.add(fp);
-		}
-		
-//		for(Paiement p :entity.getPaiement()){
+	}
+
+	private void _updateSodle(Reglement entity) {
+
+		Long oldsolde = new Long(0);Long newsolde = new Long(0);
+		Long payer = new Long(0);Long solde = new Long(0);
 //
-//			payer = payer + p.getzMnt();
-//			// mouvementer la caisse pour chaque paiement
-//			
-//			container = RestrictionsContainer.newInstance();
-//			container.addEq("paiement.id", p.getId());
-//			caisselist = daocaisse.filter(container.getPredicats(), null, null, 0, -1);
-//			System.out.println("ReglementManagerImpl._updateMontant() caisse trouvées"+caisselist);
-//			if (caisselist == null||caisselist.isEmpty()) {
-//				System.out.println("ReglementManagerImpl._updateMontant() i want to save opération de  caisse");
-//				Caisse caisse = new Caisse(p);
-//				daocaisse.save(caisse);
-//			} else {
-//				for (Caisse c : caisselist) {
-//					daocaisse.update(c.getId(), c);
-//				}
-//			}
-//		}
+//		// recherche de l'entite
+//		Reglement reglement = find("id", entity.getId());
+//		List<EcheancierDlt> listechdlt = new ArrayList<EcheancierDlt>();
+//		List<Echeancier> listech = new ArrayList<Echeancier>();
+//		Reglement rgl = new Reglement();
+//		rgl = entity;
+//		List<Paiement> listpaiement = new ArrayList<Paiement>();
+//		System.out.println("ReglementManagerImpl._updateSodle() ECHEANCE ...."+rgl.getEcheance());
+//		for (Paiement p : rgl.getPaiement()) {
+//			Paiement paiement = new Paiement();
+//			paiement = p;
+//			// update montant payer fiche paie
+//			oldsolde = (long) 0;
+//			newsolde =(long) 0;
+//			paiement.getService().setMntpayer(p.zMntverser);
+//			oldsolde = paiement.getService().getSolde();
+//			newsolde = oldsolde - p.zMntverser;
+//			// get montant payer 
+//			payer=payer+p.getzMntverser();
 //		
-		// gestion des echeance
-		Long montantEch = (long) 0;
-		for (Echeancier ech : entity.getEcheance()) {
-			for (EcheancierDlt echdlt : ech.getEcheancedtl()) {
-				montantEch = montantEch + echdlt.getMnt();
-			}
-			ech.setMnttotal(montantEch);
-			ech.setEcheancedtl(ech.getEcheancedtl());
-			ech.setZnbreEch((long) ech.getEcheancedtl().size());
-			echeance.add(ech);
-
-		}
-		// GESTION DES SOLDESS
-	
-		solde = scolarite - payer;
-		entity.setScolarite(scolarite);
-		entity.setService(listFp);
-		entity.setEcheance(echeance);
-		entity.setPayer(payer);
-		entity.setSolde(solde);
-		
-	
+//			//metre a jour les fiche de paiement 
+//			
+//			paiement.getService().setSolde(newsolde);
+//			listpaiement.add(paiement);
+//			// update echeancier
+//			RestrictionsContainer container = RestrictionsContainer.newInstance();
+//			container.addEq("service.id", paiement.getService().getId());
+//			List<Echeancier> listecheance = daoecheance.filter(container.getPredicats(), null, null, 0, -1);
+//			if(listecheance==null||listecheance.isEmpty()){
+//				rgl.setEcheance(rgl.getEcheance());
+//			}else{
+//				for (Echeancier echeance : listecheance) {
+//					Echeancier ech =daoecheance.findByPrimaryKey("id", echeance.getId());
+//					ech.setMnttotal(ech.getMnttotal()+p.getzMntverser());
+//					if (ech.getMnttotal() == ech.getZtotal()) {
+//						for (EcheancierDlt echdlt : ech.getEcheancedtl()) {
+//							echdlt.setState("Payé");
+//							listechdlt.add(echdlt);
+//						}
+//						ech.getEcheancedtl().addAll(listechdlt);
+//					}
+//					listech.add(ech);
+//				}
+//				rgl.setEcheance(listech);
+//			}
+//
+//		}
+//		solde= rgl.getScolarite()-payer;
+//		rgl.setPaiement(listpaiement);
+//		
+//		entity.setPayer(payer);
+//		entity.setSolde(solde);
+//		dao.update(rgl.getId(), rgl);
+		// update inscription
 		Inscription ins = daoIns.findByPrimaryKey("id", entity.getEleve().getId());
 		ins.setzMntPaye(entity.getPayer());
 		ins.setzMnt(entity.getScolarite());
 		ins.setzSolde(entity.getSolde());
 		daoIns.update(ins.getId(), ins);
-		
-//		this._updateMontant(entity);
-		
-	
-		
-//		for (Paiement p : entity.getPaiement()) {
-//			payer = payer + p.getzMnt();
-//			// mouvementer la caisse pour chaque paiement
-//			Caisse caisse = new Caisse(p);
-//			daocaisse.save(caisse);
-//		}
-
-		return entity;
-
 	}
-	
-	private Reglement _updateMontant(Reglement entity){
-		Long payer = new Long(0);
-		Long oldsolde = new Long(0);
-		Long newsolde = new Long(0);
-		
-		List<EcheancierDlt> listechdlt = new ArrayList<EcheancierDlt>();
-		List<Echeancier> listech = new ArrayList<Echeancier>();
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		System.out.println("ReglementManagerImpl._updateMontant() paiement is "+entity.getPaiement().size());
-		for (Paiement p : entity.getPaiement()) {
-			
-			System.out.println("ReglementManagerImpl._updateMontant() paiement is "+p.getzMntverser());
-			// update montant payer fiche paie
-			oldsolde = new Long(0);
-			newsolde = new Long(0);
-			p.getService().setMntpayer(p.zMntverser);
-			oldsolde= p.getService().getSolde();
-			newsolde=oldsolde+p.zMntverser ;
-			p.getService().setSolde(newsolde);
-			entity.getPaiement().add(p);
-			
-			// update montant payer echeance
-			if(p.getEcheancedlt()!=null){
-				
-				for(Echeancier ech : entity.getEcheance()){
-					for(EcheancierDlt echdlt : ech.getEcheancedtl()){
-						if(p.getEcheancedlt().getId()==echdlt.getId()){
-							echdlt.setMntpayer(p.getzMntverser());
-							oldsolde = new Long(0);
-							oldsolde= echdlt.getSolde();
-							newsolde = new Long(0);
-							newsolde= oldsolde+p.getzMntverser();
-							echdlt.setSolde(newsolde);
-						}
-						listechdlt.add(echdlt);
-						ech.setEcheancedtl(listechdlt);
-					}
-					listech.add(ech);
-				}
-				entity.setEcheance(listech);
-			}
-			
 
-		}
-		return entity;
-	}
+
 
 	@Override
 	public List<Retard> getRetardPaiement(Reglement entity) {
 		List<Retard> retards = new ArrayList<Retard>();
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		if (entity != null) {
-			container.addEq("eleve.id", entity.getEleve().getId());
-		}
-		List<FichePaiement> ficheP = daofp.filter(container.getPredicats(), null, null, 0, -1);
+//		if (entity != null) {
+//			container.addEq("eleve.id", entity.getEleve().getId());
+//		}
+		List<FichePaiement> ficheP = CacheMemory.getIncription().getService();//daofp.filter(container.getPredicats(), null, null, 0, -1);
 
 		if (ficheP != null) {
 			for (FichePaiement fiche : ficheP) {
-				container = RestrictionsContainer.newInstance();
-				container.addEq("fiche.id", fiche.getId());
-				container.addLe("dateEch", new Date());
-				container.addNotEq("solde", new Long(0));
-				List<EcheancierDlt> listech = daoecheance.filter(container.getPredicats(), null, null, 0, -1);
+//				container = RestrictionsContainer.newInstance();
+//				container.addEq("idPaie", fiche.getId());
+//				container.addLe("dateEch", new Date());
+//				container.addNotEq("solde", new Long(0));
+				List<EcheancierDlt> listech = new ArrayList<EcheancierDlt>();//daoecheancedlt.filter(container.getPredicats(), null, null, 0, -1);
 				if (listech != null && listech.size() > 0) {
 					for (EcheancierDlt eche : listech) {
-						retards.add(new Retard(eche));
+					//	retards.add(new Retard(eche,fiche));
 					}
 				} else if ((listech == null || listech.isEmpty())
-						&&( fiche.getService().getDelai().before(new Date())
-						&& fiche.getSolde()!=new Long(0))) {
-					retards.add(new Retard(fiche));
+						& (fiche.getService().getDelai().before(new Date()) & fiche.getSolde() != new Long(0))) {
+					retards.add(new Retard(fiche, CacheMemory.getIncription()));
 				}
 
 			}
 		}
 		return retards;
 	}
+	
+	
+	public List<ConsultationPaie> getPaiement(Reglement entity) {
+		List<ConsultationPaie> datas = new ArrayList<ConsultationPaie>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+				container = RestrictionsContainer.newInstance();
+				container.addEq("eleve.id", entity.getEleve().getId());
+				List<Paiement> 	result = daopaiement.filter(container.getPredicats(), null, null, 0, -1);
+				if (result != null && result.size() > 0) {
+					for (Paiement eche : result) {
+						datas.add(new ConsultationPaie(eche));
+					}
+				}
+
+		return datas;
+	}
+	
+	public List<FichePaiement> getFichePaiement(Reglement entity){
+		List<FichePaiement> fiches = new ArrayList<FichePaiement>();
+		Inscription eleve = daoIns.findByPrimaryKey("id", entity.getEleve().getId());
+		for(FichePaiement fiche : eleve.getService()){
+			fiches.add(new FichePaiement(fiche));
+		}
+		return fiches ;
+	}
+	
+	public List<ConsultationEch> getEcheance(Reglement entity) {
+		List<ConsultationEch> datas = new ArrayList<ConsultationEch>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+				container = RestrictionsContainer.newInstance();
+				container.addEq("eleve.id", entity.getEleve().getId());
+				List<Echeancier> 	result = daoecheance.filter(container.getPredicats(), null, null, 0, -1);
+				if (result != null && result.size() > 0) {
+					for (Echeancier eche : result) {
+						datas.add(new ConsultationEch(eche));
+					}
+				}
+
+		return datas;
+	}
+
 
 }

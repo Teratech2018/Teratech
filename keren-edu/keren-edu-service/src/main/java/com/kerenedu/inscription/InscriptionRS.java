@@ -6,24 +6,30 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import com.kerenedu.reglement.FichePaiement;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
-
 /**
- * Interface du service JAX-RS
+ * Interface du service JAX-RS
+ * 
  * @since Tue Jan 09 20:37:12 WAT 2018
  * 
  */
-public interface InscriptionRS
-    extends GenericService<Inscription, Long>
+public interface InscriptionRS extends GenericService<Inscription, Long>
 
 {
 	@GET
-	   @Produces({MediaType.APPLICATION_JSON})
-	   @Path("inscrit")
-	   public List<Inscription> getEtudiantsInscrits();
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("inscrit")
+	public List<Inscription> getEtudiantsInscrits();
 
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Path("findserviceclasse")
+	public List<FichePaiement> findmatierclasse(@Context HttpHeaders headers);
 
 }

@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Matiere;
+import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
@@ -32,22 +32,22 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name = "PROF")
-	@Predicate(label="PROF",updatable=false,type=Professeur.class , target="many-to-one",search=true , sequence=1,colsequence=1	,editable=false)
+	@Predicate(label="PROF",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=1,colsequence=1	,editable=false, searchfields="nom")
 	protected Professeur prof;
 	
 	@ManyToOne
     @JoinColumn(name = "MATIERE_ID")
-	@Predicate(label="MATIERE",optional=false,updatable=false,search=true , sequence=2, colsequence=2,type=CoefMatiereDetail.class ,editable=false)
+	@Predicate(label="MATIERE",optional=true,updatable=false,search=true , sequence=2, colsequence=2,type=CoefMatiereDetail.class ,editable=false)
 	protected CoefMatiereDetail matiere;
 	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="CLASSE",updatable=false,type=Classe.class , target="many-to-one",search=true , sequence=3	,colsequence=3,editable=false)
+	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=3	,colsequence=3,editable=false)
 	protected Classe classe;
 	
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
-	@Predicate(label="EXAMEN",updatable=false,type=Examen.class , target="many-to-one",search=true , sequence=4	,editable=false,colsequence=4)
+	@Predicate(label="EXAMEN",updatable=true,type=Examen.class , target="many-to-one",search=true , sequence=4	,editable=false,colsequence=4)
 	protected Examen examen;
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
@@ -64,7 +64,7 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 
 
 	public MatiereNote(MatiereNote filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		
 		if(filiere.matiere!=null){
 			this.matiere = new CoefMatiereDetail(filiere.matiere);
@@ -85,7 +85,7 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		
 	}
 	
-	public MatiereNote(Matiere filiere, List<Inscription> listEleve) {
+	public MatiereNote(MatiereDlt filiere, List<Inscription> listEleve) {
 		this.matiere = new CoefMatiereDetail(filiere);
 		this.notelisttr= new ArrayList<NoteDetail>();
 		for(Inscription el : listEleve){
@@ -105,16 +105,26 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		}
 	
 	}
+	public MatiereNote(CoefMatiereDetail coefmat,Examen examen,Inscription eleve) {
+		this.matiere = new CoefMatiereDetail(coefmat);
+		this.classe= new Classe(coefmat.getClasse());
+		this.prof=new Professeur(coefmat.getProffesseur());
+		this.examen= new Examen(examen);
+		this.notelisttr= new ArrayList<NoteDetail>();
+		this.notelisttr.add(new NoteDetail(eleve));
+
+	
+	}
 	
 
 	
 	
-	public MatiereNote(List<NoteDetail> detailNote,Matiere matiere) {
+	public MatiereNote(List<NoteDetail> detailNote,MatiereDlt matiere) {
 		this.matiere = new CoefMatiereDetail(matiere);
 		this.notelisttr= new ArrayList<NoteDetail>();
 		for(NoteDetail note : detailNote){
-			if(matiere.getCode().equals(note))
-			this.notelisttr.add(new NoteDetail(note));
+//			if(matiere.getCode().equals(note))
+//			this.notelisttr.add(new NoteDetail(note));
 		}
 	}
 	
@@ -203,22 +213,10 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return "PROF. "+matiere.getProffesseur().getNom()+" // MATIERE "+ matiere.getMatiere().getLibelle();
+		return "Enseignant. "+matiere.getProffesseur().getNom();
 	}
 
 
-	@Override
-	public boolean isDesablecreate() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-
-	@Override
-	public boolean isDesabledelete() {
-		// TODO Auto-generated method stub
-		return true;
-	}
 	@Override
 	public boolean isActivatefollower() {
 		// TODO Auto-generated method stub

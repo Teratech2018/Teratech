@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 
@@ -42,6 +43,7 @@ public class ClasseManagerImpl
    	public List<Classe> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
    		// TODO Auto-generated method stub
+    	predicats.addAll(CacheMemory.defaultPredicatsCycle());
    		List<Classe> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
    		List<Classe> result = new ArrayList<Classe>();
    		for(Classe elev:datas){
@@ -64,7 +66,9 @@ public class ClasseManagerImpl
    	@Override
    	public List<Classe> findAll() {
    		// TODO Auto-generated method stub
-   		List<Classe> datas = super.findAll();
+   		RestrictionsContainer container = RestrictionsContainer.newInstance();
+   		container.getPredicats().addAll(CacheMemory.defaultPredicatsCycle());
+   		List<Classe> datas = super.filter(container.getPredicats(), null, null, 0, -1);
    		List<Classe> result = new ArrayList<Classe>();
    		for(Classe elev:datas){
    			result.add(new Classe(elev));

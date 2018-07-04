@@ -5,6 +5,7 @@ package com.kerenedu.notes;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -26,10 +27,10 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	 */
 	private static final long serialVersionUID = -4609375799032659501L;
 
-	@ManyToOne
-    @JoinColumn(name = "MOD_ID")
-	@Predicate(label="Selectionner Le Model de Bulletin",updatable=true,type=ModelBulletin.class , target="many-to-one", sequence=1)
-    protected ModelBulletin model;
+	@Column(name = "LIBELLE")
+	@Predicate(label="Type Bulletin",optional=false,updatable=true,search=true, target="combobox", values="1ere Trimestre;2eme Trimestre;3éme Trimestre" , sequence=2,colsequence=1)
+	protected String typebulletin="0";
+	
 	
 	@ManyToOne
     @JoinColumn(name = "FILIERE_ID")
@@ -49,10 +50,10 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 
 
 	public EdtBulletin(EdtBulletin bull) {
-		super(bull.id, bull.designation, bull.moduleName);
+		super(bull.id, bull.designation, bull.moduleName,0L);
 		this.filiere = new Filiere(bull.filiere);
 		this.classe = new Classe(bull.classe);
-		this.model = new ModelBulletin(bull.model);
+		this.typebulletin=bull.typebulletin;
 		
 
 	}
@@ -86,13 +87,14 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 
 	
 
-	public ModelBulletin getModel() {
-		return model;
+
+	public String getTypebulletin() {
+		return typebulletin;
 	}
 
 
-	public void setModel(ModelBulletin model) {
-		this.model = model;
+	public void setTypebulletin(String typebulletin) {
+		this.typebulletin = typebulletin;
 	}
 
 
@@ -101,9 +103,12 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	}
 
 
+
+
 	public Classe getClasse() {
 		return classe;
 	}
+
 
 
 	public void setClasse(Classe classe) {

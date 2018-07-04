@@ -85,7 +85,7 @@ public class ConfigMail extends BaseElement implements Serializable, Comparable<
 
 
 	public ConfigMail(ConfigMail filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.email = filiere.email;
 		this.pword=filiere.pword;
 		this.serveur=filiere.serveur;

@@ -26,24 +26,20 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	
 
 	@Column(name = "CODE" ,unique=true)	
-	@Predicate(label="CODE",optional=false,updatable=false,search=false , sequence=1, colsequence=1)
+	@Predicate(label="CODE",optional=false,updatable=false,search=false , sequence=1)
 	protected String code;
 	
-	@Column(name = "LIBELLE" )	
-	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true , sequence=2, colsequence=2)
-	protected String libelle;
+	@Column(name = "LIBELLE")
+	@Predicate(label="Type Séquence",optional=false,updatable=true,search=true, target="combobox", values="1ere Séquence;2eme Séquence;3éme Séquence;4éme Séquence;5éme Séquence;6éme Séquence" , sequence=2,colsequence=1)
+	protected String typesequence="0";
 	
 	@Column(name = "SUR")	
 	@Predicate(label="POURCENTAGE",optional=false,updatable=true,search=true , type=Long.class, sequence=3, colsequence=3)
 	protected long sur= new Long(100);
-	
-	@Column(name = "STATUT")
-	@Predicate(label="STATUT",optional=false,updatable=true,search=true, target="combobox", values="Optionel;Obligatoire;Bonus" , sequence=4)
-	protected String statut="0";
-	
+		
 	@ManyToOne
 	@JoinColumn(name = "PERIODE_ID")
-	@Predicate(label="PERIODE SCOLAIRE",updatable=true,type=PeriodeScolaire.class , target="many-to-one",search=true , sequence=5	)
+	@Predicate(label="PERIODE SCOLAIRE",updatable=true,type=PeriodeScolaire.class , target="many-to-one",search=true , sequence=4, colsequence=2	)
 	protected PeriodeScolaire periode;
 
 	public Examen() {
@@ -53,21 +49,13 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 
 
 	public Examen(Examen filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
-		this.libelle = filiere.libelle;
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
+		this.typesequence = filiere.typesequence;
 		this.sur=filiere.sur;
-		this.statut=filiere.statut;
 		this.periode= new PeriodeScolaire(filiere.periode);
+		this.code=filiere.code;
 		
 
-	}
-
-	public String getLibelle() {
-		return libelle;
-	}
-
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
 	}
 
 
@@ -89,6 +77,16 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	}
 
 
+	public String getTypesequence() {
+		return typesequence;
+	}
+
+
+	public void setTypesequence(String typesequence) {
+		this.typesequence = typesequence;
+	}
+
+
 	public void setSur(long sur) {
 		this.sur = sur;
 	}
@@ -104,26 +102,17 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	}
 
 
-	public String getStatut() {
-		return statut;
-	}
-
-
-	public void setStatut(String statut) {
-		this.statut = statut;
-	}
-
 
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Examens";
+		return "Gestion des Séquences";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Examens";
+		return "Gestion des Séquences";
 	}
 
 	@Override
@@ -135,10 +124,23 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return libelle;
+		if(typesequence.equals("0")){
+			return "1ere Séquence";
+		}else if(typesequence.equals("1")){
+			return "2eme Séquence";
+		}else if(typesequence.equals("2")){
+			return "3éme Séquence";
+		}else if(typesequence.equals("3")){
+			return "4éme Séquence";
+		}else if(typesequence.equals("3")){
+			return "5éme Séquence";
+		}else{
+			return "6éme Séquence";
+		}		
 	}
 
 
+	
 	
 
 	public int compareTo(Examen o) {

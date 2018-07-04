@@ -4,7 +4,6 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,9 +15,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.core.base.BaseElement;
-import com.kerenedu.school.Contacts;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -26,8 +25,9 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 
-@Table
-@Entity(name = "e_etbl")
+@Entity
+@Table(name = "T_SOCIETE")
+@XmlRootElement
 public class Etablissement extends BaseElement implements Serializable, Comparable<Etablissement> {
 	
 	/**
@@ -36,47 +36,61 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "LOGO" )	
-	@Predicate(label = "LOGO",target = "image", sequence=1 ,search=true , colsequence=1  )
+	@Predicate(label = "LOGO",target = "image"  )
 	private String logo ;
 	
 	@Column(name = "NOM")
-	@Predicate(label = "Nom",  search = true , sequence=2, colsequence=2)
+	@Predicate(label = "Nom",  search = true , optional=false)
 	protected String nom;
 	
-	@Column(name = "DES")
-	@Predicate(label="DESCRIPTION", target = "textarea", search = true, sequence=3)
-	protected String description;
+	@Column(name = "CONTACT")
+	@Predicate(label="Contacts" ,search = true , optional=false)
+	protected String contacts;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true )
-    @JoinColumn(name ="CONTACTS_ID_ETB")
-	@Predicate(label = "Contacts",group = true,groupName = "tab1",groupLabel = "Contacts",target = "one-to-many",type = Contacts.class,search = false)
-	private List<Contacts> contact = new ArrayList<Contacts>();
+	@Column(name = "ADR")
+	@Predicate(label="Adresse",search = true , optional=false )
+	protected String adresse;
 	
-	@Column(name = "ENTETE_ETAT" )	
-	@Predicate(label = "ENTETE_ETAT",target = "image", group = true,groupName = "tab2",groupLabel = "Entete Rapport" )
-	private String entete ;
+	@Column(name = "EMAIL")
+	@Predicate(label="Email", search = true  )
+	protected String email;
 	
-	@Column(name = "FOOTER_ETAT" )	
-	@Predicate(label = "FOOTER_ETAT",target = "image" ,group = true,groupName = "tab3",groupLabel = "Footer Rapport" )
-	private String footer ;
+	@Column(name = "SITE")
+	@Predicate(label="Site Web",search = true  )
+	protected String sites;
+		
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name ="CYCLE_ID")
+	@Predicate(label = "Cycle",group = true,groupName = "tab1",groupLabel = "Cycle",target = "one-to-many",type = Cycle.class,search = false)
+	private List<Cycle> cyles ;
 	
+	@Column(name = "ANNIV_ELEVE")
+	@Predicate(label = "Allerte Anniversaire Elève ?",group = true,groupName = "tab2",groupLabel = "Gestion des Allertes",type = Boolean.class,search = false)
+	protected Boolean allerteanniveleve  = Boolean.FALSE;;
+	
+	@Column(name = "ANNIV_TUTEUR")
+	@Predicate(label = "Allerte Anniversaire Tuteur ?",group = true,groupName = "tab2",groupLabel = "Gestion des Allertes",type = Boolean.class,search = false)
+	protected Boolean allerteannivTuteur = Boolean.FALSE;;
+	
+	@Column(name = "DELAI_PAIEMENT")
+	@Predicate(label = "Allerte Delai de Paiement ?",group = true,groupName = "tab2",groupLabel = "Gestion des Allertes",type = Boolean.class,search = false)
+	protected Boolean allertedelaiPaiement = Boolean.FALSE;;
 	
 
 	public Etablissement() {
 	}
 
 	public Etablissement(Etablissement etbl) {
-		super(etbl.id, etbl.designation, etbl.moduleName);
+		super(etbl.id, etbl.designation, etbl.moduleName,0L);
 		this.logo = etbl.logo;
 		this.nom = etbl.nom;
-		this.description = etbl.description;
-		this.entete = etbl.entete;
-		this.footer = etbl.footer;
-		
-		for(Contacts con:etbl.contact){
-			contact.add(new Contacts(con));
-	    }
-		
+		this.contacts=etbl.contacts;
+		this.adresse=etbl.adresse;
+		this.email=etbl.email;
+		this.allerteanniveleve=etbl.allerteanniveleve;
+		this.allerteannivTuteur=etbl.allerteannivTuteur;
+		this.allertedelaiPaiement=etbl.allertedelaiPaiement;
+		this.cyles= new ArrayList<Cycle>();
 	}
 
 	@Override
@@ -142,62 +156,70 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 		this.nom = nom;
 	}
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
+	public String getContacts() {
+		return contacts;
 	}
 
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
+	public void setContacts(String contacts) {
+		this.contacts = contacts;
 	}
 
-	/**
-	 * @return the contact
-	 */
-	public List<Contacts> getContact() {
-		return contact;
+	public String getAdresse() {
+		return adresse;
 	}
 
-	/**
-	 * @param contact the contact to set
-	 */
-	public void setContact(List<Contacts> contact) {
-		this.contact = contact;
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
 	}
 
-	/**
-	 * @return the entete
-	 */
-	public String getEntete() {
-		return entete;
+	public String getEmail() {
+		return email;
 	}
 
-	/**
-	 * @param entete the entete to set
-	 */
-	public void setEntete(String entete) {
-		this.entete = entete;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	/**
-	 * @return the footer
-	 */
-	public String getFooter() {
-		return footer;
+	public String getSites() {
+		return sites;
 	}
 
-	/**
-	 * @param footer the footer to set
-	 */
-	public void setFooter(String footer) {
-		this.footer = footer;
+	public void setSites(String sites) {
+		this.sites = sites;
 	}
-	
+
+	public boolean isAllerteanniveleve() {
+		return allerteanniveleve;
+	}
+
+	public void setAllerteanniveleve(boolean allerteanniveleve) {
+		this.allerteanniveleve = allerteanniveleve;
+	}
+
+	public boolean isAllerteannivTuteur() {
+		return allerteannivTuteur;
+	}
+
+	public void setAllerteannivTuteur(boolean allerteannivTuteur) {
+		this.allerteannivTuteur = allerteannivTuteur;
+	}
+
+	public boolean isAllertedelaiPaiement() {
+		return allertedelaiPaiement;
+	}
+
+	public void setAllertedelaiPaiement(boolean allertedelaiPaiement) {
+		this.allertedelaiPaiement = allertedelaiPaiement;
+	}
+
+	public List<Cycle> getCyles() {
+		return cyles;
+	}
+
+	public void setCyles(List<Cycle> cyles) {
+		this.cyles = cyles;
+	}
+
 	
 
 }

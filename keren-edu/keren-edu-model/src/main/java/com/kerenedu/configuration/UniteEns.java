@@ -40,7 +40,7 @@ public class UniteEns extends BaseElement implements Serializable, Comparable<Un
 	}
 	
 	public UniteEns(UniteEns niveau) {
-		super(niveau.id, niveau.designation, niveau.moduleName);
+		super(niveau.id, niveau.designation, niveau.moduleName,0L);
 		this.code = niveau.code;
 		this.description = niveau.description;
 	}

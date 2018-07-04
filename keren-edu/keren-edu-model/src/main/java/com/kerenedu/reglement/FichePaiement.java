@@ -24,7 +24,7 @@ import com.megatim.common.annotations.Predicate;
  */
 
 @Table
-@Entity(name = "e_fpaie")
+@Entity(name = "e_p_fiche")
 public class FichePaiement extends BaseElement implements Serializable, Comparable<FichePaiement> {
 
 	@ManyToOne
@@ -43,37 +43,36 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	
 	@Column(name = "REMISE" )	
 	@Predicate(label="Remise %",optional=true,updatable=true,search=true, type=Long.class ,sequence=4)
-	protected Long zremise= new Long(0);
+	protected Long zremise ;
 	
-	@Column(name = "TVA")	
-	@Predicate(label="TVA %",optional=true,updatable=true,search=true, type=Long.class ,sequence=5)
-	protected Long ztva = new Long(0);
+	@Column(name = "RISTOURNE")	
+	@Predicate(label="RISTOURNE",optional=true,updatable=true,search=true, type=Long.class ,sequence=5)
+	protected Long zristourne = new Long(0);
 		
-	@Column(name = "TYP_REG")
-	@Predicate(label="reglement",optional=false,updatable=true,search=true, target="combobox", values="à la commande;programmé;echeancier" , sequence=6 )
-	protected String typePaiment="0";
+//	@Column(name = "TYP_REG")
+//	@Predicate(label="reglement",optional=false,updatable=true,search=true, target="combobox", values="à la commande;programmé;echeancier" , sequence=6 )
+//	protected String typePaiment="0";
 	
 	@Column(name = "TOTAL_TTC" )	
-	@Predicate(label="TOTAL TTC",optional=true,search=true, type=Long.class ,sequence=7, editable=false)
-	protected Long ztotal= new Long(0);
+	@Predicate(label="TOTAL TTC",optional=true,search=true, type=Long.class ,sequence=6, editable=false)
+	protected Long ztotal ;
 	
 	@Column(name = "MNT_PAYER" )	
-	@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
-	protected Long mntpayer = new Long(0);
+	@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Long.class ,sequence=7, editable=false)
+	protected Long mntpayer ;
 	
 	@Column(name = "SOLDE" )	
-	@Predicate(label="Solde ",optional=false,updatable=false,search=true, type=Long.class ,sequence=3)
-	protected Long solde =new Long(0);
+	@Predicate(label="Solde ",optional=false,updatable=false,search=true, type=Long.class ,sequence=8, editable=false)
+	protected Long solde ;
 
 	@Column(name = "MNT_PAI_TMP")	
-	protected Long zMntTmp =new Long(0);
+	protected Long zMntTmp ;
 	
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire ;
 	
-	@ManyToOne
-	@JoinColumn(name = "INS_ID")
-	protected Inscription eleve = new Inscription();
+	protected boolean payer =false;
+	
 
 	public FichePaiement() {
 		super();
@@ -82,27 +81,35 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 
 
 	public FichePaiement(FichePaiement ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.zQte = ins.zQte;
 		this.zMntHt = ins.zMntHt;
-		this.typePaiment=ins.typePaiment;
+		this.zristourne=ins.zristourne;
 		this.ztotal=ins.ztotal;
 		this.zremise=ins.zremise;
-		this.ztva=ins.ztva;
+		if(ins.service!=null){
 		this.service= new Service(ins.service);
+		}
 		this.mntpayer = ins.mntpayer;
 		this.zMntTmp=ins.zMntTmp;
-		this.eleve= new Inscription(ins.eleve);
 		this.solde=ins.solde;
 		this.mntpayer= ins.mntpayer;
+		this.payer=ins.payer;
+	
 	
 	}
 
-
-	public void setTypePaiment(String typePaiment) {
-		this.typePaiment = typePaiment;
+	public FichePaiement(Service ins) {
+		this.service= new Service(ins);
+		this.zQte=new Long(1);
+		this.zMntHt=ins.getzMnt().longValue();
+		this.ztotal=ins.getzMnt().longValue();
+		this.zremise=(long) 0;
+		this.zristourne=(long) 0;
+		this.mntpayer =(long) 0;
+		this.solde=ztotal-mntpayer;
+	
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -136,7 +143,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getDesignation() {
 //		 TODO Auto-generated method stub
-		return service.getLibelle()+" /"+eleve.getEleve().getMatricule()+" - "+eleve.getEleve().getNom();
+		return service.getLibelle();
 	}
 
 
@@ -170,13 +177,15 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	}
 
 
-	public Long getZtva() {
-		return ztva;
+
+
+	public Long getZristourne() {
+		return zristourne;
 	}
 
 
-	public void setZtva(Long ztva) {
-		this.ztva = ztva;
+	public void setZristourne(Long zristourne) {
+		this.zristourne = zristourne;
 	}
 
 
@@ -238,23 +247,24 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	}
 
 
+	public boolean isPayer() {
+		return payer;
+	}
+
+
+	public void setPayer(boolean payer) {
+		this.payer = payer;
+	}
+
+
 	public void setAnneScolaire(String anneScolaire) {
 		this.anneScolaire = anneScolaire;
 	}
 
 
-	public Inscription getEleve() {
-		return eleve;
-	}
-
-
-	public void setEleve(Inscription eleve) {
-		this.eleve = eleve;
-	}
-
-
-	public String getTypePaiment() {
-		return typePaiment;
+	@Override
+	public boolean isDesabledelete() {
+		return true;
 	}
 
 

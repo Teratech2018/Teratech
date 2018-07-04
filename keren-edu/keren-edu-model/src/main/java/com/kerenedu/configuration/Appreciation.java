@@ -94,13 +94,13 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Edition des Appreciations";
+		return "Configuration des notations";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Appreciations";
+		return "Configuration des notations";
 	}
 
 	@Override

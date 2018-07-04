@@ -35,31 +35,39 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	
 	
 	@Column(name = "LIBELLE" ,unique=true)	
-	@Predicate(label="LIBELLE",optional=false,updatable=false,search=true , sequence=1, colsequence=1)
+	@Predicate(label="CODE",optional=false,updatable=false,search=true , sequence=1, colsequence=1)
 	protected String libelle;
 	
 	@ManyToOne
     @JoinColumn(name = "FILIERE_ID")
-	@Predicate(label="FILIERE",updatable=true,type=Filiere.class , target="many-to-one",search=true, sequence=2, colsequence=2)
+	@Predicate(label="Filière",updatable=true,type=Filiere.class , target="many-to-one",search=true, sequence=2, colsequence=2)
     protected Filiere filiere;
 	
 	@ManyToOne
     @JoinColumn(name = "NIVEAU_ID")
-	@Predicate(label="NIVEAU",updatable=true,type=Niveau.class , target="many-to-one",search=true, sequence=3, colsequence=3)
+	//@Predicate(label="NIVEAU",updatable=true,type=Niveau.class , target="many-to-one",search=true, sequence=3, colsequence=3)
     protected Niveau niveau;
 	
 	@Column(name = "TYP_FORMATION")
-	@Predicate(label="TYPE FORMATION ",optional=false,updatable=true,search=false, target="combobox", values="cours du jours;cours du soir" , sequence=4, colsequence=4)
+	//@Predicate(label="TYPE FORMATION ",optional=false,updatable=true,search=false, target="combobox", values="cours du jours;cours du soir" , sequence=4, colsequence=4)
 	protected String typeformation="0";
 	
 	@Column(name = "EFFECTIF" ,unique=true)	
-	@Predicate(label="EFFECTIF",updatable=true,search=true , sequence=4, type=Long.class, editable=false)
+	@Predicate(label="Effectif",updatable=true,search=true , sequence=3, type=Long.class, editable=false)
 	protected Long effectif= new Long(0);
+	
+	@Column(name = "CAPACITE" )	
+	@Predicate(label="Capacité",optional=true,updatable=true,search=true , sequence=4, type=Long.class)
+	protected Long capacite;
 	
 	@ManyToOne
     @JoinColumn(name = "PROF_ID")
-	@Predicate(label="PROF. TITULAIRE",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=5, colsequence=4)
+	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=5, colsequence=5)
     protected Professeur professeur;
+	
+	
+    @Column(name = "CYCLE_ID")
+    protected long cycle;
 	
 //	
 //	@ManyToMany(fetch = FetchType.LAZY )
@@ -76,7 +84,7 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 
 
 	public Classe(Classe filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName);
+		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 		if(this.niveau!=null){
 			this.niveau= new Niveau( filiere.niveau);
@@ -85,12 +93,14 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 		this.typeformation=filiere.typeformation;
 		if(filiere.filiere!=null){
 			this.filiere= new Filiere(filiere.filiere);
+			this.cycle=filiere.getFiliere().getCycle().getId();
 		}
 		
 		this.effectif=filiere.effectif;
 		if(filiere.professeur!=null){
 		   this.professeur= new Professeur(filiere.professeur);
 		}
+		this.capacite=filiere.capacite;
 		
 		//this.elevelist= new ArrayList<Eleve>();
 	}
@@ -191,6 +201,26 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 
 	public Niveau getNiveau() {
 		return niveau;
+	}
+
+
+	public Long getCapacite() {
+		return capacite;
+	}
+
+
+	public void setCapacite(Long capacite) {
+		this.capacite = capacite;
+	}
+
+
+	public long getCycle() {
+		return cycle;
+	}
+
+
+	public void setCycle(long cycle) {
+		this.cycle = cycle;
 	}
 
 

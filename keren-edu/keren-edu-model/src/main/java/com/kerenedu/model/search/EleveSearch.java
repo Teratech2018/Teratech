@@ -50,7 +50,7 @@ public class EleveSearch extends BaseElement implements Serializable,Comparable<
      * @param moduleName 
      */
     public EleveSearch(Nationalite nationalite,String matricule, long id, String designation, String moduleName) {
-        super(id, designation, moduleName);
+        super(id, designation, moduleName,0L);
         this.nationalite = nationalite;
         this.matricule = matricule;
     }

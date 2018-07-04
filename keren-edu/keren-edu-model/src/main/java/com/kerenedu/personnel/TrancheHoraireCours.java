@@ -15,10 +15,8 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.core.tools.EnmHeureCours;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Matiere;
-import com.kerenedu.notes.CoefMatiere;
+import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.notes.CoefMatiereDetail;
-import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -90,7 +88,7 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 
 
 	public TrancheHoraireCours(TrancheHoraireCours ins) {
-		super(ins.id, ins.designation, ins.moduleName);
+		super(ins.id, ins.designation, ins.moduleName,0L);
 		
 	//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
 		if(ins.matiere!=null){

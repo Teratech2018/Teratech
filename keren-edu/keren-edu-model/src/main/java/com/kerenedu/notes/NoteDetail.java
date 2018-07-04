@@ -26,11 +26,15 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
     @JoinColumn(name = "ETUDIANT_ID")
-	@Predicate(label="ETUDIANT" ,target = "many-to-one",type = Eleve.class,search = true , sequence=1, colsequence=1,editable=true)
-	private Eleve eleve = new Eleve();
+	@Predicate(label="Elève" ,target = "many-to-one",type = Inscription.class,search = true , sequence=1, colsequence=1,editable=true)
+	private Inscription eleve = new Inscription();
+	
+	@Column(name = "SUR")
+	@Predicate(label = "Note/",type = Long.class,search = true  , sequence=2, colsequence=2)
+	private Long sur = new Long(0) ;
 	
 	@Column(name = "NOTE")
-	@Predicate(label = "Note",type = Long.class,search = true  , sequence=2, colsequence=2)
+	@Predicate(label = "Note",type = Long.class,search = true  , sequence=3, colsequence=3)
 	private Long note = new Long(0) ;
 	
 	@Column(name = "APPRECIATION")
@@ -46,19 +50,21 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 
 
 	public NoteDetail(NoteDetail notedetail) {
-		super(notedetail.id, notedetail.designation, notedetail.moduleName);
+		super(notedetail.id, notedetail.designation, notedetail.moduleName,0L);
 		if(notedetail.eleve!=null){
-			this.eleve = new Eleve(notedetail.eleve);
+			this.eleve = new Inscription(notedetail.eleve);
 		}
 		this.obs= notedetail.obs;
 		this.note= notedetail.note;
+		this.sur=notedetail.sur;
 
 	}
 	
 	public NoteDetail(Inscription eleve) {
-		this.eleve = new Eleve(eleve.getEleve());
+		this.eleve = new Inscription(eleve);
 		this.obs= "";
 		this.note= new Long(0);
+		this.sur= new Long(20);
 
 	}
 
@@ -92,18 +98,28 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 
 
 
-	public Eleve getEleve() {
+	public Inscription getEleve() {
 		return eleve;
 	}
 
 
-	public void setEleve(Eleve eleve) {
+	public void setEleve(Inscription eleve) {
 		this.eleve = eleve;
 	}
 
 
 	public Long getNote() {
 		return note;
+	}
+
+
+	public Long getSur() {
+		return sur;
+	}
+
+
+	public void setSur(Long sur) {
+		this.sur = sur;
 	}
 
 

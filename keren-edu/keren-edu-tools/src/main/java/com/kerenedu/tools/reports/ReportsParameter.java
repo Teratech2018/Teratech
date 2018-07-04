@@ -15,6 +15,11 @@ public class ReportsParameter {
     public static final String ETB = "etbl";
     public static final String ANNEE_SCOLAIRE = "anneeScolaire";
     public static final String REPORT_USER = "user";
+    public static final String SUBREPORT_DIR ="SUBREPORT_DIR";
+    public static final String REPORT_IMAGE_REPOSITORY="REPORT_IMAGE_REPOSITORY";
+    public static final String CYCLE_SCOLAIRE="cyclescolaire";
+    public static final String DEBUT="debut";
+    public static final String FIN="fin";
 
    
 }
