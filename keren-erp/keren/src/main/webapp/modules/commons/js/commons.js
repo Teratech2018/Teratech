@@ -276,6 +276,12 @@ angular.module('keren.core.commons')
                             }
                         }
                  },
+                 /**
+                  * 
+                  * @param {type} array
+                  * @param {type} value
+                  * @returns {Boolean}
+                  */
                  containsLiteral:function(array , value){
 //                     console.log("commonTool.containsLiteral:function(array , value) =============== tab : "+angular.toJson(array)+" ===== state : "+value);
                      if(!angular.isDefined(value)||value==null

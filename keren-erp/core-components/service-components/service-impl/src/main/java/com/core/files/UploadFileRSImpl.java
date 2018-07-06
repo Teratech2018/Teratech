@@ -9,13 +9,19 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.core.CommonTools;
 import com.kerem.core.FileHelper;
+import com.megatimgroup.mgt.commons.command.MysqlBDWinExporter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
@@ -210,7 +216,44 @@ public class UploadFileRSImpl  implements UploadFileRS{
      */
     @Override
     public Response exportdatabase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        InputStream input = null;
+        try {
+            String confg_file = FileHelper.getConfigDirectory()+File.separator+"config.properties";
+            //Load file properties
+            Properties config = new Properties();
+            input = new FileInputStream(confg_file);
+            //load a properties file
+            config.load(input);
+//            System.out.println(UploadFileRSImpl.class.toString()+".exportdatabase() ======== config : "+config);
+            String script_file = FileHelper.getConfigDirectory()+File.separator+config.getProperty("script");
+            if(config.getProperty("system").equalsIgnoreCase("mysql")){
+                MysqlBDWinExporter exporter = new MysqlBDWinExporter(config.getProperty("program"),script_file,""+FileHelper.getConfigDirectory(), config.getProperty("user")
+                        ,config.getProperty("password"), config.getProperty("database"));
+                boolean result = exporter.execute();
+                if(result){
+                    String temp_file = FileHelper.getTemporalDirectory()+File.separator+config.getProperty("filename");
+                    File file = new File(temp_file);
+                    if(file.exists()){
+                       return CommonTools.getStream(file,config.getProperty("filename"));
+                    }else{
+                        return Response.noContent().build();
+                    }//end if(file.exists())
+                }else{
+                    throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).entity("L'exportation a échouée").build());
+                }//end if(result){
+            }else{
+                throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).entity("Not supported yet.").build());
+            }//end if(config.getProperty("system").equalsIgnoreCase("mysql")){            
+        } catch (Exception ex) {
+            Logger.getLogger(UploadFileRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new WebApplicationException(ex, Response.serverError().build());
+        } finally {
+            try {
+                input.close();
+            } catch (IOException ex) {
+                Logger.getLogger(UploadFileRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
   
      /**

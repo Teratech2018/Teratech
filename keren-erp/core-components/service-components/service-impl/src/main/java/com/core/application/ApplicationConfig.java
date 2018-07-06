@@ -39,6 +39,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.core.discussions.SMessageRSImpl.class);
         resources.add(com.core.email.EmailRSImpl.class);
         resources.add(com.core.files.UploadFileRSImpl.class);
+        resources.add(com.core.importexport.ExportRSImpl.class);
         resources.add(com.core.langues.ChargerLangueRSImpl.class);
         resources.add(com.core.langues.LangueRSImpl.class);
         resources.add(com.core.langues.TermeRSImpl.class);

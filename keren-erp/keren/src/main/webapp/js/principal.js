@@ -195,8 +195,8 @@ angular.module("mainApp")
                        ]},
                        {id:-5 , name:"sauvegarde_conf",label:"DBSAVE",icon:"glyphicon glyphicon-hdd",showmenu:true,
                            actions:[
-                              {id:-100,name:"progra_save" , label:"Configuration",icon:"glyphicon glyphicon-time",entityName:"Canal",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
-                              {id:-2,name:"export_bd" , label:"EXPORTBD",icon:"glyphicon glyphicon-save-file",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'}                          
+                              {id:-100,name:"progra_save" , label:"Configuration",icon:"glyphicon glyphicon-time",entityName:"Export",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                              {id:-2,name:"export_bd" , label:"EXPORTBD",icon:"glyphicon glyphicon-save-file",entityName:"Export",moduleName:"kerencore",modal:true,securitylevel:0,model:'kerencore'}                          
                        ]}
                  ]
 
@@ -10660,6 +10660,8 @@ $scope.gererChangementFichier3 = function(event,model){
                                         });
                 
           };
+          
+          
           /**
            * 
            * @param {type} template
@@ -10670,8 +10672,36 @@ $scope.gererChangementFichier3 = function(event,model){
                
                 if($scope.currentAction.name=="application_update"){
                      $scope.updateApplication();
-                }else if($scope.currentAction.name=="export_bd"){
-                    
+                }else if($scope.currentAction.name=="export_bd"){//export the data base
+                      commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");   
+                  var url="http://"+$location.host()+":"+$location.port()+"/kerencore/resource/exportbd";
+                  $http.get(url,{responseType: "arraybuffer"})
+                          .then(function(response){
+                                var linkElement = document.createElement('a');
+                                try{
+                                        var type = "sql";
+                                        var attachment = "db_script."+type;
+                                       var arrayBufferView = new Uint8Array(response.data );
+                                       var blob = new Blob( [ arrayBufferView ], { type: type } );
+                                       var urlCreator = window.URL || window.webkitURL;
+                                       var docUrl = urlCreator.createObjectURL( blob );
+                                       linkElement.setAttribute('href', docUrl);
+                                       linkElement.setAttribute("download", attachment);
+                                       linkElement.setAttribute("target", "_blank");
+                                       var clickEvent = new MouseEvent("click", {
+                                           "view": window,
+                                           "bubbles": true,
+                                           "cancelable": false
+                                       });
+                                       linkElement.dispatchEvent(clickEvent);
+                                } catch (ex) {
+                                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
+                               }
+                                commonsTools.hideDialogLoading();
+                          },function(error){
+                                commonsTools.hideDialogLoading();
+                               commonsTools.showMessageDialog(error);
+                            });
                 }else{
                     //Create differ
                     //Initialisation de l'url
