@@ -19,6 +19,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaGroup;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -124,6 +125,7 @@ public class MetaDataUtil {
      * 
      * @param obj
      * @param shareCache
+     * @param exclures
      * @return 
      * @throws java.lang.InstantiationException 
      * @throws java.lang.IllegalAccessException 
@@ -160,8 +162,7 @@ public class MetaDataUtil {
         for(State state : ((BaseElement)obj).getStates()){
             states.add(new com.megatimgroup.generic.jax.rs.layer.impl.State(state.getCode(), state.getIntitule()));
         }//end for(State state : ((BaseElement)obj).getStates())
-        metaData.setStates(states);
-        
+        metaData.setStates(states);        
         //Mise a jour ShareClass
 //        shareCache.put(obj.getClass().toString(), metaData);
          //System.out.println(MetaDataUtil.class.toString()+" ===================== "+shareCache.keySet().size()+" ==== "+obj.getClass().toString());
@@ -169,13 +170,9 @@ public class MetaDataUtil {
         //Liste des champs disponible
         List<Field> fields = new ArrayList<Field>();
         Field[] fields_0 = obj.getClass().getSuperclass().getDeclaredFields();
-        for(Field f : fields_0){
-            fields.add(f);
-        }//end for(Field f : fields_0){
+        fields.addAll(Arrays.asList(fields_0)); //end for(Field f : fields_0){
         Field[] fields_1 =  obj.getClass().getDeclaredFields();
-        for(Field f : fields_1){
-            fields.add(f);
-        }//end for(Field f : fields_1)
+        fields.addAll(Arrays.asList(fields_1)); //end for(Field f : fields_1)
         //Traitement des donnees
         Map<String , List<Field>> groups = new HashMap<String , List<Field>>();
         List<Field> columns = new ArrayList<Field>();

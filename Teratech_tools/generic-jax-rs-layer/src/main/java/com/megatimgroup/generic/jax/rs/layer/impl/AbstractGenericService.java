@@ -181,7 +181,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 if(entity.getFormat().equalsIgnoreCase("cvs")){
                     datas = FileHelper.cvsToJavaConverter(filename, entity.getSeparator());
                 }else {
-                    datas = FileHelper.excelToJavaConverter(filename);
+                    datas = FileHelper.excelToJavaConverter(filename,entity.getFields().size());
                 }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
                 System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
                //Construction of RulesContainer
@@ -239,7 +239,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 if(entity.getFormat().equalsIgnoreCase("cvs")){
                     datas = FileHelper.cvsToJavaConverter(filename, entity.getSeparator());
                 }else {
-                    datas = FileHelper.excelToJavaConverter(filename);
+                    datas = FileHelper.excelToJavaConverter(filename,entity.getFields().size());
                 }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
 //                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
                //Construction of RulesContainer

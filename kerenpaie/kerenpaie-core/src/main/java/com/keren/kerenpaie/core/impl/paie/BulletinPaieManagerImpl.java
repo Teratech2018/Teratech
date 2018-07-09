@@ -33,6 +33,8 @@ public class BulletinPaieManagerImpl extends AbstractGenericManager<BulletinPaie
 
 	@EJB(name = "BulletinPaieDAO")
 	protected BulletinPaieDAOLocal dao;
+	
+
 
 	public BulletinPaieManagerImpl() {
 	}
@@ -78,7 +80,9 @@ public class BulletinPaieManagerImpl extends AbstractGenericManager<BulletinPaie
 		BulletinPaie data = super.find(propertyName, entityID);
 		BulletinPaie result = new BulletinPaie(data);
 		for (LigneBulletinPaie ligne : data.getLignes()) {
-			result.getLignes().add(new LigneBulletinPaie(ligne));
+			if(ligne.getValeur()!=0){
+				result.getLignes().add(new LigneBulletinPaie(ligne));	
+			} // end if(ligne.getValeur()!=0)
 		} // end for(LigneBulletinPaie ligne:data.getLignes())
 		for (LigneElementVariable ligne : data.getVariables()) {
 			result.getVariables().add(new LigneElementVariable(ligne));

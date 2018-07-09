@@ -11,26 +11,34 @@ import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
  * @author Commercial_2
  */
-@XmlRootElement
+
 @Entity
+@Table(name = "T_ECSE")
 public class EcritureSearch extends BaseElement implements Serializable,Comparable<EcritureSearch>{
 
     @Predicate(label = "Compte de:",type = Compte.class,target = "many-to-one")
+    @ManyToOne
     private Compte source ;
     
     @Predicate(label = "Compte à:",type = Compte.class,target = "many-to-one")
+    @ManyToOne
     private Compte cible ;
     
     @Predicate(label = "Date de:",type = Date.class,target = "date")
+    @Temporal(TemporalType.DATE)
     private Date debut ;
     
     @Predicate(label = "Date à:",type = Date.class,target = "date")
+    @Temporal(TemporalType.DATE)
     private Date fin ;
 
     /**

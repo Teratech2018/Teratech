@@ -9,8 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.keren.kerenpaie.model.structures.Societe;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -25,9 +27,17 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	 */
 	private static final long serialVersionUID = 2909281068129108868L;
 	
+	@Transient
+	@Predicate(label="Code",optional=false,search=true,unique=true)
+	private String code ;
+	
+	@Transient
+	@Predicate(label="Description",optional=true,search=true,unique=true)
+	private String label;
+	
 	@ManyToOne
 	@JoinColumn(name="RUBR_ID")
-	@Predicate(label="Rubriques",type=Rubrique.class,target="many-to-one",optional=false,search=true)
+//	@Predicate(label="Rubriques",type=Rubrique.class,target="many-to-one",optional=false,search=true)
 	private Rubrique rubrique;
 	
 	@Predicate(label="Valeurs",type=Double.class,editable=false,updatable=false,search=true)
@@ -92,6 +102,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 		this.valeur = valeur;
 		this.tauxsal = tauxsal;
 		this.tauxpat = tauxpat;
+		
 	}
 
 	/**
@@ -102,6 +113,8 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 		super(ligne.id, ligne.designation, ligne.moduleName,ligne.compareid);
 		if(ligne.rubrique!=null){
 			this.rubrique = new Rubrique(ligne.rubrique);
+			this.code=ligne.getRubrique().getCode();
+			this.label=ligne.getRubrique().getLabel();
 		}
 		this.valeur = ligne.valeur;
 		this.tauxsal = ligne.tauxsal;
@@ -161,6 +174,22 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	public String getModuleName() {
 		// TODO Auto-generated method stub
 		return "kerenpaie";
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	@Override

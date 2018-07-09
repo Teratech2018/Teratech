@@ -83,7 +83,10 @@ angular.module("mainApp").config(['$translateProvider',
             Fermer:'Close',
             VALIDATETITRE:'Validation report',
             Ligne:'Line',
-            Valeur:'Value'
+            Valeur:'Value',
+            Valider:'Validate',
+            Impimer:'Print',
+            Annuler:'Cancel'
         });
         $translateProvider.translations('fr',{
             PJ:'Pièce(s) Jointe(s)',
@@ -318,6 +321,22 @@ angular.module("mainApp")
                         //restService.downloadPNG("appli_icon_id","logo.png");
      };
 
+/**
+ * Filter action without appropiate security level
+ * @param {type} module
+ * @returns {undefined}
+ */
+     $scope.firstActiongroupFilter = function(module){
+         for(var i=0;i<module.groups.length;i++){
+             var group = module.groups[i];
+             for(var j=0 ; j<group.actions.length;j++){
+                 var action = group.actions[j];
+                 if(action.securitylevel !=3){
+                     return action;
+                 }//end if(action.securitylevel !=3){
+             }//end for(var j=0 ; j<group.actions.length,j++){
+         }//end for(var i=0;i<module.groups.length;i++){
+     };
     /** 
       Function de chargement du module 
       courant(module selectionné)
@@ -333,7 +352,7 @@ angular.module("mainApp")
                //Chargement de l'action par defaut
                 $scope.enabledVerticalMenu = true;
                 //$scope.getSelectAction(module.groups[0].actions[0]);           
-                $scope.getSelectAction($scope.currentModule.groups[0].actions[0]);             
+                $scope.getSelectAction($scope.firstActiongroupFilter(module));             
               }//end if(angular.isDefined(module.groups) && (module.groups.length > 0))             
               //Hide the calendar panel
                $scope.showCalendar = false ;
@@ -5844,7 +5863,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 footerDiv.appendChild(buttonElem);
                 buttonElem.setAttribute('class' , 'btn btn-primary');
                 buttonElem.setAttribute('ng-click' , "addDialogAction('"+model+"' , '"+type+"','"+entityName+"' , '"+moduleName+"',null,"+(index+1)+",'"+modelpath+"')");
-                buttonElem.appendChild(document.createTextNode('Save Change'));
+                buttonElem.appendChild(document.createTextNode("{{'Valider' | translate}}"));
             }//end if($scope.windowType!="view"){
            //Button annuler
            buttonElem = document.createElement('button');
@@ -5853,7 +5872,7 @@ $scope.gererChangementFichier3 = function(event,model){
            buttonElem.setAttribute('data-dismiss' , "modal");
            buttonElem.setAttribute('type' , 'button');
            buttonElem.setAttribute('ng-click' , "annulerAction2('"+model+"')");
-           buttonElem.appendChild(document.createTextNode('Annuler'));
+           buttonElem.appendChild(document.createTextNode("{{'Annuler' | translate}}"));
            //Entete modal
            var titleheader = document.createElement('h4');
            var titleID = '';
@@ -6262,14 +6281,14 @@ $scope.gererChangementFichier3 = function(event,model){
                          footerDiv.appendChild(buttonElem);
                          buttonElem.setAttribute('class' , 'btn btn-primary');
                          buttonElem.setAttribute('ng-click' , "addDialogAction('"+model+"' , 'list','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",'"+modelpath+"')");
-                         buttonElem.appendChild(document.createTextNode('Save Change'));
+                         buttonElem.appendChild(document.createTextNode("{{'Valider' | translate}}"));
                          //Button annuler
                          buttonElem = document.createElement('button');
                          footerDiv.appendChild(buttonElem);
                          buttonElem.setAttribute('class' , 'btn btn-default');
                          buttonElem.setAttribute('data-dismiss' , "modal");
                          buttonElem.setAttribute('type' , 'button');
-                         buttonElem.appendChild(document.createTextNode('Annuler'));
+                         buttonElem.appendChild(document.createTextNode("{{'Annuler' | translate}}"));
                          //Entete modal
                          var titleheader = document.createElement('h4');
                          titleheader.setAttribute('class','modal-title');
@@ -6368,14 +6387,14 @@ $scope.gererChangementFichier3 = function(event,model){
              footerDiv.appendChild(buttonElem);
              buttonElem.setAttribute('class' , 'btn btn-primary');
              buttonElem.setAttribute('ng-click' , "addDialogAction('"+model+"' , 'follower','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+")");
-             buttonElem.appendChild(document.createTextNode('Save Change'));
+             buttonElem.appendChild(document.createTextNode("{{'Valider' | translate}}"));
              //Button annuler
              buttonElem = document.createElement('button');
              footerDiv.appendChild(buttonElem);
              buttonElem.setAttribute('class' , 'btn btn-default');
              buttonElem.setAttribute('data-dismiss' , "modal");
              buttonElem.setAttribute('type' , 'button');
-             buttonElem.appendChild(document.createTextNode('Annuler'));
+             buttonElem.appendChild(document.createTextNode("{{'Annuler' | translate}}"));
              //Entete modal
              var titleheader = document.createElement('h4');
              titleheader.setAttribute('class','modal-title');
@@ -6468,12 +6487,12 @@ $scope.gererChangementFichier3 = function(event,model){
 //                         buttonElem.setAttribute('ng-click' , "addDialogAction('"+model+"' , 'list','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+")");
 //                         buttonElem.appendChild(document.createTextNode('Save Change'));
                          //Button annuler
-                         buttonElem = document.createElement('button');
+                         var buttonElem = document.createElement('button');
                          footerDiv.appendChild(buttonElem);
                          buttonElem.setAttribute('class' , 'btn btn-default');
                          buttonElem.setAttribute('data-dismiss' , "modal");
                          buttonElem.setAttribute('type' , 'button');
-                         buttonElem.appendChild(document.createTextNode('Annuler'));
+                         buttonElem.appendChild(document.createTextNode("{{'Annuler' | translate}}"));
                          //Entete modal
                          var titleheader = document.createElement('h4');
                          titleheader.setAttribute('class','modal-title');
@@ -6526,7 +6545,7 @@ $scope.gererChangementFichier3 = function(event,model){
          * @param {type} link
          * @returns {undefined}
          */
-        $scope.editDialogBuilderExtern = function(metaData,index,link){           
+        $scope.editDialogBuilderExtern = function(metaData,index,link,report){           
 //           $scope.innerWindowType = true;
            $scope.innerWindowType = 'new';           
            $scope.temporalMetaData = metaData;
@@ -6572,7 +6591,11 @@ $scope.gererChangementFichier3 = function(event,model){
                 footerDiv.appendChild(buttonElem);
                 buttonElem.setAttribute('class' , 'btn btn-primary');
                 buttonElem.setAttribute('ng-click' , "addDialogAction('temporalData' , 'save_only','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",null,'"+link+"')");
-                buttonElem.appendChild(document.createTextNode('Valider'));
+                if(angular.isDefined(report) && report==true){
+                    buttonElem.appendChild(document.createTextNode("{{'Imprimer' | translate}}"));
+                }else{
+                    buttonElem.appendChild(document.createTextNode("{{'Valider' | translate}}"));
+                }//end if(angular.isDefined(report) && report==true)
                 buttonElem.setAttribute("ng-hide",metaData.desablecreate);
            }//end if($scope.windowType!='view'){                      
            //Button annuler
@@ -6582,7 +6605,7 @@ $scope.gererChangementFichier3 = function(event,model){
            buttonElem.setAttribute('data-dismiss' , "modal");
            buttonElem.setAttribute('type' , 'button');
            buttonElem.setAttribute('ng-click' , 'annulerAction2()');
-           buttonElem.appendChild(document.createTextNode('Annuler'));
+           buttonElem.appendChild(document.createTextNode("{{'Annuler' | translate}}"));
            //Entete modal
            var titleheader = document.createElement('h4');
            titleheader.setAttribute('class','modal-title');
@@ -8207,21 +8230,24 @@ $scope.gererChangementFichier3 = function(event,model){
                   var container = document.createElement("div");
                   container.setAttribute("style","height: 100%; width: 100%;");
                   container.setAttribute("id",dasboardID);
-                  var viewElem = commonsTools.dashboardEntryBuilder(dasboardID,data);
-                   //listElem.append(angular.element(content)); 
-                  var compileFn = $compile(viewElem);
-                  compileFn($scope);
-                  if(viewElem){
-                    container.appendChild(viewElem);
-                     // ///Remplacement dans la vue
+                  commonsTools.dashboardEntryBuilder(dasboardID,data);
+                   //listElem.append(angular.element(content));                 
+//                  if(viewElem){
+//                    container.appendChild(viewElem);
+//                     // ///Remplacement dans la vue
                       var items = $element.find("div");
+                      var viewElem = null;
                       for(var i=0; i<items.length;i++){
                            if(items.eq(i).attr("id")==dasboardID){
-                                 items.eq(i).replaceWith(container);
+                               viewElem = items.eq(i);
+                               break;
+//                                 items.eq(i).replaceWith(container);
                                   //console.log(" ======================= on a trouve report  innerpanel");
                            }//end if(items.eq(i).attr("id")=="innerpanel")  
                       }//end if(items.eq(i).attr("id")=="innerpanel")
-                  }//end if(viewElem)
+                      var compileFn = $compile(viewElem);
+                      compileFn($scope);                                
+//                  }//end if(viewElem)
               }//end if(data)
           };
           /**
@@ -8242,6 +8268,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           $http.get(url2)
                                   .then(function(response){
                                       var data = response.data;
+                                      console.log("principal.dashboardEntryBtn = function(model , entity , method) ============ url : "+url2+" === \n data : "+angular.toJson(data));
                                       $scope.listDialogBuilderExternal(data,metadata,1);
                                       commonsTools.hideDialogLoading();
                                       $("#globalModal").modal("toggle");
@@ -10728,7 +10755,11 @@ $scope.gererChangementFichier3 = function(event,model){
                           $http.get(url)
                                   .then(function(response){
                                         $scope.currentObject = response.data;
-                                        $scope.listFramePanelBuilder(null,$scope.displayDashboardPanel());                                        
+                                        $scope.listFramePanelBuilder(null,$scope.displayDashboardPanel());
+                                        for(var i=0 ;i<$scope.currentObject.dashboards.length;i++){
+                                            var dashboard = $scope.currentObject.dashboards[i];                
+                                            commonsTools.dashboardEntryBuilder(dashboard.code,dashboard.entries[0]); 
+                                        }//end for(var i=0 ;i<$scope.currentObject.dashboards.length;i++){
                                         commonsTools.hideDialogLoading();
                                     },function(error){
                                          commonsTools.hideDialogLoading();
@@ -10891,7 +10922,7 @@ $scope.gererChangementFichier3 = function(event,model){
                if(args.report.ignore){
                      $scope.showReport();
                }else{
-                   $scope.editDialogBuilderExtern(args.metaData,1);
+                   $scope.editDialogBuilderExtern(args.metaData,1,null,true);
                    $("#myModal").modal("toggle");
                    $("#myModal").modal("show");
                }//end if(args.report.ignore){               

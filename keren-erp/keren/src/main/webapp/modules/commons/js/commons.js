@@ -1089,7 +1089,7 @@ angular.module('keren.core.commons')
              * @param {type} data
              * @returns {undefined}
              */
-            dashboardEntryFormBuilder:function(data){
+            dashboardEntryFormBuilder:function(parentID,data){
                 var formElem = document.createElement('form');
 //                container.appendChild(formElem);
                 formElem.setAttribute('class','form-inline');
@@ -1116,8 +1116,16 @@ angular.module('keren.core.commons')
                     butElem.setAttribute("ng-show",field.activalink);
                     butElem.setAttribute("ng-click" , "dashboardEntryBtn('"+field.model+"','"+field.entity+"' , '"+field.method+"')");
                 }//end for(var i=0 ; i<data.length;i++)
-                return formElem;
+                $("#"+parentID).html("");
+                $("#"+parentID).append(formElem);
+//                return formElem;
             },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
             dashboardEntryBarBuilder:function(parentID , data){
                 var bardata = new Object();
                 bardata.type = "column";
@@ -1139,6 +1147,12 @@ angular.module('keren.core.commons')
                 $("#"+parentID).CanvasJSChart(options);
 //                return divElem;
             },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
             dashboardEntryPieBuilder:function(parentID , data){
                 var bardata = new Object();
                 bardata.type = "pie";
@@ -1162,6 +1176,12 @@ angular.module('keren.core.commons')
                 $("#"+parentID).html("");
                 $("#"+parentID).CanvasJSChart(options);
             },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
             dashboardEntryLineBuilder:function(parentID , data){
                 var bardata = new Object();
                 bardata.type = "spline";
@@ -1181,7 +1201,14 @@ angular.module('keren.core.commons')
                 };
                 $("#"+parentID).html("");
                 $("#"+parentID).CanvasJSChart(options);
-            },dashboardEntryUnkownBuilder:function(parentID , data){
+            },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {unresolved}
+             */
+            dashboardEntryUnkownBuilder:function(parentID , data){
                 var divElem = document.createElement("div");
                 divElem.appendChild(document.createTextNode("Unkown options ..."));
                 return divElem;
@@ -1193,7 +1220,7 @@ angular.module('keren.core.commons')
              */
             dashboardEntryBuilder:function(parentID,data){
                 if(data.type=='data'){
-                    return this.dashboardEntryFormBuilder(data);
+                    return this.dashboardEntryFormBuilder(parentID,data);
                 }else if(data.type=='bar'){
                     return this.dashboardEntryBarBuilder(parentID,data);
                 }else if(data.type=='pie'){
@@ -1209,7 +1236,7 @@ angular.module('keren.core.commons')
              * @param {type} data:dash bord datat
              * @returns {undefined}
              */
-            dashboardBuilder:function(data){
+        dashboardBuilder:function(data){
                 if(data){                                                            
                     var divElem = document.createElement('div');
                     divElem.setAttribute("class","panel panel-primary kanban-col");
@@ -1250,7 +1277,8 @@ angular.module('keren.core.commons')
                         liElem.setAttribute("role","presentation");
                         var aElem = document.createElement("a");
                         liElem.appendChild(aElem);
-                        aElem.setAttribute("role","menuitem");aElem.setAttribute("tabindex","1");
+                        aElem.setAttribute("role","menuitem");
+                        aElem.setAttribute("tabindex","1");
                         aElem.setAttribute("href","#");
                         aElem.setAttribute("ng-click","showEntrypanel('"+data.code+"','"+entry.code+"')");
                         aElem.appendChild(document.createTextNode(entry.label));
@@ -1270,13 +1298,14 @@ angular.module('keren.core.commons')
                     artElem.setAttribute("style","height: 150px;");
                     var container = document.createElement("div");                    
                     container.setAttribute("id",data.code);
-                    container.setAttribute("style","height: 100%; width: 100%;");
-                    var dashentry =this.dashboardEntryBuilder(data.code,data.entries[0]);
-                    if(dashentry){
-                        container.appendChild(dashentry);
-                    }
+                    container.setAttribute("style","height: 100%; width: 100%;");                    
+//                    var dashentry =this.dashboardEntryBuilder(data.code,data.entries[0]);
+//                    if(dashentry){
+//                        container.appendChild(dashentry);
+//                    }//end if(dashentry){
                     artElem.appendChild(container);
 //                    console.log(" $scope.initAction ===== "+divElem.innerHTML);
+//                    this.dashboardEntryBuilder(data.code,data.entries[0]);
                     return divElem;
                 }//end if(data)
             },

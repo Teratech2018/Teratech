@@ -84,7 +84,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	private String cni ;
 	
 	@Predicate(label="Date de délivrance",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations Personelles")
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date datedelivrance ;
 	
 	@Predicate(label="Lieu de délivrance",group=true,groupName="group1",groupLabel="Informations Personelles")
@@ -99,7 +99,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Nombre d'enfants",type=Short.class,group=true,groupName="group1",groupLabel="Informations Personelles")
 	private Short nbreenfants = 0 ;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="Date de naissance",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations Personelles")
 	private Date naissance ;
 	

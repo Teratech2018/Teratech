@@ -66,11 +66,12 @@ public class FileHelper {
     /**
      * Convert Excel file to java Map object
      * @param filename
+     * @param nbrecol
      * @return 
      * @throws java.io.IOException 
      * @throws org.apache.poi.openxml4j.exceptions.InvalidFormatException 
      */
-    public static Map<Long,List<String>> excelToJavaConverter(String filename) throws IOException, InvalidFormatException{
+    public static Map<Long,List<String>> excelToJavaConverter(String filename,int nbrecol) throws IOException, InvalidFormatException{
         File excelfile = new File(filename);
         Map<Long,List<String>> result = new HashMap<>();
         //Creation of the workbook
@@ -86,7 +87,7 @@ public class FileHelper {
         
         while(row!=null){
             
-            List<String> ligne = excelrowToJavaList(row , index);
+            List<String> ligne = excelrowToJavaList(row , nbrecol);
             
             result.put(Long.valueOf(index), ligne);
             
@@ -206,11 +207,9 @@ public class FileHelper {
     private static List<String> excelrowToJavaList(Row row , int index){
         List<String> line = new ArrayList<>();
         int pos = 0 ;
-        String value = getCellValue(row.getCell(pos));
-        while(value!=null){
-            line.add(value);
-            pos++;
-            value = getCellValue(row.createCell(pos));
+        for(int i=0 ;i<index;i++){
+            String value = getCellValue(row.getCell(i));        
+            line.add(value);            
         }//end while(value!=null){
         return line ;
     }

@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.core.FileHelper;
 import com.kerem.core.MetaDataUtil;
-import com.megatimgroup.generic.jax.rs.layer.annot.AnnotationsProcessor;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -50,6 +48,8 @@ public class EcritureSearchRSImpl extends AbstractGenericService<EcritureSearch,
      @Manager(application = "baseaccount", name = "CompteManagerImpl", interf = CompteManagerRemote.class)
     protected CompteManagerRemote manager;
 
+     
+     
     public EcritureSearchRSImpl() {
         super();
     }
@@ -63,7 +63,7 @@ public class EcritureSearchRSImpl extends AbstractGenericService<EcritureSearch,
         try {
             //To change body of generated methods, choose Tools | Templates.
             MetaData meta = MetaDataUtil.getMetaData(new EcritureSearch(), new HashMap<String, MetaData>(),new ArrayList<String>());
-            System.out.println(EcritureSearchRSImpl.class.toString()+".getMetaData() ====== "+meta);
+//            System.out.println(EcritureSearchRSImpl.class.toString()+".getMetaData() ====== "+meta);
             return meta;
         } catch (InstantiationException ex) {
             Logger.getLogger(EcritureSearchRSImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,7 +93,7 @@ public class EcritureSearchRSImpl extends AbstractGenericService<EcritureSearch,
             if(headers.getRequestHeader("values")!=null && !headers.getRequestHeader("values").isEmpty()){
                 ids = gson.fromJson(headers.getRequestHeader("values").get(0),new TypeToken<List<Long>>(){}.getType());
             }//end if(headers.getRequestHeader("values")!=null && !headers.getRequestHeader("values").isEmpty()){
-            System.out.println(EcritureSearchRSImpl.class.toString()+".somethingspdf(EcritureSearch param,@Context HttpHeaders headers) ==== fileter : "+filter+" === values : "+ids);
+//            System.out.println(EcritureSearchRSImpl.class.toString()+".somethingspdf(EcritureSearch param,@Context HttpHeaders headers) ==== fileter : "+filter+" === values : "+ids);
             List<EcritureComptable> datas = ecrituremanager.somethings(param);
             String templateURL = FileHelper.getReportsDirectory()+File.separator+PLAN_CPLE;
             String temp_dir = FileHelper.getTemporalDirectory()+File.separator+"plancmpte.pdf";

@@ -17,6 +17,8 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <serveur.jboss.repertoire.deploiement.war>D:\jboss-as-7.1.1.Final\standalone\deployments\baseaccount.war</serveur.jboss.repertoire.deploiement.war>
+        <repertoire.target.generation.war>E:\ProjetsPersonels\keren\Teratech\baseaccount\baseaccount-service\target\baseaccount.war</repertoire.target.generation.war>
     </properties>
 
     <dependencies>
@@ -123,6 +125,26 @@
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Ant run maven plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mkdir-files-artifact-repo</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <tasks>
+                                <delete file="${serveur.jboss.repertoire.deploiement.war}"/>
+                                <copy file="${repertoire.target.generation.war}" tofile="${serveur.jboss.repertoire.deploiement.war}" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
