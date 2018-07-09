@@ -84,13 +84,14 @@ public class UtilisateurRSImpl
     /**
      * 
      * @param headers
+     * @param user
      * @return 
      */
     @Override
-    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers) {
+    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers,Utilisateur user) {
         //To change body of generated methods, choose Tools | Templates.
-        Gson gson = new Gson();
-        Utilisateur user = gson.fromJson(headers.getRequestHeader("user").get(0),Utilisateur.class);
+//        Gson gson = new Gson();
+//        Utilisateur user = gson.fromJson(headers.getRequestHeader("user").get(0),Utilisateur.class);
         return manager.loadUserApplications(user);
     }
 

@@ -10,7 +10,7 @@ import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.Date;
-import javax.ws.rs.FormParam;
+import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Commercial_2
  */
 @XmlRootElement
+@Entity
 public class EcritureSearch extends BaseElement implements Serializable,Comparable<EcritureSearch>{
 
     @Predicate(label = "Compte de:",type = Compte.class,target = "many-to-one")

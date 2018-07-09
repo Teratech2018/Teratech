@@ -14,6 +14,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -43,5 +45,5 @@ public interface EcritureSearchRS {
     @Produces({"application/pdf"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Path("pdf")
-    public Response somethingspdf(EcritureSearch param);
+    public Response somethingspdf(EcritureSearch param,@Context HttpHeaders headers);
 }

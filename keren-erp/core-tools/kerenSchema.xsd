@@ -49,7 +49,8 @@
             <xs:attribute name="id"  type="xs:string" use="required" />
             <xs:attribute name="label"  type="xs:string"  use="required" />
             <xs:attribute name="modal"  type="xs:boolean" default="false" />
-             <xs:attribute name="link"  type="xs:string" default="" />
+            <xs:attribute name="link"  type="xs:string" default="" />
+            <xs:attribute name="report"  type="xs:string" default="" />
             <xs:attribute name="entity_ref"  type="xs:string"  use="required" />
             <xs:attribute name="model_ref"  type="xs:string"  use="required" />
             <xs:attribute name="method_ref"  type="xs:string"/>
@@ -163,7 +164,8 @@
             <xs:attribute name="class" type="xs:string" />
             <xs:attribute name="entity" type="xs:string" />
             <xs:attribute name="module" type="xs:string" />
-            <xs:attribute name="method" type="xs:string" />            
+            <xs:attribute name="method" type="xs:string" /> 
+            <xs:attribute name="ignore" type="xs:boolean" default="false" />            
         </xs:complexType>        
     </xs:element>
     

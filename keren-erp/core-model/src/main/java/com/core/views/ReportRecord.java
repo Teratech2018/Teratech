@@ -39,7 +39,7 @@ public class ReportRecord extends Record implements Serializable{
     @Predicate(label = "Menu Item Parent" ,type = MenuAction.class,group = true,groupName = "group3",groupLabel = "MENUS ACTIONS",search = true)
     private MenuAction action ;
     
-    private String method ;
+    private String method ;    
     
     private String entity ;
     
@@ -84,6 +84,10 @@ public class ReportRecord extends Record implements Serializable{
     }
     public ReportRecord(ReportRecord report) {
         super(report.code, report.titre, report.modele, report.sequence, null, report.id, report.designation, report.moduleName);
+        super.setIgnore(report.isIgnore());
+        model = report.model;
+        entity = report.entity;
+        search = report.search;
         //this.action = action;
     }
 
@@ -134,6 +138,8 @@ public class ReportRecord extends Record implements Serializable{
     public void setClazz(String clazz) {
         this.clazz = clazz;
     }
+
+    
     
     
     

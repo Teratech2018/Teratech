@@ -295,10 +295,11 @@ angular.module("mainApp")
                                 if(data[0].langue && data[0].langue.codeISO=="en"){
                                     $translate.use('en');
                                 }//end if(data[0].langue.codeISO=="fr_FR"){
-                                $http.defaults.headers.common['user']= angular.toJson(data[0]);           
+//                                console.log("principal.getModulesForCurrentUser ====== "+angular.toJson(data[0]))
+//                                $http.defaults.headers.common['user']= angular.toJson(data[0]);           
                                 //Chargement  des modules
                                 var url = 'http://'+$location.host()+':'+$location.port()+'/kerencore/utilisateur/application'
-                                $http.get(url).then(
+                                $http.put(url , data[0]).then(
                                         function(response){
                                             $scope.modules = response.data;
                                             //console.log(angular.toJson($scope.modules));
@@ -1174,7 +1175,7 @@ angular.module("mainApp")
           */
          $scope.canCreate = function(){
 //             console.log("$scope.canCreate = function() =================== "+angular.toJson($rootScope.globals.user));
-             if($scope.metaData.desablecreate==true){
+             if(angular.isDefined($scope.metaData) && $scope.metaData.desablecreate==true){
                  return false;
              }else if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
@@ -1183,7 +1184,7 @@ angular.module("mainApp")
          };
          
          $scope.canDelete = function(){
-             if($scope.metaData.desabledelete==true){
+             if(angular.isDefined($scope.metaData) && $scope.metaData.desabledelete==true){
                  return false;
              }else if($scope.currentAction){
                  return ($scope.currentAction.securitylevel==0);
@@ -1191,7 +1192,7 @@ angular.module("mainApp")
              return false;
          };
          $scope.canUpdate = function(){
-             if($scope.metaData.desableupdate==true){
+             if(angular.isDefined($scope.metaData) && $scope.metaData.desableupdate==true){
                  return false;
              }else if($scope.currentAction){
                  return ($scope.currentAction.securitylevel>=0)&&($scope.currentAction.securitylevel<=1);
@@ -7447,6 +7448,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           $scope.windowType = "report";
                           if(report.model&&report.entity){
                                 var url_1 = 'http://'+$location.host()+":"+$location.port()+"/"+angular.lowercase(report.model)+"/"+angular.lowercase(report.entity)+"/meta";
+                                console.log("principal.customPrintAction ========================== url : "+url_1);
                                 $http.get(url_1)
                                         .then(function(response){
                                               var meta = response.data;
@@ -10711,7 +10713,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     if($scope.currentAction.viewMode){
                         mode = $scope.currentAction.viewMode.split(",");
                     }//end if($scope.currentAction.viewMode)     
-//                    console.log("InitAction ========== "+$scope.currentAction.viewMode+" ==== "+angular.toJson(mode));                                                    
+//                    console.log("InitAction ========== "+$scope.currentAction.viewMode+" ==== "+angular.toJson($scope.currentAction));                                                    
                     if(mode && mode.length>0 && mode[0]=='dashboard'){
 //                        alert("Chargement tableau de bord ....");
                           $scope.hideannuler=true;
@@ -10735,6 +10737,16 @@ $scope.gererChangementFichier3 = function(event,model){
                                     
                                     return ;
                     }//end if(mode.length>0 && mode[0]=='dashboard')
+                    //Traitement des action de type report
+                    if($scope.currentAction.report!=null && $scope.currentAction.report!=""){
+                        for(var i=0 ; $scope.currentAction.records.length;i++){
+                            var report = $scope.currentAction.records[i];
+                            if(report.code==$scope.currentAction.report){
+                                $scope.customPrintAction(report.id);
+                                return ;
+                            }//end if(report.code==$scope.currentAction.report){
+                        }//end for(var i=0 ; $scope.currentAction.records.length;i++){
+                    }//end if($scope.currentAction.report!=null && $scope.currentAction.report.length>0){
                     $scope.hideannuler=false;
                     if(!$scope.currentAction.modal){                           
                             commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
@@ -10874,14 +10886,100 @@ $scope.gererChangementFichier3 = function(event,model){
             * Reception des evenement de d'edition des etats
             */
           $scope.$on("customreport" , function(event, args){
-//               console.log("customreport =========== "+angular.toJson(args.metaData)); 
+//               console.log("customreport =========== "+angular.toJson(args.report)); 
                $scope.dataCache["report"] = args.report;
-               $scope.editDialogBuilderExtern(args.metaData,1);
-               $("#myModal").modal("toggle");
-               $("#myModal").modal("show");
+               if(args.report.ignore){
+                     $scope.showReport();
+               }else{
+                   $scope.editDialogBuilderExtern(args.metaData,1);
+                   $("#myModal").modal("toggle");
+                   $("#myModal").modal("show");
+               }//end if(args.report.ignore){               
           });
           
-         
+          $scope.getSelectLines = function(){
+              var values = new Array();
+              for(var i=0 ; i<$scope.datas.length;i++){
+                  if($scope.datas[i].selected){
+                      values.push($scope.datas[i].id);
+                  }//end if($scope.datas[i].selected){
+              }//end for(var i=0 ; i<$scope.selectedObjects;i++){
+              return values;
+          };
+          /**
+           * 
+           * @returns {undefined}
+           */
+         $scope.showReport = function(){               
+                            var report = $scope.dataCache["report"];
+                            $http.defaults.headers.common['predicats']= angular.toJson($scope.predicats); 
+                            $http.defaults.headers.common['values']= angular.toJson($scope.getSelectLines()); 
+                            var url = 'http://'+$location.host()+':'+$location.port()+'/'+angular.lowercase(report.model)+'/'+angular.lowercase(report.entity)+'/'+report.method;
+//                            commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");        
+             //               $http.defaults.headers.common['args']= angular.toJson($scope.temporalData);
+             //$http.get(url, {responseType: 'arraybuffer',data:angular.toJson($scope.temporalData)})
+                            if(report.extern==false){
+                                $http.put(url,$scope.temporalData)
+                                        .then(function(response){
+                                            $scope.temporalDatas = response.data;   
+             //                               console.log("$scope.addDialogAction ========= "+angular.toJson($scope.temporalDatas));
+//                                            commonsTools.hideDialogLoading();
+                                            $scope.displayReportPanel(report.script);  
+                                        },function(error){
+                                            commonsTools.showMessageDialog(error);
+//                                            commonsTools.hideDialogLoading();
+                                        });
+                            }else{
+                                  $http.put(url,$scope.temporalData, {responseType: 'arraybuffer'})
+                                    .then(function(response){
+                                           var contentElem = $scope.viewSelector("report");
+             //                               console.log(angular.toJson("$scope.addDialogAction ====== "+angular.toJson(response)));
+                                            var viewer = document.createElement("iframe");
+                                            viewer.setAttribute("id","iframe0001");
+                                            viewer.setAttribute("src",url);
+                                            viewer.setAttribute("alt","pdf");
+                                            viewer.setAttribute("width","100%");
+                                            viewer.setAttribute("height","700px");
+             //                               viewer.setAttribute("pluginspage","http://www.adobe.com/products/acrobat/readstep2.html");
+             //                               viewer.setAttribute("class","ng-isolate-scope");
+                                            var divElem = document.createElement("div");
+                                            divElem.setAttribute("id","report");
+                                            divElem.setAttribute("width","100%");
+                                            divElem.setAttribute("height","100%");
+                                            divElem.appendChild(viewer);
+                                            var items = contentElem.find('div');
+                                             for(var i=0; i<items.length;i++){
+                                                if(items.eq(i).attr("id")=="report"){
+                                                      items.eq(i).replaceWith(divElem);                               
+                                                }  
+                                            }//enn$d for(var i=0; i<items.length;i++){                               
+                                            // ///Remplacement dans la vue
+                                           var items = $element.find("div");
+                                           for(var i=0; i<items.length;i++){
+                                                if(items.eq(i).attr("id")=="innerpanel"){
+                                                      items.eq(i).replaceWith(contentElem);
+                                                       //console.log(" ======================= on a trouve report  innerpanel");
+                                                }//end if(items.eq(i).attr("id")=="innerpanel")  
+                                           }//end for(var i=0; i<items.length;i++)
+                                            var compileFn = $compile(contentElem);
+                                            compileFn($scope);                              
+                                             var arrayBufferView = new Uint8Array(response.data );
+                                             var blob = new Blob( [ arrayBufferView ], { type: "application/pdf" } );
+                                             var urlCreator = window.URL || window.webkitURL;
+                                             var pdfUrl = urlCreator.createObjectURL( blob );
+                                             var pdf = document.querySelector( "#iframe0001");
+                                             pdf.src = pdfUrl;
+             //                               console.log($scope.temporalData);                      
+//                                             commonsTools.hideDialogLoading();
+                                    },function(error){
+                                        commonsTools.showMessageDialog(error);
+//                                        commonsTools.hideDialogLoading();
+                                    });
+                            }//end if(report.extern==false)
+              
+//               console.log("Critere de recherh=c*************** "+$scope.dataCache["report"]+" === "+angular.toJson($scope.temporalData));
+              
+         };
       },
       /**
        * 
