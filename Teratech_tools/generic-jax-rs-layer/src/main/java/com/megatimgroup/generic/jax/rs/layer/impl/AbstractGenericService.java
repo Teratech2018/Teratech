@@ -241,7 +241,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 }else {
                     datas = FileHelper.excelToJavaConverter(filename);
                 }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
-                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
+//                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
                //Construction of RulesContainer
                 RulesContainer container = RulesContainer.newInstance();
                 for(ImportLigne ligne:entity.getFields()){
