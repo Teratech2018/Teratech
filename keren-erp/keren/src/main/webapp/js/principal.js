@@ -11089,6 +11089,9 @@ $scope.gererChangementFichier3 = function(event,model){
                     }//end if(mode.length>0 && mode[0]=='dashboard')
                     //Traitement des action de type report
                     if($scope.currentAction.report!=null && $scope.currentAction.report!=""){
+                        if($scope.windowType!='list' && !angular.isDefined(index)){
+                            $scope.listFramePanelBuilder($scope.metaData);
+                        }//end if($scope.windowType!='list')
                         for(var i=0 ; $scope.currentAction.records.length;i++){
                             var report = $scope.currentAction.records[i];
                             if(report.code==$scope.currentAction.report){
