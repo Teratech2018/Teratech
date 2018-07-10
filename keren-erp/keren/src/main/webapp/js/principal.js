@@ -7958,6 +7958,11 @@ $scope.gererChangementFichier3 = function(event,model){
          * @returns {undefined}
          */
         $scope.addNewCalendar = function(){
+            var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+            if(session==null){
+                $scope.deconnexion();
+                return;
+            }//end if(session==null){
            $scope.windowType = 'new';
            //Mise a jour des tempons
             $scope.reset();
@@ -7992,7 +7997,12 @@ $scope.gererChangementFichier3 = function(event,model){
           $scope.saveOrUpdate = function(){
                //On affiche le dialog
 //               $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-               try{  
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
+              try{  
                      var validate = $scope.validateFields($scope.metaData , $scope.currentObject);
 //                     console.log("$scope.saveOrUpdate === "+$scope.windowType+" ====== "+angular.toJson($scope.currentObject));
                      if($scope.pagination.totalPages>0){
@@ -8192,6 +8202,11 @@ $scope.gererChangementFichier3 = function(event,model){
            * @returns {undefined}
            */
           $scope.dupliquerAction = function(){ 
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               $scope.dataCache['resources'] = new Array();
                $scope.dataCache['names'] = new Array();
                $scope.windowType = 'new';               
@@ -8214,6 +8229,11 @@ $scope.gererChangementFichier3 = function(event,model){
 //               Update 
 //          **/
           $scope.updateAction = function(){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
                $scope.dataCache['resources'] = new Array();
                $scope.dataCache['names'] = new Array();
                $scope.windowType = 'update';
@@ -8249,6 +8269,11 @@ $scope.gererChangementFichier3 = function(event,model){
            */
           $scope.viewAction = function(item){
 //                console.log("$scope.viewAction ============== "+angular.toJson(item));
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
                 $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                 $scope.windowType = 'view';
                 $scope.selectedObjects = [];               
@@ -8370,7 +8395,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           $http.get(url2)
                                   .then(function(response){
                                       var data = response.data;
-                                      console.log("principal.dashboardEntryBtn = function(model , entity , method) ============ url : "+url2+" === \n data : "+angular.toJson(data));
+//                                      console.log("principal.dashboardEntryBtn = function(model , entity , method) ============ url : "+url2+" === \n data : "+angular.toJson(data));
                                       $scope.listDialogBuilderExternal(data,metadata,1);
                                       commonsTools.hideDialogLoading();
                                       $("#globalModal").modal("toggle");
@@ -8459,6 +8484,11 @@ $scope.gererChangementFichier3 = function(event,model){
            impoort
           **/
           $scope.importAction = function(){  
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               $scope.importData = commonsTools.createImportEntity($scope.metaData);
               $scope.displayImportPanel();
 //              console.log("Vous avez cliquez sur  Import "+angular.toJson($scope.importData));
@@ -8483,6 +8513,11 @@ $scope.gererChangementFichier3 = function(event,model){
            * @returns {undefined}
            */
           $scope.importFileAction = function(){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               if($scope.importData.fichier!=null){
                 var imp = angular.copy($scope.importData);
                 var parts = $scope.importData.fichier.split('\\');
@@ -8511,6 +8546,11 @@ $scope.gererChangementFichier3 = function(event,model){
         * @returns {undefined}
         */
        $scope.validerFileAction = function(){
+            var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
              if($scope.importData.fichier!=null){
                 var imp = angular.copy($scope.importData);
                 var parts = $scope.importData.fichier.split('\\');
@@ -8633,6 +8673,11 @@ $scope.gererChangementFichier3 = function(event,model){
            * @returns {undefined}
            */
           $scope.exportDataAction = function(){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               $scope.importData.fichier = $scope.metaData.entityName;
               if($scope.tableheaderselected==false && $scope.selectedObjects.length<=0){
                   var message="Veuillez selectionner les données à exporter";
@@ -8693,7 +8738,12 @@ $scope.gererChangementFichier3 = function(event,model){
               }//end for(var i=0 ; i<$scope.importData.fields.length;i++){
               return false ;
           };
-          $scope.exportAction = function(){   
+          $scope.exportAction = function(){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
                  $scope.importData = commonsTools.createImportEntity($scope.metaData);
                  $scope.exportDialogBuilderExtern(1);             
           };
@@ -8704,7 +8754,12 @@ $scope.gererChangementFichier3 = function(event,model){
            * @param {type} source
            * @returns {undefined}
            */
-          $scope.printAction = function(){   
+          $scope.printAction = function(){  
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               $scope.showreporttitle = true;
             $scope.displayReportPanel();            
           };
@@ -8713,6 +8768,11 @@ $scope.gererChangementFichier3 = function(event,model){
            * @returns {undefined}
            */
           $scope.installAction = function(){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               if($scope.currentObject.active){
                   //Deja installer on va proceder a la desinstallation
                   $scope.uninstallApplication();
@@ -8728,6 +8788,11 @@ $scope.gererChangementFichier3 = function(event,model){
  * @returns {undefined}
  */
          $scope.annulerAction2 = function(model){
+              var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
             $scope.innerWindowType = false;            
              if(model){
                 var key = commonsTools.keygenerator(model);
@@ -8762,6 +8827,11 @@ $scope.gererChangementFichier3 = function(event,model){
             Annulation de la saisie
           **/
           $scope.annulerAction = function(){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
              //console.log("Vous avez cliquez sur annulerAction");
              $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
              $scope.enablefollowerpanel = false;           
@@ -8786,6 +8856,11 @@ $scope.gererChangementFichier3 = function(event,model){
              Recherche les données selon les criteres contenu dans predicats
           **/
           $scope.searchAction = function(){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               restService.count($scope.predicats)
                 .$promise.then(function(data){
                     $scope.pagination.currentPage=1;
@@ -8829,6 +8904,11 @@ $scope.gererChangementFichier3 = function(event,model){
              Gestion des messages
          **/
          $scope.messagesAction = function(){
+              var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
              //activer le zone de saisie des messages
              $scope.enablefollowerpanel = true;
              $scope.dataCache['messageobject'] = $scope.createemptyMessage(null,null,null);
@@ -8841,6 +8921,11 @@ $scope.gererChangementFichier3 = function(event,model){
              Gestion des notes internes
           **/
          $scope.notesInterneAction = function(){
+              var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
               $scope.enablefollowerpanel = true;
               $scope.dataCache['messageobject'] = $scope.createemptyMessage(null,$rootScope.globals.user,null);
               $scope.dataCache['messageobject'].sender = $rootScope.globals.user;
@@ -9050,6 +9135,11 @@ $scope.gererChangementFichier3 = function(event,model){
              Active ou desactive le suivie
          **/
          $scope.suivreAction = function(){
+              var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+                   return;
+               }//end if(session==null){
              $scope.activefollower = !$scope.activefollower;
              $scope.dataCache['follower'].actif = $scope.activefollower;
              if($scope.activefollower==false){
@@ -11007,6 +11097,7 @@ $scope.gererChangementFichier3 = function(event,model){
                var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
                if(session==null){
                    $scope.deconnexion();
+                   return;
                }//end if(session==null){
                if(args.action){
                     $scope.dataCache['currentObject'] = $scope.currentObject;

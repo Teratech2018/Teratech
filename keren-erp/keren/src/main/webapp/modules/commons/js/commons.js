@@ -98,7 +98,7 @@ angular.module('keren.core.commons')
                  * @returns {undefined}
                  */
                showDialogLoading :function(texte, color, colorContent, topPos,leftPos) {
-                   console.log("commons.showDialogLoading ================== intree ")
+//                   console.log("commons.showDialogLoading ================== intree ")
                    var idElement = "dialogContent";
                    $('#'+idElement).remove();
                    
@@ -134,7 +134,7 @@ angular.module('keren.core.commons')
                },//end
                
                hideDialogLoading :function() {
-                   console.log("commons.hideDialogLoading ================== sortie ");
+//                   console.log("commons.hideDialogLoading ================== sortie ");
                     //On stoppe le moteur
                     this.stopMoteur(stopTimer);
                     var idElement = "dialogContent";
@@ -148,7 +148,7 @@ angular.module('keren.core.commons')
                             $('#'+idElement+"_Full").remove();
                     });
                     
-                    console.log("commons.hideDialogLoading ================== sortie 2");
+//                    console.log("commons.hideDialogLoading ================== sortie 2");
                },
                /**
                 * 
@@ -206,8 +206,8 @@ angular.module('keren.core.commons')
                                   if(!metaData.columns[i].optional || metaData.columns[i].min){
                                       if(!currentObject[metaData.columns[i].fieldName]){
                                           champs.push(metaData.columns[i].fieldLabel);
-                                      }
-                                  }
+                                      }//end if(!currentObject[metaData.columns[i].fieldName]){
+                                  }//end if(!metaData.columns[i].optional || metaData.columns[i].min){
                                   //Construction des champs pour unicite
                                   if(metaData.columns[i].unique){
                                       var pred = new Object();
@@ -215,9 +215,9 @@ angular.module('keren.core.commons')
                                       pred.fieldName =  metaData.columns[i].fieldName;
                                       pred.fieldValue = currentObject[metaData.columns[i].fieldName];
                                       uniqueContraints.push(pred);
-                                  }
-                              }
-                            }
+                                  }//end if(metaData.columns[i].unique)
+                              }//end for(var i=0 ; i< metaData.columns.length;i++){
+                            }//end if(metaData.columns){
                             //Cas des groups
                             if(metaData.groups){
                                for(var i=0;i<metaData.groups.length;i++){
@@ -238,16 +238,16 @@ angular.module('keren.core.commons')
                                                pred.value =  currentObject[metaData.groups[i].columns[j].fieldName];
                                                uniqueContraints.push(pred);
                                                // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
-                                         }
+                                         }//end if(!metaData.groups[i].columns[j].optional || metaData.groups[i].columns[j].
                                          //Construction des champs pour unicite
-                                       if(metaData.groups[i].columns[j].unique){
-                                           uniqueContraints.push(metaData.groups[i].columns[j].fieldLabel);
-                                       }
-                                      }
-                                   }
-                               }
-                            }
-                       }
+                                        if(metaData.groups[i].columns[j].unique){
+                                            uniqueContraints.push(metaData.groups[i].columns[j].fieldLabel);
+                                        }//end if(metaData.groups[i].columns[j].unique){
+                                      }//end for(var j=0 ; j< metaData.groups[i].columns.length;j++){
+                                   }//end if(metaData.groups[i].columns){
+                               }//end for(var i=0;i<metaData.groups.length;i++){
+                            }//end if(metaData.groups){
+                       }//end if(metaData && currentObject){
                        return champs;
 
                   },
