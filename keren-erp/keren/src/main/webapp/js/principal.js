@@ -1263,7 +1263,14 @@ angular.module("mainApp")
              }//end if($scope.currentAction){ 
              return false ;
          };
-         
+         /**
+            * Deconnexion de l'applicatiopn
+            * @returns {undefined}
+            */
+           $scope.deconnexion = function(){
+                 //$scope.hideDialogLoading();                                                        
+               $rootScope.$broadcast("login" , {  });  
+           };
          $scope.canDelete = function(){
              if(angular.isDefined($scope.metaData) && $scope.metaData.desabledelete==true){
                  return false;
@@ -6655,7 +6662,11 @@ $scope.gererChangementFichier3 = function(event,model){
                 var buttonElem = document.createElement('button');
                 footerDiv.appendChild(buttonElem);
                 buttonElem.setAttribute('class' , 'btn btn-primary');
-                buttonElem.setAttribute('ng-click' , "addDialogAction('temporalData' , 'save_only','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",null,'"+link+"')");
+                if(angular.isDefined(report) && report==true){
+                    buttonElem.setAttribute('ng-click', "printDialogAction('temporalData' , 'save_only','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",null,'"+link+"')"); 
+                }else{
+                    buttonElem.setAttribute('ng-click', "addDialogAction('temporalData' , 'save_only','"+metaData.entityName+"' , '"+metaData.moduleName+"',null,"+(index+1)+",null,'"+link+"')"); 
+                }//end if(angular.isDefined(report) && report==true){
                 if(angular.isDefined(report) && report==true){
                     buttonElem.appendChild(document.createTextNode("{{'Imprimer' | translate}}"));
                 }else{
@@ -6902,7 +6913,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 modalID = "myModal2";
             }
            $scope.innerWindowType = false;
-           if($scope.windowType=="report"){
+         /**  if($scope.windowType=="report"){
                var report = $scope.dataCache["report"];
                var url = 'http://'+$location.host()+':'+$location.port()+'/'+angular.lowercase(report.model)+'/'+angular.lowercase(report.entity)+'/'+report.method;
                commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");        
@@ -6969,7 +6980,7 @@ $scope.gererChangementFichier3 = function(event,model){
               
 //               console.log("Critere de recherh=c*************** "+$scope.dataCache["report"]+" === "+angular.toJson($scope.temporalData));
                $("#globalModal").modal("hide");
-           }else//end if($scope.windowType=="report")
+           }else **///end if($scope.windowType=="report")
            if(type=="new"){ 
                  //$scope.displayEditPanel();
                  var part = model.split(".");
@@ -7077,7 +7088,7 @@ $scope.gererChangementFichier3 = function(event,model){
 //                    }//end if(parts[0]=='currentObject')
 //                    if(!angular.isDefined(templateModel[parts[col]])){
                         templateModel = $scope.getParentModel(model);
-//                        console.log("$scope.addDialogAction =list ===== fieldName: "+parts[col]+" == modelpath:"+model+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
+                        console.log("$scope.addDialogAction =list ===== fieldName: "+parts[col]+" == modelpath:"+model+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
 //                    }//end if(!angular.isDefined(templateModel[parts[col]]))
                     
                     if(angular.isArray(templateModel[parts[col]])){
@@ -7162,7 +7173,105 @@ $scope.gererChangementFichier3 = function(event,model){
             $('#'+modalID).modal('hide');            
         };
         
-                
+        /**
+         * 
+         * @param {type} model
+         * @param {type} type
+         * @param {type} entityName
+         * @param {type} moduleName
+         * @param {type} customfooter
+         * @param {type} index
+         * @param {type} modelpath
+         * @param {type} link
+         * @returns {undefined}
+         */
+         $scope.printDialogAction = function(model , type,entityName , moduleName,customfooter,index,modelpath,link){  
+//           console.log("$scope.addDialogAction ===== model:"+model+" type:"+type+" entity:"+entityName+" module:"+moduleName+"  index:"+index+" ::: modelpath:"+modelpath+"  link : "+link);
+                var modalID = "";
+                var endIndex = index-1;            
+                if(endIndex==1){
+                    modalID = "myModal";
+                }else if(endIndex==2){
+                    modalID = "globalModal";
+                }else if(endIndex==3){
+                    modalID = "myModal1";
+                }else if(endIndex==4){
+                    modalID = "myModal2";
+                }
+               $scope.innerWindowType = false;          
+               var report = $scope.dataCache["report"];
+               var url = 'http://'+$location.host()+':'+$location.port()+'/'+angular.lowercase(report.model)+'/'+angular.lowercase(report.entity)+'/'+report.method;
+               commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");        
+//               $http.defaults.headers.common['args']= angular.toJson($scope.temporalData);
+//$http.get(url, {responseType: 'arraybuffer',data:angular.toJson($scope.temporalData)})
+               if(report.extern==false){
+                   $http.put(url,$scope.temporalData)
+                           .then(function(response){
+                               $scope.temporalDatas = response.data;   
+//                               console.log("$scope.addDialogAction ========= "+angular.toJson($scope.temporalDatas));
+                               commonsTools.hideDialogLoading();
+                               $scope.displayReportPanel(report.script);  
+                           },function(error){
+                               commonsTools.showMessageDialog(error);
+                               commonsTools.hideDialogLoading();
+                           });
+               }else{
+                     $http.put(url,$scope.temporalData, {responseType: 'arraybuffer'})
+                       .then(function(response){
+                              var contentElem = $scope.viewSelector("report");
+//                               console.log(angular.toJson("$scope.addDialogAction ====== "+angular.toJson(response)));
+                               var viewer = document.createElement("iframe");
+                               viewer.setAttribute("id","iframe0001");
+                               viewer.setAttribute("src",url);
+                               viewer.setAttribute("alt","pdf");
+                               viewer.setAttribute("width","100%");
+                               viewer.setAttribute("height","700px");
+//                               viewer.setAttribute("pluginspage","http://www.adobe.com/products/acrobat/readstep2.html");
+//                               viewer.setAttribute("class","ng-isolate-scope");
+                               var divElem = document.createElement("div");
+                               divElem.setAttribute("id","report");
+                               divElem.setAttribute("width","100%");
+                               divElem.setAttribute("height","100%");
+                               divElem.appendChild(viewer);
+                               var items = contentElem.find('div');
+                                for(var i=0; i<items.length;i++){
+                                   if(items.eq(i).attr("id")=="report"){
+                                         items.eq(i).replaceWith(divElem);                               
+                                   }  
+                               }//enn$d for(var i=0; i<items.length;i++){                               
+                               // ///Remplacement dans la vue
+                              var items = $element.find("div");
+                              for(var i=0; i<items.length;i++){
+                                   if(items.eq(i).attr("id")=="innerpanel"){
+                                         items.eq(i).replaceWith(contentElem);
+                                          //console.log(" ======================= on a trouve report  innerpanel");
+                                   }//end if(items.eq(i).attr("id")=="innerpanel")  
+                              }//end for(var i=0; i<items.length;i++)
+                               var compileFn = $compile(contentElem);
+                               compileFn($scope);                              
+                                var arrayBufferView = new Uint8Array(response.data );
+                                var blob = new Blob( [ arrayBufferView ], { type: "application/pdf" } );
+                                var urlCreator = window.URL || window.webkitURL;
+                                var pdfUrl = urlCreator.createObjectURL( blob );
+                                var pdf = document.querySelector( "#iframe0001");
+                                pdf.src = pdfUrl;
+//                               console.log($scope.temporalData);                      
+                                commonsTools.hideDialogLoading();
+                       },function(error){
+                           commonsTools.showMessageDialog(error);
+                           commonsTools.hideDialogLoading();
+                       });
+               }//end if(report.extern==false)
+              
+//               console.log("Critere de recherh=c*************** "+$scope.dataCache["report"]+" === "+angular.toJson($scope.temporalData));
+               $("#globalModal").modal("hide");
+           //end if($scope.windowType=="report")           
+            $timeout(function() {
+                $('.selectpicker').selectpicker('refresh');
+
+            });           
+            $('#'+modalID).modal('hide');            
+        };        
        /***
         * 
         */
