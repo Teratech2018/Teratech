@@ -71,13 +71,15 @@ angular.module('keren.core.commons')
              * @returns {undefined}
              */
             var showDialogLoadingFull = function(idElement, logo, color, opacity){
-                   $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:5000;text-align:center;background-color:black'></div>");
+                    
+                    $('#'+idElement).remove();
+                
+                    $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:5000;text-align:center;background-color:black'></div>");
                     $('#'+idElement).append("<div id='dialogFullWindow' style='width:100%;margin:auto;margin-top:22%;color:white;text-align:center'>"+logo+"</div>");
 
                     //Changer le proprietes css
                     $('#'+idElement).css("opacity",opacity);
                     $('#dialogFullWindow').css("color",color);
-
 
                     //Afficher le dialog
                     $('#'+idElement).hide();
@@ -96,7 +98,10 @@ angular.module('keren.core.commons')
                  * @returns {undefined}
                  */
                showDialogLoading :function(texte, color, colorContent, topPos,leftPos) {
+                   console.log("commons.showDialogLoading ================== intree ")
                    var idElement = "dialogContent";
+                   $('#'+idElement).remove();
+                   
                     $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:2000;text-align:center;'></div>");
                     $('#'+idElement).append("<div id='dialogWindow'></div>");
                     $('#dialogWindow').append("<span id='dialogWindowText' style='text-align:center;padding:8px;padding-right:16px;padding-left:16px;display:inline-block;color:white;border-radius:3px;font-size:80%;'>"+texte+"</span>");
@@ -129,6 +134,7 @@ angular.module('keren.core.commons')
                },//end
                
                hideDialogLoading :function() {
+                   console.log("commons.hideDialogLoading ================== sortie ");
                     //On stoppe le moteur
                     this.stopMoteur(stopTimer);
                     var idElement = "dialogContent";
@@ -141,6 +147,8 @@ angular.module('keren.core.commons')
                     $('#'+idElement+"_Full").fadeOut(function(){
                             $('#'+idElement+"_Full").remove();
                     });
+                    
+                    console.log("commons.hideDialogLoading ================== sortie 2");
                },
                /**
                 * 
@@ -1340,7 +1348,56 @@ angular.module('keren.core.commons')
                     }
                 }
             },
-            
+            /**
+             * 
+             * @param {type} module
+             * @param {type} action
+             * @param {type} entity
+             * @param {type} user
+             * @returns {commons_L61.commonsAnonym$3.createsession.session|Object}
+             */
+            createsession: function(module,action,entity,user){
+                 var session = new Object();
+                 session.module = module ;
+                 session.action = action ;
+                 session.entity = entity;
+                 session.user = user;
+                 this.createCookie("session_"+session.user,angular.toJson(session),30);
+//           console.log("principal.createsession ===== cookie read : "+commonsTools.readCookie("session_"+session.user));
+               return session ;
+            },
+            /**
+             * 
+             * @param {type} name
+             * @param {type} value
+             * @param {type} minute
+             * @returns {undefined}
+             */
+            createCookie: function(name,value,days){
+                if(days){
+                    var date = new Date();
+                    date.setTime(date.getTime()+(days*60*1000));
+                    var expires ="; expires="+date.toGMTString();
+                }else{
+                    var expires ="";
+                }//end if(days){
+                document.cookie = name+"="+value+expires+"; path=/";
+            },
+            /**
+             * 
+             * @param {type} name
+             * @returns {undefined}
+             */
+            readCookie: function(name){
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                        var c = ca[i];
+                        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            },
             /**
              * 
              * @param {type} id

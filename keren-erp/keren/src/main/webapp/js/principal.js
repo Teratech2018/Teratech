@@ -280,6 +280,7 @@ angular.module("mainApp")
              return false;
          }//end if($rootScope.globals.user.adminlevel==0||
      };
+      
      /**
       * Chargement des modules de l'utilisateur
       * @returns {undefined}
@@ -306,7 +307,15 @@ angular.module("mainApp")
                                         function(response){
                                             $scope.modules = response.data;
                                             //console.log(angular.toJson($scope.modules));
-                                            $scope.discussionModule();
+                                            var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+                                            if(session==null){
+                                                commonsTools.createsession(null,null,null,$rootScope.globals.user.id);
+                                                $scope.discussionModule();
+                                            }else{
+//                                                console.log("principal.327 ============== session precedente : "+session);
+                                                session = angular.fromJson(session);
+                                                $scope.restoreSession(session);
+                                            }//end if(session==null){
                                             commonsTools.hideDialogLoading();
                                         },function(error){
                                              commonsTools.hideDialogLoading();
@@ -320,7 +329,33 @@ angular.module("mainApp")
                         //Chargement du logo de l'application
                         //restService.downloadPNG("appli_icon_id","logo.png");
      };
-
+/**
+ * 
+ * @param {type} session
+ * @returns {undefined}
+ */
+  $scope.restoreSession = function(session){      
+      var module = null;
+      var action = null;
+      if(session.module==null){
+          $scope.discussionModule();
+      }else if(session.module==$scope.applicationsModule.name){
+          module = $scope.applicationsModule;
+      }else if(session.module==$scope.configurationModule.name){
+          module = $scope.configurationModule;
+      }else{
+            for(var i=0;i<$scope.modules.length;i++){
+                var mod = $scope.modules[i];
+                if(mod.name === session.module){
+                    module = mod ;
+                    break;
+                }//end if(mod.id == session.module){
+            }//end for(var i=0;i<$scope.modules.length;i++){
+        }//end if(session.module==null){
+      if(module!=null){
+            $scope.getModule(module,session.action,session.entity);           
+      }//end if(module!=null){
+  };
 /**
  * Filter action without appropiate security level
  * @param {type} module
@@ -337,11 +372,35 @@ angular.module("mainApp")
              }//end for(var j=0 ; j<group.actions.length,j++){
          }//end for(var i=0;i<module.groups.length;i++){
      };
-    /** 
-      Function de chargement du module 
+     /**
+      * Return action of module whith name  name 
+      * @param {type} module
+      * @param {type} name
+      * @returns {group.actions|undefined}
+      */
+     $scope.getAction = function(module,name){
+         if(name!=null && name !=""){
+            for(var i=0;i<module.groups.length;i++){
+                var group = module.groups[i];
+                for(var j=0 ; j<group.actions.length;j++){
+                    var action = group.actions[j];
+                    if(action.name === name){
+                        return action;
+                    }//end if(action.securitylevel !=3){
+                }//end for(var j=0 ; j<group.actions.length,j++){
+            }//end for(var i=0;i<module.groups.length;i++){
+        }//end if(name!=null && name !=""){
+         return $scope.firstActiongroupFilter(module);
+     };
+   /**
+    * Function de chargement du module 
       courant(module selectionné)
-    **/
-    $scope.getModule = function(module){      
+    * @param {type} module
+    * @param {type} action
+    * @param {type} item
+    * @returns {undefined}
+    */
+    $scope.getModule = function(module , action ,item){      
     	if(angular.isDefined(module)){    		
             $scope.currentModule = module;
             $scope.enabledVerticalMenu = false;
@@ -352,7 +411,7 @@ angular.module("mainApp")
                //Chargement de l'action par defaut
                 $scope.enabledVerticalMenu = true;
                 //$scope.getSelectAction(module.groups[0].actions[0]);           
-                $scope.getSelectAction($scope.firstActiongroupFilter(module));             
+                $scope.getSelectAction($scope.getAction(module , action),item);             
               }//end if(angular.isDefined(module.groups) && (module.groups.length > 0))             
               //Hide the calendar panel
                $scope.showCalendar = false ;
@@ -386,16 +445,19 @@ angular.module("mainApp")
         }//end if($scope.currentAction.name==module.name){
         return "";
     };
-    /**  
-       Fonction de traitement de l'action
+    /**
+     * Fonction de traitement de l'action
        courant()
-    **/
-    $scope.getSelectAction = function(action){
+     * @param {type} action
+     * @param {type} entity
+     * @returns {undefined}
+     */
+    $scope.getSelectAction = function(action , entity){
     	$scope.currentAction = null;	
     	if(angular.isDefined(action)){
     		$scope.currentAction = action;
                 $rootScope.$broadcast("currentActionUpdate" ,{
-                                   action:$scope.currentAction , verticalMenu:$scope.enabledVerticalMenu});  
+                 item:entity, action:$scope.currentAction , verticalMenu:$scope.enabledVerticalMenu});  
     	}//end if(angular.isDefined(action)){    	
     };
 
@@ -4241,7 +4303,7 @@ $scope.gererChangementFichier3 = function(event,model){
                      for(var j=0 ; j<groups[i].metaArray.length;j++){
                             //Cas des données de type oneToManay et ManyToMany
                             var tableElem = null;
-                            console.log(angular.toJson(groups[i].metaArray));  
+//                            console.log(angular.toJson(groups[i].metaArray));  
                             if(groups[i].metaArray[j].target == 'one-to-many'){
                                 tableElem = $scope.oneToManyComponent(model+'.'+groups[i].metaArray[j].fieldName 
                                                   , labelText 
@@ -5442,12 +5504,15 @@ $scope.gererChangementFichier3 = function(event,model){
               if($scope.currentAction && angular.isString($scope.currentAction)){
                   $scope.currentAction = angular.fromJson($scope.currentAction);
               }//end if($scope.currentAction && angular.isString($scope.currentAction))
+              //$scope.createsession()
+//              console.log("principal.displayEditPanel  ======= session data : "+angular.toJson($scope.createsession()));
               $scope.enablefollowerpanel = false;
               $scope.desablecreateedit = $scope.isviewOperation()||!$scope.canCreate();//||!$scope.canUpdate();
               $scope.desableupdateedit = $scope.isupdateOperation()||!$scope.canUpdate()||$scope.iscreateOperation();
               $scope.desabledeleteedit = !$scope.canDelete()||$scope.iscreateOperation()||$scope.isupdateOperation()||($scope.showApplication==true&&$scope.currentObject.active==true);
               $scope.desableprintedit=$scope.iscreateOperation()||!$scope.canPrint()||$scope.isviewOperation()||$scope.isupdateOperation();
 //              console.log("principal.scope.displayEditPanel = function() ========================== $scope.desablecreateedit : "+$scope.desablecreateedit+" === canCreate : "+$scope.canCreate()+" === canUpdate:"+$scope.canUpdate());              
+              $scope.createsession();
               $scope.innerWindowType = false;
               var listElem  = null ; 
               var content = $scope.viewSelector('detail') ;
@@ -7471,7 +7536,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           $scope.windowType = "report";
                           if(report.model&&report.entity){
                                 var url_1 = 'http://'+$location.host()+":"+$location.port()+"/"+angular.lowercase(report.model)+"/"+angular.lowercase(report.entity)+"/meta";
-                                console.log("principal.customPrintAction ========================== url : "+url_1);
+//                                console.log("principal.customPrintAction ========================== url : "+url_1);
                                 $http.get(url_1)
                                         .then(function(response){
                                               var meta = response.data;
@@ -7497,7 +7562,7 @@ $scope.gererChangementFichier3 = function(event,model){
                Chargement des donnees 
                Rafresh the data from the data store
        **/
-       $scope.loadData = function(){
+       $scope.loadData = function(item){
            //Chargement des donnees
                 //restService.url('societe');
 //               console.log('$scope.loadData = function() ::::::::::::::::'+$scope.pagination.currentPage+"==== "+$scope.pagination.totalPages+" ==== "+angular.isNumber($scope.pagination.totalPages));
@@ -7536,7 +7601,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                         $scope.pagination.hasnext();
                                         $scope.pagination.hasprevious();
                                         $rootScope.$broadcast("dataLoad" , {
-                                            message:"dataLoad"
+                                            message:"dataLoad",item:item
                                         });
                                         commonsTools.hideDialogLoading();
                                     }
@@ -8176,6 +8241,7 @@ $scope.gererChangementFichier3 = function(event,model){
                //console.log("Vous avez cliquez sur  Update : "+$scope.currentObject.name+" ::::: "+$scope.currentObject.shortDescription);              
           };
 
+           
           /**
            * 
            * @param {type} item
@@ -8218,6 +8284,42 @@ $scope.gererChangementFichier3 = function(event,model){
                //$scope.createEmptyObject($scope.metaData);               
           };
 
+          $scope.viewbyIDAction = function(id){
+//                console.log("$scope.viewAction ============== "+angular.toJson(item));
+                $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                $scope.windowType = 'view';
+                $scope.selectedObjects = [];     
+                 restService.findById(id).$promise
+                        .then(function(data){
+                            $scope.currentObject = data;
+                            //Recuperation du premier element
+                            var index = commonsTools.getIndex($scope.datas,data);
+                            if(angular.isDefined(index)){
+                                $scope.pagination.currentPage = $scope.pagination.beginIndex+index+1;
+                            }//end if(angular.isDefined(index))
+                            $scope.suffixedittitle = $scope.currentObject.designation;
+                             //Cas exceptionnel des application
+                            if($scope.showApplication==true){
+                                //alert(angular.toJson($scope.currentObject));
+                                if($scope.currentObject.active){
+                                    $scope.exportbtnlabel = "Desinstaller";
+                                }else{
+                                    $scope.exportbtnlabel = "Installer";
+                                }//end if($scope.currentObject.active){
+                            }//end if($scope.showApplication==true){
+//                            console.log("$scope.viewAction ============== "+angular.toJson(data));
+                            $scope.displayEditPanel();
+//                            console.log("$scope.viewAction after display ============== "+angular.toJson(data));
+                            $scope.hideDialogLoading();
+                },function(error){
+                     $scope.hideDialogLoading();
+                     commonsTools.showMessageDialog(error);
+                } );               
+               
+                //refresh data from data store
+                //$scope.currentObject = restService.findById($scope.currentObject.code);         
+               //$scope.createEmptyObject($scope.metaData);               
+          };
           /**
            * 
            * @param {type} dasboardID
@@ -8361,7 +8463,20 @@ $scope.gererChangementFichier3 = function(event,model){
               $scope.displayImportPanel();
 //              console.log("Vous avez cliquez sur  Import "+angular.toJson($scope.importData));
           };
-          
+          /**
+        * Creation du memento pour 
+        * @returns {undefined}
+        */
+       $scope.createsession = function(){
+           var session = new Object();
+           session.module = $scope.currentModule.name ;
+           session.action = $scope.currentAction.name ;
+           session.entity = $scope.currentObject.id;
+           session.user = $rootScope.globals.user.id;
+           commonsTools.createCookie("session_"+session.user,angular.toJson(session),30);
+//           console.log("principal.createsession ===== cookie read : "+commonsTools.readCookie("session_"+session.user));
+           return session ;
+       };
           
           /**
            * Send the importData to the back end
@@ -8421,6 +8536,7 @@ $scope.gererChangementFichier3 = function(event,model){
                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
              }//end if($scope.importData.fichier!=null){
        };
+      
           /**
            * 
            * @returns {undefined}
@@ -10521,13 +10637,16 @@ $scope.gererChangementFichier3 = function(event,model){
 
            
            $scope.$on("dataLoad" , function(event ,args){
-//                console.log('$scope.$on("dataLoad" , function(event ,args) :::::::::::::::: '+$scope.currentAction.viewMode+" === "+$scope.windowType);
+//                console.log('$scope.$on("dataLoad" , function(event ,args) :::::::::::::::: '+$scope.currentAction.viewMode+" === "+args.item);
                 if($scope.windowType=="calendar"){
                      $scope.calendarFramePanelBuilder($scope.metaData);
                 }else{
                     $scope.listFramePanelBuilder($scope.metaData);
-                } //end if($scope.windowType=="calendar")   
-               $scope.hideDialogLoading();
+                } //end if($scope.windowType=="calendar")                
+                commonsTools.hideDialogLoading();
+               if(angular.isDefined(args.item) && args.item!=null){
+                   $scope.viewbyIDAction(args.item);
+               }//end if(angular.isDefined(args.item) && args.item!=null){
                $scope.pagination.hasnext();
                $scope.pagination.hasprevious();
            });
@@ -10695,16 +10814,17 @@ $scope.gererChangementFichier3 = function(event,model){
            * 
            * @param {type} template
            * @param {type} index
+           * @param {type} item
            * @returns {undefined}
            */
-         $scope.initAction = function(template,index){
-               
+         $scope.initAction = function(template,index , item){             
+                $scope.createsession();
                 if($scope.currentAction.name=="application_update"){
                      $scope.updateApplication();
                 }else if($scope.currentAction.name=="export_bd"){//export the data base
-                      commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");   
-                  var url="http://"+$location.host()+":"+$location.port()+"/kerencore/resource/exportbd";
-                  $http.get(url,{responseType: "arraybuffer"})
+                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");   
+                    var url="http://"+$location.host()+":"+$location.port()+"/kerencore/resource/exportbd";
+                    $http.get(url,{responseType: "arraybuffer"})
                           .then(function(response){
                                 var linkElement = document.createElement('a');
                                 try{
@@ -10740,7 +10860,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     if($scope.currentAction.viewMode){
                         mode = $scope.currentAction.viewMode.split(",");
                     }//end if($scope.currentAction.viewMode)     
-//                    console.log("InitAction ========== "+$scope.currentAction.viewMode+" ==== "+angular.toJson($scope.currentAction));                                                    
+//                    console.log("InitAction. session information ==========  ==== "+item);                                                    
                     if(mode && mode.length>0 && mode[0]=='dashboard'){
 //                        alert("Chargement tableau de bord ....");
                           $scope.hideannuler=true;
@@ -10804,7 +10924,8 @@ $scope.gererChangementFichier3 = function(event,model){
                                                     }else{
                                                         $scope.listFramePanelBuilder(metaData);
                                                     }//end if(viewType=="tree")
-                                                    $scope.loadData();
+                                                    $scope.loadData(item);
+                                                    commonsTools.hideDialogLoading();
                                               }
                                               , function(error){
                                                   commonsTools.hideDialogLoading();
@@ -10848,7 +10969,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                         if(angular.isString($scope.currentAction)){
                                             $scope.currentAction = angular.fromJson($scope.currentAction);
                                         }//end if(angular.isString($scope.currentAction)){
-                                        
+                                        commonsTools.hideDialogLoading();
                                         $scope.editDialogBuilderExtern(metaData,index,$scope.currentAction.link);
                                         $scope.currentAction = $scope.dataCache['currentAction'];
                                         $scope.currentObject = $scope.dataCache['currentObject'];
@@ -10868,7 +10989,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                         }//end if(endIndex==1){
                                         $("#"+modalID).modal("toggle");
                                         $("#"+modalID).modal("show");
-                                        commonsTools.hideDialogLoading();
+                                        
                                     },function(error){
                                         $scope.currentAction = $scope.dataCache['currentAction'];
                                         $scope.currentObject = $scope.dataCache['currentObject'];
@@ -10883,6 +11004,10 @@ $scope.gererChangementFichier3 = function(event,model){
            * Reception du message de changement de l'action
            */
           $scope.$on("currentActionUpdate" , function(event , args){
+               var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+               if(session==null){
+                   $scope.deconnexion();
+               }//end if(session==null){
                if(args.action){
                     $scope.dataCache['currentObject'] = $scope.currentObject;
                     $scope.dataCache['currentAction'] = $scope.currentAction;
@@ -10894,7 +11019,7 @@ $scope.gererChangementFichier3 = function(event,model){
     //                console.log("$scope.$on(currentActionUpdate , function(event , args) ===== "+);
                     $scope.enabledVerticalMenu = args.verticalMenu;
                     $scope.reset();
-                    $scope.initAction(template,index);
+                    $scope.initAction(template,index , args.item);
               }//end if(args.action){
            });
            /**
