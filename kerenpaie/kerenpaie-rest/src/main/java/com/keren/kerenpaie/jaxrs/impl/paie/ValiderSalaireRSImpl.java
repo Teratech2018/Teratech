@@ -20,10 +20,12 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Tue Mar 13 16:31:05 GMT+01:00 2018
  * 
  */
@@ -108,7 +110,7 @@ public class ValiderSalaireRSImpl
 	}
 
 	@Override
-	public ValiderSalaire save(ValiderSalaire entity) {
+	public ValiderSalaire save(@Context HttpHeaders headers , ValiderSalaire entity) {
 		// TODO Auto-generated method stub
 		processBeforeSave(entity);
 		return moteurmanager.validerSalaire(entity);

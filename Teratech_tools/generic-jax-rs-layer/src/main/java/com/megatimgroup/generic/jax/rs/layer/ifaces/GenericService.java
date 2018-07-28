@@ -53,7 +53,7 @@ public interface GenericService<T ,PK extends Serializable> {
         @POST
         @Consumes({MediaType.APPLICATION_JSON})
         @Produces({MediaType.APPLICATION_JSON})
-	public T save(T entity);
+	public T save(@Context HttpHeaders headers , T entity);
 
         /**
          * 
@@ -63,7 +63,7 @@ public interface GenericService<T ,PK extends Serializable> {
         @POST
         @Consumes({MediaType.APPLICATION_JSON})
         @Path("list")
-        public void save(List<T> entities);
+        public void save(@Context HttpHeaders headers , List<T> entities);
         
 	/**
 	 * Methode generique de mise a jour d'une entite
@@ -76,7 +76,7 @@ public interface GenericService<T ,PK extends Serializable> {
         @Produces({MediaType.APPLICATION_JSON})
         @Consumes({MediaType.APPLICATION_JSON})  
         @Path("{id}")
-	public T update(@PathParam("id") PK id, T entity);
+	public T update(@Context HttpHeaders headers , @PathParam("id") PK id, T entity);
 	
         /**
          * 
@@ -87,13 +87,13 @@ public interface GenericService<T ,PK extends Serializable> {
         @Produces({MediaType.APPLICATION_JSON})
         @Consumes({MediaType.APPLICATION_JSON})  
         @Path("import")
-        public Map<Long,Map<String,List<ValidatorError>>> importData(ImportData entity);
+        public Map<Long,Map<String,List<ValidatorError>>> importData(@Context HttpHeaders headers , ImportData entity);
         
         @PUT
         @Produces({MediaType.APPLICATION_JSON})
         @Consumes({MediaType.APPLICATION_JSON})  
         @Path("validateimport")
-        public Map<Long,Map<String,List<ValidatorError>>> validateImportData(ImportData entity);
+        public Map<Long,Map<String,List<ValidatorError>>> validateImportData(@Context HttpHeaders headers , ImportData entity);
         
         /**
          * 
@@ -114,11 +114,12 @@ public interface GenericService<T ,PK extends Serializable> {
         @Produces({MediaType.APPLICATION_JSON})
         @Consumes({MediaType.APPLICATION_JSON})  
         @Path("map")
-	public void update(Map<PK,T> entities);
+	public void update(@Context HttpHeaders headers , Map<PK,T> entities);
         
                
 	/**
 	 * Methode generique de suppression d'une entite
+     * @param headers
 	 * @param id	Identifiant de l'entite a supprimer
      * @return 
 	 */
@@ -126,7 +127,7 @@ public interface GenericService<T ,PK extends Serializable> {
         @Produces({MediaType.APPLICATION_JSON})
         //@Consumes({MediaType.APPLICATION_JSON})  
         @Path("{id}")
-	public T delete(@PathParam("id") PK id);
+	public T delete(@Context HttpHeaders headers , @PathParam("id") PK id);
         
         /**
 	 * Methode generique de suppression d'une entite
@@ -140,6 +141,7 @@ public interface GenericService<T ,PK extends Serializable> {
 	
 	/**
 	 * Methode de recherche d'une entite par son ID
+     * @param headers
          * @param propertyName
 	 * @param id	ID de l'entite
 	 * @param properties Conteneur de Proprietes a charger immediatement
@@ -148,11 +150,11 @@ public interface GenericService<T ,PK extends Serializable> {
         @GET
         @Produces({MediaType.APPLICATION_JSON})
         @Path("byid/{property}/{id}")
-	public T find(@PathParam("property") String propertyName 
-                  ,@PathParam("id") PK id );
+	public T find(@Context HttpHeaders headers , @PathParam("property") String propertyName ,@PathParam("id") PK id );
         
         /**
          * 
+     * @param headers
          * @param propertyName
      * @param value
          * @return 
@@ -160,12 +162,12 @@ public interface GenericService<T ,PK extends Serializable> {
         @GET
         @Produces({MediaType.APPLICATION_JSON})
         @Path("unique/{property}/{value}")
-        public boolean unique(@PathParam("property") String propertyName 
+        public boolean unique(@Context HttpHeaders headers , @PathParam("property") String propertyName 
                   ,@PathParam("value") String value );
         
          /**
          * 
-         * @param propertyName
+     * @param headers
      * @param value
          * @return 
          */
@@ -193,39 +195,41 @@ public interface GenericService<T ,PK extends Serializable> {
        
 	/**
 	 * Methode de chargement de tous les objets
+     * @param headers
 	 * @return	Liste de tous les objets
 	 */
         @GET
         @Produces({MediaType.APPLICATION_JSON})
-	public List<T> findAll();
+	public List<T> findAll(@Context HttpHeaders headers);
 	
 	
 	/**
 	 * Methode de recherche d'une entite par une propriete unique
+     * @param headers
 	 * @param propertyName	Nom de la propriete Unique
 	 * @param propertyValue	Valeur de la propriete Unique
-	 * @param properties	Ensemble des proprietes a charger en EAGER
 	 * @return	Objet recherche
 	 */
          @GET
         @Produces({MediaType.APPLICATION_JSON})
         @Path("bylongproperty/{property}/{value}")
-	public List<T> findByUniqueProperty(@PathParam("property") String propertyName, @PathParam("value") long propertyValue);
+	public List<T> findByUniqueProperty(@Context HttpHeaders headers , @PathParam("property") String propertyName, @PathParam("value") long propertyValue);
     
         /**
 	 * Methode de recherche d'une entite par une propriete unique
+     * @param headers
 	 * @param propertyName	Nom de la propriete Unique
 	 * @param propertyValue	Valeur de la propriete Unique
-	 * @param properties	Ensemble des proprietes a charger en EAGER
 	 * @return	Objet recherche
 	 */
          @GET
         @Produces({MediaType.APPLICATION_JSON})
         @Path("bystringproperty/{property}/{value}")
-	public List<T> findByUniqueProperty(@PathParam("property") String propertyName, @PathParam("value") String propertyValue);
+	public List<T> findByUniqueProperty(@Context HttpHeaders headers , @PathParam("property") String propertyName, @PathParam("value") String propertyValue);
         
         /**
 	 * Methode de recherche d'une entite par une propriete unique
+     * @param headers
 	 * @param propertyName	Nom de la propriete Unique
 	 * @param propertyValue	Valeur de la propriete Unique
 	 * @param properties	Ensemble des proprietes a charger en EAGER
@@ -234,10 +238,11 @@ public interface GenericService<T ,PK extends Serializable> {
          @GET
         @Produces({MediaType.APPLICATION_JSON})
         @Path("byintproperty/{property}/{value}")
-	public List<T> findByUniqueProperty(@PathParam("property") String propertyName, @PathParam("property") int propertyValue);
+	public List<T> findByUniqueProperty(@Context HttpHeaders headers , @PathParam("property") String propertyName, @PathParam("property") int propertyValue);
     
         /**
 	 * Methode de recherche d'une entite par une propriete unique
+     * @param headers
 	 * @param propertyName	Nom de la propriete Unique
 	 * @param propertyValue	Valeur de la propriete Unique
 	 * @param properties	Ensemble des proprietes a charger en EAGER
@@ -246,7 +251,7 @@ public interface GenericService<T ,PK extends Serializable> {
          @GET
         @Produces({MediaType.APPLICATION_JSON})
         @Path("byshortproperty/{property}/{value}")
-	public List<T> findByUniqueProperty(@PathParam("property") String propertyName, @PathParam("property") short propertyValue);
+	public List<T> findByUniqueProperty(@Context HttpHeaders headers , @PathParam("property") String propertyName, @PathParam("property") short propertyValue);
     
     /**
      * methode de filtre des entites d'une classe en fonction des prédicats de filtres
@@ -264,6 +269,7 @@ public interface GenericService<T ,PK extends Serializable> {
     
     /**
      * methode de filtre des entites d'une classe en fonction des prédicats de filtres
+     * @param headers
      * @param predicats : List des prédicats (condition de selection)
      * @param orders : Map ordres de tri des resultats
      * @param properties : Set ensemble des proprietes à charges
@@ -276,7 +282,7 @@ public interface GenericService<T ,PK extends Serializable> {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("hintfilter")
-    public List<T> filter(List<Predicat> predicats , Map<String,OrderType> orders , Set<String> properties , Map<String,Object> hints , int firstResult , int maxResult);
+    public List<T> filter(@Context HttpHeaders headers , List<Predicat> predicats , Map<String,OrderType> orders , Set<String> properties , Map<String,Object> hints , int firstResult , int maxResult);
     
     /**
      * Retourne le nombre d'enregistrements dans une requete

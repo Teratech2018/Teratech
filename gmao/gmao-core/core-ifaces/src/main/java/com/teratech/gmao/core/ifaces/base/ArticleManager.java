@@ -7,7 +7,7 @@ import com.teratech.gmao.model.base.Article;
 
 /**
  * Interface etendue par les interfaces locale et remote du manager
- * @since Mon Feb 19 10:11:42 GMT+01:00 2018
+ * @since Fri Jul 13 14:45:37 GMT+01:00 2018
  * 
  */
 public interface ArticleManager

@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.Query;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
@@ -22,6 +21,7 @@ import com.keren.kerenpaie.core.ifaces.paie.CacheMemory;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerLocal;
 import com.keren.kerenpaie.core.ifaces.paie.MoteurPaieManagerRemote;
 import com.keren.kerenpaie.dao.ifaces.comptabilite.PeriodePaieDAOLocal;
+import com.keren.kerenpaie.dao.ifaces.conges.DemandeCongeDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.employes.EmployeDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.BulletinPaieDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.paie.ConvensionDAOLocal;
@@ -34,6 +34,7 @@ import com.keren.kerenpaie.dao.ifaces.paie.VariableDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.presences.LignePointageDAOLocal;
 import com.keren.kerenpaie.dao.ifaces.structures.SocieteDAOLocal;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
+import com.keren.kerenpaie.model.conges.DemandeConge;
 import com.keren.kerenpaie.model.employes.ContratTravail;
 import com.keren.kerenpaie.model.employes.Employe;
 import com.keren.kerenpaie.model.employes.Famille;
@@ -66,7 +67,8 @@ import com.keren.kerenpaie.model.prets.RemboursementPret;
 import com.keren.kerenpaie.model.structures.Planification;
 import com.keren.kerenpaie.model.structures.Societe;
 import com.keren.kerenpaie.tools.KerenPaieManagerException;
-import javax.persistence.TemporalType;
+import com.megatim.common.annotations.OrderType;
+import java.util.HashSet;
 
 @TransactionAttribute
 @Stateless(mappedName = "BulletinPaieManager")
@@ -75,10 +77,10 @@ public class MoteurPaieManagerImpl
     implements MoteurPaieManagerLocal, MoteurPaieManagerRemote
 {
 
-	/**
-	 * Nom de la variable devant contenir le acompte
-	 */
-	private static final String V_ACOMPTE = "MTACOMPTE";
+    /**
+     * Nom de la variable devant contenir le acompte
+     */
+    private static final String V_ACOMPTE = "MTACOMPTE";
 	
     @EJB(name = "BulletinPaieDAO")
     protected BulletinPaieDAOLocal dao;
@@ -116,10 +118,13 @@ public class MoteurPaieManagerImpl
     @EJB(name = "LignePointageDAO")
     protected LignePointageDAOLocal pointageedao;
     
+    @EJB(name = "DemandeCongeDAO")
+    protected DemandeCongeDAOLocal congedao;
+    
     /**
      * Cache contenant les ligne element variable deja calcule
      */
-    private static Map<String , LigneElementVariable> executorCache = new HashMap<String , LigneElementVariable>();
+    private  Map<String , LigneElementVariable> executorCache = new HashMap<String , LigneElementVariable>();
     
     /**
      * Convension collective en cours
@@ -143,29 +148,29 @@ public class MoteurPaieManagerImpl
 
     
     @Override
-	public PrepaSalaire preparerPaie(PrepaSalaire entity) {
-		// TODO Auto-generated method stub
-                /**
-                 * Etape 1 - Generation des bulletion de paie pour la periode
-                 */
-                List<Employe> salaries = creationBulletinPaiePeriode(entity);
-                /**
-                 * Evaluation des bulletin de paie générer
-                 */
-                if(salaries!=null && !salaries.isEmpty()){
-                        for(Employe salarie : salaries){
-                                RestrictionsContainer container = RestrictionsContainer.newInstance();
-                                container.addEq("employe", salarie);
-                                container.addEq("periode", entity.getPeriode());
-                                List<BulletinPaie> bulletins = dao.filter(container.getPredicats(), null, null, 0, -1);
-                                for(BulletinPaie bulletin : bulletins){
-                                        eval(bulletin);
-                                }//end for(BulletinPaie bulletin : bulletins){
-                        }//end for(Employe salarie : salaries)
-                }//end if(salaries!=null && !salaries.isEmpty()){
-                CacheMemory.setPeriode(entity.getPeriode());
-		return entity;
-	}
+    public PrepaSalaire preparerPaie(PrepaSalaire entity) {
+            // TODO Auto-generated method stub
+            /**
+             * Etape 1 - Generation des bulletion de paie pour la periode
+             */
+            List<Employe> salaries = creationBulletinPaiePeriode(entity);
+            /**
+             * Evaluation des bulletin de paie générer
+             */
+            if(salaries!=null && !salaries.isEmpty()){
+                    for(Employe salarie : salaries){
+                            RestrictionsContainer container = RestrictionsContainer.newInstance();
+                            container.addEq("employe", salarie);
+                            container.addEq("periode", entity.getPeriode());
+                            List<BulletinPaie> bulletins = dao.filter(container.getPredicats(), null, null, 0, -1);
+                            for(BulletinPaie bulletin : bulletins){
+                                    eval(bulletin);
+                            }//end for(BulletinPaie bulletin : bulletins){
+                    }//end for(Employe salarie : salaries)
+            }//end if(salaries!=null && !salaries.isEmpty()){
+            CacheMemory.setPeriode(entity.getPeriode());
+            return entity;
+    }
 	
     @Override
     public ValiderSalaire validerSalaire(ValiderSalaire entity) {
@@ -483,7 +488,7 @@ public class MoteurPaieManagerImpl
             //Mise a jour du Bulletin
             bulletin.setChargePatronale(chargepat);
             bulletin.setChargeSalariale(chargeSal);
-            //Calcul des cumul echeance n-1
+            //Calcul des cumul echeance n-1 yp
             Cumul cumul = getCumulSalaireBase(bulletin);
             bulletin.setCumulAvantageNature(cumul.getCumulAvantageNature());
             bulletin.setCumulChargePatronale(cumul.getCumulChargePatronale());
@@ -494,6 +499,8 @@ public class MoteurPaieManagerImpl
             bulletin.setCumulSalaireCotisable(cumul.getCumulSalaireCotisable());
             bulletin.setCumulSalaireExcep(cumul.getCumulSalaireExcep());
             bulletin.setCumulSalaireTaxable(cumul.getCumulSalaireTaxable());
+            bulletin.setCongesAcquis(cumul.getCumulCongesAcquis()+bulletin.getCongesAcquisPeriode());
+            bulletin.setCongespris(cumul.getCumulCongesPris()+bulletin.getCongesprisPeriode());
             if(contrat!=null&&contrat.getDrecurtement()!=null){
                 bulletin.setAnciennite(Double.parseDouble(""+DateHelper.numberOfMonth(contrat.getDrecurtement(), bulletin.getPeriode().getDfin())));
             }//end if(contrat!=null){
@@ -1995,6 +2002,8 @@ public class MoteurPaieManagerImpl
                              }//end if(!bulletin.getLignes().contains(ligne))
 		    	}//end for(Acompte acompte:eltvar.getAcomptes())
 		    }//end if(eltsvariables!=null&&!eltsvariables.isEmpty())
+                     bulletin.setCongesAcquisPeriode(getCongesAcquisPeriode(salarie, entity.getPeriode()));
+                     bulletin.setCongesprisPeriode(congesPris(salarie, entity.getPeriode()));
 //                    System.out.println(MoteurPaieManagerImpl.class.toString()+".creationBulletinPaiePeriode(PrepaSalaire entity) ============"+bulletin);                                       
 		    if(bulletin.getId()>0){
 		    	dao.update(bulletin.getId(), bulletin);
@@ -2028,8 +2037,29 @@ public class MoteurPaieManagerImpl
     	return datas.size()>0 ? datas.get(0):null;
     }
     
+    /**
+     * Conges pris dans la periode par l'employé
+     * @param employe
+     * @param periode
+     * @return 
+     */
+    private Double congesPris(Employe employe , PeriodePaie periode){
+        List<DemandeConge> conges = new ArrayList<DemandeConge>();
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("employe", employe);
+        container.addGe("debut", periode.getDdebut());
+        container.addLe("debut", periode.getDfin());
+        container.addEq("compensation", "2");
+        container.addEq("state", "valider");
+        conges = congedao.filter(container.getPredicats(), new HashMap<String, OrderType>(), new HashSet<String>(), 0, -1);
+        double copris = 0.0;
+        for(DemandeConge c:conges){
+            copris+= c.getDuree();
+        }//end for(DemandeConge c:conges){
+        return copris;
+    }
+    
    /**
-    * 
     * @param employe
     * @param periode
     * @return 
@@ -2065,25 +2095,12 @@ public class MoteurPaieManagerImpl
                         cumul.setCumulSalaireCotisable(cumul.getCumulSalaireCotisable()+bul.getSalaireCotisable());
                         cumul.setCumulSalaireExcep(cumul.getCumulSalaireExcep()+bul.getSalaireExcep());
                         cumul.setCumulSalaireTaxable(cumul.getCumulSalaireTaxable()+bul.getSalaireTaxable());
+                        cumul.setCumulCongesAcquis(cumul.getCumulCongesAcquis()+bul.getCongesAcquisPeriode());
+                        cumul.setCumulCongesPris(cumul.getCumulCongesPris()+bul.getCongesprisPeriode());
                    }//end if(bul.getPeriode().getDdebut().after(bulletion.getPeriode().getDdebut())){
                 }//end for(BulletinPaie bul:bulletins){
 		return cumul;
 	}
         
-        private Cumul getCumulSalaireBase2(BulletinPaie bulletion){
-		
-		String QUERY = "SELECT new com.keren.kerenpaie.model.paie.Cumul("
-				+ "sum(c.salaireBrut),"
-				+ "sum(c.salaireTaxable),"
-				+ "sum(c.salaireCotisable),"
-				+ "sum(c.salaireExcep),"
-				+ "sum(c.chargeSalariale),"
-				+ "sum(c.chargePatronale),"
-				+ "sum(c.avantageNature))"
-				+ " FROM BulletinPaie c WHERE c.periode.exercice.id = "+bulletion.getPeriode().getExercice().getId()+" "
-			    + " AND c.periode.ddebut < ?1 AND c.employe.id = "+bulletion.getEmploye().getId();
-		Query requete = dao.getEntityManager().createQuery(QUERY);
-                requete.setParameter(1, bulletion.getPeriode().getDdebut(), TemporalType.DATE);
-                return (Cumul) requete.getResultList().get(0);
-	}
+        
 }

@@ -146,10 +146,16 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
         @Predicate(label = "Solde Congé",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double congesRestant = 0.0 ;
 	
-	@Column(name="CAC")
+	@Column(name="CACP")
+        private Double congesAcquisPeriode = 0.0 ;	
+	
+        @Column(name="CPRP")
+        private Double congesprisPeriode = 0.0;
+        
+        @Column(name="CAC")
         @Predicate(label = "Congés Acquis",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double congesAcquis = 0.0 ;	
-	
+        
 	@Column(name="CSB")
         @Predicate(label = "Cumul Salaire de Base",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireBrut = 0.0;
@@ -309,12 +315,14 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		chargeSalariale = bulletin.chargeSalariale ;
 		avantageNature = bulletin.avantageNature;
 		congespris = bulletin.congespris;
+                this.congesAcquisPeriode = bulletin.congesAcquisPeriode;
+                this.congesprisPeriode = bulletin.congesprisPeriode;
 		congesRestant = bulletin.congesRestant ;
 		congesAcquis = bulletin.congesAcquis ;	
 		cumulSalaireBrut = bulletin.cumulSalaireBrut;
 		cumulSalaireTaxable =bulletin.cumulSalaireTaxable ;
-        cumulSalaireCotisable = bulletin.cumulSalaireCotisable;
-        cumulSalaireExcep = bulletin.cumulSalaireExcep ;
+                cumulSalaireCotisable = bulletin.cumulSalaireCotisable;
+                cumulSalaireExcep = bulletin.cumulSalaireExcep ;
 		cumulChargeSalariale = bulletin.cumulChargeSalariale;
 		cumulChargePatronale = bulletin.cumulChargePatronale;
 		cumulAvantageNature = bulletin.cumulAvantageNature;
@@ -381,6 +389,22 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
     public void setTaxeAvantages(Double taxeAvantages) {
         this.taxeAvantages = taxeAvantages;
+    }
+
+    public Double getCongesAcquisPeriode() {
+        return congesAcquisPeriode;
+    }
+
+    public void setCongesAcquisPeriode(Double congesAcquisPeriode) {
+        this.congesAcquisPeriode = congesAcquisPeriode;
+    }
+
+    public Double getCongesprisPeriode() {
+        return congesprisPeriode;
+    }
+
+    public void setCongesprisPeriode(Double congesprisPeriode) {
+        this.congesprisPeriode = congesprisPeriode;
     }
 	
 	

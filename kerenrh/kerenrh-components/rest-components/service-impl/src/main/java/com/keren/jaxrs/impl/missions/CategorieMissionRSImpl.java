@@ -13,10 +13,10 @@ import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.missions.CategorieMissionManagerRemote;
 import com.keren.jaxrs.ifaces.missions.CategorieMissionRS;
 import com.keren.model.missions.CategorieMission;
-import com.keren.model.missions.ResultatMission;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -95,7 +95,7 @@ public class CategorieMissionRSImpl
     }
     
     @Override
-    public CategorieMission delete(Long id) {
+    public CategorieMission delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         CategorieMission data = null;
@@ -103,7 +103,7 @@ public class CategorieMissionRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new CategorieMission(data);
             
         }catch(Exception e){

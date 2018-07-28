@@ -21,6 +21,7 @@ import com.keren.model.presences.FichePointage;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -72,7 +73,7 @@ public class SanctionRSImpl
 	}
     
     @Override
-    public Sanction delete(Long id) {
+    public Sanction delete(@Context HttpHeaders headers , Long id) {
         
         //Initialisation
         Sanction data = null;
@@ -80,7 +81,7 @@ public class SanctionRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new Sanction(data);
             
         }catch(Exception e){

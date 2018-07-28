@@ -14,12 +14,11 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.discipline.LigneResolutionManagerRemote;
 import com.keren.jaxrs.ifaces.discipline.LigneResolutionRS;
-import com.keren.model.discipline.ConvocationConseil;
 import com.keren.model.discipline.LigneResolution;
-import com.keren.model.discipline.TraitementDE;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -71,7 +70,7 @@ public class LigneResolutionRSImpl
     }
     
     @Override
-    public LigneResolution delete(Long id) {
+    public LigneResolution delete(@Context HttpHeaders headers , Long id) {
         
         //Initialisation
         LigneResolution data = null;
@@ -79,7 +78,7 @@ public class LigneResolutionRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new LigneResolution(data);
             
         }catch(Exception e){

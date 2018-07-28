@@ -12,13 +12,12 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.missions.OrdreMissionManagerRemote;
 import com.keren.jaxrs.ifaces.missions.OrdreMissionRS;
-import com.keren.model.missions.Mission;
 import com.keren.model.missions.OrdreMission;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
-import java.util.Date;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -167,7 +166,7 @@ public class OrdreMissionRSImpl
         }
     
     @Override
-    public OrdreMission delete(Long id) {
+    public OrdreMission delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         OrdreMission data = null;
@@ -175,7 +174,7 @@ public class OrdreMissionRSImpl
 
         try{
 
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new OrdreMission(data);
 
         }catch(Exception e){

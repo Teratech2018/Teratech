@@ -96,9 +96,9 @@ public class UtilisateurRSImpl
     }
 
     @Override
-    public List<Utilisateur> findByUniqueProperty(String propertyName, String propertyValue) {
+    public List<Utilisateur> findByUniqueProperty(@Context HttpHeaders headers , String propertyName, String propertyValue) {
          //To change body of generated methods, choose Tools | Templates.
-        List<Utilisateur> datas = super.findByUniqueProperty(propertyName, propertyValue);
+        List<Utilisateur> datas = super.findByUniqueProperty(headers,propertyName, propertyValue);
          List<Utilisateur> result = new ArrayList<Utilisateur>();
          for(Utilisateur user : datas){
              result.add(new Utilisateur(user));

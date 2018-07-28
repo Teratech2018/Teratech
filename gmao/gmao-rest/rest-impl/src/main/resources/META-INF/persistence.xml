@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="teratechgmao" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/teratechgmao</jta-data-source>
+    <class>com.teratech.gmao.model.base.Article</class>
+    <class>com.teratech.gmao.model.base.CentreAnalytique</class>
+    <class>com.teratech.gmao.model.base.CentreFrais</class>
+    <class>com.teratech.gmao.model.base.Civilite</class>
+    <class>com.teratech.gmao.model.base.Contact</class>
+    <class>com.teratech.gmao.model.base.Criticite</class>
+    <class>com.teratech.gmao.model.base.Devise</class>
+    <class>com.teratech.gmao.model.base.Division</class>
+    <class>com.teratech.gmao.model.base.Emplacement</class>
+    <class>com.teratech.gmao.model.base.Entrepot</class>
+    <class>com.teratech.gmao.model.base.Entreprise</class>
+    <class>com.teratech.gmao.model.base.FamilleArticle</class>
+    <class>com.teratech.gmao.model.base.Intervenant</class>
+    <class>com.teratech.gmao.model.base.LienEmplacement</class>
+    <class>com.teratech.gmao.model.base.Lot</class>
+    <class>com.teratech.gmao.model.base.Marque</class>
+    <class>com.teratech.gmao.model.base.Organe</class>
+    <class>com.teratech.gmao.model.base.Pays</class>
+    <class>com.teratech.gmao.model.base.Region</class>
+    <class>com.teratech.gmao.model.base.Secteur</class>
+    <class>com.teratech.gmao.model.base.UniteAchat</class>
+    <class>com.teratech.gmao.model.base.UniteGestion</class>
+    <class>com.teratech.gmao.model.base.Compteur</class>
+    <class>com.teratech.gmao.model.base.Equipement</class>
+    <class>com.teratech.gmao.model.base.Contrat</class>
+    <class>com.teratech.gmao.model.base.Qualification</class>
+    <class>com.teratech.gmao.model.base.Classe</class>
+    <class>com.teratech.gmao.model.base.LigneClasse</class>
+    <class>com.teratech.gmao.model.base.CalendrierIntervenant</class>
+    <class>com.teratech.gmao.model.base.CauseException</class>
+    <class>com.teratech.gmao.model.base.CalendrierEquipement</class>
+    <class>com.teratech.gmao.model.base.Rubrique</class>
+    <class>com.teratech.gmao.model.projet.Projet</class>
+    <class>com.teratech.gmao.model.projet.BudgetProjet</class>
+    <class>com.teratech.gmao.model.base.FichierLie</class>
+    <class>com.teratech.gmao.model.curative.DemandeIntervention</class>
+    <class>com.teratech.gmao.model.curative.EtatEquipement</class>
+    <class>com.teratech.gmao.model.curative.Symptome</class>
+    <class>com.teratech.gmao.model.curative.Priorite</class>
+    <class>com.teratech.gmao.model.curative.BonTravail</class>
+    <class>com.teratech.gmao.model.preventif.Gamme</class>
+    <class>com.teratech.gmao.model.curative.ArticlePrevu</class>
+    <class>com.teratech.gmao.model.curative.IntervenantPrevu</class>
+    <class>com.teratech.gmao.model.curative.ActiviteBT</class>
+    <class>com.teratech.gmao.model.curative.Diagnostic</class>
+    <class>com.teratech.gmao.model.curative.Remede</class>
+    <class>com.teratech.gmao.model.curative.ActiviteHBT</class>
+    <class>com.teratech.gmao.model.preventif.TypePlanning</class>
+    <class>com.teratech.gmao.model.preventif.MiseAJourCompteur</class>
+    <class>com.teratech.gmao.model.preventif.MaintenancePreventive</class>
+    <class>com.teratech.gmao.model.curative.AffectationBonTravail</class>
+    <class>com.teratech.gmao.model.curative.TraitementDI</class>
+    <class>com.teratech.gmao.model.budget.BudgetDivision</class>
+    <class>com.teratech.gmao.model.budget.LigneBudget</class>
+    <class>com.teratech.gmao.model.budget.BudgetCentre</class>
+    <class>com.teratech.gmao.model.budget.BudgetEquipement</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>

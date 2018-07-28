@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
@@ -46,8 +47,8 @@ public class PwdUser2RSImpl extends AbstractGenericService<PwdUser2, Long> imple
      * @return 
      */
     @Override
-    public PwdUser2 save(PwdUser2 entity) {
-        System.out.println(PwdUserRSImpl.class.toString()+" ===== =========================================================new : "+entity.getNewpassword()+" ===== old : "+entity.getOldpassword());
+    public PwdUser2 save(@Context HttpHeaders headers , PwdUser2 entity) {
+//        System.out.println(PwdUserRSImpl.class.toString()+" ===== =========================================================new : "+entity.getNewpassword()+" ===== old : "+entity.getOldpassword());
         //To change body of generated methods, choose Tools | Templates.
         Utilisateur user = usermanager.find("id", entity.getCle());        
         if(entity.getOldpassword().equalsIgnoreCase(user.getPassword())){

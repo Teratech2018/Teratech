@@ -14,6 +14,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 
@@ -93,7 +94,7 @@ public class IndicateurPerformanceRSImpl
     }
     
     @Override
-    public IndicateurPerformance delete(Long id) {
+    public IndicateurPerformance delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         IndicateurPerformance data = null;
@@ -101,7 +102,7 @@ public class IndicateurPerformanceRSImpl
 
         try{
 
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new IndicateurPerformance(data);
 
         }catch(Exception e){

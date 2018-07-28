@@ -58,7 +58,7 @@ angular.module('keren.core.commons')
                 };
 }]);
 angular.module('keren.core.commons')
-        .factory('commonsTools',function($filter){
+        .factory('commonsTools',function($filter,$compile,$http,$location){
             //Liste des contraintes
             var uniqueContraints = new Array();
             var stopTimer = 0;
@@ -677,7 +677,7 @@ angular.module('keren.core.commons')
                         footerDiv.setAttribute('class' , 'modal-footer');
                         footerDiv.setAttribute('id' , 'gmodalfooter');
                         //Button annuler
-                        buttonElem = document.createElement('button');
+                        var buttonElem = document.createElement('button');
                         footerDiv.appendChild(buttonElem);
                         buttonElem.setAttribute('class' , 'btn btn-default');
                         buttonElem.setAttribute('data-dismiss' , "modal");
@@ -1092,6 +1092,7 @@ angular.module('keren.core.commons')
                }//end if(fieldnames.length>0)
                return footerElem;
             },
+            
             /**
              * Build for from dashboard entry data
              * @param {type} data
@@ -1126,6 +1127,40 @@ angular.module('keren.core.commons')
                 }//end for(var i=0 ; i<data.length;i++)
                 $("#"+parentID).html("");
                 $("#"+parentID).append(formElem);
+//                return formElem;
+            },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
+            dashboardEntryCustomBuilder:function(parentID,data,scope){
+                var url = 'http://'+$location.host()+':'+$location.port()+'/'+angular.lowercase(data.model)+'/'+angular.lowercase(data.entity)+'/'+angular.lowercase(data.method);
+                $http.get(url).then(
+                    /**
+                     * 
+                     * @param {type} datas
+                     * @returns {undefined}
+                     */
+                        function(response){
+                             //Notification du changement du module
+                                scope.temporalData = response.data;
+                                var container = document.createElement("div");
+                //              var obj = angular.fromJson(data);
+//                                console.log("commons.dashboardEntryCustomBuilder ====== "+angular.toJson(scope.temporalData)+" ==== template : ");                
+                                container.innerHTML = data.tempate;
+                                var compileFn = $compile(container);
+                                 compileFn(scope);    
+                                $("#"+parentID).html("");
+                                $("#"+parentID).append(container);
+                        },
+                        function(error){
+//                             this.hideDialogLoading();
+                             this.showMessageDialog(error);
+                        }
+                     );
+                
 //                return formElem;
             },
             /**
@@ -1226,7 +1261,7 @@ angular.module('keren.core.commons')
              * @param {type} data
              * @returns {undefined}
              */
-            dashboardEntryBuilder:function(parentID,data){
+            dashboardEntryBuilder:function(parentID,data,scope){
                 if(data.type=='data'){
                     return this.dashboardEntryFormBuilder(parentID,data);
                 }else if(data.type=='bar'){
@@ -1235,6 +1270,8 @@ angular.module('keren.core.commons')
                     return this.dashboardEntryPieBuilder(parentID,data);
                 }else if(data.type=='line'){
                     return this.dashboardEntryLineBuilder(parentID,data);
+                }else if(data.type=='template'){
+                    return this.dashboardEntryCustomBuilder(parentID,data,scope);
                 }else{
                     return this.dashboardEntryUnkownBuilder(parentID,data);
                 }
@@ -1322,7 +1359,7 @@ angular.module('keren.core.commons')
              * @param {type} data
              * @returns {undefined}
              */
-            dashboardContainerBuilder:function(data){
+            dashboardContainerBuilder:function(data,scope){
                 var divElem = document.createElement("div");
                 divElem.setAttribute("class","row");
                 divElem.setAttribute("style","padding-left:  10px;padding-right:  10px;");
@@ -1483,6 +1520,23 @@ angular.module('keren.core.commons')
                     }//end for(var key2 in data){
                 }//end for(var key in errors){
                 return array;
+            },
+            /**
+             * 
+             * @param {type} data
+             * @param {type} expressions
+             * @returns {undefined}
+             */
+            evaluateExpression:function(data,expressions){
+                var result = true;
+                for(var i=0 ; i<expressions.length;i++){
+                    var expr = expressions[i];
+                    if(expr.function=='=='){
+                        result &=(data[expr.fieldname]==expr.value);
+                    }//end if(expr.function=='==')
+//                    console.log("commons.evaluateExpression ============ expr = "+expr+" === field : "+data[expr.fieldname]+" == oper : "+expr.function+" === value : "+expr.value);
+                }//end for(var i=0 ; i<expressions.length;i++){
+                return result;
             },
             /**
             * 

@@ -18,6 +18,7 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -88,13 +89,13 @@ public class AvancementRSImpl
 	
 
 	@Override
-	public Avancement delete(Long id) {
+	public Avancement delete(@Context HttpHeaders headers , Long id) {
             // TODO Auto-generated method stub
             Avancement entity = manager.find("id", id);
             if(entity.getState().trim().equals("valide")){
                     throw new KerenExecption("Avancement déjà validé <br/>Suppresion impossible");
             }
-            return super.delete(id);
+            return super.delete(headers,id);
 	}
 
 	@Override

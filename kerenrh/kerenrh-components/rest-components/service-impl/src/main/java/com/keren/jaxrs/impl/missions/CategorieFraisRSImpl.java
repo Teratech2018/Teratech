@@ -12,12 +12,11 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.missions.CategorieFraisManagerRemote;
 import com.keren.jaxrs.ifaces.missions.CategorieFraisRS;
-import com.keren.model.missions.ActionMission;
 import com.keren.model.missions.CategorieFrais;
-import com.keren.model.missions.ResultatMission;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -106,7 +105,7 @@ public class CategorieFraisRSImpl
     }
     
     @Override
-    public CategorieFrais delete(Long id) {
+    public CategorieFrais delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         CategorieFrais data = null;
@@ -114,7 +113,7 @@ public class CategorieFraisRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new CategorieFrais(data);
             
         }catch(Exception e){

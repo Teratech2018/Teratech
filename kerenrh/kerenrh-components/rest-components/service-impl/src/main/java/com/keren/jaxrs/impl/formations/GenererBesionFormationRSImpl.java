@@ -17,10 +17,12 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Wed Apr 11 15:59:28 GMT+01:00 2018
  * 
  */
@@ -72,7 +74,7 @@ public class GenererBesionFormationRSImpl
    	}
 
 	@Override
-	public GenererBesionFormation save(GenererBesionFormation entity) {
+	public GenererBesionFormation save(@Context HttpHeaders headers , GenererBesionFormation entity) {
 		// TODO Auto-generated method stub
 		return entity;
 	}

@@ -51,10 +51,13 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 /**
  *
  * @author Commercial_2
+ * @param <T>
+ * @param <PK>
  */
 public  abstract class AbstractGenericService< T , PK extends Serializable> implements GenericService<T , PK>{
 
@@ -66,11 +69,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         AnnotationsProcessor processor = new AnnotationsProcessor();
         try {
             processor.process(this);
-        } catch (NamingException ex) {
-            Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (NamingException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -90,7 +89,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @return 
      */
     @Override
-    public T save(T entity) {
+    public T save(@Context HttpHeaders headers , T entity) {
         //To change body of generated methods, choose Tools | Templates.
         //Verifier que les conditions son OK
         processBeforeSave(entity);
@@ -104,10 +103,11 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
 
     /**
      * Mise a jour en masse des données
+     * @param headers
      * @param entities 
      */
     @Override
-    public void save(List<T> entities) {
+    public void save(@Context HttpHeaders headers , List<T> entities) {
         //To change body of generated methods, choose Tools | Templates.
         processBeforeSave(entities);
         getManager().save(entities);
@@ -121,7 +121,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @return 
      */
     @Override
-    public T update(PK id, T entity) {
+    public T update(@Context HttpHeaders headers , PK id, T entity) {
        //To change body of generated methods, choose Tools | Templates.
 //        String userid = headers.getRequestHeader("userid").get(0);
         processBeforeUpdate(entity);
@@ -135,7 +135,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @param entities 
      */
     @Override
-    public void update(Map<PK, T> entities) {
+    public void update(@Context HttpHeaders headers , Map<PK, T> entities) {
         //To change body of generated methods, choose Tools | Templates.
         processBeforeUpdate(entities);
         getManager().update(entities);
@@ -148,7 +148,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @return 
      */
     @Override
-    public T delete(PK id) {
+    public T delete(@Context HttpHeaders headers , PK id) {
         //To change body of generated methods, choose Tools | Templates.
         processBeforeDelete(id);
         T result = getManager().delete(id);
@@ -164,13 +164,13 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
          List ids = gson.fromJson(headers.getRequestHeader("ids").get(0),new TypeToken<List<Long>>(){}.getType());
          if(ids!=null){
              for(Object id : ids){
-                 delete((PK) id);
+                 delete(headers,(PK) id);
              }
          }
     }
 
     @Override
-    public Map<Long,Map<String,List<ValidatorError>>> importData(ImportData entity){
+    public Map<Long,Map<String,List<ValidatorError>>> importData(@Context HttpHeaders headers , ImportData entity){
         try {    
             String filename = getTemporalDirectory()+File.separator+entity.getFichier();
             File file = new File(filename);
@@ -183,7 +183,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 }else {
                     datas = FileHelper.excelToJavaConverter(filename,entity.getFields().size());
                 }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
-                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
+//                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
                //Construction of RulesContainer
                 RulesContainer container = RulesContainer.newInstance();
                 for(ImportLigne ligne:entity.getFields()){
@@ -216,7 +216,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 }//end if(errorsmap.isEmpty()){                
             }//end if(file.exists())        
             return errorsmap;
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IOException | InvalidFormatException | IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
             Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
             throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).entity(ex.getMessage()).build());
         }
@@ -228,7 +228,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @return 
      */
     @Override
-    public  Map<Long, Map<String, List<ValidatorError>>> validateImportData(ImportData entity){
+    public  Map<Long, Map<String, List<ValidatorError>>> validateImportData(@Context HttpHeaders headers , ImportData entity){
             try {    
             String filename = getTemporalDirectory()+File.separator+entity.getFichier();
             File file = new File(filename);
@@ -268,7 +268,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 errorsmap = container.execute(datas);                            
             }//end if(file.exists())        
             return errorsmap;
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IOException | InvalidFormatException ex) {
             Logger.getLogger(AbstractGenericService.class.getName()).log(Level.SEVERE, null, ex);
             throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).entity(ex.getMessage()).build());
         }
@@ -283,7 +283,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @throws IllegalArgumentException
      * @throws IllegalAccessException 
      */
-     private  void affect(T object ,Field field , String value) throws IllegalArgumentException, IllegalAccessException{
+     protected  void affect(T object ,Field field , String value) throws IllegalArgumentException, IllegalAccessException{
         field.setAccessible(true);
 //        System.out.println(AbstractGenericService.class.toString()+".affect(T object ,Field field , String value) ==== field : "+field.getName()+" === value : "+value);
         if(field.getType().equals(Boolean.class)){
@@ -311,7 +311,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
       * @throws InstantiationException
       * @throws IllegalAccessException 
       */
-     private T getInstance() throws InstantiationException, IllegalAccessException{
+     protected T getInstance() throws InstantiationException, IllegalAccessException{
          ParameterizedType superClass  = (ParameterizedType) getClass().getGenericSuperclass();
          Class<T> type = (Class<T>) superClass.getActualTypeArguments()[0];
          return type.newInstance();
@@ -326,7 +326,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
       * @throws IllegalArgumentException
       * @throws IllegalAccessException 
       */
-      private  List<T> mapToJavaObject(String classname , Map<Long,List<String>> data) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, InstantiationException{
+      protected  List<T> mapToJavaObject(String classname , Map<Long,List<String>> data) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, InstantiationException{
          List result = new ArrayList();        
          List<String> fieldNames = data.get(0L);
          for(long key:data.keySet()){
@@ -430,7 +430,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     * @throws IllegalArgumentException
     * @throws IllegalAccessException 
     */
-    private  List<String> objectToListConverter(T data , List<String> fields) throws IllegalArgumentException, IllegalAccessException{
+    protected  List<String> objectToListConverter(T data , List<String> fields) throws IllegalArgumentException, IllegalAccessException{
         List<String> result = new ArrayList<>();
         Field[] champs = data.getClass().getDeclaredFields();
         for(Field ele : champs){
@@ -453,7 +453,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 
         return result;
     }
-    private List<String> getFields(ImportData entity){
+    protected List<String> getFields(ImportData entity){
         List<String> fields = new ArrayList<>();
         if(entity.getTypeexport().equalsIgnoreCase("0")){
             for(ImportLigne ligne : entity.getFields()){
@@ -481,19 +481,19 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     }
 
     @Override
-    public T find(String propertyName, PK id) {
+    public T find(@Context HttpHeaders headers , String propertyName, PK id) {
         //To change body of generated methods, choose Tools | Templates.
 //        System.out.println(AbstractGenericService.class.toString()+" === propertyName : "+propertyName+" ==============  ID : "+id);   
         return getManager().find(propertyName, id);
     }
 
     @Override
-    public boolean unique(String propertyName, String value){
+    public boolean unique(@Context HttpHeaders headers , String propertyName, String value){
 //        System.out.println(AbstractGenericService.class.getCanonicalName()+" ====  === property : "+propertyName+" === value:"+value);       
         if(value==null){
             return true;
         }//end if(value==null){
-        List result = findByUniqueProperty(propertyName,value);
+        List result = findByUniqueProperty(headers,propertyName,value);
         return (result==null||result.isEmpty());
     }
 
@@ -507,7 +507,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){
                 FilterPredicat contraint = (FilterPredicat) obj;
-                if(!unique(contraint.getFieldName(), contraint.getValue())){
+                if(!unique(headers,contraint.getFieldName(), contraint.getValue())){
                     results.add(contraint);
                 }//end if(!unique(contraint.getFieldName(), contraint.getValue()))
             }//end for(Object obj : contraints){
@@ -518,7 +518,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     
 
     @Override
-    public List<T> findAll() {
+    public List<T> findAll(@Context HttpHeaders headers) {
          //To change body of generated methods, choose Tools | Templates.
         return getManager().findAll();
     }
@@ -530,27 +530,27 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
     }
 
     @Override
-    public  List<T> findByUniqueProperty(String propertyName, short propertyValue){
+    public  List<T> findByUniqueProperty(@Context HttpHeaders headers , String propertyName, short propertyValue){
         //To change body of generated methods, choose Tools | Templates.
         HashSet<String> properties = new HashSet<String>();
         return getManager().findByUniqueProperty(propertyName, propertyValue, properties);
     }
 
     @Override
-    public List<T> findByUniqueProperty(String propertyName, int propertyValue){
+    public List<T> findByUniqueProperty(@Context HttpHeaders headers , String propertyName, int propertyValue){
         HashSet<String> properties = new HashSet<String>();
         return getManager().findByUniqueProperty(propertyName, propertyValue, properties);
     }
 
     @Override
-    public List<T> findByUniqueProperty(String propertyName, String propertyValue){
+    public List<T> findByUniqueProperty(@Context HttpHeaders headers , String propertyName, String propertyValue){
         //To change body of generated methods, choose Tools | Templates.
         HashSet<String> properties = new HashSet<String>();
         return getManager().findByUniqueProperty(propertyName, propertyValue, properties);
     }
 
     @Override
-    public List<T> findByUniqueProperty(String propertyName, long propertyValue){
+    public List<T> findByUniqueProperty(@Context HttpHeaders headers , String propertyName, long propertyValue){
         //To change body of generated methods, choose Tools | Templates.
         HashSet<String> properties = new HashSet<String>();
         return getManager().findByUniqueProperty(propertyName, propertyValue, properties);
@@ -595,7 +595,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @param filter
      * @return 
      */
-    private RestrictionsContainer addPredicate(RestrictionsContainer container , FilterPredicat filter){
+    protected RestrictionsContainer addPredicate(RestrictionsContainer container , FilterPredicat filter){
 //        System.out.println(AbstractGenericService.class.toString()+".addPredicate === "+" == "+filter);       
         if(filter.getTarget().trim().equalsIgnoreCase("boolean")){
             BooleanPredicatBuilder predicat = new BooleanPredicatBuilder(null);
@@ -623,7 +623,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
      * @return 
      */
     @Override
-    public List<T> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, Map<String, Object> hints, int firstResult, int maxResult) {
+    public List<T> filter(@Context HttpHeaders headers , List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, Map<String, Object> hints, int firstResult, int maxResult) {
         //To change body of generated methods, choose Tools | Templates.
         return getManager().filter(predicats, orders, properties, hints, firstResult, maxResult);
     }

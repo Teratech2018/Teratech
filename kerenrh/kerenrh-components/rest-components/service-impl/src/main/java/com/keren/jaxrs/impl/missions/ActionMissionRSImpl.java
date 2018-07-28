@@ -8,12 +8,12 @@ import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.missions.ActionMissionManagerRemote;
 import com.keren.jaxrs.ifaces.missions.ActionMissionRS;
 import com.keren.model.missions.ActionMission;
-import com.keren.model.missions.ResultatMission;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 
@@ -99,7 +99,7 @@ public class ActionMissionRSImpl
     }
     
     @Override
-    public ActionMission delete(Long id) {
+    public ActionMission delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         ActionMission data = null;
@@ -107,7 +107,7 @@ public class ActionMissionRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new ActionMission(data);
             
         }catch(Exception e){

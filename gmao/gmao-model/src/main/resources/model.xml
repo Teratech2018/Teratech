@@ -9,111 +9,266 @@ and open the template in the editor.
 	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
 	xmlns="http://www.megatimgroup.net/model-config">
     <elements>
-<!--        <element type="com.core.model.server.Etudiant"  idclass="long"  idname="id"   deseable="false">
+<!--        <element type="com.core.model.server.Etudiant"  idclass="long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>        -->
-        <element type="com.teratech.gmao.model.base.Article"  idclass="long"  idname="id" deseable="false">
+        <element type="com.teratech.gmao.model.base.Article"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-<!--        <element type="com.basaccount.model.comptabilite.Taxe"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.gmao.model.base.CentreFrais"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.comptabilite.SectionAnalytique"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.gmao.model.base.CentreAnalytique"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.comptabilite.CompteAnalytique"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.gmao.model.base.Civilite"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.comptabilite.NiveauAnalyse"  idclass="long"  idname="id" deseable="true">
+        <element type="com.teratech.gmao.model.base.Contact"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.comptabilite.JournalComptable"  idclass="Long"  idname="id"  deseable="true">
+        <element type="com.teratech.gmao.model.base.Criticite"  idclass="Long"  idname="id"  deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>   
-        <element type="com.basaccount.model.tiers.Tier"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Devise"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.tiers.Civilite"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Division"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.tiers.ConditionPaiement"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Emplacement"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.banques.Banque"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Entrepot"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.banques.CompteBancaire"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Entreprise"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.tiers.Contact"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.FamilleArticle"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.operations.PieceComptable"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Intervenant"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element> 
-        <element type="com.basaccount.model.operations.EcritureComptable"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.LienEmplacement"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element> 
-       <element type="com.basaccount.model.comptabilite.ExerciceComptable"  idclass="Long"  idname="id"   deseable="true">
+       <element type="com.teratech.gmao.model.base.Lot"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element> 
-        <element type="com.basaccount.model.operations.JournalSaisie"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Marque"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>  
-        <element type="com.basaccount.model.operations.EcritureAnalytique"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Organe"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-        <element type="com.basaccount.model.operations.EcritureTier"  idclass="Long"  idname="id"   deseable="true">
+        <element type="com.teratech.gmao.model.base.Pays"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-         <element type="com.basaccount.model.operations.ClotureExerciceComptable"  idclass="Long"  idname="id"   deseable="true">
+         <element type="com.teratech.gmao.model.base.Region"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
-         <element type="com.basaccount.model.operations.ClotureJournal"  idclass="Long"  idname="id"   deseable="true">
+         <element type="com.teratech.gmao.model.base.Secteur"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
-        </element>-->
+        </element>
+        <element type="com.teratech.gmao.model.base.UniteAchat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.UniteGestion"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.Equipement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.Compteur"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.Contrat"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.Qualification"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.Classe"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.CauseException"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.CalendrierIntervenant"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.CalendrierEquipement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.base.Rubrique"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.projet.Projet"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.EtatEquipement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.Priorite"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.Symptome"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.DemandeIntervention"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.BonTravail"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.ActiviteBT"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.ActiviteHBT"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.Diagnostic"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.Remede"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.preventif.Gamme"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.preventif.TypePlanning"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.preventif.MiseAJourCompteur"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.preventif.MaintenancePreventive"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.AffectationBonTravail"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.curative.TraitementDI"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.budget.BudgetDivision"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.gmao.model.budget.LigneBudgetSaisie"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.gmao.model.budget.BudgetCentre"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.teratech.gmao.model.budget.BudgetEquipement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
    </elements>
     
 </model-config>

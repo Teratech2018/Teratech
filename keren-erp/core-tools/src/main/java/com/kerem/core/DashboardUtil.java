@@ -5,6 +5,7 @@
  */
 package com.kerem.core;
 
+import com.core.base.BaseElement;
 import com.core.dashboard.DashboardContainer;
 import com.core.dashboard.DashboardEntry;
 import com.core.dashboard.DashboardField;
@@ -60,6 +61,8 @@ public class DashboardUtil {
                     continue;
                 }//end if(ent.getType()==null||ent.getType().trim().isEmpty())
                 DashboardEntry entry = new DashboardEntry(ent.getId(), ent.getType(),ent.getLabel());
+                entry.setTempate(ent.getTemplate());entry.setModel(ent.getModelRef());
+                entry.setEntity(ent.getEntityRef());entry.setMethod(ent.getMethodRef());
                //Traitement des champs
                 for(com.kerem.genarated.Field field:ent.getField()){
                     DashboardField champ = new DashboardField();
@@ -88,13 +91,16 @@ public class DashboardUtil {
                 for(String type:types){
                     DashboardEntry entr = new DashboardEntry(entry);
                     entr.setType(type);entr.setCode(entr.getCode()+""+i);
-                    if(type.equalsIgnoreCase("bar")){
-                        entr.setLabel("Histogramme");
-                    }else if(type.equalsIgnoreCase("pie")){
-                        entr.setLabel("Camenbart");
-                    }else if(type.equalsIgnoreCase("line")){
-                        entr.setLabel("Courbe");
-                    }
+                    entr.setLabel(entr.getLabel());
+                    if(entr.getLabel()==null||entr.getLabel().trim().isEmpty()){
+                        if(type.equalsIgnoreCase("bar")){
+                            entr.setLabel("Histogramme");
+                        }else if(type.equalsIgnoreCase("pie")){
+                            entr.setLabel("Camenbart");
+                        }else if(type.equalsIgnoreCase("line")){
+                            entr.setLabel("Courbe");
+                        }//end if(type.equalsIgnoreCase("bar")){
+                    }//end if(entr.getLabel()==null||entr.getLabel().trim().isEmpty()){
 //                    System.out.println(DashboardUtil.class.toString()+" === "+type+" === "+entr.getLabel());
                      dashboard.getEntries().add(entr); 
                      i++;
@@ -102,6 +108,9 @@ public class DashboardUtil {
             }//end for(DashboardEntry entry:dash.getDashboardentry())
             
         }//end for(Dashboard dash:record.getDashboard())
+        container.setEditTitle(((BaseElement)data).getEditTitle());
+        container.setListTitle(((BaseElement)data).getListTitle());
+        container.setDesignation(((BaseElement)data).getDesignation());
         return  container;
     }
 }

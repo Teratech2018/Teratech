@@ -16,13 +16,11 @@ import com.keren.kerenpaie.core.ifaces.comptabilite.PeriodePaieManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.comptabilite.PeriodePaieRS;
 import com.keren.kerenpaie.model.comptabilite.ExerciceComptable;
 import com.keren.kerenpaie.model.comptabilite.PeriodePaie;
-import com.keren.kerenpaie.model.comptabilite.PeriodePaieOpen;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -134,7 +132,7 @@ public class PeriodePaieRSImpl
     }
     
     @Override
-    public PeriodePaie delete(Long id) {
+    public PeriodePaie delete(@Context HttpHeaders headers , Long id) {
 
         // TODO Auto-generated method stub
         PeriodePaie entity = manager.find("id", id);
@@ -142,7 +140,7 @@ public class PeriodePaieRSImpl
         try{
 
             //on supprimme l'objet
-            super.delete(id);
+            super.delete(headers,id);
 
         }catch(Exception ex){
             throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");

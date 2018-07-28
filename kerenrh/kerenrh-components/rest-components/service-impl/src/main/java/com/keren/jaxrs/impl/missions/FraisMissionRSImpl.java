@@ -15,6 +15,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 
@@ -97,7 +98,7 @@ public class FraisMissionRSImpl
     }
     
     @Override
-    public FraisMission delete(Long id) {
+    public FraisMission delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         FraisMission data = null;
@@ -105,7 +106,7 @@ public class FraisMissionRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new FraisMission(data);
             
         }catch(Exception e){

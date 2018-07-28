@@ -331,6 +331,9 @@ public class MetaDataUtil {
                             label = KerenSession.getEntry(label);
                         }//end if(KerenSession.containKey(annot.label())){
                         MetaColumn column = new MetaColumn("array", field.getName(), label,annot.search(),"one-to-many", null);
+                        if(annot.target()=="many-to-many-list"){
+                            column = new MetaColumn("array", field.getName(), label,annot.search(),"many-to-many-list", meta);
+                        }//end if(annot.target()=="many-to-many-list")                        
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable());
                         column.setCustomfooter(annot.customfooter());column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         String[] searchfields = annot.searchfields().split(",");
@@ -508,7 +511,7 @@ public class MetaDataUtil {
                             /**if(!shareCache.containsKey(annot.type().getClass().toString()))**/{
                                 if(field.isAnnotationPresent(ManyToMany.class)){
                                      if(annot.target().equalsIgnoreCase("many-to-many-list")){//many-to-many-list
-                                         String label = annot.groupLabel();
+                                         String label = annot.label();
                                          if(KerenSession.containKey(annot.groupLabel())){
                                             label = KerenSession.getEntry(label);
                                          }//end if(KerenSession.containKey(annot.label())){
@@ -572,11 +575,11 @@ public class MetaDataUtil {
                                           }//end if(field.isAnnotationPresent(Filter.class)){
                                     }
                                 }else if(field.isAnnotationPresent(OneToMany.class)){ 
-                                    String label = annot.groupLabel();
+                                    String label = annot.label();
                                     if(KerenSession.containKey(annot.groupLabel())){
                                         label = KerenSession.getEntry(label);
                                     }//end if(KerenSession.containKey(annot.label())){
-                                    MetaArray metaArray = new MetaArray("array", field.getName(), label,annot.search(),annot.target(),meta);
+                                    MetaArray metaArray = new MetaArray("array", field.getName(), label,annot.search(),annot.target(),meta);                                                  
                                     metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                     metaArray.setEdittable(annot.edittable());metaArray.setFrozen(annot.frozen());
                                     String[] searchfields = annot.searchfields().split(",");

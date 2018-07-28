@@ -20,6 +20,7 @@ import com.keren.kerenpaie.model.paie.PrepaSalaire;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -91,7 +92,7 @@ public class PrepaSalaireRSImpl
 	}
 
 	@Override
-	public PrepaSalaire save(PrepaSalaire entity) {
+	public PrepaSalaire save(@Context HttpHeaders headers , PrepaSalaire entity) {
 		// TODO Auto-generated method stub
 		processBeforeSave(entity);
 		entity = moteurmanager.preparerPaie(entity);

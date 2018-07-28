@@ -24,6 +24,8 @@ import javax.persistence.EntityManager;
 /**
  * Implementation abstraite des gestionnaires
  * @author <a href="mailto:bekondo_dieu@yahoo.fr">BEKONDO Kangue Dieunedort</a>
+ * @param <T>
+ * @param <PK>
  * @since 19 Nov. 2015 - 16:18:05
  */
 public abstract class AbstractGenericManager<T , PK extends Serializable>
@@ -120,6 +122,7 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
     /**
     * Methode generique de suppression d'une entite
     * @param id	Identifiant de l'entite a supprimer
+     * @return 
     */
     public T delete(PK id) {
         //Chargement en memoire
@@ -139,8 +142,8 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
     
     /**
     * Methode de recherche d'une entite par son ID
-    * @param id	ID de l'entite
-    * @param properties Conteneur de Proprietes a charger immediatement
+     * @param propertyName
+     * @param entityID
     * @return Entite recherchee
     */
     public T find(String propertyName , PK entityID) {
@@ -176,9 +179,11 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
     
     /**
     * Methode de filtre sur la base du critere d'egalite et de conjonction des proprietes
+     * @param <Y>
     * @param criteriasProperties	MAP des proprietes de recheche
     * @param properties	Ensemble des proprietes a charger immediatement
     * @param firstResult Index du premoier
+     * @param maxResult
     * @return	Liste des entites trouvees
     */
     public <Y extends Comparable<Y>> List<T> filterOnEqualProperties(Map<String, Y> criteriasProperties, Set<String> properties, int firstResult, int maxResult) {
@@ -192,8 +197,8 @@ public abstract class AbstractGenericManager<T , PK extends Serializable>
 			for (Entry<String, Y> entry : entries) {				
 				// Predicat d'egalite
 				restrictionsContainer.addEq(entry.getKey(), entry.getValue());
-			}
-		}		
+			}//end vfor (Entry<String, Y> entry : entries) {
+		}//end if(criteriasProperties != null && !criteriasProperties.isEmpty()) {		
 		// Filtre
 		return getDao().filter(restrictionsContainer.getPredicats(), null, properties, firstResult, maxResult);
     }
