@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+	<action id="keren_courrier" />    
+	<menu id="courrier_acceuil" label="Acceuil" parent="keren_courrier" gyphycon="glyphicon glyphicon-book"/>	
+    <menuitem id="courrier_acceuil_01" label="Raccourcis" parent_ref="courrier_acceuil" entity_ref="CourrierDashboard" model_ref="kerencourrier" method_ref="acceuil" gyphycon="glyphicon glyphicon-th" modal="false" view_type="dashboard" />
+	<menu id="courrier_send" label="Courriers" parent="keren_courrier" gyphycon="glyphicon glyphicon-book"/>	
+    <menuitem id="courrier_001" label="Courriers arrivés" parent_ref="courrier_send" entity_ref="Courrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_002" label="Courriers départs" parent_ref="courrier_send" entity_ref="CourrierDepart" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_003" label="Courriers internes" parent_ref="courrier_send" entity_ref="CourrierInterne" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_005" label="Traitement" parent_ref="courrier_send" entity_ref="CourrierRecu" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true"/>
+	<menu id="courrier_trans" label="Transmissions et Receptions" parent="keren_courrier" gyphycon="glyphicon glyphicon-book"/>
+    <menuitem id="courrier_trans_01" label="Transmissions de courriers" parent_ref="courrier_trans" entity_ref="BorderoCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_trans_02" label="Receptions de courriers" parent_ref="courrier_trans" entity_ref="BorderoCourrierR" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menu id="courrier_trait" label="Traitement Courriers" parent="keren_courrier" gyphycon="glyphicon glyphicon-book"/>
+    <menuitem id="courrier_trait_01" label="Quotation" parent_ref="courrier_trait" entity_ref="CourrierAQuote" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_trait_01_1" label="Quotation" parent_ref="courrier_trait" entity_ref="QuotationAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menuitem id="courrier_trait_02" label="Annotation" parent_ref="courrier_trait" entity_ref="CourrierAAnnote" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+	<menuitem id="courrier_trait_02_1" label="Annotation" parent_ref="courrier_trait" entity_ref="AnnotationAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menuitem id="courrier_trait_03" label="Classement" parent_ref="courrier_trait" entity_ref="CourrierAClasser" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"/>
+	<menuitem id="courrier_trait_03_1" label="Classement" parent_ref="courrier_trait" entity_ref="ClassementAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menuitem id="courrier_trait_04" label="Relance" parent_ref="courrier_trait" entity_ref="CourrierARelancer" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"/>
+	<menuitem id="courrier_trait_04_1" label="Relance" parent_ref="courrier_trait" entity_ref="ActionTemplate" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menu id="courrier_ref" label="Administration" parent="keren_courrier" gyphycon="glyphicon glyphicon-cog"/>
+    <menuitem id="courrier_ref_01" label="Type Correspondant" parent_ref="courrier_ref" entity_ref="TypeCorrespondant" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_02" label="Priorité" parent_ref="courrier_ref" entity_ref="Priorite" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_03" label="Types Dossiers" parent_ref="courrier_ref" entity_ref="TypeDossier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_04" label="Dossiers" parent_ref="courrier_ref" entity_ref="DossierCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_06" label="Type Courrier" parent_ref="courrier_ref" entity_ref="TypeCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+	<menuitem id="courrier_ref_07" label="Nature Courrier" parent_ref="courrier_ref" entity_ref="NatureCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+	<menuitem id="courrier_ref_08" label="Utilisateurs" parent_ref="courrier_ref" entity_ref="UtilisateurCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_09" label="Contacts" parent_ref="courrier_ref" entity_ref="Correspondant" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_10" label="Statut" parent_ref="courrier_ref" entity_ref="Statut" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_11" label="Services" parent_ref="courrier_ref" entity_ref="StructureCompany" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_ref_12" label="Paramètrage des workflow" parent_ref="courrier_ref" entity_ref="WorkflowAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_ref_13" label="Actions courriers" parent_ref="courrier_ref" entity_ref="ActionCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_ref_14" label="Corbeilles" parent_ref="courrier_ref" entity_ref="Corbeille" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_ref_15" label="Classeurs" parent_ref="courrier_ref" entity_ref="ClasseurCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<dashboardRecord id="dashboard_courrier_001" label="Raccourcis"  action_ref="courrier_acceuil_01" entity_ref="CourrierDashboard"  model_ref="kerencourrier" method_ref="acceuil">
+	     <dashboard  id="dashboard_courrier001" parent_ref="dashboard_courrier_001" label="Corbeilles">
+		      <dashboardentry id="dashentry_courrier001" type="template" parent_ref="dashboard_courrier001" label="Corbeilles" entity_ref="CourrierDashboard"  model_ref="kerencourrier" method_ref="corbeille">
+			       <template>
+                     <![CDATA[				   
+						 <ul class="list-group">
+							  <li class="list-group-item justify-content-between" ng-repeat="obj in temporalData.corbeilles">
+								<a href="#" ng-click="getActionByName(obj.code,obj.rules)">  
+								  <span class="badge badge-default badge-pill">                                          
+									 {{obj.quantite}}
+									</span>
+									{{obj.intitule}}                                    
+								  </a>
+							  </li>							  
+						  </ul>
+                      ]]>						
+					</template>
+			  </dashboardentry>			  
+		 </dashboard>
+         <dashboard  id="dashboard_courrier002" parent_ref="dashboard_courrier_001" label="Raccourcis">
+		      <dashboardentry id="dashentry_courrier002" type="template" parent_ref="dashboard_courrier002" label="Raccourcis" entity_ref="CourrierDashboard"  model_ref="kerencourrier" method_ref="corbeille">
+			       <template>
+                     <![CDATA[				   
+						 <div class="pull-center  col-sm-4 col-md-4" ng-repeat="obj in temporalData.raccourcis">
+							  <a href="#" ng-click="getActionByName(obj.code,null)">  
+								  <span class="{{obj.icone}}"></span>
+								  {{obj.intitule}}                                    
+							  </a>							  							  
+						  </div>
+                      ]]>						
+					</template>
+			  </dashboardentry>			  
+		 </dashboard>		 		 
+	 </dashboardRecord>
+</keren>

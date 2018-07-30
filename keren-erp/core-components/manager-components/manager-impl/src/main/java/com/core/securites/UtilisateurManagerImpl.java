@@ -255,7 +255,7 @@ public class UtilisateurManagerImpl
         List<MenuAction> datas = menuitemdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
         if(datas==null) return result;
         for(MenuAction act:datas){
-            if(act.getHide()==Boolean.FALSE){
+            /*if(act.getHide()==Boolean.FALSE)*/{
                 MenuAction action = new MenuAction(act);
                 if(KerenSession.containKey(act.getLabel())){
                     action.setLabel(KerenSession.getEntry(act.getLabel()));
@@ -273,7 +273,7 @@ public class UtilisateurManagerImpl
                     }
                 }//end if(groupdb.containsKey(act.getId())){
                 result.add(action);
-            }//end if(act.getHide()==Boolean.FALSE)
+           }//end if(act.getHide()==Boolean.FALSE)
         }//end for(MenuAction act:datas){
         return result;
     }
