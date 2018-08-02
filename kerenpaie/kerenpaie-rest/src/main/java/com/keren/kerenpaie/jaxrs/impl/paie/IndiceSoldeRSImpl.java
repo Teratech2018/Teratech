@@ -13,11 +13,11 @@ import com.kerem.core.MetaDataUtil;
 import com.keren.kerenpaie.core.ifaces.paie.IndiceSoldeManagerRemote;
 import com.keren.kerenpaie.jaxrs.ifaces.paie.IndiceSoldeRS;
 import com.keren.kerenpaie.model.paie.IndiceSolde;
-import com.keren.kerenpaie.model.paie.LigneIndiceSolde;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -188,7 +188,7 @@ public class IndiceSoldeRSImpl
     }
     
     @Override
-    public IndiceSolde delete(Long id) {
+    public IndiceSolde delete(@Context HttpHeaders headers , Long id) {
 
         // TODO Auto-generated method stub
         IndiceSolde entity = manager.find("id", id);
@@ -196,7 +196,7 @@ public class IndiceSoldeRSImpl
         try{
 
             //on supprimme l'objet
-            super.delete(id);
+            super.delete(headers,id);
 
         }catch(Exception ex){
             throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");

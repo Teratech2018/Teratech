@@ -72,6 +72,7 @@ public class CommonTools {
         action.setEntityName(item.getEntityRef());
         action.setModel(item.getModelRef());        
         action.setLink(item.getLink());
+        action.setReport(item.getReport());
         action.setHide(item.isHide());
         action.setModal(item.isModal());
         action.setIcon(item.getGyphycon());
@@ -153,6 +154,7 @@ public class CommonTools {
             record.setMethod(view.getSearch().getMethod());
             record.setSearch(FileHelper.transformJaxBToScript(view.getSearch()));
             record.setClazz(view.getSearch().getClazz());
+            record.setIgnore(view.getSearch().isIgnore());
         }//end if(view.getSearch()!=null)        
 //        System.out.println(CommonTools.class.toString()+" ========================================= "+view.getTemplate());
         if(view.getTemplate()!=null&&!view.getTemplate().trim().isEmpty()){

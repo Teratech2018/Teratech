@@ -11,7 +11,6 @@ import com.megatim.common.annotations.OrderType;
 import com.teratech.stock.core.ifaces.base.EmplacementManagerLocal;
 import com.teratech.stock.core.ifaces.base.EmplacementManagerRemote;
 import com.teratech.stock.dao.ifaces.base.EmplacementDAOLocal;
-import com.teratech.stock.model.base.Contact;
 import com.teratech.stock.model.base.Emplacement;
 import java.util.ArrayList;
 import java.util.List;

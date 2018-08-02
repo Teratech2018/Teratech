@@ -49,7 +49,8 @@
             <xs:attribute name="id"  type="xs:string" use="required" />
             <xs:attribute name="label"  type="xs:string"  use="required" />
             <xs:attribute name="modal"  type="xs:boolean" default="false" />
-             <xs:attribute name="link"  type="xs:string" default="" />
+            <xs:attribute name="link"  type="xs:string" default="" />
+            <xs:attribute name="report"  type="xs:string" default="" />
             <xs:attribute name="entity_ref"  type="xs:string"  use="required" />
             <xs:attribute name="model_ref"  type="xs:string"  use="required" />
             <xs:attribute name="method_ref"  type="xs:string"/>
@@ -70,7 +71,7 @@
             <xs:attribute name="label"  type="xs:string" />
             <xs:attribute name="parent_ref" type="xs:string" />   
             <xs:attribute name="action_ref" type="xs:string" /> 
-             <xs:attribute name="entity_ref"  type="xs:string"  use="required" />
+            <xs:attribute name="entity_ref"  type="xs:string"  use="required" />
             <xs:attribute name="model_ref"  type="xs:string"  use="required" /> 
             <xs:attribute name="method_ref"  type="xs:string"  use="required" />         
         </xs:complexType>
@@ -79,12 +80,16 @@
     <xs:element name="dashboardentry">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:field"   minOccurs="0" maxOccurs="unbounded"/>          
+                <xs:element ref="tns:field"   minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>           
             </xs:sequence>
             <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="type"  type="xs:string" />
             <xs:attribute name="label"  type="xs:string" />
-            <xs:attribute name="parent_ref" type="xs:string" />     
+            <xs:attribute name="parent_ref" type="xs:string" />   
+            <xs:attribute name="entity_ref"  type="xs:string"/>
+            <xs:attribute name="model_ref"  type="xs:string"/> 
+            <xs:attribute name="method_ref"  type="xs:string"/>      
         </xs:complexType>
     </xs:element>
     
@@ -103,7 +108,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="tns:header"   minOccurs="0" maxOccurs="1"/>                 
-                <xs:element ref="tns:sheet"   minOccurs="0" maxOccurs="1"/>        
+                <xs:element ref="tns:sheet"   minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>          
             </xs:sequence>
 	    <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="label"  type="xs:string" />
@@ -163,7 +169,8 @@
             <xs:attribute name="class" type="xs:string" />
             <xs:attribute name="entity" type="xs:string" />
             <xs:attribute name="module" type="xs:string" />
-            <xs:attribute name="method" type="xs:string" />            
+            <xs:attribute name="method" type="xs:string" /> 
+            <xs:attribute name="ignore" type="xs:boolean" default="false" />            
         </xs:complexType>        
     </xs:element>
     

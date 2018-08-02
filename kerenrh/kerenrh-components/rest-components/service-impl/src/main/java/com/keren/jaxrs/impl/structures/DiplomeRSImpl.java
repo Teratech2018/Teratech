@@ -13,11 +13,11 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.structures.DiplomeManagerRemote;
 import com.keren.jaxrs.ifaces.structures.DiplomeRS;
-import com.keren.model.structures.Departement;
 import com.keren.model.structures.Diplome;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -71,7 +71,7 @@ public class DiplomeRSImpl
     }
     
     @Override
-    public Diplome delete(Long id) {
+    public Diplome delete(@Context HttpHeaders headers , Long id) {
 
         // TODO Auto-generated method stub
         Diplome entity = manager.find("id", id);
@@ -79,7 +79,7 @@ public class DiplomeRSImpl
         try{
 
             //on supprimme l'objet
-            super.delete(id);
+            super.delete(headers,id);
 
         }catch(Exception ex){
             throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");

@@ -58,7 +58,7 @@ angular.module('keren.core.commons')
                 };
 }]);
 angular.module('keren.core.commons')
-        .factory('commonsTools',function($filter){
+        .factory('commonsTools',function($filter,$compile,$http,$location){
             //Liste des contraintes
             var uniqueContraints = new Array();
             var stopTimer = 0;
@@ -71,13 +71,15 @@ angular.module('keren.core.commons')
              * @returns {undefined}
              */
             var showDialogLoadingFull = function(idElement, logo, color, opacity){
-                   $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:5000;text-align:center;background-color:black'></div>");
+                    
+                    $('#'+idElement).remove();
+                
+                    $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:5000;text-align:center;background-color:black'></div>");
                     $('#'+idElement).append("<div id='dialogFullWindow' style='width:100%;margin:auto;margin-top:22%;color:white;text-align:center'>"+logo+"</div>");
 
                     //Changer le proprietes css
                     $('#'+idElement).css("opacity",opacity);
                     $('#dialogFullWindow').css("color",color);
-
 
                     //Afficher le dialog
                     $('#'+idElement).hide();
@@ -96,7 +98,10 @@ angular.module('keren.core.commons')
                  * @returns {undefined}
                  */
                showDialogLoading :function(texte, color, colorContent, topPos,leftPos) {
+//                   console.log("commons.showDialogLoading ================== intree ")
                    var idElement = "dialogContent";
+                   $('#'+idElement).remove();
+                   
                     $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:2000;text-align:center;'></div>");
                     $('#'+idElement).append("<div id='dialogWindow'></div>");
                     $('#dialogWindow').append("<span id='dialogWindowText' style='text-align:center;padding:8px;padding-right:16px;padding-left:16px;display:inline-block;color:white;border-radius:3px;font-size:80%;'>"+texte+"</span>");
@@ -129,6 +134,7 @@ angular.module('keren.core.commons')
                },//end
                
                hideDialogLoading :function() {
+//                   console.log("commons.hideDialogLoading ================== sortie ");
                     //On stoppe le moteur
                     this.stopMoteur(stopTimer);
                     var idElement = "dialogContent";
@@ -141,6 +147,8 @@ angular.module('keren.core.commons')
                     $('#'+idElement+"_Full").fadeOut(function(){
                             $('#'+idElement+"_Full").remove();
                     });
+                    
+//                    console.log("commons.hideDialogLoading ================== sortie 2");
                },
                /**
                 * 
@@ -165,6 +173,7 @@ angular.module('keren.core.commons')
 
                      },{
                         type:type,
+                        z_index: 5800,
                          animate: {
                            enter: 'animated fadeInRight',
                            exit: 'animated fadeOutRight'
@@ -197,8 +206,8 @@ angular.module('keren.core.commons')
                                   if(!metaData.columns[i].optional || metaData.columns[i].min){
                                       if(!currentObject[metaData.columns[i].fieldName]){
                                           champs.push(metaData.columns[i].fieldLabel);
-                                      }
-                                  }
+                                      }//end if(!currentObject[metaData.columns[i].fieldName]){
+                                  }//end if(!metaData.columns[i].optional || metaData.columns[i].min){
                                   //Construction des champs pour unicite
                                   if(metaData.columns[i].unique){
                                       var pred = new Object();
@@ -206,9 +215,9 @@ angular.module('keren.core.commons')
                                       pred.fieldName =  metaData.columns[i].fieldName;
                                       pred.fieldValue = currentObject[metaData.columns[i].fieldName];
                                       uniqueContraints.push(pred);
-                                  }
-                              }
-                            }
+                                  }//end if(metaData.columns[i].unique)
+                              }//end for(var i=0 ; i< metaData.columns.length;i++){
+                            }//end if(metaData.columns){
                             //Cas des groups
                             if(metaData.groups){
                                for(var i=0;i<metaData.groups.length;i++){
@@ -229,16 +238,16 @@ angular.module('keren.core.commons')
                                                pred.value =  currentObject[metaData.groups[i].columns[j].fieldName];
                                                uniqueContraints.push(pred);
                                                // champs.push($scope.metaData.groups[i].columns[j].fieldLabel);
-                                         }
+                                         }//end if(!metaData.groups[i].columns[j].optional || metaData.groups[i].columns[j].
                                          //Construction des champs pour unicite
-                                       if(metaData.groups[i].columns[j].unique){
-                                           uniqueContraints.push(metaData.groups[i].columns[j].fieldLabel);
-                                       }
-                                      }
-                                   }
-                               }
-                            }
-                       }
+                                        if(metaData.groups[i].columns[j].unique){
+                                            uniqueContraints.push(metaData.groups[i].columns[j].fieldLabel);
+                                        }//end if(metaData.groups[i].columns[j].unique){
+                                      }//end for(var j=0 ; j< metaData.groups[i].columns.length;j++){
+                                   }//end if(metaData.groups[i].columns){
+                               }//end for(var i=0;i<metaData.groups.length;i++){
+                            }//end if(metaData.groups){
+                       }//end if(metaData && currentObject){
                        return champs;
 
                   },
@@ -275,6 +284,12 @@ angular.module('keren.core.commons')
                             }
                         }
                  },
+                 /**
+                  * 
+                  * @param {type} array
+                  * @param {type} value
+                  * @returns {Boolean}
+                  */
                  containsLiteral:function(array , value){
 //                     console.log("commonTool.containsLiteral:function(array , value) =============== tab : "+angular.toJson(array)+" ===== state : "+value);
                      if(!angular.isDefined(value)||value==null
@@ -662,7 +677,7 @@ angular.module('keren.core.commons')
                         footerDiv.setAttribute('class' , 'modal-footer');
                         footerDiv.setAttribute('id' , 'gmodalfooter');
                         //Button annuler
-                        buttonElem = document.createElement('button');
+                        var buttonElem = document.createElement('button');
                         footerDiv.appendChild(buttonElem);
                         buttonElem.setAttribute('class' , 'btn btn-default');
                         buttonElem.setAttribute('data-dismiss' , "modal");
@@ -696,6 +711,7 @@ angular.module('keren.core.commons')
                     }//end if(error.status==412)
                    
             },
+    
             /**
              * 
              * @param {type} idFileElement
@@ -959,7 +975,7 @@ angular.module('keren.core.commons')
                    if(angular.isNumber(expr)){
                        return expr;
                    }//end if(angular.isNumber(expr))
-                   console.log("getValue:function(expr,data) === "+expr);
+//                   console.log("getValue:function(expr,data) === "+expr);
                    var part = expr.split(".");
                    if(part.length==1){
                        if(angular.isNumber(data[expr])){
@@ -987,7 +1003,7 @@ angular.module('keren.core.commons')
                             expEval +=this.getValue(expr[i],data);
                         }
                     }//end for(var i+0;i<expr.length;i++){
-                    console.log("sumListExpr:function(expr, datas)) === "+expEval+" === "+result);
+//                    console.log("sumListExpr:function(expr, datas)) === "+expEval+" === "+result);
                     var result = eval(expEval.toString());
                     return result;
                 }//end if(data && expr.length>0)
@@ -1076,12 +1092,13 @@ angular.module('keren.core.commons')
                }//end if(fieldnames.length>0)
                return footerElem;
             },
+            
             /**
              * Build for from dashboard entry data
              * @param {type} data
              * @returns {undefined}
              */
-            dashboardEntryFormBuilder:function(data){
+            dashboardEntryFormBuilder:function(parentID,data){
                 var formElem = document.createElement('form');
 //                container.appendChild(formElem);
                 formElem.setAttribute('class','form-inline');
@@ -1108,8 +1125,50 @@ angular.module('keren.core.commons')
                     butElem.setAttribute("ng-show",field.activalink);
                     butElem.setAttribute("ng-click" , "dashboardEntryBtn('"+field.model+"','"+field.entity+"' , '"+field.method+"')");
                 }//end for(var i=0 ; i<data.length;i++)
-                return formElem;
+                $("#"+parentID).html("");
+                $("#"+parentID).append(formElem);
+//                return formElem;
             },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
+            dashboardEntryCustomBuilder:function(parentID,data,scope){
+                var url = 'http://'+$location.host()+':'+$location.port()+'/'+angular.lowercase(data.model)+'/'+angular.lowercase(data.entity)+'/'+angular.lowercase(data.method);
+                $http.get(url).then(
+                    /**
+                     * 
+                     * @param {type} datas
+                     * @returns {undefined}
+                     */
+                        function(response){
+                             //Notification du changement du module
+                                scope.temporalData = response.data;
+                                var container = document.createElement("div");
+                //              var obj = angular.fromJson(data);
+//                                console.log("commons.dashboardEntryCustomBuilder ====== "+angular.toJson(scope.temporalData)+" ==== template : ");                
+                                container.innerHTML = data.tempate;
+                                var compileFn = $compile(container);
+                                 compileFn(scope);    
+                                $("#"+parentID).html("");
+                                $("#"+parentID).append(container);
+                        },
+                        function(error){
+//                             this.hideDialogLoading();
+                             this.showMessageDialog(error);
+                        }
+                     );
+                
+//                return formElem;
+            },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
             dashboardEntryBarBuilder:function(parentID , data){
                 var bardata = new Object();
                 bardata.type = "column";
@@ -1131,6 +1190,12 @@ angular.module('keren.core.commons')
                 $("#"+parentID).CanvasJSChart(options);
 //                return divElem;
             },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
             dashboardEntryPieBuilder:function(parentID , data){
                 var bardata = new Object();
                 bardata.type = "pie";
@@ -1154,6 +1219,12 @@ angular.module('keren.core.commons')
                 $("#"+parentID).html("");
                 $("#"+parentID).CanvasJSChart(options);
             },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {undefined}
+             */
             dashboardEntryLineBuilder:function(parentID , data){
                 var bardata = new Object();
                 bardata.type = "spline";
@@ -1173,7 +1244,14 @@ angular.module('keren.core.commons')
                 };
                 $("#"+parentID).html("");
                 $("#"+parentID).CanvasJSChart(options);
-            },dashboardEntryUnkownBuilder:function(parentID , data){
+            },
+            /**
+             * 
+             * @param {type} parentID
+             * @param {type} data
+             * @returns {unresolved}
+             */
+            dashboardEntryUnkownBuilder:function(parentID , data){
                 var divElem = document.createElement("div");
                 divElem.appendChild(document.createTextNode("Unkown options ..."));
                 return divElem;
@@ -1183,15 +1261,17 @@ angular.module('keren.core.commons')
              * @param {type} data
              * @returns {undefined}
              */
-            dashboardEntryBuilder:function(parentID,data){
+            dashboardEntryBuilder:function(parentID,data,scope){
                 if(data.type=='data'){
-                    return this.dashboardEntryFormBuilder(data);
+                    return this.dashboardEntryFormBuilder(parentID,data);
                 }else if(data.type=='bar'){
                     return this.dashboardEntryBarBuilder(parentID,data);
                 }else if(data.type=='pie'){
                     return this.dashboardEntryPieBuilder(parentID,data);
                 }else if(data.type=='line'){
                     return this.dashboardEntryLineBuilder(parentID,data);
+                }else if(data.type=='template'){
+                    return this.dashboardEntryCustomBuilder(parentID,data,scope);
                 }else{
                     return this.dashboardEntryUnkownBuilder(parentID,data);
                 }
@@ -1201,7 +1281,7 @@ angular.module('keren.core.commons')
              * @param {type} data:dash bord datat
              * @returns {undefined}
              */
-            dashboardBuilder:function(data){
+        dashboardBuilder:function(data){
                 if(data){                                                            
                     var divElem = document.createElement('div');
                     divElem.setAttribute("class","panel panel-primary kanban-col");
@@ -1242,7 +1322,8 @@ angular.module('keren.core.commons')
                         liElem.setAttribute("role","presentation");
                         var aElem = document.createElement("a");
                         liElem.appendChild(aElem);
-                        aElem.setAttribute("role","menuitem");aElem.setAttribute("tabindex","1");
+                        aElem.setAttribute("role","menuitem");
+                        aElem.setAttribute("tabindex","1");
                         aElem.setAttribute("href","#");
                         aElem.setAttribute("ng-click","showEntrypanel('"+data.code+"','"+entry.code+"')");
                         aElem.appendChild(document.createTextNode(entry.label));
@@ -1262,13 +1343,14 @@ angular.module('keren.core.commons')
                     artElem.setAttribute("style","height: 150px;");
                     var container = document.createElement("div");                    
                     container.setAttribute("id",data.code);
-                    container.setAttribute("style","height: 100%; width: 100%;");
-                    var dashentry =this.dashboardEntryBuilder(data.code,data.entries[0]);
-                    if(dashentry){
-                        container.appendChild(dashentry);
-                    }
+                    container.setAttribute("style","height: 100%; width: 100%;");                    
+//                    var dashentry =this.dashboardEntryBuilder(data.code,data.entries[0]);
+//                    if(dashentry){
+//                        container.appendChild(dashentry);
+//                    }//end if(dashentry){
                     artElem.appendChild(container);
 //                    console.log(" $scope.initAction ===== "+divElem.innerHTML);
+//                    this.dashboardEntryBuilder(data.code,data.entries[0]);
                     return divElem;
                 }//end if(data)
             },
@@ -1277,7 +1359,7 @@ angular.module('keren.core.commons')
              * @param {type} data
              * @returns {undefined}
              */
-            dashboardContainerBuilder:function(data){
+            dashboardContainerBuilder:function(data,scope){
                 var divElem = document.createElement("div");
                 divElem.setAttribute("class","row");
                 divElem.setAttribute("style","padding-left:  10px;padding-right:  10px;");
@@ -1303,7 +1385,56 @@ angular.module('keren.core.commons')
                     }
                 }
             },
-            
+            /**
+             * 
+             * @param {type} module
+             * @param {type} action
+             * @param {type} entity
+             * @param {type} user
+             * @returns {commons_L61.commonsAnonym$3.createsession.session|Object}
+             */
+            createsession: function(module,action,entity,user){
+                 var session = new Object();
+                 session.module = module ;
+                 session.action = action ;
+                 session.entity = entity;
+                 session.user = user;
+                 this.createCookie("session_"+session.user,angular.toJson(session),30);
+//           console.log("principal.createsession ===== cookie read : "+commonsTools.readCookie("session_"+session.user));
+               return session ;
+            },
+            /**
+             * 
+             * @param {type} name
+             * @param {type} value
+             * @param {type} minute
+             * @returns {undefined}
+             */
+            createCookie: function(name,value,days){
+                if(days){
+                    var date = new Date();
+                    date.setTime(date.getTime()+(days*60*1000));
+                    var expires ="; expires="+date.toGMTString();
+                }else{
+                    var expires ="";
+                }//end if(days){
+                document.cookie = name+"="+value+expires+"; path=/";
+            },
+            /**
+             * 
+             * @param {type} name
+             * @returns {undefined}
+             */
+            readCookie: function(name){
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                        var c = ca[i];
+                        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            },
             /**
              * 
              * @param {type} id
@@ -1366,6 +1497,48 @@ angular.module('keren.core.commons')
                 return key;
             },
             /**
+             * 
+             * @param {type} errors
+             * @returns {Array}
+             */
+            converErrorsMap : function(errors){
+                var array = new Array();
+                for(var key in errors){
+                    var data = errors[key];
+                    for(var key2 in data){
+                        var error = data[key2];
+                        var obj = new Object();
+                        obj['line'] = key;
+                        obj['field'] = key2;
+                        for(var key3 in error){
+//                            console.log("commons.converErrorsMap ========== key : "+key3+" ======= value : "+angular.toJson(error[key3]));
+                            var detail = error[key3];
+                            obj['value'] = detail['value'];
+                            obj['message'] = detail['message'];
+                        }//end for(var key3 in error){
+                        array.push(obj);
+                    }//end for(var key2 in data){
+                }//end for(var key in errors){
+                return array;
+            },
+            /**
+             * 
+             * @param {type} data
+             * @param {type} expressions
+             * @returns {undefined}
+             */
+            evaluateExpression:function(data,expressions){
+                var result = true;
+                for(var i=0 ; i<expressions.length;i++){
+                    var expr = expressions[i];
+                    if(expr.function=='=='){
+                        result &=(data[expr.fieldname]==expr.value);
+                    }//end if(expr.function=='==')
+//                    console.log("commons.evaluateExpression ============ expr = "+expr+" === field : "+data[expr.fieldname]+" == oper : "+expr.function+" === value : "+expr.value);
+                }//end for(var i=0 ; i<expressions.length;i++){
+                return result;
+            },
+            /**
             * 
             * @param {type} metaData
             * @returns {undefined}
@@ -1377,12 +1550,13 @@ angular.module('keren.core.commons')
                entity.className = metaData.className;
                entity.format ='cvs';
                entity.separator = ',';
+               entity.typeexport = '0';
                /**
                 * Traitement des champs columns
                 */
                for(var i=0 ; i<metaData.columns.length;i++){
                    var ele = metaData.columns[i];
-                   if(ele.search==true){
+                   /**if(ele.search==true)**/{
                         var field = new Object();
                         field.id = -1 ;
                         field.selected = false ;
@@ -1398,6 +1572,12 @@ angular.module('keren.core.commons')
                         field.description = ele.fieldLabel;
                         field.optional = !ele.optional;
                         field.selected = field.optional;
+                        field.pattern = ele.pattern;
+                        field.length = ele.length;
+                        field.min = ele.min;
+                        field.max = ele.max ;
+                        field.unique = ele.unique;
+                        field.nullable = ele.nullable;
                         entity.fields.push(field);
                    }//end if(ele.search==true){
                }//end for(var i=0 ; i<metaData.columns.length;i++){
@@ -1407,7 +1587,7 @@ angular.module('keren.core.commons')
                for(var i=0 ; i<metaData.groups.length;i++){
                    for(var j=0 ;j<metaData.groups[i].columns.length;j++){
                        var ele = metaData.groups[i].columns[j];
-                       if(ele.search==true){
+                       /**if(ele.search==true)**/{
                             var field = new Object();
                             field.id = -1 ;
                             field.selected = false ;
@@ -1424,6 +1604,12 @@ angular.module('keren.core.commons')
                             field.description = ele.fieldLabel;
                             field.optional = !ele.optional;
                             field.selected = field.optional;
+                            field.pattern = ele.pattern;
+                            field.length = ele.length;
+                            field.min = ele.min;
+                            field.max = ele.max ;
+                            field.unique = ele.unique;
+                            field.nullable = ele.nullable;
                             entity.fields.push(field);
                        }//end if(ele.search==true){
                    }//end for(var j=0 ;j<metaData.groups[i].columns.length;j++){

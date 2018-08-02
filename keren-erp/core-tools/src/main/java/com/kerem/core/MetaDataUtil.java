@@ -19,6 +19,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaGroup;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -124,6 +125,7 @@ public class MetaDataUtil {
      * 
      * @param obj
      * @param shareCache
+     * @param exclures
      * @return 
      * @throws java.lang.InstantiationException 
      * @throws java.lang.IllegalAccessException 
@@ -160,8 +162,7 @@ public class MetaDataUtil {
         for(State state : ((BaseElement)obj).getStates()){
             states.add(new com.megatimgroup.generic.jax.rs.layer.impl.State(state.getCode(), state.getIntitule()));
         }//end for(State state : ((BaseElement)obj).getStates())
-        metaData.setStates(states);
-        
+        metaData.setStates(states);        
         //Mise a jour ShareClass
 //        shareCache.put(obj.getClass().toString(), metaData);
          //System.out.println(MetaDataUtil.class.toString()+" ===================== "+shareCache.keySet().size()+" ==== "+obj.getClass().toString());
@@ -169,13 +170,9 @@ public class MetaDataUtil {
         //Liste des champs disponible
         List<Field> fields = new ArrayList<Field>();
         Field[] fields_0 = obj.getClass().getSuperclass().getDeclaredFields();
-        for(Field f : fields_0){
-            fields.add(f);
-        }//end for(Field f : fields_0){
+        fields.addAll(Arrays.asList(fields_0)); //end for(Field f : fields_0){
         Field[] fields_1 =  obj.getClass().getDeclaredFields();
-        for(Field f : fields_1){
-            fields.add(f);
-        }//end for(Field f : fields_1)
+        fields.addAll(Arrays.asList(fields_1)); //end for(Field f : fields_1)
         //Traitement des donnees
         Map<String , List<Field>> groups = new HashMap<String , List<Field>>();
         List<Field> columns = new ArrayList<Field>();
@@ -334,6 +331,9 @@ public class MetaDataUtil {
                             label = KerenSession.getEntry(label);
                         }//end if(KerenSession.containKey(annot.label())){
                         MetaColumn column = new MetaColumn("array", field.getName(), label,annot.search(),"one-to-many", null);
+                        if(annot.target()=="many-to-many-list"){
+                            column = new MetaColumn("array", field.getName(), label,annot.search(),"many-to-many-list", meta);
+                        }//end if(annot.target()=="many-to-many-list")                        
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setUpdatable(annot.updatable());
                         column.setCustomfooter(annot.customfooter());column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         String[] searchfields = annot.searchfields().split(",");
@@ -511,7 +511,7 @@ public class MetaDataUtil {
                             /**if(!shareCache.containsKey(annot.type().getClass().toString()))**/{
                                 if(field.isAnnotationPresent(ManyToMany.class)){
                                      if(annot.target().equalsIgnoreCase("many-to-many-list")){//many-to-many-list
-                                         String label = annot.groupLabel();
+                                         String label = annot.label();
                                          if(KerenSession.containKey(annot.groupLabel())){
                                             label = KerenSession.getEntry(label);
                                          }//end if(KerenSession.containKey(annot.label())){
@@ -575,11 +575,11 @@ public class MetaDataUtil {
                                           }//end if(field.isAnnotationPresent(Filter.class)){
                                     }
                                 }else if(field.isAnnotationPresent(OneToMany.class)){ 
-                                    String label = annot.groupLabel();
+                                    String label = annot.label();
                                     if(KerenSession.containKey(annot.groupLabel())){
                                         label = KerenSession.getEntry(label);
                                     }//end if(KerenSession.containKey(annot.label())){
-                                    MetaArray metaArray = new MetaArray("array", field.getName(), label,annot.search(),annot.target(),meta);
+                                    MetaArray metaArray = new MetaArray("array", field.getName(), label,annot.search(),annot.target(),meta);                                                  
                                     metaArray.setUpdatable(annot.updatable());metaArray.setCustomfooter(annot.customfooter());
                                     metaArray.setEdittable(annot.edittable());metaArray.setFrozen(annot.frozen());
                                     String[] searchfields = annot.searchfields().split(",");

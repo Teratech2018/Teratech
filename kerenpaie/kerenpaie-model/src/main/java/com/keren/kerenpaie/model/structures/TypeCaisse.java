@@ -124,5 +124,7 @@ public class TypeCaisse extends BaseElement implements Serializable, Comparable<
 		// TODO Auto-generated method stub
 		return code.compareTo(o.code);
 	}
+        
+        
 
 }

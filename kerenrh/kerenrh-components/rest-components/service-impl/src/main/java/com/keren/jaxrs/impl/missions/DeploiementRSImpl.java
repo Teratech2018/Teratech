@@ -9,6 +9,8 @@ import com.keren.jaxrs.ifaces.missions.DeploiementRS;
 import com.keren.model.missions.Deploiement;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 
 
 /**
@@ -48,7 +50,7 @@ public class DeploiementRSImpl
     }
     
     @Override
-    public Deploiement delete(Long id) {
+    public Deploiement delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         Deploiement data = null;
@@ -56,7 +58,7 @@ public class DeploiementRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new Deploiement(data);
             
         }catch(Exception e){

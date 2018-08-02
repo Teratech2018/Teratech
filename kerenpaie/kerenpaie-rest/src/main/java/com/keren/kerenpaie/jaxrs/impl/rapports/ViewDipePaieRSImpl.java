@@ -2,8 +2,6 @@
 package com.keren.kerenpaie.jaxrs.impl.rapports;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +30,7 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 /**
  * Classe d'implementation du Web Service JAX-RS
@@ -122,7 +121,7 @@ public class ViewDipePaieRSImpl extends AbstractGenericService<ViewDipePaie, Lon
 	}
 
 	@Override
-	public ViewDipePaie save(ViewDipePaie entity) {
+	public ViewDipePaie save(@Context HttpHeaders headers , ViewDipePaie entity) {
 		// generer le dipe
 		// TODO Auto-generated method stub
 		if (entity.getPeriode() == null) {
@@ -155,7 +154,7 @@ public class ViewDipePaieRSImpl extends AbstractGenericService<ViewDipePaie, Lon
 	    
 	   
 	    public Response getFile(File file) {
-	    	System.out.println("ViewDipePaieRSImpl.getFile1() je suis iicii !!!!");
+//	    	System.out.println("ViewDipePaieRSImpl.getFile1() je suis iicii !!!!");
 	    	  try{
 //	                String resourceDir = FileHelper.getStaticDirectory()+File.separator+filename;
 //	                File file = new File(resourceDir);

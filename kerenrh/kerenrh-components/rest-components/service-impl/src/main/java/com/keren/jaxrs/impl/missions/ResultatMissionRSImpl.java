@@ -17,6 +17,7 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -122,7 +123,7 @@ public class ResultatMissionRSImpl
     }
     
     @Override
-    public ResultatMission delete(Long id) {
+    public ResultatMission delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         ResultatMission data = null;
@@ -130,7 +131,7 @@ public class ResultatMissionRSImpl
 
         try{
 
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new ResultatMission(data);
 
         }catch(Exception e){

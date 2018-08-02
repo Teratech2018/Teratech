@@ -22,6 +22,15 @@ public class DashboardEntry extends BaseElement implements Serializable,Comparab
     
     private String label ;
     
+    private String tempate ;
+    
+    private String entity;
+    
+    private String model ;
+    
+    private String method ;
+    
+    
     private List<DashboardField> fields = new ArrayList<DashboardField>();
 
     /**
@@ -55,7 +64,10 @@ public class DashboardEntry extends BaseElement implements Serializable,Comparab
         this.code = entry.code;
         this.type = entry.type;
         this.label = entry.label;
-        
+        this.tempate = entry.tempate;
+        this.entity = entry.entity;
+        this.model = entry.model;
+        this.method = entry.method;
         this.fields = entry.getFields();
     }
 
@@ -89,6 +101,38 @@ public class DashboardEntry extends BaseElement implements Serializable,Comparab
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getTempate() {
+        return tempate;
+    }
+
+    public void setTempate(String tempate) {
+        this.tempate = tempate;
+    }
+
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
     
     

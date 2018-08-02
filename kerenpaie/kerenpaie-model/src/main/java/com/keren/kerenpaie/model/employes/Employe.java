@@ -84,7 +84,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	private String cni ;
 	
 	@Predicate(label="Date de délivrance",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations Personelles")
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date datedelivrance ;
 	
 	@Predicate(label="Lieu de délivrance",group=true,groupName="group1",groupLabel="Informations Personelles")
@@ -99,7 +99,7 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	@Predicate(label="Nombre d'enfants",type=Short.class,group=true,groupName="group1",groupLabel="Informations Personelles")
 	private Short nbreenfants = 0 ;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="Date de naissance",type=Date.class,target="date",group=true,groupName="group1",groupLabel="Informations Personelles")
 	private Date naissance ;
 	
@@ -217,93 +217,93 @@ public class Employe extends BaseElement implements Serializable,Comparable<Empl
 	
 	@OneToMany(mappedBy="employe",fetch=FetchType.LAZY)
 	@Predicate(label="Contrat de tarvail",type=ContratTravail.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group41",groupLabel="Contrats de Travail")
-    private List<ContratTravail> contrats = new ArrayList<ContratTravail>();
-    	
-	@Predicate(label="Anciennité?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double anciennite =0.0;
-    
-    @Column(name="TAUXSYN")
-    @Predicate(label="Taux Syndical(%)",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double tauxsyndical =0.0;
-    
-    @Column(name="IDEMLOG")
-    @Predicate(label="Indemnité de logement?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double idemlogement = 0.0;
-    
-    @Column(name="RETCOM")
-    @Predicate(label="Retraite complémentaire?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double retraitcomplementaire = 0.0;
-    
-    @Column(name="ANGELE")
-    @Predicate(label="Anciennité gélée?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double anciennitegele = 0.0;
-    
-    @Predicate(label="Salaire de base négocié?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double salbase = 0.0;
-    
-    @Predicate(label="Complément salaire?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double cmplsalaire =0.0;
-    
-    @Predicate(label="Arbre de noel?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Double noel =0.0;
-    
-    @Predicate(label="Avantage Eau?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean eau = Boolean.FALSE;
-    
-    private Boolean eauMode = Boolean.FALSE;//True Espece False : Nature
-    
-    @Predicate(label="Avantage Logement?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean logement = Boolean.FALSE;
-    
-    private Boolean logeMode = Boolean.FALSE;//True Espece False : Nature
-    
-    @Predicate(label="Avantage Electricité?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean electricite = Boolean.FALSE;
-    
-    private Boolean elecMode = Boolean.FALSE;//True Espece False : Nature
-    
-    @Predicate(label="Avantage Ménagères?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean menagere = Boolean.FALSE;
-    
-    private Boolean menMode = Boolean.FALSE;//True Espece False : Nature
-    
-    private Short menNbre = 0 ;
-    
-    @Predicate(label="Avantage Vehicule?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean vehicule = Boolean.FALSE; 
-    
-    private Boolean vehMode = Boolean.FALSE;//True Espece False : Nature
-    
-    private Short vehNbre = 0 ;
-    
-    @Predicate(label="Avantage Alimentaire?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean alimentaire = Boolean.FALSE;
-    @Predicate(label="Employe syndiqué?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean  syndique = Boolean.FALSE; 
-	
-	@Predicate(label="Employe affecté?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
-    private Boolean  affecte = Boolean.FALSE;
-    
-   
-    private Boolean aliMode = Boolean.FALSE;//True Espece False : Nature
-    
-    @ManyToMany
-    @JoinTable(name="T_EMRUP",joinColumns=@JoinColumn(name="EMPL_ID"),inverseJoinColumns=@JoinColumn(name="RUBR_ID"))
-    @Predicate(label="Rubriques?",type=Rubrique.class,editable=false,updatable=false,target="many-to-many-list",group=true,groupName="group401",groupLabel="Rubriques Complémentaires")
-    private List<Rubrique> rubriques = new ArrayList<Rubrique>();
-    
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
-    @JoinColumn(name="EMPL_ID")
-    @Predicate(label="Medialles",type=Medaille.class,target="one-to-many",edittable=true,group=true,groupName="group6",groupLabel="Médailles")
-    private List<Medaille> medailles = new ArrayList<Medaille>();
-    
-    @Predicate(label = "Congé Exceptionel(Ans)",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés")
-    @Column(name = "COEX")
-    private Double congeExceptionel = 0.0 ;
-    
-    @Predicate(label = "Congé Acquis / Periode",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés")
-    @Column(name = "COPE")
-    private Double congePeriode = 0.0 ;
+        private List<ContratTravail> contrats = new ArrayList<ContratTravail>();
+
+            @Predicate(label="Anciennité?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double anciennite =0.0;
+
+        @Column(name="TAUXSYN")
+        @Predicate(label="Taux Syndical(%)",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double tauxsyndical =0.0;
+
+        @Column(name="IDEMLOG")
+        @Predicate(label="Indemnité de logement?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double idemlogement = 0.0;
+
+        @Column(name="RETCOM")
+        @Predicate(label="Retraite complémentaire?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double retraitcomplementaire = 0.0;
+
+        @Column(name="ANGELE")
+        @Predicate(label="Anciennité gélée?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double anciennitegele = 0.0;
+
+        @Predicate(label="Salaire de base négocié?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double salbase = 0.0;
+
+        @Predicate(label="Complément salaire?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double cmplsalaire =0.0;
+
+        @Predicate(label="Arbre de noel?",editable=false,updatable=false,type=Double.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Double noel =0.0;
+
+        @Predicate(label="Avantage Eau?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean eau = Boolean.FALSE;
+
+        private Boolean eauMode = Boolean.FALSE;//True Espece False : Nature
+
+        @Predicate(label="Avantage Logement?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean logement = Boolean.FALSE;
+
+        private Boolean logeMode = Boolean.FALSE;//True Espece False : Nature
+
+        @Predicate(label="Avantage Electricité?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean electricite = Boolean.FALSE;
+
+        private Boolean elecMode = Boolean.FALSE;//True Espece False : Nature
+
+        @Predicate(label="Avantage Ménagères?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean menagere = Boolean.FALSE;
+
+        private Boolean menMode = Boolean.FALSE;//True Espece False : Nature
+
+        private Short menNbre = 0 ;
+
+        @Predicate(label="Avantage Vehicule?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean vehicule = Boolean.FALSE; 
+
+        private Boolean vehMode = Boolean.FALSE;//True Espece False : Nature
+
+        private Short vehNbre = 0 ;
+
+        @Predicate(label="Avantage Alimentaire?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean alimentaire = Boolean.FALSE;
+        @Predicate(label="Employe syndiqué?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean  syndique = Boolean.FALSE; 
+
+        @Predicate(label="Employe affecté?",editable=false,updatable=false,type=Boolean.class,group=true,groupName="group40",groupLabel="Elements de salaire")
+        private Boolean  affecte = Boolean.FALSE;
+
+
+        private Boolean aliMode = Boolean.FALSE;//True Espece False : Nature
+
+        @ManyToMany
+        @JoinTable(name="T_EMRUP",joinColumns=@JoinColumn(name="EMPL_ID"),inverseJoinColumns=@JoinColumn(name="RUBR_ID"))
+        @Predicate(label="Rubriques?",type=Rubrique.class,editable=false,updatable=false,target="many-to-many-list",group=true,groupName="group401",groupLabel="Rubriques Complémentaires")
+        private List<Rubrique> rubriques = new ArrayList<Rubrique>();
+
+        @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
+        @JoinColumn(name="EMPL_ID")
+        @Predicate(label="Medialles",type=Medaille.class,target="one-to-many",edittable=true,group=true,groupName="group6",groupLabel="Médailles")
+        private List<Medaille> medailles = new ArrayList<Medaille>();
+
+        @Predicate(label = "Congé Exceptionel(Ans)",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés")
+        @Column(name = "COEX")
+        private Double congeExceptionel = 0.0 ;
+
+        @Predicate(label = "Congé Acquis / Periode",type = Double.class,group = true,groupName = "group400",groupLabel = "Gongés")
+        @Column(name = "COPE")
+        private Double congePeriode = 0.0 ;
     
 //    @Predicate(label = "Congé Acquis /Enfant Mineur",type = Short.class,group = true,groupName = "group400",groupLabel = "Gongés")
 //    @Column(name = "COMA")

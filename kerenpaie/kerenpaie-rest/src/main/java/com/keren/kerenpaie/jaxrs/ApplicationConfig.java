@@ -31,7 +31,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.BanqueRSImpl.class); 
+        resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.BanqueRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.CompteAnalytiqueRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.CompteBancaireRSImpl.class);
         resources.add(com.keren.kerenpaie.jaxrs.impl.comptabilite.CompteRSImpl.class);

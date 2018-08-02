@@ -31,11 +31,11 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
     @Predicate(label = "Photo",target = "image")
     private String image ;
     
+    @Predicate(label = "Intitulé",optional = false,search = true)
+    private String intitule ;
+    
     @Predicate(label = "Reference interne",optional = false,unique = true,search = true)
     private String code ;
-    
-    @Predicate(label = "Intitulé",search = true)
-    private String intitule ;
     
     @Predicate(label = "Article vendu?",type = Boolean.class,search = true)
     private Boolean vendu = Boolean.FALSE;
@@ -108,7 +108,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
    
    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
    @JoinColumn(name = "LIEM_ID")
-   @Predicate(label = "LI",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage",edittable = true)
+   @Predicate(label = "",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage",edittable = true)
    private List<LienEmplacement> stockages = new ArrayList<LienEmplacement>();
     /**
      * 

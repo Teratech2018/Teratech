@@ -76,7 +76,7 @@ public class DemandeConge extends BaseElement implements Serializable,Comparable
 	@Predicate(label="Motif",target="textarea",group=true,groupName="group2",groupLabel="Motif")
 	protected String motif;
 	
-	protected String state ;
+	protected String state = "etabli";
 
 	/**
 	 * 

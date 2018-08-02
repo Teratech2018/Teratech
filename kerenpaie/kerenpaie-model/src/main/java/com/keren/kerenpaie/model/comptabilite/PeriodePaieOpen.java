@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -23,6 +24,7 @@ public class PeriodePaieOpen extends BaseElement implements Serializable, Compar
 	
 	@ManyToOne
 	@Predicate(label="Periode de paie",type=PeriodePaie.class,target="many-to-one",optional=true)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
 	private PeriodePaie periode;
 
 	/**

@@ -25,10 +25,10 @@ public interface UtilisateurRS
     extends GenericService<Utilisateur, Long>
 {
 
-    @GET
+    @PUT
     @Produces({MediaType.APPLICATION_JSON})
     @Path("application")
-    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers);
+    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers,Utilisateur user);
     
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})

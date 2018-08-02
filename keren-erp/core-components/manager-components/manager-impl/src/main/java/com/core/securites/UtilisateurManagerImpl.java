@@ -19,7 +19,6 @@ import com.core.menus.MenuGroupActionsDAOLocal;
 import com.core.menus.MenuModule;
 import com.core.menus.MenuModuleDAOLocal;
 import com.kerem.commons.KerenSession;
-import com.kerem.security.DESEncrypter;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -233,8 +232,11 @@ public class UtilisateurManagerImpl
                  if(KerenSession.containKey(grp.getLabel())){
                      grp.setLabel(KerenSession.getEntry(grp.getLabel()));
                  }//end if(KerenSession.containKey(grp.getLabel())){
-                grp.setActions(getMenuActions(grp, groupdb));
-                result.add(grp);
+                 List<MenuAction> menusAction = getMenuActions(grp, groupdb);
+                 if(!menusAction.isEmpty()){
+                     grp.setActions(menusAction);
+                     result.add(grp);
+                 }//end if(!menusAction.isEmpty()){                
             }//endif(group.getModule()!=null)           
         }//end for(MenuGroupActions group : datas){
         return result;
@@ -253,7 +255,7 @@ public class UtilisateurManagerImpl
         List<MenuAction> datas = menuitemdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
         if(datas==null) return result;
         for(MenuAction act:datas){
-            if(act.getHide()==Boolean.FALSE){
+            /*if(act.getHide()==Boolean.FALSE)*/{
                 MenuAction action = new MenuAction(act);
                 if(KerenSession.containKey(act.getLabel())){
                     action.setLabel(KerenSession.getEntry(act.getLabel()));
@@ -271,7 +273,7 @@ public class UtilisateurManagerImpl
                     }
                 }//end if(groupdb.containsKey(act.getId())){
                 result.add(action);
-            }//end if(act.getHide()==Boolean.FALSE)
+           }//end if(act.getHide()==Boolean.FALSE)
         }//end for(MenuAction act:datas){
         return result;
     }

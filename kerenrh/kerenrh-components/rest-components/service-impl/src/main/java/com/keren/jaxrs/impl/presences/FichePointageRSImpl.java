@@ -18,15 +18,14 @@ import com.keren.core.ifaces.employes.EmployeManagerRemote;
 import com.keren.core.ifaces.presences.FichePointageManagerRemote;
 import com.keren.core.ifaces.structures.DepartementManagerRemote;
 import com.keren.jaxrs.ifaces.presences.FichePointageRS;
-import com.keren.model.conges.InterruptionConge;
 import com.keren.model.employes.Employe;
 import com.keren.model.presences.FichePointage;
 import com.keren.model.presences.LigneFichePointage;
 import com.keren.model.structures.Departement;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -98,7 +97,7 @@ public class FichePointageRSImpl
     }
 
     @Override
-    public FichePointage delete(Long id) {
+    public FichePointage delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         FichePointage data = null;
@@ -106,7 +105,7 @@ public class FichePointageRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new FichePointage(data);
             
         }catch(Exception e){

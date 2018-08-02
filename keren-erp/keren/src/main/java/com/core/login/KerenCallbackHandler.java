@@ -38,11 +38,11 @@ public class KerenCallbackHandler implements CallbackHandler{
                     nc.setName(auth.getUsername());
                 }else if(callbacks[i] instanceof PasswordCallback){
                     PasswordCallback pc = (PasswordCallback) callbacks[i];  
-                    System.out.println(KerenCallbackHandler.class.toString()+" ===============================  password : "+auth.getPassword()+" ============== crypte : "+DESEncrypter.getInstance().encryptText(auth.getPassword()));
+//                    System.out.println(KerenCallbackHandler.class.toString()+" ===============================  password : "+auth.getPassword()+" ============== crypte : "+DESEncrypter.getInstance().encryptText(auth.getPassword()));
                     pc.setPassword(DESEncrypter.getInstance().encryptText(auth.getPassword()).toCharArray());
-                }
-            }
-        }
+                }//end if(callbacks[i] instanceof NameCallback){
+            }//end  for(int i=0;i<callbacks.length;i++){
+        }//end if(auth!=null&&auth.getUsername()!=null&&auth.getPassword()!=null){
         
     }
 

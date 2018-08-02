@@ -29,6 +29,7 @@ import com.keren.kerenpaie.tools.report.ReportsName;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -69,9 +70,9 @@ public class ViewBulletinPaieRSImpl
     }
 
     @Override
-	public ViewBulletinPaie save(ViewBulletinPaie entity) {
+	public ViewBulletinPaie save(@Context HttpHeaders headers , ViewBulletinPaie entity) {
 		this.buildPdfReport(entity);
-		return super.save(entity);
+		return super.save(headers , entity);
 	}
 
 	public String getModuleName() {

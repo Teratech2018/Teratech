@@ -7,7 +7,7 @@ import com.teratech.gmao.model.base.Article;
 
 /**
  * Interface du service JAX-RS
- * @since Mon Feb 19 10:11:42 GMT+01:00 2018
+ * @since Fri Jul 13 14:45:39 GMT+01:00 2018
  * 
  */
 public interface ArticleRS

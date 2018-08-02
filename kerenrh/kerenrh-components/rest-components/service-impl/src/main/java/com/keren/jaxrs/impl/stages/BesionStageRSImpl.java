@@ -17,6 +17,7 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -99,7 +100,7 @@ public class BesionStageRSImpl
 	}
 
         @Override
-	public BesionStage delete(Long id) {
+	public BesionStage delete(@Context HttpHeaders headers , Long id) {
             
             // TODO Auto-generated method stub
             BesionStage entity = manager.find("id", id);
@@ -107,7 +108,7 @@ public class BesionStageRSImpl
             try{
                 
                 //on supprimme l'objet
-                super.delete(id);
+                super.delete(headers,id);
                 
             }catch(Exception ex){
                 throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");

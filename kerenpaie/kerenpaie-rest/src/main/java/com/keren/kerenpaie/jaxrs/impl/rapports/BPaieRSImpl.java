@@ -111,12 +111,12 @@ public class BPaieRSImpl extends AbstractGenericService<BPaie, Long> implements 
 
 	@Override
 	public Response buildBPaie(BPaie entity) {
-		entity.setPeriode(CacheMemory.getPeriode());
+//		entity.setPeriode(CacheMemory.getPeriode());
 
 		if (entity.getPeriode() == null) {
 			throw new KerenExecption("Bien vouloir renseigner les paramètres d'impression <br/> ");
 		}
-		System.out.println("LivrePaieRSImpl.buildLivrePaie() debut execution report" + entity.getPeriode().getCode());
+		System.out.println(BPaieRSImpl.class.toString()+".buildLivrePaie() debut execution report" + entity.getPeriode().getCode());
 		try {
 			List<BulletinPaie> records = bulletinmanager.getCriteres(entity);
 			String URL = ReportHelper.templateURL + ReportsName.BULLETIN_PAIE.getName();

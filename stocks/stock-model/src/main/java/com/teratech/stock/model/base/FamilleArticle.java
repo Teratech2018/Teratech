@@ -128,6 +128,50 @@ public class FamilleArticle extends BaseElement implements Serializable,Comparab
     public FamilleArticle() {
     }
 
+    /**
+     * 
+     * @param code
+     * @param intitule
+     * @param centralisateur
+     * @param unitevente
+     * @param unite
+     * @param categorie
+     * @param pays
+     * @param codefiscal
+     * @param id
+     * @param designation
+     * @param moduleName
+     * @param comparedid 
+     */
+    public FamilleArticle(String code, String intitule, FamilleArticle centralisateur, UniteAchat unitevente, UniteGestion unite, CategorieProduit categorie, Pays pays, String codefiscal, long id, String designation, String moduleName, long comparedid) {
+        super(id, designation, moduleName, comparedid);
+        this.code = code;
+        this.intitule = intitule;
+        this.centralisateur = centralisateur;
+        this.unitevente = unitevente;
+        this.unite = unite;
+        this.categorie = categorie;
+        this.pays = pays;
+        this.codefiscal = codefiscal;
+    }
+    
+    public FamilleArticle(FamilleArticle entity) {
+        super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+        this.code = entity.code;
+        this.intitule = entity.intitule;
+        if(entity.centralisateur!=null){
+            this.centralisateur = new FamilleArticle(entity.centralisateur);
+        }
+        
+        this.unitevente = entity.unitevente;
+        this.unite = entity.unite;
+        this.categorie = entity.categorie;
+        if(entity.pays!=null){
+            this.pays = new Pays(entity.pays);
+        }
+        this.codefiscal = entity.codefiscal;
+    }
+
     public String getCode() {
         return code;
     }

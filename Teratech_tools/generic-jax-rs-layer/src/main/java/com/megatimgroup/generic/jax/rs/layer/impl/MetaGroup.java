@@ -22,6 +22,9 @@ public class MetaGroup implements Serializable{
     
     private short sequence = 0;
     
+    private String hidden ;
+    
+    
     private List<MetaArray> metaArray = new ArrayList<MetaArray>();
     
     private List<MetaColumn> columns = new ArrayList<MetaColumn>();
@@ -82,6 +85,14 @@ public class MetaGroup implements Serializable{
 
     public void setSequence(short sequence) {
         this.sequence = sequence;
+    }
+
+    public String getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(String hidden) {
+        this.hidden = hidden;
     }
     
     

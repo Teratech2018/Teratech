@@ -76,6 +76,9 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
      @Predicate(label = "Action liée(uniquement si modal = true)")
      protected String link = null;
      
+     @Predicate(label = "Rapport liée")
+     private String report = null;
+     
      private Boolean hide = Boolean.FALSE;
      
      @OneToOne
@@ -132,6 +135,7 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
         this.viewMode = menu.viewMode;
         this.method = menu.method;
         this.link = menu.link;
+        this.report = menu.report;
         this.hide = menu.hide;
         if(menu.treeView!=null){
             this.treeView = new TreeRecord(menu.treeView);
@@ -285,6 +289,16 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
     public void setTreeView(TreeRecord treeView) {
         this.treeView = treeView;
     }
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
+    
+    
 
     @Override
     public boolean isCreateonfield() {

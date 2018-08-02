@@ -7,6 +7,7 @@ package com.core.application;
 
 import com.core.calendar.EventManagerLocal;
 import com.core.email.EmailManagerLocal;
+import com.core.importexport.ExportManagerLocal;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -25,8 +26,13 @@ public class StartupBean {
     @EJB(name = "EventManager")
     protected EventManagerLocal eventManager;
     
+    @EJB(name = "ExportManager")
+    protected ExportManagerLocal exportManager;
+    
     @EJB(name = "EmailManager")
     protected EmailManagerLocal emailManager;
+    
+    
     
     public final long EVENTDURATION=10000;//10 seconds 
     
@@ -50,6 +56,8 @@ public class StartupBean {
         try{
             emailManager.scheduleEventManager(today, EMAILDURATION);
         }catch(Exception ex){;}
+        
+        exportManager.scheduleDBExporterManager(today, EVENTDURATION);
     }
     @PreDestroy
     public void terminate() {

@@ -149,6 +149,11 @@ public class Banque extends BaseElement implements Serializable, Comparable<Banq
 		// TODO Auto-generated method stub
 		return code+" - "+label;
 	}
+
+    @Override
+    public String toString() {
+        return code;
+    }
 	
 	
 

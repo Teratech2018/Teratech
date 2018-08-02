@@ -44,6 +44,12 @@ public class Cumul implements Serializable {
 	
 	@Column(name="CHS")
 	private Double cumulHeuresSup = 0.0;
+        
+        @Column(name="CCOA")
+        private Double cumulCongesAcquis =0.0;
+        
+        @Column(name="CCOP")
+        private Double cumulCongesPris = 0.0;
 	
 	/**
 	 * 
@@ -100,8 +106,7 @@ public class Cumul implements Serializable {
 		this.cumulChargeSalariale = cumulChargeSalariale;
 		this.cumulChargePatronale = cumulChargePatronale;
 		this.cumulAvantageNature = cumulAvantageNature;
-		this.cumulHeureTravailles = cumulHeureTravailles;
-		this.cumulHeuresSup = cumulHeuresSup;
+		
 	}
 
 
@@ -177,9 +182,23 @@ public class Cumul implements Serializable {
 		this.cumulHeuresSup = cumulHeuresSup;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}    
+        public Double getCumulCongesAcquis() {
+            return cumulCongesAcquis;
+        }
+
+        public void setCumulCongesAcquis(Double cumulCongesAcquis) {
+            this.cumulCongesAcquis = cumulCongesAcquis;
+        }
+
+        public Double getCumulCongesPris() {
+            return cumulCongesPris;
+        }
+
+        public void setCumulCongesPris(Double cumulCongesPris) {
+            this.cumulCongesPris = cumulCongesPris;
+        }
+
+	   
 
     @Override
     public String toString() {

@@ -18,6 +18,7 @@ import com.keren.model.recrutement.Emploi;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 
 /**
@@ -139,7 +140,7 @@ public class CandidatureSpontaneRSImpl
     }
     
     @Override
-    public CandidatureSpontane delete(Long id) {
+    public CandidatureSpontane delete(@Context HttpHeaders headers , Long id) {
         
         //Initialsiation
         CandidatureSpontane entity = null;
@@ -147,7 +148,7 @@ public class CandidatureSpontaneRSImpl
         try{
             
             //On supprime l'entite
-            entity = super.delete(id);
+            entity = super.delete(headers,id);
             
         }catch(Exception e){
             

@@ -7,7 +7,6 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.core.ifaces.missions.EscaleManagerRemote;
 import com.keren.jaxrs.ifaces.missions.EscaleRS;
-import com.keren.model.employes.Employe;
 import com.keren.model.missions.Escale;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -15,6 +14,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 
@@ -89,7 +89,7 @@ public class EscaleRSImpl
     }
     
     @Override
-    public Escale delete(Long id) {
+    public Escale delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         Escale data = null;
@@ -97,7 +97,7 @@ public class EscaleRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new Escale(data);
             
         }catch(Exception e){

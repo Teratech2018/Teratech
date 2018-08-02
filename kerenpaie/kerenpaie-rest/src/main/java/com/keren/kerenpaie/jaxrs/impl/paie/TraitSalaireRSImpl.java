@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 
@@ -67,13 +68,13 @@ public class TraitSalaireRSImpl
     }
 
     @Override
-    public TraitSalaire update(Long id, TraitSalaire entity) {
+    public TraitSalaire update(@Context HttpHeaders headers , Long id, TraitSalaire entity) {
     	CacheMemory.setPeriode(entity.getPeriode());
         return entity; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public TraitSalaire save(TraitSalaire entity) {
+    public TraitSalaire save(@Context HttpHeaders headers , TraitSalaire entity) {
         //To change body of generated methods, choose Tools | Templates.
     	CacheMemory.setPeriode(entity.getPeriode());
         return entity; 

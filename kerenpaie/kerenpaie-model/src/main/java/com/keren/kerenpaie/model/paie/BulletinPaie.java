@@ -5,6 +5,7 @@ package com.keren.kerenpaie.model.paie;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,22 +43,37 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	 */
 	private static final long serialVersionUID = -8274847472533474787L;
     
-	@Predicate(label="Intutilé",updatable=false,optional=false,search=true)
+//	@Predicate(label="Intutilé",updatable=false,optional=false,search=true)
 	private String code ;
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_ID")
-	@Predicate(label="Employé",type=Employe.class,target="many-to-one",updatable=false,optional=false,search=true)
+	@Predicate(label="Employé",type=Employe.class,target="many-to-one",updatable=false,optional=false,search=true , sequence=1)
 	private Employe employe ;
 	
-	@Predicate(label="Date de payement",type=Date.class,target="date",updatable=false,search=true)
+	@Predicate(label="Date de payement",type=Date.class,target="date",updatable=false,search=true, sequence=2)
 	@Temporal(TemporalType.DATE)
 	private Date dpayement ;
 	
 	@ManyToOne
 	@JoinColumn(name="PEPA_ID")	
-	@Predicate(label="Période",type=PeriodePaie.class,target="many-to-one",updatable=false,optional=false,search=true)
+	@Predicate(label="Période",type=PeriodePaie.class,target="many-to-one",updatable=false,optional=false,search=true, sequence=3)
 	private PeriodePaie periode ;
+	
+	@Predicate(label="Catégorie",updatable=false,optional=false,search=false, sequence=4)
+	private String categorie ;
+	
+	@Predicate(label="Echelon",updatable=false,optional=false,search=false, sequence=7)
+	private String echellon ;
+	
+	@Column(name="ANC")
+   // @Predicate(label = "Anciennité",type = Double.class,editable = false,updatable = false ,sequence=7)
+	private Double anciennite =0.0;
+	
+	@Transient
+	 @Predicate(label = "Anciennité",type = Double.class,editable = false,updatable = false ,sequence=6)
+	 private String ancienniteString ;
+	
 		
 //	@Transient	
 //	@ManyToOne
@@ -105,9 +121,6 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
         @Predicate(label = "Salaire Exceptionel",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double salaireExcep = 0.0 ;
 	
-	@Column(name="ANC")
-        @Predicate(label = "Anciennité",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
-	private Double anciennite =0.0;
 	
 	@Column(name="ANG")
         @Predicate(label = "Anciennité Gélée",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
@@ -133,10 +146,16 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
         @Predicate(label = "Solde Congé",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double congesRestant = 0.0 ;
 	
-	@Column(name="CAC")
+	@Column(name="CACP")
+        private Double congesAcquisPeriode = 0.0 ;	
+	
+        @Column(name="CPRP")
+        private Double congesprisPeriode = 0.0;
+        
+        @Column(name="CAC")
         @Predicate(label = "Congés Acquis",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double congesAcquis = 0.0 ;	
-	
+        
 	@Column(name="CSB")
         @Predicate(label = "Cumul Salaire de Base",type = Double.class,editable = false,updatable = false,group = true,groupName = "group3",groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireBrut = 0.0;
@@ -184,6 +203,8 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Transient
 	private Double netapayer = 0.0;
 	
+	
+
 	@Transient
 	private String lastperiode ; 	
 	
@@ -192,6 +213,14 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	 */
 	public BulletinPaie() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getAncienniteString() {
+		return ancienniteString;
+	}
+
+	public void setAncienniteString(String ancienniteString) {
+		this.ancienniteString = ancienniteString;
 	}
 
 	/**
@@ -286,12 +315,14 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		chargeSalariale = bulletin.chargeSalariale ;
 		avantageNature = bulletin.avantageNature;
 		congespris = bulletin.congespris;
+                this.congesAcquisPeriode = bulletin.congesAcquisPeriode;
+                this.congesprisPeriode = bulletin.congesprisPeriode;
 		congesRestant = bulletin.congesRestant ;
 		congesAcquis = bulletin.congesAcquis ;	
 		cumulSalaireBrut = bulletin.cumulSalaireBrut;
 		cumulSalaireTaxable =bulletin.cumulSalaireTaxable ;
-        cumulSalaireCotisable = bulletin.cumulSalaireCotisable;
-        cumulSalaireExcep = bulletin.cumulSalaireExcep ;
+                cumulSalaireCotisable = bulletin.cumulSalaireCotisable;
+                cumulSalaireExcep = bulletin.cumulSalaireExcep ;
 		cumulChargeSalariale = bulletin.cumulChargeSalariale;
 		cumulChargePatronale = bulletin.cumulChargePatronale;
 		cumulAvantageNature = bulletin.cumulAvantageNature;
@@ -299,6 +330,9 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		cumulHeuresSup = bulletin.cumulHeuresSup;
 		this.netLettre= bulletin.netLettre;
 		this.netapayer=bulletin.netapayer; 	 	
+		this.categorie=bulletin.getEmploye().getCategorie().getCode()+"";
+		this.echellon=bulletin.getEmploye().getEchelon().getCode();
+		this.ancienniteString=this.getAnciennete(this.getAnciennite(), this.periode.getDfin());
 	}
 	public BulletinPaie(LivrePaie livre) {
 		super();
@@ -356,6 +390,22 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
     public void setTaxeAvantages(Double taxeAvantages) {
         this.taxeAvantages = taxeAvantages;
     }
+
+    public Double getCongesAcquisPeriode() {
+        return congesAcquisPeriode;
+    }
+
+    public void setCongesAcquisPeriode(Double congesAcquisPeriode) {
+        this.congesAcquisPeriode = congesAcquisPeriode;
+    }
+
+    public Double getCongesprisPeriode() {
+        return congesprisPeriode;
+    }
+
+    public void setCongesprisPeriode(Double congesprisPeriode) {
+        this.congesprisPeriode = congesprisPeriode;
+    }
 	
 	
 
@@ -366,6 +416,24 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	public void setVariables(List<LigneElementVariable> variables) {
 		this.variables = variables;
 	}
+
+	public String getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
+
+	public String getEchellon() {
+		return echellon;
+	}
+
+	public void setEchellon(String echellon) {
+		this.echellon = echellon;
+	}
+
+	
 
 	public String getState() {
 		return state;
@@ -682,5 +750,21 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
     }
         
         
-
+	 public  String getAnciennete(Double nombreMois,Date date){
+	    	String value = null;
+	    	double annee = new Double(nombreMois)/new Double(12); // divisé par zéro et c'est faux! attention!
+			int anneeint = (int) annee; 
+			double reste = (double) (annee - anneeint);
+			int mois = (int) (reste*12);
+			 
+	        Calendar c = Calendar.getInstance();
+	        c.setTime(date);
+			int max = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+			System.out.println("DateHelper.getAnciennete() nombre jous du mois "+max);
+			int jour = (int) (((reste*12)-mois) *max);
+			value=anneeint+" ans ,"+mois+" mois ,"+jour+" jours" ;
+	    	return value;
+	    }
+	 
+	
 }

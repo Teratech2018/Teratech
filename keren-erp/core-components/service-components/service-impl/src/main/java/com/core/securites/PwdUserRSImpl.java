@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 /**
@@ -44,8 +45,8 @@ public class PwdUserRSImpl extends AbstractGenericService<PwdUser, Long> impleme
      * @return 
      */
     @Override
-    public PwdUser save(PwdUser entity) {
-        System.out.println(PwdUserRSImpl.class.toString()+" ========================================= pwd : "+entity.getPassword()+" ===== encrypte : "+DESEncrypter.getInstance().encryptText(entity.getPassword().trim()));
+    public PwdUser save(@Context HttpHeaders headers , PwdUser entity) {
+//        System.out.println(PwdUserRSImpl.class.toString()+" ========================================= pwd : "+entity.getPassword()+" ===== encrypte : "+DESEncrypter.getInstance().encryptText(entity.getPassword().trim()));
         //To change body of generated methods, choose Tools | Templates.
         Utilisateur user = usermanager.find("id", entity.getCle());    
         if(!user.getPassword().equalsIgnoreCase(entity.getPassword())){

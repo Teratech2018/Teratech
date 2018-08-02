@@ -41,6 +41,7 @@ public class FileHelper {
     public static String DEPLOY_DIR = "standalone"+File.separator+"deployments";
     public static String TEMP_REPORT_DIR = "standalone"+File.separator+"data"+File.separator+"keren"+File.separator+"resources"+File.separator+"templates";
     public static String TEMP_STATIC_DIR = "standalone"+File.separator+"data"+File.separator+"keren"+File.separator+"resources"+File.separator+"static";
+    public static String TEMP_CONFIG_DIR = "standalone"+File.separator+"data"+File.separator+"keren"+File.separator+"resources"+File.separator+"config";
     public static String TEMP_DIR = "standalone"+File.separator+"tmp"+File.separator+"keren";
     /**
      * Retourn le chemin courant
@@ -87,6 +88,11 @@ public class FileHelper {
     public static File getStaticDirectory(){
          File binDirectory = FileHelper.getCurrentDirectory();        
          return new File(binDirectory.getParent()+File.separator+TEMP_STATIC_DIR);
+    }
+    
+    public static File getConfigDirectory(){
+         File binDirectory = FileHelper.getCurrentDirectory();        
+         return new File(binDirectory.getParent()+File.separator+TEMP_CONFIG_DIR);
     }
     
     public static File getTemporalDirectory(){

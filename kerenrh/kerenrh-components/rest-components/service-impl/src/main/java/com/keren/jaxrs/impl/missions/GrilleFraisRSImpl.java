@@ -9,6 +9,8 @@ import com.keren.jaxrs.ifaces.missions.GrilleFraisRS;
 import com.keren.model.missions.GrilleFrais;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 
 
 /**
@@ -48,7 +50,7 @@ public class GrilleFraisRSImpl
     }
     
     @Override
-    public GrilleFrais delete(Long id) {
+    public GrilleFrais delete(@Context HttpHeaders headers ,Long id) {
         
         //Initialisation
         GrilleFrais data = null;
@@ -56,7 +58,7 @@ public class GrilleFraisRSImpl
         
         try{
         
-            data = super.delete(id);
+            data = super.delete(headers,id);
             result = new GrilleFrais(data);
             
         }catch(Exception e){

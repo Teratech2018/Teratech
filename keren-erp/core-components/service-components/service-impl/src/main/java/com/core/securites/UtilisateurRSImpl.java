@@ -84,20 +84,21 @@ public class UtilisateurRSImpl
     /**
      * 
      * @param headers
+     * @param user
      * @return 
      */
     @Override
-    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers) {
+    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers,Utilisateur user) {
         //To change body of generated methods, choose Tools | Templates.
-        Gson gson = new Gson();
-        Utilisateur user = gson.fromJson(headers.getRequestHeader("user").get(0),Utilisateur.class);
+//        Gson gson = new Gson();
+//        Utilisateur user = gson.fromJson(headers.getRequestHeader("user").get(0),Utilisateur.class);
         return manager.loadUserApplications(user);
     }
 
     @Override
-    public List<Utilisateur> findByUniqueProperty(String propertyName, String propertyValue) {
+    public List<Utilisateur> findByUniqueProperty(@Context HttpHeaders headers , String propertyName, String propertyValue) {
          //To change body of generated methods, choose Tools | Templates.
-        List<Utilisateur> datas = super.findByUniqueProperty(propertyName, propertyValue);
+        List<Utilisateur> datas = super.findByUniqueProperty(headers,propertyName, propertyValue);
          List<Utilisateur> result = new ArrayList<Utilisateur>();
          for(Utilisateur user : datas){
              result.add(new Utilisateur(user));

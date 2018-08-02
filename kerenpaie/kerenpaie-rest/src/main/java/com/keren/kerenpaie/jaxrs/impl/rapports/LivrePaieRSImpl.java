@@ -33,6 +33,7 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import javax.ws.rs.core.Context;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -201,8 +202,8 @@ public class LivrePaieRSImpl extends AbstractGenericService<LivrePaie, Long> imp
 	}
 
 	@Override
-	public LivrePaie save(LivrePaie entity) {
-		System.out.println("LivrePaieRSImpl.save() je suis ici ");
+	public LivrePaie save(@Context HttpHeaders headers , LivrePaie entity) {
+//		System.out.println("LivrePaieRSImpl.save() je suis ici ");
 		this.buildLivrePaie(entity);
 		return entity;
 	}

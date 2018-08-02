@@ -9,6 +9,7 @@ import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
@@ -51,11 +52,17 @@ public class Record extends BaseElement implements Serializable,Comparable<Recor
     
     @Predicate(label = "Sequence" , type = Short.class,search = true)
     protected short sequence =0;
+    
+    @Column(name = "ignor")
+    private boolean ignore = false;
+    
    
     @Predicate(label = "Architecture" ,group = true,groupName = "architecture",groupLabel = "Architecture",target = "aceeditor",search = false)
     @Lob
     @Basic(fetch = FetchType.LAZY)
     protected String script ;
+    
+    
     
     /**
      * 
@@ -140,6 +147,16 @@ public class Record extends BaseElement implements Serializable,Comparable<Recor
     public void setSequence(short sequence) {
         this.sequence = sequence;
     }
+
+    public boolean isIgnore() {
+        return ignore;
+    }
+
+    public void setIgnore(boolean ignore) {
+        this.ignore = ignore;
+    }
+    
+    
 
     
     @Override

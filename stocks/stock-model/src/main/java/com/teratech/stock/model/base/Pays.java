@@ -45,6 +45,42 @@ public class Pays extends BaseElement implements Serializable,Comparable<Pays>{
     @JoinColumn(name = "PAYS_ID")
     private List<Region> etats = new ArrayList<Region>();
 
+    public Pays() {
+    }
+
+    /**
+     * 
+     * @param image
+     * @param intitule
+     * @param code
+     * @param devise
+     * @param id
+     * @param designation
+     * @param moduleName
+     * @param comparedid 
+     */
+    public Pays(String image, String intitule, String code, Devise devise, long id, String designation, String moduleName, long comparedid) {
+        super(id, designation, moduleName, comparedid);
+        this.image = image;
+        this.intitule = intitule;
+        this.code = code;
+        this.devise = devise;
+    }
+    
+    /**
+     * 
+     * @param entity 
+     */
+    public Pays(Pays entity) {
+        super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+        this.image = entity.image;
+        this.intitule = entity.intitule;
+        this.code = entity.code;
+        this.devise = entity.devise;
+    }
+    
+    
+
     public String getImage() {
         return image;
     }

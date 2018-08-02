@@ -61,7 +61,7 @@ public class Emplacement extends BaseElement implements Serializable,Comparable<
     @Predicate(label = "Actif?",type = Boolean.class,group = true,groupName = "group1",groupLabel = "Complement")
     private Boolean actif =Boolean.TRUE;
     
-    @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group1",groupLabel = "Complement")
+    @Predicate(label = " ",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")
     private String commentaire ;
 
     /**
@@ -122,8 +122,12 @@ public class Emplacement extends BaseElement implements Serializable,Comparable<
         if(empl.getEdepot()!=null){
             this.edepot = new Entrepot(empl.edepot);
         }
-        this.parent = empl.parent;
-        this.proprio = empl.proprio;
+        if(empl.parent!=null){
+            this.parent = new Emplacement(empl.parent);
+        }
+        if(empl.proprio!=null){
+            this.proprio = new Tier(empl.proprio);
+        }//end if(empl.proprio!=null){
         this.couloir = empl.couloir;
         this.rayon = empl.rayon;
         this.hauteur = empl.hauteur;

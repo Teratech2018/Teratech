@@ -66,6 +66,11 @@ public interface UploadFileRS {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadFile(@PathParam("filename") String filename,@PathParam("name") String name);
     
+    @GET
+    @Path("exportbd")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response exportdatabase();
+    
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
     @Path("{filename}")

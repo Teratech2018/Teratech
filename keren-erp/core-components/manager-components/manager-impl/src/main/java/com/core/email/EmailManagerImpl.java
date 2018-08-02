@@ -10,8 +10,6 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;

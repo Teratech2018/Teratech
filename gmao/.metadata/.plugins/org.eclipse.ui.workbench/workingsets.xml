@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1531832611997_0" label="gmao" name="gmao">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/gmao-tool" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/gmao-model" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/gmao-dao" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/dao-impl" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/dao-ifaces" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/gmao-core" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/core-ifaces" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/core-impl" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/gmao-rest" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rest-ifaces" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/rest-impl" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1531832736218_1" label="Window Working Set" name="Aggregate for window 1531832736216"/>
+</workingSetManager>

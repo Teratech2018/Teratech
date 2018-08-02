@@ -22,6 +22,7 @@ import com.keren.kerenpaie.model.paie.LigneAvantage;
 import com.keren.kerenpaie.model.paie.Rubrique;
 import com.megatim.common.annotations.OrderType;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
+import java.util.Objects;
 
 @TransactionAttribute
 @Stateless(mappedName = "ElementSalaireManager")
@@ -129,30 +130,30 @@ public class ElementSalaireManagerImpl
 			break;
 		case 7:	
                       for(LigneAvantage ligne : entity.getAvantages()){
-			if(ligne.getType().equalsIgnoreCase("0")&&ligne.getStatut()==Boolean.TRUE){
-                                salarie.setEau(ligne.getStatut());salarie.setEauMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+			if(ligne.getType().equalsIgnoreCase("0")&&Objects.equals(ligne.getStatut(), Boolean.TRUE)){
+                                salarie.setEau(ligne.getStatut());salarie.setEauMode("0".equals(ligne.getMode()) ? Boolean.TRUE:Boolean.FALSE);
                         }//end if(entity.getEau()==Boolean.TRUE){
-                         if(ligne.getType().equalsIgnoreCase("1")&&ligne.getStatut()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("1")&&Objects.equals(ligne.getStatut(), Boolean.TRUE)){
                             salarie.setLogement(ligne.getStatut());
-                            salarie.setLogeMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setLogeMode("0".equals(ligne.getMode()) ? Boolean.TRUE:Boolean.FALSE);
                         }//end if(entity.getLogement()==Boolean.TRUE){
-                        if(ligne.getType().equalsIgnoreCase("2")&&ligne.getStatut()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("2")&&Objects.equals(ligne.getStatut(), Boolean.TRUE)){
                             salarie.setElectricite(ligne.getStatut());
-                            salarie.setElecMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setElecMode("0".equals(ligne.getMode()) ? Boolean.TRUE:Boolean.FALSE);
                         }//end if(entity.getElectricite()==Boolean.TRUE){
-                        if(ligne.getType().equalsIgnoreCase("3")&&ligne.getStatut()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("3")&&Objects.equals(ligne.getStatut(), Boolean.TRUE)){
                             salarie.setMenagere(ligne.getStatut());
-                            salarie.setMenMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setMenMode("0".equals(ligne.getMode()) ? Boolean.TRUE:Boolean.FALSE);
                             salarie.setMenNbre(ligne.getQuantite());
                         }//end if(entity.getAlimentaire()==Boolean.TRUE){                       
-                        if(ligne.getType().equalsIgnoreCase("4")&&ligne.getStatut()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("4")&&Objects.equals(ligne.getStatut(), Boolean.TRUE)){
                             salarie.setVehicule(ligne.getStatut());
-                            salarie.setVehMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setVehMode("0".equals(ligne.getMode()) ? Boolean.TRUE:Boolean.FALSE);
                             salarie.setVehNbre(ligne.getQuantite());
                         }//end if(entity.getVehicule()==Boolean.TRUE){
-                        if(ligne.getType().equalsIgnoreCase("5")&&ligne.getStatut()==Boolean.TRUE){
+                        if(ligne.getType().equalsIgnoreCase("5")&&Objects.equals(ligne.getStatut(), Boolean.TRUE)){
                             salarie.setAlimentaire(ligne.getStatut());
-                            salarie.setAliMode(ligne.getMode()=="0" ? Boolean.TRUE:Boolean.FALSE);
+                            salarie.setAliMode("0".equals(ligne.getMode()) ? Boolean.TRUE:Boolean.FALSE);
                         }//end if(entity.getElectricite()==Boolean.TRUE){
                       }//end for(LigneAvantage ligne : entity.getAvantages()){
 			break;

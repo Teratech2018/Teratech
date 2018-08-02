@@ -83,14 +83,29 @@ public class DateHelper {
      * @param jour
      * @return 
      */
-    public static Date next(Date debut , int jour){
-        
+    public static Date next(Date debut , int jour){        
         if(debut==null)
                 return null;
         
         Calendar c = Calendar.getInstance();
         c.setTime(debut);
         c.add(Calendar.DATE, jour);
+        return c.getTime();
+    }
+    
+    public static Date nextJoursOuvrees(Date debut , int jour){
+         if(debut==null)
+                return null;
+        int nbre = 1;
+        Calendar c = Calendar.getInstance();
+        c.setTime(debut);
+        while(nbre<=jour){
+            c.add(Calendar.DATE, 1);
+            if(c.get(Calendar.DAY_OF_WEEK)!=Calendar.SUNDAY
+                    && c.get(Calendar.DAY_OF_WEEK)!=Calendar.SATURDAY){
+                nbre++;
+            }//end if(c.get(Calendar.DAY_OF_WEEK)!=Calendar.SUNDAY
+        }//end  while(nbre<=jour){        
         return c.getTime();
     }
     
