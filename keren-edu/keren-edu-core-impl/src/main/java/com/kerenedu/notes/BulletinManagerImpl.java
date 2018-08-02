@@ -15,6 +15,8 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.configuration.Appreciation;
+import com.kerenedu.configuration.AppreciationDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
@@ -27,6 +29,9 @@ public class BulletinManagerImpl extends AbstractGenericManager<Bulletin, Long>
 
 	@EJB(name = "BulletinDAO")
 	protected BulletinDAOLocal dao;
+	
+	@EJB(name = "AppreciationDAO")
+    protected AppreciationDAOLocal daoapp;
 
 	public BulletinManagerImpl() {
 	}
@@ -126,6 +131,41 @@ public class BulletinManagerImpl extends AbstractGenericManager<Bulletin, Long>
 			}
 		} // fin if(datas!=null)
 		return result;
+	}
+	
+	@Override
+	public void processBeforeSave(Bulletin entity) {
+		System.out.println("BulletinManagerImpl.processBeforeSave() get long value moyenne"+entity.getMoyenne().longValue());
+		Appreciation value = daoapp.getAppreciation(entity.getMoyenne().longValue());
+		if(value!=null){
+		entity.setAppre(value.getLibelle());
+		entity.setSanction(value.getSanction());
+		}else{
+			entity.setAppre("default");
+			entity.setSanction("default");
+		}
+		super.processBeforeSave(entity);
+	}
+	
+	
+	
+	
+	@Override
+	public void processBeforeUpdate(Bulletin entity) {
+		// modifier les note
+		// modifier la conduite
+		super.processBeforeUpdate(entity);
+	}
+
+	private String getAppreciation(long note){
+		String app= " default";
+		Appreciation value = daoapp.getAppreciation(note);
+		if(value!=null){
+			app = value.getLibelle();
+		}else{
+			app= "Default";
+		}
+		return app;
 	}
 
 }

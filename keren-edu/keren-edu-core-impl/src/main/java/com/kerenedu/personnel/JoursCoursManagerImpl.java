@@ -2,6 +2,7 @@
 package com.kerenedu.personnel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.core.tools.DateHelper;
 import com.core.tools.EnmHeureCours;
 import com.core.tools.EnmJoursCours;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
@@ -50,7 +52,21 @@ public class JoursCoursManagerImpl
     public String getEntityIdName() {
         return "id";
     }
+    
+    
     @Override
+	public void processBeforeUpdate(JoursCours entity) {
+    	List<TrancheHoraireCours> dats = new ArrayList<TrancheHoraireCours>();
+		for(TrancheHoraireCours hrcours: entity.getTranchehorairecours()){
+			TrancheHoraireCours thcours = new TrancheHoraireCours(hrcours);
+			thcours.setHeuretotal(DateHelper.hours(hrcours.getHeuredebut(), hrcours.getHeurefin(), new Date()));
+			dats.add(thcours);
+		}
+		entity.setTranchehorairecours(dats);
+		super.processBeforeUpdate(entity);
+	}
+
+	@Override
    	public List<JoursCours> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
    		// TODO Auto-generated method stub

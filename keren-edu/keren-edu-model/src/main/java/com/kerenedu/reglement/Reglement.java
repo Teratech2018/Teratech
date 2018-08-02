@@ -113,6 +113,7 @@ public class Reglement extends BaseElement implements Serializable, Comparable<R
 		this.scolarite= ins.getzMnt();
 		this.payer=(long) 0;
 		this.solde=this.scolarite-this.payer;
+		
 
 	}
 

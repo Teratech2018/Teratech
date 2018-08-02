@@ -51,4 +51,22 @@ public class AppreciationDAOImpl
 	            return null;
 	        }
 	}
+    
+    public Appreciation getAppreciation(long note) {
+		  try{
+			  Appreciation app = new Appreciation();
+			  String q= "SELECT * FROM e_app a "+ "WHERE a.I_DEB <= "+note+" and a.I_FIN >= "+note+"";
+			  Query query = em.createNativeQuery(q,Appreciation.class);
+			  List<Appreciation> listapp= query.getResultList();
+			  if(listapp!=null){
+				  app = listapp.get(0);
+			  }else{
+				  app = new Appreciation();
+			  }
+
+	            return app;
+	        }catch(Exception ex){
+	            return null;
+	        }
+	}
 }

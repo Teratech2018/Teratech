@@ -68,13 +68,18 @@ public class ReglementManagerImpl extends AbstractGenericManager<Reglement, Long
 	public List<Reglement> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
-		Classe classe = CacheMemory.getClasse();
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		predicats= CriteriaFactory.defaultPredicats();
-		if (classe != null) {
-			container.addEq("eleve.classe.id", classe.getId());
+		List<Reglement> listrglt = new ArrayList<Reglement>();
+		container.getPredicats().addAll(CriteriaFactory.defaultPredicats());
+		if (CacheMemory.getClasse() != null) {
+			container.addEq("eleve.classe.id", CacheMemory.getClasse().getId());
 		}
-
+		if (CacheMemory.getCurrentMatricule()!= null&&!CacheMemory.getCurrentMatricule().isEmpty()&&!CacheMemory.getCurrentMatricule().equals("")) {
+			container.addEq("eleve.eleve.matricule",CacheMemory.getCurrentMatricule());
+		}
+		if (CacheMemory.getCurrentNameStudent()!= null&&!CacheMemory.getCurrentNameStudent().isEmpty()&&!CacheMemory.getCurrentNameStudent().equals("")) {
+			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
+		}
 		predicats.addAll(container.getPredicats());
 
 		List<Reglement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);

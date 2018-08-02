@@ -9,12 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
-import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.core.ifaces.report.ViewNoteHelperManagerRemote;
@@ -86,7 +86,7 @@ public class TraitNoteRSImpl
     }
 
     @Override
-    public TraitNote update(Long id, TraitNote entity) {
+    public TraitNote update(@Context HttpHeaders headers,Long id, TraitNote entity) {
     	CacheMemory.setPeriode(entity.getPeriode().getPeriode());
     	CacheMemory.setFiliere(entity.getClasse().getFiliere());
     	CacheMemory.setClasse(entity.getClasse());
@@ -95,7 +95,7 @@ public class TraitNoteRSImpl
     }
 
     @Override
-    public TraitNote save(TraitNote entity) {
+    public TraitNote save(@Context HttpHeaders headers,TraitNote entity) {
         //To change body of generated methods, choose Tools | Templates.
     	CacheMemory.setPeriode(entity.getPeriode().getPeriode());
     	CacheMemory.setFiliere(entity.getClasse().getFiliere());
@@ -110,12 +110,12 @@ public class TraitNoteRSImpl
 		if(entity.getClasse()!=null){
 			container.addEq("classe.id", entity.getClasse().getId());
 		}//end if(classe!=null)
-		container = RestrictionsContainer.newInstance();
+		
 		//1- rechercher les eleve de la classe
 		container = RestrictionsContainer.newInstance();
-		container.addEq("classe.id", CacheMemory.getClasse().getId());
+		container.addEq("classe.id", entity.getClasse().getId());
 		List<Inscription> eleves = managerEleve.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		
+		System.out.println("TraitNoteRSImpl.save() nombre d'elève trouvés is ====="+eleves.size());
 		//2- les matiere de la classe
 		
 		container = RestrictionsContainer.newInstance();
@@ -131,6 +131,7 @@ public class TraitNoteRSImpl
 			container.addEq("matiere.id", mt.getId());
 			container.addEq("examen.id",entity.getPeriode().getId());
 			List<ViewNoteHelper>notebd= managerhelper.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+			
 			if(notebd==null||notebd.isEmpty()||notebd.size()==0){
 	   	   			MatiereNote mtrt = new MatiereNote(mt,entity.getPeriode(),eleves);
 	   	   			mtrt.setId(-1);

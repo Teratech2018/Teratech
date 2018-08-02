@@ -33,16 +33,16 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	private String image ;
 	  
 	@Column(name = "MATRICULE")	
-	@Predicate(label="Matricule",optional=false,updatable=false,search=true, sequence=4, colsequence=1)
+	@Predicate(label="Matricule",optional=true,updatable=false,search=true, sequence=4, colsequence=1, editable=false)
 	protected String matricule;
 	
 	@Column(name = "DATENAIS")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label="Né(e) le.",optional=false,updatable=true,search=true, type=Date.class, target="date", sequence=8, colsequence=4)
+	@Predicate(label="Né(e) le.",optional=true,updatable=true,search=true, type=Date.class, target="date", sequence=7, colsequence=4)
 	protected Date dateNais ;
 	
 	@Column(name = "L_NAIS")
-	@Predicate(label="à",optional=false,updatable=true,search=true, sequence=7, colsequence=5)
+	@Predicate(label="à",optional=true,updatable=true,search=true, sequence=8, colsequence=5)
 	protected String lNais;
 	
 	@Column(name = "NOM")
@@ -63,7 +63,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	protected String prenon;
 	
 	@Column(name = "SEXE")
-	@Predicate(label="Genre",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=11)
+	@Predicate(label="Genre",optional=true,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=11)
 	protected String sexe="0";
 
 	@Column(name = "SITFAMILIALE")
@@ -94,19 +94,19 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	protected String emailMere;
 	
 	@Column(name = "TEL_TUTEUR")
-	@Predicate(label="WhatsApp/Tel Tuteur",optional=false,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	@Predicate(label="WhatsApp/Tel Tuteur",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String telTuteur;
 	
 	
 	@Column(name = "EMAIL_TUTEUR")
-	@Predicate(label="Email Tuteur",optional=false,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
+	@Predicate(label="Email Tuteur",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
 	protected String emailTuteur;
 	
 
 	@ManyToOne
     @JoinColumn(name = "RESP_ID")
 	@Predicate(label="Responsable de L'élève",updatable=true,type=Responsable.class , 
-	target="many-to-one",group = true,groupName = "tab1",groupLabel = "Parents/Tuteur",optional=false)
+	target="many-to-one",group = true,groupName = "tab1",groupLabel = "Parents/Tuteur",optional=true)
     protected Responsable resp;
 	
 	@ManyToOne
@@ -125,15 +125,15 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 //	private List<DossierMedical> dossierMedical = new ArrayList<DossierMedical>();
 //	
 	@Column(name = "ALLERTE_MEDICALE")
-	@Predicate(label="Allergie ",optional=false,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
+	@Predicate(label="Allergie ",optional=true,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
 	protected String allerte;
 
 	@Column(name = "REFERENCE_HOPITAL")
-	@Predicate(label="Hopital de Reférence",optional=false,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
+	@Predicate(label="Hopital de Reférence",optional=true,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
 	protected String referenceHopital;
 	
 	@Column(name = "ADR_HOP")
-	@Predicate(label=" Adresse Hopital",optional=false,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
+	@Predicate(label=" Adresse Hopital",optional=true,updatable=true,group = true,groupName = "tab3",groupLabel = "Dossier Médical")
 	protected String adressehop;
 	
 //	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
@@ -142,14 +142,13 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 //	private List<Contacts> contact = new ArrayList<Contacts>();
 //	
 	@Column(name = "QUARTIER")
-	@Predicate(label="Quartier",optional=false,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
+	@Predicate(label="Quartier",optional=true,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
 	protected String quartier;
 	
 	@Column(name = "BLOC")
-	@Predicate(label="Bolc/Rue",optional=false,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
+	@Predicate(label="Bolc/Rue",optional=true,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
 	protected String bloc;
-	
-	
+		
 	private boolean inscrit=false;
 	
 	
@@ -217,9 +216,18 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		this.emailPere = eleve.emailPere;
 		this.telMere = eleve.telMere;
 		this.emailMere = eleve.emailMere;
-		this.nationalite = eleve.nationalite;
-		this.niveauScolaire = eleve.niveauScolaire;
-		this.profession = eleve.profession;
+		if(eleve.nationalite!=null){
+			this.nationalite = eleve.nationalite;
+		}
+
+		if(eleve.niveauScolaire!=null){
+			this.niveauScolaire = eleve.niveauScolaire;
+		}
+		
+		if(eleve.profession!=null){
+			this.profession = eleve.profession;
+		}
+		
 //		this.contact=new ArrayList<Contacts>();
 		this.telephone= eleve.telephone;
 		this.allerte=eleve.allerte;
@@ -233,7 +241,10 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		}
 		this.quartier = eleve.quartier;
 		this.bloc = eleve.bloc;
-		this.resp = eleve.resp;
+		if(eleve.resp!=null){
+			this.resp = eleve.resp;
+		}
+		
 		this.inscrit=eleve.inscrit;
 		
 		/*for(DossierMedical dos:eleve.dossierMedical){

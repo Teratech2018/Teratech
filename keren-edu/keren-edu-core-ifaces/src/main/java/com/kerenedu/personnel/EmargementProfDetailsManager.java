@@ -18,6 +18,6 @@ public interface EmargementProfDetailsManager
 
     public final static String SERVICE_NAME = "EmargementProfDetailsManager";
     
-    public List<EmargementProfDetails> findmatiereprof(long id,long idclasse, Date date);
+    public List<EmargementProfDetails> findmatiereprof(long id,long idclasse, Date date, long idprof);
 
 }

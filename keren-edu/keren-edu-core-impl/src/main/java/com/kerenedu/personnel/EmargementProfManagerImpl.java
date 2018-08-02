@@ -19,6 +19,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.core.tools.DateHelper;
 import com.core.tools.EnmJoursCours;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
@@ -92,11 +93,11 @@ public class EmargementProfManagerImpl
 	   	   				 System.out.println("EmargementProfManagerImpl.find() je suis journee 3ssq "+jour.getJournne());
 		   				 System.out.println("EmargementProfManagerImpl.find() je suis Journee 4ss "+getDateOfWeek(elev.datemarg));
 	   						for(TrancheHoraireCours thcours : jour.getTranchehorairecours()){
-	   							if(elev.getProf().getId()==thcours.getMatiere().getId()){
+	   							//if(elev.getProf().getId()==thcours.getMatiere().getId()){
 	   								System.out.println("EmargementProfManagerImpl.find() je suis Journee 5 "+thcours.getId());
 	   								EmargementProfDetails emarge= new EmargementProfDetails(thcours);
 	   								emargeDlt.add(emarge);
-	   							}
+	   							//}
 	   						}
 	   					}
 	   				}
@@ -130,9 +131,24 @@ public class EmargementProfManagerImpl
    		EmargementProf elev = super.delete(id);
    		return new EmargementProf(elev);
    	}
+   	
+   	
+
+	@Override
+	public void processBeforeUpdate(EmargementProf entity) {
+		List<EmargementProfDetails> dats = new ArrayList<EmargementProfDetails>();
+		for(EmargementProfDetails hrcours: entity.getEmagementdlt()){
+			EmargementProfDetails thcours = new EmargementProfDetails(hrcours);
+			thcours.setHeuretotal(DateHelper.hours(hrcours.getHeuredebut(), hrcours.getHeurefin(), new Date()));
+			dats.add(thcours);
+		}
+		entity.setEmagementdlt(dats);
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public void processBeforeSave(EmargementProf entity) {
+		
 		// set annescolaire courante
 		  //Creation des journaux de saisie
 		 RestrictionsContainer container = RestrictionsContainer.newInstance();
@@ -146,6 +162,7 @@ public class EmargementProfManagerImpl
 	    List<EmargementProfDetails> listdlt = new ArrayList<EmargementProfDetails>();
 	    for(EmargementProfDetails emargedlt : entity.getEmagementdlt()){
 	    	emargedlt.setId(-1);
+	    	emargedlt.setHeuretotal(DateHelper.hours(emargedlt.getHeuredebut(), emargedlt.getHeurefin(), new Date()));
 	    	listdlt.add(emargedlt);
 	    }
 	    entity.setEmagementdlt(listdlt);

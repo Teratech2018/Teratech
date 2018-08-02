@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
@@ -46,6 +47,11 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 	@Column(name = "COUT_HEURE")
 	@Predicate(label="COUT/HEURE",optional=true,updatable=true,search=true, type=Long.class, sequence=5)
 	protected Long coutheure=new Long(0);
+	
+	@ManyToOne
+	@JoinColumn(name = "GROUPE_ID")
+	@Predicate(label = "Groupe Matière", target = "many-to-one", type = GroupeCours.class, search = true, sequence = 6, colsequence = 6)
+	private GroupeCours groupe;
 
 	@ManyToOne 
     @JoinColumn(name = "CLASSE_ID")
@@ -62,6 +68,10 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 		}
 		if(cmatdetail.proffesseur!=null){
 			this.proffesseur= new Professeur(cmatdetail.proffesseur);
+		}
+		
+		if(cmatdetail.groupe!=null){
+			this.groupe= new GroupeCours(cmatdetail.groupe);
 		}
 		
 		this.coutheure=cmatdetail.coutheure;
@@ -151,6 +161,14 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	public void setClasse(Classe classe) {
 		this.classe = classe;
+	}
+
+	public GroupeCours getGroupe() {
+		return groupe;
+	}
+
+	public void setGroupe(GroupeCours groupe) {
+		this.groupe = groupe;
 	}
 
 	public int compareTo(CoefMatiereDetail o) {

@@ -13,10 +13,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.SectionE;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -30,13 +33,19 @@ import com.megatim.common.annotations.Predicate;
 public class PlanifCours extends BaseElement implements Serializable, Comparable<PlanifCours> {
 
 	private static final long serialVersionUID = -9044947840624123074L;
-
+	
+	
 	@ManyToOne
-	@JoinColumn(name="CLASSE_ID")
-	@Predicate(label="Sélectionner la Classe",type=Classe.class,target="many-to-one",optional=false , sequence=2 ,observable=true)
-//	@Observer(observable="filiere",source="field:classe")
-//	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez sélectionner la filiere\"}]")
-	private Classe classe ;
+	@JoinColumn(name="SECTION_ID")
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1, observable=true)
+	private SectionE section ;
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "CLASSE_ID")
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
+	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	protected Classe classe ;
 	
 //	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 //    @JoinColumn(name = "JOURS_COURS_ID")
@@ -55,7 +64,11 @@ public class PlanifCours extends BaseElement implements Serializable, Comparable
 
 	public PlanifCours(PlanifCours ins) {
 		super(ins.id, ins.designation, ins.moduleName,0L);
-		this.classe =  new Classe(ins.classe);
+		if(ins.getClasse()!=null){
+			this.classe =  new Classe(ins.classe);
+			this.section= new SectionE(ins.getClasse().getSection());	
+		}
+
 		//this.jourscours = new ArrayList<JoursCours>();
 	
 	}
@@ -103,6 +116,16 @@ public class PlanifCours extends BaseElement implements Serializable, Comparable
 		return classe;
 	}
 
+
+
+	public SectionE getSection() {
+		return section;
+	}
+
+
+	public void setSection(SectionE section) {
+		this.section = section;
+	}
 
 
 	public void setClasse(Classe classe) {

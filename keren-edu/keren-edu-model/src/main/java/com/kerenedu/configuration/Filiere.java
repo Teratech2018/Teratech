@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.kerenedu.school.Responsable;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -24,17 +23,22 @@ import com.megatim.common.annotations.Predicate;
 public class Filiere extends BaseElement implements Serializable, Comparable<Filiere> {
 	
 	
+	@ManyToOne
+	@JoinColumn(name="SECTION_ID")
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
+	private SectionE section ;
+	
 	@Column(name = "CODE" ,unique=true)	
-	@Predicate(label="CODE",optional=false,updatable=true,search=true , sequence=1)
+	@Predicate(label="CODE",optional=false,updatable=true,search=true , sequence=2)
 	protected String code;
 	
-	@Column(name = "LIBELLE",unique=true )	
+	@Column(name = "LIBELLE" )	
 	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true , sequence=3)
 	protected String libelle;
 	
 	@ManyToOne
     @JoinColumn(name = "CYCLE_ID")
-	@Predicate(label="Cycle Scolaire",updatable=true,type=Cycle.class , target="many-to-one",optional=false,sequence=2)
+	@Predicate(label="Cycle Scolaire",updatable=true,type=Cycle.class , target="many-to-one",optional=false,sequence=4)
     protected Cycle cycle;
 	
 	@Column(name = "CAPACITE" )	
@@ -44,6 +48,8 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 	@Column(name = "DUREE" )	
 	@Predicate(label="DUREE",optional=true,updatable=true,search=true , sequence=5, type=Long.class, editable=false)
 	protected Long duree;
+	
+	
 
 
 	public Filiere() {
@@ -59,6 +65,9 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 		this.capacite=filiere.capacite;
 		this.duree=filiere.duree;
 		this.cycle=filiere.cycle;
+		if(filiere.getSection()!=null){
+			this.section=filiere.section;
+		}
 	}
 
 	public String getLibelle() {
@@ -89,6 +98,16 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 
 
 
+	public SectionE getSection() {
+		return section;
+	}
+
+
+	public void setSection(SectionE section) {
+		this.section = section;
+	}
+
+
 	public Cycle getCycle() {
 		return cycle;
 	}
@@ -112,6 +131,8 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 	public Long getDuree() {
 		return duree;
 	}
+
+
 
 
 	public void setDuree(Long duree) {
@@ -141,7 +162,7 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return libelle;
+		return code +" "+libelle;
 	}
 
 //

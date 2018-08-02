@@ -79,18 +79,19 @@ public class EleveRSImpl
 	public MetaData getMetaData(HttpHeaders headers) {
 		// TODO Auto-generated method stub
 		try {
-			
-			MetaColumn col2 = new MetaColumn("button", "incription", "Inscription", false, "action", null);
-			col2.setValue("{'name':'keren_education_ins','template':{'eleve':'object'}}");
-			
-			MetaColumn col = new MetaColumn("button", "paiementfrais", "Scolarité", false, "action", null);
-			col.setValue("{'name':'keren_education_paie_dlt','template':{'eleve':'object'}}");
-
-			
-			
 			MetaData meta =  MetaDataUtil.getMetaData(new Eleve(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			meta.getHeader().add(col2);
+			MetaColumn col = new MetaColumn("button", "incription", "Pré-Inscription", false, "action", null);
+			col.setValue("{'name':'keren_education_ins','template':{'eleve':'object'}}");
+			
 			meta.getHeader().add(col);
+			col = new MetaColumn("button", "paiementfrais", "Scolarité", false, "action", null);
+			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object'}}");
+			meta.getHeader().add(col);
+	
+			
+			
+//			meta.getHeader().add(col2);
+//			meta.getHeader().add(col);
 			return meta;
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block

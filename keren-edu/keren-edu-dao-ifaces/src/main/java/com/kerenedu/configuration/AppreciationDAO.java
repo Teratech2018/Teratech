@@ -21,5 +21,7 @@ public interface AppreciationDAO
     public final static String SERVICE_NAME = "AppreciationDAO";
     
     public Appreciation getAppreciation(NoteDetail entiy);
+    
+    public Appreciation getAppreciation(long note) ;
 
 }

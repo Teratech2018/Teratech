@@ -17,6 +17,7 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.dashboard.DashboardField;
 import com.kerem.core.KerenExecption;
+import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.configuration.Filiere;
@@ -24,6 +25,7 @@ import com.kerenedu.configuration.FiliereDAOLocal;
 import com.kerenedu.configuration.Matiere;
 import com.kerenedu.configuration.MatiereDAOLocal;
 import com.kerenedu.configuration.MatiereDlt;
+import com.kerenedu.reglement.CriteriaFactory;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -63,6 +65,11 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 	public List<CoefMatiere> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if(CacheMemory.getFiliere() !=null){
+			container.addEq("classe.filiere.id", CacheMemory.getFiliere().getId());	
+		}
+		predicats.addAll(container.getPredicats());
 		List<CoefMatiere> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<CoefMatiere> result = new ArrayList<CoefMatiere>();
 		for (CoefMatiere elev : datas) {
@@ -168,7 +175,7 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 		List<Matiere> matieres = new ArrayList<Matiere>();
 
 		Filiere filiere = filieredao.findByPrimaryKey("id", entity.getFiliere().getId());
-
+		System.out.println("CoefMatiereManagerImpl.generatecoefmat() je suis ici "+filiere.getCode());
 		// recherche matiere
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("filiere.id", filiere.getId());

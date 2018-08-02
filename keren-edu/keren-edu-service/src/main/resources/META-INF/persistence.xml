@@ -93,6 +93,15 @@
 		<class>com.kerenedu.configuration.RappelE</class>
 		<class>com.kerenedu.configuration.MatiereDlt</class>
 		<class>com.kerenedu.model.report.ViewNoteHelper</class>
+		<class>com.kerenedu.reglement.Depense</class>
+		<class>com.kerenedu.configuration.ServiceFilliere</class>
+		<class>com.kerenedu.configuration.SectionE</class>
+		<class>com.kerenedu.reglement.Remise</class>
+		<class>com.kerenedu.reglement.TypeRemise</class>
+		<class>com.kerenedu.notes.HelpProfClasse</class>
+		<class>com.kerenedu.discipline.LigneAbscence</class>
+		<class>com.kerenedu.model.report.ViewEmargement</class>
+	
 
 
 

@@ -3,6 +3,7 @@ package com.kerenedu.configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -10,10 +11,16 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.school.Eleve;
+import com.megatim.common.annotations.Filter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 
 /**
@@ -51,6 +58,7 @@ public class ClasseRSImpl
         return ("kereneducation");
     }
     
+ 
     
     @Override
    	public MetaData getMetaData(HttpHeaders headers) {

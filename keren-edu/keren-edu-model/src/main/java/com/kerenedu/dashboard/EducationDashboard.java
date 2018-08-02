@@ -372,6 +372,13 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
         this.designation = "Education";
         return "Education"; //To change body of generated methods, choose Tools | Templates.
     }
+	
+	 @Override
+		public String getListTitle() {
+			// TODO Auto-generated method stub
+			return "Année Scolaire "+(new Long(this.anneScolaire)+1)+"-"+ this.anneScolaire;
+		}
+
 
     @Override
     public String getEditTitle() {

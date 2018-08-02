@@ -14,7 +14,9 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Service;
+import com.kerenedu.configuration.ServiceFilliere;
 import com.kerenedu.inscription.Inscription;
+import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -42,11 +44,11 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	protected Long zMntHt;
 	
 	@Column(name = "REMISE" )	
-	@Predicate(label="Remise %",optional=true,updatable=true,search=true, type=Long.class ,sequence=4)
+	@Predicate(label="Remise ",optional=true,updatable=true,search=true, type=Long.class ,sequence=4)
 	protected Long zremise ;
 	
 	@Column(name = "RISTOURNE")	
-	@Predicate(label="RISTOURNE",optional=true,updatable=true,search=true, type=Long.class ,sequence=5)
+	@Predicate(label="RISTOURNE",optional=true,updatable=true,search=false, type=Long.class ,sequence=5)
 	protected Long zristourne = new Long(0);
 		
 //	@Column(name = "TYP_REG")
@@ -71,8 +73,31 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire ;
 	
-	protected boolean payer =false;
+	@Column(name = "MAT_ID")
+	protected String matricule ;
 	
+	@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Boolean.class ,sequence=9, editable=false, target="checkbox")
+	protected Boolean payer =false;
+	
+
+	
+	
+	public FichePaiement(Service service, Long zQte, Long zMntHt, Long zremise, Long zristourne, Long ztotal,
+			Long mntpayer, Long solde, Long zMntTmp, String anneScolaire, Boolean payer) {
+		super();
+		this.service = service;
+		this.zQte = zQte;
+		this.zMntHt = zMntHt;
+		this.zremise = zremise;
+		this.zristourne = zristourne;
+		this.ztotal = ztotal;
+		this.mntpayer = mntpayer;
+		this.solde = solde;
+		this.zMntTmp = zMntTmp;
+		this.anneScolaire = anneScolaire;
+		this.payer = payer;
+	}
+
 
 	public FichePaiement() {
 		super();
@@ -90,6 +115,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 		if(ins.service!=null){
 		this.service= new Service(ins.service);
 		}
+		this.matricule=ins.matricule;
 		this.mntpayer = ins.mntpayer;
 		this.zMntTmp=ins.zMntTmp;
 		this.solde=ins.solde;
@@ -99,11 +125,11 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	
 	}
 
-	public FichePaiement(Service ins) {
+	public FichePaiement(Service ins, ServiceFilliere filiere) {
 		this.service= new Service(ins);
 		this.zQte=new Long(1);
-		this.zMntHt=ins.getzMnt().longValue();
-		this.ztotal=ins.getzMnt().longValue();
+		this.zMntHt=filiere.getzMnt();
+		this.ztotal=filiere.getzMnt();
 		this.zremise=(long) 0;
 		this.zristourne=(long) 0;
 		this.mntpayer =(long) 0;
@@ -120,7 +146,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 
 	public int compareTo(FichePaiement o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getService().getRang();
 	}
 	@Override
 	public String getEditTitle() {
@@ -227,6 +253,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	}
 
 
+
 	public Long getzMntTmp() {
 		return zMntTmp;
 	}
@@ -247,14 +274,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	}
 
 
-	public boolean isPayer() {
-		return payer;
-	}
 
-
-	public void setPayer(boolean payer) {
-		this.payer = payer;
-	}
 
 
 	public void setAnneScolaire(String anneScolaire) {
@@ -262,11 +282,46 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	}
 
 
+	public Boolean getPayer() {
+		return payer;
+	}
+
+
+	public void setPayer(Boolean payer) {
+		this.payer = payer;
+	}
+
+
+	
 	@Override
 	public boolean isDesabledelete() {
+		return true; // To change body of generated methods, choose Tools |
+						// Templates.
+	}
+	
+
+	@Override
+	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean isDesablecreate() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 
+
+	public String getMatricule() {
+		return matricule;
+	}
+
+
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
+	}
 
 		
 	

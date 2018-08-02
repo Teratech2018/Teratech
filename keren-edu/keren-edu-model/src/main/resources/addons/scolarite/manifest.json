@@ -1,0 +1,18 @@
+{
+	'name':'Scolarite',
+	'version':'1.0',
+	'author' : 'NTW',
+	'summary':'Plateforme de gestion scoalaire',
+	'sequence':7,
+	'description':'',
+	'category':'Scolarite',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\scolarite_menus.xml'],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}
