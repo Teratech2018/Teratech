@@ -1172,8 +1172,10 @@ angular.module("mainApp")
                 }
          };
          /**
-          * Observer
-          * @returns {Boolean}
+          * 
+          * @param {type} template
+          * @param {type} model
+          * @returns {principal_L731.principalAnonym$37.controller.Observer}
           */
          var Observer = function(template,model){
              this.template = template;
@@ -1220,12 +1222,9 @@ angular.module("mainApp")
                      if(angular.isObject(elem)){
                          var key = commonsTools.keygenerator(this.model);
                          $scope.dataCache[""+key+""] = new Array();
-                         if(data && angular.isDefined(data.id)){
-                           $scope.dataCache[""+key+""].push(data);
-                         }//end if(data && angular.isDefined(data.id)){
                          var obj = {id:'load' , designation:'Charger les données ....'};    
-                         $scope.dataCache[""+key+""].push(obj);
                          $scope.dataCache[""+key+""].push(elem);
+                         $scope.dataCache[""+key+""].push(obj);                         
                          $timeout(function() {
                             $('.selectpicker').selectpicker('refresh');
                          });
@@ -2503,7 +2502,7 @@ $scope.gererChangementFichier3 = function(event,model){
                         ((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false)))){
                     selectElem.setAttribute('disabled' , 'true');
 //                    buttonElem.setAttribute('disabled' , 'disabled');
-                }
+                }//end if(($scope.metaData.desableupdate==false)&&(($scope.windowType=="view")
               //Desactiver la creation
             var spanElem = document.createElement('span');
             spanElem.setAttribute('class' , 'input-group-btn');
@@ -7138,7 +7137,7 @@ $scope.gererChangementFichier3 = function(event,model){
 //                    }//end if(parts[0]=='currentObject')
 //                    if(!angular.isDefined(templateModel[parts[col]])){
                         templateModel = $scope.getParentModel(model);
-                        console.log("$scope.addDialogAction =list ===== fieldName: "+parts[col]+" == modelpath:"+model+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
+//                        console.log("$scope.addDialogAction =list ===== fieldName: "+parts[col]+" == modelpath:"+model+"  template:"+angular.toJson(templateModel)+" ==== metadata : ");
 //                    }//end if(!angular.isDefined(templateModel[parts[col]]))
                     
                     if(angular.isArray(templateModel[parts[col]])){
@@ -7903,7 +7902,7 @@ $scope.gererChangementFichier3 = function(event,model){
                        predicat["type"]=filtres[i].operator ;
                    }//end if(filtres[i].operator!=null){
                    predicat["searchfields"]=null;
-                   if(filtres[i].searchfield){
+                   if(filtres[i].searchfield && field.type==='object'){
                        predicat["searchfields"]=[filtres[i].searchfield];
                    }//end if(filtres[i].searchfield){
                    //Traitement de la valeur
@@ -7913,8 +7912,8 @@ $scope.gererChangementFichier3 = function(event,model){
 //                   if(part.length<=1&&part.length>0){
 //                       value=part[0];                                       
 //                   }else 
-                  if(part[0]=="object"){
-                    if(par[0]=="currentObject"){
+                  if(part[0]==="object"){
+                    if(par[0]==="currentObject"){
                        var obj =$scope.currentObject;
                        if(part.length>1){
                            obj = obj[part[1]];
@@ -7926,7 +7925,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
                           return false;
                         }//end if(obj && obj[filtres[i].searchfield]){
-                    }else if(par[0]=="temporalData"){
+                    }else if(par[0]==="temporalData"){
                          var obj =$scope.temporalData;
                          if(part.length>1){
                             obj = obj[part[1]];
@@ -7938,7 +7937,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+filtres[i].message,"danger");
                                return false;
                             }
-                     }else if(par[0]=="dataCache"){
+                     }else if(par[0]==="dataCache"){
                           var key = commonsTools.keyparentgenerator(model);
                           var obj =$scope.dataCache[key];
                           if(part.length>1){
@@ -7953,7 +7952,7 @@ $scope.gererChangementFichier3 = function(event,model){
                               return false;
                           }//end if(obj && obj[filtres[i].searchfield]){
                      }//end if(part[0]=="object")
-                 }else if(part[0]=="user"){
+                 }else if(part[0]==="user"){
                       var obj = $scope.currentUser[part[1]];
                       if(obj && obj[filtres[i].searchfield]){
                            value=obj[filtres[i].searchfield];
@@ -7977,8 +7976,7 @@ $scope.gererChangementFichier3 = function(event,model){
            }//end if($scope.filtertemplate)
          }catch (ex){
              //commonsTools.showMessageDialog(ex);
-             console.error(ex);
-             return true;
+             commonsTools.showMessageDialog(ex);
          }
        };
        /**
@@ -8000,6 +7998,7 @@ $scope.gererChangementFichier3 = function(event,model){
          * @returns {undefined}
          */
         $scope.getData = function(model ,item ,entityName,moduleName,index,modelpath){
+//            console.log("$scope.getData = function(model ,item ,entityName,moduleName,index,modelpath)============ model : "+model+" ====== modelpath : "+modelpath);
             var status = $scope.buildFilter(model);
             if(status==false){
                 return ;
@@ -8026,12 +8025,19 @@ $scope.gererChangementFichier3 = function(event,model){
                                                 //alert("Data: "+response.data+" === "+model);   
                                                 var parts = model.split(".");
                                                 if(parts.length>1){
-                                                    $scope.dataCache[key] = new Array();
-                                                    //var data = $scope.dataCache[""+parts[1]+""];
-                                                    for(var i=0;i<response.data.length;i++){
-                                                        $scope.dataCache[key].push(response.data[i]);
-                                                    }                        
-                                                }
+                                                     var obj = {id:'load' , designation:'Charger les données ....'};
+                                //                    if($scope.dataCache[parts[1]]&&$scope.dataCache[parts[1]].length>0){
+                                //                        obj = {id:'loadwithsearch' , designation:'Chercher plus ...'};
+                                //                    }
+                                                       $scope.dataCache[key] = new Array();
+                                                       if(response.data.length<=0){
+                                                          $scope.dataCache[""+key+""].push(obj);
+                                                       } //end if(response.data.length<=0){
+                                                        //var data = $scope.dataCache[""+parts[1]+""];
+                                                        for(var i=0;i<response.data.length;i++){
+                                                            $scope.dataCache[key].push(response.data[i]);
+                                                        }//end for(var i=0;i<response.data.length;i++){                        
+                                                 }//end if(parts.length>1){
                                                  //console.log($scope.dataCache[""+parts[1]+""]);
                                                  $timeout(function() {
                                                     $('.selectpicker').selectpicker('refresh');
