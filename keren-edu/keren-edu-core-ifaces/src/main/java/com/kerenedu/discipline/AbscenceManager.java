@@ -14,5 +14,7 @@ public interface AbscenceManager
 {
 
     public final static String SERVICE_NAME = "AbscenceManager";
+    
+    public Abscence valider(Abscence entity);
 
 }

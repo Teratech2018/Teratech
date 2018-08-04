@@ -32,17 +32,17 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	private String image ;
 	 
 	
-	@Column(name = "NOM")
+	@Column(name = "NOM", unique=true)
 	@Predicate(label="NOM",optional=false,updatable=true,search=true, sequence=4, colsequence=2)
 	protected String nom;
 	
 	@Column(name = "PRENOM")
-	@Predicate(label="PRENOM",optional=false,updatable=true,search=true , sequence=3, colsequence=3)
+	@Predicate(label="PRENOM",optional=true,updatable=true,search=true , sequence=3, colsequence=3)
 	protected String prenon;
 	
 	@Column(name = "DATENAIS")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label="DATE NAISS.",optional=false,updatable=true,search=true, type=Date.class, target="date", sequence=5, colsequence=4)
+	@Predicate(label="DATE NAISS.",optional=true,updatable=true,search=true, type=Date.class, target="date", sequence=5, colsequence=4)
 	protected Date dateNais ;
 
 	@Column(name = "EMAIL")
@@ -53,14 +53,18 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label="SEXE",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=7)
 	protected String sexe="0";
 	
+	@Column(name = "Statut")
+	@Predicate(label="Statut" , search=true,target="combobox",values="Directrice(eur);Responsable Administratif;Enseignant;Animateur Pédagogique;Autres" ,optional=true , sequence=8)
+	private String role ="0";
+	
 	@ManyToOne
     @JoinColumn(name = "DIP_ID")
-	@Predicate(label="DIPLOME",updatable=true,type=Diplome.class , target="many-to-one",search=false, sequence=10, optional=false)
+	@Predicate(label="DIPLOME",updatable=true,type=Diplome.class , target="many-to-one",search=false, sequence=10, optional=true)
     protected Diplome diplome;
 	
 	
     @Column(name = "STATUS_ID")
-	@Predicate(label="Type Contrat",optional=false,updatable=true,search=false, target="combobox", values="Vacataire;Permanent(e)" , sequence=7)
+	@Predicate(label="Type Contrat",optional=true,updatable=true,search=false, target="combobox", values="Vacataire;Permanent(e)" , sequence=9)
     protected String status;
 	
 	@Column(name ="TELEPHONE")
@@ -116,27 +120,31 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.email = eleve.email;
 		this.prenon =eleve. prenon;
 		this.sexe = eleve.sexe;
-		this.status =eleve.status ;
+		
+		if(eleve.status!=null){
+			this.status =eleve.status ;
+		}
 		this.contact=eleve.contact;
-		if(diplome!=null){
+		if(eleve.diplome!=null){
 		this.diplome= new Diplome(eleve.diplome);
 		}
 		this.salaire= eleve.salaire;
 		this.thoraire=eleve.thoraire;
 		this.numBan=eleve.numBan;
+		this.role=eleve.role;
 	
 	}
 
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Edition des Enseignants";
+		return "Edition des Enseignants/Personnels";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Enseignants";
+		return "Gestion des Enseignants/Personnels";
 	}
 
 	@Override
@@ -228,6 +236,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 
 	public void setDiplome(Diplome diplome) {
 		this.diplome = diplome;
+	}
+
+
+	public String getRole() {
+		return role;
+	}
+
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 

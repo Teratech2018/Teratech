@@ -1,7 +1,10 @@
 
 package com.kerenedu.notes;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.EdtBulletinModal;
 
 
 /**
@@ -14,5 +17,6 @@ public interface BulletinHelperGenerateManager
 {
 
     public final static String SERVICE_NAME = "BulletinHelperGenerateManager";
+    public List<BulletinHelperGenerate> getCriteres(EdtBulletinModal critere);
 
 }

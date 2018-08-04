@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
@@ -49,6 +50,12 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 
 	@Manager(application = "kereneducation", name = "ViewNoteHelperManagerImpl", interf = ViewNoteHelperManagerRemote.class)
 	protected ViewNoteHelperManagerRemote managerNoteHelper;
+	
+	@Manager(application = "kereneducation", name = "ExamenManagerImpl", interf = ExamenManagerRemote.class)
+	protected ExamenManagerRemote managerxamen;
+	
+	@Manager(application = "kereneducation", name = "NoteDetailManagerImpl", interf = NoteDetailManagerRemote.class)
+	protected NoteDetailManagerRemote managernotedlt;
 
 	public EdtBulletinRSImpl() {
 		super();
@@ -86,7 +93,7 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 	}
 
 	@Override
-	public EdtBulletin update(Long id, EdtBulletin entity) {
+	public EdtBulletin update(@Context HttpHeaders headers,Long id, EdtBulletin entity) {
 		CacheMemory.setFiliere(entity.getFiliere());
 		CacheMemory.setClasse(entity.getClasse());
 		return entity; // To change body of generated methods, choose Tools |
@@ -94,7 +101,7 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 	}
 
 	@Override
-	public EdtBulletin save(EdtBulletin entity) {
+	public EdtBulletin save(@Context HttpHeaders headers,EdtBulletin entity) {
 		// To change body of generated methods, choose Tools | Templates.
 		CacheMemory.setFiliere(entity.getFiliere());
 		CacheMemory.setClasse(entity.getClasse());
@@ -120,7 +127,7 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 
 		datas = managerBul.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 		System.out.println("EdtBulletinRSImpl.generateBulletin() Buletin dejà generé trouvée " + datas);
-
+		
 		// 0- supprimer les bulletin trouvé et regenerer
 		for (Bulletin b : datas) {
 			managerBul.delete(b.getId());
@@ -137,35 +144,31 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 		if (eleves == null || eleves.isEmpty()) {
 			throw new KerenExecption("Aucun Eleve inscrit dans la classe choisis !!!");
 		}
-		// 2- recherche des note de chaque eleve en fonctioon du model de
-		// bulletin pour chaque examen
-
+		//find examen 
+		Examen examen = managerxamen.find("id", critere.getSeq().getId());
 			for (Inscription inscrit : eleves) {
 				container = RestrictionsContainer.newInstance();
 				container.addEq("classe.id", critere.getClasse().getId());
 				container.addEq("eleve.id", inscrit.getId());
-			//	container.addEq("examen.id", examen.getId());
+				container.addEq("examen.id", examen.getId());
 				List<ViewNoteHelper> noteeleves = managerNoteHelper.filter(container.getPredicats(), null,
 						new HashSet<String>(), 0, -1);
+				System.out.println("EdtBulletinRSImpl.generateBulletin() nobre note"+noteeleves.size());
 				List<LigneBulletinClasse> lignelist = new ArrayList<LigneBulletinClasse>();
 				Bulletin bulletin = new Bulletin();
 				for (ViewNoteHelper h : noteeleves) {
-					bulletin = new Bulletin(h);
+					bulletin = new Bulletin(h,examen);
 					LigneBulletinClasse ligne = new LigneBulletinClasse();
 					ligne = new LigneBulletinClasse(h);
 					ligne.setId(-1);
 					lignelist.add(ligne);
-
 				} // fin for (BulletinHelperGenerate h : listNote)
 				bulletin.setId(-1);
 				bulletin.setLignes(lignelist);
 				managerBul.save(bulletin);
-				System.out.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "
-						+ inscrit.getEleve().getNom());
+				System.out.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "+ inscrit.getEleve().getNom());
 			} // fin for(Inscription inscrit : eleves)
 
 	}// fin
-
-	// }//if (datas == null || datas.isEmpty())
 
 }

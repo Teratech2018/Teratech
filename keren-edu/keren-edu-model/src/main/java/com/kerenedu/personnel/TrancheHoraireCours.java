@@ -4,6 +4,8 @@
 package com.kerenedu.personnel;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -11,11 +13,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
+import com.core.tools.DateHelper;
 import com.core.tools.EnmHeureCours;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.notes.CoefMatiereDetail;
 import com.megatim.common.annotations.Predicate;
 
@@ -30,22 +33,20 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	
 		
 	@Column(name = "HEURE_DEBUT")
-	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="HEURE DEBUT (Ex:6:30)",optional=false,updatable=false,search=true, type=String.class , sequence=2 , pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
+	@Predicate(label="HEURE DEBUT (Ex:6:30)",optional=false,updatable=true,search=true,   sequence=2, target="time", type=String.class)
 	protected String heuredebut;
 	
 	@Column(name = "HEURE_FIN")
-	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="HEURE FIN (Ex:7:30)",optional=false,updatable=true,search=true, type=String.class, sequence=4, pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
+	@Predicate(label="HEURE FIN (Ex:7:30)",optional=false,updatable=true,search=true,  sequence=4,  target="time" ,type=String.class)
 	protected String heurefin;
 	
 	@Column(name = "ZNHT")
-	@Predicate(label="HEURE TOTAL",optional=true,updatable=false,search=false, type=Long.class, target="time", sequence=5, hide=true)
-	protected Long heuretotal;
+	@Predicate(label="Total Heure",updatable=false,search=true,  sequence=4, type=Double.class, editable=false)
+	protected Double heuretotal;
 
 //	@ManyToOne
 //	@JoinColumn(name="CLASSE_ID")
-//	@Predicate(label="CLASSE.",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1,hide=true	)
+//	@Predicate(label="CLASSE.",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1,hide=true	 , pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
 //	private Classe classe ;
 	
 	@ManyToOne
@@ -75,7 +76,7 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	}
 
 
-	public TrancheHoraireCours(CoefMatiereDetail matiere,String heuredebut, String heurefin, Long heuretotal,Classe classe) {
+	public TrancheHoraireCours(CoefMatiereDetail matiere,String heuredebut, String heurefin, Double heuretotal,Classe classe) {
 		super();
 		this.heuredebut = heuredebut;
 		this.heuretotal = heuretotal;
@@ -97,6 +98,7 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 //		if(ins.classe!=null){
 //			  this.classe= new Classe(ins.classe);
 //			}
+
 		this.heurefin = ins.heurefin;
 		this.heuredebut = ins.heuredebut;
 		this.heuretotal = ins.heuretotal;
@@ -106,7 +108,8 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	public TrancheHoraireCours(PlanifCours jc, EnmHeureCours ins) {		
 	//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
 		this.heurefin = ins.getHfin();
-		this.heuredebut = ins.getHdeb();
+		this.heuredebut =ins.getHdeb();
+		this.heuretotal =DateHelper.hours(heuredebut,heurefin, new Date());
 //		this.classe=jc.getClasse();
 	
 	}
@@ -114,7 +117,7 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	public TrancheHoraireCours(EnmHeureCours ins) {		
 		//	this.anneScolaire= new AnneScolaire(ins.anneScolaire);
 			this.heurefin = ins.getHfin();
-			this.heuredebut = ins.getHdeb();		
+			this.heuredebut =ins.getHdeb();		
 		}
 
 	
@@ -172,12 +175,12 @@ public class TrancheHoraireCours extends BaseElement implements Serializable, Co
 	}
 
 
-	public Long getHeuretotal() {
+	public Double getHeuretotal() {
 		return heuretotal;
 	}
 
 
-	public void setHeuretotal(Long heuretotal) {
+	public void setHeuretotal(Double heuretotal) {
 		this.heuretotal = heuretotal;
 	}
 

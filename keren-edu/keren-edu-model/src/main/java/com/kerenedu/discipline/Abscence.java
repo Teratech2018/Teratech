@@ -4,27 +4,31 @@
 package com.kerenedu.discipline;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.*;
-
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.core.base.State;
+import com.core.tools.DateHelper;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.school.Eleve;
+import com.kerenedu.configuration.SectionE;
+import com.kerenedu.personnel.EmargementProfDetails;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -33,8 +37,15 @@ import com.megatim.common.annotations.Predicate;
  */
 
 @Table
-@Entity(name = "e_abscence")
+@Entity(name = "e_abs")
 public class Abscence extends BaseElement implements Serializable, Comparable<Abscence> {
+
+	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7426874191351556828L;
 
 	
 	@Column(name = "DATE_ABS")
@@ -42,73 +53,76 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datAbs;
 	
+	@Transient
+	@ManyToOne
+	@JoinColumn(name="SECTION_ID")
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=3)
+	private SectionE section ;
+	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=2)
-	protected Classe classe;
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=4, observable=true)
+	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	protected Classe classe ;
 	
-	@ManyToOne
-	@JoinColumn(name = "TYPE_ABS_ID")
-	@Predicate(label="TYPE ABSCENCE",updatable=true,type=TypeAbscence.class , target="many-to-one",search=true , sequence=3)
-	protected TypeAbscence tAbscence;
 	
-	@Column(name = "HD")
-	//@Temporal(TemporalType.TIME)
-	@Predicate(label="HEURE DEBUT(Ex:7:30)",optional=false,updatable=false,search=true, type=Date.class,sequence=5, pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
-	protected String hdebut;
 	
-	@Column(name = "HF")
-	//@Temporal(TemporalType.TIME)
-	@Predicate(label="HEURE FIN (Ex:6:30)",optional=false,updatable=false,search=true, type=Date.class, sequence=4, pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" )
-	protected String hfin;
-
-	@ManyToMany(fetch = FetchType.LAZY )
-    @JoinColumn(name ="ELEVE_ID")
-	@Predicate(label = "ETUDIANTS CONCERNES",group = true,groupName = "tab1",groupLabel = "ETUDIANTS CONCERNES",target = "many-to-many-list",
-	type = Eleve.class,search = false, sequence=6)
-	private List<Eleve> eleveList = new ArrayList<Eleve>();
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "ID_ABS")
+	@Predicate(group = true,groupName = "tab1",groupLabel = "Elèves Concernés",target ="one-to-many",type = LigneAbscence.class,search = false, edittable=true)
+	@Observer(observable="classe",source="method:findeleveclasse",parameters="classe")
+	private List<LigneAbscence> abscences = new ArrayList<LigneAbscence>();
 	
 	@Column(name = "OBS")
 	@Predicate(group = true, groupName = "tab2", groupLabel = "Observation", target = "textarea", search = false, sequence=7)
 	protected String observation;
 	
-	@ManyToOne
-	@JoinColumn(name = "ANNEE_ID")
-	protected AnneScolaire anneScolaire;
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire;
+	
+
+	@Predicate(label = "Etat", hide = true, search = true)
+	private String state = "etabli";
+
 	
 
 	
 
 	public Abscence() {
-		super();
+		state = "etabli";
 
 	}
 
 
-	public Abscence(Date datAbs, Classe classe, String hdebut, String hfin, List<Eleve> eleveList, String observation,
-			AnneScolaire anneScolaire, TypeAbscence tAbscence) {
+
+
+	public Abscence(Date datAbs, Classe classe, List<LigneAbscence> abscences, String observation,
+			String anneScolaire) {
 		super();
 		this.datAbs = datAbs;
 		this.classe = classe;
-		this.hdebut = hdebut;
-		this.hfin = hfin;
-		this.eleveList = eleveList;
+		this.abscences = abscences;
 		this.observation = observation;
-		this.anneScolaire = new AnneScolaire(anneScolaire);
-		this.tAbscence=new TypeAbscence(tAbscence) ;
+		this.anneScolaire = anneScolaire;
+		state = "etabli";
+		
 	}
+
+
 
 
 	public Abscence(Abscence ins) {
 		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.datAbs = ins.datAbs;
-		this.hdebut = ins.hdebut;
-		this.hfin = ins.hfin;
-		this.eleveList = new ArrayList<Eleve>();
 		this.observation = ins.observation;
-		this.classe = new Classe(ins.classe);
-		this.anneScolaire=new AnneScolaire(ins.anneScolaire);
-		this.tAbscence= new TypeAbscence(ins.tAbscence);
+		if(ins.getClasse()!=null){
+			this.classe = new Classe(ins.classe);
+			this.section= new SectionE(ins.getClasse().getSection());
+		}
+		
+		this.abscences = new ArrayList<LigneAbscence>();
+		this.anneScolaire=ins.anneScolaire;
+		state = ins.state;
 	
 	
 	}
@@ -124,34 +138,6 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	}
 
 
-	public String getHdebut() {
-		return hdebut;
-	}
-
-
-	public void setHdebut(String hdebut) {
-		this.hdebut = hdebut;
-	}
-
-
-	public String getHfin() {
-		return hfin;
-	}
-
-
-	public void setHfin(String hfin) {
-		this.hfin = hfin;
-	}
-
-
-	public List<Eleve> getEleveList() {
-		return eleveList;
-	}
-
-
-	public void setEleveList(List<Eleve> eleveList) {
-		this.eleveList = eleveList;
-	}
 
 
 	public String getObservation() {
@@ -169,22 +155,19 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	}
 
 
-	public TypeAbscence gettAbscence() {
-		return tAbscence;
-	}
-
-
-	public void settAbscence(TypeAbscence tAbscence) {
-		this.tAbscence = tAbscence;
-	}
-
 
 	public void setClasse(Classe classe) {
 		this.classe = classe;
 	}
 
 
-	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 
 	@Override
 	public int hashCode() {
@@ -193,6 +176,20 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 		return hash;
 	}
 
+	public List<LigneAbscence> getAbscences() {
+		return abscences;
+	}
+
+
+
+
+	public void setAbscences(List<LigneAbscence> abscences) {
+		this.abscences = abscences;
+	}
+
+
+
+
 	public int compareTo(Abscence o) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -200,13 +197,13 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Abscences";
+		return "Gérer les Abscences";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Abscences";
+		return "Gérer les Abscences";
 	}
 
 	@Override
@@ -218,20 +215,61 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return this.id+"";
+		return  " /du "+DateHelper.convertToString(datAbs, "dd/MM/yyyy")+"Classe de /"+classe.getLibelle();
 	}
 
 
-	public AnneScolaire getAnneScolaire() {
+	public String getAnneScolaire() {
 		return anneScolaire;
 	}
 
 
-	public void setAnneScolaire(AnneScolaire anneScolaire) {
+	public void setAnneScolaire(String anneScolaire) {
 		this.anneScolaire = anneScolaire;
 	}
 
+	@Override
+	public List<State> getStates() {
+		// TODO Auto-generated method stub
+		List<State> states = new ArrayList<State>();
+		State etat = new State("etabli", "Brouillon");
+		states.add(etat);
+		etat = new State("valider", "Validée");
+		states.add(etat);
+		return states;
+	}
 
+	@Override
+	public String getSerial() {
+		// TODO Auto-generated method stub
+		return Long.toString(serialVersionUID);
+	}
+
+	public SectionE getSection() {
+		return section;
+	}
+
+
+
+
+	public void setSection(SectionE section) {
+		this.section = section;
+	}
+
+
+
+
+	@Override
+	public boolean isActivatefollower() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isActivefilelien() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 	
 	
 

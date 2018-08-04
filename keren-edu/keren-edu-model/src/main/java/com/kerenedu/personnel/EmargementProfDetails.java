@@ -4,6 +4,7 @@
 package com.kerenedu.personnel;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -11,8 +12,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.core.tools.DateHelper;
 import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.notes.CoefMatiereDetail;
 import com.megatim.common.annotations.Predicate;
@@ -28,23 +32,30 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	
 	@ManyToOne
 	@JoinColumn(name = "MAT_ID")
-	@Predicate(label="MATIERE",updatable=true,type=MatiereDlt.class , target="many-to-one",search=true , sequence=1	)
+	@Predicate(label="Matière",updatable=false,type=MatiereDlt.class , target="many-to-one",search=true , sequence=1 ,colsequence=1	)
 	protected CoefMatiereDetail matiere;
 	
+	@Transient
+	@ManyToOne
+	@JoinColumn(name = "P_ID")
+	@Predicate(label="Professeur",updatable=false,type=Professeur.class , target="many-to-one",search=true , sequence=2	,colsequence=2)
+	protected Professeur prof;
+	
 	@Column(name = "HEURE_DEBUT")
-	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="HEURE DEBUT (Ex:6:30)",optional=false,updatable=false,search=true, type=String.class , sequence=2 , pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
+	@Predicate(label="Heure Début(Ex:6:30)",optional=false,updatable=true, type=String.class , search=true,sequence=3 , target="time",colsequence=3)
 	protected String heuredebut;
 	
 	@Column(name = "HEURE_FIN")
-	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="HEURE FIN (Ex:7:30)",optional=false,updatable=true,search=true, type=String.class, sequence=4, pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]")
+	@Predicate(label="Heure Fin(Ex:7:30)",optional=false,updatable=true, type=String.class, sequence=4,search=true, target="time",colsequence=4)
 	protected String heurefin;
 	
+	@Column(name = "HTEMARG")
+	@Predicate(label="Total Heure",updatable=false,search=true,  sequence=5, type=Double.class, editable=false,colsequence=5)
+	protected Double heuretotal;
+	
 	@Column(name = "STATUT")
-	@Predicate(label="Validé ?",optional=false,updatable=true,search=true, target="combobox", values="Validé;Non Validé" , sequence=3)
-	protected String statut="0";
-
+	@Predicate(label="Statut",type=Boolean.class,search=true,colsequence=6)
+	private Boolean statut = Boolean.FALSE;
 
 	public EmargementProfDetails() {
 		super();
@@ -52,35 +63,48 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	}
 
 
-	public EmargementProfDetails(CoefMatiereDetail matiere, String heurefin, String heuredebut,String statut) {
-		super();
-		this.matiere = matiere;
-		this.heurefin = heurefin;
-		this.heuredebut = heuredebut;
-		this.statut = statut;
-	}
 
 
 	public EmargementProfDetails(EmargementProfDetails ins) {
 		super(ins.id, ins.designation, ins.moduleName,0L);
 		
+		if(ins.getMatiere() !=null){
 		this.matiere= new CoefMatiereDetail(ins.matiere);
+		this.prof = new Professeur(ins.matiere.getProffesseur());
+		}
 		this.heurefin = ins.heurefin;
 		this.heuredebut = ins.heuredebut;
+		this.heuretotal = ins.heuretotal;
 		this.statut = ins.statut;
 
 	
 	
 	}
 	
+	public EmargementProfDetails(CoefMatiereDetail matiere, Professeur prof, String heuredebut, String heurefin,
+			Boolean statut) {
+		super();
+		this.matiere = matiere;
+		this.prof = prof;
+		this.heuredebut = heuredebut;
+		this.heurefin = heurefin;
+		this.heuretotal= DateHelper.hours(heuredebut, heurefin, new Date());
+		this.statut = statut;
+	}
+
+
+
+
 	public EmargementProfDetails(TrancheHoraireCours ins) {
 		
 		if(ins.matiere!=null){
 			this.matiere= new CoefMatiereDetail(ins.getMatiere());
+			this.prof= new Professeur(ins.getMatiere().getProffesseur());
 		}
 		this.heurefin = ins.getHeurefin();
 		this.heuredebut = ins.getHeuredebut();
-		this.statut= "0";
+		this.heuretotal= DateHelper.hours(heuredebut, heurefin, new Date());
+		this.statut=Boolean.FALSE;
 
 	
 	
@@ -143,6 +167,20 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	}
 
 
+	public Professeur getProf() {
+		return prof;
+	}
+
+
+
+
+	public void setProf(Professeur prof) {
+		this.prof = prof;
+	}
+
+
+
+
 	public String getHeurefin() {
 		return heurefin;
 	}
@@ -153,14 +191,28 @@ public class EmargementProfDetails extends BaseElement implements Serializable, 
 	}
 
 
-	public String getStatut() {
+	public Boolean getStatut() {
 		return statut;
 	}
 
 
-	public void setStatut(String statut) {
+	public void setStatut(Boolean statut) {
 		this.statut = statut;
 	}
+
+
+	public Double getHeuretotal() {
+		return heuretotal;
+	}
+
+
+
+
+	public void setHeuretotal(Double heuretotal) {
+		this.heuretotal = heuretotal;
+	}
+
+
 
 
 	public void setMatiere(CoefMatiereDetail matiere) {

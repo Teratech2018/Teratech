@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
@@ -76,13 +77,13 @@ public class PlanifCoursRSImpl
   	}
     
     @Override
-    public PlanifCours update(Long id, PlanifCours entity) {
+    public PlanifCours update(@Context HttpHeaders headers,Long id, PlanifCours entity) {
     	CacheMemory.setClasse(entity.getClasse());
         return entity; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PlanifCours save(PlanifCours entity) {
+    public PlanifCours save(@Context HttpHeaders headers,PlanifCours entity) {
     	
         //To change body of generated methods, choose Tools | Templates.
     	CacheMemory.setClasse(entity.getClasse());
@@ -127,6 +128,7 @@ public class PlanifCoursRSImpl
    				newJours.setId(-1);
    				newJours.setClasse(entity.getClasse());
    				newJours.setTranchehorairecours(newTranche);
+   				newJours.setAnneScolaire(CacheMemory.getCurrentannee());
    				managerJours.save(newJours);
    			}
    		}   // fin (datas==null||datas.isEmpty()||datas.size()==0)			

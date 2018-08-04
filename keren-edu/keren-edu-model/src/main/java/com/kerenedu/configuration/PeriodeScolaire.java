@@ -29,24 +29,24 @@ public class PeriodeScolaire extends BaseElement implements Serializable, Compar
 	protected String libelle;
 	
 	@Column(name = "D_DEBUT" )	
-	//@Temporal(javax.persistence.TemporalType.TIME)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="DEBUT",optional=false,updatable=false,search=true, type=Date.class, target="date", sequence=3)
-	protected String dDeb;
+	protected Date dDeb;
 	
 	@Column(name = "D_FIN" )	
-	//@Temporal(javax.persistence.TemporalType.TIME)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="FIN",optional=false,updatable=false,search=true, target="date", type=Date.class, sequence=2)
-	protected String dFin;
+	protected Date dFin;
 	
 	@Column(name = "D_DEBUT_SAI_NOTE")	
-	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="DEBUT SAISIR NOTES",optional=true,updatable=false,search=true, target="date", sequence=5)
-	protected String dDebSai;
+	@Temporal(javax.persistence.TemporalType.DATE)
+	@Predicate(label="DEBUT SAISIR NOTES",optional=true,updatable=false,search=true, target="date", sequence=5, type=Date.class)
+	protected Date dDebSai;
 	
 	@Column(name = "D_FIN_SAI_NOTE")	
-	//@Temporal(javax.persistence.TemporalType.TIME)
-	@Predicate(label="FIN SAISIR NOTES",optional=true,updatable=false,search=true,target="date", sequence=4)
-	protected String dFinSai;
+	@Temporal(javax.persistence.TemporalType.DATE)
+	@Predicate(label="FIN SAISIR NOTES",optional=true,updatable=false,search=true,target="date", sequence=4, type=Date.class)
+	protected Date dFinSai;
 	
 	
 
@@ -115,57 +115,61 @@ public class PeriodeScolaire extends BaseElement implements Serializable, Compar
 	/**
 	 * @return the dDeb
 	 */
-	public String getdDeb() {
+	public Date getdDeb() {
 		return dDeb;
 	}
 
 	/**
 	 * @param dDeb the dDeb to set
 	 */
-	public void setdDeb(String dDeb) {
+	public void setdDeb(Date dDeb) {
 		this.dDeb = dDeb;
 	}
 
 	/**
 	 * @return the dFin
 	 */
-	public String getdFin() {
+	public Date getdFin() {
 		return dFin;
 	}
 
 	/**
 	 * @param dFin the dFin to set
 	 */
-	public void setdFin(String dFin) {
+	public void setdFin(Date dFin) {
 		this.dFin = dFin;
 	}
 
 	/**
 	 * @return the dDebSai
 	 */
-	public String getdDebSai() {
+	public Date getdDebSai() {
 		return dDebSai;
 	}
 
 	/**
 	 * @param dDebSai the dDebSai to set
 	 */
-	public void setdDebSai(String dDebSai) {
+	public void setdDebSai(Date dDebSai) {
 		this.dDebSai = dDebSai;
 	}
 
 	/**
 	 * @return the dFinSai
 	 */
-	public String getdFinSai() {
+	public Date getdFinSai() {
 		return dFinSai;
 	}
 
 	/**
 	 * @param dFinSai the dFinSai to set
 	 */
-	public void setdFinSai(String dFinSai) {
+	public void setdFinSai(Date dFinSai) {
 		this.dFinSai = dFinSai;
+	}
+	@Override
+	public boolean isCreateonfield() {
+		return false;
 	}
 
 }

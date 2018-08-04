@@ -9,15 +9,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -29,17 +31,19 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_service")
 public class Service extends BaseElement implements Serializable, Comparable<Service> {
 	
+
 	
-	@Column(name = "TYPE_SERVICE")
-	@Predicate(label="Type Service",optional=false,updatable=true,search=false, target="combobox", values="Inscription;Iere Tranche;IIeme Tranche;IIeme Tranche;Autres" , sequence=1)
-	protected String type="0";
-	
-	@Column(name = "LIBELLE")	
-	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true, sequence=2)
+	@Column(name = "CODE", unique=true)	
+	@Predicate(label="CODE",optional=false,updatable=true,search=true, sequence=1)
 	protected String libelle;
 	
+	
+	@Column(name = "TYPE_SERVICE", unique=true)
+	@Predicate(label="Type Service",optional=false,updatable=false,search=false, target="combobox", values="Inscription;1ere Tranche;2eme Tranche;3eme Tranche;Autres" , sequence=2, observable=true)
+	protected String type="0";
+	
 	@Column(name = "MNT" )	
-	@Predicate(label="MONTANT",optional=false,updatable=true,search=true, type=Double.class, sequence=3)
+	@Predicate(label="MONTANT",optional=true,updatable=true,search=true, type=Double.class, sequence=3, editable=false)
 	protected Double zMnt;
 	
 	@Column(name = "DELAI")
@@ -47,11 +51,17 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date delai;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "FILL_ID")
-	@Predicate(label = ".",target = "many-to-many-list",type = Filiere.class,search = true,group=true,groupLabel="Filière concernés",
-			groupName="tab1")
-	private List<Filiere> filiere ;
+	@Predicate(label = "Totalité des Frais Exigé ?", type = Boolean.class)
+	private Boolean exige = Boolean.FALSE;
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "SERVICE_ID")
+	@Predicate(label = ".",target = "one-to-many",type = ServiceFilliere.class,search = true,group=true,groupLabel="Filière",
+			groupName="tab1", edittable=true)
+	@Observer(observable="type",source="method:findfiliere",parameters="type")
+	private List<ServiceFilliere> filiere ;
+	
+	private long rang ;
 
 	
 
@@ -64,9 +74,11 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 		super(service.id, service.designation, service.moduleName,0L);
 		this.zMnt=service.zMnt;
 		this.delai=service.delai;
-		filiere= new ArrayList<Filiere>();
+		filiere= new ArrayList<ServiceFilliere>();
 		this.libelle=service.libelle;
 		this.type=service.getType();
+		this.exige= service.getExige();
+		this.rang=service.rang;
 		
 	}
 
@@ -118,6 +130,8 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	}
 
 
+
+
 	public Date getDelai() {
 		return delai;
 	}
@@ -148,13 +162,40 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	}
 
 
-	public List<Filiere> getFiliere() {
+	public List<ServiceFilliere> getFiliere() {
 		return filiere;
 	}
 
 
-	public void setFiliere(List<Filiere> filiere) {
+	public Boolean getExige() {
+		return exige;
+	}
+
+
+	public void setExige(Boolean exige) {
+		this.exige = exige;
+	}
+
+
+	public void setFiliere(List<ServiceFilliere> filiere) {
 		this.filiere = filiere;
+	}
+
+
+	public long getRang() {
+		return rang;
+	}
+
+
+	public void setRang(long rang) {
+		this.rang = rang;
+	}
+
+
+	@Override
+	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

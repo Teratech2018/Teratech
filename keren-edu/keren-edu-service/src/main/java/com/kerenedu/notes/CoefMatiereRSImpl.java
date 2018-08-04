@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
@@ -117,7 +118,7 @@ public class CoefMatiereRSImpl
 	}
 	
 	  @Override
-	    public CoefMatiere save(CoefMatiere entity) {
+	    public CoefMatiere save(@Context HttpHeaders headers,CoefMatiere entity) {
 		  this.todowork(entity);
 	        return entity; 
 	    }

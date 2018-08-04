@@ -34,13 +34,16 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	private Long sur = new Long(0) ;
 	
 	@Column(name = "NOTE")
-	@Predicate(label = "Note",type = Long.class,search = true  , sequence=3, colsequence=3)
-	private Long note = new Long(0) ;
+	@Predicate(label = "Note",type = Double.class,search = true  , sequence=3, colsequence=3 )
+	private Double note = new Double(0) ;
 	
 	@Column(name = "APPRECIATION")
 	@Predicate(label = "Appreciation", search = true  , sequence=3, colsequence=3 ,editable=false)
 	private String obs  ;
 	
+
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire ;
 	
 
 
@@ -57,14 +60,16 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 		this.obs= notedetail.obs;
 		this.note= notedetail.note;
 		this.sur=notedetail.sur;
+		this.anneScolaire=notedetail.anneScolaire;
 
 	}
 	
 	public NoteDetail(Inscription eleve) {
 		this.eleve = new Inscription(eleve);
 		this.obs= "";
-		this.note= new Long(0);
+		this.note= new Double(0);
 		this.sur= new Long(20);
+		this.anneScolaire=eleve.getAnneScolaire();
 
 	}
 
@@ -108,7 +113,7 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	}
 
 
-	public Long getNote() {
+	public Double getNote() {
 		return note;
 	}
 
@@ -123,8 +128,18 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	}
 
 
-	public void setNote(Long note) {
+	public void setNote(Double note) {
 		this.note = note;
+	}
+
+
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
 	}
 
 

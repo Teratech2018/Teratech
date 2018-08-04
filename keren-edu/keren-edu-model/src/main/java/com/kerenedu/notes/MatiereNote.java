@@ -32,12 +32,12 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name = "PROF")
-	@Predicate(label="PROF",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=1,colsequence=1	,editable=false, searchfields="nom")
+	@Predicate(label="PROF",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=1,colsequence=2	,editable=false, searchfields="prof.nom")
 	protected Professeur prof;
 	
 	@ManyToOne
     @JoinColumn(name = "MATIERE_ID")
-	@Predicate(label="MATIERE",optional=true,updatable=false,search=true , sequence=2, colsequence=2,type=CoefMatiereDetail.class ,editable=false)
+	@Predicate(label="MATIERE",optional=true,updatable=false,search=true , sequence=2, colsequence=1,type=CoefMatiereDetail.class ,editable=false, searchfields="matiere.matiere.libelle")
 	protected CoefMatiereDetail matiere;
 	
 	@ManyToOne

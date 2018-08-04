@@ -30,12 +30,13 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Sélectionner la Séquence concernée",type=Examen.class,target="many-to-one",optional=false, sequence=2)
+	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1)
+	@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
 	private Examen periode ;
 		
 	@ManyToOne
 	@JoinColumn(name="CLASSE_ID")
-	@Predicate(label="Sélectionner la Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1)
+	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=2)
 	private Classe classe ;
 	
 	/**

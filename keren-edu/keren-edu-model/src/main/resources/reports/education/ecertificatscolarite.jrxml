@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SygmaFiles" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
 	<property name="ireport.zoom" value="1.1000000000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="54"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
 	<style name="table">
 		<box>
@@ -87,6 +87,8 @@
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<subDataset name="Table Dataset 1" uuid="9ecd45e8-9d8b-4318-8936-0bdc97e78604"/>
 	<parameter name="eduparametres" class="java.lang.Object"/>
+	<parameter name="REPORT_IMAGE_REPOSITORY" class="byte[]"/>
+	<parameter name="anneeScolaire" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM VIEW_IMPUTATION]]>
 	</queryString>
@@ -96,7 +98,10 @@
 	<field name="eleve.nom" class="java.lang.String"/>
 	<field name="eleve.prenon" class="java.lang.String"/>
 	<field name="datIns" class="java.util.Date"/>
-	<field name="filiere.libelle" class="java.lang.String"/>
+	<field name="classe.filiere.libelle" class="java.lang.String"/>
+	<field name="classe.libelle" class="java.lang.String"/>
+	<field name="anneScolaire" class="java.lang.String"/>
+	<field name="classe.filiere.cycle.libelle" class="java.lang.String"/>
 	<variable name="nbreOperation" class="java.lang.Long" resetType="Group" resetGroup="IpGroup" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -135,7 +140,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="14" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{prenon}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{eleve.prenon}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement stretchType="RelativeToTallestObject" x="91" y="248" width="11" height="20" uuid="40545b16-d6b7-4fd3-a67e-28e05ccaa0e5"/>
@@ -189,7 +194,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="14" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{dateNais}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{eleve.dateNais}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
 				<reportElement style="table" mode="Transparent" x="223" y="268" width="26" height="20" backcolor="#D3D3D3" uuid="eff6ced1-1538-44ed-86e4-ff727a974b75"/>
@@ -223,14 +228,14 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="14" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lNais}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{eleve.lNais}]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
-				<reportElement x="19" y="314" width="534" height="83" printWhenGroupChanges="IpGroup" uuid="d74b20e7-107f-4b44-93a4-ba8e781ea2d8"/>
-				<textElement verticalAlignment="Top">
-					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Bold"/>
+				<reportElement x="19" y="331" width="534" height="35" printWhenGroupChanges="IpGroup" uuid="d74b20e7-107f-4b44-93a4-ba8e781ea2d8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["est actuellement inscrit dans mon établissement depuis le"+$F{datIns}+"en classe de "+$F{filiere.libelle}+" et que sa fréquentation est régulière."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["en classe de     "+$F{classe.libelle}+"       et que sa fréquentation est régulière."]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
 				<reportElement x="296" y="435" width="126" height="22" printWhenGroupChanges="IpGroup" uuid="6185d6a9-02ea-4b49-b254-15d480cc137c"/>
@@ -253,16 +258,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA["le directeur :.............."]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="0" y="1" width="118" height="101" uuid="59a72e16-fd1e-415b-ab89-212bb9b3787a"/>
-				<imageExpression><![CDATA["D:\\DEV_TOOLS\\SA\\jboss-as-7.1.1.Final\\standalone\\data\\keren\\resources\\templates\\education\\images\\logo.jpg"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="118" y="1" width="449" height="101" uuid="902f2984-e7fc-4831-be2f-b542223b7738"/>
-				<imageExpression><![CDATA["D:\\DEV_TOOLS\\SA\\jboss-as-7.1.1.Final\\standalone\\data\\keren\\resources\\templates\\education\\images\\entete.jpg"]]></imageExpression>
-			</image>
 			<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="IpGroup" isBlankWhenNull="true">
-				<reportElement isPrintRepeatedValues="false" x="73" y="118" width="494" height="41" printWhenGroupChanges="IpGroup" uuid="d6ef22a9-3dcf-46c5-9616-f0e603f6c193">
+				<reportElement isPrintRepeatedValues="false" x="60" y="132" width="494" height="41" printWhenGroupChanges="IpGroup" uuid="d6ef22a9-3dcf-46c5-9616-f0e603f6c193">
 					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -277,11 +274,11 @@
 				<textFieldExpression><![CDATA["CERTIFICAT DE SCOLARITE"]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
-				<reportElement x="138" y="169" width="370" height="17" printWhenGroupChanges="IpGroup" uuid="a5afe15b-657d-49ab-95bc-cf5f3c098388"/>
+				<reportElement x="91" y="189" width="416" height="17" printWhenGroupChanges="IpGroup" uuid="a5afe15b-657d-49ab-95bc-cf5f3c098388"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Je soussigné	 ,Le Directeur de  l'UCAC certifie que :"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Je soussigné........................	 ,Le Directeur de GSBS certifie que :"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
 				<reportElement style="table" mode="Transparent" x="19" y="208" width="72" height="20" backcolor="#D3D3D3" uuid="ba26aa06-d9ea-4c9e-9a51-17990a6b32b8"/>
@@ -306,9 +303,9 @@
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="14" pdfFontName="Times-Roman"/>
+					<font fontName="Times New Roman" size="14" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{matricule}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{eleve.matricule}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement stretchType="RelativeToTallestObject" x="91" y="208" width="11" height="20" uuid="11d55615-623c-432d-bba3-374f8aa771c6"/>
@@ -329,7 +326,248 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="14" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nom}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{eleve.nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="44" width="182" height="10" uuid="37a57c9f-e36e-47b7-9a62-a406ce6bc585"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DELEGATION REGIONALE DU CENTRE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="396" y="1" width="168" height="11" uuid="ac3f6fca-4e03-4968-ba25-1499f8a8ae08"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPUBLIC OF CAMEROON "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="65" y="78" width="50" height="1" uuid="2d42eaeb-5946-4508-9e12-93298d304d7c"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="396" y="29" width="168" height="11" uuid="02bd6342-dd0c-464a-825c-2076d4657321"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MINISTRY OF SECONDRY EDUCATION"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="29" width="181" height="11" uuid="415378f5-f874-434b-a8c6-1b2ca46f9b8b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MINISTERE DES ENSEIGNEMENTS SECONDAIRES"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement style="table" mode="Transparent" x="406" y="81" width="65" height="12" backcolor="#D3D3D3" uuid="f9776f30-ca3f-4b99-be77-c50b70885abe"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Année Scolaire "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="469" y="81" width="11" height="12" uuid="1d6874df-9194-4edf-ac52-fff408ae065b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="1" width="181" height="11" uuid="22db0c96-5c11-41cf-8fa1-c50085c11f18"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPUBLIQUE DU CAMEROUN"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="457" y="40" width="50" height="1" uuid="33bc267b-e661-4170-abbc-134a4c10f67f"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="65" y="26" width="50" height="1" uuid="b2cddd06-928e-4b11-a935-453a4606d6ab"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="12" width="181" height="11" uuid="3173ee8a-2893-4749-b1f7-9cc4f93e8878"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PAIX-TRAVAIL-PATRIE "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="398" y="59" width="166" height="15" uuid="6e3bd002-ac7a-4b43-9ab2-c1b8f3bb297c"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MFOUNDI SUDDIVISION DELEGATION"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="59" width="182" height="17" uuid="df4bf4d0-4623-42d1-83a2-b1c55e6aa9e9"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DELEGATION REGIONALE DEPARTEMENTALE DU MFOUNDI"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="479" y="81" width="78" height="12" uuid="6e6af0ee-b75a-4050-9a87-86c6f8ed19da"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anneScolaire}+"/"+ (new Long($F{anneScolaire})+1)]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="223" y="18" width="139" height="63" uuid="81a70fac-a32b-4fef-82a6-02a39977f008"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage((byte[])$P{REPORT_IMAGE_REPOSITORY})]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="67" y="56" width="48" height="1" uuid="1c2cbaae-259b-4d88-a064-beff75659f37"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="67" y="40" width="50" height="1" uuid="69d0c822-3089-4516-8755-da86231696a9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="457" y="24" width="50" height="1" uuid="9d9cc16a-e50c-4e6c-8678-b0875f12e36e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="396" y="12" width="168" height="11" uuid="1f696d5e-c584-4cee-b86c-0d37c494bb17"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PEACE-WORK-FATHERLAND "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="458" y="78" width="50" height="1" uuid="84600fb6-18c6-47d6-93b4-0f629bab4346"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="397" y="44" width="167" height="10" uuid="eae1fdf1-c4d1-45f1-aece-4d74427b071b"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REGIONAL DELEGATION FOR THE CENTRE"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="457" y="56" width="50" height="1" uuid="3a5c0490-5cb5-436e-843a-bcc082a318fd"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="2" y="81" width="180" height="10" uuid="bdf66720-af00-4b38-a2e5-58001a31ef76"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{classe.filiere.cycle.libelle}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="20" y="308" width="342" height="23" printWhenGroupChanges="IpGroup" uuid="0066b2ed-7543-4598-b7a7-e2ff3b02d74c"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["est actuellement inscrit dans mon établissement depuis le"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="362" y="308" width="195" height="23" printWhenGroupChanges="IpGroup" uuid="ad7d8e5b-fd50-40ad-847f-5ef70548cac1"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datIns}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -98,5 +98,7 @@ public class FichePaiementManagerImpl
 
 		super.processBeforeSave(entity);
 	}
+
+
    	
 }

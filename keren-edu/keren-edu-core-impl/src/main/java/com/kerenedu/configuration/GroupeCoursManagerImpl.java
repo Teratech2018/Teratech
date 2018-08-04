@@ -54,9 +54,9 @@ public class GroupeCoursManagerImpl
  		// TODO Auto-generated method stub
  		GroupeCours elev = super.find(propertyName, entityID);
  		GroupeCours inscrip = new GroupeCours(elev);
- 		for( MatiereDlt matiere :elev.getMatiereList()){
- 			inscrip.getMatiereList().add(new MatiereDlt(matiere));
- 		}
+// 		for( MatiereDlt matiere :elev.getMatiereList()){
+// 			inscrip.getMatiereList().add(new MatiereDlt(matiere));
+// 		}
  		return inscrip;
  	}
 

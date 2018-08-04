@@ -27,6 +27,8 @@ public class ReportHelper {
     public static final String reportimages = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"logo.png";
     
     public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
+    
+    public static final String photourl = FileHelper.getStaticDirectory()+File.separator;
     /**
      * Chemin de base des report
      */
@@ -112,4 +114,16 @@ public class ReportHelper {
        }
     }
 
+    public static byte[] getPhotoBytes(String photoname) throws IOException
+    {
+    	InputStream stream = new FileInputStream(photourl+photoname);
+       try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+          byte[] buffer = new byte[1024];
+          for (int len = 0; (len = stream.read(buffer)) != -1;) {
+             os.write(buffer, 0, len);
+          }
+          os.flush();
+          return os.toByteArray();
+       }
+    }
 }

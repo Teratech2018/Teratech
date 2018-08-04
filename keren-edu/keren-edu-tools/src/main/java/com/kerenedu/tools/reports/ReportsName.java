@@ -13,9 +13,17 @@ public enum ReportsName {
     CERTIFICAT_SCOLAIRE("ecertificatscolarite.jasper"),
     FACTURE("efacture.jasper"),
     ANNIVERSAIRE("eanniversaire.jasper"),
+    LISTE_ELEVE("elisteeleve.jasper"),
+    LISTAING_RETARD("elistingretard.jasper"),
     BILANFINANCIER("ebilanfinancier.jasper"),
     BILANFINANCIERCLASSE("ebilanfinancierclasse.jasper"),
     LINSTINGPAIEMENT("elistingpaiement.jasper"),
+    LINSTINGRETARD("elistingretard.jasper"),
+    BULLSEQUENTIEL("ebulletin_sequence.jasper"), 
+    EMARGEMENT("eficheemarge.jasper"),  
+    PLANNING_COURS("eemploitemps.jasper"),  
+    BULLTRIM("ebulletin_trimestre.jasper"),  
+    FICHE_INSCRIPTION("eficheInscription.jasper"),  
     BULLETIN("ebulletin.jasper");
 
     /**

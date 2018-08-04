@@ -4,21 +4,12 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
-import com.megatim.common.annotations.Filter;
-import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -59,11 +50,11 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 //	private Filiere filiere = new Filiere();
 	
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MATIERE_ID")
-	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = MatiereDlt.class,search = false)
-	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\"}]")
-	private List<MatiereDlt> matiereList = new ArrayList<MatiereDlt>();
+//	@ManyToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "MATIERE_ID")
+//	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = MatiereDlt.class,search = false)
+//	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\"}]")
+//	private List<MatiereDlt> matiereList = new ArrayList<MatiereDlt>();
 	
 	
 
@@ -77,7 +68,7 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		super(annee.id, annee.designation, annee.moduleName,0L);
 		this.code = annee.code;
 		this.libelle = annee.libelle;
-		this.matiereList= new ArrayList<MatiereDlt>();
+//		this.matiereList= new ArrayList<MatiereDlt>();
 
 	}
 
@@ -94,16 +85,6 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		this.libelle = libelle;
 	}
 
-
-
-	public List<MatiereDlt> getMatiereList() {
-		return matiereList;
-	}
-
-
-	public void setMatiereList(List<MatiereDlt> matiereList) {
-		this.matiereList = matiereList;
-	}
 
 
 	public void setCode(String code) {

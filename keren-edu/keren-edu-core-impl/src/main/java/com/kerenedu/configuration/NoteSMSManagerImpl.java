@@ -91,19 +91,23 @@ public class NoteSMSManagerImpl extends AbstractGenericManager<NoteSMS, Long>
 		this.savemessage(entity);
 	}
 	
+
+	@Override
+	public NoteSMS save(NoteSMS entity) {
+		// TODO Auto-generated method stub
+		return super.save(entity);
+	}
+
 	private void savemessage(NoteSMS entity){
 		List<NoteSMS> listsms = new ArrayList<NoteSMS>();
 		NoteSMS sms = new NoteSMS();
-			System.out.println("NoteSMSManagerImpl.processBeforeSave() je suis ici selectionne etudiant");
 			List<Inscription> list = entity.getListDestinataire();
-			System.out.println("NoteSMSManagerImpl.processBeforeSave() je suis ici selectionne etudiant nombre select"+list.size());
+			List<NoteSMS> smslist = new ArrayList<NoteSMS>();
 			for (Inscription data : list) {
 				sms = new NoteSMS(entity, data.getEleve());
-				//listsms.add(sms);
-				save(sms);
+				listsms.add(sms);
 			}
-			System.out.println("NoteSMSManagerImpl.processBeforeSave() nombre sms is "+listsms.size());
-			//save(listsms);
+			save(listsms);
 	}
 
 	@Override

@@ -20,18 +20,22 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_app")
 public class Appreciation extends BaseElement implements Serializable, Comparable<Appreciation> {
 	
-	
-	@Column(name = "APP",unique=true )	
-	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true , sequence=2)
-	protected String libelle;
-	
+		
 	@Column(name = "I_DEB" )	
-	@Predicate(label="MIN.",optional=false,updatable=true,search=true , sequence=4, type=Long.class)
-	protected Long deb;
+	@Predicate(label="MIN.",optional=false,updatable=true,search=true , sequence=1, type=Double.class)
+	protected Double deb;
 	
 	@Column(name = "I_FIN" )	
-	@Predicate(label="MAX.",optional=false,updatable=true,search=true , sequence=3, type=Long.class)
-	protected Long fin;
+	@Predicate(label="MAX.",optional=false,updatable=true,search=true , sequence=2, type=Double.class)
+	protected Double fin;
+	
+	@Column(name = "APP",unique=true )	
+	@Predicate(label="Appreciation Travial",optional=false,updatable=true,search=true , sequence=3)
+	protected String libelle;
+	
+	@Column(name = "SANCTION" )	
+	@Predicate(label="Sanction Travail",optional=true,updatable=true,search=true , sequence=4)
+	protected String sanction;
 
 
 	public Appreciation() {
@@ -41,7 +45,7 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 
 
 
-	public Appreciation(String code, String libelle, Long min, Long max) {
+	public Appreciation(String code, String libelle, Double min, Double max) {
 		super();
 		this.libelle = libelle;
 		this.deb = min;
@@ -53,6 +57,7 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 		this.libelle = app.libelle;
 		this.deb = app.deb;
 		this.fin = app.fin;
+		this.sanction=app.sanction;
 	}
 
 
@@ -67,25 +72,25 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 
 
 
-	public Long getDeb() {
+	public Double getDeb() {
 		return deb;
 	}
 
 
 
-	public void setDeb(Long deb) {
+	public void setDeb(Double deb) {
 		this.deb = deb;
 	}
 
 
 
-	public Long getFin() {
+	public Double getFin() {
 		return fin;
 	}
 
 
 
-	public void setFin(Long fin) {
+	public void setFin(Double fin) {
 		this.fin = fin;
 	}
 
@@ -114,6 +119,18 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 		// TODO Auto-generated method stub
 		return libelle;
 	}
+
+
+	public String getSanction() {
+		return sanction;
+	}
+
+
+
+	public void setSanction(String sanction) {
+		this.sanction = sanction;
+	}
+
 
 
 	@Override

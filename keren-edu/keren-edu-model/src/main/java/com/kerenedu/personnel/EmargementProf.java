@@ -18,9 +18,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.core.tools.DateHelper;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.SectionE;
+import com.kerenedu.notes.HelpProfClasse;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -40,26 +45,38 @@ public class EmargementProf extends BaseElement implements Serializable, Compara
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datemarg = new Date();
 	
+	@Transient
 	@ManyToOne
-	@JoinColumn(name = "CLS_ID")
-	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=3 ,observable=true	)
-	protected Classe classe;
+	@JoinColumn(name="SECTION_ID")
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=1)
+	private SectionE section ;
 	
 	@ManyToOne
+	@JoinColumn(name = "CLASSE_ID")
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
+	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	protected Classe classe ;
+	
+	@Transient
+	@ManyToOne
+	@JoinColumn(name = "Help")
+	@Filter(value="[{\"fieldName\":\"classe\",\"value\":\"object.classe\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	protected HelpProfClasse profhelp;
+	
+	@Transient
+	@ManyToOne
 	@JoinColumn(name = "PROF_ID")
-	@Predicate(label="PROF.",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=2 ,observable=true	)
-	@Observer(observable="classe",source="method:findprofclasse")
 	protected Professeur prof;
 	
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "EMARG_DLT_ID")
 	@Predicate(group = true,groupName = "tab1",groupLabel = "Emargement des cours",target ="one-to-many",type = EmargementProfDetails.class,search = false, edittable=true)
-	@Observer(observable="prof",source="method:findmatiereprof",parameters="classe,datemarg")
+	@Observer(observable="classe",source="method:findmatiereprof",parameters="classe,datemarg,prof")
 	private List<EmargementProfDetails> emagementdlt = new ArrayList<EmargementProfDetails>();
 
 	@Column(name = "ANNEE_ID")
-	protected String anneScolaire=new String();
+	protected String anneScolaire;
 	
 
 
@@ -82,7 +99,7 @@ public class EmargementProf extends BaseElement implements Serializable, Compara
 		super(ins.id, ins.designation, ins.moduleName,0L);
 		this.anneScolaire= ins.anneScolaire;
 		this.classe = new Classe(ins.classe);
-		this.prof = new Professeur( ins.prof);
+		this.section= new SectionE(ins.getClasse().getSection());
 		this.datemarg = ins.datemarg;
 		this.emagementdlt= new ArrayList<EmargementProfDetails>();
 	}
@@ -123,7 +140,7 @@ public class EmargementProf extends BaseElement implements Serializable, Compara
 	@Override
 	public String getDesignation() {
 //		 TODO Auto-generated method stub
-		return getProf().getNom()+""+getClasse().getLibelle();
+		return "Classe "+ getClasse().getLibelle()+"/ du : "+DateHelper.convertToString(datemarg, "dd/MM/yyyy");
 	}
 
 
@@ -167,8 +184,28 @@ public class EmargementProf extends BaseElement implements Serializable, Compara
 	}
 
 
+	public SectionE getSection() {
+		return section;
+	}
+
+
+	public void setSection(SectionE section) {
+		this.section = section;
+	}
+
+
 	public void setEmagementdlt(List<EmargementProfDetails> emagementdlt) {
 		this.emagementdlt = emagementdlt;
+	}
+
+
+	public HelpProfClasse getProfhelp() {
+		return profhelp;
+	}
+
+
+	public void setProfhelp(HelpProfClasse profhelp) {
+		this.profhelp = profhelp;
 	}
 
 

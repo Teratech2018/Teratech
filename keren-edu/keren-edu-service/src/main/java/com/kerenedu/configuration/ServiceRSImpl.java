@@ -3,6 +3,7 @@ package com.kerenedu.configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -10,6 +11,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -33,6 +35,9 @@ public class ServiceRSImpl
      */
     @Manager(application = "kereneducation", name = "ServiceManagerImpl", interf = ServiceManagerRemote.class)
     protected ServiceManagerRemote manager;
+    
+    @Manager(application = "kereneducation", name = "FiliereManagerImpl", interf = FiliereManagerRemote.class)
+    protected FiliereManagerRemote managerfiliere;
 
     public ServiceRSImpl() {
         super();
@@ -61,5 +66,24 @@ public class ServiceRSImpl
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
    		} 
    	}
+
+	@Override
+	public List<ServiceFilliere> findfiliere(HttpHeaders headers) {
+		Gson gson = new Gson();
+		String id =gson.fromJson(headers.getRequestHeader("type").get(0), String.class);
+		List<ServiceFilliere> filieres = new ArrayList<ServiceFilliere>();
+		System.out.println("ServiceRSImpl.findfiliere() valeur "+id);
+		if(id!=null){
+			int index = 0;
+			List<Filiere> list = managerfiliere.findAll();
+			for(Filiere f : list){
+			ServiceFilliere serf = new ServiceFilliere(f);
+			serf.setId(-index);
+			index++;
+			filieres.add(serf);
+			}
+		}
+		return filieres;
+	}
 
 }

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+ <action id="keren_education" />
+	<menu id="keren_education_ecole" label=" Ecole" parent="keren_education" gyphycon="icon-home"/>	
+	<menuitem id="keren_education_selectexo" label=" Selectionner l'année Scolaire" parent_ref="keren_education_ecole" entity_ref="AnneScolaireModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" link="keren_education_dashboard_01" hide="true" />
+	<menuitem id="keren_education_dashboard_01" label="Dashboard " parent_ref="keren_education_ecole" entity_ref="EducationDashboard" model_ref="kereneducation" method_ref="solde" gyphycon="glyphicon glyphicon-th" modal="false" view_type="dashboard" />
+	<menuitem id="keren_education_Etb" label=" Ecole" parent_ref="keren_education_ecole" entity_ref="Etablissement" model_ref="kereneducation" gyphycon="icon-home" modal="false" />
+	<menuitem id="keren_education_02" label=" Fichier des Elèves" parent_ref="keren_education_ecole" entity_ref="Eleve" model_ref="kereneducation" gyphycon="glyphicon glyphicon-user blue" modal="false" />
+	<menuitem id="keren_education_ins" label=" Pré-Inscription" parent_ref="keren_education_ecole" entity_ref="Inscription" model_ref="kereneducation" gyphycon="icon icon-book"/>
+	
+	
+	<menuitem id="keren_education_paie_link" label="Inscription/Scolarité" parent_ref="keren_education_ecole" entity_ref="selectClasse" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="true" link="keren_education_paie" />
+	<menuitem id="keren_education_paie" label="Inscription/Scolarité" parent_ref="keren_education_ecole" entity_ref="Paiement" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" hide="true"  />
+	<menuitem id="keren_education_paie_ech" label=" Gestion des Echéances de paiement  " parent_ref="keren_education_ecole" entity_ref="Echeancier" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" hide="true" />
+	<menuitem id="keren_education_paie_limit" label=" Paiements" parent_ref="keren_education_ecole" entity_ref="Paiement" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" hide="true" />
+	
+	<menu id="keren_education_caisse" label=" Economat" parent="keren_education" gyphycon="icon icon-tasks"/>
+	<menuitem id="keren_education_typedps" label="Type de Dépenses" parent_ref="keren_education_caisse" entity_ref="TypeDepense" model_ref="kereneducation" gyphycon="icon icon-shopping-cart"  modal="false" />
+	<menuitem id="keren_education_cai" label="Recettes" parent_ref="keren_education_caisse" entity_ref="Caisse" model_ref="kereneducation" gyphycon="icon icon-shopping-cart"  modal="false" />
+	<menuitem id="keren_education_depense" label="Dépenses" parent_ref="keren_education_caisse" entity_ref="Depense" model_ref="kereneducation" gyphycon="icon icon-shopping-cart"  modal="false" />
+
+	<menu id="keren_education_Report" label=" Rapport" parent="keren_education" gyphycon="icon icon-cogs"/>	
+    <menuitem id="keren_education_Report_01" label="Etat des Anniversaires" parent_ref="keren_education_Report" entity_ref="ViewAnniversaire" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_account_report_anniv" />
+	<menuitem id="keren_education_Report_02" label="Liste des Elèves" parent_ref="keren_education_Report" entity_ref="ViewListeEleve" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="keren_education_list_eleve_report" />
+	<menuitem id="keren_education_Report_041" label=" Détails des Paiements" parent_ref="keren_education_Report" entity_ref="ViewDltPaiement" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="keren_education_dltpaiement_report" />
+	<menuitem id="keren_education_Report_04" label=" Retard de Paiements" parent_ref="keren_education_Report" entity_ref="ViewRetardPaiement" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="true" report="keren_education_Retardpaiement_report" />
+	<menuitem id="keren_education_Report_03" label="Bilan Financiers des éléves/Classe" parent_ref="keren_education_Report" entity_ref="ViewBilanFinancier" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="base_account_report_bilanclasse" />
+	<menuitem id="keren_education_Report_05" label="Bilan Financiers Global" parent_ref="keren_education_Report" entity_ref="ViewBilanFinancierEcole" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="base_account_report_bilan" />
+
+	
+	<menu id="keren_education_para" label=" Paramètres" parent="keren_education" gyphycon="icon icon-cogs"/>	
+    <menuitem id="keren_education_Anne" label=" Annee Scolaire, et Période" parent_ref="keren_education_para" entity_ref="AnneScolaire" model_ref="kereneducation" gyphycon="icon icon-calendar"/>
+	<menuitem id="keren_education_cla" label="Classe" parent_ref="keren_education_para" entity_ref="Classe" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_Fil" label="Filiere" parent_ref="keren_education_para" entity_ref="Filiere" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_ens" label=" Enseignants/Personnels" parent_ref="keren_education_para" entity_ref="Professeur" model_ref="kereneducation" gyphycon="icon icon-group"/>
+	<menuitem id="keren_education_ser" label="Services Financiers" parent_ref="keren_education_para" entity_ref="Service" model_ref="kereneducation" gyphycon="icon icon-wrench"  modal="false" />
+	
+	
+	 <reportRecord  id="base_account_report_01" label="Liste des Etudiants" action_ref="keren_education_02"  extern="true" >
+	      <search entity="EleveSearch" module="kereneducation" method="pdf" ignore="true">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 <reportRecord  id="base_account_report_02" label="Certificat de scolarite" action_ref="keren_education_ins"  extern="true" >
+	      <search entity="EleveSearch" module="kereneducation" method="pdf" ignore="true">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	  <reportRecord  id="base_account_report_anniv" label="Anniversaire" action_ref="keren_education_Report_01"  extern="true">
+	      <search entity="ViewAnniversaireModal" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	 <reportRecord  id="keren_education_list_eleve_report" label="Liste des Elèves" action_ref="keren_education_Report_02"  extern="true">
+	      <search entity="ViewListeEleve" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	 	 <reportRecord  id="keren_education_dltpaiement_report" label="Listing des Paiement" action_ref="keren_education_Report_041"  extern="true">
+	      <search entity="ViewDltPaiement" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 	 <reportRecord  id="keren_education_Retardpaiement_report" label="Paiement attendus" action_ref="keren_education_Report_04"  extern="true">
+	      <search entity="ViewRetardPaiement" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	 
+	   <reportRecord  id="base_account_report_bilan" label="Bilan Financier Global" action_ref="keren_education_Report_05"  extern="true">
+	      <search entity="ViewBilanFinancierEcoleModal" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 <reportRecord  id="base_account_report_bilanclasse" label="Imprimer le Recap. du Bilan" action_ref="keren_education_Report_03"  extern="true">
+	      <search entity="ViewBilanFinancierModal" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	 
+	 
+	  <dashboardRecord id="dashboardeduc_001" label="Tableau de Bord"  action_ref="keren_education_dashboard_01" entity_ref="EducationDashboard"  model_ref="kereneducation" method_ref="dashboard">
+	     <dashboard  id="dashboardeduc001" parent_ref="dashboardeduc_001" label="Effectifs">
+		      <dashboardentry id="dashentryeduc001" type="bar,data" parent_ref="dashboardeduc001" label="Données">
+			          <field name="nbreEtud" />
+					  <field name="totalIns" model_ref="kereneducation" entity_ref="Inscription" method_ref="inscrit"/>
+					  <field name="totalt1"/>
+					  <field name="totalt2"/>
+					  <field name="totalt3"/>
+					  <field name="solvable"/>
+			  </dashboardentry>			  
+		 </dashboard>
+		 <dashboard  id="dashboardeduc002" parent_ref="dashboardeduc_002" label="Bilan Financier Global">
+		      <dashboardentry id="dashentryeduc002" type="pie,data" parent_ref="dashboardeduc002" label="Données">
+					  <field name="previsionG"/>
+					  <field name="encaisseG"/>
+					  <field name="soldeG"/>
+			  </dashboardentry>			  
+		 </dashboard>
+		 <dashboard  id="dashboardeduc003" parent_ref="dashboardeduc_003" label="Etat Encaissement des Inscriptions">
+		      <dashboardentry id="dashentryeduc003" type="bar,data" parent_ref="dashboardeduc003" label="Données">
+					  <field name="previsionI"/>
+					  <field name="encaisseI"/>
+					  <field name="soldeI"/>
+			  </dashboardentry>			  
+		 </dashboard>
+		  <dashboard  id="dashboardeduc004" parent_ref="dashboardeduc_004" label="Etat Encaissement Première Tranche">
+		      <dashboardentry id="dashentryeduc004" type="bar,data" parent_ref="dashboardeduc004" label="Données">
+					  <field name="previsionT1"/>
+					  <field name="encaisseT1"/>
+					  <field name="soldeT1"/>
+			  </dashboardentry>			  
+		 </dashboard>
+		  <dashboard  id="dashboardeduc005" parent_ref="dashboardeduc_005" label="Etat Encaissement Deuxième Tranche">
+		      <dashboardentry id="dashentryeduc005" type="bar,data" parent_ref="dashboardeduc005" label="Données">
+					  <field name="previsionT2"/>
+					  <field name="encaisseT2"/>
+					  <field name="soldeT2"/>
+			  </dashboardentry>			  
+		 </dashboard>
+		 <dashboard  id="dashboardeduc006" parent_ref="dashboardeduc_006" label="Etat Encaissement Troisième Tranche">
+		      <dashboardentry id="dashentryeduc006" type="bar,data" parent_ref="dashboardeduc006" label="Données">
+					  <field name="previsionT3"/>
+					  <field name="encaisseT3"/>
+					  <field name="soldeT3"/>
+			  </dashboardentry>			  
+		 </dashboard>
+		
+	 </dashboardRecord>
+
+</keren>

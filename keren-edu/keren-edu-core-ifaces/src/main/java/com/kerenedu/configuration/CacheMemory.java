@@ -9,10 +9,6 @@ import java.util.List;
 
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Etablissement;
-import com.kerenedu.configuration.Filiere;
-import com.kerenedu.configuration.PeriodeScolaire;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.notes.Examen;
 import com.kerenedu.notes.ModelBulletin;
@@ -40,18 +36,35 @@ public class CacheMemory implements Serializable{
 	
 	private static Reglement reglement =null;
 	
-	private static String currentannee = "2017";
-	private static long curentcycle=2;
+	private static String currentannee = null;
+	
+	private static long curentcycle ;
 	private static long currentuser =1;
 	private static Etablissement currentSchool;
 	
 	private static Professeur prof = null;
+	
+	private static String currentNameStudent = new String();
+	private static String currentMatricule = null;
 
 	/**
 	 * 
 	 */
 	private  CacheMemory() {
 		// TODO Auto-generated constructor stub
+	}
+	public static void init(){
+		filiere = null;
+		classe = null;
+		examen = null;
+		incription =null;
+		reglement =null;
+		currentannee = null;
+		curentcycle =0;
+		currentuser =1;
+		prof = null;
+		currentNameStudent = null;
+		currentMatricule = null;
 	}
 
 	public static synchronized PeriodeScolaire getPeriode() {
@@ -150,12 +163,31 @@ public class CacheMemory implements Serializable{
 		CacheMemory.reglement = reglement;
 	}
 	
+	public static String getCurrentNameStudent() {
+		return currentNameStudent;
+	}
+
+	public static String getCurrentMatricule() {
+		return currentMatricule;
+	}
+
+	public static void setCurrentMatricule(String currentMatricule) {
+		CacheMemory.currentMatricule = currentMatricule;
+	}
+
+	public static void setCurrentNameStudent(String currentNameStudent) {
+		CacheMemory.currentNameStudent = currentNameStudent;
+	}
+
+
+
 	public static List<Predicat> defaultPredicats(){
 		List<Predicat> predicats = new ArrayList<Predicat>();
 	RestrictionsContainer container = RestrictionsContainer.newInstance();
 
 	if (CacheMemory.getCurrentannee() != null) {
-		container.addEq("anneScolaire",  CacheMemory.getCurrentannee());
+		System.out.println("CacheMemory.defaultPredicats() current date "+CacheMemory.getCurrentannee());
+		container.addGe("anneScolaire",  CacheMemory.getCurrentannee());
 	}
 	predicats.addAll(container.getPredicats());
 	return predicats ;
@@ -176,9 +208,9 @@ public class CacheMemory implements Serializable{
 	if (CacheMemory.getCurrentannee() != null) {
 		container.addEq("anneScolaire",  CacheMemory.getCurrentannee());
 	}
-	if (CacheMemory.getCurentcycle() != 0) {
-		container.addEq("cycle",  CacheMemory.getCurentcycle());
-	}
+//	if (CacheMemory.getCurentcycle() != 0) {
+//		container.addEq("cycle",  CacheMemory.getCurentcycle());
+//	}
 	
 	predicats.addAll(container.getPredicats());
 	return predicats ;

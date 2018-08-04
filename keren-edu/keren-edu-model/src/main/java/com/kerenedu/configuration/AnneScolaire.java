@@ -15,9 +15,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
-import com.kerenedu.school.Contacts;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -33,15 +33,17 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 	protected String code;
 	
 	@Column(name = "D_DEBUT" )	
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="DEBUT",optional=false,updatable=true,search=true, target="date", sequence=3, type=Date.class, colsequence=2)
-	protected String ddeb;
+	protected Date ddeb;
 	
 	@Column(name = "D_FIN" )	
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="FIN",optional=false,updatable=true,search=true , target="date", sequence=4, type=Date.class, colsequence=3)
-	protected String dfin;
+	protected Date dfin;
 	
 	@Column(name = "CONNECTED" )	
-	@Predicate(label="EXERCICE COURANT",optional=false,updatable=true,search=true , target="checkbox", sequence=2, type=Boolean.class, colsequence=4)
+	@Predicate(label="EXERCICE COURANT",optional=true,updatable=true,search=true , target="checkbox", sequence=2, type=Boolean.class, colsequence=4)
 	protected Boolean connected = false;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
@@ -58,7 +60,7 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 	}
 
 
-	public AnneScolaire(String code, String ddeb, String dfin, Boolean connected,
+	public AnneScolaire(String code, Date ddeb, Date dfin, Boolean connected,
 			List<PeriodeScolaire> periodeScoalire) {
 		super();
 		this.code = code;
@@ -89,22 +91,26 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 		this.code = code;
 	}
 
-	public String getDdeb() {
+
+
+	public Date getDdeb() {
 		return ddeb;
 	}
 
-	public void setDdeb(String ddeb) {
+
+	public void setDdeb(Date ddeb) {
 		this.ddeb = ddeb;
 	}
 
-	public String getDfin() {
+
+	public Date getDfin() {
 		return dfin;
 	}
 
-	public void setDfin(String dfin) {
+
+	public void setDfin(Date dfin) {
 		this.dfin = dfin;
 	}
-
 
 
 	@Override
@@ -144,7 +150,7 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return (new Long(code)-1)+" / "+code;
+		return code+" / "+ (new Long(code)+1);
 	}
 
 

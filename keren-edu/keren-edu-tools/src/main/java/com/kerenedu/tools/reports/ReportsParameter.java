@@ -20,6 +20,9 @@ public class ReportsParameter {
     public static final String CYCLE_SCOLAIRE="cyclescolaire";
     public static final String DEBUT="debut";
     public static final String FIN="fin";
+    public static final String PHOTO_IMAGE_REPOSITORY="PHOTO_IMAGE_REPOSITORY";
+    public static final String TITRE_BULL="TITRE";
+    public static final String TRIMESTRE="TRIMESTRE";
 
    
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+ <action id="keren_education" />
+ 
+	<menu id="keren_education_ecolep" label=" Ecole" parent="keren_education" gyphycon="icon-home"/>	
+	<menuitem id="keren_education_dashboard_012" label="Dashboard " parent_ref="keren_education_ecolep" entity_ref="EducationDashboard" model_ref="kereneducation" method_ref="solde" gyphycon="glyphicon glyphicon-th" modal="false" view_type="dashboard" />	
+	
+	<menu id="keren_education_logi" label=" Logigramme" parent="keren_education" gyphycon="glyphicon glyphicon-book"/>
+	<menuitem id="keren_education_Mat" label=" Matieres" parent_ref="keren_education_logi" entity_ref="Matiere" model_ref="kereneducation" gyphycon="glyphicon glyphicon-book" modal="false" />
+	<menuitem id="keren_education_mod" label="Modules" parent_ref="keren_education_logi" entity_ref="GroupeCours" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" />
+	<menuitem id="keren_education_coef" label="Gestion des coeficients" parent_ref="keren_education_logi" entity_ref="CoefMatiereModal" model_ref="kereneducation" gyphycon="glyphicon glyphicon-edit" modal="true" link="keren_education_coef_link"/>
+	<menuitem id="keren_education_coef_link" label="Gestion des coeficients" parent_ref="keren_education_logi" entity_ref="CoefMatiere" model_ref="kereneducation" gyphycon="glyphicon glyphicon-edit" modal="false" hide="true"/>
+	<menuitem id="keren_education_cours" label="Emploi du temps" parent_ref="keren_education_logi" entity_ref="PlanifCours" model_ref="kereneducation" gyphycon="glyphicon glyphicon-import" modal="true" link="keren_education_cours_1"/>
+	<menuitem id="keren_education_cours_1" label="Planification des cours" parent_ref="keren_education_logi" entity_ref="JoursCours" model_ref="kereneducation" gyphycon="glyphicon glyphicon-list-alt" hide="true" />
+	<menuitem id="keren_education_03" label=" Emmargement des cours" parent_ref="keren_education_logi" entity_ref="EmargementProf" model_ref="kereneducation" 
+	 gyphycon="glyphicon glyphicon-user blue" view_type="calendar,tree,form"/>
+	 <calendarRecord id="keren_education_calendar_06" label="pointage" action_ref="keren_education_03" titlefield="designation" startfield="datemarg" allday="true">	        
+	 </calendarRecord>
+	<menuitem id="keren_education_vac" label=" Calendrier des vacances" parent_ref="keren_education_logi" entity_ref="PlanifCours" model_ref="kereneducation" gyphycon="glyphicon glyphicon-import" hide="true" />
+	
+	<menu id="keren_education_exa" label=" Evaluations" parent="keren_education" gyphycon="icon icon-circle-blank"/>
+	<menuitem id="keren_education_exam" label=" Gestion des Sequences" parent_ref="keren_education_exa" entity_ref="Examen" model_ref="kereneducation" gyphycon="glyphicon glyphicon-book"/>
+	<menuitem id="keren_education_note_1" label="Saisie des notes" parent_ref="keren_education_exa" entity_ref="TraitNote" model_ref="kereneducation" gyphycon="glyphicon glyphicon-list-alt" modal="true" link="keren_education_note"/>
+	<menuitem id="keren_education_note" label=" Notes" parent_ref="keren_education_exa" entity_ref="MatiereNote" model_ref="kereneducation" gyphycon="	glyphicon glyphicon-list-alt" modal="false" hide="true"/>
+	<menuitem id="keren_education_bul" label=" Gestion des Model de bulletins" parent_ref="keren_education_exa" entity_ref="ModelBulletin" model_ref="kereneducation" gyphycon="glyphicon glyphicon-file" hide="true"/>
+	<menuitem id="keren_education_edit_link" label="Edition des Bulletins" parent_ref="keren_education_exa" entity_ref="EdtBulletin" model_ref="kereneducation" gyphycon="glyphicon glyphicon-import" modal="true" link="keren_education_edit_bul"/>
+	<menuitem id="keren_education_edit_bul" label=" Edition des bulletins" parent_ref="keren_education_exa" entity_ref="Bulletin" model_ref="kereneducation" gyphycon="glyphicon glyphicon-file" hide="true"/>
+	<menuitem id="keren_education_report" label="Impression des Bulletins" parent_ref="keren_education_exa" entity_ref="EdtBulletinModal" model_ref="kereneducation" gyphycon="glyphicon glyphicon-import" modal="true"  report="base_account_report_bull"/>
+		
+	<menu id="keren_education_discipline" label=" Discipline" parent="keren_education" gyphycon="icon icon-tasks"/>
+	<menuitem id="keren_education_prs" label="Gestion des Presences" parent_ref="keren_education_discipline" entity_ref="Presence" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" />
+	<menuitem id="keren_education_abs" label="Gestion des Abscences" parent_ref="keren_education_discipline" entity_ref="Abscence" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" />
+	<menuitem id="keren_education_nsms" label="Notifier par SMS" parent_ref="keren_education_discipline" entity_ref="NoteSMSSelect" model_ref="kereneducation" gyphycon="icon icon-envelope" modal="true"  link="keren_education_nsms_link"/>
+	<menuitem id="keren_education_nsms_link" label="Notifier par SMS" parent_ref="keren_education_discipline" entity_ref="NoteSMS" model_ref="kereneducation" gyphycon="icon icon-envelope" modal="true" hide="true" />
+	<menuitem id="keren_education_nmail" label="Notifier par Mail" parent_ref="keren_education_discipline" entity_ref="NoteMail" model_ref="kereneducation" gyphycon="icon icon-envelope" modal="true"/>
+	
+	<menu id="keren_education_conf" label="Settings" parent="keren_education" gyphycon="icon icon-cogs"/>	
+	<menuitem id="keren_education_app" label=" Notation" parent_ref="keren_education_conf" entity_ref="Appreciation" model_ref="kereneducation" gyphycon="icon icon-calendar"/>	
+	<menuitem id="keren_education_sms" label="Configurer les SMS" parent_ref="keren_education_conf" entity_ref="Reduction" model_ref="kereneducation" gyphycon="icon icon-comment" hide="true"/>
+	<menuitem id="keren_education_mail" label="Configurer les mails" parent_ref="keren_education_conf" entity_ref="ConfigMail" model_ref="kereneducation" gyphycon="icon icon-envelope" hide="true"/>
+
+
+	 <reportRecord  id="base_account_report_bull" label="Impression des Bulletins" action_ref="keren_education_report"  extern="true">
+	      <search entity="EdtBulletinModal" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	  <reportRecord  id="base_account_reportbull01" label="Impression des Bulletins" action_ref="keren_education_edit_link"  extern="true">
+	      <search entity="EdtBulletinModal" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+
+</keren>

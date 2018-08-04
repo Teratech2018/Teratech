@@ -15,6 +15,10 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.allerte.ViewHelperTrtglobal;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
+import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.model.search.EleveSearch;
 import com.megatim.common.annotations.OrderType;
 
@@ -30,6 +34,9 @@ public class EleveManagerImpl
     
     @EJB(name = "ResponsableDAO")
     protected ResponsableDAOLocal daoresponsable;
+    
+    @EJB(name = " AnneScolaireDAO")
+    protected AnneScolaireDAOLocal daoanne;
 
     public EleveManagerImpl() {
     }
@@ -108,14 +115,41 @@ public class EleveManagerImpl
 	public void processBeforeSave(Eleve entity) {
 		//mis à jour du nombre d'enfant du responsable
 		Responsable resp = entity.getResp();
-		if(resp.getNe()==null){
-			resp.setNe((short)0);
+		if(resp!=null){
+			if(resp!=null&&resp.getNe()==null){
+				resp.setNe((short)0);
+			}
+			Short neactuel= (short) (resp.getNe()+1);
+			resp.setNe(neactuel);
+			daoresponsable.update(resp.getId(), resp);
 		}
-		Short neactuel= (short) (resp.getNe()+1);
-		resp.setNe(neactuel);
-		daoresponsable.update(resp.getId(), resp);
+		
 		super.processBeforeSave(entity);
 	}
+
+	@Override
+	public void processAfterSave(List<Eleve> entities) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+		for(Eleve eleve : entities){
+			eleve.setMatricule(ViewHelperTrtglobal.getMatricule(eleve, annee.get(0)));
+			dao.update(eleve.getId(), eleve);	
+		}
+		super.processAfterSave(entities);
+	}
+
+	@Override
+	public void processAfterSave(Eleve entity) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+		// set Matricule 
+		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
+		dao.update(entity.getId(), entity);
+		super.processAfterSave(entity);
+	}
     
+	
 
 }

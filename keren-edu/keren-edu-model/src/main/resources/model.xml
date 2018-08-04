@@ -511,6 +511,56 @@ and open the template in the editor.
 	            </roles>           
 	        </element>
 	        
+	       <element type="com.kerenedu.reglement.Depense"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	       <element type="com.kerenedu.configuration.ServiceFilliere"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.configuration.SectionE"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.reglement.Remise"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.reglement.TypeRemise"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.notes.HelpProfClasse"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.discipline.LigneAbscence"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.notes.CloseExamen"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        <element type="com.kerenedu.model.report.ViewEmargement"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	       
+	         
+	        
 	       
     </elements>
     

@@ -3,11 +3,11 @@ package com.kerenedu.reglement;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,10 +15,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.UserEducation;
+import com.kerenedu.configuration.UserEducationManagerRemote;
+import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionManagerRemote;
+import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
 import com.kerenedu.tools.KerenEduManagerException;
 import com.kerenedu.tools.reports.ReportHelper;
@@ -26,11 +35,12 @@ import com.kerenedu.tools.reports.ReportsName;
 import com.kerenedu.tools.reports.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.base.JRBaseParameter;
 
 /**
  * Classe d'implementation du Web Service JAX-RS
@@ -47,6 +57,21 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 	 */
 	@Manager(application = "kereneducation", name = "PaiementManagerImpl", interf = PaiementManagerRemote.class)
 	protected PaiementManagerRemote manager;
+
+	@Manager(application = "kereneducation", name = "InscriptionManagerImpl", interf = InscriptionManagerRemote.class)
+	protected InscriptionManagerRemote managerIns;
+
+	@Manager(application = "kereneducation", name = "UserEducationManagerImpl", interf = UserEducationManagerRemote.class)
+	protected UserEducationManagerRemote managerUser;
+
+	@Manager(application = "kereneducation", name = "FichePaiementManagerImpl", interf = FichePaiementManagerRemote.class)
+	protected FichePaiementManagerRemote managerFiche;
+
+	@Manager(application = "kereneducation", name = "ReglementManagerImpl", interf = ReglementManagerRemote.class)
+	protected ReglementManagerRemote managerregl;
+
+	@Manager(application = "kereneducation", name = "RemiseManagerImpl", interf = RemiseManagerRemote.class)
+	protected RemiseManagerRemote managerRemise;
 
 	public PaiementRSImpl() {
 		super();
@@ -69,20 +94,22 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 	public MetaData getMetaData(HttpHeaders headers) {
 		// TODO Auto-generated method stub
 		try {
-			MetaData meta = MetaDataUtil.getMetaData(new Paiement(), new HashMap<String, MetaData>(),new ArrayList<String>());
-			MetaColumn workbtn = new MetaColumn("button", "work1", "Annuler", false, "object", null);
-			workbtn.setValue("{'model':'kereneducation','entity':'paiement','method':'annuler','template':{'this':'object'}}");
+			MetaData meta = MetaDataUtil.getMetaData(new Paiement(), new HashMap<String, MetaData>(),
+					new ArrayList<String>());
+			MetaColumn workbtn = new MetaColumn("button", "work1", "Annuler le Paiement", false, "workflow", null);
 			workbtn.setStates(new String[] { "etabli" });
-			workbtn.setPattern("btn btn-danger");	
-			//meta.getHeader().add(workbtn);
-			
-			workbtn = new MetaColumn("button", "work2", "Editer la facture ", false, "report", null);
-			workbtn.setValue("{'model':'kereneducation','entity':'paiement','method':'facture','template':{'this':'object'}}");
+			workbtn.setPattern("btn btn-primary");
+			workbtn.setValue("{'model':'kereneducation','entity':'paiement','method':'annuler'}");
+			meta.getHeader().add(workbtn);
+
+			workbtn = new MetaColumn("button", "work2", "Imprimer la Facture", false, "report", null);
+			workbtn.setValue("{'model':'kereneducation','entity':'paiement','method':'facture'}");
 			workbtn.setStates(new String[] { "etabli" });
-			// workbtn.setPattern("btn btn-primary");		
-		//	meta.getHeader().add(workbtn);
+			// workbtn.setPattern("btn btn-primary");
+			meta.getHeader().add(workbtn);
+
 			MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-			//meta.getHeader().add(stautsbar);
+			meta.getHeader().add(stautsbar);
 			return meta;
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -93,73 +120,298 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		}
 		return null;
 	}
+	
+	@Override
+    public List<Paiement> filter(HttpHeaders headers, int firstResult, int maxResult) {
+        Gson gson = new Gson();
+        Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+//        UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
+        //Type predType = ;
+        List contraints = new ArrayList();
+        if(headers.getRequestHeader("predicats")!=null){
+            contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
+        } //end if(headers.getRequestHeader("predicats")!=null){       
+//        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
+        RestrictionsContainer container = RestrictionsContainer.newInstance();  
+        if(contraints!=null&&!contraints.isEmpty()){
+            for(Object obj : contraints){
+                FilterPredicat filter = (FilterPredicat) obj ;
+                if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+                        &&filter.getValue()!=null&&!filter.getValue().isEmpty()){
+                        container = addPredicate(container,filter);
+                }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+            }//end  for(Object obj : contraints)
+        }//end if(contraints!=null&&!contraints.isEmpty())
+//        container.addEq("source", user);
+        container.addEq("state", "etabli");
+        if (CacheMemory.getClasse() != null) {
+			container.addEq("eleve.classe.id", CacheMemory.getClasse().getId());
+		}
+		if (CacheMemory.getCurrentMatricule() != null && !CacheMemory.getCurrentMatricule().isEmpty()
+				&& !CacheMemory.getCurrentMatricule().equals("")) {
+			container.addEq("eleve.eleve.matricule", CacheMemory.getCurrentMatricule());
+		}
+		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
+				&& !CacheMemory.getCurrentNameStudent().equals("")) {
+			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
+		}
+		String anneScolaire = CacheMemory.getCurrentannee();
+		if (anneScolaire != null) {
+			container.addEq("anneScolaire", anneScolaire);
+		}
+        //List result = new ArrayList();
+        return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
+    }
+    
+     @Override
+    public RSNumber count(HttpHeaders headers) {
+        //To change body of generated methods, choose Tools | Templates.
+         //To change body of generated methods, choose Tools | Templates.
+        Gson gson = new Gson();
+        Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+//        UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
+        //Type predType = ;
+        List contraints = new ArrayList();
+        if(headers.getRequestHeader("predicats")!=null){
+            contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
+        }//end if(headers.getRequestHeader("predicats")!=null){        
+        RestrictionsContainer container = RestrictionsContainer.newInstance();  
+         if(contraints!=null&&!contraints.isEmpty()){
+            for(Object obj : contraints){
+                FilterPredicat filter = (FilterPredicat) obj ;
+                if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+                        &&filter.getValue()!=null&&!filter.getValue().isEmpty()){
+                      container = addPredicate(container, filter);
+                }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+            }//end  for(Object obj : contraints)
+        }//end if(contraints!=null&&!contraints.isEmpty())
+       //  container.addEq("source", user);
+         if (CacheMemory.getClasse() != null) {
+ 			container.addEq("eleve.classe.id", CacheMemory.getClasse().getId());
+ 		}
+ 		if (CacheMemory.getCurrentMatricule() != null && !CacheMemory.getCurrentMatricule().isEmpty()
+ 				&& !CacheMemory.getCurrentMatricule().equals("")) {
+ 			container.addEq("eleve.eleve.matricule", CacheMemory.getCurrentMatricule());
+ 		}
+ 		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
+ 				&& !CacheMemory.getCurrentNameStudent().equals("")) {
+ 			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
+ 		}
+         container.addEq("state", "etabli");
+         String anneScolaire = CacheMemory.getCurrentannee();
+     	if (anneScolaire != null) {
+     		container.addEq("anneScolaire", anneScolaire);
+     	}
+        RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
+//        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
+        return number;
+    }
+
+	@Override
+	protected void processBeforeSave(Paiement entity) {
+		System.out.println("PaiementRSImpl.processBeforeSave() je suis ici !!");
+		
+		if(entity.getEleve().getzSolde()==0){
+			throw new KerenExecption("Scolarité Totalement règlé pour "+entity.getEleve().getEleve().getNom() );
+		}
+		if (entity.getzMntverser() == 0) {
+			throw new KerenExecption("Bien vouloir Saisir le Montant !!");
+		}
+		
+		if (entity.getzMntverser()>entity.getEleve().getzSolde()) {
+			throw new KerenExecption("Montant Saisir erronéé !!!!");
+		}
+		// calcul de la remise
+		entity.setZremise((long) 0);
+		long remise = 0;
+		if (entity.getModePaiement().equals("0")) {
+			List<Remise> remiselist = entity.getListremise();
+			if (remiselist != null) {
+				
+				for (Remise r : remiselist) {
+					if (r.getTypeRemise().equals("0")) {
+						remise = remise + (r.getzValeur());
+					}
+					if (r.getTypeRemise().equals("1")) {
+						remise = remise + ((r.getzValeur() * entity.getZsolde()) / 100);
+					}
+				}
+				entity.setZremise(remise);
+				long versement = entity.getZsolde() - remise;
+				entity.setzMntverser(versement);
+			}
+		}
+
+		
+		super.processBeforeSave(entity);
+	}
 
 	@Override
 	public Paiement annuler(HttpHeaders headers, Paiement entity) {
-
 		try {
-			return new Paiement();
+			if (entity == null || entity.getId() == -1) {
+				throw new KerenExecption(" Selectionner le paiement à annuler !!!");
+			}
+			if (entity.getState().equalsIgnoreCase("annulé")) {
+				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
+			}
+			manager.update(entity.getId(), entity);
+
+			return entity;
 		} catch (KerenEduManagerException ex) {
 			throw new KerenExecption(ex.getMessage());
 		}
 	}
-	
 
 	@Override
 	public Response facture(HttpHeaders headers, Paiement entity) {
 		// TODO Auto-generated method stub
-		if (entity.getService()==null) {
-			throw new KerenExecption("Ce bulletin est nulle <br/> ");
+		System.out.println("PaiementRSImpl.facture() paiement pris " + entity.getId());
+		if (entity.getService() == null) {
+			throw new KerenExecption("Ce paiement est nulle <br/> ");
 		} // end if(entity.getState().trim().equalsIgnoreCase("valide")){
 		try {
+			// find user name connect
+			// String userid = headers.getRequestHeader("userid").get(0);
+			Gson gson = new Gson();
+			long id = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+			UserEducation user = managerUser.find("id", id);
+			System.out.println("PaiementRSImpl.facture() user found is ====" + user.getName());
+
+			entity.setUsername(user.getName());
 			return this.buildPdfReport(entity);
 		} catch (KerenEduManagerException ex) {
 			throw new KerenExecption(ex.getMessage());
 		}
 	}
-	
+
 	/**
-     * Methode permettant de retourner les parametres pour le reporting
-     *
-     * @return java.util.Map
-     */
-    public Map getReportParameters() {
-        Map params = new HashMap();
-        // On positionne la locale
-        params.put(JRBaseParameter.REPORT_LOCALE, Locale.FRENCH);
-        // Construction du Bundle
-        ResourceBundle bundle = ReportHelper.getInstace();
-        // Ajout du bundle dans les parametres
-        params.put(JRBaseParameter.REPORT_RESOURCE_BUNDLE, bundle);
-        params.put(ReportsParameter.REPORT_USER, "Administrateur");
-        params.put(ReportsParameter.ETB, "UCA");
+	 * Methode permettant de retourner les parametres pour le reporting
+	 *
+	 * @return java.util.Map
+	 */
+	public Map getReportParameters() {
 
-        return params;
-    }
-
-
-    @Override
-	protected void processAfterSave(Paiement entity) {
-		//imprimer la facture
-    	this.buildPdfReport(entity);
-		super.processAfterUpdate(entity);
+		return ReportHelperTrt.getReportParameters();
 	}
 
 	@Override
-    public Response buildPdfReport(Paiement entity) {
-        try {
-        	  List<Paiement> records =manager.getCriteres(entity);
-              String URL = ReportHelper.templateURL+ReportsName.FACTURE.getName();
-              Map parameters = new HashMap();
-              return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-            Response.serverError().build();
-        }catch (JRException ex) {
-            Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
- 
-        return Response.noContent().build();
-    }
+	public Response buildPdfReport(Paiement entity) {
+		try {
+			System.out.println("PaiementRSImpl.buildPdfReport() " + entity.getEleve());
+
+			List<Paiement> records = manager.getCriteres(entity);// new
+																	// ArrayList<Paiement>();
+			// records.add(entity);//manager.getCriteres(entity);
+			String URL = ReportHelper.templateURL + ReportsName.FACTURE.getName();
+			Map parameters = this.getReportParameters();
+			parameters.put(ReportsParameter.REPORT_USER, entity.getUsername());
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return Response.noContent().build();
+	}
+
+	@Override
+	public List<FichePaiement> getideleve(HttpHeaders headers) {
+		Gson gson = new Gson();
+		long id = gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		if (id > 0) {
+			Inscription eleve = managerIns.find("id", id);
+			CacheMemory.setIncription(eleve);
+		}
+
+		return null;
+	}
+
+	@Override
+	public List<FichePaiement> findfichefraiseleve(HttpHeaders headers) {
+		Gson gson = new Gson();
+		long id = gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		List<FichePaiement> ficheeleve = new ArrayList<FichePaiement>();
+		if (id > 0) {
+			Inscription elve = managerIns.find("id", id);
+			for (FichePaiement service : elve.getService()) {
+				if (service.getPayer() == false) {
+					ficheeleve.add(service);
+				}
+			}
+		}
+
+		return ficheeleve;
+	}
+	
+
+	public List<FichePaiement> getFicheeleve(Paiement entity) {
+		List<FichePaiement> ficheeleve = new ArrayList<FichePaiement>();
+		if (entity!=null) {
+			Inscription elve = managerIns.find("id", entity.getEleve().getId());
+			for (FichePaiement service : elve.getService()) {
+				if (service.getPayer() == false) {
+					ficheeleve.add(service);
+				}
+			}
+			System.out.println("PaiementRSImpl.getFicheeleve() nombre fiche "+ficheeleve.size());
+		}
+
+		return ficheeleve;
+	}
+	
+
+
+	@Override
+	public List<Remise> getremise(HttpHeaders headers) {
+		Gson gson = new Gson();
+		long id = gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		String mode = gson.fromJson(headers.getRequestHeader("modePaiement").get(0), String.class);
+		// long ideleve =
+		// gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+		List<Remise> datas = new ArrayList<Remise>();
+		long value = 0;
+		System.out.println("PaiementRSImpl.getremise() mode select isi" + mode);
+		if (mode != null && mode.equals("0")) {
+			List<Remise> results = managerRemise.findAll();
+			System.out.println("PaiementRSImpl.getremise() size record is " + datas.size());
+			for (Remise remise : results) {
+				if (remise.getDatePriseEffet().after(new Date())) {
+					datas.add(remise);
+				}
+			}
+
+		}
+
+		return datas;
+	}
+
+	@Override
+	public Long getReduction(HttpHeaders headers) {
+		System.out.println("PaiementRSImpl.getRemise() je suis icii remise ");
+		Long remise=(long) 23000;
+		   Gson gson = new Gson();
+	          Long prioriteid = -1L;
+	          Long eleveid = -1L;
+	          eleveid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+	          String data = headers.getRequestHeader("modePaiement").get(0); 
+	        
+		return remise;
+	}
+
+	@Override
+	public Long getVersement(HttpHeaders headers) {
+		System.out.println("PaiementRSImpl.getRemise() je suis icii vesemment  ");
+		  Gson gson = new Gson();
+          Long prioriteid = -1L;
+          Long eleveid = -1L;
+          Long versement=(long) 340000;
+          eleveid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+          String data = headers.getRequestHeader("modePaiement").get(0); 
+      
+		return versement;
+	}
 
 }

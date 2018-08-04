@@ -33,23 +33,13 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datEnc;
 	
-	@Column(name = "NATURE")
-	@Predicate(label="Nature",optional=false,updatable=true,search=true, target="combobox", values="Recette;Depense" , sequence=3)
-	protected String nature="0";
-	
-//	@ManyToOne
-//    @JoinColumn(name = "TYPE_ID")
-//	//@Predicate(label="Type Dépense",updatable=true,type=TypeDepense.class , target="many-to-one",search=false, sequence=4)
-//    protected TypeDepense typeDepense;
-//	
+	@Column(name = "TYP_PAI")
+	@Predicate(label="Type Paiement",optional=false,updatable=false,search=true, target="combobox", values="especes;Espress Union" , sequence=5 )
+	protected String typePaiment="0";
 
 	@Column(name = "REVENU" )	
-	@Predicate(label="Recette",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=5,hidden="currentObject.nature=='1'")
+	@Predicate(label="Recette",optional=false,updatable=false,search=true, type=Long.class, hide=false ,sequence=5,hidden="currentObject.nature=='1'")
 	protected Long zRevenu ;
-	
-	@Column(name = "DEPENSE" )	
-	@Predicate(label="Dépense",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=6,hidden="currentObject.nature == null || currentObject.nature=='0'")
-	protected Long zdepense ;
 	
 	
 	@Column(name = "DESCRIPTION")
@@ -77,19 +67,29 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 		this.anneScolaire=ins.anneScolaire;
 		this.description=ins.description;
 		this.paiement= ins.paiement;
-		this.zdepense=ins.zdepense;
-		this.nature=ins.nature;
 		this.code=ins.code;
+		this.typePaiment=ins.typePaiment;
 	}
 	
 	public Caisse(Paiement reglement){
-		this.zRevenu = reglement.zMntverser;
+		this.zRevenu = reglement.getzMntverser();
+		this.datEnc=new Date();
+		this.anneScolaire= reglement.anneScolaire;
+		this.description="Paiement Scolarité "+"//Elève "+reglement.getEleve().getEleve().getNom();
+		this.paiement= reglement.getId();
+		this.code=reglement.getCode();
+		this.typePaiment=reglement.getTypePaiment();
+		this.code=reglement.getEleve().getEleve().getMatricule();
+	}
+	
+	public Caisse(Paiement reglement, String annuler){
+		this.zRevenu =reglement.zMntverser;
 		this.datEnc=new Date();
 		this.anneScolaire= reglement.service.anneScolaire;
-		this.description="Paiement "+reglement.service.getService().getLibelle()+"//Elève "+reglement.getEleve().getEleve().getNom();
+		this.description="Annulation du Paiement Scolarité "+"//Elève "+reglement.getEleve().getEleve().getNom();
 		this.paiement= reglement.getId();
-		this.nature="0";
 		this.code=reglement.getCode();
+		this.typePaiment=reglement.getTypePaiment();
 	}
 
 	
@@ -110,13 +110,13 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Dépenses et Recettes ";
+		return "Gestion des  Recettes ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion  des Dépenses et Recettes  ";
+		return "Gestion  des Recettes  ";
 	}
 
 	@Override
@@ -197,6 +197,16 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	}
 
 
+	public String getTypePaiment() {
+		return typePaiment;
+	}
+
+
+	public void setTypePaiment(String typePaiment) {
+		this.typePaiment = typePaiment;
+	}
+
+
 	/**
 	 * @param description the description to set
 	 */
@@ -204,39 +214,20 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 		this.description = description;
 	}
 
-//
-//	@Override
-//	public boolean isCreateonfield() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
 
-
-//	@Override
-//	public boolean isDesablecreate() {
-//		// TODO Auto-generated method stub
-//		return true;
-//	}
-
-
-	public String getNature() {
-		return nature;
+	@Override
+	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
-	public void setNature(String nature) {
-		this.nature = nature;
+	@Override
+	public boolean isDesablecreate() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
-
-	public Long getZdepense() {
-		return zdepense;
-	}
-
-
-	public void setZdepense(Long zdepense) {
-		this.zdepense = zdepense;
-	}
 
 
 	public String getCode() {

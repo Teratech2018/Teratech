@@ -20,6 +20,7 @@ import com.kerem.core.MetaDataUtil;
 import com.kerenedu.core.ifaces.report.ViewBulletinManagerRemote;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
+import com.kerenedu.model.report.EdtBulletinModal;
 import com.kerenedu.tools.KerenEduManagerException;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
@@ -52,6 +53,8 @@ public class BulletinRSImpl
     @Manager(application = "kereneducation", name = "ViewBulletinManagerImpl", interf = ViewBulletinManagerRemote.class)
     protected ViewBulletinManagerRemote viewmanager;
     
+    @Manager(application = "kereneducation", name = "BulletinHelperGenerateManagerImpl", interf = BulletinHelperGenerateManagerRemote.class)
+    protected BulletinHelperGenerateManagerRemote managerbullview;
 
     public BulletinRSImpl() {
         super();
@@ -146,8 +149,9 @@ public class BulletinRSImpl
     @Override
     public Response buildPdfReport(Bulletin bulletin) {
         try {
-        	  List<Bulletin> records =manager.getCriteres(bulletin);
-              String URL = ReportHelper.templateURL+ReportsName.BULLETIN.getName();
+        	  List<BulletinHelperGenerate> records =managerbullview.getCriteres(new EdtBulletinModal(bulletin));
+        	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
+              String URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
               System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
               Map parameters = new HashMap();
               parameters= this.getReportParameters();

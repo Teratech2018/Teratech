@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerenedu.model.search.EleveSearch;
+import com.kerenedu.reglement.FichePaiement;
 
 
 /**
@@ -19,5 +20,9 @@ public interface InscriptionManager
     public final static String SERVICE_NAME = "InscriptionManager";
     
     public List<Inscription> getCriteres(EleveSearch critere);
+    
+    public Inscription changerClasse(ChangeClasse entity);
+    
+    public List<FichePaiement>getFicheEleve(Inscription entity);
 
 }

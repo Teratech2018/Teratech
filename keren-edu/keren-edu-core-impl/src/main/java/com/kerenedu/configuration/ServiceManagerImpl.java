@@ -59,8 +59,8 @@ public class ServiceManagerImpl extends AbstractGenericManager<Service, Long>
 		// TODO Auto-generated method stub
 		Service elev = super.find(propertyName, entityID);
 		Service inscrip = new Service(elev);
-		for (Filiere frais : elev.getFiliere()) {
-			inscrip.getFiliere().add(new Filiere(frais));
+		for (ServiceFilliere frais : elev.getFiliere()) {
+			inscrip.getFiliere().add(new ServiceFilliere(frais));
 		}
 		return inscrip;
 	}
@@ -78,7 +78,30 @@ public class ServiceManagerImpl extends AbstractGenericManager<Service, Long>
 
 	@Override
 	public void processBeforeSave(Service entity) {
+		long montant = 0;
+		List<ServiceFilliere> datas = new ArrayList<ServiceFilliere>();
+		for(ServiceFilliere sf : entity.getFiliere()){
+			montant= montant+sf.getzMnt();
+			sf.setId(-1);
+//			datas.add(sf);
+		}
+		entity.setzMnt(new Double(montant));
 		super.processBeforeSave(entity);
+	}
+	
+	
+
+	@Override
+	public void processBeforeUpdate(Service entity) {
+		long montant = 0;
+		List<ServiceFilliere> datas = new ArrayList<ServiceFilliere>();
+		for(ServiceFilliere sf : entity.getFiliere()){
+			montant= montant+sf.getzMnt();
+			sf.setId(-1);
+//			datas.add(sf);
+		}
+		entity.setzMnt(new Double(montant));
+		super.processBeforeUpdate(entity);
 	}
 
 	@Override
@@ -97,9 +120,9 @@ public class ServiceManagerImpl extends AbstractGenericManager<Service, Long>
 			 
 		if(result!=null&!result.isEmpty()){
 			for(Service serice : result){
-				for(Filiere filliere : serice.getFiliere()){
-					if(filliere.getId()==classe.getFiliere().getId()){
-						FichePaiement fiche = new FichePaiement(serice);
+				for(ServiceFilliere filliere : serice.getFiliere()){
+					if(filliere.getFiliere().getId()==classe.getFiliere().getId()){
+						FichePaiement fiche = new FichePaiement(serice,filliere);
 						fiche.setId(-1);
 						datas.add(fiche);
 					}

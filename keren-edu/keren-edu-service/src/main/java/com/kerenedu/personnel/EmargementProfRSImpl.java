@@ -86,6 +86,7 @@ public class EmargementProfRSImpl
 		Gson gson = new Gson();
 		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
 		long idclasse =gson.fromJson(headers.getRequestHeader("classe").get(0), Long.class);
+//		long idProf = gson.fromJson(headers.getRequestHeader("prof").get(0), Long.class);
 		Date date =gson.fromJson(headers.getRequestHeader("datemarg").get(0), Date.class);
 //		
 //		
@@ -93,7 +94,7 @@ public class EmargementProfRSImpl
 //		System.out.println("EmargementProfRSImpl.findprofclasse() idClass===========X "+idclasse);
 //		System.out.println("EmargementProfRSImpl.findprofclasse() date===========X "+date);
 //		
-		return manageremargedlt.findmatiereprof(id,idclasse,date);
+		return manageremargedlt.findmatiereprof(id,idclasse,date,new Long(0));
 	}
 
 

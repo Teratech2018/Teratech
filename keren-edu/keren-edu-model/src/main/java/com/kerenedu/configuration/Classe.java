@@ -4,25 +4,15 @@
 package com.kerenedu.configuration;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.personnel.Professeur;
-import com.kerenedu.school.Contacts;
-import com.kerenedu.school.Eleve;
-import com.kerenedu.school.Nationalite;
-import com.kerenedu.school.NiveauScolaire;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -52,19 +42,22 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	//@Predicate(label="TYPE FORMATION ",optional=false,updatable=true,search=false, target="combobox", values="cours du jours;cours du soir" , sequence=4, colsequence=4)
 	protected String typeformation="0";
 	
-	@Column(name = "EFFECTIF" ,unique=true)	
-	@Predicate(label="Effectif",updatable=true,search=true , sequence=3, type=Long.class, editable=false)
+	@Column(name = "EFFECTIF")	
+	@Predicate(label="Effectif",updatable=true,search=true , sequence=3, type=Long.class, editable=false, colsequence=3)
 	protected Long effectif= new Long(0);
 	
 	@Column(name = "CAPACITE" )	
-	@Predicate(label="Capacité",optional=true,updatable=true,search=true , sequence=4, type=Long.class)
+	//@Predicate(label="Capacité",optional=true,updatable=true,search=true , sequence=4, type=Long.class, colsequence=4)
 	protected Long capacite;
 	
 	@ManyToOne
     @JoinColumn(name = "PROF_ID")
-	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=5, colsequence=5)
+	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=5, colsequence=4)
     protected Professeur professeur;
 	
+	@ManyToOne
+	@JoinColumn(name="SECTION_ID")
+	private SectionE section ;
 	
     @Column(name = "CYCLE_ID")
     protected long cycle;
@@ -95,14 +88,14 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 			this.filiere= new Filiere(filiere.filiere);
 			this.cycle=filiere.getFiliere().getCycle().getId();
 		}
-		
+		if(filiere.getSection()!=null){
+			this.section=filiere.getSection();
+		}
 		this.effectif=filiere.effectif;
 		if(filiere.professeur!=null){
 		   this.professeur= new Professeur(filiere.professeur);
 		}
 		this.capacite=filiere.capacite;
-		
-		//this.elevelist= new ArrayList<Eleve>();
 	}
 
 	public String getLibelle() {
@@ -219,6 +212,13 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	}
 
 
+
+
+	public SectionE getSection() {
+		return section;
+	}
+
+
 	public void setCycle(long cycle) {
 		this.cycle = cycle;
 	}
@@ -226,6 +226,11 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 
 	public void setNiveau(Niveau niveau) {
 		this.niveau = niveau;
+	}
+
+
+	public void setSection(SectionE section) {
+		this.section = section;
 	}
 
 
