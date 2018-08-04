@@ -8029,14 +8029,12 @@ $scope.gererChangementFichier3 = function(event,model){
                                 //                    if($scope.dataCache[parts[1]]&&$scope.dataCache[parts[1]].length>0){
                                 //                        obj = {id:'loadwithsearch' , designation:'Chercher plus ...'};
                                 //                    }
-                                                       $scope.dataCache[key] = new Array();
-                                                       if(response.data.length<=0){
-                                                          $scope.dataCache[""+key+""].push(obj);
-                                                       } //end if(response.data.length<=0){
+                                                       $scope.dataCache[key] = new Array();                                                      
                                                         //var data = $scope.dataCache[""+parts[1]+""];
                                                         for(var i=0;i<response.data.length;i++){
                                                             $scope.dataCache[key].push(response.data[i]);
-                                                        }//end for(var i=0;i<response.data.length;i++){                        
+                                                        }//end for(var i=0;i<response.data.length;i++){       
+                                                        $scope.dataCache[""+key+""].push(obj);
                                                  }//end if(parts.length>1){
                                                  //console.log($scope.dataCache[""+parts[1]+""]);
                                                  $timeout(function() {
