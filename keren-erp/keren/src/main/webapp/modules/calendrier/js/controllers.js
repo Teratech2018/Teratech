@@ -125,7 +125,7 @@ angular.module('keren.core.calendar')
                 }
               }else{
                 commonsTools.removeFromArray($scope.selectedObjects , item);
-                if($scope.selectedObjects.length==0){
+                if($scope.selectedObjects.length===0){
                   $scope.tableheaderselected = false;
                 }
               }
@@ -230,7 +230,7 @@ angular.module('keren.core.calendar')
                     if(participants){
                         for(var i=0 ; i<participants.length;i++){
                             var user = participants[i];
-                            if(user.compareid==item.compareid){
+                            if(user.compareid===item.compareid){
                                 participants.splice(i , 1);
                             }//end if(user.id==item.id)
                         }//end for(var i=0 ; i<participants.length;i++)
@@ -335,10 +335,10 @@ angular.module('keren.core.calendar')
                                     $('.selectpicker').selectpicker('refresh');
                                 });    
                                 //$location.path("/edit");
-                                $scope.hideDialogLoading();
+                                commonsTools.hideDialogLoading();
                             },
-                            function(errror){
-                                $scope.hideDialogLoading();
+                            function(error){
+                                commonsTools.hideDialogLoading();
                                 commonsTools.showMessageDialog(error);
                             });
                   }
@@ -352,7 +352,7 @@ angular.module('keren.core.calendar')
                 $scope.getRappelData = function(item){
                     //console.log(angular.toJson($scope.dataCache.rappels));
                     if($scope.dataCache.rappels.length<=0 || $scope.dataCache.rappels[0].id=='load'){  
-                        $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                        commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                         var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
                         $http.get(url).then(
                                 function(response){
@@ -361,10 +361,10 @@ angular.module('keren.core.calendar')
                                     $timeout(function(){
                                      $('.selectpicker').selectpicker('refresh');
                                    });//console.log(angular.toJson($scope.dataCache.users));
-                                    $scope.hideDialogLoading();
+                                    commonsTools.hideDialogLoading();
                                 },
-                                function(errror){
-                                    $scope.hideDialogLoading();
+                                function(error){
+                                    commonsTools.hideDialogLoading();
                                     commonsTools.showMessageDialog(error);
                                 });
                   }
@@ -386,16 +386,15 @@ angular.module('keren.core.calendar')
                           }//end for(var i=0 ;i<participants.length;i++)
                       }//end if(participants)
                       $scope.selectedEvent.participants = datas;
-
-                  $('#myModal00').modal('hide');
+                      $('#myModal00').modal('hide');
                 };
                 $scope.addRappel = function(){
-                    $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
                     if($scope.dataCache.crrentRappel.titre==null||$scope.dataCache.crrentRappel.quantite==null
                             ||$scope.dataCache.crrentRappel.unite==null){
                             //console.log(angular.toJson($scope.dataCache.crrentRappel));
-                            $scope.hideDialogLoading();
+                            commonsTools.hideDialogLoading();
                     }else{
                         $http.post(url,$scope.dataCache.crrentRappel).then(
                                 function(response){
@@ -404,16 +403,16 @@ angular.module('keren.core.calendar')
                                             $scope.dataCache.rappels = response.data;
                                             $('.selectpicker').selectpicker('refresh');
                                             //console.log(angular.toJson($scope.dataCache.users));
-                                            $scope.hideDialogLoading();
+                                            commonsTools.hideDialogLoading();
                                              $('#myModal002').modal('hide');
                                         },
                                         function(error){
-                                            $scope.hideDialogLoading();
+                                            commonsTools.hideDialogLoading();
                                             commonsTools.showMessageDialog(error);
                                         });
                                 },
                                 function(error){
-                                    $scope.hideDialogLoading();
+                                    commonsTools.hideDialogLoading();
                                     commonsTools.showMessageDialog(error);
                                 }
                              );
@@ -517,18 +516,18 @@ angular.module('keren.core.calendar')
                                                     message = message+"<br/>"+response[i].fieldLabel;
                                                 }
                                                 commonsTools.notifyWindow("Les champs suivants violent la contrainte d'unicit�" ,message,"danger");
-                                                $scope.hideDialogLoading();
+                                                commonsTools.hideDialogLoading();
                                           }else{
                                               backendService.save($scope.selectedEvent).$promise.then(
                                                  function(entity){                                             
                                                      $rootScope.$broadcast("refreshList",{event:entity});
                                                  },function(error){
-                                                     $scope.hideDialogLoading();
+                                                     commonsTools.hideDialogLoading();
                                                      commonsTools.showMessageDialog(error);
                                                  });
                                           }
                                       },function(error){
-                                          $scope.hideDialogLoading();
+                                          commonsTools.hideDialogLoading();
                                           commonsTools.showMessageDialog(error);
                                       });
                         }

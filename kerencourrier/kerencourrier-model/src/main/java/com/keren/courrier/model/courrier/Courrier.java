@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.core.referentiels.PieceJointe;
 import com.keren.courrier.model.referentiel.Correspondant;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.keren.courrier.model.referentiel.NatureCourrier;
@@ -42,10 +43,17 @@ import javax.persistence.Temporal;
 @Table(name = "T_COURRGC")
 public class Courrier extends BaseElement implements Serializable, Comparable<Courrier> {
 
-	private static final long serialVersionUID = -12411984333486963L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3033098358734571005L;
 
 	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true)
 	private String code;
+	
+	@Column(name="reference",unique=true)
+	@Predicate(label = "Reférence du Courrier", search = true, optional = true, unique = true )
+	private String reference;      
 
 	@Predicate(label = "Mention du courrier", target = "combobox", values = "Ordinaire;Confidentiel", search = true)
 	private String porte = "0";
@@ -56,7 +64,7 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 	private NatureCourrier nature;
 
 	@Column(name = "T_CAT")
-	@Predicate(label = "Catégorie Courrier", optional = true, search = false, editable = false, target = "combobox", values = "Courrier Arrivée;Courrier Départ;Courrier Interne;Document GED")
+//	@Predicate(label = "Catégorie Courrier", optional = true, search = false, editable = false, target = "combobox", values = "Courrier Arrivée;Courrier Départ;Courrier Interne;Document GED")
 	private String categorie;
 
 	@ManyToOne
@@ -92,7 +100,7 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 
 	@ManyToOne
 	@JoinColumn(name = "DES_ID")
-	@Predicate(label = "Destinatire", type = UtilisateurCourrier.class, updatable = false, target = "many-to-one", search = true)
+	@Predicate(label = "Destinataire", type = UtilisateurCourrier.class, updatable = false, target = "many-to-one", search = true)
 	@Observer(observable = "service", source = "field:responsable")
 	private UtilisateurCourrier destinataire;
 
@@ -111,9 +119,9 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 	@Predicate(label = "Pièces jointes", type = FichierLie.class, target = "one-to-many", edittable = true, group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
 	private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "COU_ID")
-	private List<TraitementCourrier> traitements = new ArrayList<TraitementCourrier>();
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//	@JoinColumn(name = "COU_ID")
+//	private List<TraitementCourrier> traitements = new ArrayList<TraitementCourrier>();
 
 	
 	@Temporal(javax.persistence.TemporalType.DATE)
@@ -273,6 +281,7 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 		if (dep.sowner != null) {
 			this.sowner = new StructureCompany(dep.sowner);
 		}
+		this.reference=dep.reference;
 	}
 
 	public Courrier(CourrierDepart dep) {
@@ -319,7 +328,8 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 		if (dep.getSource() != null) {
 			this.source = new UtilisateurCourrier(dep.getSource());
 		}
-		this.piecesjointes = dep.getPiecesjointes();		
+		this.piecesjointes = new ArrayList<FichierLie>();
+//		this.traitements=new ArrayList<TraitementCourrier>();
 
 	}
 
@@ -367,8 +377,9 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 		if (dep.getSource() != null) {
 			this.source = new UtilisateurCourrier(dep.getSource());
 		}
-		this.piecesjointes = dep.getPiecesjointes();
-		this.traitements=dep.getTraitements();
+		this.piecesjointes = new ArrayList<FichierLie>();
+//		this.traitements=new ArrayList<TraitementCourrier>();
+		this.reference=dep.getReference();
 	}
 
 	public StructureCompany getSowner() {
@@ -389,6 +400,14 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 	public String getListTitle() {
 		// TODO Auto-generated method stub
 		return "Courriers arrivés";
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
 
 	@Override
@@ -602,13 +621,13 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 						// Templates.
 	}
 
-	public List<TraitementCourrier> getTraitements() {
-		return traitements;
-	}
-
-	public void setTraitements(List<TraitementCourrier> traitements) {
-		this.traitements = traitements;
-	}
+//	public List<TraitementCourrier> getTraitements() {
+//		return traitements;
+//	}
+//
+//	public void setTraitements(List<TraitementCourrier> traitements) {
+//		this.traitements = traitements;
+//	}
 
 	@Override
 	public List<State> getStates() {
@@ -632,6 +651,14 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 	public boolean isCreateonfield() {
 		return false; // To change body of generated methods, choose Tools |
 						// Templates.
+	}
+	
+	
+
+	@Override
+	public long getCompareid() {
+		// TODO Auto-generated method stub
+		return id;
 	}
 
 	@Override

@@ -19,13 +19,14 @@ import com.keren.courrier.core.ifaces.courrier.CourrierDepartManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.BorderoCourrierDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierCloneDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierDepartDAOLocal;
+import com.keren.courrier.dao.ifaces.courrier.TraitementCourrierDAOLocal;
+import com.keren.courrier.model.courrier.BorderoCourrier;
 import com.keren.courrier.model.courrier.CourrierClone;
 import com.keren.courrier.model.courrier.CourrierDepart;
 import com.keren.courrier.model.courrier.FichierLie;
 import com.keren.courrier.model.courrier.LigneBorderoCourrier;
 import com.keren.courrier.model.courrier.TraitementCourrier;
 import com.keren.courrier.model.courrier.TypeTraitement;
-import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -41,6 +42,9 @@ public class CourrierDepartManagerImpl extends AbstractGenericManager<CourrierDe
 
 	@EJB(name = "BorderoCourrierDAO")
 	protected BorderoCourrierDAOLocal borderodao;
+	
+	 @EJB(name = "TraitementCourrierDAO")
+	   	protected TraitementCourrierDAOLocal daotrt;
 
 	public CourrierDepartManagerImpl() {
 	}
@@ -101,9 +105,8 @@ public class CourrierDepartManagerImpl extends AbstractGenericManager<CourrierDe
 		for (FichierLie aas : data.getPiecesjointes()) {
 			result.getPiecesjointes().add(new FichierLie(aas));
 		}
-		for (LigneDiffusion aas : data.getDiffusions()) {
-			result.getDiffusions().add(new LigneDiffusion(aas));
-		}
+		
+	
 
 		return result;
 	}
@@ -118,17 +121,11 @@ public class CourrierDepartManagerImpl extends AbstractGenericManager<CourrierDe
 		entity.setCategorie("1");
 		if (entity.getService() != null) {
 			String type = "1";
-			if (entity.getPorte() != null && entity.getPorte().trim().equalsIgnoreCase("1")) {
-				type = "2";
-			} // end
-				// if(entity.getPorte()!=null&&entity.getPorte().trim().equalsIgnoreCase("1")){
-			// BorderoCourrier bordero =
-			// borderodao.checkBordero(entity.getSource().getService(),
-			// entity.getService(),
-			// type);
-			// entity.setBordero(bordero);
-			entity.setBordero(null);
+		 if(entity.getPorte()!=null&&entity.getPorte().trim().equalsIgnoreCase("1")){
+			 BorderoCourrier bordero =borderodao.checkBordero(entity.getSource().getService(),entity.getCorrespondant(),type);
+			 entity.setBordero(bordero);
 		} // end if(entity.getService()!=null){
+		}
 		super.processBeforeSave(entity);
 	}
 
@@ -136,15 +133,16 @@ public class CourrierDepartManagerImpl extends AbstractGenericManager<CourrierDe
 	public void processAfterSave(CourrierDepart entity) {
 		entity = dao.findByPrimaryKey("id", entity.getId());
 		entity.setCode("CD/" + entity.getId() + "/" + DateHelper.convertToString(entity.getDcourrier(), "dd/MM/yyyy"));
-		// gerre le tratement;
+		//========== @NTW ENREGISTRER LE TRAITEMENT========;
 		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(entity),TypeTraitement.ENREGISTREMENT);
-		entity.getTraitements().add(trtcourrier);
+		daotrt.save(trtcourrier);
 		dao.update(entity.getId(), entity);
 		if (entity.getBordero() != null) {
 			LigneBorderoCourrier ligne = new LigneBorderoCourrier();
 			ligne.setCourrier(new CourrierClone(entity));
 			ligne.setNature("0");
 			entity.getBordero().getCourriers().add(ligne);
+			entity.getBordero().setCode("BDR/CD/" + entity.getBordero().getId() + "/" + DateHelper.convertToString(entity.getDcourrier(), "dd/MM/yyyy"));
 			borderodao.update(entity.getBordero().getId(), entity.getBordero());
 		} // end if(entity.getBordero()!=null){
 		super.processAfterSave(entity);
@@ -152,12 +150,13 @@ public class CourrierDepartManagerImpl extends AbstractGenericManager<CourrierDe
 
 	@Override
 	public CourrierDepart distribuer(CourrierDepart entity) {
-
+		
+			entity = dao.findByPrimaryKey("id", entity.getId());
 		if (entity.getState().equalsIgnoreCase("etabli")) {
 			entity.setState("valide");
 			TraitementCourrier trtcourrier = new TraitementCourrier(entity,TypeTraitement.TRANSMISSION);
 			trtcourrier.setId(-1);
-			entity.getTraitements().add(trtcourrier);
+			daotrt.save(trtcourrier);
 			entity = dao.update(entity.getId(), entity);
 		}
 
@@ -190,9 +189,7 @@ public class CourrierDepartManagerImpl extends AbstractGenericManager<CourrierDe
 			result.getPiecesjointes().add(new FichierLie(aas));
 		}
 
-		for (LigneDiffusion aas : data.getDiffusions()) {
-			result.getDiffusions().add(new LigneDiffusion(aas));
-		}
+	
 
 		return result;
 	}

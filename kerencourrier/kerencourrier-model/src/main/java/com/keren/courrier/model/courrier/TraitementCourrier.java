@@ -5,19 +5,26 @@ package com.keren.courrier.model.courrier;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+import com.keren.courrier.model.others.UtilisateurClone;
 import com.keren.courrier.model.referentiel.ClasseurCourrier;
 import com.keren.courrier.model.referentiel.CompartimentClasseur;
 import com.keren.courrier.model.referentiel.StructureCompany;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 /**
@@ -39,6 +46,10 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 	private UtilisateurCourrier operateur;
 
 	@ManyToOne
+	@JoinColumn(name = "CIBL_ID")
+	private UtilisateurCourrier destinataire;
+
+	@ManyToOne
 	@JoinColumn(name = "OWSERV_ID")
 	private StructureCompany sowner;
 
@@ -49,17 +60,21 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 	@ManyToOne
 	@JoinColumn(name = "BDR_ID")
 	private BorderoCourrier bordero;
-        
-        @Lob
-        private String avis ;
-        
-        @ManyToOne
-        @JoinColumn(name = "CLCO_ID")
-        private ClasseurCourrier classeur ;
-        
-         @ManyToOne
-        @JoinColumn(name = "COCL_ID")
-        private CompartimentClasseur compartiment;
+	
+	@ManyToOne
+	@JoinColumn(name = "COU_ID")
+	private CourrierClone courrier ;
+
+	@Lob
+	private String avis;
+
+	@ManyToOne
+	@JoinColumn(name = "CLCO_ID")
+	private ClasseurCourrier classeur;
+
+	@ManyToOne
+	@JoinColumn(name = "COCL_ID")
+	private CompartimentClasseur compartiment;
 
 	/**
 	* 
@@ -100,15 +115,22 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 		if (dep.bordero != null) {
 			this.bordero = new BorderoCourrier(dep.bordero);
 		}
-                this.avis = dep.avis;
-                if(dep.classeur!=null){
-                    this.classeur = new ClasseurCourrier(dep.classeur);
-                }
-                if(dep.compartiment!=null){
-                    this.compartiment = new CompartimentClasseur(dep.compartiment);
-                }
+		this.avis = dep.avis;
+		if (dep.classeur != null) {
+			this.classeur = new ClasseurCourrier(dep.classeur);
+		}
+		if (dep.compartiment != null) {
+			this.compartiment = new CompartimentClasseur(dep.compartiment);
+		}
+		if (dep.destinataire != null) {
+			this.destinataire = new UtilisateurCourrier(dep.destinataire);
+		}
+		if(dep.courrier!=null){
+			this.courrier= new CourrierClone(dep.courrier);
+		}
+		
 	}
-	
+
 	/**
 	 * 
 	 * @param dep
@@ -118,13 +140,13 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 		this.type = type;
 		this.doperation = courrier.getDcourrier();
 		this.operateur = new UtilisateurCourrier(courrier.getSource());
-		if(courrier.getSowner()!=null){
-		this.sowner = new StructureCompany(courrier.getSowner());
+		if (courrier.getSowner() != null) {
+			this.sowner = new StructureCompany(courrier.getSowner());
 		}
-		if(courrier.getBordero()!=null){
+		if (courrier.getBordero() != null) {
 			this.bordero = new BorderoCourrier(courrier.getBordero());
 		}
-		
+
 	}
 
 	/**
@@ -132,17 +154,19 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 	 * @param dep
 	 */
 	public TraitementCourrier(CourrierClone courrier, TypeTraitement type) {
-		this.setId(-1);
+		super(-1, null, null, 0L);
 		this.type = type;
 		this.doperation = courrier.getDcourrier();
 		this.operateur = new UtilisateurCourrier(courrier.getSource());
-		if(courrier.getSowner()!=null){
-		this.sowner = new StructureCompany(courrier.getSowner());
+		if (courrier.getSowner() != null) {
+			this.sowner = new StructureCompany(courrier.getSowner());
 		}
-		if(courrier.getBordero()!=null){
+		if (courrier.getBordero() != null) {
 			this.bordero = new BorderoCourrier(courrier.getBordero());
 		}
-		
+		if(courrier!=null)
+		this.courrier=new CourrierClone(courrier);
+
 	}
 
 	public TypeTraitement getType() {
@@ -153,15 +177,21 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 		this.type = type;
 	}
 
-    public String getAvis() {
-        return avis;
-    }
+	public String getAvis() {
+		return avis;
+	}
 
-    public void setAvis(String avis) {
-        this.avis = avis;
-    }
-        
-        
+	public void setAvis(String avis) {
+		this.avis = avis;
+	}
+
+	public UtilisateurCourrier getDestinataire() {
+		return destinataire;
+	}
+
+	public void setDestinataire(UtilisateurCourrier destinataire) {
+		this.destinataire = destinataire;
+	}
 
 	public Date getDoperation() {
 		return doperation;
@@ -203,23 +233,29 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 		this.bordero = bordero;
 	}
 
-        public ClasseurCourrier getClasseur() {
-            return classeur;
-        }
+	public ClasseurCourrier getClasseur() {
+		return classeur;
+	}
 
-        public void setClasseur(ClasseurCourrier classeur) {
-            this.classeur = classeur;
-        }
+	public void setClasseur(ClasseurCourrier classeur) {
+		this.classeur = classeur;
+	}
 
-        public CompartimentClasseur getCompartiment() {
-            return compartiment;
-        }
+	public CompartimentClasseur getCompartiment() {
+		return compartiment;
+	}
 
-        public void setCompartiment(CompartimentClasseur compartiment) {
-            this.compartiment = compartiment;
-        }
-        
-        
+	public CourrierClone getCourrier() {
+		return courrier;
+	}
+
+	public void setCourrier(CourrierClone courrier) {
+		this.courrier = courrier;
+	}
+
+	public void setCompartiment(CompartimentClasseur compartiment) {
+		this.compartiment = compartiment;
+	}
 
 	@Override
 	public int compareTo(TraitementCourrier o) {

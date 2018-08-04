@@ -51,7 +51,8 @@ public class ClasseurCourrierManagerImpl
         return results;
     }
 
-    @Override
+   
+	@Override
     public List<ClasseurCourrier> findAll() {
         return super.findAll(); //To change body of generated methods, choose Tools | Templates.
     }

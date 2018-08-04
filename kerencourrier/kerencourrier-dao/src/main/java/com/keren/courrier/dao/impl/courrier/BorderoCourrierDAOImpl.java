@@ -11,6 +11,7 @@ import com.keren.courrier.dao.ifaces.courrier.BorderoCourrierDAORemote;
 import com.keren.courrier.model.courrier.BorderoCourrier;
 import com.keren.courrier.model.courrier.CourrierClone;
 import com.keren.courrier.model.courrier.LigneBorderoCourrier;
+import com.keren.courrier.model.referentiel.Correspondant;
 import com.keren.courrier.model.referentiel.StructureCompany;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,6 +55,29 @@ public class BorderoCourrierDAOImpl
         BorderoCourrier  bordero = new BorderoCourrier();
         bordero.setSource(source);
         bordero.setCible(cible);
+        bordero.setType(type);
+        bordero.setCreation(new Date());
+        bordero.setState("etabli");
+        save(bordero);
+        borderos = filter(container.getPredicats(), null, null, 0, -1);
+        return borderos.get(0);//end if(borderos!=null&&!borderos.isEmpty()){
+    }
+    
+    @Override
+    public BorderoCourrier checkBordero(StructureCompany source, Correspondant cible, String type) {
+        //To change body of generated methods, choose Tools | Templates.
+         RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("source", source);
+        container.addEq("excible", cible);
+        container.addEq("type", type);
+        container.addEq("state", "etabli");
+        List<BorderoCourrier> borderos = filter(container.getPredicats(), null, null, 0, -1);
+        if(borderos!=null&&!borderos.isEmpty()){
+            return borderos.get(0);
+        }//end if(borderos!=null&&!borderos.isEmpty()){
+        BorderoCourrier  bordero = new BorderoCourrier();
+        bordero.setSource(source);
+        bordero.setExcible(cible);
         bordero.setType(type);
         bordero.setCreation(new Date());
         bordero.setState("etabli");

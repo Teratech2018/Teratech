@@ -38,6 +38,11 @@ public class LigneBorderoCourrier extends BaseElement implements Serializable,Co
     @Observer(observable = "courrier",source = "field:objet")
     private String objet ;
     
+    @Predicate(label = "Instruction",target = "textarea",editable = false,search = true)
+    @Observer(observable = "courrier",source = "field:objet")
+    private String instruction ;
+    
+    
     @Predicate(label = "Nature",target = "combobox",values = "Original;Copie",search = true)
     private String nature;
 
@@ -82,6 +87,7 @@ public class LigneBorderoCourrier extends BaseElement implements Serializable,Co
         if(entity.objet==null||entity.objet.trim().isEmpty()){
             this.objet = entity.getCourrier().getObjet();
         }
+        this.instruction = entity.instruction;
         this.nature = entity.nature;
     }
 
@@ -118,6 +124,16 @@ public class LigneBorderoCourrier extends BaseElement implements Serializable,Co
     public void setNature(String nature) {
         this.nature = nature;
     }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+    
+    
 
     @Override
     public String getModuleName() {

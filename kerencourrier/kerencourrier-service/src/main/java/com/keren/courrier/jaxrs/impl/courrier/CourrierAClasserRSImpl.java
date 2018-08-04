@@ -72,7 +72,7 @@ public class CourrierAClasserRSImpl
         try {
             meta = MetaDataUtil.getMetaData(new CourrierAClasser(), new HashMap<String, MetaData>(), new ArrayList<String>());
             MetaColumn workbtn = new MetaColumn("button", "work1", "Classer le Courrier", false, "action", null);
-            workbtn.setValue("{'name':'courrier_trait_03_1',template:{'courrier':'object'}}");
+            workbtn.setValue("{'name':'courrier_trait_03_1',template:{'courrier':'object','ordonateur':'object.destinataire','service':'object.destinataire.service'}}");
             workbtn.setStates(new String[]{"etabli"});
 //            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);  
@@ -113,6 +113,7 @@ public class CourrierAClasserRSImpl
         container.addNotEq("state", "etabli");
         container.addNotEq("state", "transmis");
         container.addNotEq("state", "classer");
+        container.addNotEq("state", "archivage partiel");
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -146,6 +147,7 @@ public class CourrierAClasserRSImpl
         container.addNotEq("state", "etabli");
         container.addNotEq("state", "transmis");
         container.addNotEq("state", "classer");
+        container.addNotEq("state", "archivage partiel");
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }

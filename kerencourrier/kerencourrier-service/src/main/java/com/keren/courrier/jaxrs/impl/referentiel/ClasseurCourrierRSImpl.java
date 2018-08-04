@@ -6,7 +6,10 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
 import com.keren.courrier.core.ifaces.referentiel.ClasseurCourrierManagerRemote;
 import com.keren.courrier.jaxrs.ifaces.referentiel.ClasseurCourrierRS;
+import com.keren.courrier.model.courrier.Courrier;
+import com.keren.courrier.model.courrier.FichierLie;
 import com.keren.courrier.model.referentiel.ClasseurCourrier;
+import com.keren.courrier.model.referentiel.CompartimentClasseur;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -64,6 +67,15 @@ public class ClasseurCourrierRSImpl
             Logger.getLogger(ClasseurCourrierRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return meta;
+    }
+    
+    @Override
+    protected void processBeforeSave(ClasseurCourrier entity) {        
+        for(CompartimentClasseur comp:entity.getCompartiments()){
+        	comp.setId(-1);
+        }//for(CompartimentClasseur comp:entity.getCompartiments()){
+        
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
     
     

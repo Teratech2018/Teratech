@@ -5,30 +5,40 @@
  */
 package com.keren.courrier.model.traitement;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+
 import com.core.base.BaseElement;
 import com.keren.courrier.model.courrier.CourrierClone;
+import com.keren.courrier.model.courrier.TypeTraitement;
 import com.keren.courrier.model.referentiel.ClasseurCourrier;
 import com.keren.courrier.model.referentiel.CompartimentClasseur;
 import com.keren.courrier.model.referentiel.StructureCompany;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
-import com.megatim.common.annotations.Observer;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 /**
  *
  * @author BEKO
  */
+@Entity
+@Table(name = "T_CLASACGC")
 public class ClassementAction extends BaseElement implements Serializable,Comparable<ClassementAction>{
 
     @ManyToOne
+    @JoinColumn(name = "COU_ID")
     @Predicate(label = "Courrier à classer",type = CourrierClone.class,target = "many-to-one",editable = false,optional = false)
     private CourrierClone courrier ;
     
     @Predicate(label = "Date de classement",type = Date.class,target = "date",optional = false)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date  dclassement ;
     
     @ManyToOne
@@ -37,26 +47,56 @@ public class ClassementAction extends BaseElement implements Serializable,Compar
     private UtilisateurCourrier ordonateur ;    
      
     @ManyToOne
-    @Predicate(label = "Service Ordonateur",type = StructureCompany.class,target = "many-to-one",editable = false)
-    @Observer(observable = "ordonateur",source = "field:service")
+    @JoinColumn(name = "SERV_ID")
+//    @Predicate(label = "Service Ordonateur",type = StructureCompany.class,target = "many-to-one",editable = false)
+//    @Observer(observable = "ordonateur",source = "field:service")
     private StructureCompany service ;
     
+    @Predicate(label = "Nature du classement",target = "combobox",values = "Sans suite;Fond de dossier",optional = false)
+    private String nature ="0";
     
      @ManyToOne
     @JoinColumn(name = "CLAS_ID")
-    @Predicate(label = "Classeur Concerné",type = ClasseurCourrier.class,target = "many-to-one",search = true,optional = false)
+    @Predicate(label = "Classeur Concerné",type = ClasseurCourrier.class,target = "many-to-one",search = true,optional = false, observable=true)
     private ClasseurCourrier classeur ;
     
       @ManyToOne
     @JoinColumn(name = "COMP_ID")
     @Predicate(label = "Compartiment",type = CompartimentClasseur.class,target = "many-to-one",search = true,optional = false)
+    @Filter(value="[{\"fieldName\":\"id\",\"value\":\"object.idclasseur\",\"searchfield\":\"idclasseur\",\"optional\":false,\"message\":\"Veuillez sélectionner un classeur\"}]")
     private CompartimentClasseur compartiment ;
     
     @Predicate(label = "Motif du classement",target = "textarea",optional = false,group = true,groupName = "group1",groupLabel = "")
     private String motif ;
+    
+ 
 
     public ClassementAction() {
     }
+
+    public ClassementAction(ClassementAction entity) {
+        super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+        if(entity.courrier!=null){
+            this.courrier = new CourrierClone(entity.courrier);
+        }
+        this.dclassement = entity.dclassement;
+        if(entity.ordonateur!=null){
+            this.ordonateur = new UtilisateurCourrier(entity.ordonateur);
+        }
+        if(entity.service!=null){
+            this.service = new StructureCompany(entity.service);
+        }
+        if(entity.classeur!=null){
+            this.classeur = new ClasseurCourrier(entity.classeur);
+        }
+        if(entity.compartiment!=null){
+            this.compartiment = new CompartimentClasseur(entity.compartiment);
+        }
+        this.motif = entity.motif;
+        this.nature = entity.nature;
+    }
+    
+    
 
     public UtilisateurCourrier getOrdonateur() {
         return ordonateur;
@@ -113,10 +153,18 @@ public class ClassementAction extends BaseElement implements Serializable,Compar
     public void setService(StructureCompany service) {
         this.service = service;
     }
-    
-    
 
-    @Override
+    public String getNature() {
+        return nature;
+    }
+
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+    
+  
+
+	@Override
     public String getModuleName() {
         return "kerencourrier"; //To change body of generated methods, choose Tools | Templates.
     }
@@ -131,7 +179,7 @@ public class ClassementAction extends BaseElement implements Serializable,Compar
     @Override
     public int compareTo(ClassementAction o) {
         //To change body of generated methods, choose Tools | Templates.
-        return 0;
+        return courrier.compareTo(o.courrier);
     }
     
 }

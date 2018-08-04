@@ -3,6 +3,7 @@ package com.keren.courrier.dao.ifaces.courrier;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.keren.courrier.model.courrier.BorderoCourrier;
+import com.keren.courrier.model.referentiel.Correspondant;
 import com.keren.courrier.model.referentiel.StructureCompany;
 
 
@@ -30,4 +31,6 @@ public interface BorderoCourrierDAO
      * @return 
      */
     public BorderoCourrier checkBordero(StructureCompany source,StructureCompany cible,String type);
+    
+    public BorderoCourrier checkBordero(StructureCompany source,Correspondant cible,String type);
 }

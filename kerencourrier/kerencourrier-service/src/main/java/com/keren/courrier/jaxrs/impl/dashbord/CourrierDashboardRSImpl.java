@@ -7,13 +7,11 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.core.dashboard.DashboardContainer;
 import com.core.securites.Groupe;
 import com.core.securites.GroupeDetail;
-import com.core.securites.UtilisateurManagerRemote;
 import com.core.views.DashboardRecord;
 import com.core.views.DashboardRecordManagerRemote;
 import com.google.gson.Gson;
 import com.kerem.core.DashboardUtil;
 import com.kerem.core.KerenExecption;
-import com.keren.courrier.core.ifaces.courrier.CourrierManagerRemote;
 import com.keren.courrier.core.ifaces.courrier.CourrierRecuManagerRemote;
 import com.keren.courrier.core.ifaces.dashbord.CorbeilleManagerRemote;
 import com.keren.courrier.core.ifaces.dashbord.CourrierDashboardManagerRemote;
@@ -57,6 +55,9 @@ public class CourrierDashboardRSImpl
      
     @Manager(application = "kerencourrier", name = "UtilisateurCourrierManagerImpl", interf = UtilisateurCourrierManagerRemote.class)
     protected UtilisateurCourrierManagerRemote usermanager;
+    
+    @Manager(application = "kerencourrier", name = "UserManagerImpl", interf = UserManagerRemote.class)
+    protected UserManagerRemote acomptemanager;
     
     @Manager(application = "kerencourrier", name = "CourrierRecuManagerImpl", interf = CourrierRecuManagerRemote.class)
     protected CourrierRecuManagerRemote courriermanager;
@@ -158,6 +159,7 @@ public class CourrierDashboardRSImpl
      * @return 
      */
     private List<Raccourci> getUserRaccourcis(User user){
+        user = acomptemanager.find("id", user.getId());
         List<Raccourci> results = new ArrayList<Raccourci>();
         if(user.getIntitule().trim().equalsIgnoreCase("administrateur")){
             results.add(new Raccourci("courrier_001", "Courriers arrivés", "glyphicon glyphicon-envelope"));
@@ -183,6 +185,7 @@ public class CourrierDashboardRSImpl
                     break;
                 }//end if(groupe.getModule().getName().trim().equalsIgnoreCase("keren_courrier")){
             }//end for(Groupe groupe : user.getAutorisations()){
+            if(group==null) return results;
             //Chargement des details
             for(GroupeDetail detail:group.getDroits()){
                 if(!detail.getHabilitation().trim().equalsIgnoreCase("3")){

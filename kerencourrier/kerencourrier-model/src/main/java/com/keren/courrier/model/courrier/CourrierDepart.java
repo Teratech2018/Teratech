@@ -3,38 +3,35 @@
  */
 package com.keren.courrier.model.courrier;
 
-import com.keren.courrier.model.referentiel.DossierCourrier;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.courrier.model.referentiel.Correspondant;
+import com.keren.courrier.model.referentiel.DossierCourrier;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.keren.courrier.model.referentiel.NatureCourrier;
 import com.keren.courrier.model.referentiel.Priorite;
-import com.keren.courrier.model.referentiel.Statut;
 import com.keren.courrier.model.referentiel.StructureCompany;
 import com.keren.courrier.model.referentiel.TypeCourrier;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
-import java.util.ArrayList;
-
-import javax.faces.view.facelets.FaceletContext;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
 
 /**
  * @author NTW table type correspondants
@@ -45,27 +42,25 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 
 	private static final long serialVersionUID = -12411984333486963L;
 
-	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true, editable=false)
+	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true, editable = false)
 	private String code;
 	
+	@Predicate(label = "Reférence du Courrier", search = true, optional = true, unique = true )
+	private String reference;
 
 	@ManyToOne
 	@JoinColumn(name = "T_NATURE")
 	@Predicate(label = "Nature", type = NatureCourrier.class, target = "many-to-one", search = true)
 	private NatureCourrier nature;
-	
+
 	@Predicate(label = "Type courrier départ", target = "combobox", values = "Initial;Réponse", search = false)
 	private String type = "0";
 
-
 	@Predicate(label = "Mention du courrier", target = "combobox", values = "Ordinaire;Confidentiel", search = true)
 	private String porte = "0";
-	
 
-	
 	@Column(name = "T_CAT")
-	 @Predicate(label = "Catégorie Courrier", optional = true, search = false,
-	 target = "combobox", values = "Courrier Arrivée;Courrier Départ;CourrierInterne;Document GED",editable = false)
+	//@Predicate(label = "Catégorie Courrier", optional = true, search = false, target = "combobox", values = "Courrier Arrivée;Courrier Départ;CourrierInterne;Document GED", editable = false)
 	private String categorie;
 
 	@ManyToOne
@@ -73,10 +68,11 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 	// @Predicate(label = "Type Courrier", type = TypeCourrier.class, target =
 	// "many-to-one", search = true, optional = false)
 	private TypeCourrier typecourrier;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "T_PRIO")
-//	@Predicate(label = "Priorité", type = Priorite.class, target = "many-to-one", search = true, optional = false, observable = true)
+	// @Predicate(label = "Priorité", type = Priorite.class, target =
+	// "many-to-one", search = true, optional = false, observable = true)
 	private Priorite priorite;
 
 	@Column(name = "D_COUR")
@@ -91,7 +87,7 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 
 	@ManyToOne
 	@JoinColumn(name = "T_SERV")
-	@Predicate(label = "Service initiateur", type = StructureCompany.class, target = "many-to-one", search = true, optional = false, observable = true, updatable=false)
+	@Predicate(label = "Service initiateur", type = StructureCompany.class, target = "many-to-one", search = true, optional = false, observable = true, updatable = false)
 	private StructureCompany service;
 
 	@ManyToOne
@@ -99,12 +95,11 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 	@Predicate(label = "Expéditeur", type = UtilisateurCourrier.class, target = "many-to-one", search = true)
 	@Observer(observable = "service", source = "field:responsable")
 	private UtilisateurCourrier expediteur;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "C_COUR")
-	@Predicate(label = "Courrier Arrivéé", type = Courrier.class, target = "many-to-one", optional = true,hidden="currentObject.type=='0'")
+	@Predicate(label = "Courrier Arrivéé", type = Courrier.class, target = "many-to-one", optional = true, hidden = "currentObject.type=='0'")
 	private Courrier courrier;
-
 
 	@Predicate(label = "Signataire", group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
 	private String signataire;
@@ -117,19 +112,6 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 	@JoinColumn(name = "COU_ID")
 	@Predicate(label = "Pièces jointes", type = FichierLie.class, target = "one-to-many", edittable = true, group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
 	private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "COU_ID")
-	// @Predicate(label = "",type = LigneDiffusion.class,target =
-	// "one-to-many",edittable = true,group = true,groupName =
-	// "group3",groupLabel = "Liste de diffusion")
-	// @Observer(observable = "service" ,source =
-	// "method:diffusionlist",parameters = "service")
-	private List<LigneDiffusion> diffusions = new ArrayList<LigneDiffusion>();
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "COU_ID")
-	private List<TraitementCourrier> traitements = new ArrayList<TraitementCourrier>();
 
 	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label = "Date limite", type = Date.class, target = "date", search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
@@ -152,14 +134,14 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 	@ManyToOne
 	@JoinColumn(name = "SOUR_ID")
 	private UtilisateurCourrier source;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "OWSERV_ID")
 	private StructureCompany sowner;
-	
-    @ManyToOne
-    @JoinColumn(name = "BORD_ID")
-    private BorderoCourrier bordero ;
+
+	@ManyToOne
+	@JoinColumn(name = "BORD_ID")
+	private BorderoCourrier bordero;
 	/*
 	 * @Column(name = "D_LIM_TRT")
 	 * 
@@ -176,8 +158,6 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 	 * = true, groupLabel = "Informations Complémentaires", groupName = "tab6")
 	 * private String obs;
 	 */
-
-	
 
 	/**
 	 * 
@@ -209,7 +189,6 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		this.signataire = signataire;
 		this.objet = objet;
 		this.piecesjointes = piecesjointes;
-		this.diffusions = diffusions;
 		this.limite = limite;
 		this.dossier = dossier;
 		this.motscles = motscles;
@@ -251,17 +230,19 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		}
 		this.signataire = dep.signataire;
 		this.porte = dep.porte;
+
+		if (dep.courrier != null) {
+			this.courrier = new Courrier(dep.courrier);
+		}
+		if (dep.sowner != null) {
+			this.sowner = new StructureCompany(dep.sowner);
+		}
+		if (dep.getBordero() != null) {
+			this.bordero = new BorderoCourrier(dep.getBordero());
+		}
+		this.type = dep.type;
 		
-		if(dep.courrier!=null){
-			this.courrier=new Courrier(dep.courrier) ;
-		}
-		if(dep.sowner!=null){
-			this.sowner=new StructureCompany(dep.sowner);
-		}
-		if(dep.getBordero()!=null){
-			this.bordero= new BorderoCourrier(dep.getBordero());
-		}
-		this.type=dep.type;
+		this.reference=dep.getReference();
 	}
 
 	@Override
@@ -304,14 +285,6 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		this.typecourrier = typecourrier;
 	}
 
-	public List<LigneDiffusion> getDiffusions() {
-		return diffusions;
-	}
-
-	public void setDiffusions(List<LigneDiffusion> diffusions) {
-		this.diffusions = diffusions;
-	}
-
 	public DossierCourrier getDossier() {
 		return dossier;
 	}
@@ -348,13 +321,6 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		return nature;
 	}
 
-	public List<TraitementCourrier> getTraitements() {
-		return traitements;
-	}
-
-	public void setTraitements(List<TraitementCourrier> traitements) {
-		this.traitements = traitements;
-	}
 
 	public void setNature(NatureCourrier nature) {
 		this.nature = nature;
@@ -472,6 +438,14 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		this.signataire = signataire;
 	}
 
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
 	public String getPorte() {
 		return porte;
 	}
@@ -491,8 +465,8 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		List<State> states = new ArrayList<State>();
 		State state = new State("etabli", "Brouillon");
 		states.add(state);
-		 state = new State("valide", "Distribué");
-		 states.add(state);
+		state = new State("valide", "Distribué");
+		states.add(state);
 		return states; // To change body of generated methods, choose Tools |
 						// Templates.
 	}
@@ -509,6 +483,8 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		return false; // To change body of generated methods, choose Tools |
 						// Templates.
 	}
+	
+	
 
 	@Override
 	public int compareTo(CourrierDepart o) {

@@ -11,7 +11,6 @@ import com.keren.courrier.core.ifaces.courrier.CourrierAAnnoteManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.UtilisateurCourrierManagerRemote;
 import com.keren.courrier.jaxrs.ifaces.courrier.CourrierAAnnoteRS;
 import com.keren.courrier.model.courrier.CourrierAAnnote;
-import com.keren.courrier.model.courrier.CourrierAQuote;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -73,8 +72,8 @@ public class CourrierAAnnoteRSImpl
         MetaData meta = null;
         try {
             meta = MetaDataUtil.getMetaData(new CourrierAAnnote(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Annoter le Courrier", false, "action", null);
-            workbtn.setValue("{'name':'courrier_trait_02_1',template:{'courrier':'object'}}");
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Annoter le Courrier", false, "link", null);
+            workbtn.setValue("{'name':'courrier_trait_02_1',template:{'courrier':'object','quoteur':'object.destinataire','service':'object.destinataire.service'},'header':['courrier']}");
             workbtn.setStates(new String[]{"etabli"});
 //            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);  

@@ -23,7 +23,7 @@
 			                <div class="panel-body flex-grow  action-group-body">
 			                    <table class="table" >
                                                 <tr ng-repeat=" menuitem in menu.actions"  ng-hide="menuitem.securitylevel==3">                                                    
-			                            <td ng-if="menuitem.hide===false" ng-class="getMenuClass(menuitem)">
+			                            <td ng-if="menuitem.hide==false" ng-class="getMenuClass(menuitem)">
 			                                <span class="{{menuitem.icon}} text-primary"></span>
                                                         <a href="#" ng-click="getSelectAction(menuitem)" ng-class="{'activemenu-color':menuitem.name==currentAction.name}">{{menuitem.label | translate}}</a>
 			                            </td>

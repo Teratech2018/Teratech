@@ -73,8 +73,9 @@ public class CourrierARelancerRSImpl
         MetaData meta = null;
         try {
             meta = MetaDataUtil.getMetaData(new CourrierARelancer(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Relencer le Courrier", false, "action", null);
-            workbtn.setValue("{'name':'courrier_trait_01_1',teplate:{'courrier':'object'}}");
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Relancer le Courrier", false, "action", null);
+            workbtn.setValue("{'name':'courrier_trait_04_1',template:{'courrier':'object','service':'object.service','doldlimite':'object.limite',"
+            		+ "'quoteur':'object.correspondant','squote':'object.sowner','quote':'object.destinataire'}}");
             workbtn.setStates(new String[]{"etabli"});
 //            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);  
@@ -111,11 +112,12 @@ public class CourrierARelancerRSImpl
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
-        container.addEq("sowner", user.getService());
-        container.addNotEq("state", "etabli");
-        container.addNotEq("state", "transmis");
-        container.addNotEq("state", "classer");
-        container.addLt("limite", new Date());
+       // container.addEq("sowner", user.getService());
+//        container.addNotEq("state", "etabli");
+        container.addEq("categorie", "0");
+        container.addEq("state", "transmis");
+//        container.addNotEq("state", "classer");
+        container.addLe("limite", new Date());
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -145,11 +147,12 @@ public class CourrierARelancerRSImpl
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
-        container.addEq("sowner", user.getService());
-        container.addNotEq("state", "etabli");
-        container.addNotEq("state", "transmis");
-        container.addNotEq("state", "classer");
-        container.addLt("limite", new Date());
+        //container.addEq("sowner", user.getService());
+        container.addEq("categorie", "0");
+         container.addEq("state", "transmis");
+//        container.addNotEq("state", "transmis");
+//        container.addNotEq("state", "classer");
+        container.addLe("limite", new Date());
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }

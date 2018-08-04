@@ -19,6 +19,7 @@ import com.keren.courrier.core.ifaces.courrier.CourrierInterneManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.BorderoCourrierDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierCloneDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierInterneDAOLocal;
+import com.keren.courrier.dao.ifaces.courrier.TraitementCourrierDAOLocal;
 import com.keren.courrier.model.courrier.BorderoCourrier;
 import com.keren.courrier.model.courrier.CourrierClone;
 import com.keren.courrier.model.courrier.CourrierDepart;
@@ -28,6 +29,7 @@ import com.keren.courrier.model.courrier.LigneBorderoCourrier;
 import com.keren.courrier.model.courrier.TraitementCourrier;
 import com.keren.courrier.model.courrier.TypeTraitement;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
+import com.keren.courrier.model.referentiel.User;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -45,6 +47,9 @@ public class CourrierInterneManagerImpl
     
     @EJB(name = "BorderoCourrierDAO")
 	protected BorderoCourrierDAOLocal borderodao;
+    
+    @EJB(name = "TraitementCourrierDAO")
+   	protected TraitementCourrierDAOLocal daotrt;
 
     public CourrierInterneManagerImpl() {
     }
@@ -63,10 +68,13 @@ public class CourrierInterneManagerImpl
     public List<CourrierInterne> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
         List<CourrierInterne> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<CourrierInterne> results = new ArrayList<CourrierInterne>();        
-        for(CourrierInterne courrier:datas){           
-            CourrierInterne data = new CourrierInterne(courrier);
-            results.add(new CourrierInterne(data));            
-        }//end for(CourrierInterne courrier:datas){                
+        for(CourrierInterne courrier:datas){  
+            User compte = new User(courrier.getExpediteur().getCompte());
+            courrier.getExpediteur().setCompte(compte);
+            CourrierInterne data = new CourrierInterne(courrier);            
+            results.add(data);            
+        }//end for(CourrierInterne courrier:datas){  
+        System.out.println("CourrierInterneManagerImpl.filter() list value "+results);
         return results;
     }
 
@@ -86,14 +94,18 @@ public class CourrierInterneManagerImpl
     public CourrierInterne find(String propertyName, Long entityID) {        
         //initialisaiton
         CourrierInterne data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
-        CourrierInterne result = new CourrierInterne(data);         
+        CourrierInterne result = new CourrierInterne(data); 
+        if(data.getCourrier()!=null){
+        	result.setCourrier(new CourrierClone(data.getCourrier()));
+        }//end if(data.getCourrier()!=null){
         for(FichierLie aas:data.getPiecesjointes()){
             result.getPiecesjointes().add(new FichierLie(aas));
         }//end for(FichierLie aas:data.getPiecesjointes()){
-        for(LigneDiffusion aas:data.getDiffusions()){
-            result.getDiffusions().add(new LigneDiffusion(aas));
-        }//end for(LigneDiffusion aas:data.getDiffusions()){        
-        return result;
+//        for(LigneDiffusion aas:data.getDiffusions()){
+//            result.getDiffusions().add(new LigneDiffusion(aas));
+//        }//end for(LigneDiffusion aas:data.getDiffusions()){  
+        
+         return result;
     }
     
      @Override
@@ -125,13 +137,14 @@ public class CourrierInterneManagerImpl
  		 entity.setCode("CI/"+entity.getId()+"/"+DateHelper.convertToString(entity.getDcourrier(), "dd/MM/yyyy"));
  		// gerre le tratement;
  		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(entity),TypeTraitement.ENREGISTREMENT);
- 		entity.getTraitements().add(trtcourrier);
+ 		daotrt.save(trtcourrier);
  		dao.update(entity.getId(), entity);
  	        if(entity.getBordero()!=null){
  	            LigneBorderoCourrier ligne = new LigneBorderoCourrier();
  	            ligne.setCourrier(new CourrierClone(entity));
  	            ligne.setNature("0");
  	            entity.getBordero().getCourriers().add(ligne);
+ 	           entity.getBordero().setCode("BDR/CI/" + entity.getBordero().getId() + "/" + DateHelper.convertToString(entity.getDcourrier(), "dd/MM/yyyy"));
  	            borderodao.update(entity.getBordero().getId(), entity.getBordero());           
  	        }//end if(entity.getBordero()!=null){
  		super.processAfterSave(entity);
@@ -146,7 +159,6 @@ public class CourrierInterneManagerImpl
 		CourrierInterne entity = dao.findByPrimaryKey("id", id);
 		daoclone.deleteCourrierRAD(new CourrierClone(entity));
 	    entity= new CourrierInterne();
-	    System.out.println("CourrierInterneManagerImpl.delete() delete ok ...");
 		return new CourrierInterne(entity);
 	}
     
@@ -156,18 +168,12 @@ public class CourrierInterneManagerImpl
         if(entity.getState().trim().equalsIgnoreCase("etabli")){
             entity.setState("valide");
         }
-
         CourrierInterne data = dao.update(entity.getId(), entity);
         CourrierInterne result = new CourrierInterne(data);
 
         for(FichierLie aas:data.getPiecesjointes()){
             result.getPiecesjointes().add(new FichierLie(aas));
         }
-
-        for(LigneDiffusion aas:data.getDiffusions()){
-            result.getDiffusions().add(new LigneDiffusion(aas));
-        }
-
         return result;
     }
 }

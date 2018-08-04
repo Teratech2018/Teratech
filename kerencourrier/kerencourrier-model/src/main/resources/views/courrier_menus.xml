@@ -7,19 +7,22 @@
     <menuitem id="courrier_001" label="Courriers arrivés" parent_ref="courrier_send" entity_ref="Courrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
     <menuitem id="courrier_002" label="Courriers départs" parent_ref="courrier_send" entity_ref="CourrierDepart" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
     <menuitem id="courrier_003" label="Courriers internes" parent_ref="courrier_send" entity_ref="CourrierInterne" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
-    <menuitem id="courrier_005" label="Traitement" parent_ref="courrier_send" entity_ref="CourrierRecu" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true"/>
+    <menuitem id="courrier_005" label="Courriers recus" parent_ref="courrier_send" entity_ref="CourrierRecu" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true"/>
+	<menuitem id="courrier_006" label="Liste des courriers" parent_ref="courrier_send" entity_ref="CourrierTous" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true"/>
 	<menu id="courrier_trans" label="Transmissions et Receptions" parent="keren_courrier" gyphycon="glyphicon glyphicon-book"/>
     <menuitem id="courrier_trans_01" label="Transmissions de courriers" parent_ref="courrier_trans" entity_ref="BorderoCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
 	<menuitem id="courrier_trans_02" label="Receptions de courriers" parent_ref="courrier_trans" entity_ref="BorderoCourrierR" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
 	<menu id="courrier_trait" label="Traitement Courriers" parent="keren_courrier" gyphycon="glyphicon glyphicon-book"/>
     <menuitem id="courrier_trait_01" label="Quotation" parent_ref="courrier_trait" entity_ref="CourrierAQuote" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
-	<menuitem id="courrier_trait_01_1" label="Quotation" parent_ref="courrier_trait" entity_ref="QuotationAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menuitem id="courrier_trait_01_1" label="Quotation" parent_ref="courrier_trait" entity_ref="QuotationAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true"/>
 	<menuitem id="courrier_trait_02" label="Annotation" parent_ref="courrier_trait" entity_ref="CourrierAAnnote" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
-	<menuitem id="courrier_trait_02_1" label="Annotation" parent_ref="courrier_trait" entity_ref="AnnotationAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menuitem id="courrier_trait_02_1" label="Annotation" parent_ref="courrier_trait" entity_ref="AnnotationAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true"/>
 	<menuitem id="courrier_trait_03" label="Classement" parent_ref="courrier_trait" entity_ref="CourrierAClasser" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"/>
 	<menuitem id="courrier_trait_03_1" label="Classement" parent_ref="courrier_trait" entity_ref="ClassementAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
-	<menuitem id="courrier_trait_04" label="Relance" parent_ref="courrier_trait" entity_ref="CourrierARelancer" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"/>
-	<menuitem id="courrier_trait_04_1" label="Relance" parent_ref="courrier_trait" entity_ref="ActionTemplate" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menuitem id="courrier_trait_04" label="Déclassement" parent_ref="courrier_trait" entity_ref="CourrierADeclasser" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"/>
+	<menuitem id="courrier_trait_04_1" label="DéClassement" parent_ref="courrier_trait" entity_ref="DeclassementAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
+	<menuitem id="courrier_trait_05" label="Relance" parent_ref="courrier_trait" entity_ref="CourrierARelancer" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"/>
+	<menuitem id="courrier_trait_05_1" label="Relance" parent_ref="courrier_trait" entity_ref="RelanceAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
 	<menu id="courrier_ref" label="Administration" parent="keren_courrier" gyphycon="glyphicon glyphicon-cog"/>
     <menuitem id="courrier_ref_01" label="Type Correspondant" parent_ref="courrier_ref" entity_ref="TypeCorrespondant" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
     <menuitem id="courrier_ref_02" label="Priorité" parent_ref="courrier_ref" entity_ref="Priorite" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
@@ -67,6 +70,28 @@
                       ]]>						
 					</template>
 			  </dashboardentry>			  
-		 </dashboard>		 		 
+		 </dashboard>	
+         <dashboard  id="dashboard_courrier003" parent_ref="dashboard_courrier_001" label="Recheche Rapide">
+		      <dashboardentry id="dashentry_courrier003" type="template" parent_ref="dashboard_courrier003" label="Corbeilles" entity_ref="CourrierDashboard"  model_ref="kerencourrier" method_ref="corbeille">
+			       <template>
+                     <![CDATA[				   
+						 <div class="col-sm-12 col-md-12">
+							 <form class="navbar-form navbar-search  navbar-center" role="Search" style="width: 100%;" > 
+								<div class="input-group" style="width: 100%;">                     
+									<span class="input-group-btn  pull-left" style="display: inline-block;width: 100%;">
+											<input type="text" ng-model="temporalData.search" class="form-control input-sm" style="width: 97%;">                                       
+											<button type="button" class="btn btn-search btn-sm btn-default"  ng-click="getActionByName('courrier_006',null,temporalData.search)">
+											  <span class="glyphicon glyphicon-search"></span>
+											</button>                           
+									  </span>
+								  
+								</div>           
+								
+							</form> 
+						 </div>    				
+                      ]]>						
+					</template>
+			  </dashboardentry>			  
+		 </dashboard>		 
 	 </dashboardRecord>
 </keren>

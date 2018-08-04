@@ -7,33 +7,30 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.commons.DateHelper;
+import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.courrier.core.ifaces.courrier.CourrierManagerRemote;
 import com.keren.courrier.core.ifaces.courrier.TraitementCourrierManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.PrioriteManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.StructureCompanyManagerRemote;
-import com.keren.courrier.core.ifaces.referentiel.UserManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.UtilisateurCourrierManagerRemote;
 import com.keren.courrier.jaxrs.ifaces.courrier.CourrierRS;
 import com.keren.courrier.model.courrier.Courrier;
-import com.keren.courrier.model.courrier.CourrierDepart;
 import com.keren.courrier.model.courrier.FichierLie;
 import com.keren.courrier.model.courrier.ServiceDiffusion;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.keren.courrier.model.referentiel.Priorite;
-import com.keren.courrier.model.referentiel.StructureCompany;
-import com.keren.courrier.model.referentiel.User;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
-import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -182,6 +179,7 @@ public class CourrierRSImpl
          container.addEq("source", user);
         container.addEq("categorie", "0");
         container.addNotEq("state", "receptionne");
+        container.addNotEq("state", "classer");
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -214,9 +212,11 @@ public class CourrierRSImpl
         container.addEq("source", user);
         container.addEq("categorie", "0");
         container.addNotEq("state", "receptionne");
+        container.addNotEq("state", "classer");
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }
+    
 
     @Override
     protected void processBeforeUpdate(Courrier entity) {
@@ -226,6 +226,57 @@ public class CourrierRSImpl
        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    protected void processAfterUpdate(Courrier entity) {
+         //To change body of generated methods, choose Tools | Templates.
+        for(FichierLie elt:entity.getPiecesjointes()){
+            File file = new File(FileHelper.getTemporalDirectory().getPath()+File.separator+elt.getFilename());
+            if(file.exists()){
+                File destfile = new File(FileHelper.getStaticDirectory().getPath());
+                boolean result = true;
+                if(!destfile.exists()){
+                    result = destfile.mkdir();
+                }//end if(!destfile.exists()){
+                if(result){
+                    try {
+                        destfile = new File(destfile.getPath()+File.separator+elt.getFilename());
+                        FileHelper.moveFile(file, destfile);
+                    } //end if(result){
+                    catch (IOException ex) {
+                        throw new KerenExecption(ex.getMessage());
+                    }
+                }
+            }//end if(file.exists()){
+        }//end for(FichierLie elt:entity.getPiecesjointes()){
+        super.processAfterUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processAfterSave(Courrier entity) {
+        //To change body of generated methods, choose Tools | Templates.
+        for(FichierLie elt:entity.getPiecesjointes()){
+            File file = new File(FileHelper.getTemporalDirectory().getPath()+File.separator+elt.getFilename());
+            if(file.exists()){
+                File destfile = new File(FileHelper.getStaticDirectory().getPath());
+                boolean result = true;
+                if(!destfile.exists()){
+                    result = destfile.mkdir();
+                }//end if(!destfile.exists()){
+                if(result){
+                    try {
+                        destfile = new File(destfile.getPath()+File.separator+elt.getFilename());
+                        FileHelper.moveFile(file, destfile);
+                    } //end if(result){
+                    catch (IOException ex) {
+                        throw new KerenExecption(ex.getMessage());
+                    }
+                }
+            }//end if(file.exists()){
+        }//end for(FichierLie elt:entity.getPiecesjointes()){
+        super.processAfterSave(entity); 
+    }
+
+    
     
     @Override
 	public Courrier delete(@Context HttpHeaders headers, Long id) {
@@ -242,8 +293,7 @@ public class CourrierRSImpl
 	
 
 		} catch (Exception ex) {
-			throw new KerenExecption(
-					"Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+			throw new KerenExecption("Le courrier "+entity.getDesignation()+" est déjà en cours de traitement...");
 		}
 
 		return entity;

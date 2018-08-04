@@ -45,6 +45,8 @@ public class CourrierARelancerManagerImpl
     public List<CourrierARelancer> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
         List<CourrierARelancer> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<CourrierARelancer> results = new ArrayList<CourrierARelancer>();        
+        
+        
         for(CourrierARelancer courrier:datas){
             CourrierARelancer data = new CourrierARelancer(courrier);
             results.add(data);              

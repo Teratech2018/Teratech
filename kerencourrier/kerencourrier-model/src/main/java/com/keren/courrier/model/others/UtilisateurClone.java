@@ -151,8 +151,58 @@ public class UtilisateurClone extends BaseElement implements Serializable, Compa
 //            this.service = new StructureCompany(entity.service);
 //        }
     }
+    
+    public UtilisateurClone(UtilisateurClone entity,String compte) {
+    	  super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+        this.type = entity.type;
+        this.sigle = entity.sigle;
+        this.civilite = entity.civilite;
+        this.nom = entity.nom;
+        this.prenom = entity.prenom;
+        this.fonction = entity.fonction;
+        this.courriel = entity.courriel;
+        //this.obs = entity.obs;
+        this.adress = entity.adress;
+        this.bp = entity.bp;
+        this.pays = entity.pays;
+        this.ville = entity.ville;
+        this.telephone = entity.telephone;
+        this.fax = entity.fax;
+        this.site = entity.site;
+        this.nature = entity.nature;
+//        if(entity.compte!=null){
+//            this.compte = new User(entity.compte);
+//        }
+//        if(entity.service!=null){
+//            this.service = new StructureCompany(entity.service);
+//        }
+    }
 	
-
+    public UtilisateurClone(UtilisateurCourrier entity) {
+        super(entity.getId(), entity.getDesignation(), entity.getModuleName(), entity.getCompareid());
+        this.type = entity.getType();
+        this.sigle = entity.getSigle();
+        this.civilite = entity.getCivilite();
+        this.nom = entity.getNom();
+        this.prenom = entity.getPrenom();
+        this.fonction = entity.getFonction();
+        this.courriel = entity.getCourriel();
+        //this.obs = entity.obs;
+        this.adress = entity.getAdress();
+        this.bp = entity.getBp();
+        this.pays = entity.getPays();
+        this.ville = entity.getVille();
+        this.telephone = entity.getTelephone();
+        this.fax = entity.getFax();
+        this.site = entity.getSite();
+        this.nature = entity.getNature();
+//        if(entity.compte!=null){
+//            this.compte = new User(entity.compte);
+//        }
+//        if(entity.service!=null){
+//            this.service = new StructureCompany(entity.service);
+//        }
+    }
     
 
 	public String getNom() {

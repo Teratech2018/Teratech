@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<model-config xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
+	xmlns="http://www.megatimgroup.net/model-config">
+    <elements>     
+        <element type="com.keren.courrier.model.courrier.Courrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.referentiel.Civilite"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+         <element type="com.keren.courrier.model.referentiel.Company"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.referentiel.Contact"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.referentiel.Correspondant"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.referentiel.DossierCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.referentiel.Priorite"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+          <element type="com.keren.courrier.model.referentiel.Service"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+           <element type="com.keren.courrier.model.referentiel.Statut"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.referentiel.TypeCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.referentiel.TypeDossier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+          <element type="com.keren.courrier.model.referentiel.TypeCorrespondant"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.referentiel.GroupeUtilisateur"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.referentiel.User"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.referentiel.StructureCompany"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>        
+       <element type="com.keren.courrier.model.courrier.CourrierDepart"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>        
+         <element type="com.keren.courrier.model.courrier.CourrierInterne"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.courrier.model.courrier.CourrierClone"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
+        <element type="com.keren.courrier.model.courrier.TraitementCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>           
+        <element type="com.keren.courrier.model.referentiel.NatureCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>        
+        <element type="com.keren.courrier.model.workflow.WorkflowAction"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.workflow.ActionCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.dashbord.CourrierDashboard"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.dashbord.Corbeille"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.InstanceCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.others.AvisTemplate"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.others.ActionTemplate"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.BorderoCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.LigneBorderoCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.BorderoCourrierR"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.LigneBorderoCourrierR"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.referentiel.UtilisateurCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.others.UtilisateurClone"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.traitement.QuotationAction"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.traitement.AnnotationAction"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.traitement.ClassementAction"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.referentiel.CompartimentClasseur"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.referentiel.ClasseurCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.CourrierAQuote"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.CourrierAAnnote"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.CourrierAClasser"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.CourrierARelancer"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.courrier.CourrierRecu"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+   </elements>
+    
+</model-config>

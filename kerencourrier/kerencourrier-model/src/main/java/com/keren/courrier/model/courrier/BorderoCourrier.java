@@ -8,6 +8,7 @@ package com.keren.courrier.model.courrier;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.keren.courrier.model.others.UtilisateurClone;
+import com.keren.courrier.model.referentiel.Correspondant;
 import com.keren.courrier.model.referentiel.StructureCompany;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
@@ -44,21 +45,26 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
     private StructureCompany source ;
     
     @ManyToOne
-    @JoinColumn(name = "CIB_ID")
-    @Predicate(label = "Service",type = StructureCompany.class,updatable = false,target = "many-to-one",optional = false,search = true)
-    private StructureCompany cible ;
-    
+    @JoinColumn(name = "EXCIB_ID")
+    @Predicate(label = "Entité Cible",type = Correspondant.class,updatable = false,target = "many-to-one",search = true,hidden="currentObject.type==null||currentObject.type!='1'")
+    private Correspondant excible;
+   
     @ManyToOne
     @JoinColumn(name = "UTCL_ID")
     @Predicate(label = "Agent liaison",type = UtilisateurClone.class,target = "many-to-one",optional = true,search = true)
     private UtilisateurClone agentliaison ;
+    
+    @ManyToOne
+    @JoinColumn(name = "CIB_ID")
+    @Predicate(label = "Service",type = StructureCompany.class,updatable = false,target = "many-to-one",search = true,hidden="currentObject.type=='1'")
+    private StructureCompany cible ;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     @Predicate(label = "Date création",type = Date.class,editable =false,target = "date",search = true)
     private Date creation;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Predicate(label = "Date émission",type = Date.class,target = "date",editable =false,search = true)
+    @Predicate(label = "Date émission",type = Date.class,target = "date",editable =true,search = true)
     private Date emission;
     
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -126,9 +132,18 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
         this.cible = cible;
     }
 
+    
    
 
-    public List<LigneBorderoCourrier> getCourriers() {
+    public Correspondant getExcible() {
+		return excible;
+	}
+
+	public void setExcible(Correspondant excible) {
+		this.excible = excible;
+	}
+
+	public List<LigneBorderoCourrier> getCourriers() {
         return courriers;
     }
 
@@ -251,7 +266,7 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
     @Override
     public int compareTo(BorderoCourrier o) {
         //To change body of generated methods, choose Tools | Templates.
-        return code.compareTo(o.code);
+        return Long.valueOf(id).compareTo(Long.valueOf(o.id));
     }
     
 }

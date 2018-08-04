@@ -16,5 +16,6 @@ public enum TypeTraitement {
     DECHARGE,
     QUOTATION,
     ANNOTATION,
-    CLASSEMENT
+    CLASSEMENT,
+    DECLASSEMENT
 }

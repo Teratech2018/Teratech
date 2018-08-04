@@ -34,7 +34,6 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
-
 /**
  * @author NTW table type correspondants
  */
@@ -42,150 +41,167 @@ import javax.persistence.Temporal;
 @Table(name = "T_COURRGC")
 public class CourrierClone extends BaseElement implements Serializable, Comparable<CourrierClone> {
 
-         private static final long serialVersionUID = -12411984333486963L;
-         
-	@Predicate(label = "Numéro du Courrier", search = true, optional = true,unique = true)
+	private static final long serialVersionUID = -12411984333486963L;
+
+	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true)
 	private String code;
-        
-         
-        @Predicate(label = "Mention du courrier",target = "combobox",values = "Ordinaire;Confidentiel",search = true)
-        private String porte = "0";
-        
-        @ManyToOne
+
+	@Predicate(label = "Reférence du Courrier", search = true, optional = true, unique = true)
+	private String reference;
+
+	@Predicate(label = "Mention du courrier", target = "combobox", values = "Ordinaire;Confidentiel", search = true)
+	private String porte = "0";
+
+	@ManyToOne
 	@JoinColumn(name = "T_NATURE")
-        @Predicate(label = "Nature",type = NatureCourrier.class,target = "many-to-one",search = true)
-        private NatureCourrier nature ;
-        
-        @Column(name = "T_CAT")
+	@Predicate(label = "Nature", type = NatureCourrier.class, target = "many-to-one", search = true)
+	private NatureCourrier nature;
+
+	@Column(name = "T_CAT")
 	@Predicate(label = "Catégorie Courrier", optional = false, search = false, target = "combobox", values = "Courrier Arrivée;Courrier Départ;Courrier Interne;Document GED")
 	private String categorie;
 
-//	@ManyToOne
-//	@JoinColumn(name = "T_TYPE")
-//	@Predicate(label = "Type Courrier", type = TypeCourrier.class, target = "many-to-one", search = true, optional = false)
-//	private TypeCourrier typecourrier;
+	// @ManyToOne
+	// @JoinColumn(name = "T_TYPE")
+	// @Predicate(label = "Type Courrier", type = TypeCourrier.class, target =
+	// "many-to-one", search = true, optional = false)
+	// private TypeCourrier typecourrier;
 
 	@ManyToOne
 	@JoinColumn(name = "T_PRIO")
-	@Predicate(label = "Priorité", type = Priorite.class, target = "many-to-one", search = true, optional = false,observable = true)
-	private Priorite priorite;        
-        
+	@Predicate(label = "Priorité", type = Priorite.class, target = "many-to-one", search = true, optional = false, observable = true)
+	private Priorite priorite;
+
 	@Column(name = "D_COUR")
-	@Predicate(label = "Date de Création du Courrier", optional = false, updatable = false, search = false, type = Date.class, target ="date")
-        @Temporal(javax.persistence.TemporalType.DATE)
+	@Predicate(label = "Date de Création du Courrier", optional = false, updatable = false, search = false, type = Date.class, target = "date")
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dcourrier;
-        
-        @Column(name = "D_ARR")
-	@Predicate(label = "Date d'arrivée Courrier", optional = true, updatable = false, search = false, type = Date.class, target ="date")
-        @Temporal(javax.persistence.TemporalType.DATE)
+
+	@Column(name = "D_ARR")
+	@Predicate(label = "Date d'arrivée Courrier", optional = true, updatable = false, search = false, type = Date.class, target = "date")
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date darrive;
-        
-        
-        @ManyToOne
+
+	@ManyToOne
 	@JoinColumn(name = "T_CORRES")
 	@Predicate(label = "Expéditeur", type = Correspondant.class, target = "many-to-one", search = true, optional = false)
 	private Correspondant correspondant;
-        
-        @ManyToOne
+
+	@ManyToOne
+	@JoinColumn(name = "T_EXPE")
+	@Predicate(label = "Expediteur du courrier", type = UtilisateurCourrier.class, target = "many-to-one", search = true, optional = false, observable = true)
+	private UtilisateurCourrier expediteur;
+
+	@ManyToOne
 	@JoinColumn(name = "T_SERV")
-	@Predicate(label = "Service Traitant", type = StructureCompany.class, target = "many-to-one", search = true, optional = false,observable = true)
+	@Predicate(label = "Service Traitant", type = StructureCompany.class, target = "many-to-one", search = true, optional = false, observable = true)
 	private StructureCompany service;
-        
-        @ManyToOne
-        @JoinColumn(name = "DES_ID")
-        @Predicate(label = "Destinatire",type = UtilisateurCourrier.class,target = "many-to-one",search = true)
-        @Observer(observable = "service",source = "field:responsable")
-        private UtilisateurCourrier destinataire;
-        
-        @ManyToOne
-        @JoinColumn(name = "STAT_ID")
-//        @Predicate(label = "Statut courrier",type = Statut.class,target = "many-to-one" ,optional = false,search = true)
-        private Statut statutcourrier;
-        
-        @Lob
-        @Predicate(label = "Objet",target = "textarea",group = true,groupName = "group1",groupLabel = "objet/Pièces jointes")
-	private String objet ;
 
-        @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
-        @JoinColumn(name = "COU_ID")
-        @Predicate(label = "Pièces jointes",type = FichierLie.class,target = "one-to-many",edittable = true,group = true,groupName = "group1",groupLabel = "objet/Pièces jointes")
-        private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
-	
-        
+	@ManyToOne
+	@JoinColumn(name = "DES_ID")
+	@Predicate(label = "Destinatire", type = UtilisateurCourrier.class, target = "many-to-one", search = true)
+	@Observer(observable = "service", source = "field:responsable")
+	private UtilisateurCourrier destinataire;
 
-        @Temporal(javax.persistence.TemporalType.DATE)
-        @Predicate(label = "Date limite",type = Date.class,target = "date", search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
-        @Observer(observable = "priorite",source = "method:datelimite",parameters = "priorite")
-        private Date limite ;
-        
-        @Predicate(label = "Signataire", group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
-        private String signataire ;
-        
+	@ManyToOne
+	@JoinColumn(name = "STAT_ID")
+	// @Predicate(label = "Statut courrier",type = Statut.class,target =
+	// "many-to-one" ,optional = false,search = true)
+	private Statut statutcourrier;
+
+	@Lob
+	@Predicate(label = "Objet", target = "textarea", group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
+	private String objet;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name = "COU_ID")
+	@Predicate(label = "Pièces jointes", type = FichierLie.class, target = "one-to-many", edittable = true, group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
+	private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
+
+	@Temporal(javax.persistence.TemporalType.DATE)
+	@Predicate(label = "Date limite", type = Date.class, target = "date", search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
+	@Observer(observable = "priorite", source = "method:datelimite", parameters = "priorite")
+	private Date limite;
+
+	@Predicate(label = "Signataire", group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
+	private String signataire;
+
 	@ManyToOne
 	@JoinColumn(name = "T_DOS")
 	@Predicate(label = "Dossier", type = DossierCourrier.class, target = "many-to-one", search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
 	@Filter(value = "[{\"fieldName\":\"classement\",\"value\":\"1\"}]")
-        protected DossierCourrier dossier;
+	protected DossierCourrier dossier;
 
 	@Column(name = "MOTS_CLES")
 	@Predicate(label = "Mots Clés", updatable = true, search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
 	protected String motscles;
-        
-        @ManyToOne
-        @JoinColumn(name = "ETA_ID")        
-        private WorkflowAction etape ;
-        
-        @Predicate(label = "Etat",search = true,hide = true)
-        private String state = "etabli";
-        
-//        @OneToMany(mappedBy = "courrier",fetch = FetchType.LAZY)
-//        private List<TraitementCourrier> traitements = new ArrayList<TraitementCourrier>();
 
-        @ManyToOne
-        @JoinColumn(name = "SOUR_ID")
-        private UtilisateurCourrier source ;
-        
-        @ManyToOne
-        @JoinColumn(name = "ORI_ID")
-        private CourrierClone origanal ;
-        
-        @ManyToOne
-        @JoinColumn(name = "BORD_ID")
-        private BorderoCourrier bordero ;
-        
-         
-        @ManyToOne
+	@ManyToOne
+	@JoinColumn(name = "C_COUR")
+	// @Predicate(label = "Courrier Joint", type = CourrierClone.class, target =
+	// "many-to-one", optional = true, hidden = "currentObject.type=='0'")
+	private CourrierClone courrier;
+
+	@ManyToOne
+	@JoinColumn(name = "ETA_ID")
+	private WorkflowAction etape;
+
+	@Predicate(label = "Etat", search = true, hide = true)
+	private String state = "etabli";
+
+	// @Predicate(label = "Type courrier départ", target = "combobox", values =
+	// "Initial;Réponse", search = false)
+	private String type = "0";
+
+	// @OneToMany(mappedBy = "courrier",fetch = FetchType.LAZY)
+	// private List<TraitementCourrier> traitements = new
+	// ArrayList<TraitementCourrier>();
+
+	@ManyToOne
+	@JoinColumn(name = "SOUR_ID")
+	private UtilisateurCourrier source;
+
+	@ManyToOne
+	@JoinColumn(name = "ORI_ID")
+	private CourrierClone origanal;
+
+	@ManyToOne
+	@JoinColumn(name = "BORD_ID")
+	private BorderoCourrier bordero;
+
+	@ManyToOne
 	@JoinColumn(name = "OWSERV_ID")
-        private StructureCompany sowner;
-        
-        
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "COU_ID")
-	private List<TraitementCourrier> traitements = new ArrayList<TraitementCourrier>();
+	private StructureCompany sowner;
 
+	@Column(name = "type_class")
+	private String typeclassement = "0";
+	
+	@Column(name = "LAST_TRT")
+	private String lastState;
 
-	public CourrierClone(String categorie, String niveauDeTraitement, TypeCourrier typecourrier, Priorite priorite, boolean confidentiel,
-			Date dcourrier, Date darrive, Correspondant correspondant, Boolean limite, Date dlimtrt,
-			Statut statut, StructureCompany service, String obs, DossierCourrier dossier, String motscles, List<DossierCourrier> dossiercourrier) {
+	public CourrierClone(String categorie, String niveauDeTraitement, TypeCourrier typecourrier, Priorite priorite,
+			boolean confidentiel, Date dcourrier, Date darrive, Correspondant correspondant, Boolean limite,
+			Date dlimtrt, Statut statut, StructureCompany service, String obs, DossierCourrier dossier, String motscles,
+			List<DossierCourrier> dossiercourrier) {
 		super();
 		this.categorie = categorie;
-//                this.typecourrier = typecourrier;
-		//this.priorite = priorite;
-		//this.confidentiel = confidentiel;
+		// this.typecourrier = typecourrier;
+		// this.priorite = priorite;
+		// this.confidentiel = confidentiel;
 		this.dcourrier = dcourrier;
 		this.darrive = darrive;
 		this.correspondant = correspondant;
-                this.dossier = dossier;
-                this.motscles = motscles;
-                
-		//this.nature = nature;
-		//this.limite = limite;
-		//this.dlimtrt = dlimtrt;
+		this.dossier = dossier;
+		this.motscles = motscles;
+
+		// this.nature = nature;
+		// this.limite = limite;
+		// this.dlimtrt = dlimtrt;
 		this.service = service;
-		//this.obs = obs;
-		//this.motscles = motscles;
-		//this.dossier = dossier;
-		
+		// this.obs = obs;
+		// this.motscles = motscles;
+		// this.dossier = dossier;
+
 	}
 
 	/**
@@ -196,229 +212,259 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 	}
 
 	public CourrierClone(CourrierClone dep) {
-		super(dep.id, dep.designation, dep.moduleName,dep.compareid);
+		super(dep.id, dep.designation, dep.moduleName, dep.compareid);
 		this.categorie = dep.categorie;
-                this.code = dep.code;
-              
-//                if(dep.typecourrier!=null){
-//                    this.typecourrier = new TypeCourrier(dep.typecourrier);
-//                }
-                
-                if(dep.priorite != null){
-                    this.priorite = new Priorite(dep.priorite);
-                }
-                
-		//this.confidentiel = dep.confidentiel;
+		this.code = dep.code;
+
+		// if(dep.typecourrier!=null){
+		// this.typecourrier = new TypeCourrier(dep.typecourrier);
+		// }
+
+		if (dep.priorite != null) {
+			this.priorite = new Priorite(dep.priorite);
+		}
+
+		// this.confidentiel = dep.confidentiel;
 		this.dcourrier = dep.dcourrier;
 		this.darrive = dep.darrive;
-                
-                if(dep.correspondant != null){
-                    this.correspondant = new Correspondant(dep.correspondant);
-                }
-                
-                if(dep.nature != null){
-                    this.nature = new NatureCourrier(dep.nature);
-                }
-                this.objet = dep.objet;
+
+		if (dep.correspondant != null) {
+			this.correspondant = new Correspondant(dep.correspondant);
+		}
+
+		if (dep.nature != null) {
+			this.nature = new NatureCourrier(dep.nature);
+		}
+		this.objet = dep.objet;
 		this.limite = dep.limite;
-		//this.dlimtrt = dep.dlimtrt;
-                
-                if(dep.dossier!=null){
-                    this.dossier = new DossierCourrier(dep.getDossier());
-                }
-                this.motscles = dep.getMotscles();
-                
-                if(dep.service!=null){
-                    this.service = new StructureCompany(dep.service);
-                }
-                if(dep.etape!=null){
-                    this.etape = new WorkflowAction(dep.etape);
-                }
+		// this.dlimtrt = dep.dlimtrt;
+
+		if (dep.dossier != null) {
+			this.dossier = new DossierCourrier(dep.getDossier());
+		}
+		this.motscles = dep.getMotscles();
+
+		if (dep.service != null) {
+			this.service = new StructureCompany(dep.service);
+		}
+		if (dep.etape != null) {
+			this.etape = new WorkflowAction(dep.etape);
+		}
 		this.state = dep.state;
-                
-                if(dep.source!=null){
-                    this.source = new UtilisateurCourrier(dep.source);
-                }
-                if(dep.destinataire!=null){
-                    this.destinataire = new UtilisateurCourrier(dep.destinataire);
-                }
-                if(dep.statutcourrier!=null){
-                    this.statutcourrier = new Statut(dep.statutcourrier);
-                }
-                this.state = dep.state;
-		if(dep.origanal!=null){
-                    this.origanal = new CourrierClone(dep.origanal);
-                }
-                if(dep.bordero!=null){
-                    this.bordero = new BorderoCourrier(dep.bordero);
-                }
-                this.porte = dep.porte;
-                 if(dep.sowner!=null){
-                    this.sowner = new StructureCompany(dep.sowner);
-                }
+
+		if (dep.source != null) {
+
+			this.source = new UtilisateurCourrier(dep.source);
+		}
+		if (dep.destinataire != null) {
+			this.destinataire = new UtilisateurCourrier(dep.destinataire);
+		}
+		if (dep.statutcourrier != null) {
+			this.statutcourrier = new Statut(dep.statutcourrier);
+		}
+		this.state = dep.state;
+		// if (dep.origanal != null) {
+		// this.origanal = new CourrierClone(dep.origanal);
+		// }
+		// if (dep.bordero != null) {
+		// this.bordero = new BorderoCourrier(dep.bordero);
+		// }
+		this.porte = dep.porte;
+		if (dep.sowner != null) {
+			this.sowner = new StructureCompany(dep.sowner);
+		}
+		this.reference = dep.reference;
+		this.type = dep.type;
+		// if (dep.courrier != null) {
+		// this.courrier = new CourrierClone(dep.courrier);
+		// }
+		if (dep.expediteur != null) {
+			this.expediteur = new UtilisateurCourrier(dep.expediteur);
+		}
+		this.typeclassement = dep.typeclassement;
+		this.lastState= dep.lastState;
 	}
-        
-        public CourrierClone(CourrierDepart dep) {
-		super(dep.getId(), dep.getDesignation(), dep.getModuleName(),dep.getCompareid());
+
+	public CourrierClone(CourrierDepart dep) {
+		super(dep.getId(), dep.getDesignation(), dep.getModuleName(), dep.getCompareid());
 		this.categorie = dep.getCategorie();
-                this.code = dep.getCode();
-              
-//                if(dep.getTypecourrier()!=null){
-//                    this.typecourrier = new TypeCourrier(dep.getTypecourrier());
-//                }
-                
-                if(dep.getPriorite() != null){
-                    this.priorite = new Priorite(dep.getPriorite());
-                }
-                
-		//this.confidentiel = dep.confidentiel;
+		this.code = dep.getCode();
+
+		// if(dep.getTypecourrier()!=null){
+		// this.typecourrier = new TypeCourrier(dep.getTypecourrier());
+		// }
+
+		if (dep.getPriorite() != null) {
+			this.priorite = new Priorite(dep.getPriorite());
+		}
+
+		// this.confidentiel = dep.confidentiel;
 		this.dcourrier = dep.getDcourrier();
 		this.darrive = null;
-                
-                if(dep.getCorrespondant() != null){
-                    this.correspondant = new Correspondant(dep.getCorrespondant());
-                }
-                
-                if(dep.getNature() != null){
-                    this.nature = new NatureCourrier(dep.getNature());
-                }
-                this.objet = dep.getObjet();
+
+		if (dep.getCorrespondant() != null) {
+			this.correspondant = new Correspondant(dep.getCorrespondant());
+		}
+
+		if (dep.getNature() != null) {
+			this.nature = new NatureCourrier(dep.getNature());
+		}
+		this.objet = dep.getObjet();
 		this.limite = dep.getLimite();
-		//this.dlimtrt = dep.dlimtrt;
-                
-                if(dep.dossier!=null){
-                    this.dossier = new DossierCourrier(dep.getDossier());
-                }
-                this.motscles = dep.getMotscles();
-                
-                if(dep.getService()!=null){
-                    this.service = new StructureCompany(dep.getService());
-                }
-//                if(dep.getE()!=null){
-//                    this.etape = new WorkflowAction(dep.etape);
-//                }
+		// this.dlimtrt = dep.dlimtrt;
+
+		if (dep.dossier != null) {
+			this.dossier = new DossierCourrier(dep.getDossier());
+		}
+		this.motscles = dep.getMotscles();
+
+		if (dep.getService() != null) {
+			this.service = new StructureCompany(dep.getService());
+		}
+		// if(dep.getE()!=null){
+		// this.etape = new WorkflowAction(dep.etape);
+		// }
 		this.state = dep.getState();
-                
-                if(dep.getSource()!=null){
-                    this.source = new UtilisateurCourrier(dep.getSource());
-                }
-                this.piecesjointes = dep.getPiecesjointes();
-                                
-	}
-        
-         public CourrierClone(Courrier dep) {
-		super(dep.getId(), dep.getDesignation(), dep.getModuleName(),dep.getCompareid());
-		this.categorie = dep.getCategorie();
-                this.code = dep.getCode();
-              
-//                if(dep.getTypecourrier()!=null){
-//                    this.typecourrier = new TypeCourrier(dep.getTypecourrier());
-//                }
-                
-                if(dep.getPriorite() != null){
-                    this.priorite = new Priorite(dep.getPriorite());
-                }
-                
-		//this.confidentiel = dep.confidentiel;
-		this.dcourrier = dep.getDcourrier();
-		this.darrive = null;
-                
-                if(dep.getCorrespondant() != null){
-                    this.correspondant = new Correspondant(dep.getCorrespondant());
-                }
-                
-                if(dep.getNature() != null){
-                    this.nature = new NatureCourrier(dep.getNature());
-                }
-                this.objet = dep.getObjet();
-		this.limite = dep.getLimite();
-		//this.dlimtrt = dep.dlimtrt;
-                
-                if(dep.dossier!=null){
-                    this.dossier = new DossierCourrier(dep.getDossier());
-                }
-                this.motscles = dep.getMotscles();
-                
-                if(dep.getService()!=null){
-                    this.service = new StructureCompany(dep.getService());
-                }
-//                if(dep.getE()!=null){
-//                    this.etape = new WorkflowAction(dep.etape);
-//                }
-		this.state = dep.getState();
-                
-                if(dep.getSource()!=null){
-                    this.source = new UtilisateurCourrier(dep.getSource());
-                }
-                this.piecesjointes = dep.getPiecesjointes();
-                                
-	}
-        
-        public CourrierClone(CourrierInterne dep) {
-		super(dep.getId(), dep.getDesignation(), dep.getModuleName(),dep.getCompareid());
-		this.categorie = dep.getCategorie();
-                this.code = dep.getCode();
-              
-//                if(dep.getTypecourrier()!=null){
-//                    this.typecourrier = new TypeCourrier(dep.getTypecourrier());
-//                }
-                
-                if(dep.getPriorite() != null){
-                    this.priorite = new Priorite(dep.getPriorite());
-                }
-                
-		//this.confidentiel = dep.confidentiel;
-		this.dcourrier = dep.getDcourrier();
-		this.darrive = null;
-                
-//                if(dep.getCorrespondant() != null){
-//                    this.correspondant = new Uti(dep.getCorrespondant());
-//                }
-                
-                if(dep.getNature() != null){
-                    this.nature = new NatureCourrier(dep.getNature());
-                }
-                this.objet = dep.getObjet();
-		this.limite = dep.getLimite();
-		//this.dlimtrt = dep.dlimtrt;
-                
-                if(dep.dossier!=null){
-                    this.dossier = new DossierCourrier(dep.getDossier());
-                }
-                this.motscles = dep.getMotscles();
-                
-                if(dep.getService()!=null){
-                    this.service = new StructureCompany(dep.getService());
-                }
-//                if(dep.getE()!=null){
-//                    this.etape = new WorkflowAction(dep.etape);
-//                }
-		this.state = dep.getState();
-                
-                if(dep.getSource()!=null){
-                    this.source = new UtilisateurCourrier(dep.getSource());
-                }                
+
+		if (dep.getSource() != null) {
+			this.source = new UtilisateurCourrier(dep.getSource());
+		}
 		this.piecesjointes = dep.getPiecesjointes();
-                                
+		// this.traitements= dep.getTraitements();
+		this.reference = dep.getReference();
+
 	}
 
-        public BorderoCourrier getBordero() {
-            return bordero;
-        }
+	public CourrierClone(Courrier dep) {
+		super(dep.getId(), dep.getDesignation(), dep.getModuleName(), dep.getCompareid());
+		this.categorie = dep.getCategorie();
+		this.code = dep.getCode();
 
-        public void setBordero(BorderoCourrier bordero) {
-            this.bordero = bordero;
-        }
+		// if(dep.getTypecourrier()!=null){
+		// this.typecourrier = new TypeCourrier(dep.getTypecourrier());
+		// }
 
-    public StructureCompany getSowner() {
-        return sowner;
-    }
+		if (dep.getPriorite() != null) {
+			this.priorite = new Priorite(dep.getPriorite());
+		}
 
-    public void setSowner(StructureCompany sowner) {
-        this.sowner = sowner;
-    }
-        
-        
+		// this.confidentiel = dep.confidentiel;
+		this.dcourrier = dep.getDcourrier();
+		this.darrive = null;
+
+		if (dep.getCorrespondant() != null) {
+			this.correspondant = new Correspondant(dep.getCorrespondant());
+		}
+
+		if (dep.getNature() != null) {
+			this.nature = new NatureCourrier(dep.getNature());
+		}
+		this.objet = dep.getObjet();
+		this.limite = dep.getLimite();
+		// this.dlimtrt = dep.dlimtrt;
+
+		if (dep.dossier != null) {
+			this.dossier = new DossierCourrier(dep.getDossier());
+		}
+		this.motscles = dep.getMotscles();
+
+		if (dep.getService() != null) {
+			this.service = new StructureCompany(dep.getService());
+		}
+		// if(dep.getE()!=null){
+		// this.etape = new WorkflowAction(dep.etape);
+		// }
+		this.state = dep.getState();
+
+		if (dep.getSource() != null) {
+			this.source = new UtilisateurCourrier(dep.getSource());
+		}
+		this.piecesjointes = dep.getPiecesjointes();
+		// this.traitements= dep.getTraitements();
+		this.reference = dep.getReference();
+
+	}
+
+	public CourrierClone(CourrierInterne dep) {
+		super(dep.getId(), dep.getDesignation(), dep.getModuleName(), dep.getCompareid());
+		this.categorie = dep.getCategorie();
+		this.code = dep.getCode();
+
+		// if(dep.getTypecourrier()!=null){
+		// this.typecourrier = new TypeCourrier(dep.getTypecourrier());
+		// }
+
+		if (dep.getPriorite() != null) {
+			this.priorite = new Priorite(dep.getPriorite());
+		}
+
+		// this.confidentiel = dep.confidentiel;
+		this.dcourrier = dep.getDcourrier();
+		this.darrive = null;
+
+		if (dep.getNature() != null) {
+			this.nature = new NatureCourrier(dep.getNature());
+		}
+		this.objet = dep.getObjet();
+		this.limite = dep.getLimite();
+		// this.dlimtrt = dep.dlimtrt;
+
+		if (dep.dossier != null) {
+			this.dossier = new DossierCourrier(dep.getDossier());
+		}
+		this.motscles = dep.getMotscles();
+
+		if (dep.getService() != null) {
+			this.service = new StructureCompany(dep.getService());
+		}
+		// if(dep.getE()!=null){
+		// this.etape = new WorkflowAction(dep.etape);
+		// }
+		this.state = dep.getState();
+
+		if (dep.getSource() != null) {
+			this.source = new UtilisateurCourrier(dep.getSource());
+		}
+		this.piecesjointes = dep.getPiecesjointes();
+		// this.traitements= dep.getTraitements();
+		this.reference = dep.getReference();
+		if (dep.getExpediteur() != null) {
+			this.expediteur = new UtilisateurCourrier(dep.getExpediteur());
+		}
+
+	}
+
+	public BorderoCourrier getBordero() {
+		return bordero;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public void setBordero(BorderoCourrier bordero) {
+		this.bordero = bordero;
+	}
+
+	public StructureCompany getSowner() {
+		return sowner;
+	}
+
+	public void setSowner(StructureCompany sowner) {
+		this.sowner = sowner;
+	}
+
+	public UtilisateurCourrier getExpediteur() {
+		return expediteur;
+	}
+
+	public void setExpediteur(UtilisateurCourrier expediteur) {
+		this.expediteur = expediteur;
+	}
 
 	@Override
 	public String getEditTitle() {
@@ -441,10 +487,9 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return code ;
+		return code;
 	}
 
-	
 	public String getCategorie() {
 		return categorie;
 	}
@@ -453,91 +498,103 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		this.categorie = categorie;
 	}
 
-       
-//	public TypeCourrier getTypecourrier() {
-//		return typecourrier;
-//	}
-//
-//	public void setTypecourrier(TypeCourrier typecourrier) {
-//		this.typecourrier = typecourrier;
-//	}
+	public CourrierClone getCourrier() {
+		return courrier;
+	}
 
-        public DossierCourrier getDossier() {
-            return dossier;
-        }
+	public void setCourrier(CourrierClone courrier) {
+		this.courrier = courrier;
+	}
 
-        public void setDossier(DossierCourrier dossier) {
-            this.dossier = dossier;
-        }
+	public String getType() {
+		return type;
+	}
 
-        public String getMotscles() {
-            return motscles;
-        }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-        public void setMotscles(String motscles) {
-            this.motscles = motscles;
-        }
+	public DossierCourrier getDossier() {
+		return dossier;
+	}
+
+	public void setDossier(DossierCourrier dossier) {
+		this.dossier = dossier;
+	}
+
+	public String getMotscles() {
+		return motscles;
+	}
+
+	public void setMotscles(String motscles) {
+		this.motscles = motscles;
+	}
+
+	public UtilisateurCourrier getDestinataire() {
+		return destinataire;
+	}
 
 
-        public UtilisateurCourrier getDestinataire() {
-            return destinataire;
-        }
 
-        public void setDestinataire(UtilisateurCourrier destinataire) {
-            this.destinataire = destinataire;
-        }
+	public String getLastState() {
+		return lastState;
+	}
 
+	public void setLastState(String lastState) {
+		this.lastState = lastState;
+	}
 
+	public void setDestinataire(UtilisateurCourrier destinataire) {
+		this.destinataire = destinataire;
+	}
 
-        public NatureCourrier getNature() {
-            return nature;
-        }
+	public NatureCourrier getNature() {
+		return nature;
+	}
 
-        public void setNature(NatureCourrier nature) {
-            this.nature = nature;
-        }
+	public void setNature(NatureCourrier nature) {
+		this.nature = nature;
+	}
 
-        public String getObjet() {
-            return objet;
-        }
+	public String getObjet() {
+		return objet;
+	}
 
-        public void setObjet(String objet) {
-            this.objet = objet;
-        }
+	public void setObjet(String objet) {
+		this.objet = objet;
+	}
 
-        public List<FichierLie> getPiecesjointes() {
-            return piecesjointes;
-        }
+	public List<FichierLie> getPiecesjointes() {
+		return piecesjointes;
+	}
 
-        public void setPiecesjointes(List<FichierLie> piecesjointes) {
-            this.piecesjointes = piecesjointes;
-        }
+	public void setPiecesjointes(List<FichierLie> piecesjointes) {
+		this.piecesjointes = piecesjointes;
+	}
 
-        public Date getLimite() {
-            return limite;
-        }
+	public Date getLimite() {
+		return limite;
+	}
 
-        public void setLimite(Date limite) {
-            this.limite = limite;
-        }
+	public void setLimite(Date limite) {
+		this.limite = limite;
+	}
 
-        public WorkflowAction getEtape() {
-            return etape;
-        }
+	public WorkflowAction getEtape() {
+		return etape;
+	}
 
-        public void setEtape(WorkflowAction etape) {
-            this.etape = etape;
-        }
+	public void setEtape(WorkflowAction etape) {
+		this.etape = etape;
+	}
 
-        public Statut getStatutcourrier() {
-            return statutcourrier;
-        }
+	public Statut getStatutcourrier() {
+		return statutcourrier;
+	}
 
-        public void setStatutcourrier(Statut statutcourrier) {
-            this.statutcourrier = statutcourrier;
-        }
-
-	
+	public void setStatutcourrier(Statut statutcourrier) {
+		this.statutcourrier = statutcourrier;
+	}
 
 	public Date getDcourrier() {
 		return dcourrier;
@@ -563,188 +620,190 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		this.correspondant = correspondant;
 	}
 
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public Priorite getPriorite() {
-            return priorite;
-        }
-
-        public void setPriorite(Priorite priorite) {
-            this.priorite = priorite;
-        }
-
-        public StructureCompany getService() {
-            return service;
-        }
-
-        public void setService(StructureCompany service) {
-            this.service = service;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-//        public List<TraitementCourrier> getTraitements() {
-//            return traitements;
-//        }
-//
-//        public void setTraitements(List<TraitementCourrier> traitements) {
-//            this.traitements = traitements;
-//        }
-
-        public UtilisateurCourrier getSource() {
-            return source;
-        }
-
-        public void setSource(UtilisateurCourrier source) {
-            this.source = source;
-        }
-
-        public String getSignataire() {
-            return signataire;
-        }
-
-        public void setSignataire(String signataire) {
-            this.signataire = signataire;
-        }
-
-        public CourrierClone getOriganal() {
-            return origanal;
-        }
-
-        public void setOriganal(CourrierClone origanal) {
-            this.origanal = origanal;
-        }
-
-        public String getPorte() {
-            return porte;
-        }
-
-        public void setPorte(String porte) {
-            this.porte = porte;
-        }
-
-        public List<TraitementCourrier> getTraitements() {
-            return traitements;
-        }
-
-        public void setTraitements(List<TraitementCourrier> traitements) {
-            this.traitements = traitements;
-        }
-
-
-
-        @Override
-        public boolean isActivatefollower() {
-            return true; //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public List<State> getStates() {
-            List<State> states = new ArrayList<State>();
-            State state = new State("etabli", "Brouillon");
-            states.add(state);
-    //        state = new State("valide", "Saisi validée");
-    //        states.add(state);
-            return states; //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public String getSerial() {
-            return Long.toString(serialVersionUID); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public boolean isCreateonfield() {
-            return true; //To change body of generated methods, choose Tools | Templates.
-        }
-        
-	@Override
-	public int compareTo(CourrierClone o) {
-            //TODO Auto-generated method stub
-            return code.compareTo(o.code);
+	public String getCode() {
+		return code;
 	}
 
-    public CourrierClone newInstace() {
-        CourrierClone entity = new CourrierClone();
-        entity.categorie = this.categorie;
-        entity.code = this.code;
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-//        if(this.typecourrier!=null){
-//            entity.typecourrier = new TypeCourrier(this.typecourrier);
-//        }
+	public Priorite getPriorite() {
+		return priorite;
+	}
 
-        if(this.priorite != null){
-            entity.priorite = new Priorite(this.priorite);
-        }
+	public void setPriorite(Priorite priorite) {
+		this.priorite = priorite;
+	}
 
-        //this.confidentiel = this.confidentiel;
-        entity.dcourrier = this.dcourrier;
-        entity.darrive = this.darrive;
+	public StructureCompany getService() {
+		return service;
+	}
 
-        if(this.correspondant != null){
-            entity.correspondant = new Correspondant(this.correspondant);
-        }
+	public void setService(StructureCompany service) {
+		this.service = service;
+	}
 
-        if(this.nature != null){
-            entity.nature = new NatureCourrier(this.nature);
-        }
-        entity.objet = this.objet;
-        entity.limite = this.limite;
-        //this.dlimtrt = this.dlimtrt;
+	public String getState() {
+		return state;
+	}
 
-        if(this.dossier!=null){
-            entity.dossier = new DossierCourrier(this.getDossier());
-        }
-        entity.motscles = this.getMotscles();
+	public void setState(String state) {
+		this.state = state;
+	}
 
-        if(this.service!=null){
-            entity.service = new StructureCompany(this.service);
-        }
-        if(this.etape!=null){
-            entity.etape = new WorkflowAction(this.etape);
-        }
-        entity.state = this.state;
+	// public List<TraitementCourrier> getTraitements() {
+	// return traitements;
+	// }
+	//
+	// public void setTraitements(List<TraitementCourrier> traitements) {
+	// this.traitements = traitements;
+	// }
 
-        if(this.source!=null){
-            entity.source = new UtilisateurCourrier(this.source);
-        }
-        if(this.destinataire!=null){
-            entity.destinataire = new UtilisateurCourrier(this.destinataire);
-        }
-        if(this.statutcourrier!=null){
-            entity.statutcourrier = new Statut(this.statutcourrier);
-        }
-        entity.state = this.state;
-        if(this.origanal!=null){
-            entity.origanal = new CourrierClone(this.origanal);
-        }
-        if(this.bordero!=null){
-            entity.bordero = new BorderoCourrier(this.bordero);
-        }
-        entity.porte = this.porte;
-        if(this.sowner!=null){
-            entity.sowner = new StructureCompany(this.sowner);
-        }
-        for(FichierLie fichier:piecesjointes){
-            FichierLie pj = new FichierLie(fichier);
-            pj.setId(-1);
-            entity.getPiecesjointes().add(pj);
-        }
-        return entity; //To change body of generated methods, choose Tools | Templates.
-    }
-        
-        
+	public UtilisateurCourrier getSource() {
+		return source;
+	}
+
+	public void setSource(UtilisateurCourrier source) {
+		this.source = source;
+	}
+
+	public String getSignataire() {
+		return signataire;
+	}
+
+	public void setSignataire(String signataire) {
+		this.signataire = signataire;
+	}
+
+	public CourrierClone getOriganal() {
+		return origanal;
+	}
+
+	public void setOriganal(CourrierClone origanal) {
+		this.origanal = origanal;
+	}
+
+	public String getPorte() {
+		return porte;
+	}
+
+	public void setPorte(String porte) {
+		this.porte = porte;
+	}
+
+	public String getTypeclassement() {
+		return typeclassement;
+	}
+
+	public void setTypeclassement(String typeclassement) {
+		this.typeclassement = typeclassement;
+	}
+
+	@Override
+	public boolean isActivatefollower() {
+		return true; // To change body of generated methods, choose Tools |
+						// Templates.
+	}
+
+	@Override
+	public List<State> getStates() {
+		List<State> states = new ArrayList<State>();
+		State state = new State("etabli", "Brouillon");
+		states.add(state);
+		// state = new State("valide", "Saisi validée");
+		// states.add(state);
+		return states; // To change body of generated methods, choose Tools |
+						// Templates.
+	}
+
+	@Override
+	public String getSerial() {
+		return Long.toString(serialVersionUID); // To change body of generated
+												// methods, choose Tools |
+												// Templates.
+	}
+
+	@Override
+	public boolean isCreateonfield() {
+		return true; // To change body of generated methods, choose Tools |
+						// Templates.
+	}
+
+	@Override
+	public int compareTo(CourrierClone o) {
+		// TODO Auto-generated method stub
+		return code.compareTo(o.code);
+	}
+
+	public CourrierClone newInstace() {
+		CourrierClone entity = new CourrierClone();
+		entity.categorie = this.categorie;
+		entity.code = this.code;
+
+		// if(this.typecourrier!=null){
+		// entity.typecourrier = new TypeCourrier(this.typecourrier);
+		// }
+
+		if (this.priorite != null) {
+			entity.priorite = new Priorite(this.priorite);
+		}
+
+		// this.confidentiel = this.confidentiel;
+		entity.dcourrier = this.dcourrier;
+		entity.darrive = this.darrive;
+
+		if (this.correspondant != null) {
+			entity.correspondant = new Correspondant(this.correspondant);
+		}
+
+		if (this.nature != null) {
+			entity.nature = new NatureCourrier(this.nature);
+		}
+		entity.objet = this.objet;
+		entity.limite = this.limite;
+		// this.dlimtrt = this.dlimtrt;
+
+		if (this.dossier != null) {
+			entity.dossier = new DossierCourrier(this.getDossier());
+		}
+		entity.motscles = this.getMotscles();
+
+		if (this.service != null) {
+			entity.service = new StructureCompany(this.service);
+		}
+		if (this.etape != null) {
+			entity.etape = new WorkflowAction(this.etape);
+		}
+		entity.state = this.state;
+
+		if (this.source != null) {
+			entity.source = new UtilisateurCourrier(this.source);
+		}
+		if (this.destinataire != null) {
+			entity.destinataire = new UtilisateurCourrier(this.destinataire);
+		}
+		if (this.statutcourrier != null) {
+			entity.statutcourrier = new Statut(this.statutcourrier);
+		}
+		entity.state = this.state;
+		if (this.origanal != null) {
+			entity.origanal = new CourrierClone(this.origanal);
+		}
+		if (this.bordero != null) {
+			entity.bordero = new BorderoCourrier(this.bordero);
+		}
+		entity.porte = this.porte;
+		if (this.sowner != null) {
+			entity.sowner = new StructureCompany(this.sowner);
+		}
+		for (FichierLie fichier : piecesjointes) {
+			FichierLie pj = new FichierLie(fichier);
+			pj.setId(-1);
+			entity.getPiecesjointes().add(pj);
+		}
+		return entity; // To change body of generated methods, choose Tools |
+						// Templates.
+	}
 
 }
