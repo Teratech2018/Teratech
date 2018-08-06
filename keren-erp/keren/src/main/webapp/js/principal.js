@@ -2487,11 +2487,11 @@ $scope.gererChangementFichier3 = function(event,model){
                if(angular.isString(index)){
                    index = new Number(index);
                }//end if(angular.isString(index)){
+               selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+key);              
                selectElem.setAttribute('ng-change'  , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"','"+modelpath+"')");
                selectElem.setAttribute('data-live-search','true');
                divElem_1.appendChild(selectElem);
-              selectElem.setAttribute('ng-options' , "item as item.designation for item in dataCache."+key);
-              var optionElem = document.createElement('option');
+               var optionElem = document.createElement('option');
               optionElem.setAttribute('value' , '');
               optionElem.appendChild(document.createTextNode('Please select option'));
               selectElem.appendChild(optionElem);             
@@ -8031,10 +8031,13 @@ $scope.gererChangementFichier3 = function(event,model){
                                 //                    }
                                                        $scope.dataCache[key] = new Array();                                                      
                                                         //var data = $scope.dataCache[""+parts[1]+""];
+                                                        if(response.data.length<=0){
+                                                            $scope.dataCache[""+key+""].push(obj);
+                                                        }//end if(response.data.length<=0){
                                                         for(var i=0;i<response.data.length;i++){
                                                             $scope.dataCache[key].push(response.data[i]);
                                                         }//end for(var i=0;i<response.data.length;i++){       
-                                                        $scope.dataCache[""+key+""].push(obj);
+//                                                        
                                                  }//end if(parts.length>1){
                                                  //console.log($scope.dataCache[""+parts[1]+""]);
                                                  $timeout(function() {
@@ -8275,7 +8278,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                         //Reinitialisation du context
                                           //Rechargement des données
 //                                          $http.defaults.headers.common['names']= angular.toJson($scope.dataCache['names']); 
-                                            restService.findByCompareid(entity.compareid)
+                                            restService.findByCompareid($scope.currentObject.compareid)
                                                .$promise.then(function(data){
 //                                                    $scope.pagination.currentPage=1;
 //                                                   $scope.pagination.totalPages = data.value ;                                                  

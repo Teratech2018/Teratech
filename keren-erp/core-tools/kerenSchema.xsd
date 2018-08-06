@@ -177,8 +177,35 @@
     <xs:element name="header">
         <xs:complexType>
             <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>         
                 <xs:element ref="tns:button"   minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element ref="tns:field"   minOccurs="0" maxOccurs="1"/>        
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="main">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="footer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="principal">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:header"   minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="tns:main"   minOccurs="1" maxOccurs="1"/> 
+                <xs:element ref="tns:footer"   minOccurs="0" maxOccurs="1"/>              
             </xs:sequence>
         </xs:complexType>
     </xs:element>
