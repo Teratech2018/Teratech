@@ -37,6 +37,7 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -105,10 +106,9 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			workbtn.setStates(new String[] { "crée" });
 			meta.getHeader().add(workbtn);
 
-
 			workbtn = new MetaColumn("button", "work1", "Frais de Scolarité", false, "link", null);
 			workbtn.setValue(
-					"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'}}");
+					"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'},'header':['eleve']}");
 			workbtn.setStates(new String[] { "etabli" });
 			// workbtn.setPattern("btn btn-primary");
 			meta.getHeader().add(workbtn);
@@ -130,14 +130,17 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		// TODO Auto-generated method stub
 		return findAll(headers);
 	}
-	
-	 @Override
-	    protected void processBeforeUpdate(Inscription entity) {
-	        if(entity.getzMntPaye()!=0){
-	            throw new KerenExecption("Modification impossible<br/> Lincription "+entity.getDesignation()+" est déjà en cours de traitement...");
-	        }
-	       super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
-	    }
+
+	@Override
+	protected void processBeforeUpdate(Inscription entity) {
+		if (entity.getzMntPaye() != 0) {
+			throw new KerenExecption("Modification impossible<br/> Lincription " + entity.getDesignation()
+					+ " est déjà en cours de traitement...");
+		}
+		super.processBeforeUpdate(entity); // To change body of generated
+											// methods, choose Tools |
+											// Templates.
+	}
 
 	@Override
 	public Inscription changer(HttpHeaders headers, Inscription entity) {
@@ -146,7 +149,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			if (entity.getState().equalsIgnoreCase("crée")) {
 				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
 			}
-			//manager.update(entity.getId(), entity);
+			// manager.update(entity.getId(), entity);
 
 			return entity;
 		} catch (KerenEduManagerException ex) {
@@ -266,5 +269,30 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 
 		return entity;
 	}
+
+//
+//	@Override
+//	public List<Inscription> filter(HttpHeaders headers, int firstResult, int maxResult) {
+//		System.out.println("InscriptionRSImpl.filter() je suis ici ::::");
+//		String header = null;
+//		RestrictionsContainer container = null;
+//		if (headers.getRequestHeader("action_param") != null) {
+//			header = headers.getRequestHeader("action_param").get(0);
+//		}
+//		 System.out.println(InscriptionRSImpl.class.toString()+" ==================================== "+header);
+//		List<Inscription> datas = new ArrayList<Inscription>();
+//		List<Inscription> results = new ArrayList<Inscription>();
+//		// To change body of generated methods, choose Tools | Templates.
+//			 container = RestrictionsContainer.newInstance();
+//			 if(header!=null){
+//			container.addLike("eleve.nom", "%" + header);
+//			 }
+//			datas = manager.filter(container.getPredicats(), null, null, firstResult, maxResult);
+//			for (Inscription data : datas) {
+//				results.add(new Inscription(data));
+//			} // end for(CourrierTous data:datas){
+//		
+//		return results;
+//	}
 
 }

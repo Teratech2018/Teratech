@@ -101,6 +101,8 @@
 		<class>com.kerenedu.notes.HelpProfClasse</class>
 		<class>com.kerenedu.discipline.LigneAbscence</class>
 		<class>com.kerenedu.model.report.ViewEmargement</class>
+		<class>com.kerenedu.inscription.Inscriptionclone</class>
+		
 	
 
 

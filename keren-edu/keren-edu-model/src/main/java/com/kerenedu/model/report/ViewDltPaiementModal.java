@@ -40,16 +40,16 @@ public class ViewDltPaiementModal extends BaseElement implements Serializable, C
 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true ,sequence=1,searchfields="libelle")
+	//@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true ,sequence=1,searchfields="libelle")
 	protected Classe classe;
 	
 	
-	@Predicate(label = "Date Paiement allant du : ", optional = false, updatable = true, search = true, type = Date.class, target = "date" ,sequence=3)
+	@Predicate(label = "Date ", optional = false, updatable = true, search = true, type = Date.class, target = "date" ,sequence=3)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datepaideb;
 	
 	
-	@Predicate(label = "Au:", optional = false, updatable = true, search = true, type = Date.class, target = "date" ,sequence=2)
+	//@Predicate(label = "Au:", optional = false, updatable = true, search = true, type = Date.class, target = "date" ,sequence=2)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datepaifin;
 

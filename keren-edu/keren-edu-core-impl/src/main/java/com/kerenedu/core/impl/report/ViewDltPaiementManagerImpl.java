@@ -1,7 +1,10 @@
 
 package com.kerenedu.core.impl.report;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +18,15 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.core.tools.DateHelper;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.core.ifaces.report.ViewDltPaiementManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewDltPaiementManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewDltPaiementDAOLocal;
-import com.kerenedu.inscription.InscriptionDAOLocal;
 import com.kerenedu.model.report.ViewDltPaiement;
 import com.kerenedu.model.report.ViewDltPaiementModal;
+import com.kerenedu.reglement.Paiement;
+import com.kerenedu.reglement.PaiementDAOLocal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -32,8 +37,8 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 	@EJB(name = "ViewDltPaiementDAO")
 	protected ViewDltPaiementDAOLocal dao;
 
-	@EJB(name = "InscriptionDAO")
-	protected InscriptionDAOLocal daoIns;
+	@EJB(name = "PaiementDAO")
+	protected PaiementDAOLocal daopaiement;
 
 	public ViewDltPaiementManagerImpl() {
 	}
@@ -53,14 +58,12 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
 		predicats.addAll(CacheMemory.defaultPredicatsCycleAnnee());
-		List<ViewDltPaiement> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+		List<ViewDltPaiement> datas = dao.filter(predicats, orders, properties, firstResult, maxResult);
 		List<ViewDltPaiement> result = new ArrayList<ViewDltPaiement>();
-		// for(ViewDltPaiement elev:datas){
-		// if(elev.getMntpayer()!=0){
-		// result.add(new ViewDltPaiement(elev));
-		// }
-		// }
-		return datas;
+		 for(ViewDltPaiement p:datas){
+		 result.add(new ViewDltPaiement(p));
+		 }
+		return result;
 	}
 
 	@Override
@@ -99,25 +102,24 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 		if (critere != null) {
 			container = RestrictionsContainer.newInstance();
 			container.getPredicats().addAll(CacheMemory.defaultPredicats());
-			if (critere.getClasse() != null) {
-				container.addEq("classe.id", critere.getClasse().getId());
-			}
+//			if (critere.getClasse() != null) {
+//				container.addEq("classe.id", critere.getClasse().getId());
+//			}
 			if (critere.getDatepaideb() != null) {
-				System.out.println("ViewDltPaiementManagerImpl.getCriteres() debut "+critere.getDatepaideb());
-				container.addGe("datepai", critere.getDatepaideb());
+				container.addEq("datePaiement", DateHelper.formatDate(critere.getDatepaideb()));
 			}
-			if (critere.getDatepaifin() != null) {
-				System.out.println("ViewDltPaiementManagerImpl.getCriteres() fin "+critere.getDatepaifin());
-				container.addLe("datepai", critere.getDatepaifin());
-			}
+			container.addEq("state", "etabli");
+//			if (critere.getDatepaifin() != null) {
+//				System.out.println("ViewDltPaiementManagerImpl.getCriteres() fin "+critere.getDatepaifin());
+//				container.addLe("datepai", critere.getDatepaifin());
+//			}
 
 		}
 		List<ViewDltPaiement> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		List<ViewDltPaiement> result = new ArrayList<ViewDltPaiement>();
 		if (datas != null) {
-			for (ViewDltPaiement aniv : datas) {
-				;
-				result.add(new ViewDltPaiement(aniv));
+			for (ViewDltPaiement p : datas) {
+				result.add(new ViewDltPaiement(p));
 			}
 		} // fin if(datas!=null)
 		return result;

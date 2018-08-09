@@ -22,7 +22,7 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 	
 	
 	@Column(name = "LIBELLE")	
-	@Predicate(label="Libellé",optional=false,updatable=false,search=true)
+	@Predicate(label="Libellé",optional=false,updatable=true,search=true)
 	protected String libelle;
 	
 	@Column(name = "CYCLE")

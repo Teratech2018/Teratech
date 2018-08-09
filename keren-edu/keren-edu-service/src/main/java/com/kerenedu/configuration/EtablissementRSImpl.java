@@ -6,12 +6,14 @@ import java.util.HashMap;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.inscription.Inscription;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -78,7 +80,24 @@ public class EtablissementRSImpl
 		 }
 		super.processBeforeUpdate(entity);
 	}
-    
+	@Override
+	public Etablissement delete(@Context HttpHeaders headers, Long id) {
+
+		// TODO Auto-generated method stub
+		Etablissement entity = manager.find("id", id);
+
+		try {
+
+			// on supprimme l'objet
+			super.delete(headers, id);
+
+		} catch (Exception ex) {
+			throw new KerenExecption(
+					"Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+		}
+
+		return entity;
+	}
     
 
 }

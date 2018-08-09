@@ -61,7 +61,10 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	@Observer(observable="type",source="method:findfiliere",parameters="type")
 	private List<ServiceFilliere> filiere ;
 	
-	private long rang ;
+	private int rang ;
+	
+	@Predicate(label = "Elligible Remise ?", type = Boolean.class)
+	private Boolean elligible = Boolean.FALSE;
 
 	
 
@@ -79,6 +82,7 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 		this.type=service.getType();
 		this.exige= service.getExige();
 		this.rang=service.rang;
+		this.elligible=service.getElligible();
 		
 	}
 
@@ -167,6 +171,16 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	}
 
 
+	public Boolean getElligible() {
+		return elligible;
+	}
+
+
+	public void setElligible(Boolean elligible) {
+		this.elligible = elligible;
+	}
+
+
 	public Boolean getExige() {
 		return exige;
 	}
@@ -182,12 +196,12 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	}
 
 
-	public long getRang() {
+	public int getRang() {
 		return rang;
 	}
 
 
-	public void setRang(long rang) {
+	public void setRang(int rang) {
 		this.rang = rang;
 	}
 

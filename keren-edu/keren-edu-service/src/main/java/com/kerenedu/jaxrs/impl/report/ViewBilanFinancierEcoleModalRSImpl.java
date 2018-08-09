@@ -90,6 +90,7 @@ public class ViewBilanFinancierEcoleModalRSImpl
 	@Override
 	public Response buildPdfReport(ViewBilanFinancierEcoleModal entity) {
 		try {
+		
       	  List<ViewBilanFinancierEcole> records =manager.getCriteres(entity);
       	  System.out.println("ViewBilanFinancierEcoleModalRSImpl.buildPdfReport() size record is "+records.size());
             String URL = ReportHelper.templateURL+ReportsName.BILANFINANCIER.getName();

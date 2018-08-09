@@ -41,6 +41,7 @@ import com.kerenedu.discipline.PresenceRSImpl;
 import com.kerenedu.discipline.TypeAbscenceRSImpl;
 import com.kerenedu.inscription.ChangeClasseRSImpl;
 import com.kerenedu.inscription.InscriptionRSImpl;
+import com.kerenedu.inscription.InscriptioncloneRSImpl;
 import com.kerenedu.jaxrs.dashboard.PedagogieDashboardRSImpl;
 import com.kerenedu.jaxrs.impl.report.EdtBulletinModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewAnniversaireModalRSImpl;
@@ -55,6 +56,7 @@ import com.kerenedu.jaxrs.impl.report.ViewDltPaiementRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewEmargementRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewListeEleveRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewNoteHelperRSImpl;
+import com.kerenedu.jaxrs.impl.report.ViewPaiementJournalierRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewRetardPaiementRSImpl;
 import com.kerenedu.notes.BulletinRSImpl;
 import com.kerenedu.notes.CloseExamenRSImpl;
@@ -247,6 +249,8 @@ public class ApplicationConfig extends Application {
 		resources.add(DltBulletinRSImpl.class);
 		resources.add(ChangeClasseRSImpl.class);
 		resources.add(ViewEmargementRSImpl.class);
+		resources.add(ViewPaiementJournalierRSImpl.class);
+		resources.add(InscriptioncloneRSImpl.class);
 		
     }
     

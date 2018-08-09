@@ -348,8 +348,9 @@ public class ViewBilanFinancierEcole extends BaseElement implements Serializable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return "";
+		return "Bilan Financiers Global ";
 	}
 
+	
 	
 }

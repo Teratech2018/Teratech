@@ -1,4 +1,3 @@
-
 package com.kerenedu.core.impl.report;
 
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.core.tools.DateHelper;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.core.ifaces.report.ViewAnniversaireManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewAnniversaireManagerRemote;
@@ -105,14 +105,15 @@ public class ViewAnniversaireManagerImpl
 	public List<ViewAnniversaire> getCriteres(ViewAnniversaireModal critere) {
 		// To change body of generated methods, choose Tools | Templates.
 				RestrictionsContainer container = RestrictionsContainer.newInstance();
+			
 				if (critere != null) {
 					container = RestrictionsContainer.newInstance();
 //					if (critere.getDatInsfin() != null) {
-//						container.addGe("eleve.dateNais", critere.getDatInsfin());
+//						container.addLe("eleve.dateNais", DateHelper.formatDate(critere.getDatInsfin()));
 //					}
 //					
 //					if (critere.getDatInsdeb() != null) {
-//						container.addLe("eleve.dateNais", critere.getDatInsdeb());
+//						container.addGe("eleve.dateNais", DateHelper.formatDate(critere.getDatInsdeb()));
 //					}
 
 					if (critere.getClasse() != null) {
@@ -123,7 +124,10 @@ public class ViewAnniversaireManagerImpl
 				List<Inscription> datas = daoIns.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 				List<ViewAnniversaire> result = new ArrayList<ViewAnniversaire>();
 				if (datas != null) {
-					for (Inscription aniv : datas) {;
+					for (Inscription aniv : datas) {
+						System.out.println("ViewAnniversaireManagerImpl.getCriteres() mois date "+DateHelper.getMonthName(aniv.getEleve().getDateNais()));
+						System.out.println("ViewAnniversaireManagerImpl.getCriteres() mois select "+getMonth(Integer.parseInt(critere.getMois())));
+					if(DateHelper.getMonthName(aniv.getEleve().getDateNais())==getMonth(Integer.parseInt(critere.getMois())))
 						result.add(new ViewAnniversaire(aniv));
 					}
 				} // fin if(datas!=null)
@@ -134,6 +138,39 @@ public class ViewAnniversaireManagerImpl
 	public List<ViewAnniversaire> getCriteres(ViewAnniversaire critere) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public String getMonth(int month){
+		String monthString;
+        switch (month) {
+            case 0:  monthString = "Janvier";
+                     break;
+            case 1:  monthString = "Fevrier";
+                     break;
+            case 2:  monthString = "Mars";
+                     break;
+            case 3:  monthString = "Avril";
+                     break;
+            case 4:  monthString = "Mai";
+                     break;
+            case 5:  monthString = "Juin";
+                     break;
+            case 6:  monthString = "Juillet";
+                     break;
+            case 7:  monthString = "Aout";
+                     break;
+            case 8:  monthString = "Septembre";
+                     break;
+            case 9: monthString = "Octobre";
+                     break;
+            case 10: monthString = "Novembre";
+                     break;
+            case 11: monthString = "Decembre";
+                     break;
+            default: monthString = "Invalid month";
+                     break;
+	}
+		return monthString;
 	}
 
 

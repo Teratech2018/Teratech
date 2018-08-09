@@ -4,8 +4,11 @@
 package com.kerenedu.dashboard;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
@@ -15,6 +18,8 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 public class EducationDashboard extends BaseElement implements Serializable,Comparable<EducationDashboard>{
+	
+	 private List<Raccourci> raccourcis = new ArrayList<Raccourci>();
 
 	 @Predicate(label = "Total Elève" ,type = Double.class)
 	    private double nbreEtud ;
@@ -39,6 +44,12 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 	    
 	    @Predicate(label = "Encaissé" ,type = double.class)
 	    private double encaisseG ;
+	    
+	    @Predicate(label = "Remise" ,type = double.class)
+	    private double remiseG ;
+	    
+	    @Predicate(label = "Ristourne" ,type = double.class)
+	    private double ristourneG ;
 	    
 	    @Predicate(label = "Solde" ,type = double.class)
 	    private double soldeG ;
@@ -77,6 +88,10 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 	    private double encaisseT3 ;
 	    
 	    @Predicate(label = "Solde" ,type = double.class)
+	    
+	    @Transient
+	    private double remise ;
+	    
 	    private double soldeT3 ;
 	    @Column(name = "ANNEE_ID")
 		protected String anneScolaire;
@@ -137,6 +152,10 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 		this.previsionT3 = ins.previsionT3;
 		this.encaisseT3 = ins.encaisseT3;
 		this.soldeT3 = ins.soldeT3;
+		this.remiseG=ins.remiseG;
+		this.raccourcis=ins.raccourcis;
+		this.ristourneG=ins.ristourneG;
+	
 		
     }
     
@@ -159,10 +178,13 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 		this.previsionT2 = ins.getPrevisionT2();
 		this.encaisseT2 = ins.getEncaisseT2();
 		this.soldeT2 = ins.getSoldeT2();
-		this.previsionT3 = ins.getPrevisionT3();
-		this.encaisseT3 = ins.getEncaisseT3();
-		this.soldeT3 = ins.getSoldeT3();
+		this.previsionT3 = ins.getPrevisionT3()+ins.getPrevisionT2()+ins.getPrevisionT1();
+		this.encaisseT3 = ins.getEncaisseT3()+ins.getEncaisseT2()+ins.getEncaisseT1();
+		this.soldeT3 = ins.getSoldeT3()+ins.getSoldeT2()+ins.getSoldeT1();
 		this.anneScolaire=ins.getAnneScolaire();
+		this.remiseG=ins.getRemiseG();
+		this.ristourneG=ins.getRistourneG();
+		
 		
     }
     
@@ -184,6 +206,14 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 	 */
 	public double getNbreEtud() {
 		return nbreEtud;
+	}
+
+	public List<Raccourci> getRaccourcis() {
+		return raccourcis;
+	}
+
+	public void setRaccourcis(List<Raccourci> raccourcis) {
+		this.raccourcis = raccourcis;
 	}
 
 	/**
@@ -263,12 +293,28 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 		this.soldeG = soldeG;
 	}
 
+	public double getRemiseG() {
+		return remiseG;
+	}
+
+	public void setRemiseG(double remiseG) {
+		this.remiseG = remiseG;
+	}
+
 	public double getPrevisionI() {
 		return previsionI;
 	}
 
 	public void setPrevisionI(double previsionI) {
 		this.previsionI = previsionI;
+	}
+
+	public double getRemise() {
+		return remise;
+	}
+
+	public void setRemise(double remise) {
+		this.remise = remise;
 	}
 
 	public double getEncaisseI() {
@@ -293,6 +339,14 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 
 	public void setSoldeI(double soldeI) {
 		this.soldeI = soldeI;
+	}
+
+	public double getRistourneG() {
+		return ristourneG;
+	}
+
+	public void setRistourneG(double ristourneG) {
+		this.ristourneG = ristourneG;
 	}
 
 	public double getPrevisionT1() {
@@ -376,14 +430,14 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 	 @Override
 		public String getListTitle() {
 			// TODO Auto-generated method stub
-			return "Année Scolaire "+(new Long(this.anneScolaire)+1)+"-"+ this.anneScolaire;
+			return "Année Scolaire "+ this.anneScolaire +"-"+ (new Long(this.anneScolaire)+1);
 		}
 
 
     @Override
     public String getEditTitle() {
-        this.editTitle = "Tableau de bord";
-        return "Tableau de bord"; //To change body of generated methods, choose Tools | Templates.
+
+        return "Année Scolaire "+ this.anneScolaire +"-"+ (new Long(this.anneScolaire)+1);//To change body of generated methods, choose Tools | Templates.
     }
 
 	public int compareTo(EducationDashboard o) {

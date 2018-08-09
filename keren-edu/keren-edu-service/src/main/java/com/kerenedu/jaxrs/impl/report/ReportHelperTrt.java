@@ -49,7 +49,7 @@ public class ReportHelperTrt {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-         params.put(ReportsParameter.SUBREPORT_DIR, ReportHelper.reportFileChemin);
+	        params.put(ReportsParameter.SUBREPORT_DIR, ReportHelper.reportFileChemin);
 	       
 
 	        return params;

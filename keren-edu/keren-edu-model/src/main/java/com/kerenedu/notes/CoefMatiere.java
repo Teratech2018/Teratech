@@ -36,10 +36,10 @@ public class CoefMatiere extends BaseElement implements Serializable, Comparable
 	 */
 	private static final long serialVersionUID = -2319955732777210165L;
 
-	@Transient
+	//@Transient
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	//@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
 	private SectionE section ;
 	
 		
@@ -73,6 +73,10 @@ public class CoefMatiere extends BaseElement implements Serializable, Comparable
 
 		//this.filiere= new Filiere(annee.filiere);
 		this.matdetailList= new ArrayList<CoefMatiereDetail>();
+		
+		if(annee.getSection()!=null){
+			this.section=annee.section;
+		}
 
 	}
 
