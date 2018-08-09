@@ -19,6 +19,7 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.commons.DateHelper;
+import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.keren.courrier.core.ifaces.courrier.CourrierInterneManagerRemote;
@@ -27,9 +28,9 @@ import com.keren.courrier.core.ifaces.referentiel.PrioriteManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.StructureCompanyManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.UtilisateurCourrierManagerRemote;
 import com.keren.courrier.jaxrs.ifaces.courrier.CourrierInterneRS;
+import com.keren.courrier.model.courrier.Courrier;
 import com.keren.courrier.model.courrier.CourrierInterne;
 import com.keren.courrier.model.courrier.FichierLie;
-import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.keren.courrier.model.referentiel.Priorite;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -38,6 +39,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -99,7 +102,7 @@ public class CourrierInterneRSImpl
 //            workbtn.setPattern("btn btn-primary");
            // meta.getHeader().add(workbtn);  
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-            meta.getHeader().add(stautsbar);	              
+          //  meta.getHeader().add(stautsbar);	              
         } catch (InstantiationException ex) {
             Logger.getLogger(CourrierRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -137,10 +140,7 @@ public class CourrierInterneRSImpl
         // TODO Auto-generated method stub
     	 if(entity.getType().equals("1")&&entity.getCourrier()==null){
     		 throw new KerenExecption("Enregistrement impossible<br/>car le courrier arrivéé pas renseigné  !!!"); 
-    	 }
-        for(LigneDiffusion ligne:entity.getDiffusions()){
-            ligne.setId(-1);
-        }//end for(LigneDiffusion ligne:entity.getDiffusions()){
+    	 }       
         for(FichierLie fichier:entity.getPiecesjointes()){
              fichier.setId(-1);
         }//end for(FichierLie fichier:entity.getPiecesjointes()){
@@ -163,6 +163,58 @@ public class CourrierInterneRSImpl
 		}
 		super.processBeforeUpdate(entity);
 	}
+        
+        
+    @Override
+    protected void processAfterUpdate(CourrierInterne entity) {
+         //To change body of generated methods, choose Tools | Templates.
+        for(FichierLie elt:entity.getPiecesjointes()){
+            File file = new File(FileHelper.getTemporalDirectory().getPath()+File.separator+elt.getFilename());
+            if(file.exists()){
+                File destfile = new File(FileHelper.getStaticDirectory().getPath());
+                boolean result = true;
+                if(!destfile.exists()){
+                    result = destfile.mkdir();
+                }//end if(!destfile.exists()){
+                if(result){
+                    try {
+                        destfile = new File(destfile.getPath()+File.separator+elt.getFilename());
+                        FileHelper.moveFile(file, destfile);
+                    } //end if(result){
+                    catch (IOException ex) {
+                        throw new KerenExecption(ex.getMessage());
+                    }
+                }
+            }//end if(file.exists()){
+        }//end for(FichierLie elt:entity.getPiecesjointes()){
+        super.processAfterUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void processAfterSave(CourrierInterne entity) {
+        //To change body of generated methods, choose Tools | Templates.
+        for(FichierLie elt:entity.getPiecesjointes()){
+            File file = new File(FileHelper.getTemporalDirectory().getPath()+File.separator+elt.getFilename());
+            if(file.exists()){
+                File destfile = new File(FileHelper.getStaticDirectory().getPath());
+                boolean result = true;
+                if(!destfile.exists()){
+                    result = destfile.mkdir();
+                }//end if(!destfile.exists()){
+                if(result){
+                    try {
+                        destfile = new File(destfile.getPath()+File.separator+elt.getFilename());
+                        FileHelper.moveFile(file, destfile);
+                    } //end if(result){
+                    catch (IOException ex) {
+                        throw new KerenExecption(ex.getMessage());
+                    }
+                }
+            }//end if(file.exists()){
+        }//end for(FichierLie elt:entity.getPiecesjointes()){
+        super.processAfterSave(entity); 
+    }
+
 
 	@Override
     public List<CourrierInterne> filter(HttpHeaders headers, int firstResult, int maxResult) {
@@ -186,8 +238,9 @@ public class CourrierInterneRSImpl
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
         container.addEq("source", user);
-        container.addEq("categorie", "2");
+          container.addEq("categorie", "2");
         container.addEq("state", "etabli");
+        
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }
@@ -234,24 +287,7 @@ public class CourrierInterneRSImpl
         return super.save(headers, entity); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<LigneDiffusion> getdiffusionList(HttpHeaders headers) {
-         //To change body of generated methods, choose Tools | Templates.
-//        String data = headers.getRequestHeader("service").get(0);
-//        Long serviceid = -1L;
-//         try{
-//              serviceid = Long.valueOf(data);
-//          }catch(NumberFormatException ex){
-//              serviceid = -1L;
-//          }//end  try{
-//         if(serviceid>0){
-//             StructureCompany service = servicemanager.find("id", serviceid);             
-//             return service.getIntervenants();
-//         }else{
-//            return new ArrayList<LigneDiffusion>();
-//         }
-         return new ArrayList<LigneDiffusion>();
-    }
+    
 	@Override
 	public CourrierInterne delete(@Context HttpHeaders headers, Long id) {
 

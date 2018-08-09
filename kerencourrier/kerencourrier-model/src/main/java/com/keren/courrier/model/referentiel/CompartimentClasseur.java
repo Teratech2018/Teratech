@@ -17,83 +17,89 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "T_COMCLGC")
 public class CompartimentClasseur extends BaseElement implements Serializable, Comparable<CompartimentClasseur> {
 
-        @Predicate(label = "Compartiment",optional = false,unique = true,search = true)
-	private String code ;        
-        
-        @Predicate(label = "Désignation",optional = true,search = true)
-        private String intitule ;       
-        
-        
-        
+	@Predicate(label = "Compartiment", optional = false, unique = true, search = true)
+	private String code;
 
-        public CompartimentClasseur() {
-        }
+	@Predicate(label = "Désignation", optional = true, search = true)
+	private String intitule;
+	
+	private long idclasseur ;
 
-        public CompartimentClasseur(String code, String intitule, String style, CompartimentClasseur parent) {
-            this.code = code;
-            this.intitule = intitule;
-            
-        }
+	public CompartimentClasseur() {
+	}
 
-        public CompartimentClasseur(String code, String intitule, String style, CompartimentClasseur parent, long id, String designation, String moduleName, long comparedid) {
-            super(id, designation, moduleName, comparedid);
-            this.code = code;
-            this.intitule = intitule;
-           
-        }
+	public CompartimentClasseur(String code, String intitule, String style, CompartimentClasseur parent) {
+		this.code = code;
+		this.intitule = intitule;
 
-       public CompartimentClasseur(CompartimentClasseur entity) {
-            super(entity.id, entity.designation, entity.moduleName, entity.compareid);
-            this.code = entity.code;
-            this.intitule = entity.intitule;            
-        }
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public CompartimentClasseur(String code, String intitule, String style, CompartimentClasseur parent, long id,
+			String designation, String moduleName, long comparedid) {
+		super(id, designation, moduleName, comparedid);
+		this.code = code;
+		this.intitule = intitule;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	}
 
-    public String getIntitule() {
-        return intitule;
-    }
+	public CompartimentClasseur(CompartimentClasseur entity) {
+		super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+		this.code = entity.code;
+		this.intitule = entity.intitule;
+	}
 
-    public void setIntitule(String intitule) {
-        this.intitule = intitule;
-    }
+	public String getCode() {
+		return code;
+	}
 
-  
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    @Override
-    public String getDesignation() {
-        return code+" - "+intitule; //To change body of generated methods, choose Tools | Templates.
-    }
+	public String getIntitule() {
+		return intitule;
+	}
 
-    @Override
-    public String getModuleName() {
-        return "kerencourrier"; //To change body of generated methods, choose Tools | Templates.
-    }
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
+	}
 
-    @Override
-    public String getListTitle() {
-        return "Chemises courriers"; //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public String getDesignation() {
+		return code + " - " + intitule; // To change body of generated methods,
+										// choose Tools | Templates.
+	}
 
-    @Override
-    public String getEditTitle() {
-        return "Chemise courrier"; //To change body of generated methods, choose Tools | Templates.
-    }
-       
-       
-        
-        
-        @Override
-        public int compareTo(CompartimentClasseur o) {
-            return code.compareTo(o.code); //To change body of generated methods, choose Tools | Templates.
-        }
-        
-        
+	public long getIdclasseur() {
+		return idclasseur;
+	}
+
+	public void setIdclasseur(long idclasseur) {
+		this.idclasseur = idclasseur;
+	}
+
+	@Override
+	public String getModuleName() {
+		return "kerencourrier"; // To change body of generated methods, choose
+								// Tools | Templates.
+	}
+
+	@Override
+	public String getListTitle() {
+		return "Chemises courriers"; // To change body of generated methods,
+										// choose Tools | Templates.
+	}
+
+	@Override
+	public String getEditTitle() {
+		return "Chemise courrier"; // To change body of generated methods,
+									// choose Tools | Templates.
+	}
+
+	@Override
+	public int compareTo(CompartimentClasseur o) {
+		return code.compareTo(o.code); // To change body of generated methods,
+										// choose Tools | Templates.
+	}
 
 }

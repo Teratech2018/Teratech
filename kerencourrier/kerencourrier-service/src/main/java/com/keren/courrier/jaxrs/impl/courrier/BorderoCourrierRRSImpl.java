@@ -15,6 +15,7 @@ import com.keren.courrier.jaxrs.ifaces.courrier.BorderoCourrierRRS;
 import com.keren.courrier.model.courrier.BorderoCourrier;
 import com.keren.courrier.model.courrier.BorderoCourrierR;
 import com.keren.courrier.model.courrier.LigneBorderoCourrier;
+import com.keren.courrier.model.courrier.LigneBorderoCourrierR;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.OrderType;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -154,12 +155,24 @@ public class BorderoCourrierRRSImpl
 
     @Override
     public BorderoCourrierR distribuer(HttpHeaders headers, BorderoCourrierR entity) {
-        //To change body of generated methods, choose Tools | Templates.
+        //To change body of generated methods, choose Tools | Templates.  
+        validateLigneBordero(entity);
         Gson gson =new Gson();
         Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0),Long.class);
         UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
         return manager.accuserreception(entity,user);
     }
   
+    private void validateLigneBordero(BorderoCourrierR entity){
+        int index = 0;
+        for(LigneBorderoCourrierR ligne:entity.getCourriers()){
+            if(ligne.getStatut()!=null&&ligne.getStatut().compareTo(Boolean.TRUE)==0){
+                index++;
+            }
+        }
+        if(index<=0){
+            throw new KerenExecption("Aucun courrier sélectionné");
+        }//end if(index<=0){
+    }
 
 }

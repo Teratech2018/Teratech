@@ -11,9 +11,12 @@ import com.keren.courrier.core.ifaces.courrier.BorderoCourrierRManagerLocal;
 import com.keren.courrier.core.ifaces.courrier.BorderoCourrierRManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.BorderoCourrierRDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierCloneDAOLocal;
+import com.keren.courrier.dao.ifaces.courrier.TraitementCourrierDAOLocal;
 import com.keren.courrier.model.courrier.BorderoCourrierR;
 import com.keren.courrier.model.courrier.CourrierClone;
 import com.keren.courrier.model.courrier.LigneBorderoCourrierR;
+import com.keren.courrier.model.courrier.TraitementCourrier;
+import com.keren.courrier.model.courrier.TypeTraitement;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
@@ -34,6 +37,9 @@ public class BorderoCourrierRManagerImpl
     
     @EJB(name = "CourrierCloneDAO")
     protected CourrierCloneDAOLocal courrierdao;
+    
+    @EJB(name = "TraitementCourrierDAO")
+   	protected TraitementCourrierDAOLocal daotrt;
 
     public BorderoCourrierRManagerImpl() {
     }
@@ -100,14 +106,39 @@ public class BorderoCourrierRManagerImpl
             if(ligne.getNature().trim().equalsIgnoreCase("0")){
                 courrier.setSource(user);
                 courrier.setSowner(entity.getCible());
+                courrier.setBordero(null);
                 courrier.setState("receptionne");
+               //========== @NTW ENREGISTRER LE TRAITEMENT========;
+        		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(courrier),TypeTraitement.DECHARGE);
+        		daotrt.save(trtcourrier);
                 courrierdao.update(courrier.getId(), courrier);
+                //Traitement du courrier joint
+                if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")&&courrier.getCourrier()!=null){
+                    trtcourrier = new TraitementCourrier(new CourrierClone(courrier.getCourrier()),TypeTraitement.DECHARGE);
+                    daotrt.save(trtcourrier);
+                    courrierdao.update(courrier.getCourrier().getId(), courrier.getCourrier());
+                }//end if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")){
             }else{//Cas de copie
                courrier.setState("receptionne");
                courrier.setOriganal(ligne.getCourrier());
                courrier.setSowner(entity.getCible());
                courrier.setSource(user);
+               courrier.setBordero(null);
                courrierdao.save(courrier);
+               //========== @NTW ENREGISTRER LE TRAITEMENT========;
+          		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(courrier),TypeTraitement.ENREGISTREMENT);
+          		daotrt.save(trtcourrier);
+          		courrierdao.update(courrier.getId(), courrier);
+               //========== @NTW ENREGISTRER LE TRAITEMENT========;
+          		 trtcourrier = new TraitementCourrier(new CourrierClone(courrier),TypeTraitement.DECHARGE);
+          		daotrt.save(trtcourrier);
+          		courrierdao.update(courrier.getId(), courrier);
+                //Traitement du courrier joint
+                if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")&&courrier.getCourrier()!=null){
+                    trtcourrier = new TraitementCourrier(new CourrierClone(courrier.getCourrier()),TypeTraitement.DECHARGE);
+                    daotrt.save(trtcourrier);
+                    courrierdao.update(courrier.getCourrier().getId(), courrier.getCourrier());
+                }//end if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")){
             }//end if(ligne.getNature().trim().equalsIgnoreCase("0")){
         }//end for(LigneBorderoCourrierR ligne:entity.getCourriers()){
         dao.update(entity.getId(), entity);

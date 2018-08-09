@@ -8,8 +8,10 @@
     <class>com.keren.courrier.model.courrier.CourrierAClasser</class>
     <class>com.keren.courrier.model.courrier.CourrierAAnnote</class>
     <class>com.keren.courrier.model.courrier.CourrierARelancer</class>
+    <class>com.keren.courrier.model.courrier.CourrierADeclasser</class>
     <class>com.keren.courrier.model.courrier.CourrierClone</class>
     <class>com.keren.courrier.model.courrier.CourrierRecu</class>
+    <class>com.keren.courrier.model.courrier.CourrierTous</class>
     <class>com.keren.courrier.model.courrier.TraitementCourrier</class>
     <class>com.keren.courrier.model.courrier.CourrierDepart</class>
     <class>com.keren.courrier.model.courrier.CourrierInterne</class>
@@ -36,6 +38,9 @@
     <class>com.keren.courrier.model.workflow.WorkflowLigne</class>
     <class>com.keren.courrier.model.dashbord.Corbeille</class>
     <class>com.keren.courrier.model.dashbord.RegleCorbeille</class>
+    <class>com.keren.courrier.model.traitement.QuotationAction</class>
+    <class>com.keren.courrier.model.traitement.QuotationActionGele</class>
+    <class>com.keren.courrier.model.traitement.AnnotationAction</class>
     <class>com.core.calendar.Event</class>
     <class>com.core.calendar.Rappel</class>
     <class>com.core.discussions.Canal</class>
@@ -72,9 +77,15 @@
     <class>com.keren.courrier.model.referentiel.CompartimentClasseur</class>
     <class>com.keren.courrier.model.courrier.BorderoCourrierR</class>
     <class>com.keren.courrier.model.courrier.LigneBorderoCourrierR</class>
+    <class>com.keren.courrier.model.traitement.ClassementAction</class>
+    <class>com.keren.courrier.model.traitement.DeclassementAction</class>
+    <class>com.keren.courrier.model.traitement.RelanceAction</class>
+    <class>com.keren.courrier.model.referentiel.EventCourrier</class>
+    <class>com.keren.courrier.model.referentiel.RappelCourrier</class>
+    <class>com.keren.courrier.model.others.ViewCourrier</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>      
     </properties>
   </persistence-unit>
 </persistence>

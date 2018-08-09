@@ -161,6 +161,7 @@ public class UtilisateurCourrier extends BaseElement implements Serializable, Co
 			this.service = new StructureCompany(entity.service);
 		}
 	}
+	
 
 	public String getNom() {
 		return nom;

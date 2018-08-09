@@ -11,6 +11,7 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.keren.courrier.core.ifaces.referentiel.UtilisateurCourrierManagerLocal;
 import com.keren.courrier.core.ifaces.referentiel.UtilisateurCourrierManagerRemote;
 import com.keren.courrier.dao.ifaces.referentiel.UtilisateurCourrierDAOLocal;
+import com.keren.courrier.model.referentiel.User;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class UtilisateurCourrierManagerImpl
        //To change body of generated methods, choose Tools | Templates.
         List<UtilisateurCourrier> results = new ArrayList<UtilisateurCourrier>();
         for(UtilisateurCourrier data:datas){
+            User user = new User(data.getCompte());
+            data.setCompte(user);
             results.add(new UtilisateurCourrier(data));
         }
         return results;
@@ -60,6 +63,8 @@ public class UtilisateurCourrierManagerImpl
         List<UtilisateurCourrier> datas = super.findAll(); //To change body of generated methods, choose Tools | Templates.
         List<UtilisateurCourrier> results = new ArrayList<UtilisateurCourrier>();
         for(UtilisateurCourrier data:datas){
+        	User user = new User(data.getCompte());
+        	data.setCompte(user);
             results.add(new UtilisateurCourrier(data));
         }
         return results;
@@ -69,6 +74,8 @@ public class UtilisateurCourrierManagerImpl
     public UtilisateurCourrier find(String propertyName, Long entityID) {
         UtilisateurCourrier data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
         UtilisateurCourrier entity = new UtilisateurCourrier(data);
+        User user = new User(data.getCompte());
+        entity.setCompte(user);
         return entity;
     }
 

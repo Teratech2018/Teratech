@@ -32,7 +32,7 @@ public class Corbeille extends BaseElement implements Serializable,Comparable<Co
     @JoinColumn(name = "USER_ID")
     private User user ;
     
-    @Predicate(label = "Corbeille",optional = false,editable = false,hide=true)
+    @Predicate(label = "Corbeille",optional = false,search=true)
     private String code;
     
     @Predicate(label = "Désignation",optional = false,search = true)

@@ -23,6 +23,7 @@ import com.keren.courrier.model.referentiel.Statut;
 import com.keren.courrier.model.referentiel.StructureCompany;
 import com.keren.courrier.model.referentiel.TypeCourrier;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
+import com.keren.courrier.model.traitement.RelanceAction;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
@@ -42,8 +43,11 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 
 	private static final long serialVersionUID = -12411984333486963L;
 
-	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true, editable=true)
+	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true, editable = true)
 	private String code;
+
+	@Predicate(label = "Reférence du Courrier", search = true, optional = true, unique = true)
+	private String reference;
 
 	@Predicate(label = "Type courrier départ", target = "combobox", values = "Initial;Réponse", search = false)
 	private String type = "0";
@@ -54,8 +58,9 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 	private NatureCourrier nature;
 
 	@Column(name = "T_CAT")
-	 @Predicate(label = "Catégorie Courrier", optional = true, search = false,
-	 target = "combobox", values = "Courrier Arrivée;Courrier Départ;Courrier Interne;Document GED",editable = false)
+	// @Predicate(label = "Catégorie Courrier", optional = true, search =
+	// false,target = "combobox", values = "Courrier Arrivée;Courrier
+	// Départ;Courrier Interne;Document GED",editable = false)
 	private String categorie;
 
 	@Predicate(label = "Mention du courrier", target = "combobox", values = "Ordinaire;Confidentiel", search = true)
@@ -78,13 +83,14 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 	private Date dcourrier;
 
 	@ManyToOne
-	@JoinColumn(name = "T_EXPE")
+	@JoinColumn(name = "T_CORRES")
 	@Predicate(label = "Expediteur du courrier", type = UtilisateurCourrier.class, target = "many-to-one", search = true, optional = false, observable = true)
 	private UtilisateurCourrier expediteur;
 
 	@ManyToOne
 	@JoinColumn(name = "T_SERV")
 	@Predicate(label = "Service Traitant", type = StructureCompany.class, target = "many-to-one", search = true, optional = false)
+	@Observer(observable = "correspondant", source = "field:service")
 	private StructureCompany service;
 
 	@ManyToOne
@@ -94,8 +100,8 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 
 	@ManyToOne
 	@JoinColumn(name = "C_COUR")
-	@Predicate(label = "Courrier Arrivéé", type = Courrier.class, target = "many-to-one", optional = true, hidden = "currentObject.type=='0'")
-	private Courrier courrier;
+	@Predicate(label = "Courrier Joint", type = CourrierClone.class, target = "many-to-one", optional = true, hidden = "currentObject.type=='0'||currentObject.type==null")
+	private CourrierClone courrier;
 
 	@Lob
 	@Predicate(label = "Objet", target = "textarea", group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
@@ -106,21 +112,8 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 	@Predicate(label = "Pièces jointes", type = FichierLie.class, target = "one-to-many", edittable = true, group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
 	private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "COU_ID")
-	// @Predicate(label = "",type = LigneDiffusion.class,target =
-	// "one-to-many",edittable = true,group = true,groupName =
-	// "group3",groupLabel = "Liste de diffusion")
-	// @Observer(observable = "service" ,source =
-	// "method:diffusionlist",parameters = "service")
-	private List<LigneDiffusion> diffusions = new ArrayList<LigneDiffusion>();
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "COU_ID")
-	private List<TraitementCourrier> traitements = new ArrayList<TraitementCourrier>();
-
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "Date limite", type = Date.class, target = "date", search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
+	@Predicate(label = "Date limite", type = Date.class, target = "date", search = true, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
 	@Observer(observable = "priorite", source = "method:datelimite", parameters = "priorite")
 	private Date limite;
 
@@ -138,37 +131,16 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 	protected String motscles;
 
 	@Predicate(label = "Etat", search = true, hide = true)
-	private String state = "etabli";/*
-									 * @Column(name = "D_LIM_TRT")
-									 * 
-									 * @Predicate(label =
-									 * "Date Limite Traitement", optional =
-									 * true, updatable = false, search = false,
-									 * type = Date.class, target = "date", group
-									 * = true, groupLabel =
-									 * "Informations Complémentaires", groupName
-									 * = "tab6", hidden =
-									 * "currentObject.limite ==true") private
-									 * Date dlimtrt;
-									 * 
-									 * @Lob
-									 * 
-									 * @Column(name = "OBS")
-									 * 
-									 * @Predicate(label = "Observation",
-									 * optional = false, search = false, group =
-									 * true, groupLabel =
-									 * "Informations Complémentaires", groupName
-									 * = "tab6") private String obs;
-									 */
+	private String state = "etabli";
 
 	@ManyToOne
 	@JoinColumn(name = "SOUR_ID")
 	private UtilisateurCourrier source;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "OWSERV_ID")
 	private StructureCompany sowner;
+	
 	@ManyToOne
 	@JoinColumn(name = "BORD_ID")
 	private BorderoCourrier bordero;
@@ -232,16 +204,55 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 		}
 		this.porte = dep.porte;
 		this.signataire = dep.signataire;
-		this.type=dep.type;
-		this.courrier=dep.courrier;
-		if(dep.bordero!=null){
-			this.bordero= new BorderoCourrier(dep.bordero);
+		this.type = dep.type;
+		// this.courrier=dep.courrier;
+		// if(dep.bordero!=null){
+		// this.bordero= new BorderoCourrier(dep.bordero);
+		// }
+
+		if (dep.sowner != null) {
+			this.sowner = new StructureCompany(dep.sowner);
 		}
-		
-		if(dep.sowner!=null){
-			this.sowner=new StructureCompany(dep.sowner);
+		if (dep.expediteur != null) {
+			this.expediteur = new UtilisateurCourrier(dep.expediteur);
 		}
-		
+
+		this.reference = dep.getReference();
+
+	}
+
+	public CourrierInterne(RelanceAction dep) {
+		super(-1, null, null, 0L);
+		this.categorie = "2";
+		if (dep.getCourrier().getPriorite() != null) {
+			this.priorite = new Priorite(dep.getCourrier().getPriorite());
+		}
+		// this.confidentiel = dep.confidentiel;
+		this.dcourrier = new Date();
+		if (dep.getQuote() != null) {
+			this.correspondant = new UtilisateurCourrier(dep.getQuote());
+		}
+		this.nature = dep.getCourrier().getNature();
+		this.objet = dep.getNote();
+		this.limite = dep.getLimite();
+		if (dep.getService() != null) {
+			this.service = new StructureCompany(dep.getService());
+		}
+		this.state = "transmis";
+		if (dep.getQuoteur() != null) {
+			this.source = new UtilisateurCourrier(dep.getQuoteur());
+		}
+		this.porte = dep.getCourrier().getPorte();
+		this.signataire = dep.getCourrier().getSignataire();
+		this.type = "0";
+		if (dep.getService() != null) {
+			this.sowner = new StructureCompany(dep.getService());
+		}
+		if (dep.getQuoteur() != null) {
+			this.expediteur = dep.getQuoteur();
+		}
+		this.piecesjointes.addAll(dep.getPiecesjointes());
+
 	}
 
 	@Override
@@ -266,6 +277,14 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 	public String getDesignation() {
 		// TODO Auto-generated method stub
 		return code;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
 
 	public UtilisateurCourrier getExpediteur() {
@@ -300,14 +319,6 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 		this.typecourrier = typecourrier;
 	}
 
-	public List<LigneDiffusion> getDiffusions() {
-		return diffusions;
-	}
-
-	public void setDiffusions(List<LigneDiffusion> diffusions) {
-		this.diffusions = diffusions;
-	}
-
 	public DossierCourrier getDossier() {
 		return dossier;
 	}
@@ -330,14 +341,6 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 
 	public void setNature(NatureCourrier nature) {
 		this.nature = nature;
-	}
-
-	public List<TraitementCourrier> getTraitements() {
-		return traitements;
-	}
-
-	public void setTraitements(List<TraitementCourrier> traitements) {
-		this.traitements = traitements;
 	}
 
 	public String getObjet() {
@@ -469,11 +472,11 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 		this.type = type;
 	}
 
-	public Courrier getCourrier() {
+	public CourrierClone getCourrier() {
 		return courrier;
 	}
 
-	public void setCourrier(Courrier courrier) {
+	public void setCourrier(CourrierClone courrier) {
 		this.courrier = courrier;
 	}
 
@@ -493,7 +496,7 @@ public class CourrierInterne extends BaseElement implements Serializable, Compar
 	@Override
 	public int compareTo(CourrierInterne o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return code.compareTo(o.code);
 	}
 
 }

@@ -62,6 +62,109 @@ angular.module('keren.core.commons')
             //Liste des contraintes
             var uniqueContraints = new Array();
             var stopTimer = 0;
+            
+            /**
+             * Momento for navigation
+             * @param {type} action: name of the action
+             * @param {type} item:current data
+             * @returns {undefined}
+             */
+            var NavigationItem = function(action, item){
+                this.action = action;
+                this.item = item;
+            };
+            NavigationItem.prototype={
+                hydrate:function(){
+                    var memento = angular.fromJson(this);
+                    return memento;
+                },
+                dehydrate:function(memento){
+                    var nav = angular.toJson(memento);
+                    this.action = nav.action;
+                    this.item = nav.item;
+                },
+                equals : function(memento){
+                    return memento.action===this.action && memento.item===this.item;                      
+                }
+            };
+            var NavigationContainer=function(){
+                this.mementos = new Array();
+                /**
+                 * 
+                 * @param {type} action
+                 * @returns {undefined}
+                 */
+                this.addRule = function(action,item){
+                    var memento = new NavigationItem(action,item);
+                    var index = this.getKey(memento);
+                    if(index<0){
+                        this.mementos[this.mementos.length] = memento;
+                    }else{
+                        this.mementos[index] = memento;
+                    }//end if(index<0){
+                },
+                this.getRule = function(key){
+                    return this.mementos[key];
+                },
+                this.getKey = function(memento){
+                    for(var i=0;i<this.mementos.length;i++){
+                        var data = this.mementos[i];
+                        if(memento.equals(data)===true){
+                            return i;
+                        }//end if(memento.equals(data)===true){
+                    }//end for(var i=0;i<this.mementos.length;i++){
+                    return -1 ;
+                },
+                this.getMementos = function(){
+                    return this.mementos;
+                },
+                this.reset = function(){
+                    this.mementos = new Array();
+                },
+                /**
+                 * Back to one step
+                 * @returns {undefined}
+                 */
+                this.gotoPreview = function(){
+                    this.mementos.pop();
+                    return this.mementos[this.mementos.length-1];
+                },
+                this.gotoPreviewIFExist = function(){
+                    var memento = this.mementos[this.mementos.length-1];
+                    if(memento.item!==null){
+                        this.gotoPreview();
+                    }//end if(memento.item!==null){
+                    return memento;
+                },
+                this.lastPage = function(){
+                    if(this.mementos.length===0) return null;
+                    return this.mementos[this.mementos.length-1]
+                },
+                this.setMementos = function(mementos){
+                    if(!angular.isDefined(mementos)
+                            ||!angular.isArray(mementos)){
+                        this.mementos = new Array();
+                    }else{
+                        this.mementos = mementos;
+                    }
+                }
+            };
+            var NotifyStatutPanel=(function(){
+               var instance;
+                function createInstance(){
+                    var object = new Object();
+                    object.active=false;
+                    return object;
+                }
+                return{
+                    getInstance: function(){
+                        if(!instance){
+                            instance = createInstance();
+                        }
+                        return instance;
+                    }
+                };
+            })();
             /**
              * 
              * @param {type} idElement
@@ -87,7 +190,14 @@ angular.module('keren.core.commons')
                };
 
             return {
-                
+                /**
+                 * Return le container de navigation
+                 * @returns {commons_L61.NavigationContainer}
+                 */
+                getNavigatorContainer:function(){
+                    var container = new NavigationContainer();
+                    return container;
+                },
                 /**
                  * 
                  * @param {type} texte
@@ -99,55 +209,62 @@ angular.module('keren.core.commons')
                  */
                showDialogLoading :function(texte, color, colorContent, topPos,leftPos) {
 //                   console.log("commons.showDialogLoading ================== intree ")
-                   var idElement = "dialogContent";
-                   $('#'+idElement).remove();
-                   
-                    $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:2000;text-align:center;'></div>");
-                    $('#'+idElement).append("<div id='dialogWindow'></div>");
-                    $('#dialogWindow').append("<span id='dialogWindowText' style='text-align:center;padding:8px;padding-right:16px;padding-left:16px;display:inline-block;color:white;border-radius:3px;font-size:80%;'>"+texte+"</span>");
+                   var instance = NotifyStatutPanel.getInstance();
+                   if(instance.active===false){
+                       instance.active = true;
+                        var idElement = "dialogContent";
+                        $('#'+idElement).remove();
 
-                    //Changer le proprietes css
-                    $('#'+idElement).css("top",topPos);
-                    $('#'+idElement).css("left",leftPos);
+                         $('body').append("<div id="+idElement+" style='width:100%;height:100%;position:absolute;z-index:2000;text-align:center;'></div>");
+                         $('#'+idElement).append("<div id='dialogWindow'></div>");
+                         $('#dialogWindow').append("<span id='dialogWindowText' style='text-align:center;padding:8px;padding-right:16px;padding-left:16px;display:inline-block;color:white;border-radius:3px;font-size:80%;'>"+texte+"</span>");
 
-                    $('#dialogWindowText').css("color",color);
-                    $('#dialogWindowText').css("background-color",colorContent);
+                         //Changer le proprietes css
+                         $('#'+idElement).css("top",topPos);
+                         $('#'+idElement).css("left",leftPos);
 
-                    //Afficher le dialog
-                    $('#'+idElement).fadeIn();
+                         $('#dialogWindowText').css("color",color);
+                         $('#dialogWindowText').css("background-color",colorContent);
 
-                    stopTimer = setTimeout(function(){
+                         //Afficher le dialog
+                         $('#'+idElement).fadeIn();
 
-                            $('#'+idElement).fadeOut(function(){
-                                    showDialogLoadingFull(idElement+"_Full","<i class='fa fa-cog fa-spin fa-3x fa-fw'></i>","white","0.2");
-                                    $('#'+idElement).remove();
+                         stopTimer = setTimeout(function(){
 
-                                    /*setTimeout(function(){
-                                            hideDialogLoading("open01");
-                                    },6000);*/
+                                 $('#'+idElement).fadeOut(function(){
+                                         showDialogLoadingFull(idElement+"_Full","<i class='fa fa-cog fa-spin fa-3x fa-fw'></i>","white","0.2");
+                                         $('#'+idElement).remove();
 
-                            });
+                                         /*setTimeout(function(){
+                                                 hideDialogLoading("open01");
+                                         },6000);*/
 
-                            //hideDialogLoading(idElement+"_Full");
-                    },6000);
+                                 });
+
+                                 //hideDialogLoading(idElement+"_Full");
+                         },6000);
+                     }
 	
                },//end
                
                hideDialogLoading :function() {
 //                   console.log("commons.hideDialogLoading ================== sortie ");
                     //On stoppe le moteur
-                    this.stopMoteur(stopTimer);
-                    var idElement = "dialogContent";
-                    //On cache
-                    $('#'+idElement).fadeOut(function(){
-                            $('#'+idElement).remove();
-                    });
+                    var instance = NotifyStatutPanel.getInstance();
+                    if(instance.active===true){
+                        instance.active = false;
+                        this.stopMoteur(stopTimer);
+                        var idElement = "dialogContent";
+                        //On cache
+                        $('#'+idElement).fadeOut(function(){
+                                $('#'+idElement).remove();
+                        });
 
-                    //On cache
-                    $('#'+idElement+"_Full").fadeOut(function(){
-                            $('#'+idElement+"_Full").remove();
-                    });
-                    
+                        //On cache
+                        $('#'+idElement+"_Full").fadeOut(function(){
+                                $('#'+idElement+"_Full").remove();
+                        });
+                    }//end if(instance.active===true){
 //                    console.log("commons.hideDialogLoading ================== sortie 2");
                },
                /**
@@ -1393,11 +1510,11 @@ angular.module('keren.core.commons')
              * @param {type} user
              * @returns {commons_L61.commonsAnonym$3.createsession.session|Object}
              */
-            createsession: function(module,action,entity,user){
+            createsession: function(module,memento,user){
                  var session = new Object();
                  session.module = module ;
-                 session.action = action ;
-                 session.entity = entity;
+                 session.navigator = memento ;
+//                 session.entity = entity;
                  session.user = user;
                  this.createCookie("session_"+session.user,angular.toJson(session),30);
 //           console.log("principal.createsession ===== cookie read : "+commonsTools.readCookie("session_"+session.user));

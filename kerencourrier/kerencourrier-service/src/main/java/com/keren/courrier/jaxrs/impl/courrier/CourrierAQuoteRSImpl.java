@@ -73,8 +73,8 @@ public class CourrierAQuoteRSImpl
         MetaData meta = null;
         try {
             meta = MetaDataUtil.getMetaData(new CourrierAQuote(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Quoter le Courrier", false, "action", null);
-            workbtn.setValue("{'name':'courrier_trait_01_1',template:{'courrier':'object'}}");
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Quoter le Courrier", false, "link", null);
+            workbtn.setValue("{'name':'courrier_trait_01_1',template:{'courrier':'object','quoteur':'object.destinataire','squote':'object.destinataire.service'},'header':['courrier']}");
             workbtn.setStates(new String[]{"etabli"});
 //            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);  
@@ -87,9 +87,12 @@ public class CourrierAQuoteRSImpl
         }
         return meta; //To change body of generated methods, choose Tools | Templates.
     }
+     
+     
     
-    
-    @Override
+   
+
+	@Override
     public RSNumber count(HttpHeaders headers) {
         //To change body of generated methods, choose Tools | Templates.
          //To change body of generated methods, choose Tools | Templates.
@@ -133,7 +136,6 @@ public class CourrierAQuoteRSImpl
         if(headers.getRequestHeader("predicats")!=null){
             contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
         } //end if(headers.getRequestHeader("predicats")!=null){       
-//        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
         if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){

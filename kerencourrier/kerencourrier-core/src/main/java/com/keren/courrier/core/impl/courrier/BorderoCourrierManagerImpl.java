@@ -1,9 +1,16 @@
 
 package com.keren.courrier.core.impl.courrier;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
@@ -11,6 +18,7 @@ import com.keren.courrier.core.ifaces.courrier.BorderoCourrierManagerLocal;
 import com.keren.courrier.core.ifaces.courrier.BorderoCourrierManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.BorderoCourrierDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierCloneDAOLocal;
+import com.keren.courrier.dao.ifaces.courrier.TraitementCourrierDAOLocal;
 import com.keren.courrier.model.courrier.BorderoCourrier;
 import com.keren.courrier.model.courrier.CourrierClone;
 import com.keren.courrier.model.courrier.LigneBorderoCourrier;
@@ -18,11 +26,6 @@ import com.keren.courrier.model.courrier.TraitementCourrier;
 import com.keren.courrier.model.courrier.TypeTraitement;
 import com.keren.courrier.model.referentiel.StructureCompany;
 import com.megatim.common.annotations.OrderType;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @TransactionAttribute
 @Stateless(mappedName = "BorderoCourrierManager")
@@ -36,6 +39,9 @@ public class BorderoCourrierManagerImpl
     
     @EJB(name = "CourrierCloneDAO")
     protected CourrierCloneDAOLocal courrierdao;
+    
+    @EJB(name = "TraitementCourrierDAO")
+   	protected TraitementCourrierDAOLocal daotrt;
 
     public BorderoCourrierManagerImpl() {
     }
@@ -121,11 +127,16 @@ public class BorderoCourrierManagerImpl
             courrier = courrierdao.findByPrimaryKey("id", courrier.getId());
             if(courrier.getPiecesjointes()!=null)courrier.getPiecesjointes().size();
             courrier.setState("transmis");
-//         // gerre le tratement;
-//    		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(courrier),TypeTraitement.TRANSMISSION);
-//    		trtcourrier.setId(-1);
-//    		courrier.getTraitements().add(trtcourrier);
+          //========== @NTW ENREGISTRER LE TRAITEMENT========;
+    		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(courrier),TypeTraitement.TRANSMISSION);
+    		daotrt.save(trtcourrier);
             courrierdao.update(courrier.getId(), courrier);
+            //Traitement du courrier joint
+            if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")&&courrier.getCourrier()!=null){
+                trtcourrier = new TraitementCourrier(new CourrierClone(courrier.getCourrier()),TypeTraitement.TRANSMISSION);
+                daotrt.save(trtcourrier);
+                courrierdao.update(courrier.getCourrier().getId(), courrier.getCourrier());
+            }//end if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")){
         }//end for(LigneBorderoCourrier ligne:entity.getCourriers()){
         entity.setState("transmis");
         entity.setEmission(new Date());

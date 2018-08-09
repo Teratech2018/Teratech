@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.courrier.jaxrs.impl.courrier.BorderoCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierAAnnoteRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierAClasserRSImpl.class);
+        resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierADeclasserRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierAQuoteRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierARelancerRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierCloneRSImpl.class);
@@ -42,12 +43,14 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierInterneRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierRecuRSImpl.class);
+        resources.add(com.keren.courrier.jaxrs.impl.courrier.CourrierTousRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.LigneBorderoCourrierRRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.LigneBorderoCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.courrier.TraitementCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.dashbord.CorbeilleRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.dashbord.CourrierDashboardRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.others.UtilisateurCloneRSImpl.class);
+        resources.add(com.keren.courrier.jaxrs.impl.others.ViewCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.CiviliteRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.ClasseurCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.CompanyRSImpl.class);
@@ -55,9 +58,11 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.ContactRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.CorrespondantRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.DossierCourrierRSImpl.class);
+        resources.add(com.keren.courrier.jaxrs.impl.referentiel.EventCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.GroupeUtilisateurRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.NatureCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.PrioriteRSImpl.class);
+        resources.add(com.keren.courrier.jaxrs.impl.referentiel.RappelCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.StatutRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.StructureCompanyRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.TypeCorrespondantRSImpl.class);
@@ -67,7 +72,9 @@ public class ApplicationConfig extends Application {
         resources.add(com.keren.courrier.jaxrs.impl.referentiel.UtilisateurCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.traitement.AnnotationActionRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.traitement.ClassementActionRSImpl.class);
+        resources.add(com.keren.courrier.jaxrs.impl.traitement.DeclassementActionRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.traitement.QuotationActionRSImpl.class);
+        resources.add(com.keren.courrier.jaxrs.impl.traitement.RelanceActionRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.workflow.ActionCourrierRSImpl.class);
         resources.add(com.keren.courrier.jaxrs.impl.workflow.WorkflowActionRSImpl.class);
     }

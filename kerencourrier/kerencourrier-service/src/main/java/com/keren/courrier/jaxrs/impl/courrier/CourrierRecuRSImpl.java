@@ -75,21 +75,21 @@ public class CourrierRecuRSImpl
         MetaData meta = null;
         try {
             meta = MetaDataUtil.getMetaData(new CourrierRecu(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Quoter le Courrier", false, "action", null);
-            workbtn.setValue("{'name':'courrier_trait_01_1',template:{'courrier':'object'}}");
-            workbtn.setStates(new String[]{"etabli"});
-//            workbtn.setPattern("btn btn-primary");
-            meta.getHeader().add(workbtn);  
-            workbtn = new MetaColumn("button", "work1", "Annoter le Courrier", false, "action", null);
-            workbtn.setValue("{'name':'courrier_trait_02_1',template:{'courrier':'object'}}");
-            workbtn.setStates(new String[]{"etabli"});
-//            workbtn.setPattern("btn btn-primary");
-            meta.getHeader().add(workbtn);  
-            workbtn = new MetaColumn("button", "work1", "Classer le Courrier", false, "action", null);
-            workbtn.setValue("{'name':'courrier_trait_03_1',template:{'courrier':'object'}}");
-            workbtn.setStates(new String[]{"etabli"});
-//            workbtn.setPattern("btn btn-primary");
-            meta.getHeader().add(workbtn);  
+//            MetaColumn workbtn = new MetaColumn("button", "work1", "Quoter le Courrier", false, "action", null);
+//            workbtn.setValue("{'name':'courrier_trait_01_1',template:{'courrier':'object'}}");
+//            workbtn.setStates(new String[]{"etabli"});
+////            workbtn.setPattern("btn btn-primary");
+//            meta.getHeader().add(workbtn);  
+//            workbtn = new MetaColumn("button", "work1", "Annoter le Courrier", false, "action", null);
+//            workbtn.setValue("{'name':'courrier_trait_02_1',template:{'courrier':'object'}}");
+//            workbtn.setStates(new String[]{"etabli"});
+////            workbtn.setPattern("btn btn-primary");
+//            meta.getHeader().add(workbtn);  
+//            workbtn = new MetaColumn("button", "work1", "Classer le Courrier", false, "action", null);
+//            workbtn.setValue("{'name':'courrier_trait_03_1',template:{'courrier':'object'}}");
+//            workbtn.setStates(new String[]{"etabli"});
+////            workbtn.setPattern("btn btn-primary");
+//            meta.getHeader().add(workbtn);  
 //            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
 //            meta.getHeader().add(stautsbar);	       
         } catch (InstantiationException ex) {

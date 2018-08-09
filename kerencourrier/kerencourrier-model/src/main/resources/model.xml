@@ -103,6 +103,11 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>  
+        <element type="com.keren.courrier.model.courrier.CourrierTous"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>  
         <element type="com.keren.courrier.model.courrier.TraitementCourrier"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
@@ -193,6 +198,11 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+        <element type="com.keren.courrier.model.traitement.DeclassementAction"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
         <element type="com.keren.courrier.model.referentiel.CompartimentClasseur"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
@@ -218,12 +228,38 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+        <element type="com.keren.courrier.model.courrier.CourrierADeclasser"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
         <element type="com.keren.courrier.model.courrier.CourrierARelancer"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           
         </element>
         <element type="com.keren.courrier.model.courrier.CourrierRecu"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.traitement.RelanceAction"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+        <element type="com.keren.courrier.model.referentiel.EventCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>        
+        <element type="com.keren.courrier.model.referentiel.RappelCourrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.others.ViewCourrier"  idclass="long"  idname="id" deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           

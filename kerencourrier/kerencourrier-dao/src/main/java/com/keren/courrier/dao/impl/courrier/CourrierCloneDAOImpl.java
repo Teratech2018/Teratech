@@ -42,8 +42,8 @@ public class CourrierCloneDAOImpl
 			 
 			  value = em.createNativeQuery(queryligne).executeUpdate();
 			  value = em.createNativeQuery(querypc).executeUpdate();
-			  value = em.createNativeQuery(querytrt).executeUpdate();
 			  value = em.createNativeQuery(querycourier).executeUpdate();
+			  value = em.createNativeQuery(querytrt).executeUpdate();
 	
 	        }catch(Exception ex){
 

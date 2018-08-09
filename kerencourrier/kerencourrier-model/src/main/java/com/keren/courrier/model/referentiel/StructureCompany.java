@@ -27,7 +27,7 @@ public class StructureCompany extends BaseElement implements Serializable, Compa
 	 */
 	private static final long serialVersionUID = -8474421046166007279L;
 	
-	@Predicate(label="Code",optional=false,unique=true,search=true)
+	@Predicate(label="Code Service",optional=false,unique=true,search=true)
 	private String code ;
 	
 	@Predicate(label="Actif",type=Boolean.class,search=true)
@@ -36,9 +36,15 @@ public class StructureCompany extends BaseElement implements Serializable, Compa
 	@Predicate(label="Nom du service",optional=false,search=true)
 	private String nom ;
 	
+	@Predicate(label="Porte",optional=false,search=true)
+	private String porte ;
+	
+	@Predicate(label="Tel/Fax",optional=false,search=true)
+	private String conctat ;
+	
 	@ManyToOne
 	@JoinColumn(name="DEP_ID")
-	@Predicate(label="Service parent",type=StructureCompany.class,target="many-to-one",search=true)
+	@Predicate(label="Supérieur Direct",type=StructureCompany.class,target="many-to-one",search=true)
 	private StructureCompany parent ;
 	
 	@ManyToOne
@@ -48,6 +54,18 @@ public class StructureCompany extends BaseElement implements Serializable, Compa
 	
 	@Predicate(label="Type",search=true,target="combobox",values="Antenne;Direction;Sous-direction;Service;Bureau")
 	private String type ="0";
+	
+	@Predicate(label="Relance ?",search=false,type=Boolean.class)
+	private Boolean relance = Boolean.FALSE;
+	
+	@Predicate(label="Arrivée ?",search=false,type=Boolean.class)
+	private Boolean arrive = Boolean.FALSE;
+	
+	@Predicate(label="Départ ?",search=false,type=Boolean.class)
+	private Boolean depart = Boolean.FALSE;
+	
+	@Predicate(label="Classement ?",search=false,type=Boolean.class)
+	private Boolean classement = Boolean.FALSE;
         
 //        @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
 //        @JoinColumn(name = "LIDI_ID")
@@ -91,7 +109,13 @@ public class StructureCompany extends BaseElement implements Serializable, Compa
 		if(dep.parent!=null){
 			this.parent = new StructureCompany(dep.parent);
 		}
-		this.type = dep.type;
+		this.type= dep.type;
+		this.porte=dep.porte;
+		this.conctat=dep.conctat;
+		this.relance=dep.relance;
+		this.arrive=dep.arrive;
+		this.depart=dep.depart;
+		this.classement=dep.classement;
 	}
 
 	public String getCode() {
@@ -183,6 +207,55 @@ public class StructureCompany extends BaseElement implements Serializable, Compa
 	public String getDesignation() {
 		// TODO Auto-generated method stub
 		return code+" - "+nom;
+	}
+
+	public String getPorte() {
+		return porte;
+	}
+
+	public void setPorte(String porte) {
+		this.porte = porte;
+	}
+
+	public String getConctat() {
+		return conctat;
+	}
+
+	public void setConctat(String conctat) {
+		this.conctat = conctat;
+	}
+
+
+	public Boolean getRelance() {
+		return relance;
+	}
+
+	public void setRelance(Boolean relance) {
+		this.relance = relance;
+	}
+
+	public Boolean getArrive() {
+		return arrive;
+	}
+
+	public void setArrive(Boolean arrive) {
+		this.arrive = arrive;
+	}
+
+	public Boolean getDepart() {
+		return depart;
+	}
+
+	public void setDepart(Boolean depart) {
+		this.depart = depart;
+	}
+
+	public Boolean getClassement() {
+		return classement;
+	}
+
+	public void setClassement(Boolean classement) {
+		this.classement = classement;
 	}
 
 	@Override

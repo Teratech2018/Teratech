@@ -14,29 +14,39 @@ import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author BEKO
  */
+@Entity
+@Table(name = "T_ANNOACGC")
 public class AnnotationAction extends BaseElement implements Serializable,Comparable<AnnotationAction>{
 
     
      @ManyToOne
+     @JoinColumn(name = "COU_ID")
     @Predicate(label = "Courrier concerné",type = Courrier.class,target = "many-to-one",editable = false,search = true)
     private CourrierClone courrier ;
     
       
     @Predicate(label = "Date Annotation",type = Date.class,target = "date",optional = false,search = true)
+     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dvisa;
      
     @ManyToOne
+    @JoinColumn(name = "QUOT_ID")
     @Predicate(label = "Le Viseur",type = UtilisateurCourrier.class,target = "many-to-one",optional = false,search = true,observable = true)
     private UtilisateurCourrier quoteur ;
     
      @ManyToOne
+     @JoinColumn(name = "SERV_ID")
     @Predicate(label = "Service Du Viseur",type = StructureCompany.class,target = "many-to-one",editable = false)
     @Observer(observable = "quoteur",source = "field:service")
     private StructureCompany service ;
@@ -47,6 +57,27 @@ public class AnnotationAction extends BaseElement implements Serializable,Compar
 
     public AnnotationAction() {
     }
+
+    /**
+     * 
+     * @param entity 
+     */
+    public AnnotationAction(AnnotationAction entity) {
+        super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+        if(entity.courrier!=null){
+            this.courrier = new CourrierClone(entity.courrier);
+        }
+        this.dvisa = entity.dvisa;
+        if(entity.quoteur!=null){
+            this.quoteur = new UtilisateurCourrier(entity.quoteur);
+        }
+        if(entity.service!=null){
+            this.service = new StructureCompany(entity.service);
+        }
+        this.note = entity.note;
+    }
+    
+    
 
     public CourrierClone getCourrier() {
         return courrier;
@@ -97,6 +128,16 @@ public class AnnotationAction extends BaseElement implements Serializable,Compar
     @Override
     public String getEditTitle() {
         return "Annotation Courrier"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getDesignation() {
+        return courrier.getDesignation(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getListTitle() {
+        return "Annotations Courriers"; //To change body of generated methods, choose Tools | Templates.
     }
     
     

@@ -118,7 +118,7 @@ public class BorderoCourrierRSImpl
 
     @Override
     protected void processBeforeSave(BorderoCourrier entity) {
-         if(entity.getType()==null||entity.getType().trim().isEmpty()){
+        if(entity.getType()==null||entity.getType().trim().isEmpty()){
             throw new KerenExecption("Le champ Bordero est obligatoire");
         }else if(entity.getCible()==null){
             throw new KerenExecption("Le champ Service est obligatoire");

@@ -1,22 +1,25 @@
 
 package com.keren.courrier.jaxrs.impl.referentiel;
 
-import javax.ws.rs.Path;
-import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
-import com.kerem.core.MetaDataUtil;
-import com.keren.courrier.core.ifaces.referentiel.StructureCompanyManagerRemote;
-import com.keren.courrier.jaxrs.ifaces.referentiel.StructureCompanyRS;
-import com.keren.courrier.jaxrs.impl.courrier.CourrierRSImpl;
-import com.keren.courrier.model.courrier.Courrier;
-import com.keren.courrier.model.referentiel.StructureCompany;
-import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
-import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+
+import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
+import com.kerem.core.MetaDataUtil;
+import com.keren.courrier.core.ifaces.referentiel.StructureCompanyManagerRemote;
+import com.keren.courrier.jaxrs.ifaces.referentiel.StructureCompanyRS;
+import com.keren.courrier.jaxrs.impl.courrier.CourrierRSImpl;
+import com.keren.courrier.model.referentiel.StructureCompany;
+import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
+import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 
 /**
@@ -68,5 +71,23 @@ public class StructureCompanyRSImpl
         }
         return meta; //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @Override
+	public StructureCompany delete(@Context HttpHeaders headers, Long id) {
+
+		// TODO Auto-generated method stub
+    	StructureCompany entity = manager.find("id", id);
+		try {
+				// on supprimme l'objet
+				super.delete(headers, id);
+	
+
+		} catch (Exception ex) {
+			throw new KerenExecption(
+					"Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+		}
+
+		return entity;
+	}
     
 }

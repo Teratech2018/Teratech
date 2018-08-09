@@ -1,32 +1,33 @@
 
 package com.keren.courrier.core.impl.courrier;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.commons.DateHelper;
 import com.keren.courrier.core.ifaces.courrier.CourrierManagerLocal;
 import com.keren.courrier.core.ifaces.courrier.CourrierManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.BorderoCourrierDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierCloneDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.CourrierDAOLocal;
+import com.keren.courrier.dao.ifaces.courrier.TraitementCourrierDAOLocal;
 import com.keren.courrier.model.courrier.BorderoCourrier;
 import com.keren.courrier.model.courrier.Courrier;
 import com.keren.courrier.model.courrier.CourrierClone;
-import com.keren.courrier.model.courrier.CourrierDepart;
 import com.keren.courrier.model.courrier.FichierLie;
 import com.keren.courrier.model.courrier.LigneBorderoCourrier;
-import com.keren.courrier.model.courrier.ServiceDiffusion;
 import com.keren.courrier.model.courrier.TraitementCourrier;
 import com.keren.courrier.model.courrier.TypeTraitement;
-import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.megatim.common.annotations.OrderType;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @TransactionAttribute
 @Stateless(mappedName = "CourrierManager")
@@ -41,6 +42,9 @@ public class CourrierManagerImpl extends AbstractGenericManager<Courrier, Long>
 	
 	@EJB(name = "CourrierCloneDAO")
 	protected CourrierCloneDAOLocal daoclone;
+	
+	@EJB(name = "TraitementCourrierDAO")
+	protected TraitementCourrierDAOLocal daotrt;
 
 	public CourrierManagerImpl() {
 	}
@@ -101,6 +105,15 @@ public class CourrierManagerImpl extends AbstractGenericManager<Courrier, Long>
 		for (FichierLie aas : data.getPiecesjointes()) {
 			result.getPiecesjointes().add(new FichierLie(aas));
 		}
+//		for (TraitementCourrier trt : data.getTraitements()) {
+//			TraitementCourrier trtcour = new TraitementCourrier(trt);
+//			UtilisateurCourrier user = new UtilisateurCourrier(trt.getOperateur(),"");
+//			UtilisateurCourrier dest= new UtilisateurCourrier(trt.getDestinataire(),"");
+//			trtcour.setOperateur(user);
+//			trtcour.setDestinataire(dest);
+//			result.getTraitements().add(trtcour);
+//		}
+
 		return result;
 	}
 
@@ -129,18 +142,22 @@ public class CourrierManagerImpl extends AbstractGenericManager<Courrier, Long>
 	@Override
 	public void processAfterSave(Courrier entity) {
 		entity = dao.findByPrimaryKey("code", entity.getCode());
+		entity = dao.findByPrimaryKey("id", entity.getId());
+		entity.setCode("CA/" + entity.getId() + "/" + DateHelper.convertToString(entity.getDcourrier(), "dd/MM/yyyy"));
+		//========== @NTW ENREGISTRER LE TRAITEMENT========;
+		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(entity),TypeTraitement.ENREGISTREMENT);
+		daotrt.save(trtcourrier);
+//		entity.getTraitements().add(trtcourrier);
+		dao.update(entity.getId(), entity);
 		if (entity.getBordero() != null) {
 			LigneBorderoCourrier ligne = new LigneBorderoCourrier();
 			ligne.setCourrier(new CourrierClone(entity));
 			ligne.setNature("0");
 			entity.getBordero().getCourriers().add(ligne);
+			entity.getBordero().setCode("BDR/CA/" + entity.getBordero().getId() + "/" + DateHelper.convertToString(entity.getDcourrier(), "dd/MM/yyyy"));
 			borderodao.update(entity.getBordero().getId(), entity.getBordero());
 		} // end if(entity.getBordero()!=null){
-		// gerre le tratement;
-		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(entity),TypeTraitement.ENREGISTREMENT);
-		trtcourrier.setId(-1);
-		entity.getTraitements().add(trtcourrier);
-		dao.update(entity.getId(), entity);
+	
 		super.processAfterSave(entity); // To change body of generated methods,
 										// choose Tools | Templates.
 	}
