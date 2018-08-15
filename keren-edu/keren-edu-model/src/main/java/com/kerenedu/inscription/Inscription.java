@@ -24,7 +24,6 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.SectionE;
 import com.kerenedu.reglement.FichePaiement;
 import com.kerenedu.school.Eleve;
@@ -37,8 +36,8 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 
-@Table
-@Entity(name = "e_inscription")
+@Entity
+@Table(name = "e_inscription")
 public class Inscription extends BaseElement implements Serializable, Comparable<Inscription> {
 
 	@Transient
@@ -50,43 +49,43 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",updatable=false,type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true, searchfields="libelle")
+	@Predicate(label="Classe",updatable=false,type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true, searchfields="libelle", colsequence=1)
 	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
-	@Predicate(label="Elève",updatable=true,type=Eleve.class , target="many-to-one",search=true , sequence=3,searchfields="nom"	)
+	@Predicate(label="Elève",updatable=true,type=Eleve.class , target="many-to-one",search=true , sequence=3,searchfields="nom",colsequence=2	)
 	protected Eleve eleve ;
 
 	
 	@Column(name = "STATUT")
-	@Predicate(label="Statut Elève",optional=false,updatable=true,search=true, target="combobox", values="Redoublant(e);Non Redoublant(e)" , sequence=3)
+	@Predicate(label="Statut Elève",optional=false,updatable=true,search=false, target="combobox", values="Redoublant(e);Non Redoublant(e)" , sequence=3)
 	protected String satut="0";
 	
 	@Column(name = "DATE_INS")
-	@Predicate(label="DATE INSCRIPTION",optional=false,updatable=true,search=true, type=Date.class,sequence=4, target="date" )
+	@Predicate(label="DATE INSCRIPTION",optional=false,updatable=true,search=true, type=Date.class,sequence=4, target="date" ,colsequence=3)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datIns ;
 	
 	@Column(name = "MNT" )	
-	@Predicate(label="SCOLARITE",optional=true,updatable=false,search=true, type=BigDecimal.class ,sequence=5, editable=false)
+	@Predicate(label="SCOLARITE",optional=true,updatable=false,search=true, type=BigDecimal.class ,sequence=5, editable=false,colsequence=4)
 	protected Long zMnt ;
 		
 	@Column(name = "MNT_PAYE")	
-	@Predicate(label="PAYER",optional=true,updatable=false,search=true, type=BigDecimal.class,sequence=7, editable=false)
+	@Predicate(label="PAYER",optional=true,updatable=false,search=true, type=BigDecimal.class,sequence=7, editable=false,colsequence=5)
 	protected Long zMntPaye;
 	
 	@Column(name = "SOLDE")	
-	@Predicate(label="SOLDE",optional=true,updatable=false,search=true, type=BigDecimal.class, hide=true,sequence=8)
+	@Predicate(label="SOLDE ",optional=true,updatable=false,search=true, type=BigDecimal.class ,sequence=8,colsequence=6)
 	protected Long zSolde ;
 	
 	@Column(name = "REMISE")	
-	@Predicate(label="REMISE",optional=true,updatable=false,search=true, type=BigDecimal.class,sequence=9, editable=false 	)
+	@Predicate(label="REMISE",optional=true,updatable=false,search=true, type=BigDecimal.class,sequence=9, editable=false,colsequence=7 	)
 	protected Long zRemise;
 	
 	@Column(name = "RISTOURNE")	
-	@Predicate(label="RISTOURNE",optional=true,updatable=false,search=false, type=BigDecimal.class, hide=true,sequence=9)
+	@Predicate(label="RISTOURNE",optional=true,updatable=false,search=false, type=BigDecimal.class,sequence=10)
 	protected Long zRistourne;
 	
 	@Column(name = "TOTAL")	
@@ -134,7 +133,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 
 	public Inscription(Inscription ins) {
-		super(ins.id, ins.designation, ins.moduleName,0L);
+		super(ins.id, ins.designation, ins.moduleName,ins.compareid);
 		this.zMnt = ins.zMnt;
 		if(ins.eleve!=null){
 			this.eleve = new Eleve(ins.eleve);
@@ -294,7 +293,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return eleve.getMatricule()+"-"+eleve.getNom();
+		return eleve.getNom()+" "+ eleve.getPrenon();
 	}
 
 

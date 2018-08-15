@@ -18,7 +18,6 @@ import com.kerem.core.KerenExecption;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireManagerRemote;
 import com.kerenedu.configuration.CacheMemory;
-import com.kerenedu.dashboard.EducationDashboard;
 import com.kerenedu.dashboard.PedagogieDashboard;
 import com.kerenedu.dashboard.ViewDashboard;
 import com.kerenedu.dashboard.ViewDashboardManagerRemote;
@@ -33,7 +32,7 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
  * 
  */
 @Path("/pedagogiedashboard")
-public class PedagogieDashboardRSImpl implements EducationDashboardRSLocal, EducationDashboardRSRemote {
+public class PedagogieDashboardRSImpl implements PedagogieDashboardRSLocal, PedagogieDashboardRSRemote {
 
 	@Manager(application = "kerencore", name = "DashboardRecordManagerImpl", interf = DashboardRecordManagerRemote.class)
 	protected DashboardRecordManagerRemote dashboardmanager;

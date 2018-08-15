@@ -125,6 +125,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
     public List<Paiement> filter(HttpHeaders headers, int firstResult, int maxResult) {
         Gson gson = new Gson();
         Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+      
 //        UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
         //Type predType = ;
         List contraints = new ArrayList();
@@ -143,18 +144,23 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
 //        container.addEq("source", user);
+      
+        if(headers.getRequestHeader("eleve")!=null){
+             long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+
+             Inscription inscription = null;
+            inscription = managerIns.find("id", studenid);
+        	container.addEq("eleve.id", inscription.getId());
+       }
         container.addEq("state", "etabli");
-        if (CacheMemory.getClasse() != null) {
-			container.addEq("eleve.classe.id", CacheMemory.getClasse().getId());
-		}
-		if (CacheMemory.getCurrentMatricule() != null && !CacheMemory.getCurrentMatricule().isEmpty()
-				&& !CacheMemory.getCurrentMatricule().equals("")) {
-			container.addEq("eleve.eleve.matricule", CacheMemory.getCurrentMatricule());
-		}
-		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
-				&& !CacheMemory.getCurrentNameStudent().equals("")) {
-			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
-		}
+
+//		if (inscription != null) {
+//			container.addEq("eleve.eleve.matricule", inscription.getEleve().());
+//		}
+//		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
+//				&& !CacheMemory.getCurrentNameStudent().equals("")) {
+//			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
+//		}
 		String anneScolaire = CacheMemory.getCurrentannee();
 		if (anneScolaire != null) {
 			container.addEq("anneScolaire", anneScolaire);
@@ -169,6 +175,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
          //To change body of generated methods, choose Tools | Templates.
         Gson gson = new Gson();
         Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+
 //        UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
         //Type predType = ;
         List contraints = new ArrayList();
@@ -185,23 +192,26 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
-       //  container.addEq("source", user);
-         if (CacheMemory.getClasse() != null) {
- 			container.addEq("eleve.classe.id", CacheMemory.getClasse().getId());
- 		}
- 		if (CacheMemory.getCurrentMatricule() != null && !CacheMemory.getCurrentMatricule().isEmpty()
- 				&& !CacheMemory.getCurrentMatricule().equals("")) {
- 			container.addEq("eleve.eleve.matricule", CacheMemory.getCurrentMatricule());
- 		}
- 		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
- 				&& !CacheMemory.getCurrentNameStudent().equals("")) {
- 			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
- 		}
-         container.addEq("state", "etabli");
-         String anneScolaire = CacheMemory.getCurrentannee();
-     	if (anneScolaire != null) {
-     		container.addEq("anneScolaire", anneScolaire);
-     	}
+         if(headers.getRequestHeader("eleve")!=null){
+             long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+
+             Inscription inscription = null;
+            inscription = managerIns.find("id", studenid);
+        	container.addEq("eleve.id", inscription.getId());
+       }
+        container.addEq("state", "etabli");
+
+//		if (inscription != null) {
+//			container.addEq("eleve.eleve.matricule", inscription.getEleve().());
+//		}
+//		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
+//				&& !CacheMemory.getCurrentNameStudent().equals("")) {
+//			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
+//		}
+		String anneScolaire = CacheMemory.getCurrentannee();
+		if (anneScolaire != null) {
+			container.addEq("anneScolaire", anneScolaire);
+		}
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -209,23 +219,44 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 
 	@Override
 	protected void processBeforeSave(Paiement entity) {
-		System.out.println("PaiementRSImpl.processBeforeSave() je suis ici !!");
 		
-		if(entity.getEleve().getzSolde()==0){
-			throw new KerenExecption("Scolarité Totalement règlé pour "+entity.getEleve().getEleve().getNom() );
-		}
-		if (entity.getzMntverser() == 0) {
-			throw new KerenExecption("Bien vouloir Saisir le Montant !!");
-		}
-		
-		if (entity.getzMntverser()>entity.getEleve().getzSolde()) {
-			throw new KerenExecption("Montant Saisir erronéé !!!!");
+		if(entity.getZristourne()==null){
+			entity.setZristourne((long) 0);
 		}
 		// calcul de la remise
 		entity.setZremise((long) 0);
+		
+		if (entity.getEleve()==null) {
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Selectionner l'elève  !!!!");
+		}
+		if(entity.getEleve().getzSolde()==0||entity.getEleve().getzMnt()==entity.getEleve().getzMntPaye()){
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Scolarite Totalement Payer pour  "+entity.getEleve().getEleve().getNom() );
+		}
+		if (entity.getzMntverser() == 0&&entity.getModePaiement().equals("1")) {
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/>Bien vouloir Saisir le Montant !!");
+		}
+		
+		if (entity.getzMntverser()>entity.getEleve().getzSolde()&&entity.getModePaiement().equals("1")) {
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Montant Saisie ERROR  !!!!");
+		}
+		
+		if (entity.getZristourne()>0&&entity.getEleve().getzRistourne()>0) {
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Cet eleve a deja beneficier d'une ristourne de : "+entity.getEleve().getzRistourne());
+		}
+		
+		
+		
 		long remise = 0;
+		long montelligle = 0L;
 		if (entity.getModePaiement().equals("0")) {
 			List<Remise> remiselist = entity.getListremise();
+			Inscription inscription = managerIns.find("id", entity.getEleve().getId());
+			for (FichePaiement fiche : inscription.getService()) {
+				if(fiche.getService().getElligible()==true){
+					montelligle=montelligle+fiche.getZtotal();
+				}
+			}
+			System.out.println("PaiementRSImpl.processBeforeSave() je suis ici ///" + montelligle);
 			if (remiselist != null) {
 				
 				for (Remise r : remiselist) {
@@ -233,11 +264,12 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 						remise = remise + (r.getzValeur());
 					}
 					if (r.getTypeRemise().equals("1")) {
-						remise = remise + ((r.getzValeur() * entity.getZsolde()) / 100);
+						remise = remise + ((r.getzValeur() * montelligle) / 100);
 					}
 				}
 				entity.setZremise(remise);
-				long versement = entity.getZsolde() - remise;
+				long versement = entity.getZsolde() - remise- entity.getZristourne();
+				System.out.println("PaiementRSImpl.processBeforeSave() versement is :"+versement);
 				entity.setzMntverser(versement);
 			}
 		}
@@ -255,7 +287,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			if (entity.getState().equalsIgnoreCase("annulé")) {
 				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
 			}
-			manager.update(entity.getId(), entity);
+			entity =  manager.update(entity.getId(), entity);
 
 			return entity;
 		} catch (KerenEduManagerException ex) {
@@ -267,7 +299,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 	public Response facture(HttpHeaders headers, Paiement entity) {
 		// TODO Auto-generated method stub
 		System.out.println("PaiementRSImpl.facture() paiement pris " + entity.getId());
-		if (entity.getService() == null) {
+		if (entity.getEleve() == null) {
 			throw new KerenExecption("Ce paiement est nulle <br/> ");
 		} // end if(entity.getState().trim().equalsIgnoreCase("valide")){
 		try {
@@ -298,10 +330,13 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 	@Override
 	public Response buildPdfReport(Paiement entity) {
 		try {
+			entity = manager.find("id",entity.getId());
 			System.out.println("PaiementRSImpl.buildPdfReport() " + entity.getEleve());
-
-			List<Paiement> records = manager.getCriteres(entity);// new
-																	// ArrayList<Paiement>();
+	
+//			Inscription ins = managerIns.find("id", entity.getEleve().getId());
+//			entity.setLignes(ins.getService());
+//			System.out.println("PaiementRSImpl.buildPdfReport() lignes "+entity.getLignes());
+			List<Paiement> records = manager.getCriteres(entity);// new ArrayList<Paiement>();//
 			// records.add(entity);//manager.getCriteres(entity);
 			String URL = ReportHelper.templateURL + ReportsName.FACTURE.getName();
 			Map parameters = this.getReportParameters();
@@ -367,7 +402,12 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 	@Override
 	public List<Remise> getremise(HttpHeaders headers) {
 		Gson gson = new Gson();
-		long id = gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		if (headers.getRequestHeader("eleve")==null) {
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Selectionner l'elève  !!!!");
+		}
+		long id = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+		Inscription eleve = managerIns.find("id", id);
+		
 		String mode = gson.fromJson(headers.getRequestHeader("modePaiement").get(0), String.class);
 		// long ideleve =
 		// gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
@@ -378,7 +418,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			List<Remise> results = managerRemise.findAll();
 			System.out.println("PaiementRSImpl.getremise() size record is " + datas.size());
 			for (Remise remise : results) {
-				if (remise.getDatePriseEffet().after(new Date())) {
+				if (remise.getDatePriseEffet().after(new Date())&&eleve.getzRemise()==0) {
 					datas.add(remise);
 				}
 			}

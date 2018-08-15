@@ -559,9 +559,17 @@ and open the template in the editor.
 	            </roles>           
 	        </element>
 	       
-	         
-	        
-	       
+	          <element type="com.kerenedu.model.report.ViewPaiementJournalier"  idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.inscription.Inscriptionclone" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	             
     </elements>
     
 </model-config>

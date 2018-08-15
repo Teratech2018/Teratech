@@ -20,8 +20,8 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 
-@Table
-@Entity(name = "e_caisse")
+@Entity
+@Table(name = "e_caisse")
 public class Caisse extends BaseElement implements Serializable, Comparable<Caisse> {
 
 	@Column(name = "Code")
@@ -85,7 +85,7 @@ public class Caisse extends BaseElement implements Serializable, Comparable<Cais
 	public Caisse(Paiement reglement, String annuler){
 		this.zRevenu =reglement.zMntverser;
 		this.datEnc=new Date();
-		this.anneScolaire= reglement.service.anneScolaire;
+		this.anneScolaire= reglement.anneScolaire;
 		this.description="Annulation du Paiement Scolarité "+"//Elève "+reglement.getEleve().getEleve().getNom();
 		this.paiement= reglement.getId();
 		this.code=reglement.getCode();

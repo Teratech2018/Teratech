@@ -31,7 +31,7 @@ public class ViewBilanFinancierEcoleModal extends BaseElement implements Seriali
 
 
 	@Column(name = "CYCLE")
-	@Predicate(label="Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primare;Secondaire;Universitaire;Tous" , sequence=11)
+	@Predicate(label="Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primare;Secondaire;Tous" , sequence=11)
 	protected String typecycle="0";
 	
 	public ViewBilanFinancierEcoleModal() {
@@ -61,6 +61,12 @@ public class ViewBilanFinancierEcoleModal extends BaseElement implements Seriali
 
 	public void setTypecycle(String typecycle) {
 		this.typecycle = typecycle;
+	}
+
+	@Override
+	public String getDesignation() {
+		// TODO Auto-generated method stub
+		return "Bilan Financier Global";
 	}
 
 	

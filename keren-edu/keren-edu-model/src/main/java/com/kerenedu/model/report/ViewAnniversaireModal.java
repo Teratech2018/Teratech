@@ -48,20 +48,24 @@ public class ViewAnniversaireModal extends BaseElement implements Serializable, 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
 	@Transient
 	@Column(name = "DATE_INS")
-	@Predicate(label="Date Début",optional=false,updatable=true,search=true, type=Date.class,target="date" ,sequence=3)
+	//@Predicate(label="Date Début",optional=false,updatable=true,search=true, type=Date.class,target="date" ,sequence=3)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datInsdeb ;
 	
 	@Transient
 	@Column(name = "DATE_INS")
-	@Predicate(label="Date Fin",optional=false,updatable=true,search=true, type=Date.class,target="date" ,sequence=4 )
+	//@Predicate(label="Date Fin",optional=false,updatable=true,search=true, type=Date.class,target="date" ,sequence=4 )
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datInsfin ;
+	
+	@Column(name = "Mois")
+	@Predicate(label="Mois",optional=true,updatable=true,search=false, target="combobox", values="Janvier;Février;Mars;Avril;Mai;Juin;Juillet;Août;Septembre;octobre;Novembre;Decembre" , sequence=11)
+	protected String mois="0";
 	
 		
 	
@@ -76,6 +80,7 @@ public class ViewAnniversaireModal extends BaseElement implements Serializable, 
 		super(ins.id, ins.designation, ins.moduleName,0L);
 			this.datInsdeb=ins.datInsdeb;
 			this.datInsfin=ins.datInsfin;
+			this.mois=ins.mois;
 
 		
 	}
@@ -152,6 +157,16 @@ public class ViewAnniversaireModal extends BaseElement implements Serializable, 
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+
+	public String getMois() {
+		return mois;
+	}
+
+
+	public void setMois(String mois) {
+		this.mois = mois;
+	}
+
 
 	@Override
 	public String getDesignation() {

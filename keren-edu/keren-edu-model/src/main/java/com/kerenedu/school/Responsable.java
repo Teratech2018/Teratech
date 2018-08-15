@@ -36,12 +36,12 @@ public class Responsable extends BaseElement implements Serializable, Comparable
 	protected String tel;
 	
 	@Column(name = "EMAIL")
-	@Predicate(label="Email",optional=false,updatable=false,search=true)
+	@Predicate(label="Email",optional=true,updatable=false,search=true)
 	protected String email;
 	
 	@Column(name = "DATENAIS")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label="Né(e) le.",optional=false,updatable=true,search=true, type=Date.class, target="date")
+	@Predicate(label="Né(e) le.",optional=true,updatable=true,search=true, type=Date.class, target="date")
 	protected Date dateNais ;
 	
 	@Column(name = "NE")

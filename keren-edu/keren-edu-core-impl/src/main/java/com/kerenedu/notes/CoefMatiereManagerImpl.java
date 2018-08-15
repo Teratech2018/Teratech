@@ -15,7 +15,6 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.core.dashboard.DashboardField;
 import com.kerem.core.KerenExecption;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
@@ -25,7 +24,6 @@ import com.kerenedu.configuration.FiliereDAOLocal;
 import com.kerenedu.configuration.Matiere;
 import com.kerenedu.configuration.MatiereDAOLocal;
 import com.kerenedu.configuration.MatiereDlt;
-import com.kerenedu.reglement.CriteriaFactory;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute

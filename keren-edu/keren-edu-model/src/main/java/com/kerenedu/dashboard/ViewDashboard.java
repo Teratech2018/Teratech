@@ -52,6 +52,14 @@ public class ViewDashboard extends BaseElement implements Serializable,Comparabl
     @Predicate(label = "Encaissé" ,type = double.class)
     private double encaisseG ;
     
+    @Column(name="REMISE_G")
+    @Predicate(label = "Remise" ,type = double.class)
+    private double remiseG ;
+    
+    @Column(name="RISTOURNE_G")
+    @Predicate(label = "Ristourne" ,type = double.class)
+    private double ristourneG ;
+    
     @Column(name="SOLD_G")
     @Predicate(label = "Solde" ,type = double.class)
     private double soldeG ;
@@ -177,6 +185,8 @@ public class ViewDashboard extends BaseElement implements Serializable,Comparabl
 		this.anneScolaire=ins.anneScolaire;
 		this.txReu=ins.txReu;
 		this.admis=ins.admis;
+		this.remiseG=ins.remiseG;
+		this.ristourneG=ins.ristourneG;
 		
     }
 
@@ -217,6 +227,18 @@ public class ViewDashboard extends BaseElement implements Serializable,Comparabl
 		return previsionG;
 	}
 
+	public double getRemiseG() {
+		return remiseG;
+	}
+
+
+
+	public void setRemiseG(double remiseG) {
+		this.remiseG = remiseG;
+	}
+
+
+
 	public void setPrevisionG(double previsionG) {
 		this.previsionG = previsionG;
 	}
@@ -232,6 +254,18 @@ public class ViewDashboard extends BaseElement implements Serializable,Comparabl
 	public double getSoldeG() {
 		return soldeG;
 	}
+
+	public double getRistourneG() {
+		return ristourneG;
+	}
+
+
+
+	public void setRistourneG(double ristourneG) {
+		this.ristourneG = ristourneG;
+	}
+
+
 
 	public void setSoldeG(double soldeG) {
 		this.soldeG = soldeG;

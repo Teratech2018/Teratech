@@ -85,6 +85,7 @@ public class ViewBilanFinancierModalRSImpl
 	   
 	        return ReportHelperTrt.getReportParameters();
 	    }
+	 
 
 
 	@Override

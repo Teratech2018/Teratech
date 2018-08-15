@@ -35,7 +35,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	protected Service service ;
 	
 	@Column(name = "QTE" )	
-	@Predicate(label="Qte",optional=true,updatable=true,search=true, type=Long.class ,sequence=2)
+	@Predicate(label="Qte",optional=true,updatable=true, type=Long.class ,sequence=2)
 	protected Long zQte;
 	
 	@Column(name = "M_HT")	
@@ -44,7 +44,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	protected Long zMntHt;
 	
 	@Column(name = "REMISE" )	
-	@Predicate(label="Remise ",optional=true,updatable=true,search=true, type=Long.class ,sequence=4)
+	@Predicate(label="Remise ",optional=true,updatable=true, type=Long.class ,sequence=4)
 	protected Long zremise ;
 	
 	@Column(name = "RISTOURNE")	
@@ -56,7 +56,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 //	protected String typePaiment="0";
 	
 	@Column(name = "TOTAL_TTC" )	
-	@Predicate(label="TOTAL TTC",optional=true,search=true, type=Long.class ,sequence=6, editable=false)
+	@Predicate(label="TOTAL TTC",optional=true, type=Long.class ,sequence=6,search=true, editable=false)
 	protected Long ztotal ;
 	
 	@Column(name = "MNT_PAYER" )	
@@ -106,14 +106,14 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 
 
 	public FichePaiement(FichePaiement ins) {
-		super(ins.id, ins.designation, ins.moduleName,0L);
+		super(ins.id, ins.designation, ins.moduleName,ins.compareid);
 		this.zQte = ins.zQte;
 		this.zMntHt = ins.zMntHt;
 		this.zristourne=ins.zristourne;
 		this.ztotal=ins.ztotal;
 		this.zremise=ins.zremise;
 		if(ins.service!=null){
-		this.service= new Service(ins.service);
+		  this.service= new Service(ins.service);
 		}
 		this.matricule=ins.matricule;
 		this.mntpayer = ins.mntpayer;
@@ -244,7 +244,7 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 
 
 	public Long getSolde() {
-		return solde;
+		return this.ztotal - this.mntpayer;
 	}
 
 
@@ -323,7 +323,15 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 		this.matricule = matricule;
 	}
 
-		
+	public void addMontant(long montant){
+		this.mntpayer+=montant;
+		this.solde-=montant;
+	}
+	
+	public void subtractMontant(long montant){
+		this.mntpayer=this.mntpayer-montant;
+		this.solde=this.solde+montant;
+	}
 	
 
 }

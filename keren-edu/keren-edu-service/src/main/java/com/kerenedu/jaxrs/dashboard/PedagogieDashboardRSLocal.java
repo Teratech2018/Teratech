@@ -12,6 +12,6 @@ import javax.ejb.Local;
  * @author Commercial_2
  */
 @Local
-public interface PedagogieDashboardRSLocal extends EducationDashboardRS{
+public interface PedagogieDashboardRSLocal extends PedagogieDashboardRS{
     
 }

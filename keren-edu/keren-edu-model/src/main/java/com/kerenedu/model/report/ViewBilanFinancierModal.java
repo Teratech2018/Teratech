@@ -28,7 +28,7 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_zview_bf")
 public class ViewBilanFinancierModal extends BaseElement implements Serializable, Comparable<ViewBilanFinancierModal> {
 
-	@Transient
+	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
 	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
@@ -38,8 +38,8 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2)
+//	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
 	
@@ -49,13 +49,13 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 	}
 
 
-	public ViewBilanFinancierModal(Classe classe, Eleve eleve, Long zInscriptionEnc, Long tranche1Enc, Long tranche2Enc,
-			Long tranche3Enc, Long remise, Long ristourne, Long zTotalA, Long zTotalR, Long zSolde, Cycle cycle,
-			Long effectifs, Long effectifssolvable, String anneeid) {
+
+	public ViewBilanFinancierModal(SectionE section, Classe classe) {
 		super();
+		this.section = section;
 		this.classe = classe;
-		
 	}
+
 
 
 	public ViewBilanFinancierModal(ViewBilanFinancierModal ins) {
@@ -63,6 +63,10 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 		
 		if(ins.classe!=null){
 			this.classe = new Classe(ins.classe);
+		}
+		
+		if(ins.getSection()!=null){
+			this.section=ins.section;
 		}
 	
 			

@@ -12,6 +12,6 @@ import javax.ejb.Remote;
  * @author Commercial_2
  */
 @Remote
-public interface PedagogieDashboardRSRemote extends EducationDashboardRS{
+public interface PedagogieDashboardRSRemote extends PedagogieDashboardRS{
     
 }

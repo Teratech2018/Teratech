@@ -15,6 +15,28 @@ import java.util.Date;
  * @author DEV_4
  */
 public class DateHelper {
+	
+	
+	
+	public static Date getDateDay(int nombreday, Date date){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DAY_OF_MONTH, +nombreday);
+		date = cal.getTime();
+		return date;
+	}
+	
+	public static Date formatDate(Date date){
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = null;
+		try {
+			d = f.parse(f.format(date));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return d;
+	}
 
 	/**
 	 * 

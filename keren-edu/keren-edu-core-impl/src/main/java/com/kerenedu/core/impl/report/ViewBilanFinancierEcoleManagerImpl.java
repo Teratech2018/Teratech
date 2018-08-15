@@ -76,13 +76,15 @@ public class ViewBilanFinancierEcoleManagerImpl
 		if (critere != null) {
 			container = RestrictionsContainer.newInstance();
 
-			if (critere.getTypecycle() != null) {
+			if (critere.getTypecycle() != null&& !critere.getTypecycle().equals("3")) {
 				Cycle cycle = daocycle.findByProperty("typecycle", critere.getTypecycle()).get(0);
 				if(cycle!=null){
 					container = RestrictionsContainer.newInstance();
 					container.addEq("cycle.id", cycle.getId());
 				}
 				
+			}else{
+				container = RestrictionsContainer.newInstance();
 			}
 
 		}

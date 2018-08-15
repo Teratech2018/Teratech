@@ -57,9 +57,9 @@ public class ViewListeEleveManagerImpl
    			int firstResult, int maxResult) {
    		// TODO Auto-generated method stub
     	predicats.addAll(CacheMemory.defaultPredicatsCycleAnnee());
-    	List<Inscription> listIns = daoIns.filter(predicats, orders, properties, firstResult, maxResult);
+    	List<ViewListeEleve> listIns = dao.filter(predicats, orders, properties, firstResult, maxResult);
     	List<ViewListeEleve> result = new ArrayList<ViewListeEleve>();
-    	for(Inscription i :listIns){
+    	for(ViewListeEleve i :listIns){
     		result.add(new ViewListeEleve(i));
     	}
    		return result;
@@ -68,7 +68,7 @@ public class ViewListeEleveManagerImpl
    	@Override
    	public ViewListeEleve find(String propertyName, Long entityID) {
    		// TODO Auto-generated method stub
-   		Inscription ins= daoIns.findByPrimaryKey("id", entityID);
+   		ViewListeEleve ins= dao.findByPrimaryKey("id", entityID);
    		//ViewListeEleve elev = super.find(propertyName, entityID);
    		ViewListeEleve inscrip = new ViewListeEleve(ins);
 //   		for(Eleve serv: elev.getElevelist()){
@@ -80,10 +80,10 @@ public class ViewListeEleveManagerImpl
    	@Override
    	public List<ViewListeEleve> findAll() {
    		// TODO Auto-generated method stub
-   		List<Inscription> inst = daoIns.filter(null, null, null, 0, 0);
+   
    		List<ViewListeEleve> datas = super.findAll();
    		List<ViewListeEleve> result = new ArrayList<ViewListeEleve>();
-   		for(Inscription elev:inst){
+   		for(ViewListeEleve elev:datas){
    			result.add(new ViewListeEleve(elev));
    		}
    		return result;
@@ -107,19 +107,20 @@ public class ViewListeEleveManagerImpl
 //						container.addGe("eleve.dateNais", critere.getDatInsfin());
 //					}
 //					
-//					if (critere.getDatInsdeb() != null) {
-//						container.addLe("eleve.dateNais", critere.getDatInsdeb());
-//					}
+					if (critere.getSection() != null) {
+						container.addEq("eleve.section.id", critere.getSection().getId());
+					}
 
 					if (critere.getClasse() != null) {
 						container.addEq("classe.id", critere.getClasse().getId());
+						container.addEq("eleve.section.id", critere.getClasse().getSection().getId());
 					}
 
 				}
-				List<Inscription> datas = daoIns.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+				List<ViewListeEleve> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 				List<ViewListeEleve> result = new ArrayList<ViewListeEleve>();
 				if (datas != null) {
-					for (Inscription aniv : datas) {;
+					for (ViewListeEleve aniv : datas) {;
 						result.add(new ViewListeEleve(aniv));
 					}
 				} // fin if(datas!=null)

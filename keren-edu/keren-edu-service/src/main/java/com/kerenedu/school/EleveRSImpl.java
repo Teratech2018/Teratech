@@ -82,11 +82,17 @@ public class EleveRSImpl
 			MetaData meta =  MetaDataUtil.getMetaData(new Eleve(), new HashMap<String, MetaData>(),new ArrayList<String>());
 			MetaColumn col = new MetaColumn("button", "incription", "Pré-Inscription", false, "action", null);
 			col.setValue("{'name':'keren_education_ins','template':{'eleve':'object'}}");
-			
 			meta.getHeader().add(col);
-			col = new MetaColumn("button", "paiementfrais", "Scolarité", false, "action", null);
-			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object'}}");
-			meta.getHeader().add(col);
+//			
+//			MetaColumn workbtn = new MetaColumn("button", "work1", "Frais de Scolarité", false, "link", null);
+//			workbtn.setValue(
+//					"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'}}");
+//			workbtn.setStates(new String[] { "etabli" });
+//			
+//			meta.getHeader().add(col);
+//			col = new MetaColumn("button", "paiementfrais", "Scolarité", false, "action", null);
+//			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object'}}");
+//			meta.getHeader().add(col);
 	
 			
 			
