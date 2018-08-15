@@ -9,6 +9,7 @@ import com.core.base.BaseElement;
 import com.core.views.CalendarRecord;
 import com.core.views.DashboardRecord;
 import com.core.views.FormRecord;
+import com.core.views.KabanRecord;
 import com.core.views.ReportRecord;
 import com.core.views.TreeRecord;
 import com.megatim.common.annotations.Predicate;
@@ -97,6 +98,9 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
      @OneToOne(mappedBy = "action",fetch = FetchType.LAZY)
      protected CalendarRecord calendar;
      
+     @OneToOne(mappedBy = "action",fetch = FetchType.LAZY)
+     protected KabanRecord kaban;
+     
      @OneToMany(fetch = FetchType.LAZY,mappedBy = "action")
      protected List<ReportRecord> records = new ArrayList<ReportRecord>();
      
@@ -153,6 +157,9 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
         }
         if(menu.getCalendar()!=null){
             this.calendar = new CalendarRecord(menu.calendar);
+        }
+        if(menu.kaban!=null){
+            this.kaban = new KabanRecord(menu.kaban);
         }
     }
     /**
@@ -243,6 +250,14 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
 
     public void setHide(Boolean hide) {
         this.hide = hide;
+    }
+
+    public KabanRecord getKaban() {
+        return kaban;
+    }
+
+    public void setKaban(KabanRecord kaban) {
+        this.kaban = kaban;
     }
     
     

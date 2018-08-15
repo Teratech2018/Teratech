@@ -7,6 +7,7 @@ package com.core.menus;
 
 import com.core.application.Manifest;
 import com.core.base.BaseElement;
+import com.core.templates.ThemeRecord;
 import com.core.views.FormRecord;
 import com.core.views.TreeRecord;
 import com.megatim.common.annotations.Predicate;
@@ -81,6 +82,8 @@ public class MenuModule extends BaseElement implements Serializable,Comparable<M
      @OneToOne(fetch = FetchType.LAZY,mappedBy ="module" )
      private MenuAction action ;
      
+     @OneToOne(fetch = FetchType.LAZY,mappedBy ="module" )
+     private ThemeRecord theme;
      
      @OneToMany(mappedBy = "module" , fetch = FetchType.LAZY)
      //@Predicate(label = "menus" ,target = "one-to-many" ,updatable = false ,group = true,groupName = "group1",groupLabel = "MENUS",type = MenuGroupActions.class)
@@ -148,6 +151,7 @@ public MenuModule(MenuModule module) {
         this.active = module.active;
         this.hasmenu = module.hasmenu;
         this.categorie = module.categorie;
+        
     }
 
 /**
@@ -215,7 +219,13 @@ public MenuModule(Manifest manifest) {
         this.website = website;
     }
 
-   
+    public ThemeRecord getTheme() {
+        return theme;
+    }
+
+    public void setTheme(ThemeRecord theme) {
+        this.theme = theme;
+    }
     
 
     public String getName() {

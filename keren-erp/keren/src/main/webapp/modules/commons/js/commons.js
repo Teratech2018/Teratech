@@ -63,15 +63,17 @@ angular.module('keren.core.commons')
             var uniqueContraints = new Array();
             var stopTimer = 0;
             
+            
             /**
              * Momento for navigation
              * @param {type} action: name of the action
              * @param {type} item:current data
              * @returns {undefined}
              */
-            var NavigationItem = function(action, item){
+            var NavigationItem = function(action, item,label){
                 this.action = action;
                 this.item = item;
+                this.label = label;
             };
             NavigationItem.prototype={
                 hydrate:function(){
@@ -94,8 +96,8 @@ angular.module('keren.core.commons')
                  * @param {type} action
                  * @returns {undefined}
                  */
-                this.addRule = function(action,item){
-                    var memento = new NavigationItem(action,item);
+                this.addRule = function(action,item,label){
+                    var memento = new NavigationItem(action,item,label);
                     var index = this.getKey(memento);
                     if(index<0){
                         this.mementos[this.mementos.length] = memento;
@@ -190,6 +192,53 @@ angular.module('keren.core.commons')
                };
 
             return {
+                /**
+                 * Builder of the custom principal screen
+                 * @param {type} theme
+                 * @returns {undefined}
+                 */
+                principalScreenBuilder:function(theme,scope){
+//                    console.log("commons.principalScreenBuilder(theme,scope) ======== "+theme.script);
+                    if(angular.isDefined(theme) && angular.isDefined(theme.script)){
+                         var viewElem = document.createElement("div");
+                         viewElem.setAttribute('id' , 'modulescontainer');
+                         viewElem.setAttribute('style' , "height: 100%;width: 100%;position: absolute;");
+                         viewElem.innerHTML = theme.script;
+                         var compileFn = $compile(viewElem);
+                         compileFn(scope);
+                         var items = $(document).find("div");
+                         for(var i=0; i<items.length;i++){                 
+                             if(items.eq(i).attr("id")==="modulescontainer"){
+                                   items.eq(i).replaceWith(viewElem);
+                                   scope.defaultui = false;
+//                                   console.log("commons.principalScreenBuilder =============== trouve");
+                             }//end if(items.eq(i).attr("id")=="datatable"){ 
+                         }//end for(var i=0; i<items.length;i++){      
+                    }//end if(angular.isDefined(theme) && angular.isDefined(theme.script)){                    
+                },
+                /**
+                 * 
+                 * @param {type} theme
+                 * @param {type} scope
+                 * @returns {undefined}
+                 */
+                treeTemplateBuilder:function(theme,scope){
+                    if(angular.isDefined(theme) && angular.isDefined(theme.tree)){
+                         var viewElem = document.createElement("div");
+                         viewElem.setAttribute('id' , 'container');
+//                         viewElem.setAttribute('ng-show' , 'principalscreen==false');
+                         viewElem.innerHTML = theme.tree;
+                         var compileFn = $compile(viewElem);
+                         compileFn(scope);
+                         var items = $(document).find("div");
+                         for(var i=0; i<items.length;i++){                 
+                             if(items.eq(i).attr("id")=="container"){
+                                   items.eq(i).replaceWith(viewElem);
+//                                   console.log("commons.principalScreenBuilder =============== trouve");
+                             }//end if(items.eq(i).attr("id")=="datatable"){ 
+                         }//end for(var i=0; i<items.length;i++){      
+                    }//end if(angular.isDefined(theme) && angular.isDefined(theme.script)){
+                },
                 /**
                  * Return le container de navigation
                  * @returns {commons_L61.NavigationContainer}
@@ -1402,14 +1451,11 @@ angular.module('keren.core.commons')
                 if(data){                                                            
                     var divElem = document.createElement('div');
                     divElem.setAttribute("class","panel panel-primary kanban-col");
-                    divElem.setAttribute("style","margin-bottom:7px;padding-left: 0px;margin-right: 10px;width: 49%;");
+                    divElem.setAttribute("style","margin-bottom:7px;padding-left: 0px;margin-right: 10px;width: 47%;");
                     var headElem = document.createElement("div");
                     divElem.appendChild(headElem);
-                    headElem.setAttribute("class","panel-heading col-sm-12 col-md-12");
+                    headElem.setAttribute("class","panel-heading col-sm-12 col-md-12 dashboard-header");
                     headElem.appendChild(document.createTextNode(data.label));
-                    var iElem = document.createElement("i");
-                    iElem.setAttribute("class" ,"fa fa-2x fa-plus-circle pull-right");
-                    headElem.appendChild(iElem);
                     var actionElem = document.createElement("div");
                     headElem.appendChild(actionElem);
                     actionElem.setAttribute("class","btn-group  dropdown pull-right");
@@ -1417,7 +1463,7 @@ angular.module('keren.core.commons')
                     actionElem.setAttribute("aria-label","group 2");
                     var buttonElem = document.createElement("button");
                     actionElem.appendChild(buttonElem);
-                    buttonElem.setAttribute("class","btn btn-primary dropdown dropdown-toggle btn-sm");
+                    buttonElem.setAttribute("class","btn btn-primary dropdown dropdown-toggle btn-sm  dashboard-header");
                     buttonElem.setAttribute("type","button");
                     buttonElem.setAttribute("data-toggle","dropdown");
                     buttonElem.setAttribute("aria-haspopup","false");
@@ -1456,6 +1502,7 @@ angular.module('keren.core.commons')
                     divElem2.setAttribute("style","padding:0px;");
                     var artElem = document.createElement("article");
                     divElem2.appendChild(artElem);
+                    artElem.setAttribute("class","dashboard-body");
                     artElem.setAttribute("draggable","true");
                     artElem.setAttribute("style","height: 150px;");
                     var container = document.createElement("div");                    
@@ -1471,6 +1518,144 @@ angular.module('keren.core.commons')
                     return divElem;
                 }//end if(data)
             },
+               /**
+             * 
+             * @param {type} data:dash bord datat
+             * @returns {undefined}
+             */
+        kabanBuilder:function(scope){
+                    var divElem = document.createElement('div');
+                    divElem.setAttribute("class","panel panel-primary kanban-col");
+                    divElem.setAttribute("style","margin-bottom:7px;padding-left: 0px;margin-right: 10px;width: 24%;");
+                    var headElem = document.createElement("div");
+                    divElem.appendChild(headElem);
+                    headElem.setAttribute("class","panel-heading col-sm-4 col-md-3 col-lg-2 dashboard-header");
+                    headElem.setAttribute("style","width: 100%;height:5px;");
+                    var span = document.createElement("span");
+                    span.setAttribute("class","tc-dropdown");
+                    span.setAttribute("style","float:right;");
+                    headElem.appendChild(span); 
+                    var spanElem = document.createElement("span");
+                    spanElem.setAttribute("class" ,"glyphicon glyphicon-option-horizontal pull-right tc-dropbtn");                    
+                    span.appendChild(spanElem); 
+                    var ulelem = document.createElement("ul");
+                    ulelem.setAttribute('class','dropdown-menu');
+                    ulelem.setAttribute('role','menu');
+                    ulelem.setAttribute('aria-labelledby','aria-labelledby');
+                    span.appendChild(ulelem);
+                    ulelem.setAttribute("class","tc-dropdown-content");
+                    if(scope.currentModule.name==="application"){
+                        var liElem = document.createElement('li');
+                        var aElem = document.createElement('a');
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableprint');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click','viewAction(item)');
+                        aElem.appendChild(document.createTextNode("{{'Voir' | translate}}")) ;
+                        liElem.appendChild(aElem);
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableupdate');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click','installAction(item)');
+                        aElem.appendChild(document.createTextNode('{{exportbtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                        //Bloc 3
+                        liElem = document.createElement('li');
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableupdateedit');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click','updateAction(item)');
+                        aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                    }else{
+                        var liElem = document.createElement('li');
+                        var aElem = document.createElement('a');
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableprint');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click','viewAction(item)');
+                        aElem.appendChild(document.createTextNode("{{'Voir' | translate}}")) ;
+                        liElem.appendChild(aElem);
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableupdate');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click','updateAction(item)');
+                        aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                        //Bloc 3
+                        liElem = document.createElement('li');
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desabledelete');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click','deleteAction(item)');
+                        aElem.appendChild(document.createTextNode('{{deletebtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                    }//end if(scope.currentModule.name=="application"){                    
+                    //Body of the dashboard
+                    var bodyElem = document.createElement("div");
+                    divElem.appendChild(bodyElem);
+                    bodyElem.setAttribute("class","panel-body col-sm-4 col-md-3  col-lg-2");
+                    bodyElem.setAttribute("style","padding: 0px;");
+                    var divElem2 = document.createElement("div");
+                    bodyElem.appendChild(divElem2);
+                    divElem2.setAttribute("class","kanban-centered");
+                    divElem2.setAttribute("style","padding:0px;");
+                    var artElem = document.createElement("article");
+                    divElem2.appendChild(artElem);
+                    artElem.setAttribute("class","kaban-body");
+                    artElem.setAttribute("draggable","true");
+                    artElem.setAttribute("style","height: 100px;");
+                    var container = document.createElement("div");                    
+                    container.setAttribute("id","kaban_{{item.id}}");
+                    container.setAttribute("style","height: 100%; width: 100%;");                    
+                    if(angular.isDefined(scope.currentAction.kaban) 
+                            &&angular.isDefined(scope.currentAction.kaban.script)){
+                        container.innerHTML = scope.currentAction.kaban.script;                        
+                    }//end dashentry = if(angular.isDefined(scope.currentAction.kaban)
+                    artElem.appendChild(container);
+                    var compileFn = $compile(divElem);
+                    compileFn(scope);                    
+//                    console.log(" $scope.initAction ===== "+divElem.innerHTML);
+//                    this.dashboardEntryBuilder(data.code,data.entries[0]);
+                    return divElem;               
+            },
+            /**
+             * 
+             * @returns {unresolved}
+             */
+            kabanContainerBuilder:function(scope){
+                var divElem = document.createElement("div");
+                divElem.setAttribute("id","datawidget");
+                divElem.setAttribute("style","padding-left:  10px;margin:10px;");
+                divElem.setAttribute("ng-repeat","item in datas");
+                divElem.appendChild(this.kabanBuilder(scope));  
+                return divElem;
+            }
+            ,
             /**
              * Construction du panel tableau de bord
              * @param {type} data
@@ -1479,7 +1664,7 @@ angular.module('keren.core.commons')
             dashboardContainerBuilder:function(data,scope){
                 var divElem = document.createElement("div");
                 divElem.setAttribute("class","row");
-                divElem.setAttribute("style","padding-left:  10px;padding-right:  10px;");
+                divElem.setAttribute("style","padding-left:  10px;margin:10px;");
                 for(var i=0;i<data.dashboards.length;i++){
                     if(data.dashboards[i]){                        
                         divElem.appendChild(this.dashboardBuilder(data.dashboards[i]));                        
@@ -1487,6 +1672,7 @@ angular.module('keren.core.commons')
                 }//end for(var i=0;i<data.dashboards.length;i++)
                 return divElem;
             },
+          
             /**
              * 
              * @param {type} date

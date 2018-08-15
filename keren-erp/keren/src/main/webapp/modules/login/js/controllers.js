@@ -48,5 +48,6 @@ angular.module('keren.core.login')
                             $rootScope.$broadcast("login" , {username:$scope.username , password:$scope.password});
                         });
             };
+           
         });
 

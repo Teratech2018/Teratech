@@ -15,6 +15,8 @@
                 <xs:element ref="tns:reportRecord"  minOccurs="0" maxOccurs="unbounded" />
                 <xs:element ref="tns:dashboardRecord"  minOccurs="0" maxOccurs="unbounded" />
                 <xs:element ref="tns:calendarRecord"  minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="tns:kabanentry"  minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="tns:theme"  minOccurs="0" maxOccurs="1" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -59,9 +61,7 @@
             <xs:attribute name="view_type" type="xs:string" default="tree,form" />  
             <xs:attribute name="hide" type="xs:boolean" default="false" />     
         </xs:complexType>
-    </xs:element>     
-   
-     
+    </xs:element>    
     <xs:element name="dashboardRecord">
         <xs:complexType>
             <xs:sequence>
@@ -75,8 +75,7 @@
             <xs:attribute name="model_ref"  type="xs:string"  use="required" /> 
             <xs:attribute name="method_ref"  type="xs:string"  use="required" />         
         </xs:complexType>
-    </xs:element>
-    
+    </xs:element>    
     <xs:element name="dashboardentry">
         <xs:complexType>
             <xs:sequence>
@@ -91,8 +90,18 @@
             <xs:attribute name="model_ref"  type="xs:string"/> 
             <xs:attribute name="method_ref"  type="xs:string"/>      
         </xs:complexType>
-    </xs:element>
-    
+    </xs:element>    
+    <xs:element name="kabanentry">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>           
+            </xs:sequence>
+            <xs:attribute name="id"  type="xs:string" />
+            <xs:attribute name="parent_ref" type="xs:string" />   
+            <xs:attribute name="entity_ref"  type="xs:string"/>
+            <xs:attribute name="model_ref"  type="xs:string"/>             
+        </xs:complexType>
+    </xs:element>    
     <xs:element name="dashboard">
         <xs:complexType>
             <xs:sequence>
@@ -102,8 +111,7 @@
             <xs:attribute name="label"  type="xs:string" />
             <xs:attribute name="parent_ref" type="xs:string" />   
         </xs:complexType>
-    </xs:element>
-    
+    </xs:element>    
     <xs:element name="formRecord">
         <xs:complexType>
             <xs:sequence>
@@ -159,7 +167,11 @@
     
     <xs:element name="template"  type="xs:string">
         
-    </xs:element> 
+    </xs:element>
+    
+     <xs:element name="container"  type="xs:string">
+        
+    </xs:element>  
           
     <xs:element name="search">
         <xs:complexType>
@@ -203,9 +215,94 @@
     <xs:element name="principal">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:header"   minOccurs="0" maxOccurs="1"/>
-                <xs:element ref="tns:main"   minOccurs="1" maxOccurs="1"/> 
-                <xs:element ref="tns:footer"   minOccurs="0" maxOccurs="1"/>              
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dashboardtemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="reporttemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>              
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="calendartemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>              
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="treetemplate">
+        <xs:complexType>
+            <xs:sequence>
+               <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                           
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+     <xs:element name="containertemplate">
+        <xs:complexType>
+            <xs:sequence>
+               <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                  
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="formtemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                     
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="importtemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                   
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="exporttemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                    
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="discussiontemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="logintemplate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="theme">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:principal"   minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="tns:containertemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:logintemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:discussiontemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:formtemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:treetemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:calendartemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:reporttemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:dashboardtemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:importtemplate"   minOccurs="0" maxOccurs="1"/> 
+                <xs:element ref="tns:exporttemplate"   minOccurs="0" maxOccurs="1"/>              
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -42,6 +42,11 @@ public interface UploadFileRS {
     public Response uploadFiletemporal(MultipartFormDataInput input,@Context HttpHeaders headers);
     
     @GET
+    @Path("static/{filename}")
+    @Produces("image/png")
+    public Response downloadImageFileFree(@PathParam("filename") String filename);
+    
+    @GET
     @Path("png/{filename}")
     @Produces("image/png")
     public Response downloadImageFile(@PathParam("filename") String filename);

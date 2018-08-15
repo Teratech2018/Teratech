@@ -1,3 +1,32 @@
+.tc-dropbtn {
+    border: none;
+}
+
+.tc-dropdown {
+    position: relative;   
+}
+
+.tc-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.tc-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;  
+    display: block;
+}
+
+.tc-dropdown-content a:hover {text-decoration: none;background-color: buttonface; }
+
+.tc-dropdown:hover .tc-dropdown-content {display: block;}
+
+.tc-dropdown:hover .tc-dropbtn {background-color: #3e8e41;}
 
 img {
     vertical-align: middle;

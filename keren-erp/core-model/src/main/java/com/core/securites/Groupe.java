@@ -7,6 +7,7 @@ package com.core.securites;
 
 import com.core.base.BaseElement;
 import com.core.menus.MenuModule;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class Groupe extends BaseElement implements Serializable,Comparable<Group
     @ManyToOne
     @JoinColumn(name = "M_ID")
     @Predicate(label = "MODULE CONCERNE",target = "many-to-one",optional = false,updatable = false,type = MenuModule.class,search = true,observable = true)
+    @Filter(value = "[{\"fieldName\":\"application\",\"value\":true}]")
     private MenuModule module ;
     
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)

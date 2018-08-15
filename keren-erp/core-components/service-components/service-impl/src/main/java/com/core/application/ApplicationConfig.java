@@ -55,9 +55,11 @@ public class ApplicationConfig extends Application {
         resources.add(com.core.securites.PwdUser2RSImpl.class);
         resources.add(com.core.securites.PwdUserRSImpl.class);
         resources.add(com.core.securites.UtilisateurRSImpl.class);
+        resources.add(com.core.templates.ThemeRecordRSImpl.class);
         resources.add(com.core.views.CalendarRecordRSImpl.class);
         resources.add(com.core.views.DashboardRecordRSImpl.class);
         resources.add(com.core.views.FormRecordRSImpl.class);
+        resources.add(com.core.views.KabanRecordRSImpl.class);
         resources.add(com.core.views.ReportRecordRSImpl.class);
         resources.add(com.core.views.TreeRecordRSImpl.class);
     }

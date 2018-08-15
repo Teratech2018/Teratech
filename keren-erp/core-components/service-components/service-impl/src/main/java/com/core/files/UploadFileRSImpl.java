@@ -347,5 +347,22 @@ public class UploadFileRSImpl  implements UploadFileRS{
         }
     }    
 
+    @Override
+    public Response downloadImageFileFree(String filename) {
+        //To change body of generated methods, choose Tools | Templates.
+        try {
+            //To change body of generated methods, choose Tools | Templates.
+            File fichier = new File(FileHelper.getStaticDirectory()+File.separator+filename);
+//            System.out.println(UploadFileRSImpl.class.toString()+" ==== "+fichier.getAbsolutePath());
+            if(!fichier.exists()||!fichier.isFile()){
+                fichier = new File(FileHelper.getStaticDirectory()+File.separator+"avatar.png");
+            }
+            return CommonTools.getImage(fichier);
+        } catch (IOException ex) {
+             Response.serverError().build();
+        }
+        return Response.noContent().build();
+    }
+
     
 }

@@ -134,6 +134,11 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+        <element type="com.core.views.KabanRecord"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
         <element type="com.core.importexport.KerenEntity"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
@@ -155,6 +160,11 @@ and open the template in the editor.
             </roles>           
         </element>
         <element type="com.core.importexport.Export"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.core.templates.ThemeRecord"  idclass="Long"  idname="id"   deseable="true">
             <roles>
                 <role>ADMIN</role>
             </roles>           

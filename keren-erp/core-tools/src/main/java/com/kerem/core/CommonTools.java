@@ -8,9 +8,11 @@ package com.kerem.core;
 import com.core.menus.ActionItem;
 import com.core.menus.MenuAction;
 import com.core.menus.MenuGroupActions;
+import com.core.templates.ThemeRecord;
 import com.core.views.CalendarRecord;
 import com.core.views.DashboardRecord;
 import com.core.views.FormRecord;
+import com.core.views.KabanRecord;
 import com.core.views.ReportRecord;
 import com.core.views.TreeRecord;
 import com.kerem.genarated.Action;
@@ -132,6 +134,67 @@ public class CommonTools {
         record.setCode(view.getId());
         record.setScript(FileHelper.transformJaxBToScript(view));
         record.setTitre(view.getLabel());
+        return record;
+    }
+    
+    
+    /**
+     * 
+     * @param view
+     * @return
+     * @throws JAXBException 
+     */
+    public static KabanRecord getKabanentry(com.kerem.genarated.Kabanentry view) throws JAXBException{
+        KabanRecord record = new KabanRecord();
+        record.setCode(view.getId());
+        record.setScript(view.getTemplate());
+//        record.setTitre(view.getLabel());
+        return record;
+    }
+    /**
+     * 
+     * @param view
+     * @return
+     * @throws JAXBException 
+     */
+    public static ThemeRecord getTheme(com.kerem.genarated.Theme view) throws JAXBException{
+        ThemeRecord record = new ThemeRecord();
+//        record.setCode("appli_theme");
+//        if(view.getPri)
+//        record.setScript(view.getP);
+        if(view.getPrincipal()!=null){
+            record.setScript(view.getPrincipal().getTemplate());
+        }//end if(view.getPrincipal()!=null){
+        if(view.getDiscussiontemplate()!=null){
+            record.setDiscussion(view.getDiscussiontemplate().getTemplate());
+        }
+        if(view.getFormtemplate()!=null){
+            record.setForm(view.getFormtemplate().getTemplate());
+        }
+//        record.setScript(view.get);
+        if(view.getTreetemplate()!=null){
+            record.setTree(view.getTreetemplate().getTemplate());
+//            record.setContainer(view.getContainertemplate().getTemplate());
+        }
+        if(view.getContainertemplate()!=null){
+            record.setContainer(view.getContainertemplate().getTemplate());
+        }
+        if(view.getReporttemplate()!=null){
+            record.setReport(view.getReporttemplate().getTemplate());
+        }
+        if(view.getDashboardtemplate()!=null){
+            record.setDashbord(view.getDashboardtemplate().getTemplate());
+        }
+        if(view.getCalendartemplate()!=null){
+            record.setCalendar(view.getCalendartemplate().getTemplate());
+        }
+        if(view.getImporttemplate()!=null){
+            record.setImporter(view.getImporttemplate().getTemplate());
+        }
+        if(view.getExporttemplate()!=null){
+            record.setExport(view.getExporttemplate().getTemplate());
+        }
+//        record.setTitre("Theme Keren");
         return record;
     }
     

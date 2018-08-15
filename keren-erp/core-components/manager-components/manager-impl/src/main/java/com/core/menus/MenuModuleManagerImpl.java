@@ -10,16 +10,20 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.application.Manifest;
 import com.core.securites.Groupe;
 import com.core.securites.GroupeDAOLocal;
+import com.core.templates.ThemeRecord;
+import com.core.templates.ThemeRecordDAOLocal;
 import com.core.views.CalendarRecordDAOLocal;
 import com.core.views.DashboardRecord;
 import com.core.views.DashboardRecordDAOLocal;
 import com.core.views.FormRecordDAOLocal;
+import com.core.views.KabanRecordDAOLocal;
 import com.core.views.ReportRecordDAOLocal;
 import com.core.views.TreeRecordDAOLocal;
 import com.kerem.core.CommonTools;
 import com.kerem.core.FileHelper;
 import com.kerem.genarated.CalendarRecord;
 import com.kerem.genarated.FormRecord;
+import com.kerem.genarated.Kabanentry;
 import com.kerem.genarated.Keren;
 import com.kerem.genarated.Menu;
 import com.kerem.genarated.Menuitem;
@@ -69,6 +73,12 @@ public class MenuModuleManagerImpl
     
      @EJB(name = "CalendarRecordDAO")
     protected CalendarRecordDAOLocal calendardao;
+     
+     @EJB(name = "ThemeRecordDAO")
+    protected ThemeRecordDAOLocal themedao;
+     
+    @EJB(name = "KabanRecordDAO")
+    protected KabanRecordDAOLocal kabandao;
     
     public MenuModuleManagerImpl() {
     }
@@ -158,8 +168,12 @@ public class MenuModuleManagerImpl
             List<Keren> views = FileHelper.getViews(module);
             //Creation ou mise ajour de la vue
             applicationMenusBulder(module, views);
+            //Creation du theme
             //Mise a jour du module
             module.setActive(true);
+            if(module.getTheme()!=null){
+                module.setInstallable(false);
+            }//end if(module.getTheme()!=null){
             dao.update(module.getId(), module);
             //Deplacement des artefacts javaee
             FileHelper.processCore(manifest);
@@ -177,7 +191,11 @@ public class MenuModuleManagerImpl
     public void uninstallApplication(MenuModule module) {
         //To change body of generated methods, choose Tools | Templates.
         if(module==null||!module.isActive()) return ;
+        module = dao.findByPrimaryKey("id", module.getId());
         //Le module est installer
+        if(module.getTheme()!=null){//Desinstallation du theme
+            themedao.delete(module.getTheme().getId());
+        }//end if(module.getTheme()!=null){
         if(!module.isHasmenu()){
             RestrictionsContainer container = RestrictionsContainer.newInstance();
             container.addEq("module.id", module.getId());
@@ -254,6 +272,9 @@ public class MenuModuleManagerImpl
             if(act.getCalendar()!=null){
                 calendardao.delete(act.getCalendar().getId());               
             }//end if(act.getDashboard()!=null){
+            if(act.getKaban()!=null){
+                kabandao.delete(act.getKaban().getId());               
+            }//end if(act.getDashboard()!=null){
             menuitemdao.delete(act.getId());
         }
     }
@@ -269,6 +290,20 @@ public class MenuModuleManagerImpl
     private void applicationMenusBulder(MenuModule module , List<Keren> views) throws JAXBException, IOException, ParserConfigurationException, SAXException, TransformerException {        
        
         for(Keren data : views){
+            //Traitement des themes
+            if(data.getTheme()!=null){
+                ThemeRecord theme = CommonTools.getTheme(data.getTheme());
+                RestrictionsContainer container = RestrictionsContainer.newInstance();                
+                List<ThemeRecord> themes = themedao.filter(container.getPredicats(), null, null, 0, -1);
+                theme.setModule(module);
+                if(themes!=null&&!themes.isEmpty()){
+                    theme.setId(themes.get(0).getId());
+                    themedao.update(theme.getId(), theme);
+                }else{
+                    themedao.save(theme);
+                }//end if(themes!=null&&!themes.isEmpty()){
+                return ;
+            }//end if(data.getTheme()!=null){
             //Mise a jour de l'action Parente
             if(data.getAction()==null) continue ;
             //Initialisation du module
@@ -405,6 +440,23 @@ public class MenuModuleManagerImpl
                             reportdao.save(record);
                         }
                     }
+                }//end if(data.getReportRecord()!=null)
+                if(data.getKabanentry()!=null){
+                    for(Kabanentry view:data.getKabanentry()){
+                        com.core.views.KabanRecord record = CommonTools.getKabanentry(view);
+                        //System.out.println(MenuModuleManagerImpl.class.toString()+" ====================== "+view.getTemplate());
+                        MenuAction action = menuitemdao.findByPrimaryKey("name", view.getParentRef());
+                        if(action==null) continue;
+                        record.setAction(action);
+                        //Verification Existance de la vue
+                        com.core.views.KabanRecord old_record = kabandao.findByPrimaryKey("code", record.getCode());
+                        if(old_record!=null){
+                            record.setId(old_record.getId());
+                            kabandao.update(record.getId(), record);
+                        }else{
+                            kabandao.save(record);
+                        }//end if(old_record!=null){
+                    }//end
                 }//end if(data.getReportRecord()!=null)
             } //end  if(!data.getAction().isHasmenu()){
             
