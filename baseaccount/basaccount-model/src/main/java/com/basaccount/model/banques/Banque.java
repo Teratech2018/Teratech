@@ -122,7 +122,7 @@ public class Banque extends BaseElement implements Serializable,Comparable<Banqu
     }
 
     public boolean isActive() {
-        return active;
+        return active==null ? false:active;
     }
 
     public void setActive(boolean active) {

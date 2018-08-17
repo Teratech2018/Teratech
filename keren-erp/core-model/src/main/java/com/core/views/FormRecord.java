@@ -11,6 +11,7 @@ import java.io.Serializable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 /**
@@ -25,6 +26,9 @@ public class FormRecord extends Record implements Serializable{
     @JoinColumn(name="F_ITEM_ID")
     @Predicate(label = "Menu Item Parent" ,type = MenuAction.class,group = true,groupName = "group2",groupLabel = "MENUS ACTIONS",search = true)
     private MenuAction action ;
+    
+    @Lob
+    private String template ;
 
     /**
      * 
@@ -55,7 +59,7 @@ public class FormRecord extends Record implements Serializable{
      */
     public FormRecord(FormRecord record) {
         super(record.code, record.titre, record.modele, record.sequence, record.script, record.id, record.designation, record.moduleName);
-        //this.action = record.action;
+        this.template = record.template;
     }
 
     public MenuAction getAction() {
@@ -66,6 +70,16 @@ public class FormRecord extends Record implements Serializable{
         this.action = action;
     }
 
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template;
+    }
+
+    
+    
     
 
     @Override

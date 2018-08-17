@@ -18,7 +18,6 @@ import com.keren.courrier.dao.ifaces.courrier.CourrierCloneDAOLocal;
 import com.keren.courrier.dao.ifaces.courrier.TraitementCourrierDAOLocal;
 import com.keren.courrier.dao.ifaces.traitement.ClassementActionDAOLocal;
 import com.keren.courrier.model.courrier.CourrierClone;
-import com.keren.courrier.model.courrier.CourrierInterne;
 import com.keren.courrier.model.courrier.TraitementCourrier;
 import com.keren.courrier.model.courrier.TypeTraitement;
 import com.keren.courrier.model.traitement.ClassementAction;

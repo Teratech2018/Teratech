@@ -129,8 +129,8 @@ public class QuotationActionManagerImpl
         }else if(courrier.getCategorie().trim().equalsIgnoreCase("1")){
             type ="1";
         }//end if(courrier.getPorte().trim().equalsIgnoreCase("1")){
-        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoteur "+entity.getQuoteur().getService().getCode());
-        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoté "+entity.getQuote().getService().getCode());
+//        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoteur "+entity.getQuoteur().getService().getCode());
+//        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoté "+entity.getQuote().getService().getCode());
         
         if(entity.getQuote()!=null&&entity.getQuote().getService().compareTo(entity.getQuoteur().getService())!=0){
             bordero = borderodao.checkBordero(entity.getQuoteur().getService(), entity.getQuote().getService(),type);

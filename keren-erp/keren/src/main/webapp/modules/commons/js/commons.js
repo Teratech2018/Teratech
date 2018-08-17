@@ -168,6 +168,21 @@ angular.module('keren.core.commons')
                 };
             })();
             /**
+             * Construction d'interface Detail Display
+             *Pattern chain of responsability
+             */
+            var EditPanelProvider =function(){
+                //Liste des 
+                this.chain = new Array();
+            };//end var EditPanelProvider =function(){
+            /**
+             * Fenetre d'edition par defaut
+             * @returns {undefined}
+             */
+            var DefaultEditPanel = function(){
+                
+            };
+            /**
              * 
              * @param {type} idElement
              * @param {type} logo
@@ -676,145 +691,41 @@ angular.module('keren.core.commons')
                 return map;
             },
 
-            xmlViewParser : function(data,tree,meta){
-                 if(meta==null || !angular.isDefined(meta)){
+           /**
+            * 
+            * @param {type} template
+            * @param {type} model
+            * @param {type} metaData
+            * @param {type} windowType
+            * @param {type} index
+            * @param {type} modelpath
+            * @returns {unresolved}
+            */
+            xmlViewParser : function(template,scope,model , metaData , windowType,index,modelpath){
+//                 console.log("Nous avons trouve un champs field");
+                if(!angular.isDefined(template)
+                        ||template==null){
+                    return null;
+                }//end if(!angular.isDefined(template)
+                 if(metaData==null || !angular.isDefined(metaData)){
                       return null;
-                 }
-                 var map = this.metaDataMapBuilder(meta);                 
-                 var metaData = meta;
-                 if(data){
-                     metaData = new Object();
-                     metaData['entityName'] = meta['entityName'];
-                     metaData['moduleName'] = meta['moduleName'];
-                     metaData['editTitle'] = meta['editTitle'];
-                     metaData['listTitle'] = meta['listTitle'];
-                     metaData['createonfield'] = meta['createonfield'];
-                     metaData['desablecreate'] = meta['desablecreate'];
-                     metaData['header'] = new Array();
-                     metaData['columns'] = new Array();
-                     metaData['groups'] = new Array();
-                     var container = document.createElement('div');
-                     container.innerHTML = data;
-                     var form = $(container).find('formRecord');
-                     //parametres descriptif de la vue
-                     var label = $(form).attr('label');
-                      if(label){
-                          metaData['editTitle'] = label;
-                      }
-                     //Traitement des headers
-                     var header = $(container).find('header');
-                     if(header){
-                          //traitement des buttons
-                          var buttons = header.find('button');
-                          if(buttons){
-                              for(var i=0 ; i<buttons.length;i++){
-                                var button = buttons.eq(i);
-                                 var column = new Object();
-                                  column['type'] = button.attr('type');
-                                  column['search'] = false;
-                                  column['target'] = button.attr('class');;
-                                  column['fieldName'] = button.attr('name');
-                                  column['fieldLabel'] = button.attr('label');
-                                  column['value'] = null;
-                                  column['optional'] = null;
-                                  column['unique']=null;
-                                  column['updatable'] = null;
-                                  column['min']=null;
-                                  column['max']=null;
-                                  column['pattern']=null;
-                                  column['sequence']=null;
-                                  column['metaData']=null;
-                                  column['colsequence']=null;
-                              }//end for(var i=0 ; i<buttons.length;i++) 
-                          }//end if(buttons)
-                       }//end if(header){
-
-                     //Traitement du sheet
-                     var sheet = $(container).find('sheet');
-                     //traitement des fields descendant du sheet
-                     var fields = $(sheet).find('field');
-                     var sequence = 1;
-                     for(var i=0;i<fields.length;i++){
-                        var name = fields.eq(i).attr('name');
-                        var target = fields.eq(i).attr('target');
-                        var columns = metaData['columns'];
-                        //Si le champs name est definie
-                        if(name){
-                            columns[i] = map[name];
-                            var column = columns[i];
-                            column['sequence'] = sequence;
-                            column['search'] = false;
-                            if(target) {                            
-                                column['target']=target;
-                            }
-                         }
-                         sequence = sequence+1 ;
-                     }
-                     //Traitement des groups 
-                     var groups = $(sheet).find('group'); 
-                     for(var i=0;i<groups.length;i++){
-                         var group = groups.eq(i);
-                         var name = group['name'];
-                         var label = group['label']
-                         if(name){
-                             var groupe = new Object();
-                             groupe['name'] = name;
-                             groupe['label'] = label;
-                             groupe['sequence'] = i;
-                             groupe['columns'] = new Array();
-                             groupe['metaArray']=null;
-                             //Traitement des champs
-                             var fields = $(group).find('field');
-                             for(var j=0 ; j<fields.length;j++){
-                                 var field = fields.eq(j);
-                                 var name = fields.eq(i).attr('name');
-                                 var target = fields.eq(i).attr('target');
-                                 if(name){
-                                    var elem = map[name];
-                                    elem['sequence'] = sequence;
-                                    elem['search'] = false;
-                                    if(target) {                            
-                                        elem['target']=target;
-                                    }//end if(target)
-                                    if(elem['type']=='array'){
-                                        groupe['metaArray'] = elem;
-                                    }else{
-                                         groupe['columns'].push(elem);
-                                    }//end if(elem['type']=='array')                                
-                                 }//end if(name)
-                                 
-                             }//end for(var j=0 ; j<fields.length;j++)
-                         }//end if(name)
-                     }//end for(var i=0;i<groups.length;i++)
-                  }//end if(data)
-                 //Traitement de la fenetre liste
-                 //console.log(tree);
-                 if(tree){
-                     container = document.createElement('div');
-                     container.innerHTML = tree;
-                     var form = $(container).find('treeRecord');
-                     //parametres descriptif de la vue
-                     var label = $(form).attr('label');
-                      if(label){
-                          metaData['listTitle'] = label;
-                      }
-                     var fields = $(container).find('field');
-                     for(var i=0;i<fields.length;i++){
-                        var name = fields.eq(i).attr('name');
-                        var target = fields.eq(i).attr('target');
-                        var columns = metaData['columns'];
-                        //Si le champs name est definie
-                        if(name){
-                            //columns[i] = map[name];
-                            var column = map[name];
-                            column['colsequence'] = i;
-                            column['search'] = true;                            
-                         }                         
-                     }//end for(var i=0;i<fields.length;i++)
-                     //console.log(fields.innerHTML);
-                 }//end if(tree)
-                 //console.log(angular.toJson(metaData));
-                 return metaData;
+                 }//end if(metaData==null || !angular.isDefined(metaData)){
+//                 var metaData = meta;
+                 var container = angular.element(template);
+                 var items = container.find("field");
+                 for(var i=0; i<items.length;i++){ 
+                     var item = items.eq(i);
+                     var field = this.getMetaField(metaData,item.attr("name"));
+                     if(angular.isDefined(field)){
+                         if(angular.isDefined(item.attr("target"))){
+                             field.target = item.attr("target");
+                         }//end if(angular.isDefined(item.attr("target")))
+                         item.replaceWith(scope.getIhmComponent(model , field , metaData.entityName , metaData.metaDataName,index,modelpath));
+                     }//end if(angular.isDefined(field)){
+//                     console.log("commons.xmlViewParser ===== "+item.attr("name")+" ==== target : "+item.attr("target"));
+//                      items.eq(i).replaceWith(titleheader);                  
+                 }//end for(var i=0; i<items.length;i++){   
+                 return container;
             },
             /**
              * 
@@ -1207,7 +1118,9 @@ angular.module('keren.core.commons')
                         }//end for(var j=0;j<rowNode.childNodes.length;j++){
                       }//end if(rowNode.tagName=='TR'){
                }//end for(var i=0;i<container.childNodes.length;i++)
-                return container;
+               var thelem = document.createElement('th');
+               container.appendChild(thelem);
+               return container;
             },
             /**
              * 
@@ -1256,6 +1169,8 @@ angular.module('keren.core.commons')
 //                        tableElem.appendChild(footerElem);
                     }//end if(fieldnames.length>0)
                }//end if(fieldnames.length>0)
+               var thelem = document.createElement('th');
+               footerElem.appendChild(thelem);  
                return footerElem;
             },
             
@@ -1518,6 +1433,93 @@ angular.module('keren.core.commons')
                     return divElem;
                 }//end if(data)
             },
+            /**
+             * 
+             * @param {type} scope
+             * @param {type} container
+             * @returns {undefined}
+             */
+            menusActions :function(scope,container,sens,terme){
+                    var span = document.createElement("span");
+                    span.setAttribute("class","tc-dropdown");
+                    span.setAttribute("style","float:right;");
+                    container.appendChild(span); 
+                    var spanElem = document.createElement("span");
+                    if(sens===0){
+                      spanElem.setAttribute("class" ,"glyphicon glyphicon-option-horizontal pull-right tc-dropbtn"); 
+                    }else{
+                        spanElem.setAttribute("class" ,"glyphicon glyphicon-option-vertical pull-right tc-dropbtn"); 
+                    }//end if(sens===0){
+                    span.appendChild(spanElem); 
+                    var ulelem = document.createElement("ul");
+                    ulelem.setAttribute('class','dropdown-menu');
+                    ulelem.setAttribute('role','menu');
+                    ulelem.setAttribute('aria-labelledby','aria-labelledby');
+                    span.appendChild(ulelem);
+                    ulelem.setAttribute("class","tc-dropdown-content");
+                    if(scope.currentModule.name==="application"){
+                        var liElem = document.createElement('li');
+                        var aElem = document.createElement('a');
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableupdate');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click',"installAction("+terme+")");
+                        aElem.appendChild(document.createTextNode('{{exportbtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                        //Bloc 3
+                        liElem = document.createElement('li');
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableupdate');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click',"updateAction("+terme+")");
+                        aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                    }else{
+                        var liElem = document.createElement('li');
+                        var aElem = document.createElement('a');                        
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desableupdate');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click',"updateAction("+terme+")");
+                        aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                        //Bloc dupliquer
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desablecreate');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click',"dupliquerAction("+terme+")");
+                        aElem.appendChild(document.createTextNode("{{'Dupliquer' | translate}}")) ;
+                        liElem.appendChild(aElem);
+                        //Bloc 3
+                        liElem = document.createElement('li');
+                        liElem.setAttribute('role','presentation');
+                        liElem.setAttribute('ng-hide','desabledelete');
+                        ulelem.appendChild(liElem);
+                        aElem = document.createElement('a');
+                        aElem.setAttribute('role','menuitem');
+                        aElem.setAttribute('tabindex','-1');
+                        aElem.setAttribute('href','#');
+                        aElem.setAttribute('ng-click',"deleteAction("+terme+")");
+                        aElem.appendChild(document.createTextNode('{{deletebtnlabel | translate}}')) ;
+                        liElem.appendChild(aElem);
+                    }//end if(scope.currentModule.name=="application"){     
+            },
                /**
              * 
              * @param {type} data:dash bord datat
@@ -1531,90 +1533,8 @@ angular.module('keren.core.commons')
                     divElem.appendChild(headElem);
                     headElem.setAttribute("class","panel-heading col-sm-4 col-md-3 col-lg-2 dashboard-header");
                     headElem.setAttribute("style","width: 100%;height:5px;");
-                    var span = document.createElement("span");
-                    span.setAttribute("class","tc-dropdown");
-                    span.setAttribute("style","float:right;");
-                    headElem.appendChild(span); 
-                    var spanElem = document.createElement("span");
-                    spanElem.setAttribute("class" ,"glyphicon glyphicon-option-horizontal pull-right tc-dropbtn");                    
-                    span.appendChild(spanElem); 
-                    var ulelem = document.createElement("ul");
-                    ulelem.setAttribute('class','dropdown-menu');
-                    ulelem.setAttribute('role','menu');
-                    ulelem.setAttribute('aria-labelledby','aria-labelledby');
-                    span.appendChild(ulelem);
-                    ulelem.setAttribute("class","tc-dropdown-content");
-                    if(scope.currentModule.name==="application"){
-                        var liElem = document.createElement('li');
-                        var aElem = document.createElement('a');
-                        liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desableprint');
-                        ulelem.appendChild(liElem);
-                        aElem = document.createElement('a');
-                        aElem.setAttribute('role','menuitem');
-                        aElem.setAttribute('tabindex','-1');
-                        aElem.setAttribute('href','#');
-                        aElem.setAttribute('ng-click','viewAction(item)');
-                        aElem.appendChild(document.createTextNode("{{'Voir' | translate}}")) ;
-                        liElem.appendChild(aElem);
-                        liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desableupdate');
-                        ulelem.appendChild(liElem);
-                        aElem = document.createElement('a');
-                        aElem.setAttribute('role','menuitem');
-                        aElem.setAttribute('tabindex','-1');
-                        aElem.setAttribute('href','#');
-                        aElem.setAttribute('ng-click','installAction(item)');
-                        aElem.appendChild(document.createTextNode('{{exportbtnlabel | translate}}')) ;
-                        liElem.appendChild(aElem);
-                        //Bloc 3
-                        liElem = document.createElement('li');
-                        liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desableupdateedit');
-                        ulelem.appendChild(liElem);
-                        aElem = document.createElement('a');
-                        aElem.setAttribute('role','menuitem');
-                        aElem.setAttribute('tabindex','-1');
-                        aElem.setAttribute('href','#');
-                        aElem.setAttribute('ng-click','updateAction(item)');
-                        aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
-                        liElem.appendChild(aElem);
-                    }else{
-                        var liElem = document.createElement('li');
-                        var aElem = document.createElement('a');
-                        liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desableprint');
-                        ulelem.appendChild(liElem);
-                        aElem = document.createElement('a');
-                        aElem.setAttribute('role','menuitem');
-                        aElem.setAttribute('tabindex','-1');
-                        aElem.setAttribute('href','#');
-                        aElem.setAttribute('ng-click','viewAction(item)');
-                        aElem.appendChild(document.createTextNode("{{'Voir' | translate}}")) ;
-                        liElem.appendChild(aElem);
-                        liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desableupdate');
-                        ulelem.appendChild(liElem);
-                        aElem = document.createElement('a');
-                        aElem.setAttribute('role','menuitem');
-                        aElem.setAttribute('tabindex','-1');
-                        aElem.setAttribute('href','#');
-                        aElem.setAttribute('ng-click','updateAction(item)');
-                        aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
-                        liElem.appendChild(aElem);
-                        //Bloc 3
-                        liElem = document.createElement('li');
-                        liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desabledelete');
-                        ulelem.appendChild(liElem);
-                        aElem = document.createElement('a');
-                        aElem.setAttribute('role','menuitem');
-                        aElem.setAttribute('tabindex','-1');
-                        aElem.setAttribute('href','#');
-                        aElem.setAttribute('ng-click','deleteAction(item)');
-                        aElem.appendChild(document.createTextNode('{{deletebtnlabel | translate}}')) ;
-                        liElem.appendChild(aElem);
-                    }//end if(scope.currentModule.name=="application"){                    
+//                    var span = document.createElement("span");
+                    this.menusActions(scope,headElem,0,'item');              
                     //Body of the dashboard
                     var bodyElem = document.createElement("div");
                     divElem.appendChild(bodyElem);
@@ -1629,6 +1549,7 @@ angular.module('keren.core.commons')
                     artElem.setAttribute("class","kaban-body");
                     artElem.setAttribute("draggable","true");
                     artElem.setAttribute("style","height: 100px;");
+                    artElem.setAttribute("ng-click","viewAction(item)");
                     var container = document.createElement("div");                    
                     container.setAttribute("id","kaban_{{item.id}}");
                     container.setAttribute("style","height: 100%; width: 100%;");                    

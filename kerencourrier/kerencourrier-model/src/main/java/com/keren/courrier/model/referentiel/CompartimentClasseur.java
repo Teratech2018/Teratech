@@ -23,6 +23,7 @@ public class CompartimentClasseur extends BaseElement implements Serializable, C
 	@Predicate(label = "Désignation", optional = true, search = true)
 	private String intitule;
 	
+        @Predicate(label = "ID Classeur",type = Long.class,search = false,hide = true)
 	private long idclasseur ;
 
 	public CompartimentClasseur() {

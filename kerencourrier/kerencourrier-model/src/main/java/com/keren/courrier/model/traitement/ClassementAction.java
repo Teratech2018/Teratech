@@ -63,7 +63,7 @@ public class ClassementAction extends BaseElement implements Serializable,Compar
       @ManyToOne
     @JoinColumn(name = "COMP_ID")
     @Predicate(label = "Compartiment",type = CompartimentClasseur.class,target = "many-to-one",search = true,optional = false)
-    @Filter(value="[{\"fieldName\":\"id\",\"value\":\"object.idclasseur\",\"searchfield\":\"idclasseur\",\"optional\":false,\"message\":\"Veuillez sélectionner un classeur\"}]")
+    @Filter(value="[{\"fieldName\":\"idclasseur\",\"value\":\"object.classeur\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner un classeur\"}]")
     private CompartimentClasseur compartiment ;
     
     @Predicate(label = "Motif du classement",target = "textarea",optional = false,group = true,groupName = "group1",groupLabel = "")

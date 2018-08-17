@@ -8,7 +8,9 @@
 
 .tc-dropdown-content {
     display: none;
+    float: right;
     position: absolute;
+    margin-left: -160px;
     background-color: white;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -26,7 +28,7 @@
 
 .tc-dropdown:hover .tc-dropdown-content {display: block;}
 
-.tc-dropdown:hover .tc-dropbtn {background-color: #3e8e41;}
+/**.tc-dropdown:hover .tc-dropbtn {background-color: #3e8e41;}**/
 
 img {
     vertical-align: middle;

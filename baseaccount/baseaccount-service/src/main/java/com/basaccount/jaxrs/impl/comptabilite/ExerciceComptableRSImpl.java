@@ -75,15 +75,7 @@ public class ExerciceComptableRSImpl
         return super.filter(headers, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<ExerciceComptable> findAll() {
-        return super.findAll(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ExerciceComptable find(String propertyName, Long id) {
-        return super.find(propertyName, id); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 
     @Override
     protected void processBeforeUpdate(ExerciceComptable data) {

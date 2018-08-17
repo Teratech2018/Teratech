@@ -83,9 +83,10 @@
     <class>com.keren.courrier.model.referentiel.EventCourrier</class>
     <class>com.keren.courrier.model.referentiel.RappelCourrier</class>
     <class>com.keren.courrier.model.others.ViewCourrier</class>
+    <class>com.core.templates.ThemeRecord</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>      
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
     </properties>
   </persistence-unit>
 </persistence>

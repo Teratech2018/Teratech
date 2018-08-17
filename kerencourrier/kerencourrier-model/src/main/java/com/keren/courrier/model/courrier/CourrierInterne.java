@@ -16,7 +16,6 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
-import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.keren.courrier.model.referentiel.NatureCourrier;
 import com.keren.courrier.model.referentiel.Priorite;
 import com.keren.courrier.model.referentiel.Statut;

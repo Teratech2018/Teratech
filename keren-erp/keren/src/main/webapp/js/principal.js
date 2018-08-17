@@ -1418,7 +1418,7 @@ angular.module("mainApp")
           * 
           * @returns {Boolean}
           */
-         $scope.showActions = function(){
+         $scope.showActions = function(){            
              return $scope.selectedObjects.length>0 && $scope.showApplication==false;
          };
           /**
@@ -3167,7 +3167,6 @@ $scope.gererChangementFichier3 = function(event,model){
          * @returns {unresolved}
          */
         $scope.oneToManyComponentEditable = function(model , labelText , entityName ,metaData,field,index,modelpath){
-              
 //             $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);
 //              console.log("$scope.oneToManyComponent = === "+model+"==="+labelText+" == "+"=== "+entityName+" == "+index); 
              $scope.dataCache[modelpath+"_field"] = field;
@@ -3274,8 +3273,10 @@ $scope.gererChangementFichier3 = function(event,model){
                             }//end if(total)
                         }//end if(data)
                     }//end for(var i=0 ;  i<fieldnames.length ; i++)
+                    thelem = document.createElement('th');
+                    footerElem.appendChild(thelem);
                     tableElem.appendChild(footerElem);
-                }//end if(fieldnames.length>0)
+                }//end if(fieldnames.length$>0)
             }else{
                 var sources = model.split(".");   
                 $scope.dataCache[key+"foot"] = field.footerScript;
@@ -3316,8 +3317,7 @@ $scope.gererChangementFichier3 = function(event,model){
              /*alert($scope.currentObject.actions);*/
 //             var divElem0 = document.createElement('div');
 //             divElem0.appendChild(divElem);
-//             console.log(divElem0.innerHTML);
-             
+//             console.log(divElem0.innerHTML);             
              return tableElem;
         };
         
@@ -3364,13 +3364,13 @@ $scope.gererChangementFichier3 = function(event,model){
         $scope.getTemplate = function(item,fieldname,key,model,modelpath,index,col){
             var metaData = $scope.getCurrentMetaData(modelpath);
             var oldItem = $scope.dataCache[key];
-            var oldfieldname = $scope.dataCache[key+"_fieldname"];
+            var oldfieldname = $scope.dataCache[key+"_fieldname"];               
             var id = "td"+Math.abs(item.id)+"_"+fieldname;
             var oldId = null;
             if(oldItem!=null){
                 oldId = "td"+Math.abs(oldItem.id)+"_"+oldfieldname;
             }//end if(oldItem!=null)
-//            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index);            
+            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index+" === "+angular.toJson(item));            
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
@@ -3394,7 +3394,7 @@ $scope.gererChangementFichier3 = function(event,model){
             if(oldItem!=null && oldspanElem!=null&&(oldId != id)){
                 var data = oldItem[oldfieldname];
                 var spanelem = document.createElement("span");
-                spanelem.setAttribute("id",oldId);                
+                spanelem.setAttribute("id",oldId);              
                 if(angular.isObject(data)){
                     spanelem.appendChild(document.createTextNode(data['designation']));
                 }else{
@@ -3405,12 +3405,12 @@ $scope.gererChangementFichier3 = function(event,model){
                         var values = field.value.split(';');
                         spanelem.appendChild(document.createTextNode(values[Number(data)]));
                     }//end if(field.type!='combobox'){
-                }//end if(angular.isObject(data))
+                }//end if(angular.isObject(data))               
                 oldspanElem.replaceWith(spanelem);
             }//end if(oldItem!=null)
             //Traitement de la cellule selectionnée
             if(id != oldId){
-                var data = $scope.getCurrentModel(model);
+                var data  = $scope.getCurrentModel(model);                
                 var pos = 0;
                 for(var i=0 ;i<data.length;i++){
                     if(data[i].id == item.id){
@@ -3418,7 +3418,13 @@ $scope.gererChangementFichier3 = function(event,model){
                     }//end if(data[i].id == item.id){
                 }//end for(var i=0 ;i<data.length;i++)
                 var field = $scope.getField(metaData,fieldname);
-                var htmlElem = $scope.getIhmComponent(modelpath+'['+pos+']',field,null,null,index,modelpath);
+                var htmlElem = null;
+                if(modelpath==='currentObject'){
+                     $scope.templateData = item;
+                     htmlElem = $scope.getIhmComponent('templateData',field,null,null,index,'templateData');
+                }else{
+                    htmlElem = $scope.getIhmComponent(modelpath+'['+pos+']',field,null,null,index,modelpath);
+                }//end if(modelpath==='currentObject'){
 //                console.log("principal.getTemplate ========= model :"+model+" ==== modelpath : "+modelpath+" field name : "+fieldname+" ====  ID :"+id+" Meta :"+htmlElem.innerHTML);
                 var spanelem = document.createElement("span");
                 spanelem.setAttribute("id",id);
@@ -3442,10 +3448,10 @@ $scope.gererChangementFichier3 = function(event,model){
         $scope.editRow = function(item,key){
             if($scope.dataCache[key]==null){
                 return false;
-            }
+            }//end if($scope.dataCache[key]==null){
             if(item.id==$scope.dataCache[key].id){
                 return true;
-            }
+            }//end if(item.id==$scope.dataCache[key].id){
             return false;
         };
         /**
@@ -3555,9 +3561,6 @@ $scope.gererChangementFichier3 = function(event,model){
          */
         $scope.displayTemplate = function(metaData,model,modelpath,trEleme,key,index){
             var scriptelem = trEleme ; //document.createElement("span");
-//            scriptelem.setAttribute('type','text/ng-template');
-//            scriptelem.setAttribute("ng-show","enableeditRow(item)");
-//            console.log("$scope.displayTemplate = function(metaData,model,modelpath,trEleme,key,index) ======================= "+angular.toJson(metaData));
             for(var i=0 ; i< metaData.columns.length;i++){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
@@ -3644,7 +3647,92 @@ $scope.gererChangementFichier3 = function(event,model){
             
             return scriptelem;
         };
-        
+         /**
+         * Build Display Row
+         * @param {type} metaData
+         * @returns {undefined}
+         */
+        $scope.listDisplayTemplate = function(metaData,trEleme,key,index){
+            var scriptelem = trEleme ; //document.createElement("span");
+            var tdElem = document.createElement('td');
+            scriptelem.appendChild(tdElem);
+//            rbodyElem.setAttribute('style' , "cursor: pointer;");
+            var inputElem0 = document.createElement('input');
+            inputElem0.setAttribute('type' , 'checkbox');
+            inputElem0.setAttribute('ng-model' , 'obj.selected');
+            inputElem0.setAttribute('ng-click' , 'onRowCheckboxClick(obj)');
+            tdElem.appendChild(inputElem0);
+            for(var i=0 ; i< metaData.columns.length;i++){
+                 if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
+                     var tdElem = document.createElement('td');
+                     if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'
+                              && metaData.columns[i].type!='combobox'){
+                         var spanElem = document.createElement("span");
+                         spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
+                         spanElem.appendChild(document.createTextNode('{{obj.'+metaData.columns[i].fieldName+'}}'));
+                         tdElem.appendChild(spanElem);
+                         if(metaData.columns[i].type=='number'){
+                            tdElem.setAttribute('class','text-right');
+                         }//end if(metaData.columns[i].type=='number'){
+                     }else if(metaData.columns[i].type=='object'){
+                          //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
+                          var spanElem = document.createElement("span");
+                          spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
+                          spanElem.appendChild(document.createTextNode("{{obj."+metaData.columns[i].fieldName+"['designation']}}"));
+                          tdElem.appendChild(spanElem);
+                     }else if(metaData.columns[i].type=='combobox'){
+                          //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
+                          var spanElem = document.createElement("span");
+                          spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
+                          spanElem.appendChild(document.createTextNode("{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
+                          tdElem.appendChild(spanElem);
+                     }
+//                     tdElem.setAttribute('ng-show' , "noteditRow(item,'"+key+"','"+id+"')");                           
+                     tdElem.setAttribute('ng-click',"getTemplate(obj,'"+metaData.columns[i].fieldName+"','"+key+"', 'currentObject' , 'currentObject','0','"+i+"')"); 
+                     scriptelem.appendChild(tdElem);
+                 }//end if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search)
+            }//end for(var i=0 ; i< metaData.columns.length;i++)
+            //Traitement  des champs des groupes
+             if(metaData.groups&&metaData.groups.length>0){
+                 for(var i=0;i<metaData.groups.length;i++){
+                     //Cas des columns
+                     if(metaData.groups[i].columns&&metaData.groups[i].columns.length>0){
+                          for(var j = 0 ; j < metaData.groups[i].columns.length;j++){
+                            if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search){
+                                var tdElem = document.createElement('td');
+                                if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object' 
+                                        && metaData.groups[i].columns[j].type!='combobox'){
+                                    var spanElem = document.createElement("span");
+                                    spanElem.setAttribute("id","{{identfiantenerator(item , '"+metaData.columns[i].fieldName+"')}}");
+                                    spanElem.appendChild(document.createTextNode('{{obj.'+metaData.groups[i].columns[j].fieldName+'}}'));
+                                    tdElem.appendChild(spanElem);
+                                    if(metaData.groups[i].columns[j].type=='number'){
+                                        tdElem.setAttribute('class','text-right');
+                                    }//end if(metaData.groups[i].columns[j].type=='number'){
+                                }else if(metaData.groups[i].columns[j].type=='object'){
+                                    var spanElem = document.createElement("span");
+                                    spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
+                                    spanElem.appendChild(document.createTextNode("{{obj."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
+                                    tdElem.appendChild(spanElem);
+                                }else if(metaData.groups[i].columns[j].type=="combobox"){
+                                    var spanElem = document.createElement("span");
+                                    spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
+                                    spanElem.appendChild(document.createTextNode("{{comboboxselctionvalues(obj."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                    tdElem.appendChild(spanElem);                              
+                                } //end if(metaData.groups[i].columns[j].type!='array'&& metaData.groups[i].columns[j].type!='object'){    
+//                                tdElem.setAttribute('ng-show' , "noteditRow(item,'"+key+"','"+id+"')"); 
+                                tdElem.setAttribute('ng-click',"getTemplate(obj,'"+metaData.columns[i].fieldName+"','"+key+"', 'currentObject' , 'currentObject','0','"+i+"')"); 
+                                scriptelem.appendChild(tdElem);
+                            }//end if(angular.isDefined(metaData.groups[i].columns[j].search) && metaData.groups[i].columns[j].search)
+                        }//end for(var j = 0 ; j < metaData.groups[i].columns.length;j++)
+                     }//end if(metaData.groups[i].columns&&metaData.groups[i].columns.length>0)                     
+                 }//end for(var i=0;i<metaData.groups.length;i++)
+             }//end if(metaData.groups&&metaData.groups.length>0){
+             var tdelem = document.createElement('td');
+             commonsTools.menusActions($scope,tdelem,1,'obj');
+             scriptelem.appendChild(tdelem);
+             return scriptelem;
+        };
           /**
             Creation d'un composant table avec possibilte ajout modif suppression et consultation
             model : field to map
@@ -4540,13 +4628,13 @@ $scope.gererChangementFichier3 = function(event,model){
                                        if($rootScope.globals.theme!=null && $rootScope.globals.theme.form){
                                            content = $rootScope.globals.theme.form;
                                        }else{
-                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'  >{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>{{'Enregistrer' | translate}}</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()'>{{'Quitter' | translate}}</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> {{'PJ' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Ajouter' | translate}} </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='hideMenuActions()'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='dupliquerAction()'> {{'Dupliquer' | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='addElementAction()'> {{'Creer' | translate}} </a> </li><li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel | translate}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> Abonnée(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnées </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
+                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'  >{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>{{'Enregistrer' | translate}}</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-hide='hideannuler==true' ng-click='annulerAction()'>{{'Quitter' | translate}}</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> {{'PJ' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Ajouter' | translate}} </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='hideMenuActions()'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='dupliquerAction()'> {{'Dupliquer' | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='addElementAction()'> {{'Creer' | translate}} </a> </li><li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel | translate}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> Abonnée(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnées </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
                                        }//end if($rootScope.globals.theme!==null&&$rootScope.globals.theme.form){
                                    }else if(type==="report"){
                                        if($rootScope.globals.theme!==null&&$rootScope.globals.theme.report){
                                            content = $rootScope.globals.theme.report;
                                        }else{
-                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' ng-hide='hideannuler'>{{'Quitter' | translate}}</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
+                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' >{{'Quitter' | translate}}</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
                                        }//end if($rootScope.globals.theme!==null&&$rootScope.globals.theme.report){
                                    }else if(type==="dashboard"){ 
                                        if($rootScope.globals.theme!=null && $rootScope.globals.theme.tree){
@@ -5756,8 +5844,13 @@ $scope.gererChangementFichier3 = function(event,model){
               }//end if($scope.currentAction && angular.isString($scope.currentAction))
               //$scope.createsession()
 //              console.log("principal.displayEditPanel  ======= session data : "+angular.toJson($scope.createsession()));
+              var modes = ['tree','form'];
+              if(angular.isDefined($scope.currentAction.viewMode)){
+                  modes =$scope.currentAction.viewMode.split(",");
+              }//end if(angular.isDefined($scope.currentAction.viewMode)){
+              $scope.hideannuler = modes[0]==='form';
               $scope.enablefollowerpanel = false;
-              $scope.desablecreateedit = $scope.isviewOperation()||!$scope.canCreate();//||!$scope.canUpdate();
+              $scope.desablecreateedit = ($scope.isviewOperation()||!$scope.canCreate());//||!$scope.canUpdate();
               $scope.desableupdateedit = $scope.isupdateOperation()||!$scope.canUpdate()||$scope.iscreateOperation();
               $scope.desabledeleteedit = !$scope.canDelete()||$scope.iscreateOperation()||$scope.isupdateOperation()||($scope.showApplication==true&&$scope.currentObject.active==true);
               $scope.desableprintedit=$scope.iscreateOperation()||!$scope.canPrint()||$scope.isviewOperation()||$scope.isupdateOperation();
@@ -5765,13 +5858,19 @@ $scope.gererChangementFichier3 = function(event,model){
               $scope.createsession();              
               $scope.innerWindowType = false;
               var listElem  = null ; 
-              var content = $scope.viewSelector('detail') ;
+              var content = $scope.viewSelector('detail') ;              
               listElem = angular.element(content);
              //Construction Header
              listElem = $scope.buildActionsMenu(listElem,'angular',0);  
              listElem = $scope.buildPrintActionsMenu(listElem);  
              $scope.observablePools = new Object();
-             var viewElem = $scope.editPanelComponent('currentObject' , $scope.metaData,null,0,'currentObject');   
+             var viewElem = null;
+             if($scope.currentAction.formView!=null
+                      && $scope.currentAction.formView.template!=null){
+                  viewElem = commonsTools.xmlViewParser($scope.currentAction.formView.template,$scope,'currentObject',$scope.metaData,null,0,'currentObject');
+              }else{
+                  viewElem = $scope.editPanelComponent('currentObject' , $scope.metaData,null,0,'currentObject');   
+              }//end if(angular.isDefined($scope.currentAction.formView)
              var headerElem = $scope.editPanelHeader('currentObject' , $scope.metaData,0);       
              $scope.showpjmenu = false ;
              if($scope.metaData.activefilelink==true &&($scope.windowType=="update"||$scope.windowType=="view")){
@@ -5852,7 +5951,9 @@ $scope.gererChangementFichier3 = function(event,model){
              $timeout(function() {                
                 $('.selectpicker').selectpicker('refresh');                
              });
-          };
+             //Return 
+             return listElem;
+        };
 
           /**    
              Affichage du panel List
@@ -6885,8 +6986,14 @@ $scope.gererChangementFichier3 = function(event,model){
            viewElem.setAttribute("class","modal-body");
            viewElem.setAttribute("style","height:100%;");
            var headerElem = $scope.editPanelHeader('temporalData' , metaData,index,true);  
-           var editPanel =  $scope.editPanelComponent('temporalData',metaData,'new',index,'temporalData');
-           if(headerElem){
+           var editPanel =  null;//$scope.editPanelComponent('temporalData',metaData,'new',index,'temporalData');
+           if($scope.currentAction.formView!=null
+                      && $scope.currentAction.formView.template!=null){
+                editPanel = commonsTools.xmlViewParser($scope.currentAction.formView.template,$scope,'temporalData',metaData,null,0,'temporalData');
+            }else{
+                editPanel = $scope.editPanelComponent('temporalData' , metaData,null,0,'temporalData');   
+            }//end if(angular.isDefined($scope.currentAction.formView)
+            if(headerElem){
                viewElem.appendChild(headerElem);
            }//end if(headerElem)
            //viewElem.appendChild(headerElem);
@@ -8303,8 +8410,19 @@ $scope.gererChangementFichier3 = function(event,model){
             $scope.reset();
            $scope.createEmptyObject($scope.metaData,$scope.templateData);
            $scope.suffixedittitle = 'Nouveau';
-           //alert($scope.currentObject.actions);          
-           $scope.displayEditPanel();
+           //alert($scope.currentObject.actions); 
+           var modes =['tree','form'];
+           if(angular.isDefined($scope.currentAction.viewMode)){
+               modes = $scope.currentAction.viewMode.split(',');
+           }//end if(angular.isDefined($scope.currentAction.viewMode)){
+           if(modes[0]=='tree'&&modes.length==1){
+               if($scope.datas.length==0 
+                       ||$scope.datas[0].id>0){
+                   $scope.datas.unshift($scope.currentObject);
+               }//end if($scope.datas.length==0 
+           }else{
+               $scope.displayEditPanel();
+           }//end if(modes[0]=='tree'&&modes.length==1){
            
           //console.log(viewElem.innerHTML);
            
@@ -8521,12 +8639,15 @@ $scope.gererChangementFichier3 = function(event,model){
            * Dupliquer the current object
            * @returns {undefined}
            */
-          $scope.dupliquerAction = function(){ 
+          $scope.dupliquerAction = function(item){ 
                var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
                if(session==null){
                    $scope.deconnexion();
                    return;
                }//end if(session==null){
+               if(angular.isDefined(item)){
+                   $scope.viewAction(item);
+               }//end if(angular.isDefined(item)){
               $scope.dataCache['resources'] = new Array();
                $scope.dataCache['names'] = new Array();
                $scope.windowType = 'new';               
@@ -8553,10 +8674,10 @@ $scope.gererChangementFichier3 = function(event,model){
                if(session==null){
                    $scope.deconnexion();
                    return;
-               }//end if(session==null){
+               }//end if(session==null){     
                if(angular.isDefined(item)){
-                   $scope.currentObject = item;
-               }//end if(angular.isDefined(item)){
+                   $scope.viewAction(item);
+               }//end if(angular.isDefined(item)){ 
                $scope.dataCache['resources'] = new Array();
                $scope.dataCache['names'] = new Array();
                $scope.windowType = 'update';
@@ -10400,10 +10521,10 @@ $scope.gererChangementFichier3 = function(event,model){
                 }
             }//end if(metaData.groups){
             //Span
-            var spanElem = document.createElement("span");
-            spanElem.setAttribute("class" ,"glyphicon glyphicon-option-vertical pull-right");
+//            var spanElem = document.createElement("span");
+//            spanElem.setAttribute("class" ,"glyphicon glyphicon-option-vertical pull-right");
             var tdelem = document.createElement('td');
-            tdelem.appendChild(spanElem);
+            commonsTools.menusActions($scope,tdelem,1,'obj');
             rbodyElem.appendChild(tdelem);
             //Construction du footer du tableau
             var footerElem = document.createElement('tfoot');
@@ -10427,6 +10548,136 @@ $scope.gererChangementFichier3 = function(event,model){
                     thElem.setAttribute('class','text-center');
                 }//end if(total)
             }//end for(var i=0;i<fieldnames.length;i++){
+            var thElem = document.createElement('th');
+            trElem.appendChild(thElem);
+            if(numeric_fields>0){
+                tableElem.appendChild(footerElem);
+            }//end if(numeric_fields>0)
+//             var divElem = document.createElement('div');            
+            return tableElem;
+         };
+         /**
+          * 
+          * @param {type} metaData
+          * @returns {unresolved}
+          */
+         $scope.editableTableListComponent = function(metaData){
+            $scope.currentSort.column =null;
+            $scope.currentSort.reverse = false;
+             var tableElem = document.createElement('table');
+             tableElem.setAttribute('class' , 'table table-sm table-striped table-hover');
+             tableElem.setAttribute('style' , 'margin-top: -10px;');
+             tableElem.setAttribute('id' , 'table');
+             //Creation du table header
+             var theadElem = document.createElement('thead');
+             tableElem.appendChild(theadElem);
+             //Creation entete
+             var  rheadElem = document.createElement('tr');
+             rheadElem.setAttribute('class' ,'table-header');
+             theadElem.appendChild(rheadElem);
+             var thElem0 = document.createElement('th');
+             var inputElem0 = document.createElement('input');
+             inputElem0.setAttribute('type' , 'checkbox');
+             inputElem0.setAttribute('ng-model' , 'tableheaderselected');
+             inputElem0.setAttribute('ng-click' , 'onCheckboxClick()');
+            thElem0.appendChild(inputElem0);
+            rheadElem.appendChild(thElem0);
+            //Array of field name
+            var fieldnames = new Array();
+            var fieldtypes = new Array();
+            //Contient des reference au champs de type combobox
+            var comboMap = new Object();
+            //Traitement des champs columns
+            if(metaData.columns){
+                //Sort of array
+                metaData.columns = $filter('orderBy')(metaData.columns,'colsequence',false);             
+                for(var i=0 ; i< metaData.columns.length;i++){
+                  if(angular.isDefined(metaData.columns[i].search)
+                            &&(metaData.columns[i].search==true)){
+                      if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'){  //&&metaData.columns[i].type!='textarea'&&metaData.columns[i].type!='richeditor'
+                            var thElem = document.createElement('th');
+                            thElem.innerHTML = metaData.columns[i].fieldLabel+" <span ng-show=down('"+metaData.columns[i].fieldName+"')==true  class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span> <span ng-show=up('"+metaData.columns[i].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
+                            thElem.setAttribute("ng-click","listeSorter('"+metaData.columns[i].fieldName+"')");
+                            rheadElem.appendChild(thElem);
+                            fieldnames.push( metaData.columns[i].fieldName);
+                            if(metaData.columns[i].type=='number'){
+                                fieldtypes.push(true);
+                            }else{
+//                                if(metaData.columns[i].type=='combobox'){
+//                                    comboMap[metaData.columns[i].fieldName]= metaData.columns[i].value.split(";");
+//                                }//end if(metaData.columns[i].type=='combobox'){
+                                fieldtypes.push(false);
+                            }//end if(metaData.columns[i].type=='number')
+                       }//end if(metaData.columns[i].type!='array'&&metaData.columns[i].type!='image'&&metaData.columns[i]
+                   }//end if(angular.isDefined(metaData.columns[i].search)
+                }
+            }//end if(metaData.columns){
+            //Traitement des groups
+            if(metaData.groups){
+                //Cas des columns
+                for(var i=0 ; i<metaData.groups.length;i++){
+                    if(metaData.groups[i]&&metaData.groups[i].columns){
+                        for(var j=0 ; j< metaData.groups[i].columns.length;j++){
+                            if(angular.isDefined(metaData.groups[i].columns[j].search)
+                                      &&(metaData.groups[i].columns[j].search==true)){
+                                 if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image'){   //&&metaData.groups[i].columns[j].type.type!='textarea'&&metaData.groups[i].columns[j].type.type!='richeditor'
+                                    var thElem = document.createElement('th');
+                                    thElem.innerHTML = metaData.groups[i].columns[j].fieldLabel+" <span ng-show=down('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-down' aria-hidden='true' ></span> <span ng-show=up('"+metaData.groups[i].columns[j].fieldName+"')==true class='glyphicon glyphicon-chevron-up' aria-hidden='true' ></span>";
+                                    thElem.setAttribute("ng-click","listeSorter('"+metaData.groups[i].columns[j].fieldName+"')");
+                                    rheadElem.appendChild(thElem);
+                                    fieldnames.push(metaData.groups[i].columns[j].fieldName);
+                                    if(metaData.groups[i].columns[j].type=='number'){
+                                        fieldtypes.push(true);
+                                    }else{
+//                                        if(metaData.groups[i].columns[j].type=='combobox'){
+//                                            comboMap[metaData.groups[i].columns[j].fieldName]= metaData.groups[i].columns[j].value.split(";");
+//                                        }//end if(metaData.columns[i].type=='combobox'){
+                                        fieldtypes.push(false);
+                                    }
+                                }//end if(metaData.groups[i].columns[j].type!='array'&&metaData.groups[i].columns[j].type!='image')
+                            }
+                        }//end For
+                    }//Fin traitement des colommes
+                }
+            }//end if(metaData.groups){
+             var thElem = document.createElement('th');
+             rheadElem.appendChild(thElem);
+            //Creation du corps du tableau
+            var tbodyElem = document.createElement('tbody');
+            tableElem.appendChild(tbodyElem);
+            var rbodyElem = document.createElement('tr');
+            rbodyElem.setAttribute('ng-repeat' , ' obj in datas');
+            tbodyElem.appendChild(rbodyElem);
+//            var tdElem = document.createElement('td');
+//            rbodyElem.appendChild(tdElem);
+            rbodyElem.setAttribute('style' , "cursor: pointer;");
+            var key = "currentobject";
+            $scope.dataCache["row"+key] = null;
+            $scope.listDisplayTemplate(metaData,rbodyElem,key,0);
+            //Construction du footer du tableau
+            var footerElem = document.createElement('tfoot');
+            footerElem.setAttribute('style','background-color: #eeeeee;');
+            var trElem = document.createElement('tr');
+            var thElem = document.createElement('th');
+            trElem.appendChild(thElem);
+            footerElem.appendChild(trElem);
+            var numeric_fields = 0 ;
+            for(var i=0;i<fieldnames.length;i++){
+                var total = null;
+                if(fieldtypes[i]==true){
+                    total = commonsTools.sumTableField(fieldnames[i],$scope.datas);
+//                    console.log("$scope.tableListComponent === begin  "+i+" ****** "+fieldnames[i]+"=== "+total);
+                }
+                thElem = document.createElement('th');
+                trElem.appendChild(thElem);      
+                if(total){                    
+                    numeric_fields++ ;
+                    thElem.appendChild(document.createTextNode(total));
+                    thElem.setAttribute('class','text-center');
+                }//end if(total)
+            }//end for(var i=0;i<fieldnames.length;i++){
+            thElem = document.createElement('th');
+            trElem.appendChild(thElem);     
             if(numeric_fields>0){
                 tableElem.appendChild(footerElem);
             }//end if(numeric_fields>0)
@@ -10931,6 +11182,19 @@ $scope.gererChangementFichier3 = function(event,model){
              return divelem;
          };
          /**
+          * 
+          * @returns {Boolean}
+          */
+         $scope.isEditableList = function(){
+              if(angular.isDefined($scope.currentAction.viewMode)){
+                  var modes = $scope.currentAction.viewMode.split(',');
+                  if(modes[0]=='tree'&&modes.length==1){
+                      return true;
+                  }//end if(modes[0]=='tree'&&modes.length==1){
+              }//end if(angular.isDefined($scope.currentAction.viewMode)){
+              return false;
+         };
+         /**
           * Building table list panel
           * @param {type} metaData
           * @returns {undefined}
@@ -10942,9 +11206,9 @@ $scope.gererChangementFichier3 = function(event,model){
                 listElem = angular.element(content);
                 if(metaData==null||!angular.isDefined(metaData)){
                    return ;
-                 }
+                }//end if(metaData==null||!angular.isDefined(metaData)){                
                 $scope.desablecreate = metaData.desablecreate || !$scope.canCreate();
-                $scope.desableupdate = !$scope.canUpdate();
+                $scope.desableupdate = !$scope.canUpdate()||$scope.isEditableList();
                 $scope.desabledelete = !$scope.canDelete();
                 $scope.desableprint = !$scope.canPrint();
                  listElem = $scope.buildActionsMenu(listElem,null,0);
@@ -10960,19 +11224,17 @@ $scope.gererChangementFichier3 = function(event,model){
 //                divElem.setAttribute("class","panel-body container-body-panel");
                 divElem.setAttribute("id","datawidget");
 //                divElem.setAttribute("style","height: 82%;overflow: auto;margin-top: -8%;");
-                divElem.appendChild($scope.tableListComponent(metaData));
+//                console.log("principal_11190 :::::::::::::::::::::::::::::::: "+angular.toJson($scope.currentAction))
+                var modes = [];
+                if(angular.isDefined($scope.currentAction.viewMode)){
+                    modes =$scope.currentAction.viewMode.split(",");
+                }//end if(angular.isDefined($scope.currentAction.viewMode))
+                if(modes.length==1 && modes[0]=='tree'){
+                  divElem.appendChild($scope.editableTableListComponent(metaData));
+                }else{
+                    divElem.appendChild($scope.tableListComponent(metaData));
+                }//end if(modes.length==1 && modes[0]=='tree'){
                 //Insertion du tableau
-//                var items = listElem.find("table");
-//                for(var i=0; i<items.length;i++){                     
-//                     if(items.eq(i).attr("id")=="treeid"){
-//                           items.eq(i).replaceWith($scope.tableListComponent(metaData));
-//                     }//end if(items.eq(i).attr("id")=="datatable"){  
-//                }//end for(var i=0; i<items.length;i++){    
-                /**
-                 * 
-                 * @param {type} metaData
-                 * @returns {undefined}Remplacement 
-                 */
                 var items = listElem.find("div");
                 for(var i=0; i<items.length;i++){                     
                      if(items.eq(i).attr("id")=="datawidget"){
@@ -11132,6 +11394,75 @@ $scope.gererChangementFichier3 = function(event,model){
                      }
 
                     return listElem;
+          };
+          /**
+           * formulaire 
+           * @param {type} metaData
+           * @param {type} elem
+           * @returns {unresolved}
+           */
+          $scope.formFramePanelBuilder = function(elem){
+                   var listElem  = null ;         
+//                    $scope.previousType="view";
+//                    $scope.windowType="view";
+                    var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+                    if(session==null){
+                        $scope.deconnexion();
+                        return;
+                    }//end if(session==null){  
+//                   $scope.viewmode = "list"; 
+//                   console.log("listFramePanelBuilder inside ====== "+$scope.activateVerticalMenu);
+                   if($rootScope.globals.theme!=null&&$rootScope.globals.theme.container){
+                       listElem = angular.element($rootScope.globals.theme.container);
+                   }else{
+                        if($scope.enabledVerticalMenu){       
+                             listElem = angular.element("<div>")
+                                           .addClass("col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2")
+                                           .attr("id" , "container")
+                                           .attr("style" ,"position: absolute;width: 84.2%;height: 91%;margin-left:15.55% ;margin-right:0px;padding:0px;");
+                         }else{
+                           listElem = angular.element("<div>")
+                                            .addClass("col-sm-12  col-md-12")
+                                            .attr("id" , "container")
+                                            .attr("style" ,"position: absolute;width: 100%;height: 91.0%; margin:0px;padding:0px;" );                   
+
+                         }    
+                     }//end if($rootScope.globals.theme!=null&&$rootScope.globals.theme.container){
+                     listElem.append(elem); 
+                    //var content = $scope.viewSelector('list') ;
+                      //listElem.append(angular.element(content)); 
+                      var compileFn = $compile(listElem);
+                      compileFn($scope);
+                      //Insertion du tableau
+                      var items = $element.find("div");
+                      for(var i=0; i<items.length;i++){
+                           if(items.eq(i).attr("id")=="container"){
+                                 items.eq(i).replaceWith(listElem);
+                                // console.log("listFramePanelBuilder ====== "+$scope.enabledVerticalMenu);
+                           }//end if(items.eq(i).attr("id")=="container")  
+                      }//end for(var i=0; i<items.length;i++){
+
+//                    return listElem;
+                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                    restService.findAll().$promise
+                           .then(
+                           function(datas){
+                               if(datas.length>0){
+                                    $scope.currentObject = datas[0];
+                                    $scope.viewAction($scope.currentObject);
+                               }else{
+                                   $scope.addElementAction();
+                               }//end if(datas.length>0)                              
+                               //Cacher la navigation
+                               $scope.navigatorcontainer.addRule($scope.currentAction.name,$scope.currentObject.id,$scope.currentObject.designation);
+   //                            console.log("$scope.viewAction ============== "+angular.toJson(data));
+                                                             
+   //                            console.log("$scope.viewAction after display ============== "+angular.toJson(data));
+                               commonsTools.hideDialogLoading();
+                   },function(error){
+                        commonsTools.hideDialogLoading();
+                        commonsTools.showMessageDialog(error);
+                   } );                   
           };
             /**
              Fonction de construction des 
@@ -11556,12 +11887,16 @@ $scope.gererChangementFichier3 = function(event,model){
 //                                                    console.log("principal.initAction_11090 ================= : "+mode[0]);
                                                     if(mode && mode[0]=="calendar"){
                                                        $scope.calendarFramePanelBuilder(metaData);
+                                                       $scope.loadData(item);                                                    
                                                     }else if(mode && mode[0]=="kaban"){
                                                        $scope.kabanFramePanelBuilder(metaData);
+                                                       $scope.loadData(item);                                                    
+                                                    }else if(mode && mode[0]=="form"){
+                                                        $scope.formFramePanelBuilder($scope.displayEditPanel());                                                       
                                                     }else{
                                                         $scope.listFramePanelBuilder(metaData);
+                                                        $scope.loadData(item);                                                    
                                                     }//end if(viewType=="tree")
-                                                    $scope.loadData(item);
                                                     commonsTools.hideDialogLoading();
                                               }
                                               , function(error){

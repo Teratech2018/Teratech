@@ -651,15 +651,9 @@ public class Courrier extends BaseElement implements Serializable, Comparable<Co
 	public boolean isCreateonfield() {
 		return false; // To change body of generated methods, choose Tools |
 						// Templates.
-	}
-	
-	
+	}	
 
-	@Override
-	public long getCompareid() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+	
 
 	@Override
 	public int compareTo(Courrier o) {

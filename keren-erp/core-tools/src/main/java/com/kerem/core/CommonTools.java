@@ -118,6 +118,7 @@ public class CommonTools {
         FormRecord record = new FormRecord();
         record.setCode(view.getId());
         record.setScript(FileHelper.transformJaxBToScript(view));
+        record.setTemplate(view.getTemplate());
         record.setTitre(view.getLabel());
         return record;
     }
