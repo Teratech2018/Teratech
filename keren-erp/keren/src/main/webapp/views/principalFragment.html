@@ -116,7 +116,7 @@ and open the template in the editor.
         <div ng-controller="calendarCtrl">
           <ng-include src="'modules/calendrier/views/calendar.html'"  ng-show = "showCalendar==true"></ng-include>
          </div>
-         <div ng-controller="discussionCtrl">
+         <div ng-controller="discussionCtrl" style="width: 100%;margin-left: 15.5px;">
           <ng-include src="'modules/discussions/views/discussion.html'"  ng-show = "showDiscussion==true"></ng-include>
          </div>
          <!-- <ng-include src="'views/contentViewWithVMenu.html'"  ng-show = "enabledVerticalMenu == true"></ng-include>         
@@ -231,7 +231,7 @@ and open the template in the editor.
              <header-builder entity-metadata="{{metaData}}"  full-screen="{{enabledVerticalMenu}}" 
                            select-action="{{currentAction}}"     data-value="{{modules}}"   ng-show="hideOther==false">             
              </header-builder>        
-            <div ng-controller="calendarCtrl">
+             <div ng-controller="calendarCtrl">
               <ng-include src="'modules/calendrier/views/calendar.html'"  ng-show = "showCalendar==true"></ng-include>
              </div>
              <div ng-controller="discussionCtrl">

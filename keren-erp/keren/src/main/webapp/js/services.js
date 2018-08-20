@@ -27,6 +27,10 @@ angular.module("mainApp")
                           
                           update:{
                                method:'PUT'                               
+                          },
+                          
+                          save:{
+                               method:'POST'                               
                           }
                    });
                  //console.log("restService == "+urlPath);

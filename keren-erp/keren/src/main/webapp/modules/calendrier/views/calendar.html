@@ -9,45 +9,6 @@
                 </button>
                 <a  class="navbar-brand" href="#">{{metaData.listTitle}}</a>
              </div>
-<!--             <div class="col-sm-6 col-md-7  container-heading-panel" >
-                 <form class="navbar-form navbar-search  navbar-right" role="Search" id="filtercontainer" style="width: 100%;" > 
-                    <div class="input-group" style="width: 100%;">                     
-                        <span class="input-group-btn pull-left"  style="display: inline-block;width: 20%;">
-                              <button type="button" class="btn btn-search btn-sm btn-default dropdown-toggle" data-toggle="dropdown" id="filtertbtn" style="width: 100%;">
-                                  <span class="glyphicon glyphicon-filter"></span>
-                                  <span class="label-icon">Filtres</span>
-                                  <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu" role="menu"  id="filterActionsId">
-                                 <li>
-                                      <a href="#">
-                                           <span class="glyphicon glyphicon-user"></span>
-                                          <span class="label-icon">Search By User</span> 
-                                          <span>
-                                            <input type="text" style="border: none;">
-                                            <input type="checkbox" name="name" ng-model="checkbox01">
-                                          </span>
-                                      </a>
-                                  </li>
-                                  <li>
-                                      <a href="#">
-                                      <span class="glyphicon glyphicon-book"></span>
-                                      <span class="label-icon">Search By Organization</span>
-                                      </a>
-                                  </li>
-                              </ul>
-                        </span>                                                               
-                       <span class="input-group-btn  pull-left" style="display: inline-block;width: 80%;">
-                            <input type="text" ng-model="searchCriteria" class="form-control input-sm" style="width: 93%;">                                       
-                            <button type="button" class="btn btn-search btn-sm btn-default"  ng-click="searchAction()">
-                              <span class="glyphicon glyphicon-search"></span>
-                            </button>                           
-                      </span>
-
-                    </div>           
-
-                </form> 
-             </div>-->
             <br /><br /><br />
             <div class="btn-toolbar" role="toolbar"  aria-label="Toolbar1">
                <div class="btn-group"  role="group"  aria-label="group 1" ng-hide="listViewType=='calendar'">
@@ -59,57 +20,8 @@
                    <button type="button"  class="btn btn-default btn-sm"  ng-click="importAction()"  id="importerbtn" ng-hide="listViewType=='edit'">{{'Importer' | translate}}</button>
                   <button type="button"  class="btn btn-default btn-sm"  ng-click="annulerAction()"  id="importerbtn" ng-hide="listViewType=='list'">{{'Quitter' | translate}}</button>
                </div>
-
-<!--                <div class="btn-group  dropdown"    role="group"  aria-label="group 2" ng-hide="listViewType=='calendar'||(listViewType=='edit' && windowType=='new')">                     
-                    <button type="button"  class="btn btn-default btn-sm dropdown dropdown-toggle" data-toggle="dropdown"
-                                          aria-haspopup="false"  aria-expanded="true" id="imprimerbtn">
-                         Imprimer
-                         <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu"  role="menu"  aria-labelledby="imprimerbtn">  
-                       <li role="presentation">
-                          <a role="menuitem" tabindex="-1" href="#">
-                             Imprimer 
-                          </a>                            
-                       </li>                             
-                    </ul>                        
-               </div>
-
-               <div class="btn-group  dropdown"    role="group"  aria-label="group 2"  ng-hide="listViewType=='calendar' ||  (listViewType=='edit' && windowType=='new')||(selectedObjects.length==0)">                     
-                   <button type="button"  class="btn btn-default btn-sm dropdown dropdown-toggle" data-toggle="dropdown"
-                                          aria-haspopup="false"  aria-expanded="true" id="actionsbtn"  ng-hide="selectedObjects.length==0">
-                                        Actions
-                        <span class="caret"></span>
-                    </button>
-                   <ul class="dropdown-menu"  role="menu"  aria-labelledby="actionsbtn">  
-                       <li role="presentation">
-                          <a role="menuitem" tabindex="-1" href="#"  ng-click="exportAction()">
-                             Exporter
-                          </a>                            
-                       </li>
-                       <li role="presentation">
-                          <a role="menuitem" tabindex="-1" href="#"  ng-click="updateAction()">
-                             Modifier
-                          </a>                            
-                       </li>
-                       <li role="presentation">
-                          <a role="menuitem" tabindex="-1" href="#"  ng-click="deleteAction()">
-                             Supprimer
-                          </a>                            
-                       </li>
-                    </ul>                      
-               </div>-->
-               <span  class="pull-right">
+<!--               <span  class="pull-right">
                     <span>
-<!--                          <div class="btn-group"  role="group"  aria-label="group 3" ng-hide="listViewType=='calendar' || listViewType=='edit'">
-                            <span class="btn btn-default btn-sm">{{pagination.currentPage}} / {{pagination.totalPages}} </span>
-                            <button type="button"  class="btn btn-default btn-sm">
-                               <span class="glyphicon glyphicon-chevron-left"  aria-hidden="true"></span>
-                            </button>  
-                            <button type="button"  class="btn btn-default btn-sm">
-                               <span class="glyphicon glyphicon-chevron-right"  aria-hidden="true"></span>
-                            </button>                   
-                         </div> -->
                         <div class="btn-group"  role="group"  aria-label="group 3" ng-hide="listViewType=='edit'">
                               <button type="button"  class="btn btn-default btn-sm" ng-click="switchToCalendar()">
                                <span class="glyphicon glyphicon-calendar"  aria-hidden="true"></span>
@@ -119,7 +31,7 @@
                             </button>                   
                          </div> 
                     </span>                    
-               </span>
+               </span>-->
 
      </div>
    </div>
@@ -127,9 +39,6 @@
 
 <div class="col-sm-12  col-md-12">
     <ng-view />
-<!--    <div id="calendar-list">
-        <ng-include src="'modules/calendrier/views/calendarListPanel.html'"  ng-show = "listViewType=='list'"></ng-include>
-    </div>-->
 </div>
 <!-- Fenetre Modale -->
 <div id="myModal00" class="modal" role="dialog">

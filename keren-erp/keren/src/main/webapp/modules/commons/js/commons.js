@@ -1839,6 +1839,13 @@ angular.module('keren.core.commons')
                    }//end for(var j=0 ;j<metaData.groups[i].columns.length;j++){
                }//end for(var i=0 ; i<metaData.groups.length;i++){
                return entity;
+           },
+           /**
+            * 
+            * @returns {undefined}
+            */
+           websiteTemplate:function(){
+               
            }
 
        };

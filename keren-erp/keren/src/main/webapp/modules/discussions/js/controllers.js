@@ -12,7 +12,8 @@ angular.module('keren.core.discussion')
             INBOX:'INBOX',
             MSGEDIRECT:'DIRECT MESSAGES',
             INPUTMSGE:'Enter your Message',
-            Administrateur:'Administrator'
+            Administrateur:'Administrator',
+            Discussion:'Discuss'
         });
         $translateProvider.translations('fr',{
             MSGEDIRECT:'MESSAGES DIRECT',
@@ -46,7 +47,66 @@ angular.module('keren.core.discussion')
                $scope.messageobject = null;
                $scope.dataCache = new Object();
                $scope.windowType = "INBOX";
-               
+               $scope.searchCriteria = null;
+               $scope.currentModule =  { id:-1 , name:"discussionconf",label:"Discussion",selected:false,hasmenu:false,
+                          groups:[
+                                                      
+                          ]
+
+               };
+               /**
+                * 
+                * @returns {undefined}
+                */
+               $scope.searchAction = function(){
+                    var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
+                    if(session===null){
+                        $scope.deconnexion();
+                        return;
+                    }//end if(session==null){
+                    $http.defaults.headers.common['search_text']= $scope.searchCriteria;  
+                    $http.defaults.headers.common['userid']= $rootScope.globals.user.id;   
+                   restService.count($scope.predicats)
+                     .$promise.then(function(data){
+                         $scope.pagination.currentPage=1;
+                         $scope.pagination.beginIndex = 0;
+                         $scope.pagination.totalPages = data.value ;                                                  
+                         var url="http://"+$location.host()+":"+$location.port()+"/kerencore/";
+                         //Chargement des donnes
+                         if($scope.windowType=="INBOX"){
+                            url+="rmessage/inbox/"+$scope.currentUser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                         }else if($scope.windowType=="CANAL"){
+                            url+="kmessage/canal/"+$scope.currentUser.id+"/"+$scope.canal.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                         }else{
+                            url+="kmessage/direct/"+$scope.currentUser.id+"/"+$scope.connecteduser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                         }//end if($scope.windowType=='INBOX')
+                         $http.get(url)
+                               .then(function(response){
+//                                                      console.log('$scope.loadData = function() :::::::::::::::: '+data);
+                                    if(response.data){
+                                        $scope.messages = response.data;
+                                        $scope.setImageIds($scope.messages);
+                                        $scope.loadMessagesResources($scope.messages);
+                                        $scope.pagination.currentPage = $scope.pagination.beginIndex;
+                                        $scope.pagination.endIndex = $scope.pagination.endIndex+$scope.pagination.pageSize;
+                                        if($scope.pagination.endIndex>$scope.pagination.totalPages){
+                                            $scope.pagination.endIndex = $scope.pagination.totalPages;
+                                        }
+                                        commonsTools.hideDialogLoading();
+//                                                         $rootScope.$broadcast("dataLoad" , {
+//                                                             message:"dataLoad"
+//                                                         });
+                                    }
+                               } ,function(error){
+                                   commonsTools.hideDialogLoading();
+                                   commonsTools.showMessageDialog(error);
+                               });  
+                     }
+                     , function(error){
+                         commonsTools.hideDialogLoading();
+                         commonsTools.showMessageDialog(error);
+                     });       
+               };
                 $scope.pagination = {  
                                  beginIndex: 0,
                                  endIndex : 0,
@@ -1028,7 +1088,16 @@ angular.module('keren.core.discussion')
              var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/marquer/"+msgeID+"/"+$scope.currentUser.id+"/0/20";
              $http.get(url)
                      .then(function(response){
-                         $scope.buildMessageTableView(response.data);
+                            $scope.messages = response.data;
+                            $scope.setImageIds($scope.messages);
+                            $scope.loadMessagesResources($scope.messages);
+                            $scope.pagination.currentPage = 1;
+                            if($scope.messages.length<=0){
+                                $scope.pagination.currentPage = 0;
+                            }//end if($scope.messages.length<=0)
+                            $scope.pagination.endIndex = $scope.messages.length;
+    //                                            $scope.buildMessageTableView($scope.messages);
+                            commonsTools.hideDialogLoading();
                          commonsTools.hideDialogLoading();
                      },function(error){
                          commonsTools.hideDialogLoading();

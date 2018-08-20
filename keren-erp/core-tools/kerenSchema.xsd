@@ -17,6 +17,7 @@
                 <xs:element ref="tns:calendarRecord"  minOccurs="0" maxOccurs="unbounded" />
                 <xs:element ref="tns:kabanentry"  minOccurs="0" maxOccurs="unbounded" />
                 <xs:element ref="tns:theme"  minOccurs="0" maxOccurs="1" />
+                <xs:element ref="tns:website"  minOccurs="0" maxOccurs="1" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -80,7 +81,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="tns:field"   minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>           
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/> 
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>              
             </xs:sequence>
             <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="type"  type="xs:string" />
@@ -94,7 +96,8 @@
     <xs:element name="kabanentry">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>           
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>    
             </xs:sequence>
             <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="parent_ref" type="xs:string" />   
@@ -117,7 +120,8 @@
             <xs:sequence>
                 <xs:element ref="tns:header"   minOccurs="0" maxOccurs="1"/>                 
                 <xs:element ref="tns:sheet"   minOccurs="0" maxOccurs="1"/>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>          
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>           
             </xs:sequence>
 	    <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="label"  type="xs:string" />
@@ -155,7 +159,8 @@
         <xs:complexType>            
             <xs:sequence>
                 <xs:element ref="tns:search" minOccurs="0" maxOccurs="1"/>
-                <xs:element ref="tns:template"   minOccurs="1" maxOccurs="1"/>                
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                   
             </xs:sequence>
             <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="label"  type="xs:string" />
@@ -163,12 +168,7 @@
             <xs:attribute name="action_ref" type="xs:string" />
             <xs:attribute name="extern" type="xs:boolean" default="false" />
         </xs:complexType>
-    </xs:element>
-    
-    <xs:element name="template"  type="xs:string">
-        
-    </xs:element>
-    
+    </xs:element>   
      <xs:element name="container"  type="xs:string">
         
     </xs:element>  
@@ -189,7 +189,8 @@
     <xs:element name="header">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>         
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>     
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/> 
                 <xs:element ref="tns:button"   minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element ref="tns:field"   minOccurs="0" maxOccurs="1"/>        
             </xs:sequence>
@@ -199,7 +200,8 @@
     <xs:element name="main">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>      
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -207,7 +209,8 @@
     <xs:element name="footer">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>            
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -215,77 +218,88 @@
     <xs:element name="principal">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="dashboardtemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>           
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="reporttemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>              
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>          
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="calendartemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>              
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/> 
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                  
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="treetemplate">
         <xs:complexType>
             <xs:sequence>
-               <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                           
+               <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/> 
+               <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                              
             </xs:sequence>
         </xs:complexType>
     </xs:element>
      <xs:element name="containertemplate">
         <xs:complexType>
             <xs:sequence>
-               <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                  
+               <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>    
+               <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                 
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="formtemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                     
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>    
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="importtemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                   
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/> 
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                          
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="exporttemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                    
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>   
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                      
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="discussiontemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>               
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>   
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                
             </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="logintemplate">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="1"/>                
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>   
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                    
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -343,5 +357,47 @@
             <xs:attribute name="class" type="xs:string"/>
             <xs:attribute name="states" type="xs:string"/>
         </xs:complexType>
+    </xs:element>
+     <xs:element name="template">
+        <xs:complexType>            
+            <xs:sequence>
+                <xs:element name="script" minOccurs="0" maxOccurs="1" type="xs:string"/> 
+                <xs:element name="url" minOccurs="0" maxOccurs="1" type="xs:string"/>                                 
+            </xs:sequence>
+            <xs:attribute name="id"  type="xs:string" />
+            <xs:attribute name="name"  type="xs:string" />
+            <xs:attribute name="page" type="xs:boolean" default="false" />
+            <xs:attribute name="css" type="xs:boolean" default="false" />
+            <xs:attribute name="js" type="xs:boolean" default="false" />
+            <xs:attribute name="index" type="xs:boolean" default="false" />
+            <xs:attribute name="entity_ref"  type="xs:string"/>
+            <xs:attribute name="model_ref"  type="xs:string"/> 
+            <xs:attribute name="method_ref"  type="xs:string"/>
+            <xs:attribute name="var_ref"  type="xs:string"/>     
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="navigationcase">
+        <xs:complexType>
+            <xs:attribute name="outcome" type="xs:string"/>
+            <xs:attribute name="viewid" type="xs:string"/>
+            <xs:attribute name="sectionid" type="xs:string"/>             
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="navigationrule">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:navigationcase"   minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="fromviewid"  type="xs:string" />            
+        </xs:complexType>    
+    </xs:element>
+    <xs:element name="website">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:navigationrule"   minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="tns:template"   minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>              
+        </xs:complexType>    
     </xs:element>
 </xs:schema>

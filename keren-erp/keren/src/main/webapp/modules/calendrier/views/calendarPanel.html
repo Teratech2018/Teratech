@@ -1,7 +1,7 @@
 <div class="col-sm-9  col-md-10" id="calendar" ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="myCalendar" ng-show="listViewType=='calendar'"></div>
    <div class="col-md-2 col-sm-3">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
+       <div class="panel panel-primary" style="margin-top: 50px;">
+           <div class="panel-heading" style="background-color: #f0eeee;color: #777;">
                {{'CALENDAROPTIONS' | translate}}
             </div>
             <div class="panel-body">
@@ -9,9 +9,9 @@
                         <li class="media">
                            <div class="media-body">
                                <div class="media">
-                                   <div class="media-body" >
-                                       <input type="checkbox" class="pull-left"  ng-model="item.selected" ng-change="userselect(item)">
-                                       <small style="font-weight: bold;" class="text-muted">{{item.intitule | translate}}</small>                                      
+                                   <div class="media-body" >  
+                                       <input type="checkbox" class="pull-left"  ng-model="item.selected" ng-change="userselect(item)"  style="padding-right: 10px;">                                   
+                                       <small style="font-weight: bold;" class="text-muted">{{item.intitule | translate}}</small>                                         
                                    </div>
                                </div>
 

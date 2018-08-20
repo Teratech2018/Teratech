@@ -77,9 +77,7 @@ a.mail-dropdown {
 .btn-compose {
     background: none repeat scroll 0 0 #ff6c60;
     color: #fff;
-    padding: 12px 0;
-    text-align: center;
-    width: 100%;
+    text-align: center;    
 }
 .btn-compose:hover {
     background: none repeat scroll 0 0 #f5675c;

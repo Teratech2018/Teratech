@@ -19,7 +19,7 @@ angular.module("mainApp").config(['$translateProvider',
             Modifier:'Update',
             Supprimer:'Delete',
             Administration:'Administration',
-            Discussions:'Discussions',
+            Discussion:'Discuss',
             Calendrier:'Calendar',
             Applications:'Applications',
             Configuration:'Configuration',
@@ -58,7 +58,6 @@ angular.module("mainApp").config(['$translateProvider',
             Pays:'Country',
             Traductions:'Translations',
             Langues:'Languages',
-            Discussion:'Discussion',
             CANAUX:'Communication channels',
             Technique:'Technical',
             MENUGROUP:'Menu Elements',
@@ -157,12 +156,16 @@ angular.module("mainApp")
    //List of available users and canal
    $scope.tchatinput = new Array();        
    //Utilisateur courant
-   $scope.applicationsModule = { id:-1 , name:"discussionconf",label:"Discussion",selected:false,hasmenu:false,
+   $scope.agendaModule = { id:-1 , name:"discussionconf",label:"Discussion",selected:false,hasmenu:false,
                           groups:[
                                                       
                           ]
 
                };
+    $scope.calandarModule = { id:-1 , name:"calandar",label:"Agenda",selected:false,hasmenu:false,
+              action:{id:-1,name:"events" , label:"Utilisateurs",icon:"glyphicon glyphicon-user",entityName:"Utilisateur",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false}
+
+   };
    /**
        Structure du module de configuration
    **/
@@ -178,7 +181,7 @@ angular.module("mainApp")
                        { id:-2 , name:"traduction" , label:"Traductions",icon:"glyphicon glyphicon-book" ,showmenu:true,
                          actions:[{id:-1,name:"langues" , label:"Langues",icon:"glyphicon glyphicon-bullhorn",entityName:"Langue",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false},
 //                                  {id:-2,name:"chargelangue" , label:"Charger une traduction",icon:"glyphicon glyphicon-saved",entityName:"ChargerLangue",moduleName:"kerencore",modal:true,securitylevel:0,model:'kerencore'},
-                                  ,{id:-3,name:"traduction" , label:"TERME",icon:"glyphicon glyphicon-globe",entityName:"Terme",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false}
+                                  ,{id:-3,name:"traduction" , label:"TERME",icon:"glyphicon glyphicon-globe",entityName:"Terme",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false,viewMode:'tree'}
                                   //{id:4,name:"exportertraduction" , label:"Exporter une traduction",icon:"glyphicon glyphicon-user",entityName:null,moduleName:"kerencore",modal:false}
                          ]},
                          {id:-4 , name:"discussion_conf",label:"Discussion",icon:"glyphicon glyphicon-th",showmenu:true,
@@ -271,8 +274,8 @@ angular.module("mainApp")
                        commonsTools.principalScreenBuilder(theme,$scope);
                    },function(error){
                        commonsTools.hideDialogLoading();
+                       commonsTools.showMessageDialog(error);
                        $rootScope.globals.theme = null;
-//                       commonsTools.showMessageDialog(error);
                    });
        };
        //Chargmeent du theme
@@ -619,6 +622,7 @@ angular.module("mainApp")
         //Hide the discussion
         $scope.showDiscussion = true;
         $scope.moduleValue = "discussion";
+        $scope.currentModule = $scope.agendaModule;
         //Desactivi
         $scope.enabledVerticalMenu = false;
         $scope.hideOther = $scope.showCalendar || $scope.showDiscussion ;
@@ -626,7 +630,8 @@ angular.module("mainApp")
         //Chargement du logo de l'application
         restService.downloadPNG($rootScope.globals.user.image,"mail_user_id");        
         //console.log("Vous avez cliquer sur le module ::: Discussion");
-        $rootScope.$broadcast("discussionmodule" , {verticalMenu:$scope.enabledVerticalMenu});
+//        $rootScope.$broadcast("discussionmodule" , {verticalMenu:$scope.enabledVerticalMenu});
+//        $rootScope.$broadcast("currentModule" , {module:$scope.currentModule , verticalMenu:false});
     };
     
    
@@ -644,6 +649,7 @@ angular.module("mainApp")
         $scope.hideOther = $scope.showCalendar || $scope.showDiscussion ;
         $scope.moduleValue = "calendar";
         $scope.principalscreen = false;
+        $scope.currentModule = $scope.calandarModule;
         //Initialisation du service Rest
         restService.url('event','kerencore');
         restService.getMetaData(null).$promise.then(
@@ -2515,12 +2521,14 @@ $scope.gererChangementFichier3 = function(event,model){
                //Creation de l'entree
                //Filter criteria
                var key = commonsTools.keygenerator(model);
-               $scope.filtertemplate[""+key+""] = field.filter ;
+//               console.log("$scope.manyToOneComponent = ======= mode :"+model+" ====== entityname:"+metaData.entityName+" === field:"+field.fieldName+" === index:"+index+" ==== path:"+modelpath+" ===== key:"+key);
+               if(angular.isDefined($scope.filtertemplate)){
+                    $scope.filtertemplate[""+key+""] = field.filter ;
+               }//end if(angular.isDefined($scope.filtertemplate)){
                var exprFn = $parse(model); 
                 var data = exprFn($scope);
                 var parts = model.split(".");
 //                var key = commonsTools.keygenerator(model);
-//                console.log("$scope.manyToOneComponent = ======= mode :"+model+" ====== entityname:"+metaData.entityName+" === field:"+field.fieldName+" === index:"+index+" ==== path:"+modelpath+" ===== key:"+key+" === data:"+angular.toJson(data));
                 if(parts.length>1){
                     $scope.dataCache[""+key+""] = new Array();
                     if(data && angular.isDefined(data.id)){
@@ -2941,7 +2949,9 @@ $scope.gererChangementFichier3 = function(event,model){
                         }//end for(var j = 0 ; j < metaData.groups[i].columns.length;j++)
                      }//end if(metaData.groups[i].columns&&metaData.groups[i].columns.length>0)                     
                  }//end for(var i=0;i<metaData.groups.length;i++)
-             }
+             }//end if(metaData.groups&&metaData.groups.length>0){
+             var thElem = document.createElement('th');
+             trElem.appendChild(thElem);
              //alert(columnNumber);
              var nextIndex = index +1 ;
              //Creation du corps du tableau
@@ -2950,10 +2960,11 @@ $scope.gererChangementFichier3 = function(event,model){
               if(metaData.createonfield==true){  
                     //Creation de la ligne des actions
                     var trElem = document.createElement('tr');
+                    trElem.setAttribute("ng-hide","windowType=='view'");
                     tbodyElem.appendChild(trElem);
                     var tdElem = document.createElement('td');
                     trElem.appendChild(tdElem);
-                    tdElem.setAttribute("colspan" , columnNumber);                   
+                    tdElem.setAttribute("colspan" , columnNumber+1);                   
                     if(($scope.windowType!="view")
                             ||($scope.metaData.desableupdate==true&&($scope.innerWindowType=="new"||$scope.innerWindowType=="update"))){
                         var aElem = document.createElement('a');
@@ -3102,6 +3113,9 @@ $scope.gererChangementFichier3 = function(event,model){
                 if(($scope.windowType=="view")){
                      aElem.setAttribute('disabled' , 'disabled');                  
                  }//end if($scope.windowType=="view"){            
+            }else{
+                tdElem = document.createElement('td');
+                trElem.appendChild(tdElem);
             }//end if(metaData.createonfield==true)
             if(field.hide){
                divElem.setAttribute('ng-hide',true);
@@ -3216,7 +3230,9 @@ $scope.gererChangementFichier3 = function(event,model){
                         }//end for(var j = 0 ; j < metaData.groups[i].columns.length;j++)
                      }//end if(metaData.groups[i].columns&&metaData.groups[i].columns.length>0)                     
                  }//end for(var i=0;i<metaData.groups.length;i++)
-             }
+             }//end if(metaData.groups&&metaData.groups.length>0){
+             var thElem = document.createElement('th');
+             trElem.appendChild(thElem);
              //alert(columnNumber);
              var nextIndex = index +1 ;
              //Creation du corps du tableau
@@ -3226,9 +3242,10 @@ $scope.gererChangementFichier3 = function(event,model){
                     //Creation de la ligne des actions
                     var trElem = document.createElement('tr');
                     tbodyElem.appendChild(trElem);
+                    trElem.setAttribute("ng-hide","windowType=='view'");
                     var tdElem = document.createElement('td');
                     trElem.appendChild(tdElem);
-                    tdElem.setAttribute("colspan" , columnNumber);
+                    tdElem.setAttribute("colspan" , columnNumber+1);
                     var aElem = document.createElement('a');
                     tdElem.appendChild(aElem);
                     aElem.setAttribute('href' , '#');
@@ -3370,7 +3387,7 @@ $scope.gererChangementFichier3 = function(event,model){
             if(oldItem!=null){
                 oldId = "td"+Math.abs(oldItem.id)+"_"+oldfieldname;
             }//end if(oldItem!=null)
-            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index+" === "+angular.toJson(item));            
+//            console.log("$scope.getTemplate = function(item) =========  ==== new : "+fieldname+" ==== old :"+oldfieldname+" === "+key+" ======= new : "+id+" :::: old : "+oldId+" ======== "+model+" :::: "+modelpath+" :::: "+index+" === "+angular.toJson(item));            
             //Recherche du span contenant 
             var spanElem = null ;
             var oldspanElem = null ;
@@ -3643,6 +3660,9 @@ $scope.gererChangementFichier3 = function(event,model){
                 if(($scope.windowType=="view")){
                      aElem.setAttribute('disabled' , 'disabled');                  
                 }//end if($scope.windowType=="view"){            
+            }else{
+                tdElem = document.createElement('td');
+                scriptelem.appendChild(tdElem);
             }//end if(metaData.createonfield==true){
             
             return scriptelem;
@@ -7692,6 +7712,7 @@ $scope.gererChangementFichier3 = function(event,model){
              } //end if(metaData){
              var today = new Date();
              $scope.currentObject['compareid'] = today.getTime();
+             $scope.currentObject['id'] = -1;
          };
          /**
           * 
@@ -7990,6 +8011,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           pageBeginIndex = 0;
                       }   **/       
                       $http.defaults.headers.common['userid']= $rootScope.globals.user.id;   
+                      $http.defaults.headers.common['search_text']= $scope.searchCriteria;  
                       restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
                                .$promise.then(function(datas){                                    
                                     if(datas){
@@ -8416,9 +8438,12 @@ $scope.gererChangementFichier3 = function(event,model){
                modes = $scope.currentAction.viewMode.split(',');
            }//end if(angular.isDefined($scope.currentAction.viewMode)){
            if(modes[0]=='tree'&&modes.length==1){
+                $scope.windowType = 'list';
                if($scope.datas.length==0 
                        ||$scope.datas[0].id>0){
                    $scope.datas.unshift($scope.currentObject);
+               }else{
+                   $scope.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>Veuillez enregistrer la ligne courante et réessayer","danger");
                }//end if($scope.datas.length==0 
            }else{
                $scope.displayEditPanel();
@@ -8525,9 +8550,10 @@ $scope.gererChangementFichier3 = function(event,model){
                                     $scope.notifyWindow("Les champs suivants violent la contrainte d'unicitée" ,message,"danger");
                                     commonsTools.hideDialogLoading();
                                 }else{
-//                                    console.log("$scope.saveOrUpdate === Constraint result inner2 ==================="+$scope.windowType+" === contraints : "+angular.toJson($scope.currentObject));
-                                    restService.save($scope.currentObject).$promise.then(function(entity){
-                                        //$scope.notifyWindow("Status Operation" ,"L'opération de save s'est déroulée avec sucess","success"); 
+                                    delete $scope.currentObject.id;
+                                    restService.save($scope.currentObject)
+                                            .$promise.then(function(entity){
+                                         console.log("$scope.saveOrUpdate === Constraint result inner2 ==================="+$scope.windowType+" === contraints : "+angular.toJson($scope.currentObject));
                                         //Reinitialisation du context
                                           //Rechargement des données
 //                                          $http.defaults.headers.common['names']= angular.toJson($scope.dataCache['names']); 
@@ -8646,24 +8672,40 @@ $scope.gererChangementFichier3 = function(event,model){
                    return;
                }//end if(session==null){
                if(angular.isDefined(item)){
-                   $scope.viewAction(item);
+                   if(!$scope.isEditableList()){
+                       $scope.viewAction(item);
+                   }//end if(!$scope.isEditableList()){
                }//end if(angular.isDefined(item)){
               $scope.dataCache['resources'] = new Array();
                $scope.dataCache['names'] = new Array();
                $scope.windowType = 'new';               
                 //Recuperation du premier element
                 var clone = new Object();
+                if(angular.isDefined(item)){
+                    $scope.currentObject = item;
+                }//end if(angular.isDefined(item)){
                angular.copy($scope.currentObject,clone)
                delete clone.id ;
                var today = new Date();
                clone.compareid = today.getTime();
+               clone.id = -1;
                $scope.currentObject = clone ;
                $scope.selectedObjects = [];
                //Chargement rafresh data from server
                $scope.suffixedittitle = $scope.currentObject.designation;                   
                //$scope.currentObject = restService.findById($scope.currentObject.code);
                //$scope.createEmptyObject($scope.metaData);
-               $scope.displayEditPanel();              
+               if(!$scope.isEditableList()){
+                   $scope.displayEditPanel();    
+               }else{
+                  if($scope.datas.length==0
+                          ||$scope.datas[0].id>0){
+                     $scope.datas.unshift($scope.currentObject);
+                  }else{
+                      $scope.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>Veuillez enregistrer la ligne courante et réessayer","danger");
+                  }//end if($scope.datas.length==0
+               }//end if(!$scope.isEditableList())
+                         
           };
 
 //          /**
@@ -8691,7 +8733,11 @@ $scope.gererChangementFichier3 = function(event,model){
                    $scope.suffixedittitle = $scope.currentObject.designation;                   
                    //$scope.currentObject = restService.findById($scope.currentObject.code);
                    //$scope.createEmptyObject($scope.metaData);
-                   $scope.displayEditPanel();
+                   if(!$scope.isEditableList()){
+                       $scope.displayEditPanel();
+                   }else{
+                       $scope.saveOrUpdateEditableListtAction(item);
+                   }//end if(!$scope.isEditableList()){
                }else{
                    //Traitement des modules
                    if($scope.currentObject.active==true){
@@ -8908,6 +8954,49 @@ $scope.gererChangementFichier3 = function(event,model){
                      $scope.notifyWindow("Suppression Impossible" ,"<br/> Veuillez selectionner au moins une ligne","warning");
                  }      
              }//end if(result==true){
+          };
+           $scope.saveOrUpdateEditableListtAction = function(item){
+                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                     var url="http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase($scope.metaData.moduleName)+"/"+angular.lowercase($scope.metaData.entityName);
+                     var validate = $scope.validateFields($scope.metaData , item);
+                     if(validate.length>0){
+                        var message = "";
+                        for(var i=0; i<validate.length;i++){
+                            message = message+"<br/>"+validate[i];
+                        }//end for(var i=0; i<validate.length;i++)
+                        commonsTools.hideDialogLoading();
+                        $scope.notifyWindow("Les champs suivants sont incorrects" ,message,"danger");                        
+                     }else if(item.id<0){
+//                        console.log("$scope.saveOrUpdateEditableListtAction === "+$scope.windowType+" ====== "+angular.toJson(item));
+                        delete item.id;
+                        restService.save(item).$promise
+                                .then(function(entity){
+                                         $scope.reset();
+                                         //Rechargement des données
+                                         $scope.windowType = 'list';
+                                         $scope.displayListPanel();
+                                         commonsTools.hideDialogLoading();
+                                         $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");
+                                  },function(error){
+                                      commonsTools.hideDialogLoading();
+                                      commonsTools.showMessageDialog(error);
+                                  });
+                    }else{
+                       restService.update(item).$promise
+                             .then(function(entity){
+                                        $scope.reset();
+                                        //Rechargement des données
+                                        $scope.windowType = 'list';
+                                        $scope.displayListPanel();
+                                        commonsTools.hideDialogLoading();
+                                        $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");
+                                 },function(error){
+                                     commonsTools.hideDialogLoading();
+                                     commonsTools.showMessageDialog(error);
+                                 });
+                    }//end if(item.id<0){
+                      //$scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");                   
+                              
           };
           /**
            * Suppression des informations
@@ -11199,7 +11288,8 @@ $scope.gererChangementFichier3 = function(event,model){
           * @param {type} metaData
           * @returns {undefined}
           */
-          $scope.listPanelComponent = function(metaData){               
+          $scope.listPanelComponent = function(metaData){  
+              $scope.filtertemplate = new Object();
                $scope.windowType = "list";
                 var listElem  = null ; 
                 var content = $scope.viewSelector('list') ;                
@@ -11230,8 +11320,10 @@ $scope.gererChangementFichier3 = function(event,model){
                     modes =$scope.currentAction.viewMode.split(",");
                 }//end if(angular.isDefined($scope.currentAction.viewMode))
                 if(modes.length==1 && modes[0]=='tree'){
-                  divElem.appendChild($scope.editableTableListComponent(metaData));
+                    $scope.updatebtnlabel ='Enregistrer';
+                    divElem.appendChild($scope.editableTableListComponent(metaData));
                 }else{
+                    $scope.updatebtnlabel ='Modifier';
                     divElem.appendChild($scope.tableListComponent(metaData));
                 }//end if(modes.length==1 && modes[0]=='tree'){
                 //Insertion du tableau
@@ -11296,7 +11388,7 @@ $scope.gererChangementFichier3 = function(event,model){
                            items.eq(i).replaceWith($scope.viewModeBuilder());
                      }  //end  if(items.eq(i).attr("id")=="viewmodeid"){
                 }//end for(var i=0; i<items.length;i++){ 
-                console.log("principal.displayKabanPanel ================================ "+metaData);                
+//                console.log("principal.displayKabanPanel ================================ "+metaData);                
                 return listElem;
           };
           /**
@@ -11613,7 +11705,7 @@ $scope.gererChangementFichier3 = function(event,model){
                             $scope.updatebtnlabel ='Mise Ã  jour';
                             $scope.deletebtnlabel='Supprimer';
                             $scope.showApplication = true;
-                        }  //end if($scope.currentModule.name=='application')
+                        }  //end if($scope.currentModule.name=='application')                        
                 }else if($scope.currentModule.hasmenu==false){
                     alert("Vous avez cliquez sur un module sans menu ....");
                 }
