@@ -32,7 +32,7 @@ angular.module('keren.core.login')
                             $http.post(urlPath ,{username:$scope.username,password:$scope.password})
                                     .then(function(response){
 //                                        console.log("$scope.login = function() remember == encrypt pwd : "+response.data);                            
-                                        authenticationService.setCredentials($scope.username,response.data,$scope.remember);
+                                        authenticationService.setCredentials($scope.username,response.data,$scope.remember);                                        
                                     },function(error){
                                         commonsTools.notifyWindow("Echec authentification" ,"<br/>"+"Echec de recupération des paramètres ","danger");
                                         $rootScope.$broadcast("login" , {username:$scope.username , password:$scope.password});

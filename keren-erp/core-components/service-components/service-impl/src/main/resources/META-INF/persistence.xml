@@ -34,6 +34,8 @@
     <class>com.core.importexport.Export</class>
     <class>com.core.templates.ThemeRecord</class>
     <class>com.core.views.KabanRecord</class>
+    <class>com.core.website.WebSiteComponent</class>
+    <class>com.core.website.WebSiteModule</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

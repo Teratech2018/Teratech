@@ -55,6 +55,7 @@ angular.module('keren.core.calendar' ,['ui.calendar','pascalprecht.translate','n
             ADDELEMENT:'Add an element',
             Lieu:'Place',
             ALLDAY:'All day'
+            
         });
         $translateProvider.translations('fr',{
             PJ:'Pièce(s) Jointe(s)',
@@ -99,6 +100,10 @@ angular.module('keren.core.calendar')
         , function($rootScope,$scope,$translate,$timeout,$location,$http , uiCalendarConfig,commonsTools,backendService){
                 $scope.tableheaderselected = false;
                 $scope.userslist = new Array();
+                $scope.calandarModule = { id:-1 , name:"calandar",label:"Agenda",selected:false,hasmenu:false,
+                            action:{id:-1,name:"events" , label:"Evenement",icon:"glyphicon glyphicon-user",entityName:"Event",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false,viewMode:'tree,form'}
+
+                 };
                 $scope.onCheckboxClick = function(){        
                             $scope.tableheaderselected = !$scope.tableheaderselected;
 
@@ -196,7 +201,11 @@ angular.module('keren.core.calendar')
                               $scope.previousType = 'calendar';                              
                               $scope.selectedEvent = commonsTools.createEmptyObject($scope.metaData);
                               $scope.selectedEvent.start = new Date(start);;
-                              $scope.selectedEvent.end = new Date(end); ;
+                              $scope.selectedEvent.end = new Date(end); 
+                              var entity = $scope.selectedEvent;
+                              var action = $scope.calandarModule.action;
+//                              $rootScope.$broadcast("calandarActionItem" ,{
+//                                 item:entity, action:action , verticalMenu:false,restriction:new Array()});  
                               $location.path("/edit");
                               $('.selectpicker').selectpicker('refresh');
                              //console.log("Vous avez cliquez sur selectionner");
@@ -207,6 +216,10 @@ angular.module('keren.core.calendar')
                             $scope.windowType = 'update';
                             $scope.previousType = 'calendar';//Notification du changement du module
                             $rootScope.$broadcast("calendarEventClick" , {event:event});                    
+                            var entity = $scope.selectedEvent;
+                            var action = $scope.calandarModule.action;
+//                            $rootScope.$broadcast("calandarActionItem" ,{
+//                                item:entity, action:action , verticalMenu:false,restriction:new Array()});  
                         },
                         eventAfterAllRender:function(){
                             if($scope.events.length>0 && isFirstTime){
@@ -216,7 +229,7 @@ angular.module('keren.core.calendar')
                                     uiCalendarConfig.calendars.myCalendar.fullCalendar('gotoDate',$scope.events[0].start);
                                   }
                                   isFirstTime = false;
-                           }
+                           }//end  if($scope.events.length>0 && isFirstTime){
                         }
                     }
                 };
@@ -492,15 +505,7 @@ angular.module('keren.core.calendar')
                         if($scope.windowType=='update'){
                            backendService.update($scope.selectedEvent).$promise.then(
                                    function(entity){
-                                       //$scope.events.push(entity);
-//                                       $scope.selectedEvent = null;
-//                                       $scope.listViewType = $scope.previousType;
-//                                        if($scope.listViewType=='list'){
-//                                            $location.path('/list');
-//                                        }else if($scope.listViewType=='calendar'){
-//                                            $location.path('/calendar');
-//                                        }
-//                                        $scope.hideDialogLoading();
+                                         commonsTools.hideDialogLoading();
                                          $rootScope.$broadcast("refreshList",{event:entity});
                                         commonsTools.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");   
                                    },function(error){
@@ -545,6 +550,7 @@ angular.module('keren.core.calendar')
                      $http.get(url).then(
                             function(response){
                                 $scope.events = response.data;
+                                console.log("controllers ============================================ "+$scope.events.length);
                                  for(var i=0;i<$scope.events.length;i++){
                                     $scope.events[i].start = new Date($scope.events[i].start);
                                     if(!$scope.events[i].allDay){
@@ -553,14 +559,15 @@ angular.module('keren.core.calendar')
                                         $scope.events[i].end = null;
                                     }
                                 }//end for(var i=0;i<$scope.events.length;i++)
-                                $scope.eventSources=[$scope.events];
+                                $scope.uiConfig.calendar.eventAfterAllRender();
+//                                $scope.eventSources=[$scope.events];
                                $scope.selectedEvent = null;
                                $scope.listViewType = $scope.previousType;
                                 if($scope.listViewType=='list'){
                                     $location.path('/list');
                                 }else if($scope.listViewType=='calendar'){
                                     $location.path('/calendar');
-                                    $scope.uiConfig.calendar.eventAfterAllRender();
+//                                    $scope.uiConfig.calendar.eventAfterAllRender();
                                 }
                                 commonsTools.hideDialogLoading();
 //                                commonsTools.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");   

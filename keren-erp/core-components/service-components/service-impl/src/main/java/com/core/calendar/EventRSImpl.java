@@ -123,12 +123,12 @@ public class EventRSImpl
     @Override
     public List<Event> getevents(HttpHeaders headers, long userid) {
         //To change body of generated methods, choose Tools | Templates.
-         Gson gson =new Gson();
-         
+         Gson gson =new Gson();         
         List ids = new ArrayList();
         if(headers.getRequestHeader("usersid")!=null){
             ids = gson.fromJson(headers.getRequestHeader("usersid").get(0),new TypeToken<List<Long>>(){}.getType());
-        }
+        }//end if(headers.getRequestHeader("usersid")!=null){
+        System.out.println(EventRSImpl.class.toString()+" ============================= userid = "+userid+" =================== users : "+ids);
         String requete = "SELECT DISTINCT c FROM Event c , IN(c.participants) p WHERE c.owner.id="+userid;
          String subquery = "(";
         int index = 0 ;
@@ -147,7 +147,7 @@ public class EventRSImpl
         }//end if(ids.size()>0)
         List<Event> datas = manager.getDao().getEntityManager().createQuery(requete).getResultList();
         List<Event> output = new ArrayList<Event>();
-//        System.out.println(EventRSImpl.class.toString()+" =========================== "+datas.size()+" === "+requete);
+        System.out.println(EventRSImpl.class.toString()+" =========================== "+datas.size()+" === "+requete);
         for(Event evt:datas){
             output.add(new Event(evt));
         }//end for(Event evt:datas){

@@ -77,6 +77,9 @@ public class UtilisateurManagerImpl
     @Override
     public List<Utilisateur> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
         //To change body of generated methods, choose Tools | Templates.
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addNotEq("state", "system");
+        predicats.addAll(container.getPredicats());
         List<Utilisateur> datas = super.filter(predicats, orders, properties, firstResult, maxResult); 
         List<Utilisateur> resultats = new ArrayList<Utilisateur>();
         if(datas!=null){

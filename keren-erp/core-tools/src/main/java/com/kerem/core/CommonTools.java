@@ -15,28 +15,35 @@ import com.core.views.FormRecord;
 import com.core.views.KabanRecord;
 import com.core.views.ReportRecord;
 import com.core.views.TreeRecord;
+import com.core.website.WebSiteComponent;
+import com.core.website.WebSiteModule;
 import com.kerem.genarated.Action;
 import com.kerem.genarated.Button;
 import com.kerem.genarated.Field;
 import com.kerem.genarated.Group;
 import com.kerem.genarated.Menu;
 import com.kerem.genarated.Menuitem;
+import com.kerem.genarated.Template;
+import com.kerem.genarated.Website;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaArray;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaGroup;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -257,6 +264,28 @@ public class CommonTools {
         record.setCode(view.getId());
         record.setScript(FileHelper.transformJaxBToScript(view));
         record.setTitre(view.getLabel());
+        return record;
+    }
+    
+    /**
+     * 
+     * @param entity
+     * @return 
+     */
+    public static WebSiteModule getWebSiteRecord(Website entity){
+        WebSiteModule record = new WebSiteModule();
+        record.setCode(entity.getId());
+        //traitement des templates
+        for(Template temp:entity.getTemplate()){
+            WebSiteComponent comp = new WebSiteComponent();
+            comp.setCode(temp.getId());comp.setEntity(temp.getEntityRef());
+            comp.setIndexPage(temp.isIndex());comp.setMethod(temp.getMethodRef());
+            comp.setScript(temp.getScript());comp.setType(temp.getType());
+            comp.setVar(temp.getVarRef());comp.setModele(temp.getModelRef());
+            Date date = new Date();
+            comp.setCompareid(date.getTime());comp.setCreateonfield(true);
+            record.getWebcomponents().add(comp);
+        }//end for(Template temp:entity.getTemplate()){       
         return record;
     }
     
@@ -485,6 +514,27 @@ public class CommonTools {
         return responseBuilder.build();
     }
     
+    /**
+     * 
+     * @param file
+     * @param filename
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public static String getTextStream(File file,String filename) throws FileNotFoundException, IOException{
+        String[] names = file.getName().split(".");
+        BufferedReader reader  = new BufferedReader(new FileReader(file));
+        StringBuffer buffer = new StringBuffer();
+        String ligne = null;
+        do{
+            ligne = reader.readLine();
+            if(ligne!=null){
+                buffer.append(ligne);
+            }//end if(ligne!=null){
+        }while(ligne!=null);
+        return buffer.toString().trim();
+    }
     /**
      * 
      * @param file

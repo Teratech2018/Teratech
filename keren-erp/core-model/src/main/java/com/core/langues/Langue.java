@@ -23,7 +23,7 @@ public class Langue extends BaseElement implements Serializable,Comparable<Langu
 
     @Predicate(label = "Nom",search = true)
     private String intitule ;
-    
+        
     @Predicate(label = "Actif" ,type = Boolean.class,search = false)
     private Boolean actif = Boolean.FALSE;
     

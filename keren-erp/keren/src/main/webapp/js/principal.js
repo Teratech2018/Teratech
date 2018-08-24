@@ -163,7 +163,7 @@ angular.module("mainApp")
 
                };
     $scope.calandarModule = { id:-1 , name:"calandar",label:"Agenda",selected:false,hasmenu:false,
-              action:{id:-1,name:"events" , label:"Utilisateurs",icon:"glyphicon glyphicon-user",entityName:"Utilisateur",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false}
+              action:{id:-1,name:"events" , label:"Evenement",icon:"glyphicon glyphicon-user",entityName:"Event",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false,viewMode:'form'}
 
    };
    /**
@@ -202,7 +202,7 @@ angular.module("mainApp")
                        ]},
                        {id:-5 , name:"sauvegarde_conf",label:"DBSAVE",icon:"glyphicon glyphicon-hdd",showmenu:true,
                            actions:[
-                              {id:-100,name:"progra_save" ,hide:false, label:"Configuration",icon:"glyphicon glyphicon-time",entityName:"Export",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore'},
+                              {id:-100,name:"progra_save" ,hide:false, label:"Configuration",icon:"glyphicon glyphicon-time",entityName:"Export",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',viewMode:'form'},
                               {id:-2,name:"export_bd" ,hide:false, label:"EXPORTBD",icon:"glyphicon glyphicon-save-file",entityName:"Export",moduleName:"kerencore",modal:true,securitylevel:0,model:'kerencore'}                          
                        ]}
                  ]
@@ -753,6 +753,30 @@ angular.module("mainApp")
      */
     $scope.getDefaultModule();
 
+/**
+            Reception du signal de changement de module
+          **/
+          $scope.$on("calandarActionItem" , function(event , args){
+                    $scope.currentModule = $scope.calandarModule;
+                    var entity = args.item;
+                    $scope.currentAction = args.action;
+                    var filter = args.restriction;
+                    $scope.enabledVerticalMenu = false;
+                    $scope.moduleValue = "others";
+                    $rootScope.$broadcast("currentModule" , {module:$scope.currentModule , verticalMenu:$scope.enabledVerticalMenu});
+                    //Notification du changement du module
+                     $rootScope.$broadcast("currentActionUpdate" ,{
+                        item:entity, action:$scope.currentAction , verticalMenu:$scope.enabledVerticalMenu,restriction:filter});   
+                    //Hide the calendar panel
+                    $scope.showCalendar = false ;
+                    //Hide the discussion
+                    $scope.showDiscussion = false;
+                    //Hide General
+                    $scope.hideOther = $scope.showCalendar || $scope.showDiscussion ;    
+                    $scope.principalscreen = false;
+                    console.log("principal.calandarActionItem =================== "+$scope.currentModule);
+                  
+          });
     //Hide Discussion login , calendar ,discussion ,others
     //Chargement des modules de l'utilisateur connecté;
 //    $scope.$on("user_modules" ,function(event ,args){
@@ -4654,7 +4678,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                        if($rootScope.globals.theme!==null&&$rootScope.globals.theme.report){
                                            content = $rootScope.globals.theme.report;
                                        }else{
-                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' >{{'Quitter' | translate}}</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
+                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a class='navbar-brand' href='#' ng-show='showreporttitle==true'>{{metaData.editTitle}} / {{suffixedittitle}}</a><a class='navbar-brand' href='#' ng-show='showreporttitle==false'>{{currentObject.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 30px;'> <button type='button'  class='btn btn-default btn-sm' ng-click='annulerAction()' >{{'Quitter' | translate}}</button> </div>  </div> </nav>   <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div id='report'>  </div> </div>";
                                        }//end if($rootScope.globals.theme!==null&&$rootScope.globals.theme.report){
                                    }else if(type==="dashboard"){ 
                                        if($rootScope.globals.theme!=null && $rootScope.globals.theme.tree){
@@ -9050,7 +9074,7 @@ $scope.gererChangementFichier3 = function(event,model){
         * Creation du memento pour 
         * @returns {undefined}
         */
-       $scope.createsession = function(){
+       $scope.createsession = function(){         
            var session = new Object();
            session.module = $scope.currentModule.name ;
            session.navigator = $scope.navigatorcontainer.getMementos() ;
@@ -11707,7 +11731,7 @@ $scope.gererChangementFichier3 = function(event,model){
                             $scope.showApplication = true;
                         }  //end if($scope.currentModule.name=='application')                        
                 }else if($scope.currentModule.hasmenu==false){
-                    alert("Vous avez cliquez sur un module sans menu ....");
+//                    alert("Vous avez cliquez sur un module sans menu ....");
                 }
                   
           });
@@ -12083,7 +12107,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     $scope.currentAction = args.action;
                     var template = args.template;
                     var index = args.index;
-    //                console.log("$scope.$on(currentActionUpdate , function(event , args) ===== "+);
+                    console.log("$scope.$on(currentActionUpdate , function(event , args) ===== "+angular.toJson($scope.currentModule));
                     $scope.enabledVerticalMenu = args.verticalMenu;
                     $scope.reset();
                     $scope.initAction(template,index , args.item,args.inner);

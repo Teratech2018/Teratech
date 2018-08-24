@@ -10,6 +10,7 @@ import com.kerem.core.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 /**
@@ -36,5 +37,36 @@ public class UploadFileRSImpl  implements UploadFileRS{
         return Response.noContent().build();
     }
 
+     @Override
+    public Response downloadTextFile(String filename) {
+       //To change body of generated methods, choose Tools | Templates.
+         try{
+                String resourceDir = FileHelper.getStaticDirectory()+File.separator+filename;
+                File file = new File(resourceDir);
+                if(file.exists()){
+                    return CommonTools.getText(file,file.getName());
+                }else{
+                    return Response.noContent().build();
+                }//end if(file.exists())
+        }catch(Exception ex){
+            throw new WebApplicationException(ex, Response.serverError().build());
+        }
+    }
+
+    @Override
+    public String getTextFileContaint(String filename) {
+        //To change body of generated methods, choose Tools | Templates.
+         try{
+                String resourceDir = FileHelper.getStaticDirectory()+File.separator+filename;
+                File file = new File(resourceDir);
+                if(file.exists()){
+                    return CommonTools.getTextStream(file,file.getName());
+                }else{
+                    return null;
+                }//end if(file.exists())
+        }catch(Exception ex){
+            throw new WebApplicationException(ex, Response.serverError().build());
+        }
+    }
     
 }

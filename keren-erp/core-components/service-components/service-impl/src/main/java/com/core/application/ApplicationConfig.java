@@ -62,6 +62,8 @@ public class ApplicationConfig extends Application {
         resources.add(com.core.views.KabanRecordRSImpl.class);
         resources.add(com.core.views.ReportRecordRSImpl.class);
         resources.add(com.core.views.TreeRecordRSImpl.class);
+        resources.add(com.core.website.WebSiteComponentRSImpl.class);
+        resources.add(com.core.website.WebSiteModuleRSImpl.class);
     }
     
 }

@@ -169,6 +169,16 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+        <element type="com.core.website.WebSiteModule"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.core.website.WebSiteComponent"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
    </elements>
     
 </model-config>

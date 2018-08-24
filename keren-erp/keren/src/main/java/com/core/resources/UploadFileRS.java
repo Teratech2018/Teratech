@@ -22,4 +22,14 @@ public interface UploadFileRS {
     @Produces("image/png")
     public Response downloadImageFileFree(@PathParam("filename") String filename);
     
+    @GET
+    @Path("text/{filename}")
+    @Produces("text/plain")
+    public Response downloadTextFile(@PathParam("filename") String filename);
+    
+    @GET
+    @Path("textstream/{filename}")
+    @Produces("text/plain")
+    public String getTextFileContaint(@PathParam("filename") String filename);
+    
 }

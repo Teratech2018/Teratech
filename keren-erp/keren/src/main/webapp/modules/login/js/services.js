@@ -153,6 +153,19 @@ angular.module('keren.core.login')
                                                , password:password ,authdata:authdata});
                             
                  },
+                 
+                setCredentialWithoutBroatcast:function(username , password){
+                     var authdata = Base64.encode(username + ':' + password);                     
+                     $rootScope.globals = {
+                         currentUser:{
+                             username:username,
+                             authdata:authdata                             
+                         }
+                     };
+                     //Set default auth header for http requests
+                     $http.defaults.headers.common['Authorization']='Basic '+authdata;                                  
+                            
+                 },
                  clearCredentials : function(){
                     $rootScope.globals={};
                     $cookieStore.remove('globals');

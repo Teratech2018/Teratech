@@ -228,6 +228,28 @@ public class Event extends BaseElement implements Serializable,Comparable<Event>
     public void setOwner(Utilisateur owner) {
         this.owner = owner;
     }
+
+    @Override
+    public String getDesignation() {
+        return title; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getModuleName() {
+        return "kerencore"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getListTitle() {
+        return "Evenements"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getEditTitle() {
+        return "Evenement"; //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
     @Override
     public int compareTo(Event o) {

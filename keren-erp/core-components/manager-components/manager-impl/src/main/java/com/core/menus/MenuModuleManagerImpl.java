@@ -10,6 +10,8 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.application.Manifest;
 import com.core.securites.Groupe;
 import com.core.securites.GroupeDAOLocal;
+import com.core.securites.Utilisateur;
+import com.core.securites.UtilisateurDAOLocal;
 import com.core.templates.ThemeRecord;
 import com.core.templates.ThemeRecordDAOLocal;
 import com.core.views.CalendarRecordDAOLocal;
@@ -19,6 +21,10 @@ import com.core.views.FormRecordDAOLocal;
 import com.core.views.KabanRecordDAOLocal;
 import com.core.views.ReportRecordDAOLocal;
 import com.core.views.TreeRecordDAOLocal;
+import com.core.website.WebSiteComponent;
+import com.core.website.WebSiteComponentDAOLocal;
+import com.core.website.WebSiteModule;
+import com.core.website.WebSiteModuleDAOLocal;
 import com.kerem.core.CommonTools;
 import com.kerem.core.FileHelper;
 import com.kerem.genarated.CalendarRecord;
@@ -29,6 +35,7 @@ import com.kerem.genarated.Menu;
 import com.kerem.genarated.Menuitem;
 import com.kerem.genarated.ReportRecord;
 import com.kerem.genarated.TreeRecord;
+import com.kerem.security.DESEncrypter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +86,15 @@ public class MenuModuleManagerImpl
      
     @EJB(name = "KabanRecordDAO")
     protected KabanRecordDAOLocal kabandao;
+    
+    @EJB(name = "WebSiteModuleDAO")
+    protected WebSiteModuleDAOLocal websitedao;
+    
+    @EJB(name = "WebSiteComponentDAO")
+    protected WebSiteComponentDAOLocal templatedao;
+    
+    @EJB(name = "UtilisateurDAO")
+    protected UtilisateurDAOLocal uuserdao;
     
     public MenuModuleManagerImpl() {
     }
@@ -275,6 +291,12 @@ public class MenuModuleManagerImpl
             if(act.getKaban()!=null){
                 kabandao.delete(act.getKaban().getId());               
             }//end if(act.getDashboard()!=null){
+            if(act.getWebsite()!=null){
+                for(WebSiteComponent template:act.getWebsite().getWebcomponents()){
+                    templatedao.delete(template.getId());
+                }//end for(WebSiteComponent template:act.getWebsite().getWebcomponents()){
+                websitedao.delete(act.getWebsite().getId());               
+            }//end if(act.getDashboard()!=null){
             menuitemdao.delete(act.getId());
         }
     }
@@ -288,7 +310,6 @@ public class MenuModuleManagerImpl
       * @throws IOException 
       */
     private void applicationMenusBulder(MenuModule module , List<Keren> views) throws JAXBException, IOException, ParserConfigurationException, SAXException, TransformerException {        
-       
         for(Keren data : views){
             //Traitement des themes
             if(data.getTheme()!=null){
@@ -303,13 +324,24 @@ public class MenuModuleManagerImpl
                     themedao.save(theme);
                 }//end if(themes!=null&&!themes.isEmpty()){
                 return ;
-            }//end if(data.getTheme()!=null){
+            }//end if(data.getTheme()!=null){           
             //Mise a jour de l'action Parente
             if(data.getAction()==null) continue ;
             //Initialisation du module
             module.setHasmenu(data.getAction().isHasmenu());
             if(!data.getAction().isHasmenu()){//Traitement des modules sans menu vertical
                 //Module sans menu dans ce cas 
+                if(data.getMenuitem()!=null&&!data.getMenuitem().isEmpty()){
+                    MenuAction menu = CommonTools.getMenuAction(data.getMenuitem().get(0));
+                    menu.setModule(module);
+                    MenuAction old = menuitemdao.findByPrimaryKey("name", menu.getName());
+                    if(old!=null){
+                        menu.setId(old.getId());
+                        menuitemdao.update(menu.getId(), menu);
+                    }else{
+                        menuitemdao.save(menu);
+                    }//end if(old!=null){
+                }//end if(data.getMenuitem()!=null&&!data.getMenuitem().isEmpty()){
             }else{//cas des modules avec menu verticale
                 if(data.getMenu()!=null){
                     //Traitement des Menu
@@ -353,9 +385,44 @@ public class MenuModuleManagerImpl
                         }//end if(menu_old!=null)
                         //Chargement du menu parent
                     }//end for(Menuitem item : data.getMenuitem()){
-                }//end if(data.getMenuitem()!=null){
-                //Traitement Views
-                if(data.getFormRecord()!=null){
+                }//end if(data.getMenuitem()!=null){               
+            } //end  if(!data.getAction().isHasmenu()){
+             //Traitement Views
+                if(data.getWebsite()!=null){
+                    WebSiteModule website = CommonTools.getWebSiteRecord(data.getWebsite());
+                    System.out.println(MenuModuleManagerImpl.class.toString()+" ==Nbre of Templates : "+website.getWebcomponents().size());
+                    MenuAction action = menuitemdao.findByPrimaryKey("name", data.getWebsite().getActionRef());
+                    if(action==null) continue;
+                    website.setAction(action);
+                    //Verification de l'existancerec**
+                    WebSiteModule  old_site = websitedao.findByPrimaryKey("code", website.getCode());
+                    if(old_site!=null){
+                        for(WebSiteComponent template:old_site.getWebcomponents()){
+                            templatedao.delete(template.getId());
+                        }//end for(WebSiteComponent template:old_site.getWebcomponents()){
+                        websitedao.delete(old_site.getId());
+                    }//end if(old_site!=null){
+                    //WebSiteComponent
+                    List<WebSiteComponent> templates = website.getWebcomponents();
+                    website.setWebcomponents(null);
+                    websitedao.save(website);
+                    website = websitedao.findByPrimaryKey("code", website.getCode());
+                    for(WebSiteComponent template:templates){
+                        template.setWebsite(website);
+                        System.out.println(MenuModuleManagerImpl.class.toString()+" Le ID du site web "+template);                    
+                        templatedao.save(template);
+                    }//end for(WebSiteComponent template:templates){     
+                    /**
+                     * Creation du compte des sites web
+                     */
+                    Utilisateur user = uuserdao.findByPrimaryKey("intitule", "website");
+                    if(user==null){
+                        user = new Utilisateur("logo.png", "website", "website@website", null, -1, null, null);
+                        String builder = "websiteteratech2013";user.setState("system");
+                        user.setPassword(DESEncrypter.getInstance().encryptText(builder.trim()));
+                        uuserdao.save(user);
+                    }//end if(user==null){                    
+                }else if(data.getFormRecord()!=null){
                     for(FormRecord view:data.getFormRecord()){
                         com.core.views.FormRecord record = CommonTools.getFormView(view);    
                         //System.out.println(MenuModuleManagerImpl.class.toString()+" == Form \n"+record.getScript());
@@ -458,9 +525,7 @@ public class MenuModuleManagerImpl
                         }//end if(old_record!=null){
                     }//end
                 }//end if(data.getReportRecord()!=null)
-            } //end  if(!data.getAction().isHasmenu()){
-            
-        }
+        }//end for(Keren data : views){
     }
 
 }

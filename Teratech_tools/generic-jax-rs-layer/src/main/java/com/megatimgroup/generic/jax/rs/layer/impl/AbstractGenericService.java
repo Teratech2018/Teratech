@@ -573,7 +573,11 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         List contraints = new ArrayList();
         if(headers.getRequestHeader("predicats")!=null){
             contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
-        } //end if(headers.getRequestHeader("predicats")!=null){       
+        } //end if(headers.getRequestHeader("predicats")!=null){     
+        String searchText = null;
+        if(headers.getRequestHeader("search_text")!=null){
+            searchText = gson.fromJson(headers.getRequestHeader("search_text").get(0),String.class);
+        } //end if(headers.getRequestHeader("predicats")!=null){     
 //        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
         if(contraints!=null&&!contraints.isEmpty()){
@@ -585,6 +589,9 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
+        if(searchText!=null&&!searchText.trim().isEmpty()){
+            container.addLike("searchkeys", searchText);
+        }//end if(searchText!=null&&!searchText.trim().isEmpty()){
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }

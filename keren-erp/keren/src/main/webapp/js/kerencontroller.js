@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-angular.module("keren.core",['keren.core.login','mainApp','keren.core.commons']);
+angular.module("keren.core",['keren.core.login','keren.core.website','mainApp','keren.core.commons']);
 
 angular.module("keren.core")
         .controller("kerenCtrl" ,function($scope,$rootScope,$http,$location,$interval,commonsTools){
@@ -51,6 +51,19 @@ angular.module("keren.core")
                    if(angular.isDefined($rootScope.globals.discussionworker)){
                        $interval.cancel($rootScope.globals.discussionworker);
                        $rootScope.globals.discussionworker = undefined;
-                   }  
+                   }//end if(angular.isDefined($rootScope.globals.discussionworker))  
                 };
+                
+                $scope.init = function(){
+                    $scope.level = "login";
+                    var path = $location.path();
+                    var paths = path.split('/');
+                    if(paths.length>1 && paths[1]==='website'){
+                        $scope.level = paths[1];
+                        $rootScope.website = paths[2];
+                    }//end if(paths.length>1 && paths[1]==='website'){
+                    console.log("kerencontroller.init ================== "+angular.toJson(paths));
+                };
+                $scope.init();
         });
+

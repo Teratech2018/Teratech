@@ -12,6 +12,7 @@ import com.core.views.FormRecord;
 import com.core.views.KabanRecord;
 import com.core.views.ReportRecord;
 import com.core.views.TreeRecord;
+import com.core.website.WebSiteModule;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,6 +102,9 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
      @OneToOne(mappedBy = "action",fetch = FetchType.LAZY)
      protected KabanRecord kaban;
      
+     @OneToOne(mappedBy = "action",fetch = FetchType.LAZY)
+     protected WebSiteModule website;
+     
      @OneToMany(fetch = FetchType.LAZY,mappedBy = "action")
      protected List<ReportRecord> records = new ArrayList<ReportRecord>();
      
@@ -160,6 +164,9 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
         }
         if(menu.kaban!=null){
             this.kaban = new KabanRecord(menu.kaban);
+        }
+        if(menu.website!=null){
+            this.website = new WebSiteModule(menu.website);
         }
     }
     /**
@@ -258,6 +265,14 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
 
     public void setKaban(KabanRecord kaban) {
         this.kaban = kaban;
+    }
+
+    public WebSiteModule getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(WebSiteModule website) {
+        this.website = website;
     }
     
     

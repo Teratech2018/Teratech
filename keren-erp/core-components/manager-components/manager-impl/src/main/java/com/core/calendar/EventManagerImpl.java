@@ -5,15 +5,19 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
+import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.discussions.SMessage;
 import com.core.discussions.SMessageDAOLocal;
 import com.core.securites.Utilisateur;
+import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.TimedObject;
@@ -75,6 +79,22 @@ public class EventManagerImpl
        //dao.getEntityManager().clear();
        return results;
     }
+
+    @Override
+    public List<Event> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
+        //To change body of generated methods, choose Tools | Templates.
+        List<Event> datas = super.filter(predicats, orders, properties, firstResult, maxResult); 
+        List<Event> results = new ArrayList<Event>();
+        if(datas!=null){
+            for(Event ev : datas){
+                results.add(new Event(ev));
+            }
+        }
+       //dao.getEntityManager().clear();
+       return results;
+    }
+    
+    
 
     @Override
     public void ejbTimeout(Timer timer) {

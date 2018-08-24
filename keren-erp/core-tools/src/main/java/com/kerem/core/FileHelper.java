@@ -365,65 +365,13 @@ public class FileHelper {
         output = writer.toString();
         return output;
     }
-//     /**
-//      * 
-//      * @param view
-//     * @param type:form,tree,calandar,report;
-//      * @return
-//      * @throws JAXBException 
-//      */
-//     public static String transformJaxBToScript(Theme view ,String type) throws JAXBException{
-//        StringWriter writer = new StringWriter();
-//        String output = "";
-//        JAXBContext ctx = null;
-//        if(type.trim().equalsIgnoreCase("login")&&view.getLogintemplate()!=null){
-//            ctx = JAXBContext.newInstance(Logintemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("discussion")&&view.getDiscussiontemplate()!=null){
-//            ctx = JAXBContext.newInstance(Discussiontemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("form")&&view.getFormtemplate()!=null){
-//            ctx = JAXBContext.newInstance(Formtemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("tree")&&view.getTreetemplate()!=null){
-//            ctx = JAXBContext.newInstance(Treetemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("report")&&view.getReporttemplate()!=null){
-//            ctx = JAXBContext.newInstance(Reporttemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("dashboard")&&view.getDashboardtemplate()!=null){
-//            ctx = JAXBContext.newInstance(Dashboardtemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("calandar")&&view.getCalendartemplate()!=null){
-//            ctx = JAXBContext.newInstance(Calendartemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("import")&&view.getImporttemplate()!=null){
-//            ctx = JAXBContext.newInstance(Importtemplate.class);
-//        }else if(type.trim().equalsIgnoreCase("export")&&view.getExporttemplate()!=null){
-//            ctx = JAXBContext.newInstance(Exporttemplate.class);
-//        }else if(view.getPrincipal()!=null){
-//            ctx = JAXBContext.newInstance(Principal.class);
-//        }//end if(type.trim().equalsIgnoreCase("login")){
-//        Marshaller marshaller = ctx.createMarshaller();
-//        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);        
-//        if(type.trim().equalsIgnoreCase("login")&&view.getLogintemplate()!=null){
-//            marshaller.marshal(view.getLogintemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("discussion")&&view.getDiscussiontemplate()!=null){
-//            marshaller.marshal(view.getDiscussiontemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("form")&&view.getFormtemplate()!=null){
-//            marshaller.marshal(view.getFormtemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("tree")&&view.getTreetemplate()!=null){
-//            marshaller.marshal(view.getTreetemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("report")&&view.getReporttemplate()!=null){
-//            marshaller.marshal(view.getReporttemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("dashboard")&&view.getDashboardtemplate()!=null){
-//            marshaller.marshal(view.getDashboardtemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("calandar")&&view.getCalendartemplate()!=null){
-//            marshaller.marshal(view.getCalendartemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("import")&&view.getImporttemplate()!=null){
-//            marshaller.marshal(view.getImporttemplate(),writer);
-//        }else if(type.trim().equalsIgnoreCase("export")&&view.getExporttemplate()!=null){
-//            marshaller.marshal(view.getExporttemplate(),writer);
-//        }else if(view.getPrincipal()!=null){
-//            marshaller.marshal(view.getPrincipal(),writer);
-//        }//end if(type.trim().equalsIgnoreCase("login")){
-//        output = writer.toString();
-//        return output;
-//    }
-     
+
+     /**
+      * 
+      * @param view
+      * @return
+      * @throws JAXBException 
+      */
      public static String transformJaxBToScript(CalendarRecord view) throws JAXBException{
         StringWriter writer = new StringWriter();
         String output = "";
