@@ -11958,6 +11958,11 @@ $scope.gererChangementFichier3 = function(event,model){
                                     
                                     return ;
                     }//end if(mode.length>0 && mode[0]=='dashboard')
+                    //Traitement des actions de type website
+                    if(mode && mode.length>0 && mode[0]=='website'){
+                        console.log("Vous avez cliquez sur une action de type Web Site");
+                        return ;
+                    }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
                     //Traitement des action de type report
                     if($scope.currentAction.report!=null && $scope.currentAction.report!=""){
 //                        if($scope.windowType!='list' && !angular.isDefined(index)){
@@ -12107,7 +12112,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     $scope.currentAction = args.action;
                     var template = args.template;
                     var index = args.index;
-                    console.log("$scope.$on(currentActionUpdate , function(event , args) ===== "+angular.toJson($scope.currentModule));
+//                    console.log("$scope.$on(currentActionUpdate , function(event , args) ===== "+angular.toJson($scope.currentModule));
                     $scope.enabledVerticalMenu = args.verticalMenu;
                     $scope.reset();
                     $scope.initAction(template,index , args.item,args.inner);

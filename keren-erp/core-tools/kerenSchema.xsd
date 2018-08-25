@@ -366,7 +366,8 @@
                 <xs:element ref="tns:template"   minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>    
             <xs:attribute name="id"  type="xs:string" />
-            <xs:attribute name="action_ref" type="xs:string" />                          
+            <xs:attribute name="action_ref" type="xs:string" />
+            <xs:attribute name="categorie" type="xs:string" default="web_site" />                          
         </xs:complexType>    
     </xs:element>
 </xs:schema>

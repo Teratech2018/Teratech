@@ -86,7 +86,8 @@ angular.module('keren.core.website')
              $scope.username = null;
              //Cache des données du site web
              $scope.website = new Object();
-             
+             //Web Element cache
+             $scope.javascripts = new Array();
              $scope.login = function(){
                     //console.log("Authentication Login methode === "+$scope.username+" === "+$scope.password);
                      if(angular.isDefined($rootScope.globals)
@@ -143,20 +144,25 @@ angular.module('keren.core.website')
                            item.replaceWith(linkElem);
                        }else if(type=='javascript'){
                            var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
-                           var scriptElem = document.createElement('script');
-                           scriptElem.setAttribute('src',url);
-                           item.replaceWith(scriptElem);
+                           $('<script />', { type : 'text/javascript', src : url}).appendTo('body');
+                           $scope.javascripts.push(url);
+//                           var scriptElem = document.createElement('script');
+//                           scriptElem.setAttribute('src',url);
+                           item.remove();
                        }//end if(type=='css'){
                    }//end for(var i=0; i<items.length;i++){
-//                   console.log("website.controller.parseHTML ========================= template : "+angular.toJson(template))  
-                    var compileFn = $compile(container);
-                    compileFn($scope);
+                   angular.bootstrap(container, ['keren.core.website']);                   
+//                   var compileFn = $compile(container);
+//                    compileFn($scope);
                     var items = $(document).find("div");
                     for(var i=0; i<items.length;i++){ 
                          if(items.eq(i).attr("id")==id){
-                             items.eq(i).replaceWith(container);                      
+                             items.eq(i).replaceWith(container);                             
+                             break;
                         }//end if(items.eq(i).attr("id")=="detail-panel-body"){  
                     }//end for(var i=0; i<items.length;i++){ 
+                    $rootScope.$broadcast("websiteready" , {currentuser:$rootScope.globals.currentUser});
+//                    console.log("website.controller.parseHTML ========================= template : "+angular.toJson($rootScope.globals.currentUser));  
                };//end $scope.parseHTML = function(template){
                
                /**

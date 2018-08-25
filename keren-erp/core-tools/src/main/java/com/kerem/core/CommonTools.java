@@ -275,6 +275,7 @@ public class CommonTools {
     public static WebSiteModule getWebSiteRecord(Website entity){
         WebSiteModule record = new WebSiteModule();
         record.setCode(entity.getId());
+        record.setCategorie(entity.getCategorie());
         //traitement des templates
         for(Template temp:entity.getTemplate()){
             WebSiteComponent comp = new WebSiteComponent();

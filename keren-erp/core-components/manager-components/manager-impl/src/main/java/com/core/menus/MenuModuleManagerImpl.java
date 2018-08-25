@@ -422,7 +422,8 @@ public class MenuModuleManagerImpl
                         user.setPassword(DESEncrypter.getInstance().encryptText(builder.trim()));
                         uuserdao.save(user);
                     }//end if(user==null){                    
-                }else if(data.getFormRecord()!=null){
+                }//end if(data.getWebsite()!=null){
+                if(data.getFormRecord()!=null){
                     for(FormRecord view:data.getFormRecord()){
                         com.core.views.FormRecord record = CommonTools.getFormView(view);    
                         //System.out.println(MenuModuleManagerImpl.class.toString()+" == Form \n"+record.getScript());

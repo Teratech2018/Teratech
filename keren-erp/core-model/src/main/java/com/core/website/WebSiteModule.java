@@ -11,7 +11,6 @@ import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +30,13 @@ public class WebSiteModule extends BaseElement implements Serializable,Comparabl
     @Column(unique = true)
     private String code ;
    
+    /**
+     * Categorie of Web Module there two categorie
+     * website: for web site application
+     * application:For application 
+     */
+    private String categorie ;
+    
     @Column(name = "iden001")
     private String usercompte;
      
@@ -80,6 +86,7 @@ public class WebSiteModule extends BaseElement implements Serializable,Comparabl
         this.code = entity.code;
         this.usercompte = entity.usercompte;
         this.userpassword = entity.userpassword;
+        this.categorie = entity.categorie;
 //        if(entity.action!=null){
 //            this.action = new MenuAction(entity.action);
 //        }
@@ -124,6 +131,14 @@ public class WebSiteModule extends BaseElement implements Serializable,Comparabl
 
     public void setUserpassword(String userpassword) {
         this.userpassword = userpassword;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
     }
     
     
