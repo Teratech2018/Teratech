@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="rh_paie" />	 
+	 <menu id="rh_paie_employe" label="Employés" parent="rh_paie" gyphycon="glyphicon glyphicon-user"/>
+	 <menuitem id="rh_paie_1" label="Employé" parent_ref="rh_paie_employe" entity_ref="Employe" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-user" modal="false" />
+	 <menuitem id="rh_paie_1_1" label="Contrats de Travail" parent_ref="rh_paie_employe" entity_ref="ContratTravail" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-file" modal="false" />
+	 <menu id="rh_paie_avance" label="Avances et rembousements" parent="rh_paie" gyphycon="glyphicon glyphicon-modal-window"/>
+	 <menuitem id="rh_paie_avan_1" label="Avances de salaire" parent_ref="rh_paie_avance" entity_ref="AvanceSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-hand-right" modal="false" />
+	 <menuitem id="rh_paie_avan_2" label="Remboursements avances" parent_ref="rh_paie_avance" entity_ref="RemboursementAvance" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-hand-left" modal="false" />
+	 <menu id="rh_paie_pret" label="Prêts et rembousements" parent="rh_paie" gyphycon="glyphicon glyphicon-link"/>
+	 <menuitem id="rh_paie_pret_1" label="Demandes de Prêt" parent_ref="rh_paie_pret" entity_ref="DemandePret" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-hand-right" modal="false" />
+	 <menuitem id="rh_paie_pret_2" label="Remboursements de Prêts" parent_ref="rh_paie_pret" entity_ref="RemboursementPret" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-hand-left" modal="false" />
+	 <menuitem id="rh_paie_pret_3" label="Catégorie de Prêt" parent_ref="rh_paie_pret" entity_ref="CategoriePret" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_paie_acomp" label="Acomptes et Rappels" parent="rh_paie" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="rh_paie_acomp_1" label="Acomptes de salaire" parent_ref="rh_paie_acomp" entity_ref="Acompte" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_acomp_2" label="Rappels de salaire" parent_ref="rh_paie_acomp" entity_ref="Rappel" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_paie_salaire" label="Administration de la paie" parent="rh_paie" gyphycon="glyphicon glyphicon-folder-open"/>
+	 <menuitem id="rh_paie_2_1" label="Eléments Salaires" parent_ref="rh_paie_salaire" entity_ref="ElementSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-unchecked" modal="false" />
+	 <menuitem id="rh_paie_2" label="Ouvrir une periode" parent_ref="rh_paie_salaire" entity_ref="PeriodePaieOpen" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true" />
+	 <menuitem id="rh_paie_4" label="Préparation des salaires" parent_ref="rh_paie_salaire" entity_ref="PrepaSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true"  link="rh_paie_5_2"/>
+	 <menuitem id="rh_paie_5_1" label="Traitement des salaires" parent_ref="rh_paie_salaire" entity_ref="TraitSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="true" link="rh_paie_5_2"/>
+	 <menuitem id="rh_paie_5_2" label="Salaires" parent_ref="rh_paie_salaire"  entity_ref="BulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
+	  <reportRecord  id="rh_paie_rapport_all" label="Generer les Bulletin" action_ref="rh_paie_5_2"  extern="true">
+	      <search entity="ViewBulletinPaie" module="kerenpaie" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 <menuitem id="rh_paie_6" label="Validation des salaires" parent_ref="rh_paie_salaire" entity_ref="ValiderSalaire" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-edit" modal="true" />
+	 <reportRecord  id="rhpaie_brouillard01" label="Brouillard des salaires" action_ref="rh_paie_5_2"  extern="true">
+	      <search entity="BrouillardSalaire" module="kerenpaie" method="brouillard">		    		 
+		  </search>	     
+	 </reportRecord>
+	 <menuitem id="rh_paie_6_1" label="Transfert Comptabilité" parent_ref="rh_paie_salaire" entity_ref="ValiderSalaire" model_ref="kerenpaie" gyphycon="	glyphicon glyphicon-download-alt" modal="true" />
+	 <menuitem id="rh_paie_3" label="Fermer une periode" parent_ref="rh_paie_salaire" entity_ref="PeriodePaieClose" model_ref="kerenpaie" gyphycon="icon icon-envelope" modal="true" />
+	 <menu id="rh_paie_element" label="Elements de salaire" parent="rh_paie" gyphycon="glyphicon glyphicon-scale"/>
+	 <menuitem id="rh_paie_9" label="Grille de salaire" parent_ref="rh_paie_element" entity_ref="Convension" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_9_1" label="Indices de solde" parent_ref="rh_paie_element" entity_ref="IndiceSolde" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_10" label="Profils de paie" parent_ref="rh_paie_element" entity_ref="ProfilPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_11" label="Rubriques de paie" parent_ref="rh_paie_element" entity_ref="Rubrique" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_12" label="Variables de paie" parent_ref="rh_paie_element" entity_ref="Variable" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_13" label=" Parametrages avancés" parent_ref="rh_paie_element" entity_ref="ParametreAvance" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-cog" modal="false" />
+	 <menu id="rh_paie_param" label=" Parametrage de la paie" parent="rh_paie" gyphycon="icon icon-shopping-cart"/>
+	 <menuitem id="rh_paie_14" label="Dossier de paie" parent_ref="rh_paie_param" entity_ref="Societe" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-book" modal="false" />
+	 <menuitem id="rh_paie_15" label="Exercices" parent_ref="rh_paie_param" entity_ref="ExerciceComptable" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-calendar" modal="false" />
+	 <menuitem id="rh_paie_16" label="Periodes " parent_ref="rh_paie_param" entity_ref="PeriodePaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-calendar" modal="false" />
+	 <menuitem id="rh_paie_17" label="Trimestres" parent_ref="rh_paie_param" entity_ref="Trimestre" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-calendar" modal="false" />
+	 
+	 <menu id="rh_paie_rapport" label="Rapports" parent="rh_paie" gyphycon="glyphicon glyphicon-eye-open"/>
+	 <menuitem id="rh_paie_rapport_0" label="Bulletin de Paie" parent_ref="rh_paie_rapport" entity_ref="BPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-list-alt" modal="true" />
+	 <menuitem id="rh_paie_rapport_1" label="Livre de Paie" parent_ref="rh_paie_rapport" entity_ref="LivrePaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-list-alt" modal="true" />
+	 <menuitem id="rh_paie_rapport_2" label="Dipe " parent_ref="rh_paie_rapport" entity_ref="ViewBulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-book" modal="true" />
+	 <menuitem id="rh_paie_rapport_3" label="Generer le Dipe Magnetique" parent_ref="rh_paie_rapport" entity_ref="ViewDipePaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-qrcode" modal="true" />
+	 <menuitem id="rh_paie_rapport_4" label="Brouillard de paie" parent_ref="rh_paie_rapport" entity_ref="ViewBulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-list-alt" modal="true" />
+	 <menuitem id="rh_paie_rapport_5" label="Etat des cotisations" parent_ref="rh_paie_rapport" entity_ref="ViewBulletinPaie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-list-alt" modal="true" />
+	   <reportRecord  id="rh_paie_rapport_EDT" label="Generer les Bulletin" action_ref="rh_paie_rapport_0"  extern="true">
+	      <search entity="ViewBulletinPaie" module="kerenpaie" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	 <menu id="rh_paie_compta" label="Comptabilité" parent="rh_paie" gyphycon="glyphicon glyphicon-retweet"/>
+	 <menuitem id="rh_paie_18" label="Plan comptable" parent_ref="rh_paie_compta" entity_ref="Compte" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_19" label="Plan Analytique" parent_ref="rh_paie_compta" entity_ref="CompteAnalytique" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_20" label="Taxes" parent_ref="rh_paie_compta" entity_ref="Taxe" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="rh_paie_config" label="Configurations" parent="rh_paie" gyphycon="icon icon-wrench"/>
+	 <menuitem id="rh_paie_21" label="Structure" parent_ref="rh_paie_config" entity_ref="Societe" model_ref="kerenpaie" gyphycon=" icon-home" modal="false" />
+	 <menuitem id="rh_paie_21_1" label="Syndicat" parent_ref="rh_paie_config" entity_ref="Syndicat" model_ref="kerenpaie" gyphycon="icon icon-group" modal="false" />
+	 <menuitem id="rh_paie_22" label="Type Contract" parent_ref="rh_paie_config" entity_ref="TypeContrat" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-file" modal="false" />
+	 <menuitem id="rh_paie_22_1" label="Type Caisse" parent_ref="rh_paie_config" entity_ref="TypeCaisse" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_23" label="Catégorie" parent_ref="rh_paie_config" entity_ref="Categorie" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_24" label="Echélon" parent_ref="rh_paie_config" entity_ref="Echelon" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_25" label="Structure entreprise" parent_ref="rh_paie_config" entity_ref="DepartementSoc" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_26" label="Organigramme" parent_ref="rh_paie_config" entity_ref="DConge" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_27" label="Département administatif" parent_ref="rh_paie_config" entity_ref="Departement" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_28" label="Postes" parent_ref="rh_paie_config" entity_ref="Poste" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_29" label="Fonctions" parent_ref="rh_paie_config" entity_ref="Fonction" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_30" label="niveau d'etude" parent_ref="rh_paie_config" entity_ref="NiveauEtude" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_31" label="Spécialités" parent_ref="rh_paie_config" entity_ref="Specialite" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_32" label="Diplômes" parent_ref="rh_paie_config" entity_ref="Diplome" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_33" label="Regions" parent_ref="rh_paie_config" entity_ref="Region" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_34" label="Departement" parent_ref="rh_paie_config" entity_ref="DepartementSoc" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="rh_paie_35" label="Pays" parent_ref="rh_paie_config" entity_ref="Pays" model_ref="kerenpaie" gyphycon="glyphicon glyphicon-th" modal="false" />
+</keren>

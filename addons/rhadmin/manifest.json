@@ -1,0 +1,19 @@
+{
+	'name':'Administration du personels',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Mise en place du referentiel des resources humaines',
+	'sequence':10,
+	'description':'',
+	'category':'Accounting',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\rhadmin_menus.xml'],
+	'templates':[],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

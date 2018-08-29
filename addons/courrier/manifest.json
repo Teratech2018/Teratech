@@ -1,0 +1,19 @@
+{
+	'name':'Gestion du courrier',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Gestion du courrier',
+	'sequence':10,
+	'description':'',
+	'category':'Courrier',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\courrier_menus.xml'],
+	'templates':[],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

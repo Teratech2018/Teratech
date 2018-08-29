@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="teratech_achat" />
+	 <menu id="teratech_achat_besion" label="Expression des besions" parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_achat_bes_1" label="Demandes d'achat" parent_ref="teratech_achat_besion" entity_ref="ExprBesion" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_achat_operation" label="Opérations d'achat" parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_achat_ope_1" label="Appels d'offres" parent_ref="teratech_achat_operation" entity_ref="AppelOffre" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_ope_2" label="Demande de prix" parent_ref="teratech_achat_operation" entity_ref="DemandePrix" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_ope_5" label="Bon de commande" parent_ref="teratech_achat_operation" entity_ref="BonCommande" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_ope_6" label="Bon de reception" parent_ref="teratech_achat_operation" entity_ref="BonReception" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_achat_facturation" label="Contrôle facturation" parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_achat_fac_1" label="Sur facture brouillon" parent_ref="teratech_achat_facturation" entity_ref="Facture" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_fac_2" label="Sur ligne de commande" parent_ref="teratech_achat_facturation" entity_ref="BonCommande" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_achat_structure" label="Structures." parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_achat_str_1" label="Articles." parent_ref="teratech_achat_structure" entity_ref="Article" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_str_2" label="Familles. Articles" parent_ref="teratech_achat_structure" entity_ref="FamilleArticle" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_achat_comptabilite" label="Comptabilité.." parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_achat_com_1" label="Plan. comptable." parent_ref="teratech_achat_comptabilite" entity_ref="Compte" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_com_2" label="Fournisseur." parent_ref="teratech_achat_comptabilite" entity_ref="Tier" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_com_3" label="Plan Analytique.." parent_ref="teratech_achat_comptabilite" entity_ref="CompteAnalytique" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_com_4" label="Journal comptable." parent_ref="teratech_achat_comptabilite" entity_ref="JournalComptable" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_com_5" label="Taxes.." parent_ref="teratech_achat_comptabilite" entity_ref="Taxe" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_achat_configuration" label="Configuration." parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_achat_conf_1" label="Entrepôts." parent_ref="teratech_achat_configuration" entity_ref="Entrepot" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_2" label="Emplacements." parent_ref="teratech_achat_configuration" entity_ref="Emplacement" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_3" label="Unité de gestion." parent_ref="teratech_achat_configuration" entity_ref="UniteGestion" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_4" label="Unité d'achat." parent_ref="teratech_achat_configuration" entity_ref="UniteAchat" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_5" label="Catégorie de produit." parent_ref="teratech_achat_configuration" entity_ref="CategorieProduit" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_6" label="Régions .." parent_ref="teratech_achat_configuration" entity_ref="Region" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_7" label="Pays.." parent_ref="teratech_achat_configuration" entity_ref="Pays" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_8" label="Civilité .." parent_ref="teratech_achat_configuration" entity_ref="Civilite" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+</keren>

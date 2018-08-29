@@ -813,7 +813,7 @@ angular.module("mainApp")
                 if(action.viewMode){
                     mode = action.viewMode.split(",");
                 }//end if($scope.currentAction.viewMode) 
-                console.log("$scope.buttonAction ======================== == == mode : "+mode+"===== "+(mode[0]=='website'));   
+//                console.log("$scope.buttonAction ======================== == == mode : "+mode+"===== "+(mode[0]=='website'));   
                 //Traitement des actions de type website
                 if(mode && mode.length>0 && mode[0]=='website'){
                     $rootScope.$broadcast("website" , {website:action.model,currentuser:$rootScope.globals.currentUser});

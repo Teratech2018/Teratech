@@ -1,0 +1,19 @@
+{
+	'name':'METAL',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'METAL THEME',
+	'sequence':10,
+	'description':'',
+	'category':'theme',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\layout.xml'],
+	'templates':[],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':False,
+	'auto_install' : True
+}

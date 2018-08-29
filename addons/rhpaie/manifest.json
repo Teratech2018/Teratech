@@ -1,0 +1,19 @@
+{
+	'name':'Gestion de la paie',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Calcul de la paie',
+	'sequence':10,
+	'description':'',
+	'category':'Accounting',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\rhpaie_menus.xml'],
+	'templates':[],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

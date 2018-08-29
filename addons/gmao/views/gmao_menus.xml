@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="teratech_gmao" />
+	 <menu id="teratech_gmao_cur" label="Interventions" parent="teratech_gmao" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_gmao_cur_1" label="Demande d'intervention" parent_ref="teratech_gmao_cur" entity_ref="DemandeIntervention" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_cur_1_1" label="Traitement D.I" parent_ref="teratech_gmao_cur" entity_ref="TraitementDI" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_cur_2" label="Bon de Travail" parent_ref="teratech_gmao_cur" entity_ref="BonTravail" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_cur_3" label="Affectation des B.T" parent_ref="teratech_gmao_cur" entity_ref="AffectationBonTravail" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_cur_4" label="Activités sur B.T" parent_ref="teratech_gmao_cur" entity_ref="ActiviteBT" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_cur_5" label="Activités hors B.T" parent_ref="teratech_gmao_cur" entity_ref="ActiviteHBT" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_cur_6" label="Arbre de défaillance" parent_ref="teratech_gmao_cur" entity_ref="BonReception" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_gmao_prev" label="Préventif" parent="teratech_gmao" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_gmao_prev_1" label="Gammes" parent_ref="teratech_gmao_prev" entity_ref="Gamme" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_prev_2" label="Mise à jour compteurs" parent_ref="teratech_gmao_prev" entity_ref="MiseAJourCompteur" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_prev_3" label="Type de Plannification" parent_ref="teratech_gmao_prev" entity_ref="TypePlanning" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_prev_4" label="Maintenance Preventive" parent_ref="teratech_gmao_prev" entity_ref="MaintenancePreventive" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_prev_5" label="Planning des charges" parent_ref="teratech_gmao_prev" entity_ref="Compte" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_prev_6" label="Synthèse des Charges et Ressources" parent_ref="teratech_gmao_prev" entity_ref="Compte" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_gmao_pro" label="Projets et Budgets" parent_ref="teratech_gmao"  gyphycon="glyphicon glyphicon-th"  />
+	 <menuitem id="teratech_gmao_pro_1" label="Projets" parent_ref="teratech_gmao_pro" entity_ref="Projet" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_pro_2" label="Budget par Division" parent_ref="teratech_gmao_pro" entity_ref="BudgetDivision" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_pro_2_1" label="Saisie Budget par Division" parent_ref="teratech_gmao_pro"  entity_ref="LigneBudgetSaisie" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
+	 <menuitem id="teratech_gmao_pro_3" label="Budget par Centre" parent_ref="teratech_gmao_pro" entity_ref="BudgetCentre" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_pro_4" label="Budget par Equipement" parent_ref="teratech_gmao_pro" entity_ref="BudgetEquipement" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_gmao_base" label="Configurations" parent_ref="teratech_gmao"  gyphycon="glyphicon glyphicon-th"  />
+	 <menuitem id="teratech_gmao_base_1" label="Exploration" parent_ref="teratech_gmao_base" entity_ref="CompteAnalytique" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_2" label="Division" parent_ref="teratech_gmao_base" entity_ref="Division" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_3" label="Centre de frais" parent_ref="teratech_gmao_base" entity_ref="CentreFrais" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_3_1" label="Classe horaires" parent_ref="teratech_gmao_base" entity_ref="Classe" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_4" label="Equipements" parent_ref="teratech_gmao_base" entity_ref="Equipement" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_5" label="Planning Equipements" parent_ref="teratech_gmao_base" entity_ref="CalendrierEquipement" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="calendar,tree,form"/>
+	 <calendarRecord id="teratech_gmao_calendar02" label="Planning equipements" action_ref="teratech_gmao_base_5" titlefield="designation" startfield="debut" endfield="fin">	        
+	 </calendarRecord>
+	 <menuitem id="teratech_gmao_base_6" label="Organes" parent_ref="teratech_gmao_base" entity_ref="Organe" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_6_1" label="Compteurs" parent_ref="teratech_gmao_base" entity_ref="Compteur" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_7" label="Articles" parent_ref="teratech_gmao_base" entity_ref="Article" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_8" label="Intervenants" parent_ref="teratech_gmao_base" entity_ref="Intervenant" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_gmao_base_8_1" label="Planning des intervenants" parent_ref="teratech_gmao_base" entity_ref="CalendrierIntervenant" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" view_type="calendar,tree,form"/>
+	 <calendarRecord id="teratech_gmao_calendar01" label="Planning intervenants" action_ref="teratech_gmao_base_8_1" titlefield="designation" startfield="debut" endfield="fin">	        
+	 </calendarRecord>
+	 <menuitem id="teratech_gmao_base_9" label="Contrats Fournisseurs" parent_ref="teratech_gmao_base" entity_ref="Contrat" model_ref="teratechgmao" gyphycon="glyphicon glyphicon-th" modal="false" />	 	 
+</keren>
