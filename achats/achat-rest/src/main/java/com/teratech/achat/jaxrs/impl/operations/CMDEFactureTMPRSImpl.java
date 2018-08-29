@@ -70,7 +70,6 @@ public class CMDEFactureTMPRSImpl
         return null;
     }
 
-    @Override
     public Facture delete(Long id) {
          //To change body of generated methods, choose Tools | Templates.
         return null;

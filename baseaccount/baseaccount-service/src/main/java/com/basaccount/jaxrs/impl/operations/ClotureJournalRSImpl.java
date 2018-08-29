@@ -79,12 +79,10 @@ public class ClotureJournalRSImpl
         return new ArrayList<ClotureJournal>(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public List<ClotureJournal> findAll() {
         return new ArrayList<ClotureJournal>(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public ClotureJournal find(String propertyName, Long id) {
         return new ClotureJournal(); //To change body of generated methods, choose Tools | Templates.
     }
@@ -94,7 +92,6 @@ public class ClotureJournalRSImpl
        //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public ClotureJournal delete(Long id) {
         return new ClotureJournal(); //To change body of generated methods, choose Tools | Templates.
     }

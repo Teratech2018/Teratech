@@ -115,20 +115,20 @@
   </head>
 
   <body ng-controller="kerenCtrl" class="principal-background websitecontainer">
-      <div ng-switch on="level">
-          <div ng-switch-when="authenticate" >
-              <div ng-controller="mainCtrl">
-                <ng-include src="'views/principalFragment.html'"  ng-show = "level==='authenticate'"></ng-include>
+      <div ng-switch on="activemodule">
+          <div ng-switch-when="kerencore" >
+              <div ng-controller="mainCtrl"  ng-show = "active('kerencore')">
+                <ng-include src="'views/principalFragment.html'" ></ng-include>
              </div>
           </div>
           <div ng-switch-when="website" class="websitecontainer">
-              <div ng-controller="WebSiteCtrl">
+              <div ng-controller="WebSiteCtrl"  ng-show="active('website')">
                 <ng-include src="'views/websiteTemplate.html'"></ng-include>
              </div>
           </div>
           <div ng-switch-default>
               <div ng-controller="loginCtrl">
-                <ng-include src="'modules/login/views/login.html'"  ng-show = "level!=='authenticate'"></ng-include>
+                <ng-include src="'modules/login/views/login.html'"  ng-show ="active('login')"></ng-include>
              </div>
           </div>
       </div>

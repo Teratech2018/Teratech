@@ -520,6 +520,15 @@ angular.module("mainApp")
     	$scope.currentAction = null;	
     	if(angular.isDefined(action)){
     		$scope.currentAction = action;
+//                var mode = null ;
+//                if($scope.currentAction.viewMode){
+//                    mode = $scope.currentAction.viewMode.split(",");
+//                }//end if($scope.currentAction.viewMode)   
+//                //Traitement des actions de type website
+//                if(mode && mode.length>0 && mode[0]=='website'){
+//                    $rootScope.$broadcast("website" , {website:$scope.currentAction.model,currentuser:$rootScope.globals.currentUser});
+//                    return ;
+//                }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
                 $rootScope.$broadcast("currentActionUpdate" ,{
                  item:entity, action:$scope.currentAction , verticalMenu:$scope.enabledVerticalMenu,restriction:filters});  
     	}//end if(angular.isDefined(action)){    	
@@ -630,7 +639,7 @@ angular.module("mainApp")
         //Chargement du logo de l'application
         restService.downloadPNG($rootScope.globals.user.image,"mail_user_id");        
         //console.log("Vous avez cliquer sur le module ::: Discussion");
-//        $rootScope.$broadcast("discussionmodule" , {verticalMenu:$scope.enabledVerticalMenu});
+        $rootScope.$broadcast("discussionmodule" , {verticalMenu:$scope.enabledVerticalMenu});
 //        $rootScope.$broadcast("currentModule" , {module:$scope.currentModule , verticalMenu:false});
     };
     
@@ -774,7 +783,7 @@ angular.module("mainApp")
                     //Hide General
                     $scope.hideOther = $scope.showCalendar || $scope.showDiscussion ;    
                     $scope.principalscreen = false;
-                    console.log("principal.calandarActionItem =================== "+$scope.currentModule);
+//                    console.log("principal.calandarActionItem =================== "+$scope.currentModule);
                   
           });
     //Hide Discussion login , calendar ,discussion ,others
@@ -799,7 +808,17 @@ angular.module("mainApp")
              * @returns {undefined}
              */
             function(event, args){              
-              var action = $scope.getAction($scope.currentModule,args.action);
+                var action = $scope.getAction($scope.currentModule,args.action);
+                var mode = null ;
+                if(action.viewMode){
+                    mode = action.viewMode.split(",");
+                }//end if($scope.currentAction.viewMode) 
+                console.log("$scope.buttonAction ======================== == == mode : "+mode+"===== "+(mode[0]=='website'));   
+                //Traitement des actions de type website
+                if(mode && mode.length>0 && mode[0]=='website'){
+                    $rootScope.$broadcast("website" , {website:action.model,currentuser:$rootScope.globals.currentUser});
+                    return ;
+                }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
 //              console.log("customreport ================================ name ::::: "+args.action+"  action"+angular.toJson(action)); 
               if(angular.isDefined(action)&&action!=null){
                   $scope.getSelectAction(action,args.item,args.restriction);
@@ -10203,6 +10222,16 @@ $scope.gererChangementFichier3 = function(event,model){
                                                    }//end if(template[hearders]){
                                                }//end if(angular.isArray(hearders)){
                                            }//end if(angular.isDefined(hearders)){
+                                            var mode = null ;
+                                            if(action.viewMode){
+                                                mode = action.viewMode.split(",");
+                                            }//end if($scope.currentAction.viewMode) 
+//                                            console.log("$scope.buttonAction ========================"+hearders+" == == mode : "+mode);   
+                                            //Traitement des actions de type website
+                                            if(mode && mode.length>0 && mode[0]=='website'){
+                                                $rootScope.$broadcast("website" , {website:action.model,currentuser:$rootScope.globals.currentUser});
+                                                return ;
+                                            }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
                                            $rootScope.$broadcast("currentActionUpdate" ,{
                                                 action:action , verticalMenu:$scope.enabledVerticalMenu , template:template,index:index,inner:true});  
                                       }else{
@@ -11960,7 +11989,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     }//end if(mode.length>0 && mode[0]=='dashboard')
                     //Traitement des actions de type website
                     if(mode && mode.length>0 && mode[0]=='website'){
-                        console.log("Vous avez cliquez sur une action de type Web Site");
+                        $rootScope.$broadcast("website" , {website:$scope.currentAction.model,currentuser:$rootScope.globals.currentUser});
                         return ;
                     }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
                     //Traitement des action de type report

@@ -58,7 +58,7 @@ angular.module('keren.core.commons')
                 };
 }]);
 angular.module('keren.core.commons')
-        .factory('commonsTools',function($filter,$compile,$http,$location){
+        .factory('commonsTools',function($filter,$compile,$http,$location,$interval){
             //Liste des contraintes
             var uniqueContraints = new Array();
             var stopTimer = 0;
@@ -167,6 +167,25 @@ angular.module('keren.core.commons')
                     }
                 };
             })();
+            var WebSiteContext = (function(){
+                var instance;
+                function createInstance(){
+                    var object = new Object();
+                    object.currentuser=null;
+                    object.website = null;
+                    object.promise = null;
+                    return object;
+                }
+                return{
+                    getInstance: function(){
+//                        console.log("Vous avez cachez ======================== "+angular.toJson(currentuser));
+                        if(!instance){
+                            instance = createInstance();
+                        }
+                        return instance;
+                    }
+                };
+            })();
             /**
              * Construction d'interface Detail Display
              *Pattern chain of responsability
@@ -207,6 +226,123 @@ angular.module('keren.core.commons')
                };
 
             return {
+                setWebContext:function(currentuser){return WebSiteContext.setInstance(currentuser);},
+                getWebContext:function(){return WebSiteContext.getInstance();},
+                startWebsiteWorker:function(scope){
+                    var instance = WebSiteContext.getInstance();
+                    if(instance.promise===null){
+                        instance.promise = $interval(function(){
+                            var key = $('#website_cache').attr('value');
+                            if(angular.isDefined(key)){
+                                var webcontext = angular.fromJson(sessionStorage.getItem(key));
+                                scope.currentuser = webcontext.currentuser;
+                                scope.website = webcontext.website;
+                                $http.defaults.headers.common['Authorization']='Basic '+scope.currentuser.authdata;
+//                                console.log("Hello ce fichier est execute : "+key+" ====== "+angular.toJson(scope.currentuser));
+                                $interval.cancel(instance.promise);
+                            }//end if(angular.isDefined(key)){
+                        },1000);
+                    }else{
+                        $interval.cancel(instance.promise);
+                        instance.promise =   $interval(function(){
+                            var key = $('#website_cache').attr('value');
+                            if(angular.isDefined(key)){
+                                scope.currentuser = angular.fromJson(sessionStorage.getItem(key));
+                                $http.defaults.headers.common['Authorization']='Basic '+scope.currentuser.authdata;
+//                                console.log("Hello ce fichier est execute : "+key+" ====== "+angular.toJson(scope.currentuser));
+                                $interval.cancel(instance.promise);
+                            }
+                        },1000);
+                        
+                    }
+                    
+                },
+                backtocore : function(scope){
+                     var url = "http://"+$location.host()+":"+$location.port()+"/keren";
+                     var key = $('#website_cache').attr('value');
+                     var session = angular.fromJson(sessionStorage.getItem(key));
+                     key= "kerensession";
+                     var webSiteContext = new Object();
+                     webSiteContext.currentuser = session.currentuser;
+                     webSiteContext.website = session.website;
+                     sessionStorage.setItem(key,angular.toJson(webSiteContext));
+                     if(session.currentuser.username!=='website@website'){
+                        window.location.replace(url);
+                        location.reload();      
+                      }//end if(session.currentuser.username!=='website@website'){
+                },
+                /**
+                 * 
+                 * @param {type} scope
+                 * @param {type} websiteid
+                 * @param {type} templateid
+                 * @param {type} fragment
+                 * @returns {undefined}
+                 */
+                goto : function(scope, websiteid,templateid , fragment){
+                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/indexpage/"+websiteid;
+                    if(angular.isDefined(templateid)
+                            && templateid!=null){
+                          url = "http://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/fragment/"+websiteid+"/"+templateid;
+                    }//end if(angular.isDefined(args.cible)
+                    this.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                    var stopmoteur = function(IdMoteur){clearInterval(IdMoteur);};
+                    var hidenFn = function(){var instance = NotifyStatutPanel.getInstance(); if(instance.active===true){ instance.active = false; stopmoteur(stopTimer); var idElement = "dialogContent"; $('#'+idElement).fadeOut(function(){ $('#'+idElement).remove(); }); $('#'+idElement+"_Full").fadeOut(function(){ $('#'+idElement+"_Full").remove(); }); }};
+                    $http.get(url).then(
+                            function(response){
+                                var template = response.data;
+                                  var id = 'website_container';
+                                if(angular.isDefined(fragment) && fragment!=null){
+                                     id = fragment;
+                                }//end if(angular.isDefined(position) && position!=null){
+                                var container = document.createElement('div');
+                                container.setAttribute('id',id);
+             //                   container.setAttribute('ng-init','load()');
+                                container.innerHTML = template.script;   
+                                container = angular.element(container);                   
+                                //raitement des inclusion
+                                var items = container.find("include");
+                                for(var i=0; i<items.length;i++){ 
+                                    var item = items.eq(i);
+                                    var type = item.attr('type');
+                                    var src = item.attr("src");
+                                    if(type=='css'){
+                                        var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                                        var linkElem = document.createElement('style');
+                                        linkElem.setAttribute('type','text/css');
+                                        linkElem.innerHTML='@import url("'+url+'");';
+                                        item.replaceWith(linkElem);
+                                    }else if(type=='less'){
+                                        var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                                        var linkElem = document.createElement('style');
+                                        linkElem.setAttribute('type','text/less');
+                                        linkElem.innerHTML='@import url("'+url+'");';
+                                        item.replaceWith(linkElem);
+                                    }else if(type=='javascript'){
+                                        var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                                        $('<script />', { type : 'text/javascript', src : url}).appendTo('body');
+//                                        scope.javascripts.push(url);
+             //                           var scriptElem = document.createElement('script');
+             //                           scriptElem.setAttribute('src',url);
+                                        item.remove();
+                                    }//end if(type=='css'){
+                                }//end for(var i=0; i<items.length;i++){                    
+                                var compileFn = $compile(container);
+                                compileFn(scope);           
+                                var items = $(document).find("div");
+                                 for(var i=0; i<items.length;i++){ 
+                                      if(items.eq(i).attr("id")==id){
+                                          items.eq(i).replaceWith(container);                             
+                                          break;
+                                     }//end if(items.eq(i).attr("id")=="detail-panel-body"){  
+                                 }//end for(var i=0; i<items.length;i++){          
+                                hidenFn();
+                            },function(error){
+                                hidenFn();
+//                                this.showMessageDialog(error); 
+                            });                       
+                },
+               
                 /**
                  * Builder of the custom principal screen
                  * @param {type} theme

@@ -70,7 +70,7 @@ public class EcritureComptableRSImpl
     @Override
     public List<EcritureComptable> getEcritures() {
          //To change body of generated methods, choose Tools | Templates.
-        return findAll();
+        return new ArrayList<EcritureComptable>();
     }
     
     

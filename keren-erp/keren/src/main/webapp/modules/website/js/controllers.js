@@ -89,12 +89,21 @@ angular.module('keren.core.website')
              //Web Element cache
              $scope.javascripts = new Array();
              $scope.login = function(){
-                    //console.log("Authentication Login methode === "+$scope.username+" === "+$scope.password);
+                     var key= "kerensession";
+                     var sessionobject = sessionStorage.getItem(key);
+                     var webContext = null;
+                     if(sessionobject!=null){
+                         webContext = angular.fromJson(sessionStorage.getItem(key));
+                         $rootScope.globals = new Object();
+                         $rootScope.globals.currentUser = webContext.currentuser;
+                     }//end if(sessionobject!=null){
+//                    console.log("Authentication Login methode === "+$scope.username+" === "+sessionStorage.getItem(key));
                      if(angular.isDefined($rootScope.globals)
                              &&angular.isDefined($rootScope.globals.currentUser)
                              && $rootScope.globals.currentUser!=null){
-                             authenticationService.setCredentials($rootScope.globals.currentUser.username
-                                                            ,$rootScope.globals.currentUser.authdata,false);
+//                             authenticationService.setCredentials($rootScope.globals.currentUser.username
+//                                                            ,$rootScope.globals.currentUser.authdata,false);
+                             $http.defaults.headers.common['Authorization']='Basic '+$rootScope.globals.currentUser.authdata; 
                              $rootScope.$broadcast("gotowebsite" , {username:$rootScope.globals.currentUser.username});
                       }else{
                          var urlPath = "http://"+$location.host()+":"+$location.port()+"/keren/auth/login/crypto"; 
@@ -120,10 +129,36 @@ angular.module('keren.core.website')
                    if(angular.isDefined(position) && position!=null){
                         id = position;
                    }//end if(angular.isDefined(position) && position!=null){
+                   var websitediv = document.createElement('div');
+                   websitediv.setAttribute('ng-controller','portailwebCtrl');
                    var container = document.createElement('div');
+                   websitediv.appendChild(container);
                    container.setAttribute('id',id);
+//                   container.setAttribute('ng-init','load()');
                    container.innerHTML = template.script;   
                    container = angular.element(container);
+                   var inputeleme = document.createElement('input');
+                   inputeleme.setAttribute('id','website_cache');
+                   inputeleme.setAttribute('type','hidden');
+//                   inputeleme.setAttribute('ng-init','load()');
+                   var key = generateurId();
+                   var webSiteContext = new Object();
+                   webSiteContext.currentuser = $rootScope.globals.currentUser;
+                   webSiteContext.website = $rootScope.website;
+                   sessionStorage.setItem(key,angular.toJson(webSiteContext));
+                   sessionStorage.removeItem("kerensession");
+                   inputeleme.setAttribute('value',key);
+                   var items = container.find("input");
+                   var trouve = false;
+                   for(var i=0;i<items.length;i++){
+                       if(items.eq(i).id=='website_cache'){
+                           items.eq(i).replaceWith(inputeleme);
+                           trouve = true;
+                       }//end if(items.eq(i).id=='website_cache'){
+                   }//end for(var i=0;i<items.length;i++){
+                   if(trouve==false){
+                       websitediv.prepend(inputeleme);
+                   }//end if(trouve==false){
                    //raitement des inclusion
                    var items = container.find("include");
                    for(var i=0; i<items.length;i++){ 
@@ -151,18 +186,16 @@ angular.module('keren.core.website')
                            item.remove();
                        }//end if(type=='css'){
                    }//end for(var i=0; i<items.length;i++){
-                   angular.bootstrap(container, ['keren.core.website']);                   
-//                   var compileFn = $compile(container);
-//                    compileFn($scope);
-                    var items = $(document).find("div");
+                   angular.bootstrap(websitediv, ['keren.core.website']);
+//                    var compileFn = $compile(container);
+//                    compileFn($scope);           
+                   var items = $(document).find("div");
                     for(var i=0; i<items.length;i++){ 
                          if(items.eq(i).attr("id")==id){
-                             items.eq(i).replaceWith(container);                             
+                             items.eq(i).replaceWith(websitediv);                             
                              break;
                         }//end if(items.eq(i).attr("id")=="detail-panel-body"){  
-                    }//end for(var i=0; i<items.length;i++){ 
-                    $rootScope.$broadcast("websiteready" , {currentuser:$rootScope.globals.currentUser});
-//                    console.log("website.controller.parseHTML ========================= template : "+angular.toJson($rootScope.globals.currentUser));  
+                    }//end for(var i=0; i<items.length;i++){                     
                };//end $scope.parseHTML = function(template){
                
                /**
@@ -199,7 +232,7 @@ angular.module('keren.core.website')
                 * @param {type} position
                 * @returns {undefined}
                 */
-               $scope.goto = function(templateid , fragment){
+               $scope.gotodepreciate = function(templateid , fragment){
                    $rootScope.$broadcast("gotowebsite" , {username:$rootScope.globals.currentUser.username,cible:templateid,position:fragment});
                };//end $scope.goto = function(templateid , position){
                /**

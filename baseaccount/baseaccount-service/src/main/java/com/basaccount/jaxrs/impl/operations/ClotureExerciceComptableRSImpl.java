@@ -65,12 +65,10 @@ public class ClotureExerciceComptableRSImpl
         return new ArrayList<ClotureExerciceComptable>(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public List<ClotureExerciceComptable> findAll() {
         return new ArrayList<ClotureExerciceComptable>(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public ClotureExerciceComptable find(String propertyName, Long id) {
         return new ClotureExerciceComptable(); //To change body of generated methods, choose Tools | Templates.
     }
@@ -80,7 +78,6 @@ public class ClotureExerciceComptableRSImpl
         //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public ClotureExerciceComptable delete(Long id) {
         return new ClotureExerciceComptable(); //To change body of generated methods, choose Tools | Templates.
     }
