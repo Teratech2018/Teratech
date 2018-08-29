@@ -540,6 +540,7 @@ angular.module("mainApp")
      */
     $scope.getDefaultModule = function(){         
         $scope.getModulesForCurrentUser();
+        commonsTools.createBodyChatContent();
     };
 
     /**
@@ -747,6 +748,12 @@ angular.module("mainApp")
      */
     $scope.tchatwindow = function(item){
         var zoneid = "zone"+item.id;
+        var idUser = $scope.currentUser.id;
+        var idFriend = item.id;
+        var photoUser = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+$scope.currentUser.image;
+        var photoFriend = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+item.image;
+        var nameFriend = item.designation;
+        commonsTools.addChatZone(zoneid,idUser,idFriend,photoUser,photoFriend,nameFriend);
     };
     
     /**

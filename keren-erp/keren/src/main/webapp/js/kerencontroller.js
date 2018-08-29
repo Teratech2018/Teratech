@@ -44,7 +44,7 @@ angular.module("keren.core")
                 * Echec de login de login
                 */
                $scope.$on("login" , function(event ,args){
-                   console.log('$scope.$on("dataLoad" , function(event ,args) :::::::::::::::: '+angular.toJson(args));
+//                   console.log('$scope.$on("dataLoad" , function(event ,args) :::::::::::::::: '+angular.toJson(args));
                    //$location.path("/failed");
                    $scope.level = "login";
                    $scope.activemodule = "login";
@@ -112,7 +112,7 @@ angular.module("keren.core")
                             $rootScope.$broadcast("authenticate" , {username:$rootScope.globals.currentUser.username 
                                                       ,authdata:$rootScope.globals.currentUser.authdata});
                         }//end if(sessionitem==null){
-                    }//end if(paths.length>1 && paths[1]==='website'){
+                    }//end if(paths.length>1 && paths[1]==='website'){                    
 //                    console.log("kerencontroller.init ================== "+angular.toJson(paths));
                 };
                 $scope.init();
