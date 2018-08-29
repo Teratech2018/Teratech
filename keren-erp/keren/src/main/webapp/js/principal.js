@@ -2619,7 +2619,7 @@ $scope.gererChangementFichier3 = function(event,model){
 //              if($scope.windowType=="view"||(field.updatable==false&&$scope.windowType!='new')){
 //                  selectElem.setAttribute('disabled' , 'disabled');
 //              }
-              if(($scope.metaData.desableupdate==false)&&(($scope.windowType=="view")||
+              if((metaData.desableupdate==false)&&(($scope.windowType=="view")||
                         ((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false)))){
                     selectElem.setAttribute('disabled' , 'true');
 //                    buttonElem.setAttribute('disabled' , 'disabled');
