@@ -88,11 +88,12 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 	    private double encaisseT3 ;
 	    
 	    @Predicate(label = "Solde" ,type = double.class)
+	    private double soldeT3 ;
 	    
 	    @Transient
 	    private double remise ;
 	    
-	    private double soldeT3 ;
+	   
 	    @Column(name = "ANNEE_ID")
 		protected String anneScolaire;
     /**
@@ -150,7 +151,7 @@ public class EducationDashboard extends BaseElement implements Serializable,Comp
 		this.encaisseT2 = ins.encaisseT2;
 		this.soldeT2 = ins.soldeT2;
 		this.previsionT3 = ins.previsionT3;
-		this.encaisseT3 = ins.encaisseT3;
+		this.encaisseT3 = ins.encaisseT3-ins.remiseG;
 		this.soldeT3 = ins.soldeT3;
 		this.remiseG=ins.remiseG;
 		this.raccourcis=ins.raccourcis;

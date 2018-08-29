@@ -68,6 +68,18 @@ public class ResponsableManagerImpl
    	
 
    	@Override
+	public void processBeforeSave(Responsable entity) {
+		
+   		if(entity.getPersonnel()!=null&&entity.getPersonnel().equals("1")){
+   			entity.setNom(entity.getPersonnel().getNom());
+   			entity.setDateNais(entity.getPersonnel().getDateNais());
+   			entity.setEmail(entity.getPersonnel().getEmail());
+   			entity.setTel(entity.getPersonnel().getContact());
+   		}
+		super.processBeforeSave(entity);
+	}
+
+	@Override
    	public Responsable delete(Long id) {
    		// TODO Auto-generated method stub
    		Responsable elev = super.delete(id);

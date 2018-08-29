@@ -107,13 +107,11 @@ public class ViewListeEleveManagerImpl
 //						container.addGe("eleve.dateNais", critere.getDatInsfin());
 //					}
 //					
-					if (critere.getSection() != null) {
-						container.addEq("eleve.section.id", critere.getSection().getId());
-					}
+					
 
 					if (critere.getClasse() != null) {
 						container.addEq("classe.id", critere.getClasse().getId());
-						container.addEq("eleve.section.id", critere.getClasse().getSection().getId());
+						
 					}
 
 				}

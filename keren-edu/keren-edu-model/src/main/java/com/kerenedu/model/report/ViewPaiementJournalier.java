@@ -60,7 +60,7 @@ public class ViewPaiementJournalier extends BaseElement implements Serializable,
 	
 	@Transient
 	@Column(name = "SOLDE")
-	@Predicate(label = "Solde ", optional = false, updatable = false, search = true, type = Long.class, editable = false ,colsequence=8)
+	@Predicate(label = "Solde ", optional = false, updatable = false, search = true, type = Long.class,colsequence=8)
 	protected Long solde;
 	
 	@Column(name = "DATE_PAI")
@@ -93,6 +93,7 @@ public class ViewPaiementJournalier extends BaseElement implements Serializable,
 		this.ristourne=ins.ristourne;
 		this.anneScolaire=ins.anneScolaire;
 		this.cycle=ins.cycle;
+		this.solde = ins.getSolde();
 
 
 	}
@@ -106,6 +107,7 @@ public class ViewPaiementJournalier extends BaseElement implements Serializable,
 		this.ristourne=(long) 0;
 		this.anneScolaire=ins.getAnneScolaire();
 		this.cycle=ins.getEleve().getCycle();
+		this.solde = ins.getZsolde();
 
 
 	}

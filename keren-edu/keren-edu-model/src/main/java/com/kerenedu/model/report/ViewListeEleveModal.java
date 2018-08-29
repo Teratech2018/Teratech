@@ -5,7 +5,9 @@ package com.kerenedu.model.report;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
+import com.kerenedu.dashboard.Raccourci;
 import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
@@ -27,8 +30,8 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 
-//@Entity
-//@Table(name = "e_inscription")
+// @Entity
+// @Table(name = "e_inscription")
 public class ViewListeEleveModal extends BaseElement implements Serializable, Comparable<ViewListeEleveModal> {
 
 	/**
@@ -36,72 +39,61 @@ public class ViewListeEleveModal extends BaseElement implements Serializable, Co
 	 */
 	private static final long serialVersionUID = 8430641365166122149L;
 
+	private List<Raccourci> raccourcis = new ArrayList<Raccourci>();
 
+	private long nbreEtud;
+	private long totalIns;
 	@ManyToOne
-	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1, observable=true)
-	private SectionE section ;
-	
-	
+	@JoinColumn(name = "SECTION_ID")
+	@Predicate(label = "Section", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true)
+	private SectionE section;
+
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",updatable=false,type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true, searchfields="libelle", colsequence=1)
-	protected Classe classe ;
-	
+	@Predicate(label = "Classe", updatable = false, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1)
+	protected Classe classe;
 
-	
-	
-	
-	
+	public List<Raccourci> getRaccourcis() {
+		return raccourcis;
+	}
 
+	public void setRaccourcis(List<Raccourci> raccourcis) {
+		this.raccourcis = raccourcis;
+	}
 
 	public ViewListeEleveModal(SectionE section, Classe classe, Eleve eleve, String satut, Date datIns, Long zMnt,
 			Long zMntPaye, Long zSolde, Long zRemise, Long zRistourne, Long zTotal, String anneScolaire, long cycle) {
 		super();
 		this.section = section;
 		this.classe = classe;
-		}
-
+	}
 
 	public ViewListeEleveModal() {
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public ViewListeEleveModal(ViewListeEleveModal ins) {
-		super(ins.id, ins.designation, ins.moduleName,ins.compareid);
-	
-		if(ins.classe!=null){
-			this.classe = new Classe(ins.classe);	
-//			this.cycle=ins.getClasse().getCycle();
-			this.section=ins.getClasse().getSection();
+		super(ins.id, ins.designation, ins.moduleName, ins.compareid);
+
+		if (ins.classe != null) {
+			this.classe = new Classe(ins.classe);
+			// this.cycle=ins.getClasse().getCycle();
+			this.section = ins.getClasse().getSection();
 		}
-		
+
 	}
 
-
-
-
-//	public void setServiceList(Service serviceList) {
-//		this.serviceList = serviceList;
-//	}
-
+	// public void setServiceList(Service serviceList) {
+	// this.serviceList = serviceList;
+	// }
 
 	public Classe getClasse() {
 		return classe;
 	}
 
-
 	public void setClasse(Classe classe) {
 		this.classe = classe;
 	}
-
-
-	
-
-
-
-
 
 	@Override
 	public int hashCode() {
@@ -114,6 +106,7 @@ public class ViewListeEleveModal extends BaseElement implements Serializable, Co
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -137,49 +130,31 @@ public class ViewListeEleveModal extends BaseElement implements Serializable, Co
 		// TODO Auto-generated method stub
 		return "Critère de Recherche ";
 	}
-	
-//
 
+	//
+
+	public long getNbreEtud() {
+		return nbreEtud;
+	}
+
+	public void setNbreEtud(long nbreEtud) {
+		this.nbreEtud = nbreEtud;
+	}
+
+	public long getTotalIns() {
+		return totalIns;
+	}
+
+	public void setTotalIns(long totalIns) {
+		this.totalIns = totalIns;
+	}
 
 	public SectionE getSection() {
 		return section;
 	}
 
-
 	public void setSection(SectionE section) {
 		this.section = section;
 	}
-
-
-	
-	@Override
-	public boolean isDesablecreate() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-
-	@Override
-	public boolean isDesableupdate() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-
-	@Override
-	public boolean isDesabledelete() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-
-
-
-
-	
-
-
-	
-
 
 }

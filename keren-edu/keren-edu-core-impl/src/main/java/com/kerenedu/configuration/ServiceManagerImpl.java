@@ -16,6 +16,7 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.reglement.FichePaiement;
+import com.kerenedu.reglement.FichePaiementOptionel;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -121,7 +122,7 @@ public class ServiceManagerImpl extends AbstractGenericManager<Service, Long>
 		if(result!=null&!result.isEmpty()){
 			for(Service serice : result){
 				for(ServiceFilliere filliere : serice.getFiliere()){
-					if(filliere.getFiliere().getId()==classe.getFiliere().getId()){
+					if(filliere.getFiliere().getId()==classe.getFiliere().getId()&&serice.getExige()==true){
 						FichePaiement fiche = new FichePaiement(serice,filliere);
 						fiche.setId(-1);
 						datas.add(fiche);
@@ -133,5 +134,7 @@ public class ServiceManagerImpl extends AbstractGenericManager<Service, Long>
 		}
 		return datas;
 	}
+	
+
 
 }

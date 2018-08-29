@@ -3,6 +3,7 @@ package com.kerenedu.inscription;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import com.kerenedu.configuration.UserEducationDAOLocal;
 import com.kerenedu.model.search.EleveSearch;
 import com.kerenedu.reglement.FichePaiement;
 import com.kerenedu.reglement.FichePaiementDAOLocal;
+import com.kerenedu.reglement.FichePaiementOptionel;
 import com.kerenedu.reglement.PaiementDAOLocal;
 import com.kerenedu.reglement.ReglementDAOLocal;
 import com.kerenedu.school.Eleve;
@@ -111,6 +113,9 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		for (FichePaiement serv : elev.getService()) {
 			inscrip.getService().add(new FichePaiement(serv));
 		}
+//		for (FichePaiementOptionel serv : elev.getServiceOpt()) {
+//			inscrip.getServiceOpt().add(new FichePaiementOptionel(serv));
+//		}
 		return inscrip;
 	}
 
@@ -140,24 +145,7 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 	@Override
 	public void processBeforeSave(Inscription entity) {
 //		// set annescolaire courante
-//		entity.setState("crée");
-//		// Creation des journaux de saisie
-//		RestrictionsContainer container = RestrictionsContainer.newInstance();
-//		container.addEq("connected", true);
-//		List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0, -1);
-//		if (annee == null || annee.size() == 0) {
-//			throw new KerenExecption("Aucune Année Scolaire disponible !!!");
-//		}
-//		entity.setAnneScolaire(CacheMemory.getCurrentannee());
-//		entity.setAnneScolaire(annee.get(0).getCode());
-//		// verifier si l'étudiant a déjà été inscit
-//		container = RestrictionsContainer.newInstance();
-//		container.addEq("eleve.matricule", entity.getEleve().getMatricule());
-//		container.addEq("anneScolaire", entity.getAnneScolaire());
-//		List<Inscription> inscit = dao.filter(container.getPredicats(), null, null, 0, -1);
-//		if ((inscit != null && inscit.size() != 0)) {
-//			throw new KerenExecption("Eléve déjà Inscrit !!!");
-//		}
+
 		long apayer = (long) 0;
 		long aremise = (long) 0;
 		long aristourne = (long) 0;
@@ -289,23 +277,62 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		// relement
 		dao.deleteRadReglement(incription);
 		System.out.println("InscriptionManagerImpl.changerClasse() delete sucess !!!");
-
 		dao.delete(incription.getId());
+	
 		System.out.println("InscriptionManagerImpl.changerClasse() delete inscription  sucess !!!");
 		
 		// new service
+		Inscription newincrt = new Inscription(incription.getEleve(),entity.getNewclasse(),incription);
 		List<FichePaiement> newFiche = this.findfiche(entity.getClasse().getId());
-		incription.setService(newFiche);
-		Inscription newins = new Inscription(incription,"");
+		newincrt.setService(newFiche);
+		dao.delete(incription.getId());
 		System.out.println("InscriptionManagerImpl.changerClasse() je suis ici !!!");
-//		newins.setId(-1);
-//		newins.setClasse(entity.getNewclasse());
-//		newins = dao.save(newins);
-//		
-		return newins;
+		newincrt = dao.save(newincrt);
+		Inscription i = dao.findByPrimaryKey("id", newincrt.getId());
+		System.out.println("InscriptionManagerImpl.changerClasse() fichier service is "+ i.getService().size());
+		// mis a jour montant fiche 
+		ChangerWorker worker = buildWorker( i);
+		if(old.getzSolde()==0){
+			worker.setMontant(newincrt.getzMnt());
+		}else{
+			worker.setMontant(old.getzMntPaye());
+		}
+		
+		worker.compute();
+		dao.update(newincrt.getId() , newincrt);
+		return newincrt;
 	}
 	
-	
+	private ChangerWorker buildWorker(Inscription insc) {
+		Map<Integer, FichePaiement> map = new HashMap<Integer, FichePaiement>();
+		for (FichePaiement fiche : insc.getService()) {
+			if(fiche.getService().getExige()==true){
+				map.put(fiche.getService().getRang(), fiche);
+			}
+			
+		}
+		List<Integer> keys = new ArrayList<Integer>();
+		for (int key : map.keySet()) {
+			keys.add(key);
+		}
+		Collections.sort(keys);
+		int plage = keys.size() - 1;
+		ChangerWorker work0 = null;
+		int key = plage;
+		while (key >= 0) {
+			if (key == plage) {
+				work0 = new ChangerWorker(map.get(keys.get(key)), insc, null);
+				System.out.println("PaiementManagerImpl.buildWorker() key valuer 0" + keys.get(key));
+				System.out.println(
+						"PaiementManagerImpl.buildWorker() map valuer 0" + map.get(keys.get(key)) + "map " + map);
+			} else {
+				ChangerWorker work = new ChangerWorker(map.get(keys.get(key)), insc, work0);
+				work0 = work;
+			} // end if(key==plage-1){
+			key = key - 1;
+		} // end for(int key=plage;key>=0;key--){
+		return work0;
+	}
 	
 	public List<FichePaiement>getFicheEleve(Inscription entity){
 		List<FichePaiement>datas = new ArrayList<FichePaiement>();
@@ -348,6 +375,127 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		}
 		}
 		return datas;
+	}
+	class ChangerWorker {
+		private FichePaiement tranche;
+
+		private Inscription inscription;
+
+		private ChangerWorker next;
+
+		private Long montant;
+
+		/**
+		 * 
+		 * @param tranche
+		 * @param inscription
+		 */
+
+		public ChangerWorker(FichePaiement tranche, Inscription inscription, ChangerWorker next) {
+			super();
+			this.tranche = tranche;
+			this.inscription = inscription;
+			this.next = next;
+		}
+
+		public ChangerWorker getNext() {
+			return next;
+		}
+
+		public void setNext(ChangerWorker next) {
+			this.next = next;
+		}
+
+		public Long getMontant() {
+			return montant;
+		}
+
+		public void setMontant(Long montant) {
+			this.montant = montant;
+		}
+
+		public FichePaiement getTranche() {
+			return tranche;
+		}
+
+		public void setTranche(FichePaiement tranche) {
+			this.tranche = tranche;
+		}
+
+		public Inscription getInscription() {
+			return inscription;
+		}
+
+		public void setInscription(Inscription inscription) {
+			this.inscription = inscription;
+		}
+
+		public ChangerWorker inversecompute() {
+			
+			if (tranche.getMntpayer() > 0) {
+				System.out.println("PaiementManagerImpl.PaiementWorker.inversecompute() je suis ici "+montant);
+				if (montant >= tranche.getMntpayer()) { // montant>>
+					long reste = montant - tranche.getMntpayer();
+					System.out.println("PaiementManagerImpl.PaiementWorker.inversecompute() je suis ici +++++"+montant);
+					tranche.subtractMontant(tranche.getMntpayer());
+					tranche.setPayer(Boolean.FALSE);
+					if (next == null) {
+						return this;
+					} else {
+						System.out.println("PaiementManagerImpl.PaiementWorker.inversecompute() je suis reste "+reste);
+						next.setMontant(reste);
+						return next.inversecompute();
+					}
+				} else {
+					if (montant >0 && montant < tranche.getMntpayer()) {
+						tranche.subtractMontant(montant);
+						tranche.setPayer(Boolean.FALSE);
+						return this;
+					} else {
+						return this;
+					}
+				}
+			} else {
+				if (next == null) {
+					return this;
+				} else {
+					System.out.println("PaiementManagerImpl.PaiementWorker.inversecompute() je suis reste "+montant);
+					next.setMontant(montant);
+					return next.inversecompute();
+				}
+			}
+		}
+
+		/**
+		 * 
+		 * @return
+		 */
+		public ChangerWorker compute() {
+			if (tranche.getSolde() == 0) {// Solde
+				if (next == null)
+					return this;
+				else {
+					next.setMontant(montant);
+					return next.compute();
+				}
+			} else {// solde>0
+				if (tranche.getSolde() > montant) {
+					tranche.addMontant(montant);
+					return this;
+				} else {
+					long reste = montant - tranche.getSolde();
+					tranche.addMontant(tranche.getSolde());
+					tranche.setAnneScolaire(inscription.getAnneScolaire());
+					tranche.setPayer(Boolean.TRUE);
+					if (next == null)
+						return this;
+					else {
+						next.setMontant(reste);
+						return next.compute();
+					}
+				} // end if(tranche.getSolde()>montant){
+			}
+		}
 	}
 
 }

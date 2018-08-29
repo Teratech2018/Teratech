@@ -50,10 +50,13 @@ import com.kerenedu.jaxrs.impl.report.ViewBilanFinancierEcoleModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewBilanFinancierEcoleRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewBilanFinancierModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewBilanFinancierRSImpl;
+import com.kerenedu.jaxrs.impl.report.ViewBilanServiceEleveRSImpl;
+import com.kerenedu.jaxrs.impl.report.ViewBilanServiceModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewDltPaiementModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewDltPaiementRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewEmargementRSImpl;
+import com.kerenedu.jaxrs.impl.report.ViewListeEleveModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewListeEleveRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewNoteHelperRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewPaiementJournalierRSImpl;
@@ -85,11 +88,13 @@ import com.kerenedu.reglement.ConsultationPaieRSImpl;
 import com.kerenedu.reglement.DepenseRSImpl;
 import com.kerenedu.reglement.EcheancierDltRSImpl;
 import com.kerenedu.reglement.EcheancierRSImpl;
+import com.kerenedu.reglement.FichePaiementOptionelRSImpl;
 import com.kerenedu.reglement.FichePaiementProfRSImpl;
 import com.kerenedu.reglement.FichePaiementRSImpl;
 import com.kerenedu.reglement.PaiementProfRSImpl;
 import com.kerenedu.reglement.PaiementRSImpl;
 import com.kerenedu.reglement.PrimeProfRSImpl;
+import com.kerenedu.reglement.RecetteRSImpl;
 import com.kerenedu.reglement.ReglementProfRSImpl;
 import com.kerenedu.reglement.ReglementRSImpl;
 import com.kerenedu.reglement.RemiseRSImpl;
@@ -251,7 +256,11 @@ public class ApplicationConfig extends Application {
 		resources.add(ViewEmargementRSImpl.class);
 		resources.add(ViewPaiementJournalierRSImpl.class);
 		resources.add(InscriptioncloneRSImpl.class);
-		
+		resources.add(ViewBilanServiceEleveRSImpl.class);
+		resources.add(ViewBilanServiceModalRSImpl.class);
+		resources.add(ViewListeEleveModalRSImpl.class);
+		resources.add(RecetteRSImpl.class);
+		resources.add(FichePaiementOptionelRSImpl.class);
     }
     
 }

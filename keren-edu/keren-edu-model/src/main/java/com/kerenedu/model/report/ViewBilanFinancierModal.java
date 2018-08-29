@@ -31,7 +31,7 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=1)
 	private SectionE section ;
 	
 	
@@ -101,13 +101,13 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Bilan Financier : Selectionnez une Classe";
+		return "Bilan Financier Détaillé ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Bilan Financier : Selectionnez une Classe";
+		return "Bilan Financier Détaillé ";
 	}
 
 	public SectionE getSection() {

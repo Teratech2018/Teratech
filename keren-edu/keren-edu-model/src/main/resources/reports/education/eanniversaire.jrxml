@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SygmaFiles" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
-	<property name="ireport.zoom" value="1.610510000000001"/>
+	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
@@ -101,6 +101,7 @@
 	<field name="lieu" class="java.lang.String"/>
 	<field name="classe.id" class="java.lang.Long"/>
 	<field name="classe.filiere.cycle.libelle" class="java.lang.String"/>
+	<field name="classe.filiere.cycle.id" class="java.lang.Long"/>
 	<field name="anneScolaire" class="java.lang.String"/>
 	<sortField name="classe.id"/>
 	<variable name="nbreclasse" class="java.lang.Long" resetType="Group" resetGroup="employe" calculation="Count">
@@ -264,7 +265,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{anneScolaire}+"/"+(new Long($F{anneScolaire})+1)]]></textFieldExpression>
+					<textFieldExpression><![CDATA[" Année Scolaire :" +($F{anneScolaire}+"-"+ (new Long($F{anneScolaire})+1))]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -452,7 +453,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{classe.filiere.cycle.libelle}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{classe.filiere.cycle.id}==1 ? "Groupe Scolaire Bilingue les Sauterelles ".toUpperCase() : ($F{classe.filiere.cycle.id}==2 ? "Groupe Scolaire Bilingue les Sauterelles ".toUpperCase() : "Collège Bilingue la piété ".toUpperCase() ) )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="401" y="81" width="166" height="10" uuid="f9a37f59-d37b-4800-afbd-d938b8635619"/>
@@ -465,7 +466,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{classe.filiere.cycle.libelle}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{classe.filiere.cycle.id}==1 ? "bilingual nursery and primary school the sauterelles ".toUpperCase() : ($F{classe.filiere.cycle.id}==2 ? "bilingual nursery and primary school the sauterelles ".toUpperCase() : "Piete bilingual college".toUpperCase() ) )]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="64" y="78" width="50" height="1" uuid="34e9eeb4-224d-4afc-a041-7173f0ee527c"/>

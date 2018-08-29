@@ -63,19 +63,19 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	protected FichePaiement service;
 
 	@Column(name = "DATE_PAI")
-	@Predicate(label = "DATE PAIEMENT", optional = false, updatable = false, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 4)
+	@Predicate(label = "DATE PAIEMENT", optional = false, updatable = true, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 4)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datePaiement = new Date();
 
 	@Column(name = "ZMNT_VERSER")
 	@Predicate(label = "Versement ", optional = true, updatable = false, search = true, type = Long.class, sequence = 5, colsequence = 5, hidden = "currentObject.modePaiement==0")
-	@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
+	//@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
 	protected Long zMntverser;
 	
 	 @Transient
 	@Column(name = "ZMNT_VERSER")
 	@Predicate(label = "Versement ", optional = true, updatable = false, type = Long.class, sequence = 5, colsequence = 5, editable=false, hidden = "currentObject.modePaiement==1")
-	@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
+	//@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
 	protected Long zMntversertotal;
 
 	@Transient
@@ -97,25 +97,23 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 
 	@Transient
 	@Column(name = "ZSOLDE")
-	@Predicate(label = " Solde ", search = true, type = Long.class, sequence = 7, editable = false,colsequence = 6)
+	@Predicate(label = " Solde ", type = Long.class, sequence = 7, editable = false,colsequence = 6)
 	@Observer(observable = "eleve", source = "field:zSolde")
 	protected Long zsolde;
 
 	@Column(name = "ZREMISE")
-	@Predicate(label = "Remise", optional = true, updatable = true, search = false, sequence = 8, type = Long.class, editable = false, 
-	hidden = "currentObject.modePaiement==null||currentObject.modePaiement==1")
-	@Observer(observable = "modePaiement", source = "method:reduction", parameters = "modePaiement,eleve")
+	@Predicate(label = "Remise", optional = true, updatable = true, search = false, sequence = 8, type = Long.class, editable = true)//	hidden = "currentObject.modePaiement==null||currentObject.modePaiement==1"
+	//@Observer(observable = "modePaiement", source = "method:reduction", parameters = "modePaiement,eleve")
 	protected Long zremise;
 	
 	@Column(name = "ZRISTOURNE")
-	@Predicate(label = "Ristourne", optional = true, updatable = true, search = false, sequence = 9, type = Long.class,
-			hidden = "currentObject.modePaiement==null||currentObject.modePaiement==0")
+	@Predicate(label = "Ristourne", optional = true, updatable = true, search = false, sequence = 9, type = Long.class,hidden = "currentObject.modePaiement==null||currentObject.modePaiement==0")
 	protected Long zristourne;
 
 	@Transient
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "REMISE_ID")
-	@Predicate(updatable = true, type = Remise.class, target = "many-to-many-list", search = true, hidden = "currentObject.modePaiement==null||currentObject.modePaiement==1", sequence = 2, group = true, groupLabel = "Attribution des Remises", groupName = "tab1")
+	@Predicate(updatable = true, type = Remise.class, target = "many-to-many-list", search = true, sequence = 2, group = true, groupLabel = "Attribution des Remises", groupName = "tab1")
 	@Observer(observable = "modePaiement", source = "method:getremise", parameters = "modePaiement,eleve,datePaiement")
 	protected List<Remise> listremise;
 
@@ -164,7 +162,8 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 		// }
 		this.zremise = ins.zremise;
 		this.zristourne=ins.zristourne;
-		 this.zsolde = ins.getzMnt() -ins.getzMntverser()-ins.getZremise()-ins.getZristourne();
+//		 this.zsolde = ins.getzMnt() -ins.getzMntverser()-ins.getZremise()-ins.getZristourne();
+		this.zsolde = ins.getEleve().getzSolde();
 		this.state = ins.state;
 		this.modePaiement = ins.modePaiement;
 		if (ins.getEleve() != null) {
@@ -242,7 +241,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	@Override
 	public boolean isDesableupdate() {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 	public String getUsername() {

@@ -102,10 +102,9 @@
 		<class>com.kerenedu.discipline.LigneAbscence</class>
 		<class>com.kerenedu.model.report.ViewEmargement</class>
 		<class>com.kerenedu.inscription.Inscriptionclone</class>
-		
-	
-
-
+		<class>com.kerenedu.model.report.ViewBilanServiceEleve</class>
+		<class>com.kerenedu.reglement.Recette</class>	
+		<class>com.kerenedu.reglement.FichePaiementOptionel</class>	
 
 		<shared-cache-mode>NONE</shared-cache-mode>
 		<properties>

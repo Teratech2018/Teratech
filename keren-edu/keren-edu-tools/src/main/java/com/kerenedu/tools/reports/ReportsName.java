@@ -17,6 +17,7 @@ public enum ReportsName {
     LISTAING_RETARD("elistingretard.jasper"),
     BILANFINANCIER("ebilanfinancier.jasper"),
     BILANFINANCIERCLASSE("ebilanfinancierclasse.jasper"),
+    RETARD_PAIELMENT("eretardpaiement.jasper"),
     LINSTINGPAIEMENT("elistingpaiement.jasper"),
     LINSTINGRETARD("elistingretard.jasper"),
     BULLSEQUENTIEL("ebulletin_sequence.jasper"), 
@@ -24,6 +25,7 @@ public enum ReportsName {
     PLANNING_COURS("eemploitemps.jasper"),  
     BULLTRIM("ebulletin_trimestre.jasper"),  
     FICHE_INSCRIPTION("eficheInscription.jasper"),  
+    BILAN_SERVICE("elistingseleveservice.jasper"),
     BULLETIN("ebulletin.jasper");
 
     /**
