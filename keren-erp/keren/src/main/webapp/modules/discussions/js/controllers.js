@@ -1252,7 +1252,7 @@ angular.module('keren.core.discussion')
                                         instance.errors = 0;
                                         $scope.messagestate = response.data;
                                         if($scope.messagestate.unreadMessages>0){
-//                                            $rootScope.$broadcast("updatemessagesnumber",{value:$scope.messagestate.unreadMessages});
+                                            $rootScope.$broadcast("updatemessagesnumber",{value:$scope.messagestate.unreadMessages});
                                         }//end if($scope.numberofnewmessages>0)                                        
                                     },function(error){                                
                                         instance.errors = instance.errors+1;

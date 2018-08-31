@@ -926,14 +926,17 @@ angular.module('keren.core.commons')
           */
          convertToLocalDate:function(date){
                  //var date = new Date();  
-                var d = date.getDate();
-                var m = date.getMonth();
-                var y = date.getFullYear();
+                var d = ''+date.getDate();
+                var m = ''+(date.getMonth()+1);
+                var y = ''+date.getFullYear();
+                if(m.length<2) m = '0'+m;
+                if(d.length<2) d = '0'+d;
                 var h = date.getHours()<9 ? "0"+date.getHours():date.getHours();
                 var m2 = date.getMinutes()<9 ? "0"+date.getMinutes():date.getMinutes();
                 var s = date.getSeconds();
                var dateString = new String();
                dateString = y+"-"+m+"-"+d+"T"+h+":"+m2;
+//               console.log("commons.convertToLocalDate ========================= "+dateString)
                return dateString;
          },
          
@@ -1951,6 +1954,7 @@ angular.module('keren.core.commons')
                     }
                 }
             },
+            
             /**
              * 
              * @param {type} module

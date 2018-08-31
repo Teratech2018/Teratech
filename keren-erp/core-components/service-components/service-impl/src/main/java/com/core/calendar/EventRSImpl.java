@@ -6,6 +6,7 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.commons.DateHelper;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -71,52 +72,32 @@ public class EventRSImpl
     @Override
     protected void processBeforeUpdate(Event entity) {
         if(entity.getTitle()==null||entity.getTitle().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir le titre")).build()); 
-        }
-        if(entity.getStart()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la date de debut")).build()); 
-        }
-        if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selectionner au moins un participant")).build()); 
-        }
-        if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la durée")).build());  
-        }
-        if(entity.getRappel()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selection la periode de rappel")).build());            
-        }
-        
+            throw new KerenExecption("Veuillez saisir le titre"); 
+        }else if(entity.getStart()==null){
+            throw new KerenExecption("Veuillez saisir la Date de début"); 
+        }else if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
+            throw new KerenExecption("Veuillez saisir sélectionner au moins un participants"); 
+        }else if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
+            throw new KerenExecption("Veuillez saisir la durée");             
+        }else if(entity.getRappel()==null){
+            throw new KerenExecption("Veuillez selection la periode de rappel");           
+        }        
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected void processBeforeSave(Event entity) {
-        if(entity.getTitle()==null||entity.getTitle().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir le titre")).build()); 
-        }
-        if(entity.getStart()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la date de debut")).build()); 
-        }
-        if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selectionner au moins un participant")).build()); 
-        }
-        if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la durée")).build());  
-        }
-        if(entity.getRappel()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selection la periode de rappel")).build());            
-        }
-        
+       if(entity.getTitle()==null||entity.getTitle().trim().isEmpty()){
+            throw new KerenExecption("Veuillez saisir le titre"); 
+        }else if(entity.getStart()==null){
+            throw new KerenExecption("Veuillez saisir la Date de début"); 
+        }else if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
+            throw new KerenExecption("Veuillez saisir sélectionner au moins un participants"); 
+        }else if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
+            throw new KerenExecption("Veuillez saisir la durée");             
+        }else if(entity.getRappel()==null){
+            throw new KerenExecption("Veuillez selection la periode de rappel");           
+        }        
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -140,7 +121,7 @@ public class EventRSImpl
             start = DateHelper.getFirstDayOfMonth(new Date());
             end = DateHelper.getLastDayOfMonth(new Date());
         }//end if(start==null){
-        String requete = "SELECT DISTINCT c FROM Event c , IN(c.participants) p WHERE (c.owner.id="+userid;
+        String requete = "SELECT DISTINCT c FROM Event c  WHERE (c.owner.id="+userid;
         StringBuffer subquery = new StringBuffer(" ");
         int index = 0;
         for(Object obj : ids){
@@ -154,11 +135,11 @@ public class EventRSImpl
         }//end for(Object id : ids){
         subquery.append(" ");// 
         if(subquery.toString().trim().isEmpty()){
-            requete+=") AND c.start BETWEEN :start AND :end ";
+            requete+=") AND (c.start >=:start AND c.start<=:end)";
         }else{
-            requete+=" OR "+subquery+" ) AND c.start BETWEEN :start AND :end ";
+            requete+=" OR "+subquery+" ) AND (c.start >=:start AND c.start<=:end)";
         }//end if(subquery.toString().trim().isEmpty()){        
-//        System.out.println(EventRSImpl.class.toString()+" ===========================  === "+requete);
+        System.out.println(EventRSImpl.class.toString()+" ===========================  === "+requete+" === "+start+" === "+end);
         Query query = manager.getDao().getEntityManager().createQuery(requete);
         query.setParameter("start", start, TemporalType.TIMESTAMP);
         query.setParameter("end", end, TemporalType.TIMESTAMP);

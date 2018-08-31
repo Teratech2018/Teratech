@@ -20,24 +20,17 @@
                    <div class="btn-group"  role="group"  aria-label="group 1" ng-hide="listViewType=='calendar'">
                        <button type="button"  class="btn btn-default btn-sm"  ng-click="importAction()"  id="importerbtn" ng-hide="listViewType=='edit'">{{'Importer' | translate}}</button>
                       <button type="button"  class="btn btn-default btn-sm"  ng-click="annulerAction()"  id="importerbtn" ng-hide="listViewType=='list'">{{'Quitter' | translate}}</button>
-                   </div>
-    <!--               <span  class="pull-right">
-                        <span>
-                            <div class="btn-group"  role="group"  aria-label="group 3" ng-hide="listViewType=='edit'">
-                                  <button type="button"  class="btn btn-default btn-sm" ng-click="switchToCalendar()">
-                                   <span class="glyphicon glyphicon-calendar"  aria-hidden="true"></span>
-                                </button>  
-                                <button type="button"  class="btn btn-default btn-sm" ng-click="switchToList()">
-                                   <span class="glyphicon glyphicon-list"  aria-hidden="true"></span>
-                                </button>                   
-                             </div> 
-                        </span>                    
-                   </span>-->
-
+                   </div> 
          </div>
        </div>
     </nav>
-    <div class="col-sm-12  col-md-12">
+    <div class="col-sm-12  col-md-12"  style="height: 1000px;background-color: #9d9d9d;">
+        <style>
+            #calendar{
+                background-color: #ffffff;
+                margin-top: 30px;
+            }
+        </style>
         <ng-view />
     </div>
 </div>
