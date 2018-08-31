@@ -541,6 +541,7 @@ angular.module("mainApp")
     $scope.getDefaultModule = function(){         
         $scope.getModulesForCurrentUser();
         commonsTools.createBodyChatContent();
+        $rootScope.$broadcast("startdiscussionworker" ,{});  
     };
 
     /**
@@ -637,6 +638,7 @@ angular.module("mainApp")
         $scope.enabledVerticalMenu = false;
         $scope.hideOther = $scope.showCalendar || $scope.showDiscussion ;
         $scope.principalscreen = false;
+        //Fermeture du tchat
         //Chargement du logo de l'application
         restService.downloadPNG($rootScope.globals.user.image,"mail_user_id");        
         //console.log("Vous avez cliquer sur le module ::: Discussion");
@@ -743,6 +745,68 @@ angular.module("mainApp")
     };
     /**
      * 
+     * @param {type} idParent
+     * @param {type} idElement
+     * @param {type} idUser
+     * @param {type} sens
+     * @param {type} photo
+     * @param {type} message
+     * @param {type} date
+     * @returns {undefined}
+     */
+     $scope.addMessage = function(idParent,idElement,idUser,sens,photo,message,date){
+                   $('#'+idParent+'_tchatTexteContent').append("<div id="+idParent+idElement+"_messageTchat style='width:100%;padding:8px;'></div>");
+	           if(sens == 0){
+                            //Left
+                            $('#'+idParent+idElement+"_messageTchat").append("<span id="+idParent+idElement+"_messageTchatPhotoContent style='margin-right:5px;width:40px;border:solid 1px #d3d3d3;display:inline-block;'></span>");
+                            $('#'+idParent+idElement+"_messageTchat").append("<span id="+idParent+idElement+"_messageTchatTexteContent style='width:82%;vertical-align:top;display:inline-block;background-color:#eaeaea;padding:8px;border-radius:15px;word-wrap : break-word ;'></span>");
+
+                            $('#'+idParent+idElement+"_messageTchatPhotoContent").append("<img id="+idParent+idElement+"_messageTchatPhoto style='width:100%;' src="+photo+">");
+                            if(angular.isString(message)){
+                              $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message+"</div>");
+                            }else{
+                                $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message.body+"</div>");
+                            }//end if(angular.isString(message)){
+                            $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatDate style='font-style:italic;font-size:80%;text-align:right;'>"+date+"</div>");
+
+                    }else{
+
+                            //Right
+                            $('#'+idParent+idElement+"_messageTchat").append("<span id="+idParent+idElement+"_messageTchatTexteContent style='margin-right:5px;width:82%;vertical-align:top;display:inline-block;background-color:#0484f7;color:white;padding:8px;border-radius:15px;word-wrap : break-word ;'></span>");
+                            $('#'+idParent+idElement+"_messageTchat").append("<span id="+idParent+idElement+"_messageTchatPhotoContent style='width:40px;border:solid 1px #d3d3d3;display:inline-block;'></span>");
+
+                            $('#'+idParent+idElement+"_messageTchatPhotoContent").append("<img id="+idParent+idElement+"_messageTchatPhoto style='width:100%;' src="+photo+">");
+                            if(angular.isString(message)){
+                                $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message+"</div>");
+                            }else{
+                               $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message.body+"</div>");
+                            }
+                            $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatDate style='font-style:italic;font-size:80%;text-align:right;'>"+date+"</div>");
+                    }
+                    //On scroll vers le bas
+                    $('#'+idParent+'_tchatTexteContent').scrollTop(1000000000,'bottom');
+                    //Save en bd
+                    var instance = commonsTools.getToTchatContext(idParent);
+                    var canal = null;
+                    var user = null;
+//                    console.log("commons.addMessage : function(idParent,idElement,idUser,sens,photo,message,date,rootScope)============= "+" ===Element : "+idElement+"========="+angular.toJson(instance));
+                    if(instance[idParent].cible.editTitle=='CANAL'){
+                        canal = instance[idParent].cible;
+                    }else{
+                        user = instance[idParent].cible;
+                    }//end if(instance[idElement].user.editTitle=='CANAL'){
+                    var msge = message;
+                    if(angular.isString(message)){
+                        msge = commonsTools.createemptyMessage(instance[idParent].user,canal,user,message);
+                        msge.sender=instance[idParent].user;                        
+//                        console.log("princiâl.addMessage : function(idParent,idElement,idUser,sens,photo,message,date,rootScope) ============ ")
+                        commonsTools.sendAction(msge);
+                    }//end if(angular.isString(message)){     
+                    instance[idParent].messages.push(msge);
+               }; 
+//     $scope.addPieceJoointe = function()
+    /**
+     * 
      * @param {type} item
      * @returns {undefined}
      */
@@ -752,8 +816,37 @@ angular.module("mainApp")
         var idFriend = item.id;
         var photoUser = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+$scope.currentUser.image;
         var photoFriend = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+item.image;
-        var nameFriend = item.designation;
-        commonsTools.addChatZone(zoneid,idUser,idFriend,photoUser,photoFriend,nameFriend);
+        var nameFriend = item.designation;       
+        if(angular.isDefined($scope.currentModule) && $scope.currentModule.name!=="discussionconf"){
+            commonsTools.addToTchatContext(zoneid,$scope.currentUser,item);
+            commonsTools.addChatZone(zoneid,idUser,idFriend,photoUser,photoFriend,nameFriend,$scope);
+            //Chargement des données
+           var messages = new Array();
+           var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/direct/"+$scope.currentUser.id+"/"+item.id+"/0/15";
+           if(item.editTitle==='CANAL'){
+              url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/canal/"+$scope.currentUser.id+"/"+item.id+"/0/15";
+           }//end if(item.editTitle==='CANAL'){
+           $http.get(url)
+                    .then(function(response){
+                         var messages = response.data;
+//                         $filter('orderBy')(messages,'id',true); 
+                         for(var i=messages.length-1 ; i>=0 ;i--){
+                             var sens = 0;
+                             var photo = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+$scope.currentUser.image;
+                             if($scope.currentUser.id!=messages[i].sender.id){
+                                 sens = 1;
+                                 photo = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+item.image;
+                             }//end if($scope.currentUser.id!=messages[i].sender.id){
+                             var today = new Date();
+                             $scope.addMessage(zoneid,today.getTime(),idUser,sens,photo,messages[i],commonsTools.formatDat(new Date(messages[i].date)));
+                         }//endfor(var i=0 ; i<messages.length;i++){
+//                        $scope.piecejointeMenu($scope.messageobject);
+                        commonsTools.hideDialogLoading();
+                    },function(error){
+                        commonsTools.hideDialogLoading();
+                        commonsTools.showDialogLoading(error);
+                    });
+        }//end if($scope.currentModule.name!=="discussionconf"){
     };
     
     /**
@@ -806,6 +899,46 @@ angular.module("mainApp")
                $scope.numberofnewmessages = args.value;
           });
           
+          $scope.$on("refresh_message",function(event,args){
+                var message = args.message;
+                var zoneid = null;//"zone"+item.id;
+                var canal = message.canal;
+                var user = message.reciever;
+                var item = null;
+                if(canal!=null){
+                    zoneid = "zone"+canal.id;
+                    item = canal;
+                }else {
+                    zoneid = "zone"+user.id;
+                    item = user;
+                }//end if(message.reciever!=null){
+                //Mise a jour de la Zone de tchat               
+                var instance = commonsTools.getToTchatContext(zoneid);
+                if(!angular.isDefined(instance[zoneid])||instance[zoneid].active===false){
+                     commonsTools.addToTchatContext(zoneid,$scope.currentUser,item);
+                     instance = commonsTools.getToTchatContext(zoneid);
+                }//end if(!angular.isDefined(instance[zoneid])){
+                var photoUser = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+$scope.currentUser.image;
+                var photoFriend = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+item.image;
+                var nameFriend = item.designation;
+                if(angular.isDefined($scope.currentModule)&&$scope.currentModule!=null
+                        && $scope.currentModule.name!=="discussionconf" && !commonsTools.isTchatOpen(zoneid)){
+                   commonsTools.addChatZone(zoneid,$scope.currentUser.id,item.id,photoUser,photoFriend,nameFriend,$scope); 
+                }//end if(angular.isDefined($scope.currentModule) && $scope.currentModule.name!=="discussionconf" && !commonsTools.isTchatOpen(zoneid)){
+//                console.log("discussionctrl.$scope.$on(refresh_message,function(event,args)===================== "+message.id+" === "+commonsTools.contains(instance[zoneid].messages,message)+" data table ===== "+angular.toJson(instance[zoneid].messages));
+                if(!commonsTools.contains(instance[zoneid].messages,message)){
+                    instance[zoneid].messages.push(message);
+                    var sens = 0;
+                    var photo = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+$scope.currentUser.image;
+                    if($scope.currentUser.id!=message.sender.id){
+                        sens = 1;
+                        photo = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/static/"+item.image;
+                    }//end if($scope.currentUser.id!=messages[i].sender.id){
+                    var today = new Date();
+                    instance[zoneid].messages.push(message);
+                    $scope.addMessage(zoneid,today.getTime(),item.id,sens,photo,message,commonsTools.formatDat(new Date(message.date)));
+                }//end if(!commonsTools.contains(instance[zoneid].messages,args.message))){
+          });
           
           $scope.$on("linkToAction" , 
             /**
@@ -6742,7 +6875,7 @@ $scope.gererChangementFichier3 = function(event,model){
                          //Construction de la partie recherche
                          var editPanel =  $scope.listPanelDialogComponent(metaData,index);
                          var bodyElem = document.createElement('div');
-                         bodyElem.setAttribute('style','overflow: auto;margin-top: -20px;');
+                         bodyElem.setAttribute('style','overflow: auto;margin-top: -20px;height:400px;');
                          bodyElem.appendChild(editPanel);
                          viewElem.appendChild(bodyElem);  
                          var filter = $scope.filterOptionsComponent(metaData,"filterMtmActionsId");                         
@@ -7083,7 +7216,7 @@ $scope.gererChangementFichier3 = function(event,model){
            }//end if(endIndex==1)
            footerDiv.setAttribute('id' , footerID);
 //           console.log("$scope.editDialogBuilderExtern = function(metaData,index,link) ====== canupdate : "+$scope.canUpdate()+" ==== cancreate : "+$scope.canCreate())
-           if($scope.metaData.desableupdate==true||$scope.canUpdate()||$scope.canCreate()){
+           /*if(metaData.desableupdate==true||$scope.canUpdate()||$scope.canCreate())*/{
                 var buttonElem = document.createElement('button');
                 footerDiv.appendChild(buttonElem);
                 buttonElem.setAttribute('class' , 'btn btn-primary');
@@ -7097,7 +7230,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 }else{
                     buttonElem.appendChild(document.createTextNode("{{'Valider' | translate}}"));
                 }//end if(angular.isDefined(report) && report==true)
-                buttonElem.setAttribute("ng-hide",metaData.desablecreate);
+                //buttonElem.setAttribute("ng-hide",metaData.desablecreate);
            }//end if($scope.windowType!='view'){                      
            //Button annuler
            buttonElem = document.createElement('button');

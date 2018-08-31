@@ -186,6 +186,22 @@ angular.module('keren.core.commons')
                     }
                 };
             })();
+            var tchatContext =(function(){
+                var instance;
+                function createInstance(){
+                    var object = new Object();
+                    return object;
+                }
+                return{
+                    getInstance: function(){
+//                        console.log("Vous avez cachez ======================== "+angular.toJson(currentuser));
+                        if(!instance){
+                            instance = createInstance();
+                        }
+                        return instance;
+                    }
+                };
+            })();
             /**
              * Construction d'interface Detail Display
              *Pattern chain of responsability
@@ -352,14 +368,52 @@ angular.module('keren.core.commons')
                createBodyChatContent : function(){
                    $('body').append("<div id='tchatBodyContent' style='border:solid 1px green;position:fixed;z-index:9000; width:100%;top:100%;text-align:right;background-color:white'></div>");
                },
+               /**
+                * 
+                * @param {type} idElement
+                * @returns {listeTchatBox.isOpen}
+                */
+               isTchatOpen : function(idElement){ 
+                   var instance = tchatContext.getInstance();
+                   return angular.isDefined(instance[idElement])&&instance[idElement].active;
+               },
                getNbreTChatBox : function(){return nbreTchatBox;},
                incrementeNbreTChatBox : function(){nbreTchatBox = nbreTchatBox + 1;},
                decrementeNbreTChatBox : function(){nbreTchatBox = nbreTchatBox - 1;},
-               addChatZone : function(idElement,idUser,idFriend,photoUser,photoFriend,nameFriend){
+               closeTchat : function(idElement){
+                    this.decrementeNbreTChatBox();	
+		    $('#'+idElement+'_tchatContent').remove();
+                },
+                addToTchatContext : function(zoneid,user,cible){
+                    var instance = tchatContext.getInstance();
+                    instance[zoneid] = new Object();
+                    instance[zoneid].user = user;
+                    instance[zoneid].cible = cible;
+                    instance[zoneid].active = true;
+                    instance[zoneid].messages = new Array();
+                },
+                getToTchatContext : function(zoneid){
+                    var instance = tchatContext.getInstance();
+                    return instance;
+                },
+               /**
+                * 
+                * @param {type} idElement
+                * @param {type} idUser
+                * @param {type} idFriend
+                * @param {type} photoUser
+                * @param {type} photoFriend
+                * @param {type} nameFriend
+                * @returns {undefined}
+                */
+               addChatZone : function(idElement,idUser,idFriend,photoUser,photoFriend,nameFriend,scope){
+//                        this.decrementeNbreTChatBox();
+                        
+                        $('#'+idElement+'_tchatContent').remove();
                         $('#tchatBodyContent').append("<span id="+idElement+"_tchatContent style='width:300px;height:400px;vertical-align:top;margin-left:6px;display:inline-block;text-align:left;margin-top:-400px'></span>");
-                        $('#'+idElement+'_tchatContent').append("<div id="+idElement+"_tchatTitleContent style='width:100%;height:8%;padding:5px;background-color:#0384f7;color:white;border-radius:5px 5px 0px 0px'></div>");
-                        $('#'+idElement+'_tchatContent').append("<div id="+idElement+"_tchatTexteContent style='border-left:solid 1px #d3d3d3;border-right:solid 1px #d3d3d3;width:100%;height:82%;overflow:auto;padding:5px'></div>");
-                        $('#'+idElement+'_tchatContent').append("<div id="+idElement+"_tchatSaisieContent style='width:100%;height:10%;'></div>");
+                        $('#'+idElement+'_tchatContent').append("<div id="+idElement+"_tchatTitleContent style='width:100%;height:8%;padding:5px;background-color:#276090;color:white;border-radius:5px 5px 0px 0px'></div>");
+                        $('#'+idElement+'_tchatContent').append("<div id="+idElement+"_tchatTexteContent style='border-left:solid 1px #d3d3d3;border-right:solid 1px #d3d3d3;width:100%;height:82%;overflow:auto;padding:5px;background-color: white;'></div>");
+                        $('#'+idElement+'_tchatContent').append("<div id="+idElement+"_tchatSaisieContent style='width:100%;height:10%;background-color: white;'></div>");
                         $('#'+idElement+'_tchatTitleContent').append("<span id="+idElement+"_tchatTitleTexte style='width:90%;display:inline-block;font-weight:bold'>"+nameFriend+"</span>");
                         $('#'+idElement+'_tchatTitleContent').append("<span id="+idElement+"_tchatRemove style='width:10%;text-align:center;display:inline-block;cursor:pointer'><i class='fa fa-remove'></i></span>");
                         $('#'+idElement+'_tchatSaisieContent').append("<input id="+idElement+"_tchatSaisie style='width:100%;height:100%;border:solid 1px #d3d3d3;padding:6px' placeholder='Ajouter un message'>");
@@ -375,7 +429,7 @@ angular.module('keren.core.commons')
                                         if(e.which == 13){
 
                                                 if($('#'+idElement+'_tchatSaisie').val().length != 0){
-                                                        addMessage(idElement,generateurIdAvance(), idUser, 1, photoUser, $('#'+idElement+'_tchatSaisie').val(), "A l'instant");
+                                                        scope.addMessage(idElement,generateurIdAvance(), idUser, 1, photoUser, $('#'+idElement+'_tchatSaisie').val(), "A l'instant");
 
                                                         //On vide la zone de saisie
                                                         $('#'+idElement+'_tchatSaisie').val("");
@@ -386,9 +440,11 @@ angular.module('keren.core.commons')
                                 $('#'+idElement+'_tchatRemove').click(function(e) {
 
                                         $('#'+idElement+'_tchatContent').fadeOut(function(){
-
-                                                decrementeNbreTChatBox();	
+                                                  var instance = tchatContext.getInstance();
+                                                  instance[idElement].active=false;
+//                                                decrementeNbreTChatBox();	
                                                 $('#'+idElement+'_tchatContent').remove();
+//                                                instance[idElement].active = false;
                                         });	
 
                                 });
@@ -414,18 +470,30 @@ angular.module('keren.core.commons')
                                 });
                         }
                },
-               addMessage : function(idParent,idElement,idUser,sens,photo,message,date){
+               /**
+                * 
+                * @param {type} idParent
+                * @param {type} idElement
+                * @param {type} idUser
+                * @param {type} sens
+                * @param {type} photo
+                * @param {type} message
+                * @param {type} date
+                * @returns {undefined}
+                */
+               addMessage : function(idParent,idElement,idUser,sens,photo,message,date,rootScope){
                    $('#'+idParent+'_tchatTexteContent').append("<div id="+idParent+idElement+"_messageTchat style='width:100%;padding:8px;'></div>");
-	
-
-                    if(sens == 0){
-
+	           if(sens == 0){
                             //Left
                             $('#'+idParent+idElement+"_messageTchat").append("<span id="+idParent+idElement+"_messageTchatPhotoContent style='margin-right:5px;width:40px;border:solid 1px #d3d3d3;display:inline-block;'></span>");
                             $('#'+idParent+idElement+"_messageTchat").append("<span id="+idParent+idElement+"_messageTchatTexteContent style='width:82%;vertical-align:top;display:inline-block;background-color:#eaeaea;padding:8px;border-radius:15px;word-wrap : break-word ;'></span>");
 
                             $('#'+idParent+idElement+"_messageTchatPhotoContent").append("<img id="+idParent+idElement+"_messageTchatPhoto style='width:100%;' src="+photo+">");
-                            $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message+"</div>");
+                            if(angular.isString(message)){
+                              $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message+"</div>");
+                            }else{
+                                $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message.body+"</div>");
+                            }//end if(angular.isString(message)){
                             $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatDate style='font-style:italic;font-size:80%;text-align:right;'>"+date+"</div>");
 
                     }else{
@@ -435,15 +503,55 @@ angular.module('keren.core.commons')
                             $('#'+idParent+idElement+"_messageTchat").append("<span id="+idParent+idElement+"_messageTchatPhotoContent style='width:40px;border:solid 1px #d3d3d3;display:inline-block;'></span>");
 
                             $('#'+idParent+idElement+"_messageTchatPhotoContent").append("<img id="+idParent+idElement+"_messageTchatPhoto style='width:100%;' src="+photo+">");
-                            $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message+"</div>");
+                            if(angular.isString(message)){
+                                $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message+"</div>");
+                            }else{
+                               $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatTexte style='font-size:89%'>"+message.body+"</div>");
+                            }
                             $('#'+idParent+idElement+"_messageTchatTexteContent").append("<div id="+idParent+idElement+"_messageTchatDate style='font-style:italic;font-size:80%;text-align:right;'>"+date+"</div>");
                     }
-
                     //On scroll vers le bas
                     $('#'+idParent+'_tchatTexteContent').scrollTop(1000000000,'bottom');
-
                     //Save en bd
-               },
+                    var instance = tchatContext.getInstance();
+                    var canal = null;
+                    var user = null;
+//                    console.log("commons.addMessage : function(idParent,idElement,idUser,sens,photo,message,date,rootScope)============= "+" ===Element : "+idElement+"========="+angular.toJson(instance));
+                    if(instance[idParent].cible.editTitle=='CANAL'){
+                        canal = instance[idParent].cible;
+                    }else{
+                        user = instance[idParent].cible;
+                    }//end if(instance[idElement].user.editTitle=='CANAL'){
+                    var msge = message;
+                    if(angular.isString(message)){
+                        msge = this.createemptyMessage(instance[idParent].user,canal,user,message);
+                        msge.sender=instance[idParent].user; 
+//                        console.log("commons.addMessage : function(idParent,idElement,idUser,sens,photo,message,date,rootScope) ============ ")
+                        rootScope.$broadcast("new_message" , {message:msge});
+                    }//end if(angular.isString(message)){                   
+               }, 
+              createemptyMessage : function(sender , canal,reciever,body){
+                var message = new Object();
+                message.id = -1;message.compareid=-1;message.designation=null;
+                message.editTitle=null;message.listTitle=null;message.moduleName=null;
+                message.selected=false;message.createonfield=true;message.desablecreate=false;
+                message.desabledelete=false;message.serial=null;message.activefilelien=false;
+                message.footerScript=null;message.activatefollower=false;message.date=new Date();
+                message.status=false;message.piecesjointe=new Array();message.sender=sender;
+                message.canal=canal;message.reciever=reciever;message.body=body;//message.senders=[];
+                return message;
+            }, 
+            sendAction : function(message){
+                var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/smessage/send/"+message.sender.id;
+//                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
+                $http.post(url,message)
+                        .then(function(response){                                                        
+//                                commonsTools.hideDialogLoading();
+                        },function(error){
+                           this.showDialogLoading(error);
+                        });
+                
+            },
                 /**
                  * Builder of the custom principal screen
                  * @param {type} theme
@@ -848,14 +956,11 @@ angular.module('keren.core.commons')
                if(!angular.isDefined(array)){
                   return false;
                }
-
                for(var i= 0 ; i<array.length;i++){
-
-                   if(array[i].id == item.id){
+                   if(array[i].id===item.id){
                       return true;
                    }
                }
-
                return false;
           },
           /**

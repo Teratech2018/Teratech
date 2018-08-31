@@ -29,7 +29,7 @@ public interface KMessageRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("direct/{userid}/{connectuserid}/{first}/{max}")
     public List<KMessage> getUsermessages(@PathParam("userid") long userid,@PathParam("connectuserid") long canalid,@PathParam("first") int firstResult, @PathParam("max") int maxResult);
-
+        
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("countcanal/{userid}/{canalid}")
@@ -39,4 +39,9 @@ public interface KMessageRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("countdirect/{userid}/{connectuserid}")
     public long countDirectMsge(@PathParam("userid") long userid,@PathParam("connectuserid") long connectuserid);
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("all/{userid}/{lastid}")
+    public DiscusionSession getmessages(@PathParam("userid") long userid,@PathParam("lastid") long lastid);
 }

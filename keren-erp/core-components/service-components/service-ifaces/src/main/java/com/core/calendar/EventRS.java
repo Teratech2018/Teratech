@@ -27,5 +27,10 @@ public interface EventRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("event/{userid}")
     public List<Event> getevents(@Context HttpHeaders headers,@PathParam("userid") long userid);
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("period/{userid}")
+    public List<Event> geteventsforperiod(@Context HttpHeaders headers,@PathParam("userid") long userid);
       
 }

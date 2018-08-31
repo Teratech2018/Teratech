@@ -3,19 +3,19 @@ package com.core.calendar;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
-import com.core.discussions.KMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kerem.commons.DateHelper;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -125,33 +125,54 @@ public class EventRSImpl
         //To change body of generated methods, choose Tools | Templates.
          Gson gson =new Gson();         
         List ids = new ArrayList();
+        Date start = null;
+        Date end = null;
         if(headers.getRequestHeader("usersid")!=null){
             ids = gson.fromJson(headers.getRequestHeader("usersid").get(0),new TypeToken<List<Long>>(){}.getType());
         }//end if(headers.getRequestHeader("usersid")!=null){
-        System.out.println(EventRSImpl.class.toString()+" ============================= userid = "+userid+" =================== users : "+ids);
-        String requete = "SELECT DISTINCT c FROM Event c , IN(c.participants) p WHERE c.owner.id="+userid;
-         String subquery = "(";
-        int index = 0 ;
+        if(headers.getRequestHeader("startdate")!=null){
+            start = gson.fromJson(headers.getRequestHeader("startdate").get(0),Date.class);
+        }//end if(headers.getRequestHeader("startdate")!=null){
+        if(headers.getRequestHeader("enddate")!=null){
+            end = gson.fromJson(headers.getRequestHeader("enddate").get(0),Date.class);
+        }//end if(headers.getRequestHeader("startdate")!=null){
+        if(start==null){
+            start = DateHelper.getFirstDayOfMonth(new Date());
+            end = DateHelper.getLastDayOfMonth(new Date());
+        }//end if(start==null){
+        String requete = "SELECT DISTINCT c FROM Event c , IN(c.participants) p WHERE (c.owner.id="+userid;
+        StringBuffer subquery = new StringBuffer(" ");
+        int index = 0;
         for(Object obj : ids){
             Long id = (Long) obj;
+            String quer = "c.owner.id = "+id+" AND (c.confidentialite=0 OR c.confidentialite=2)";
             if(index==0){
-                subquery+=" p.id="+id;
+                subquery.append(quer);
             }else{
-                subquery+=" OR p.id="+id;
-            }
-            index++;
-        }//end for(Object obj : ids)
-        if(ids.size()>0){
-            subquery+=") AND (c.confidentialite=0 OR c.confidentialite=2)";
-            requete+=" OR "+subquery;
-        }//end if(ids.size()>0)
-        List<Event> datas = manager.getDao().getEntityManager().createQuery(requete).getResultList();
+                subquery.append(" OR "+quer);
+            }//end if(index==0){
+        }//end for(Object id : ids){
+        subquery.append(" ");// 
+        if(subquery.toString().trim().isEmpty()){
+            requete+=") AND c.start BETWEEN :start AND :end ";
+        }else{
+            requete+=" OR "+subquery+" ) AND c.start BETWEEN :start AND :end ";
+        }//end if(subquery.toString().trim().isEmpty()){        
+//        System.out.println(EventRSImpl.class.toString()+" ===========================  === "+requete);
+        Query query = manager.getDao().getEntityManager().createQuery(requete);
+        query.setParameter("start", start, TemporalType.TIMESTAMP);
+        query.setParameter("end", end, TemporalType.TIMESTAMP);
+        List<Event> datas = query.getResultList();
         List<Event> output = new ArrayList<Event>();
-        System.out.println(EventRSImpl.class.toString()+" =========================== "+datas.size()+" === "+requete);
         for(Event evt:datas){
             output.add(new Event(evt));
         }//end for(Event evt:datas){
         return output;
+    }
+
+    @Override
+    public List<Event> geteventsforperiod(HttpHeaders headers, long userid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
    

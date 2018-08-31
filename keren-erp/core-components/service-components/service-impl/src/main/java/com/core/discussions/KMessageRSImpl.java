@@ -71,7 +71,8 @@ public class KMessageRSImpl
         //To change body of generated methods, choose Tools | Templates.
        return manager.getUsermessages(userid, canalid, firstResult, maxResult);
     }
-
+    
+    
     @Override
     public long countCanalMsge(long userid, long canalid) {
         //To change body of generated methods, choose Tools | Templates.
@@ -84,7 +85,12 @@ public class KMessageRSImpl
         return manager.countdirect(userid, connectuserid);
     }
 
-   
+    @Override
+    public DiscusionSession getmessages(long userid, long lastid) {
+        //To change body of generated methods, choose Tools | Templates.
+        return manager.getmessages(userid, lastid);
+    }
+
    
 
 }
