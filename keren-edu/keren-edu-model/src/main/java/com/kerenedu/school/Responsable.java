@@ -9,10 +9,14 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
+import com.kerenedu.personnel.Professeur;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -23,27 +27,35 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_resp")
 public class Responsable extends BaseElement implements Serializable, Comparable<Responsable> {
 
+	@Column(name = "RESPONSABLE")
+	@Predicate(label="Responsable",optional=false,updatable=true,search=false, target="combobox", values="Parents;Personnels" )
+	protected String responsable="0";
+	
 	@Column(name = "NOM", unique = true)
-	@Predicate(label="Nom & Prenom",optional=false,updatable=false,search=true)
+	@Predicate(label="Nom & Prenom",optional=true,updatable=false,search=true, hidden ="temporalData.responsable=='1'")
 	protected String nom;
 	
 	@Column(name = "SEXE")
-	@Predicate(label="Genre",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" )
+	@Predicate(label="Genre",optional=true,updatable=true,search=false, target="combobox", values="Masculin;Feminin", hidden ="temporalData.responsable=='1'" )
 	protected String sexe="0";
 
 	@Column(name = "TEL")
-	@Predicate(label="WhatsApp/Teléphone",optional=false,updatable=false,search=true)
+	@Predicate(label="WhatsApp/Teléphone",optional=true,updatable=false,search=true, hidden ="temporalData.responsable=='1'")
 	protected String tel;
 	
 	@Column(name = "EMAIL")
-	@Predicate(label="Email",optional=true,updatable=false,search=true)
+	@Predicate(label="Email",optional=true,updatable=false,search=true, hidden ="temporalData.responsable=='1'")
 	protected String email;
 	
 	@Column(name = "DATENAIS")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label="Né(e) le.",optional=true,updatable=true,search=true, type=Date.class, target="date")
+	@Predicate(label="Né(e) le.",optional=true,updatable=true,search=true, type=Date.class, target="date", hidden ="temporalData.responsable=='1'")
 	protected Date dateNais ;
 	
+	@ManyToOne
+	@JoinColumn(name = "PERS_ID")
+	@Predicate(label = "Personnel", type = Professeur.class, target = "many-to-one", optional = true, hidden ="temporalData.responsable=='0'")
+	private Professeur personnel;
 	@Column(name = "NE")
 	//@Predicate(label="Nombre d'enfant",optional=false,updatable=false,search=true, type=Short.class)
 	protected Short ne;
@@ -67,14 +79,25 @@ public class Responsable extends BaseElement implements Serializable, Comparable
 
 
 
-	public Responsable(Responsable nationalite) {
-		super(nationalite.id, nationalite.designation, nationalite.moduleName,0L);
-		this.nom = nationalite.nom;
-		this.tel = nationalite.tel;
-		this.email = nationalite.email;
-		this.dateNais = nationalite.dateNais;
-		this.ne = nationalite.ne;
-		this.sexe= nationalite.sexe;
+	public Responsable(Responsable entity) {
+		super(entity.id, entity.designation, entity.moduleName,0L);
+		this.responsable=entity.responsable;
+		this.ne = entity.ne;
+		if(entity.personnel!=null){
+			this.personnel=new Professeur(entity.personnel);
+			this.nom = entity.getPersonnel().getNom();
+			this.tel = entity.getPersonnel().getContact();
+			this.email = entity.getPersonnel().getEmail();
+			this.dateNais = entity.getPersonnel().getDateNais();
+			this.sexe= entity.getPersonnel().getSexe();
+		}else{
+			this.nom = entity.nom;
+			this.tel = entity.tel;
+			this.email = entity.email;
+			this.dateNais = entity.dateNais;
+			this.ne = entity.ne;
+			this.sexe= entity.sexe;
+		}
 	}
 
 	
@@ -164,6 +187,30 @@ public class Responsable extends BaseElement implements Serializable, Comparable
 
 
 
+	public String getResponsable() {
+		return responsable;
+	}
+
+
+
+	public void setResponsable(String responsable) {
+		this.responsable = responsable;
+	}
+
+
+
+	public Professeur getPersonnel() {
+		return personnel;
+	}
+
+
+
+	public void setPersonnel(Professeur personnel) {
+		this.personnel = personnel;
+	}
+
+
+
 	public void setSexe(String sexe) {
 		this.sexe = sexe;
 	}
@@ -173,7 +220,7 @@ public class Responsable extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return toString();
+		return nom ;
 	}
 
 	@Override

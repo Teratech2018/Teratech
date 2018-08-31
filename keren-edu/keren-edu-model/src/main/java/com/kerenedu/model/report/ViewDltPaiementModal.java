@@ -44,7 +44,7 @@ public class ViewDltPaiementModal extends BaseElement implements Serializable, C
 	protected Classe classe;
 	
 	
-	@Predicate(label = "Date ", optional = false, updatable = true, search = true, type = Date.class, target = "date" ,sequence=3)
+	@Predicate(label = "Date ", optional = true, updatable = true, search = true, type = Date.class, target = "date" ,sequence=3)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datepaideb;
 	

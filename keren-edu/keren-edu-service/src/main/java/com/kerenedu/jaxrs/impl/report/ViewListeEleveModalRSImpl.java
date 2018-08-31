@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +14,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
@@ -26,7 +24,6 @@ import com.kerenedu.model.report.ViewListeEleve;
 import com.kerenedu.model.report.ViewListeEleveModal;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
-import com.megatim.common.annotations.OrderType;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;

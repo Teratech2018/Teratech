@@ -68,6 +68,18 @@ public class ViewBilanFinancierEcoleModal extends BaseElement implements Seriali
 		// TODO Auto-generated method stub
 		return "Bilan Financier Global";
 	}
+	
+	@Override
+	public String getEditTitle() {
+		// TODO Auto-generated method stub
+		return "Bilan Financiers Global";
+	}
+
+	@Override
+	public String getListTitle() {
+		// TODO Auto-generated method stub
+		return "Bilan Financiers Global";
+	}
 
 	
 //

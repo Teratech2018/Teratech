@@ -4,8 +4,10 @@ package com.kerenedu.core.ifaces.report;
 import java.util.List;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.model.report.ViewBilanFinancier;
 import com.kerenedu.model.report.ViewBilanFinancierModal;
+import com.kerenedu.model.report.ViewBilanServiceModal;
 
 
 /**
@@ -19,5 +21,9 @@ public interface ViewBilanFinancierManager
 
     public final static String SERVICE_NAME = "ViewBilanFinancierManager";
     public List<ViewBilanFinancier> getCriteres(ViewBilanFinancierModal critere);
+    
+    public List<ViewBilanFinancier> getCriteres(ViewBilanServiceModal critere);
+    
+	public List<Inscription> getEleveElligible(ViewBilanServiceModal critere);
 
 }

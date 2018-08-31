@@ -65,7 +65,7 @@ public class ViewDltPaiement extends BaseElement implements Serializable, Compar
 	private String code;
 	
 	@Column(name = "DATE_PAI")
-	@Predicate(label = "DATE PAIEMENT", optional = false, updatable = false, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 4)
+	@Predicate(label = "DATE PAIEMENT", optional = true, updatable = false, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 4)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datePaiement = new Date();
 	
@@ -155,6 +155,8 @@ public class ViewDltPaiement extends BaseElement implements Serializable, Compar
 		this.anneScolaire =ins.anneScolaire;
 		this.cycle = ins.cycle;
 		this.state=ins.state;
+		this.zsolde= ins.eleve.getzSolde();
+		
 
 	}
 	
@@ -172,6 +174,7 @@ public class ViewDltPaiement extends BaseElement implements Serializable, Compar
 		this.anneScolaire =ins.getAnneScolaire();
 		this.cycle = ins.getEleve().getCycle();
 		this.state=ins.getState();
+		this.zsolde= ins.getZsolde();
 
 	}
 
@@ -218,28 +221,24 @@ public class ViewDltPaiement extends BaseElement implements Serializable, Compar
 	//
 	@Override
 	public boolean isCreateonfield() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 
 	@Override
 	public boolean isDesablecreate() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 
 	@Override
 	public boolean isDesableupdate() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 
 	@Override
 	public boolean isDesabledelete() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

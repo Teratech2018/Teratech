@@ -29,6 +29,7 @@ import com.kerenedu.configuration.ServiceManagerRemote;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
 import com.kerenedu.reglement.FichePaiement;
+import com.kerenedu.reglement.FichePaiementOptionel;
 import com.kerenedu.tools.KerenEduManagerException;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
@@ -37,7 +38,6 @@ import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
-import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -86,12 +86,11 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new Inscription(), new HashMap<String, MetaData>(),
 					new ArrayList<String>());
-			// MetaColumn workbtn = new MetaColumn("button", "work1", "Change de
-			// Classe", false, "workflow", null);
-			// workbtn.setStates(new String[] { "crée" });
-			// workbtn.setPattern("btn btn-primary");
-			// workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'changer'}");
-			// meta.getHeader().add(workbtn);
+//			 MetaColumn workbtn = new MetaColumn("button", "work1", "Change de Classe", false, "workflow", null);
+//			 workbtn.setStates(new String[] { "crée" });
+//			 workbtn.setPattern("btn btn-primary");
+//			 workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'changer'}");
+//			 meta.getHeader().add(workbtn);
 
 			MetaColumn col = new MetaColumn("button", "paiementfrais", "Paiement des frais", false, "action", null);
 			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object'}}");
@@ -106,17 +105,25 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			workbtn.setStates(new String[] { "crée" });
 			meta.getHeader().add(workbtn);
 
+			//workbtn = new MetaColumn("button", "work1", "Frais de Scolarité", false, "action", null);
 			workbtn = new MetaColumn("button", "work1", "Frais de Scolarité", false, "link", null);
 			workbtn.setValue(
-					"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'},'header':['eleve']}");
+			//		"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'}}");
+			"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'},'header':['eleve']}");
+			workbtn.setStates(new String[] { "etabli" });
+			// workbtn.setPattern("btn btn-primary");
+			meta.getHeader().add(workbtn);
+			
+			workbtn = new MetaColumn("button", "work1", "Frais Divers", false, "link", null);
+			workbtn.setValue("{'name':'keren_education_frais_opt','template':{'eleve':'object'},'header':['eleve']}");
 			workbtn.setStates(new String[] { "etabli" });
 			// workbtn.setPattern("btn btn-primary");
 			meta.getHeader().add(workbtn);
 
-			col = new MetaColumn("button", "changeclasse", "Changer de classe", false, "action", null);
+			col = new MetaColumn("button", "changer", "Changer de classe", false, "link", null);
 			col.setValue(
-					"{'name':'keren_education_ins_chgr','template':{'classe':'object.classe','eleve':'object.eleve','section':'object.classe.section','idIns':'object.id'}}");
-			// meta.getHeader().add(col);
+					"{'name':'keren_education_ins_chgr','template':{'classe':'object.classe','eleve':'object.eleve','section':'object.classe.section','idIns':'object.id'},'header':['eleve']}");
+		//	 meta.getHeader().add(col);
 			return meta;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -133,10 +140,10 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 
 	@Override
 	protected void processBeforeUpdate(Inscription entity) {
-		if (entity.getzMntPaye() != 0) {
-			throw new KerenExecption("Modification impossible<br/> Lincription " + entity.getDesignation()
-					+ " est déjà en cours de traitement...");
-		}
+//		if (entity.getzMntPaye() != 0) {
+//			throw new KerenExecption("Modification impossible<br/> L'incription " + entity.getDesignation()
+//					+ " est déjà en cours de traitement...");
+//		}
 		super.processBeforeUpdate(entity); // To change body of generated
 											// methods, choose Tools |
 											// Templates.
@@ -145,7 +152,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 	@Override
 	public Inscription changer(HttpHeaders headers, Inscription entity) {
 		try {
-
+			System.out.println("InscriptionRSImpl.changer() je suis ici changer :::::");
 			if (entity.getState().equalsIgnoreCase("crée")) {
 				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
 			}
@@ -175,8 +182,13 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		if ((inscit != null && inscit.size() != 0)) {
 			throw new KerenExecption("Traitement impossible<br/> ELEVE DEJA INSCRIT !!!");
 		}
+//		  for(FichePaiement ficheobligatoire:entity.getService()){
+//			  ficheobligatoire.setId(-1);
+//	        }//end  for(FichePaiement ficheobligatoire:entity.getService()){
+//		 
 		super.processBeforeSave(entity);
 	}
+
 
 	@Override
 	public List<FichePaiement> findmatierclasse(HttpHeaders headers) {
@@ -186,6 +198,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		return managerService.findmatierclasse(id);
 	}
 
+	
 	/**
 	 * Methode permettant de retourner les parametres pour le reporting
 	 *
@@ -209,8 +222,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			Map parameters = this.getReportParameters();
 			if (entity.getEleve().getImage() != null) {
 				try {
-					parameters.put(ReportsParameter.PHOTO_IMAGE_REPOSITORY,
-							ReportHelper.getPhotoBytes(entity.getEleve().getImage()));
+					parameters.put(ReportsParameter.PHOTO_IMAGE_REPOSITORY,ReportHelper.getPhotoBytes(entity.getEleve().getImage()));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

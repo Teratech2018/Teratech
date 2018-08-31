@@ -26,7 +26,7 @@ public class Remise extends BaseElement implements Serializable, Comparable<Remi
 
 	
 	@Column(name = "NATURE")
-	@Predicate(label="Nature Remise",optional=false,updatable=true,search=true, target="combobox", values="Total Scolarité;Reste Scolarité" , sequence=1)
+	@Predicate(label="Nature Remise",optional=false,updatable=true,search=true, target="combobox", values="Total Scolarité;Reste Scolarité;Personnel" , sequence=1)
 	protected String natureRemise="0";
 	
 	@Column(name = "TYPE")
@@ -38,18 +38,31 @@ public class Remise extends BaseElement implements Serializable, Comparable<Remi
 	protected Long zValeur ;
 	
 	@Column(name = "DATE_EFFET")
-	@Predicate(label="Delai Prise Effet",optional=false,updatable=false,search=true, type=Date.class,sequence=5, target="date" )
+	@Predicate(label="Delai Prise Effet",optional=false,updatable=false,search=true, type=Date.class,sequence=4, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datePriseEffet = new Date();
 	
+	@Column(name = "OPERATEUR")
+	//@Predicate(label="Opérateur",optional=false,updatable=true,search=true, target="combobox", values="== ;>=;<=" , sequence=5)
+	protected String operateur="0";
+	
+	@Column(name = "NBRE_ENFTS" )	
+	@Predicate(label="Enfants Min. Elligible ?",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=6)
+	protected Long zenfant ;
+	
+	@Column(name = "NBRE_ENFTS_MAX" )	
+	@Predicate(label="Enfants Max. Elligible ?",optional=true,updatable=false,search=true, type=Long.class, hide=false ,sequence=7)
+	protected Long zenfantMax ;
+	
+	
 	@Column(name = "DESCRIPTION")
-	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true , sequence=7,target="textarea")
+	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true , sequence=8,target="textarea")
 	protected String description ;
 
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire ;
 	
-	protected boolean Valider =false;
+	protected boolean valider =false;
 	
 
 
@@ -62,6 +75,40 @@ public class Remise extends BaseElement implements Serializable, Comparable<Remi
 	
 
 	
+
+
+
+	public Remise(String natureRemise, String typeRemise, Long zValeur, Date datePriseEffet, Long zenfant,
+			String description, String anneScolaire, boolean valider) {
+		super();
+		this.natureRemise = natureRemise;
+		this.typeRemise = typeRemise;
+		this.zValeur = zValeur;
+		this.datePriseEffet = datePriseEffet;
+		this.zenfant = zenfant;
+		this.description = description;
+		this.anneScolaire = anneScolaire;
+		this.valider = valider;
+	}
+
+	public Remise(Remise entity) {
+		super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+		this.natureRemise = entity.natureRemise;
+		this.typeRemise =  entity.typeRemise;
+		this.zValeur =  entity.zValeur;
+		this.datePriseEffet =  entity.datePriseEffet;
+		this.zenfant =  entity.zenfant;
+		this.description =  entity.description;
+		this.anneScolaire = entity. anneScolaire;
+		this.valider  =  entity.valider;
+		this.operateur=entity.operateur;
+		this.zenfantMax=entity.zenfantMax;
+	}
+
+
+
+
+
 
 
 
@@ -199,13 +246,8 @@ public class Remise extends BaseElement implements Serializable, Comparable<Remi
 
 
 
-
-
-
-
-
 	public boolean isValider() {
-		return Valider;
+		return valider;
 	}
 
 
@@ -216,46 +258,7 @@ public class Remise extends BaseElement implements Serializable, Comparable<Remi
 
 
 	public void setValider(boolean valider) {
-		Valider = valider;
-	}
-
-
-
-
-
-
-	@Override
-	public boolean isCreateonfield() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public boolean isDesablecreate() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	
-
-
-	@Override
-	public boolean isDesabledelete() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-
-
-
-
-
-
-
-	@Override
-	public boolean isDesableupdate() {
-		// TODO Auto-generated method stub
-		return true;
+		this.valider = valider;
 	}
 
 
@@ -279,6 +282,72 @@ public class Remise extends BaseElement implements Serializable, Comparable<Remi
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+
+
+
+
+
+
+
+	public Long getZenfant() {
+		return zenfant;
+	}
+
+
+
+
+
+
+
+
+	public Long getZenfantMax() {
+		return zenfantMax;
+	}
+
+
+
+
+
+
+
+
+	public void setZenfantMax(Long zenfantMax) {
+		this.zenfantMax = zenfantMax;
+	}
+
+
+
+
+
+
+
+
+	public String getOperateur() {
+		return operateur;
+	}
+
+
+
+
+
+
+
+
+	public void setOperateur(String operateur) {
+		this.operateur = operateur;
+	}
+
+
+
+
+
+
+
+
+	public void setZenfant(Long zenfant) {
+		this.zenfant = zenfant;
 	}
 
 

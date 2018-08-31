@@ -25,8 +25,8 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 
-@Table
-@Entity(name = "e_p_fiche")
+@Entity
+@Table(name = "e_p_fiche")
 public class FichePaiement extends BaseElement implements Serializable, Comparable<FichePaiement> {
 
 	@ManyToOne
@@ -118,6 +118,26 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 		this.matricule=ins.matricule;
 		this.mntpayer = ins.mntpayer;
 		this.zMntTmp=ins.zMntTmp;
+		this.solde=ins.solde;
+		this.mntpayer= ins.mntpayer;
+		this.payer=ins.payer;
+	
+	
+	}
+	
+	public FichePaiement(FichePaiementOptionel ins) {
+		super(-1,null,null,0L);
+		this.zQte = ins.zQte;
+		this.zMntHt = ins.zMntHt;
+		this.zristourne=(long) 0;
+		this.ztotal=ins.ztotal;
+		this.zremise=(long) 0;
+		if(ins.service!=null){
+		  this.service= new Service(ins.service);
+		}
+		this.matricule=ins.matricule;
+		this.mntpayer = ins.mntpayer;
+		this.zMntTmp=(long) 0;
 		this.solde=ins.solde;
 		this.mntpayer= ins.mntpayer;
 		this.payer=ins.payer;
@@ -326,6 +346,36 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	public void addMontant(long montant){
 		this.mntpayer+=montant;
 		this.solde-=montant;
+	}
+	
+	public void addMontantopt(long montant){
+		this.mntpayer+=montant;
+	}
+	public void addMontanthtopt(long montant){
+		this.zMntHt+=montant;
+	}
+	
+	public void addTotalopt(long montant){
+		this.ztotal+=montant;
+	}
+	
+	public void subMontantopt(long montant){
+		this.mntpayer-=montant;
+	}
+	public void subMontanthtopt(long montant){
+		this.zMntHt-=montant;
+	}
+	
+	public void subTotalopt(long montant){
+		this.ztotal-=montant;
+	}
+	
+	public void subQteopt(long qte){
+		this.zQte-=qte;
+	}
+	
+	public void addQteopt(long qte){
+		this.zQte+=qte;
 	}
 	
 	public void subtractMontant(long montant){

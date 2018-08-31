@@ -120,161 +120,190 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		}
 		return null;
 	}
-	
+
 	@Override
-    public List<Paiement> filter(HttpHeaders headers, int firstResult, int maxResult) {
-        Gson gson = new Gson();
-        Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
-      
-//        UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
-        //Type predType = ;
-        List contraints = new ArrayList();
-        if(headers.getRequestHeader("predicats")!=null){
-            contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
-        } //end if(headers.getRequestHeader("predicats")!=null){       
-//        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
-        RestrictionsContainer container = RestrictionsContainer.newInstance();  
-        if(contraints!=null&&!contraints.isEmpty()){
-            for(Object obj : contraints){
-                FilterPredicat filter = (FilterPredicat) obj ;
-                if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
-                        &&filter.getValue()!=null&&!filter.getValue().isEmpty()){
-                        container = addPredicate(container,filter);
-                }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
-            }//end  for(Object obj : contraints)
-        }//end if(contraints!=null&&!contraints.isEmpty())
-//        container.addEq("source", user);
-      
-        if(headers.getRequestHeader("eleve")!=null){
-             long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+	public List<Paiement> filter(HttpHeaders headers, int firstResult, int maxResult) {
+		Gson gson = new Gson();
+		Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 
-             Inscription inscription = null;
-            inscription = managerIns.find("id", studenid);
-        	container.addEq("eleve.id", inscription.getId());
-       }
-        container.addEq("state", "etabli");
+		// UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
+		// Type predType = ;
+		List contraints = new ArrayList();
+		if (headers.getRequestHeader("predicats") != null) {
+			contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),
+					new TypeToken<List<FilterPredicat>>() {
+					}.getType());
+		} // end if(headers.getRequestHeader("predicats")!=null){
+			// System.out.println(AbstractGenericService.class.toString()+" ===
+			// "+headers.getRequestHeader("predicats")+" === "+firstResult+" ===
+			// "+maxResult+" == "+contraints);
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (contraints != null && !contraints.isEmpty()) {
+			for (Object obj : contraints) {
+				FilterPredicat filter = (FilterPredicat) obj;
+				if (filter.getFieldName() != null && !filter.getFieldName().trim().isEmpty()
+						&& filter.getValue() != null && !filter.getValue().isEmpty()) {
+					container = addPredicate(container, filter);
+				} // end
+					// if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+			} // end for(Object obj : contraints)
+		} // end if(contraints!=null&&!contraints.isEmpty())
+			// container.addEq("source", user);
 
-//		if (inscription != null) {
-//			container.addEq("eleve.eleve.matricule", inscription.getEleve().());
-//		}
-//		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
-//				&& !CacheMemory.getCurrentNameStudent().equals("")) {
-//			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
-//		}
+		if (headers.getRequestHeader("eleve") != null) {
+			long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+
+			Inscription inscription = null;
+			inscription = managerIns.find("id", studenid);
+			container.addEq("eleve.id", inscription.getId());
+		}
+		container.addEq("state", "etabli");
+
+		// if (inscription != null) {
+		// container.addEq("eleve.eleve.matricule", inscription.getEleve().());
+		// }
+		// if (CacheMemory.getCurrentNameStudent() != null &&
+		// !CacheMemory.getCurrentNameStudent().isEmpty()
+		// && !CacheMemory.getCurrentNameStudent().equals("")) {
+		// container.addEq("eleve.eleve.nom",
+		// CacheMemory.getCurrentNameStudent());
+		// }
 		String anneScolaire = CacheMemory.getCurrentannee();
 		if (anneScolaire != null) {
 			container.addEq("anneScolaire", anneScolaire);
 		}
-        //List result = new ArrayList();
-        return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
-    }
-    
-     @Override
-    public RSNumber count(HttpHeaders headers) {
-        //To change body of generated methods, choose Tools | Templates.
-         //To change body of generated methods, choose Tools | Templates.
-        Gson gson = new Gson();
-        Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+		// List result = new ArrayList();
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), firstResult, maxResult);
+	}
 
-//        UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
-        //Type predType = ;
-        List contraints = new ArrayList();
-        if(headers.getRequestHeader("predicats")!=null){
-            contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
-        }//end if(headers.getRequestHeader("predicats")!=null){        
-        RestrictionsContainer container = RestrictionsContainer.newInstance();  
-         if(contraints!=null&&!contraints.isEmpty()){
-            for(Object obj : contraints){
-                FilterPredicat filter = (FilterPredicat) obj ;
-                if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
-                        &&filter.getValue()!=null&&!filter.getValue().isEmpty()){
-                      container = addPredicate(container, filter);
-                }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
-            }//end  for(Object obj : contraints)
-        }//end if(contraints!=null&&!contraints.isEmpty())
-         if(headers.getRequestHeader("eleve")!=null){
-             long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+	@Override
+	public RSNumber count(HttpHeaders headers) {
+		// To change body of generated methods, choose Tools | Templates.
+		// To change body of generated methods, choose Tools | Templates.
+		Gson gson = new Gson();
+		Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 
-             Inscription inscription = null;
-            inscription = managerIns.find("id", studenid);
-        	container.addEq("eleve.id", inscription.getId());
-       }
-        container.addEq("state", "etabli");
+		// UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
+		// Type predType = ;
+		List contraints = new ArrayList();
+		if (headers.getRequestHeader("predicats") != null) {
+			contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),
+					new TypeToken<List<FilterPredicat>>() {
+					}.getType());
+		} // end if(headers.getRequestHeader("predicats")!=null){
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (contraints != null && !contraints.isEmpty()) {
+			for (Object obj : contraints) {
+				FilterPredicat filter = (FilterPredicat) obj;
+				if (filter.getFieldName() != null && !filter.getFieldName().trim().isEmpty()
+						&& filter.getValue() != null && !filter.getValue().isEmpty()) {
+					container = addPredicate(container, filter);
+				} // end
+					// if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+			} // end for(Object obj : contraints)
+		} // end if(contraints!=null&&!contraints.isEmpty())
+		if (headers.getRequestHeader("eleve") != null) {
+			long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
 
-//		if (inscription != null) {
-//			container.addEq("eleve.eleve.matricule", inscription.getEleve().());
-//		}
-//		if (CacheMemory.getCurrentNameStudent() != null && !CacheMemory.getCurrentNameStudent().isEmpty()
-//				&& !CacheMemory.getCurrentNameStudent().equals("")) {
-//			container.addEq("eleve.eleve.nom", CacheMemory.getCurrentNameStudent());
-//		}
+			Inscription inscription = null;
+			inscription = managerIns.find("id", studenid);
+			container.addEq("eleve.id", inscription.getId());
+		}
+		container.addEq("state", "etabli");
+
+		// if (inscription != null) {
+		// container.addEq("eleve.eleve.matricule", inscription.getEleve().());
+		// }
+		// if (CacheMemory.getCurrentNameStudent() != null &&
+		// !CacheMemory.getCurrentNameStudent().isEmpty()
+		// && !CacheMemory.getCurrentNameStudent().equals("")) {
+		// container.addEq("eleve.eleve.nom",
+		// CacheMemory.getCurrentNameStudent());
+		// }
 		String anneScolaire = CacheMemory.getCurrentannee();
 		if (anneScolaire != null) {
 			container.addEq("anneScolaire", anneScolaire);
 		}
-        RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
-//        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
-        return number;
-    }
+		RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
+		// System.out.println(AbstractGenericService.class.toString()+".count
+		// === "+" == "+number.getValue());
+		return number;
+	}
 
 	@Override
 	protected void processBeforeSave(Paiement entity) {
-		
-		if(entity.getZristourne()==null){
+
+		if (entity.getZristourne() == null) {
 			entity.setZristourne((long) 0);
 		}
 		// calcul de la remise
-		entity.setZremise((long) 0);
-		
-		if (entity.getEleve()==null) {
+		if (entity.getZremise() == null) {
+			entity.setZremise((long) 0);
+		}
+
+		if (entity.getEleve() == null) {
 			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Selectionner l'elève  !!!!");
 		}
-		if(entity.getEleve().getzSolde()==0||entity.getEleve().getzMnt()==entity.getEleve().getzMntPaye()){
-			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Scolarite Totalement Payer pour  "+entity.getEleve().getEleve().getNom() );
+		if (entity.getEleve().getzSolde()!=null&&entity.getEleve().getzSolde() == 0 || entity.getEleve().getzMnt() == entity.getEleve().getzMntPaye()) {
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Scolarite Totalement Payer pour  "
+					+ entity.getEleve().getEleve().getNom());
 		}
-		if (entity.getzMntverser() == 0&&entity.getModePaiement().equals("1")) {
+		if (entity.getzMntverser()!=null &&entity.getzMntverser() == 0 && entity.getModePaiement().equals("1")) {
 			throw new KerenExecption("OPERATION IMPOSSIBLE <br/>Bien vouloir Saisir le Montant !!");
 		}
-		
-		if (entity.getzMntverser()>entity.getEleve().getzSolde()&&entity.getModePaiement().equals("1")) {
+
+		if (entity.getzMntverser()!=null&&entity.getzMntverser() > entity.getEleve().getzSolde() && entity.getModePaiement().equals("1")) {
 			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Montant Saisie ERROR  !!!!");
 		}
-		
-		if (entity.getZristourne()>0&&entity.getEleve().getzRistourne()>0) {
-			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Cet eleve a deja beneficier d'une ristourne de : "+entity.getEleve().getzRistourne());
+
+		if (entity.getZristourne()!=null&&entity.getZristourne() > 0 && entity.getEleve().getzRistourne() > 0) {
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Cet eleve a deja beneficier d'une ristourne de : "
+					+ entity.getEleve().getzRistourne());
 		}
-		
-		
-		
 		long remise = 0;
+		Inscription inscription = managerIns.find("id", entity.getEleve().getId());
+		if (entity.getZremise() == null) {
 		long montelligle = 0L;
-		if (entity.getModePaiement().equals("0")) {
-			List<Remise> remiselist = entity.getListremise();
-			Inscription inscription = managerIns.find("id", entity.getEleve().getId());
-			for (FichePaiement fiche : inscription.getService()) {
-				if(fiche.getService().getElligible()==true){
-					montelligle=montelligle+fiche.getZtotal();
+		
+		for (FichePaiement fiche : inscription.getService()) {
+			if (fiche.getService().getElligible() == true) {
+				montelligle = montelligle + fiche.getZtotal();
+			}
+		}
+		List<Remise> remiselist = this.getremise(entity);// entity.getListremise();
+		System.out.println("PaiementRSImpl.processBeforeSave() true remise is "+remiselist.size());
+		if (remiselist != null) {
+
+			for (Remise r : remiselist) {
+
+				if (r.getTypeRemise().equals("0")) {
+					remise = remise + (r.getzValeur());
+				}
+				if (r.getTypeRemise().equals("1")) {
+					remise = remise + ((r.getzValeur() * montelligle) / 100);
 				}
 			}
-			System.out.println("PaiementRSImpl.processBeforeSave() je suis ici ///" + montelligle);
-			if (remiselist != null) {
-				
-				for (Remise r : remiselist) {
-					if (r.getTypeRemise().equals("0")) {
-						remise = remise + (r.getzValeur());
-					}
-					if (r.getTypeRemise().equals("1")) {
-						remise = remise + ((r.getzValeur() * montelligle) / 100);
-					}
-				}
+		}
+		}else{
+			remise= entity.getZremise();
+		}
+		if (entity.getModePaiement().equals("0")) {			
 				entity.setZremise(remise);
-				long versement = entity.getZsolde() - remise- entity.getZristourne();
-				System.out.println("PaiementRSImpl.processBeforeSave() versement is :"+versement);
+				long versement = entity.getZsolde() - remise - entity.getZristourne();
+				entity.setzMntverser(versement);
+		}else{
+			System.out.println("PaiementRSImpl.processBeforeSave() REMISE is :" + remise);
+			long totalpayer = inscription.getzMntPaye()+entity.getzMntverser();
+			System.out.println("PaiementRSImpl.processBeforeSave() total PAYER is :" + totalpayer);
+			
+			if(totalpayer==inscription.getzMnt()){
+				entity.setZremise(remise);
+				long versement = entity.getzMntverser()- remise - entity.getZristourne() ;//- remise - entity.getZristourne()
+				System.out.println("PaiementRSImpl.processBeforeSave() versement is :" + versement);
 				entity.setzMntverser(versement);
 			}
 		}
 
-		
 		super.processBeforeSave(entity);
 	}
 
@@ -287,7 +316,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			if (entity.getState().equalsIgnoreCase("annulé")) {
 				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
 			}
-			entity =  manager.update(entity.getId(), entity);
+			entity = manager.update(entity.getId(), entity);
 
 			return entity;
 		} catch (KerenEduManagerException ex) {
@@ -330,13 +359,16 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 	@Override
 	public Response buildPdfReport(Paiement entity) {
 		try {
-			entity = manager.find("id",entity.getId());
+			entity = manager.find("id", entity.getId());
 			System.out.println("PaiementRSImpl.buildPdfReport() " + entity.getEleve());
-	
-//			Inscription ins = managerIns.find("id", entity.getEleve().getId());
-//			entity.setLignes(ins.getService());
-//			System.out.println("PaiementRSImpl.buildPdfReport() lignes "+entity.getLignes());
-			List<Paiement> records = manager.getCriteres(entity);// new ArrayList<Paiement>();//
+
+			// Inscription ins = managerIns.find("id",
+			// entity.getEleve().getId());
+			// entity.setLignes(ins.getService());
+			// System.out.println("PaiementRSImpl.buildPdfReport() lignes
+			// "+entity.getLignes());
+			List<Paiement> records = manager.getCriteres(entity);// new
+																	// ArrayList<Paiement>();//
 			// records.add(entity);//manager.getCriteres(entity);
 			String URL = ReportHelper.templateURL + ReportsName.FACTURE.getName();
 			Map parameters = this.getReportParameters();
@@ -380,77 +412,118 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 
 		return ficheeleve;
 	}
-	
 
 	public List<FichePaiement> getFicheeleve(Paiement entity) {
 		List<FichePaiement> ficheeleve = new ArrayList<FichePaiement>();
-		if (entity!=null) {
+		if (entity != null) {
 			Inscription elve = managerIns.find("id", entity.getEleve().getId());
 			for (FichePaiement service : elve.getService()) {
 				if (service.getPayer() == false) {
 					ficheeleve.add(service);
 				}
 			}
-			System.out.println("PaiementRSImpl.getFicheeleve() nombre fiche "+ficheeleve.size());
+			System.out.println("PaiementRSImpl.getFicheeleve() nombre fiche " + ficheeleve.size());
 		}
 
 		return ficheeleve;
 	}
-	
-
 
 	@Override
 	public List<Remise> getremise(HttpHeaders headers) {
 		Gson gson = new Gson();
-		if (headers.getRequestHeader("eleve")==null) {
+		if (headers.getRequestHeader("eleve") == null) {
 			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Selectionner l'elève  !!!!");
 		}
 		long id = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
 		Inscription eleve = managerIns.find("id", id);
-		
+
 		String mode = gson.fromJson(headers.getRequestHeader("modePaiement").get(0), String.class);
 		// long ideleve =
-		// gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
 		List<Remise> datas = new ArrayList<Remise>();
-		long value = 0;
-		System.out.println("PaiementRSImpl.getremise() mode select isi" + mode);
-		if (mode != null && mode.equals("0")) {
-			List<Remise> results = managerRemise.findAll();
-			System.out.println("PaiementRSImpl.getremise() size record is " + datas.size());
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if(eleve.getzRemise() == 0){
+
+		if(eleve.getEleve().getResp()!=null&&eleve.getEleve().getResp().getResponsable()!=null
+				&&eleve.getEleve().getResp().getResponsable().equals("1")){
+			container.addEq("natureRemise", "2");
+			container.addLe("zenfant", eleve.getEleve().getResp().getNe());
+			container.addGe("zenfantMax", eleve.getEleve().getResp().getNe());
+			List<Remise> results = managerRemise.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 			for (Remise remise : results) {
-				if (remise.getDatePriseEffet().after(new Date())&&eleve.getzRemise()==0) {
+				if (remise.getDatePriseEffet().after(new Date())) {
 					datas.add(remise);
 				}
 			}
-
+		}else{
+			container = RestrictionsContainer.newInstance();
+			container.addNotEq("natureRemise", "2");
+			List<Remise> results = managerRemise.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			for (Remise remise : results) {
+				if (remise.getDatePriseEffet().after(new Date())) {
+					datas.add(remise);
+				}
+			}
+		}
 		}
 
 		return datas;
 	}
 
+	private List<Remise> getremise(Paiement entity) {
+		Inscription eleve = managerIns.find("id", entity.getEleve().getId());
+		List<Remise> datas = new ArrayList<Remise>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if(eleve.getzRemise() == 0){
+
+		if(eleve.getEleve().getResp()!=null&&eleve.getEleve().getResp().getResponsable()!=null
+				&&eleve.getEleve().getResp().getResponsable().equals("1")){
+			container.addEq("natureRemise", "2");
+			container.addLe("zenfant", entity.getEleve().getEleve().getResp().getNe());
+			container.addGe("zenfantMax", entity.getEleve().getEleve().getResp().getNe());
+			List<Remise> results = managerRemise.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			for (Remise remise : results) {
+				if (remise.getDatePriseEffet().after(new Date())) {
+					datas.add(remise);
+				}
+			}
+		}else{
+			container = RestrictionsContainer.newInstance();
+			container.addNotEq("natureRemise", "2");
+			List<Remise> results = managerRemise.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			for (Remise remise : results) {
+				if (remise.getDatePriseEffet().after(new Date())) {
+					datas.add(remise);
+				}
+			}
+		}
+		}
+		return datas;
+
+	}
+
 	@Override
 	public Long getReduction(HttpHeaders headers) {
 		System.out.println("PaiementRSImpl.getRemise() je suis icii remise ");
-		Long remise=(long) 23000;
-		   Gson gson = new Gson();
-	          Long prioriteid = -1L;
-	          Long eleveid = -1L;
-	          eleveid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
-	          String data = headers.getRequestHeader("modePaiement").get(0); 
-	        
+		Long remise = (long) 23000;
+		Gson gson = new Gson();
+		Long prioriteid = -1L;
+		Long eleveid = -1L;
+		eleveid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+		String data = headers.getRequestHeader("modePaiement").get(0);
+
 		return remise;
 	}
 
 	@Override
 	public Long getVersement(HttpHeaders headers) {
 		System.out.println("PaiementRSImpl.getRemise() je suis icii vesemment  ");
-		  Gson gson = new Gson();
-          Long prioriteid = -1L;
-          Long eleveid = -1L;
-          Long versement=(long) 340000;
-          eleveid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
-          String data = headers.getRequestHeader("modePaiement").get(0); 
-      
+		Gson gson = new Gson();
+		Long prioriteid = -1L;
+		Long eleveid = -1L;
+		Long versement = (long) 340000;
+		eleveid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+		String data = headers.getRequestHeader("modePaiement").get(0);
+
 		return versement;
 	}
 

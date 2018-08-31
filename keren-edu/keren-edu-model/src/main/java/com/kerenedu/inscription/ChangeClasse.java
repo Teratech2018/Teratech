@@ -62,14 +62,12 @@ public class ChangeClasse extends BaseElement implements Serializable, Comparabl
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label = "Ancienne Classe", type = Classe.class, target = "many-to-one", search = true, sequence = 3, observable = true,editable=false)
-	@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe;
 
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label = "Nouvelle Classe", type = Classe.class, target = "many-to-one", search = true, sequence = 4, observable = true, optional=false)
-	@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe newclasse;
 	
 	@Predicate(label = "Nouvelle Classe", type = Long.class, hide=true, sequence=5)

@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
+import com.kerenedu.configuration.Service;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.reglement.FichePaiement;
 import com.kerenedu.school.Eleve;
@@ -32,18 +33,23 @@ import com.megatim.common.annotations.Predicate;
 public class ViewRetardPaiement extends BaseElement implements Serializable, Comparable<ViewRetardPaiement> {
 
 	
+	@ManyToOne
+	@JoinColumn(name = "SERVICE_ID")
+	@Predicate(label="Type Service",type=Service.class , target="many-to-one",search=true , sequence=1, optional=false)
+	protected Service service ;
+		
 	@Transient
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=1)
 	private SectionE section ;
-	
+		
 	
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
 	@Transient
@@ -99,6 +105,11 @@ public class ViewRetardPaiement extends BaseElement implements Serializable, Com
 		if(ins.getSection()!=null){
 			this.section=ins.getSection();
 		}
+		
+		if(ins.service!=null){
+			this.service= ins.service;
+		}
+		
 	
 		
 	}
@@ -202,6 +213,16 @@ public class ViewRetardPaiement extends BaseElement implements Serializable, Com
 
 	public void setDelai(Date delai) {
 		this.delai = delai;
+	}
+
+
+	public Service getService() {
+		return service;
+	}
+
+
+	public void setService(Service service) {
+		this.service = service;
 	}
 
 

@@ -18,14 +18,13 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.core.ifaces.report.ViewBilanServiceEleveManagerRemote;
 import com.kerenedu.core.ifaces.report.ViewRetardPaiementManagerRemote;
 import com.kerenedu.jaxrs.ifaces.report.ViewRetardPaiementRS;
-import com.kerenedu.model.report.ViewDltPaiement;
-import com.kerenedu.model.report.ViewDltPaiementModal;
+import com.kerenedu.model.report.ViewBilanServiceEleve;
 import com.kerenedu.model.report.ViewRetardPaiement;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
-import com.kerenedu.tools.reports.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -50,6 +49,9 @@ public class ViewRetardPaiementRSImpl
      */
     @Manager(application = "kereneducation", name = "ViewRetardPaiementManagerImpl", interf = ViewRetardPaiementManagerRemote.class)
     protected ViewRetardPaiementManagerRemote manager;
+    
+    @Manager(application = "kereneducation", name = "ViewBilanServiceEleveManagerImpl", interf = ViewBilanServiceEleveManagerRemote.class)
+    protected ViewBilanServiceEleveManagerRemote managereleve;
 
     public ViewRetardPaiementRSImpl() {
         super();
@@ -88,12 +90,12 @@ public class ViewRetardPaiementRSImpl
 @Override
 public Response buildPdfReport(ViewRetardPaiement entity) {
 	try {
-  	  List<ViewRetardPaiement> records =manager.getCriteres(entity);
+  	  List<ViewBilanServiceEleve> records =managereleve.getCriteresRetard(entity);
   	  if(records.size()==0){
   		throw new KerenExecption("Aucune Données Trouvés !!!");
   	  }
   	  System.out.println("ViewRetardPaiementRSImpl.buildPdfReport() size record is "+records.size());
-        String URL = ReportHelper.templateURL+ReportsName.LINSTINGRETARD.getName();
+        String URL = ReportHelper.templateURL+ReportsName.RETARD_PAIELMENT.getName();
         Map parameters = new HashMap();
         parameters= this.getReportParameters();
         return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);

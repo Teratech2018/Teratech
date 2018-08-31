@@ -569,6 +569,24 @@ and open the template in the editor.
 	                <role>ADMIN</role>
 	            </roles>           
 	        </element>
+	         <element type="com.kerenedu.model.report.ViewBilanServiceEleve" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.reglement.Recette" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	          <element type="com.kerenedu.reglement.FichePaiementOptionel" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	        
 	             
     </elements>
     

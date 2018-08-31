@@ -31,7 +31,6 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_service")
 public class Service extends BaseElement implements Serializable, Comparable<Service> {
 	
-
 	
 	@Column(name = "CODE", unique=true)	
 	@Predicate(label="CODE",optional=false,updatable=true,search=true, sequence=1)
@@ -39,7 +38,7 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	
 	
 	@Column(name = "TYPE_SERVICE", unique=true)
-	@Predicate(label="Type Service",optional=false,updatable=false,search=false, target="combobox", values="Inscription;1ere Tranche;2eme Tranche;3eme Tranche;Autres" , sequence=2, observable=true)
+	@Predicate(label="Type Service",optional=false,updatable=false,search=false, target="combobox", values="Inscription;1ere Tranche;2eme Tranche;3eme Tranche;autres" , sequence=2, observable=true)
 	protected String type="0";
 	
 	@Column(name = "MNT" )	
@@ -51,7 +50,7 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date delai;
 	
-	@Predicate(label = "Totalité des Frais Exigé ?", type = Boolean.class)
+	@Predicate(label = "Optionnel ?", type = Boolean.class)
 	private Boolean exige = Boolean.FALSE;
 	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
@@ -207,12 +206,22 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 
 
 	@Override
+	public boolean isDesabledelete() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
 	public boolean isCreateonfield() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-
+	
+	@Override
+	public boolean isDesableupdate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 }

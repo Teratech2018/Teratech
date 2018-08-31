@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SygmaFiles" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
-	<property name="ireport.zoom" value="0.826446280991736"/>
+	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
@@ -112,7 +112,13 @@
 	<field name="eleve.matricule" class="java.lang.String"/>
 	<field name="eleve.prenon" class="java.lang.String"/>
 	<field name="eleve.nom" class="java.lang.String"/>
+	<field name="anneeid" class="java.lang.String"/>
+	<field name="classe.section.id" class="java.lang.Long"/>
+	<field name="classe.section.libelle" class="java.lang.String"/>
+	<sortField name="classe.section.id"/>
+	<sortField name="cycle.id"/>
 	<sortField name="classe.id"/>
+	<sortField name="eleve.nom"/>
 	<variable name="nbre" class="java.lang.Long" resetType="Group" resetGroup="classe" calculation="Count">
 		<variableExpression><![CDATA[$F{classe.id}]]></variableExpression>
 	</variable>
@@ -152,10 +158,257 @@
 	<variable name="tauxt" class="java.lang.Double" resetType="Group" resetGroup="classe">
 		<variableExpression><![CDATA[($V{encaisset}.doubleValue()/$V{previsiont}.doubleValue())]]></variableExpression>
 	</variable>
-	<group name="classe" isStartNewPage="true">
+	<variable name="effectifsection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Count">
+		<variableExpression><![CDATA[$F{effectifs}]]></variableExpression>
+	</variable>
+	<variable name="previsiontSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{zTotalA}]]></variableExpression>
+	</variable>
+	<variable name="encaissetSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{zTotalR}]]></variableExpression>
+	</variable>
+	<variable name="remisetSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{remise}]]></variableExpression>
+	</variable>
+	<variable name="ristournetSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{ristourne}]]></variableExpression>
+	</variable>
+	<variable name="inscencaisetSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{zInscriptionEnc}]]></variableExpression>
+	</variable>
+	<variable name="tranche1encSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{tranche1Enc}]]></variableExpression>
+	</variable>
+	<variable name="tranche2encSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{tranche2Enc}]]></variableExpression>
+	</variable>
+	<variable name="tranche3encSection" class="java.lang.Long" resetType="Group" resetGroup="section" calculation="Sum">
+		<variableExpression><![CDATA[$F{tranche3Enc}]]></variableExpression>
+	</variable>
+	<variable name="tauxtSection" class="java.lang.Double" resetType="Group" resetGroup="section">
+		<variableExpression><![CDATA[($V{encaisset}.doubleValue()/$V{previsiont}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="effectifgen" class="java.lang.Long" calculation="Count">
+		<variableExpression><![CDATA[$F{effectifs}]]></variableExpression>
+	</variable>
+	<variable name="previsiontgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{zTotalA}]]></variableExpression>
+	</variable>
+	<variable name="encaissetgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{zTotalR}]]></variableExpression>
+	</variable>
+	<variable name="remisetgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{remise}]]></variableExpression>
+	</variable>
+	<variable name="ristournetgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{ristourne}]]></variableExpression>
+	</variable>
+	<variable name="inscencaisetgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{zInscriptionEnc}]]></variableExpression>
+	</variable>
+	<variable name="tranche1encgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{tranche1Enc}]]></variableExpression>
+	</variable>
+	<variable name="tranche2encgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{tranche2Enc}]]></variableExpression>
+	</variable>
+	<variable name="tranche3encgen" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{tranche3Enc}]]></variableExpression>
+	</variable>
+	<variable name="tauxtgen" class="java.lang.Double">
+		<variableExpression><![CDATA[($V{encaisset}.doubleValue()/$V{previsiont}.doubleValue())]]></variableExpression>
+	</variable>
+	<group name="section" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{classe.section.id}]]></groupExpression>
+		<groupHeader>
+			<band height="79">
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="3" y="41" width="405" height="14" uuid="a6c87a11-22d6-4608-9036-e5684bcfe1f9"/>
+					<box leftPadding="4">
+						<leftPen lineWidth="0.0" lineColor="#999999"/>
+						<bottomPen lineWidth="0.0" lineColor="#999999"/>
+						<rightPen lineWidth="0.0" lineColor="#999999"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Section : "+$F{classe.section.libelle}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="2" y="57" width="406" height="14" uuid="d41a0bde-32f0-4faf-81bf-59d74fb0d72e"/>
+					<box leftPadding="4">
+						<leftPen lineWidth="0.0" lineColor="#999999"/>
+						<bottomPen lineWidth="0.0" lineColor="#999999"/>
+						<rightPen lineWidth="0.0" lineColor="#999999"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Effectif : "+$V{effectifsection}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="table" mode="Transparent" x="116" y="2" width="309" height="33" backcolor="#E3E1E1" uuid="c6d22e11-9638-40c6-8e23-e8557cc7de33"/>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#999999"/>
+						<leftPen lineWidth="0.0" lineColor="#999999"/>
+						<bottomPen lineWidth="0.0" lineColor="#999999"/>
+						<rightPen lineWidth="0.0" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="18" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA["BILAN FINANCIER  DETAILLE / "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="table" mode="Transparent" x="425" y="2" width="285" height="33" backcolor="#E3E1E1" uuid="d74e67df-269f-4fab-a1c9-a412989519a6"/>
+					<box>
+						<topPen lineWidth="0.0" lineColor="#999999"/>
+						<leftPen lineWidth="0.0" lineColor="#999999"/>
+						<bottomPen lineWidth="0.0" lineColor="#999999"/>
+						<rightPen lineWidth="0.0" lineColor="#999999"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="18" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" Année Scolaire :" +($F{anneeid}+"-"+ (new Long($F{anneeid})+1))]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="23">
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="485" y="-1" width="60" height="24" uuid="6b7a7fa3-c81e-45d6-aea7-7bb4be565b09"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ristournetSection}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="425" y="-1" width="60" height="24" uuid="53dc03b9-9c4d-4e7d-8e11-31a96d214162"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tranche3encSection}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="1" y="0" width="244" height="23" backcolor="#E3E1E1" uuid="596b4144-858a-4366-861a-ab124bc305dc"/>
+					<box leftPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TOTAL Section "+$F{classe.section.libelle}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="305" y="-1" width="60" height="24" uuid="833cab43-7540-4074-967a-0214028bb8af"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tranche1encSection}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="245" y="-1" width="60" height="24" backcolor="#99CCFF" uuid="371af630-59f8-49bf-a0ca-28cfc167e4da"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{inscencaisetSection}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="545" y="-1" width="60" height="24" backcolor="#99CCFF" uuid="21eab8a9-8ac8-4291-b284-e3236dc175b4"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{remisetSection}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="733" y="-1" width="81" height="24" uuid="cc3d663d-8409-46b7-9f29-3476c1f9060a"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{previsiontSection}-$V{encaissetSection}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="605" y="-1" width="60" height="24" uuid="eddcba31-841e-432c-b818-944afa0ec497"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{previsiontSection}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="365" y="-1" width="60" height="24" backcolor="#99CCFF" uuid="298d0f69-ce93-4fe5-bdae-4d83674ddcb9"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tranche2encSection}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="665" y="-1" width="68" height="24" uuid="c8ef3e26-c0df-40b7-bae4-b2cc7e6e1a23"/>
+					<box leftPadding="4" rightPadding="4">
+						<leftPen lineWidth="0.25" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.25" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{encaissetSection}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="cycle">
+		<groupExpression><![CDATA[$F{cycle.id}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+	</group>
+	<group name="classe" minHeightToStartNewPage="200">
 		<groupExpression><![CDATA[$F{classe.id}]]></groupExpression>
 		<groupHeader>
-			<band height="101">
+			<band height="94">
 				<textField evaluationTime="Auto">
 					<reportElement style="table" mode="Transparent" x="73" y="0" width="236" height="15" backcolor="#E3E1E1" uuid="7aec1d1d-3383-407f-92d4-c5e9c34a3709"/>
 					<box>
@@ -207,45 +460,6 @@
 						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{effectifs}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement style="table" mode="Opaque" x="305" y="66" width="60" height="35" backcolor="#E3E1E1" uuid="58c9020b-f2a3-44f4-861a-82b681439f80"/>
-					<box>
-						<topPen lineWidth="0.5" lineColor="#999999"/>
-						<leftPen lineWidth="0.5" lineColor="#999999"/>
-						<bottomPen lineWidth="0.5" lineColor="#999999"/>
-						<rightPen lineWidth="0.5" lineColor="#999999"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Encaissé Tranche I"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement style="table" mode="Opaque" x="245" y="66" width="60" height="35" backcolor="#E3E1E1" uuid="41b5f1de-8ffb-43e9-af1b-99f57ff7caab"/>
-					<box>
-						<topPen lineWidth="0.75" lineColor="#999999"/>
-						<leftPen lineWidth="0.75" lineColor="#999999"/>
-						<bottomPen lineWidth="0.75" lineColor="#999999"/>
-						<rightPen lineWidth="0.75" lineColor="#999999"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Inscription Encaissé"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement style="table" mode="Opaque" x="1" y="66" width="244" height="35" backcolor="#E3E1E1" uuid="760a9f93-2986-4fad-963c-9aae02df78f2"/>
-					<box>
-						<topPen lineWidth="0.75" lineColor="#999999"/>
-						<leftPen lineWidth="0.75" lineColor="#999999"/>
-						<bottomPen lineWidth="0.75" lineColor="#999999"/>
-						<rightPen lineWidth="0.75" lineColor="#999999"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Eléve"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="table" mode="Opaque" x="460" y="0" width="97" height="15" backcolor="#E3E1E1" uuid="d0423b05-66a1-4ace-a810-b4a16f96302f"/>
@@ -430,7 +644,46 @@
 					<textFieldExpression><![CDATA[$V{tauxt}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="485" y="66" width="60" height="35" backcolor="#E3E1E1" uuid="629d613b-b213-49a4-b477-aa808775abd0"/>
+					<reportElement style="table" mode="Opaque" x="305" y="59" width="60" height="35" backcolor="#E3E1E1" uuid="58c9020b-f2a3-44f4-861a-82b681439f80"/>
+					<box>
+						<topPen lineWidth="0.5" lineColor="#999999"/>
+						<leftPen lineWidth="0.5" lineColor="#999999"/>
+						<bottomPen lineWidth="0.5" lineColor="#999999"/>
+						<rightPen lineWidth="0.5" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Encaissé Tranche I"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="table" mode="Opaque" x="245" y="59" width="60" height="35" backcolor="#E3E1E1" uuid="41b5f1de-8ffb-43e9-af1b-99f57ff7caab"/>
+					<box>
+						<topPen lineWidth="0.75" lineColor="#999999"/>
+						<leftPen lineWidth="0.75" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.75" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Inscription Encaissé"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="table" mode="Opaque" x="1" y="59" width="244" height="35" backcolor="#E3E1E1" uuid="760a9f93-2986-4fad-963c-9aae02df78f2"/>
+					<box>
+						<topPen lineWidth="0.75" lineColor="#999999"/>
+						<leftPen lineWidth="0.75" lineColor="#999999"/>
+						<bottomPen lineWidth="0.75" lineColor="#999999"/>
+						<rightPen lineWidth="0.75" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Eléve"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="table" mode="Opaque" x="485" y="59" width="60" height="35" backcolor="#E3E1E1" uuid="629d613b-b213-49a4-b477-aa808775abd0"/>
 					<box>
 						<topPen lineWidth="0.75" lineColor="#CCCCCC"/>
 						<leftPen lineWidth="0.75" lineColor="#CCCCCC"/>
@@ -443,7 +696,7 @@
 					<textFieldExpression><![CDATA["Ristourne"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="425" y="66" width="60" height="35" backcolor="#E3E1E1" uuid="2ea0ad88-51d7-41b9-8f04-8424dd717d3e"/>
+					<reportElement style="table" mode="Opaque" x="425" y="59" width="60" height="35" backcolor="#E3E1E1" uuid="2ea0ad88-51d7-41b9-8f04-8424dd717d3e"/>
 					<box>
 						<topPen lineWidth="0.5" lineColor="#999999"/>
 						<leftPen lineWidth="0.5" lineColor="#999999"/>
@@ -456,7 +709,7 @@
 					<textFieldExpression><![CDATA["Encaissé Tranche III"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="365" y="66" width="60" height="35" backcolor="#E3E1E1" uuid="60bec2c5-0829-4dba-b535-531880173d0f"/>
+					<reportElement style="table" mode="Opaque" x="365" y="59" width="60" height="35" backcolor="#E3E1E1" uuid="60bec2c5-0829-4dba-b535-531880173d0f"/>
 					<box>
 						<topPen lineWidth="0.75" lineColor="#999999"/>
 						<leftPen lineWidth="0.75" lineColor="#999999"/>
@@ -469,7 +722,7 @@
 					<textFieldExpression><![CDATA["Encaissé Tranche II"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="665" y="66" width="68" height="35" backcolor="#E3E1E1" uuid="dc501bae-154f-417e-a454-14b59f4c6227"/>
+					<reportElement style="table" mode="Opaque" x="665" y="59" width="68" height="35" backcolor="#E3E1E1" uuid="dc501bae-154f-417e-a454-14b59f4c6227"/>
 					<box>
 						<topPen lineWidth="0.5" lineColor="#999999"/>
 						<leftPen lineWidth="0.5" lineColor="#999999"/>
@@ -482,7 +735,7 @@
 					<textFieldExpression><![CDATA["Encaissé"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="605" y="66" width="60" height="35" backcolor="#E3E1E1" uuid="ac40d35a-8b4b-4b4f-8af2-9acf6f13ba5c"/>
+					<reportElement style="table" mode="Opaque" x="605" y="59" width="60" height="35" backcolor="#E3E1E1" uuid="ac40d35a-8b4b-4b4f-8af2-9acf6f13ba5c"/>
 					<box>
 						<topPen lineWidth="0.75" lineColor="#999999"/>
 						<leftPen lineWidth="0.75" lineColor="#999999"/>
@@ -495,7 +748,7 @@
 					<textFieldExpression><![CDATA["Prévision"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="545" y="66" width="60" height="35" backcolor="#E3E1E1" uuid="639f5a95-f058-469c-bdeb-61007290f9cd"/>
+					<reportElement style="table" mode="Opaque" x="545" y="59" width="60" height="35" backcolor="#E3E1E1" uuid="639f5a95-f058-469c-bdeb-61007290f9cd"/>
 					<box>
 						<topPen lineWidth="0.75" lineColor="#999999"/>
 						<leftPen lineWidth="0.75" lineColor="#999999"/>
@@ -508,7 +761,7 @@
 					<textFieldExpression><![CDATA["Remise"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="733" y="66" width="81" height="35" backcolor="#E3E1E1" uuid="cfc9c247-30b8-43f3-8d6f-80d0d0595396"/>
+					<reportElement style="table" mode="Opaque" x="733" y="59" width="82" height="35" backcolor="#E3E1E1" uuid="cfc9c247-30b8-43f3-8d6f-80d0d0595396"/>
 					<box>
 						<topPen lineWidth="0.75" lineColor="#CCCCCC"/>
 						<leftPen lineWidth="0.75" lineColor="#CCCCCC"/>
@@ -523,7 +776,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="25">
+			<band height="24">
 				<textField pattern="#,##0" isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="733" y="-1" width="81" height="24" uuid="1a828d50-8340-4d52-a620-8f506a2957c6"/>
 					<box leftPadding="4" rightPadding="4">
@@ -618,7 +871,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["TOTAL CLASSE "+$F{classe.libelle}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0" isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="245" y="-1" width="60" height="24" backcolor="#99CCFF" uuid="f4d78185-fec4-4978-83ad-e4071b6d1cff"/>
@@ -648,7 +901,7 @@
 		</groupFooter>
 	</group>
 	<title>
-		<band height="145">
+		<band height="106">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="29" width="181" height="11" uuid="81eba422-58ff-410e-b449-83d8a21d11ab"/>
 				<box>
@@ -863,45 +1116,6 @@
 					<pen lineWidth="1.25" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
-			<textField>
-				<reportElement style="table" mode="Transparent" x="206" y="102" width="176" height="33" backcolor="#E3E1E1" uuid="c6d22e11-9638-40c6-8e23-e8557cc7de33"/>
-				<box>
-					<topPen lineWidth="0.0" lineColor="#999999"/>
-					<leftPen lineWidth="0.0" lineColor="#999999"/>
-					<bottomPen lineWidth="0.0" lineColor="#999999"/>
-					<rightPen lineWidth="0.0" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-					<font fontName="Times New Roman" size="18" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA["BILAN FINANCIER / "]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement style="table" mode="Transparent" x="382" y="102" width="185" height="33" backcolor="#E3E1E1" uuid="d74e67df-269f-4fab-a1c9-a412989519a6"/>
-				<box>
-					<topPen lineWidth="0.0" lineColor="#999999"/>
-					<leftPen lineWidth="0.0" lineColor="#999999"/>
-					<bottomPen lineWidth="0.0" lineColor="#999999"/>
-					<rightPen lineWidth="0.0" lineColor="#999999"/>
-				</box>
-				<textElement verticalAlignment="Middle" markup="none">
-					<font fontName="Times New Roman" size="18" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA["ANNEE SCOLAIRE  :"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement style="table" mode="Transparent" x="567" y="102" width="100" height="33" backcolor="#E3E1E1" uuid="e8337837-ce6f-4327-88ce-70d5cce4858e"/>
-				<box>
-					<topPen lineWidth="0.0" lineColor="#999999"/>
-					<leftPen lineWidth="0.0" lineColor="#999999"/>
-					<bottomPen lineWidth="0.0" lineColor="#999999"/>
-					<rightPen lineWidth="0.0" lineColor="#999999"/>
-				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
-					<font fontName="Times New Roman" size="18" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA[(new Long($P{anneeScolaire})-1)+"-"+$P{anneeScolaire}]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
 	<detail>
@@ -1084,4 +1298,128 @@
 			</textField>
 		</band>
 	</columnFooter>
+	<summary>
+		<band height="50">
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="485" y="0" width="60" height="24" uuid="a6fe0918-3c44-48cd-965f-a8e2a33653eb"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ristournetgen}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="425" y="0" width="60" height="24" uuid="dd841762-2cbf-487b-b7fd-54120b464ff1"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tranche3encgen}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="1" y="1" width="244" height="23" backcolor="#E3E1E1" uuid="53dec89e-83dd-48de-89ab-7316e754ea08"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL GENERAL "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="305" y="0" width="60" height="24" uuid="ec9ffe51-e343-4f63-9576-4c1c72b2f83c"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tranche1encgen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="245" y="0" width="60" height="24" backcolor="#99CCFF" uuid="98f0dec7-1091-4bbc-8e34-b9a70f1c2897"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{inscencaisetgen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="545" y="0" width="60" height="24" backcolor="#99CCFF" uuid="37e438bf-382c-432d-904d-a7e3acfec9da"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{remisetgen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="733" y="0" width="81" height="24" uuid="01699ef4-1ac2-468c-b2e4-f46890408096"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{previsiontgen}-$V{encaissetgen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="605" y="0" width="60" height="24" uuid="0d7f843b-d7cf-4cf0-8786-c47bbd70bce2"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{previsiontgen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="365" y="0" width="60" height="24" backcolor="#99CCFF" uuid="93d36d68-6b5a-4611-aab5-fdf2ea0c1d4c"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tranche2encgen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="665" y="0" width="68" height="24" uuid="2588ea39-5217-4437-8e4a-5bf94de0c073"/>
+				<box leftPadding="4" rightPadding="4">
+					<leftPen lineWidth="0.25" lineColor="#999999"/>
+					<bottomPen lineWidth="0.75" lineColor="#999999"/>
+					<rightPen lineWidth="0.25" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{encaissetgen}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>

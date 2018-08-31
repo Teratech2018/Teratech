@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.kerenedu.reglement.FichePaiement;
+import com.kerenedu.reglement.FichePaiementOptionel;
 import com.kerenedu.reglement.Paiement;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 

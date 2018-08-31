@@ -66,7 +66,7 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 			if (elev.service != null) {
 				p.service = new FichePaiement(elev.service);
 				p.zMntservice = elev.service.getZtotal();
-				p.zsolde = (elev.service.getZtotal() - elev.zMntverser);
+				//p.zsolde = (elev.service.getZtotal() - elev.zMntverser);
 			}
 			result.add(p);
 		}
@@ -81,7 +81,7 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 		if (data.service != null) {
 			result.service = new FichePaiement(data.service);
 			result.zMntservice = data.service.getZtotal();
-			result.zsolde = (data.service.getZtotal() - data.zMntverser);
+			//result.zsolde = (data.service.getZtotal() - data.zMntverser);
 		}
 
 		return result;
@@ -150,7 +150,10 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 	private PaiementWorker buildWorker(Inscription insc) {
 		Map<Integer, FichePaiement> map = new HashMap<Integer, FichePaiement>();
 		for (FichePaiement fiche : insc.getService()) {
-			map.put(fiche.getService().getRang(), fiche);
+			if(fiche.getService().getExige()==true){
+				map.put(fiche.getService().getRang(), fiche);
+			}
+			
 		}
 		List<Integer> keys = new ArrayList<Integer>();
 		for (int key : map.keySet()) {
@@ -178,7 +181,9 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 	private PaiementWorker buildWorkerInverse(Inscription insc) {
 		Map<Integer, FichePaiement> map = new HashMap<Integer, FichePaiement>();
 		for (FichePaiement fiche : insc.getService()) {
-			map.put(fiche.getService().getRang(), fiche);
+			if(fiche.getService().getExige()==true){
+				map.put(fiche.getService().getRang(), fiche);
+			}
 		}
 		List<Integer> keys = new ArrayList<Integer>();
 		for (int key : map.keySet()) {

@@ -15,7 +15,6 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerenedu.reglement.FichePaiement;
+import com.kerenedu.reglement.FichePaiementOptionel;
 
 
 /**
@@ -19,5 +20,6 @@ public interface ServiceManager
     public final static String SERVICE_NAME = "ServiceManager";
     
     public List<FichePaiement> findmatierclasse(long id) ;
+    
 
 }

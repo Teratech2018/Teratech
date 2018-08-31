@@ -126,6 +126,23 @@ public class EleveManagerImpl
 		
 		super.processBeforeSave(entity);
 	}
+	
+	
+	
+
+	@Override
+	public void processBeforeUpdate(Eleve entity) {
+		Responsable resp = entity.getResp();
+		if(resp!=null){
+			if(resp!=null&&resp.getNe()==null){
+				resp.setNe((short)0);
+			}
+			Short neactuel= (short) (resp.getNe()+1);
+			resp.setNe(neactuel);
+			daoresponsable.update(resp.getId(), resp);
+		}
+		super.processBeforeUpdate(entity);
+	}
 
 	@Override
 	public void processAfterSave(List<Eleve> entities) {

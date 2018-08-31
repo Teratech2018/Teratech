@@ -20,9 +20,12 @@ import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewBilanFinancierDAOLocal;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionDAOLocal;
 import com.kerenedu.model.report.ViewBilanFinancier;
 import com.kerenedu.model.report.ViewBilanFinancierModal;
+import com.kerenedu.model.report.ViewBilanServiceModal;
+import com.kerenedu.reglement.FichePaiement;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -85,8 +88,37 @@ public class ViewBilanFinancierManagerImpl
 			container = RestrictionsContainer.newInstance();
 
 			if (critere.getClasse() != null) {
-					container = RestrictionsContainer.newInstance();
 					container.addEq("classe.id", critere.getClasse().getId());
+					container.addEq("classe.section.id", critere.getClasse().getSection().getId());				
+			}
+			if (critere.getSection() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+				container.addEq("classe.section.id",critere.getSection().getId());
+			
+			
+		}
+
+		}
+		List<ViewBilanFinancier> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<ViewBilanFinancier> result = new ArrayList<ViewBilanFinancier>();
+		if (datas != null) {
+			for (ViewBilanFinancier aniv : datas) {;
+				result.add(new ViewBilanFinancier(aniv));
+			}
+		} // fin if(datas!=null)
+		return result;
+	}
+
+	@Override
+	public List<ViewBilanFinancier> getCriteres(ViewBilanServiceModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+
+			if (critere.getClasse() != null) {
+				container = RestrictionsContainer.newInstance();
+				container.addEq("classe.id", critere.getClasse().getId());
 				
 				
 			}
@@ -100,6 +132,30 @@ public class ViewBilanFinancierManagerImpl
 			}
 		} // fin if(datas!=null)
 		return result;
+	}
+	
+	public List<Inscription> getEleveElligible(ViewBilanServiceModal critere){
+		List<Inscription> result = new ArrayList<Inscription>();
+		List<Inscription> datas = new ArrayList<Inscription>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere.getClasse() != null) {
+			container = RestrictionsContainer.newInstance();
+			container.addEq("classe.id", critere.getClasse().getId());	
+		}
+		result = daoIns.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		
+		if(result !=null&& result.size()!=0){
+			for(Inscription ins : result){
+				for(FichePaiement fp :ins.getService()){
+					if(fp.getService().getType().equals(critere.getType())&& fp.getPayer()==true){
+						datas.add(ins);
+					}
+				}
+			}
+		}
+		
+		
+		return datas ;
 	}
 
 
