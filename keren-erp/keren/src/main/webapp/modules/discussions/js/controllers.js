@@ -342,6 +342,9 @@ angular.module('keren.core.discussion')
                     $http.get(url)
                             .then(function(response){
                                 $scope.connectedusers = response.data;
+                                if($scope.connectedusers.length>0){
+                                  $rootScope.$broadcast("updateconnectusernumber",{value:$scope.connectedusers.length});
+                                }//end if($scope.connectedusers.length>0){
                                 commonsTools.hideDialogLoading();
                             },function(error){
                                 commonsTools.hideDialogLoading();

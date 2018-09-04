@@ -153,6 +153,7 @@ angular.module("mainApp")
    $scope.moduleValue = "login";
    //Number de messages
    $scope.numberofnewmessages = 0;
+   $scope.numberofconnectusers = 0;
    //List of available users and canal
    $scope.tchatinput = new Array();        
    //Utilisateur courant
@@ -174,7 +175,7 @@ angular.module("mainApp")
                       {id:-1 , name:"utilisateurs",label:"Utilisateurs",icon:"glyphicon glyphicon-user" ,showmenu:true,
                        actions:[
                           {id:-1,name:"utilisateur" , label:"Utilisateurs",icon:"glyphicon glyphicon-user",entityName:"Utilisateur",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false,viewMode:'kaban,tree,form'
-                              ,kaban:{code:"application_001",script:"<div class='col-md-12 col-sm-12' id='detail-panel-body-header'> <div class='col-md-3 col-sm-4'> <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'></div> </div> <div  class='col-md-8 col-sm-7'> <div style='font-weight: bold;'>{{item.designation}}</div> <div>{{item.courriel | cut:true:50:'...'}}</div> <div> <div class='col-sm-6 col-md-6 pull-left' >{{item.societe.designation}}</div></div> </div> </div>"}},
+                              ,kaban:{code:"application_001",script:"<div class='col-md-12 col-sm-12' id='detail-panel-body-header'> <div class='col-md-3 col-sm-4'> <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image }}' alt='Image ' ng-click='imageClick()' height='70' width='75'></div> </div> <div  class='col-md-8 col-sm-7'> <div style='font-weight: bold;'>{{item.designation}}</div> <div>{{item.courriel | cut:true:50:'...'}}</div> <div> <div class='col-sm-6 col-md-6 pull-left' >{{item.societe.designation}}</div></div> </div> </div>"}},
                           {id:-2,name:"groupes" , label:"Groupes",icon:"glyphicon glyphicon-list-alt",entityName:"Groupe",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false},
                           {id:-3,name:"societe" , label:"Societes",icon:"glyphicon glyphicon-home",entityName:"Societe",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false},
                           {id:-4,name:"pays" , label:"Pays",icon:"glyphicon glyphicon-flag",entityName:"pays",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false}
@@ -895,11 +896,16 @@ angular.module("mainApp")
 //        console.log("Felicitation vous ÃƒÂªte authentifiÃ© == "+args.modules);
 //    });
    /**
-            * Reception des evenement de d'edition des etats
+            * Reception des evenement de d'edition des etats $scope.numberofconnectusers = 0;
             */
           $scope.$on("updatemessagesnumber" , function(event, args){
 //               console.log("customreport =========== "+angular.toJson(args.metaData)); 
                $scope.numberofnewmessages = args.value;
+          });
+          
+          $scope.$on("updateconnectusernumber" , function(event, args){
+//               console.log("customreport =========== "+angular.toJson(args.metaData)); 
+               $scope.numberofconnectusers = args.value;
           });
           
           $scope.$on("refresh_message",function(event,args){
