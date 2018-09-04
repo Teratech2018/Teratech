@@ -1884,7 +1884,7 @@ angular.module('keren.core.commons')
                     var bodyElem = document.createElement("div");
                     divElem.appendChild(bodyElem);
                     bodyElem.setAttribute("class","panel-body col-sm-4 col-md-3  col-lg-2");
-                    bodyElem.setAttribute("style","padding: 0px;");
+                    bodyElem.setAttribute("style","padding: 0px;width: 100%;");
                     var divElem2 = document.createElement("div");
                     bodyElem.appendChild(divElem2);
                     divElem2.setAttribute("class","kanban-centered");

@@ -173,7 +173,8 @@ angular.module("mainApp")
                  groups:[
                       {id:-1 , name:"utilisateurs",label:"Utilisateurs",icon:"glyphicon glyphicon-user" ,showmenu:true,
                        actions:[
-                          {id:-1,name:"utilisateur" , label:"Utilisateurs",icon:"glyphicon glyphicon-user",entityName:"Utilisateur",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false},
+                          {id:-1,name:"utilisateur" , label:"Utilisateurs",icon:"glyphicon glyphicon-user",entityName:"Utilisateur",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false,viewMode:'kaban,tree,form'
+                              ,kaban:{code:"application_001",script:"<div class='col-md-12 col-sm-12' id='detail-panel-body-header'> <div class='col-md-3 col-sm-4'> <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'></div> </div> <div  class='col-md-8 col-sm-7'> <div style='font-weight: bold;'>{{item.designation}}</div> <div>{{item.courriel | cut:true:50:'...'}}</div> <div> <div class='col-sm-6 col-md-6 pull-left' >{{item.societe.designation}}</div></div> </div> </div>"}},
                           {id:-2,name:"groupes" , label:"Groupes",icon:"glyphicon glyphicon-list-alt",entityName:"Groupe",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false},
                           {id:-3,name:"societe" , label:"Societes",icon:"glyphicon glyphicon-home",entityName:"Societe",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false},
                           {id:-4,name:"pays" , label:"Pays",icon:"glyphicon glyphicon-flag",entityName:"pays",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',hide:false}
@@ -216,8 +217,10 @@ angular.module("mainApp")
                  groups:[
                       {id:-1 , name:"application",label:"Applications",icon:"glyphicon glyphicon-th",showmenu:true,
                        actions:[
-                          {id:-1,name:"applications" ,hide:false, label:"Applications",icon:"glyphicon glyphicon-th-list",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',viewMode:'kaban,tree,form'},
-                          {id:-2,name:"application_update" ,hide:false, label:"MISEAJOUR",icon:"glyphicon glyphicon-refresh",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',viewMode:'kaban,tree,form'}                          
+                          {id:-1,name:"applications" ,hide:false, label:"Applications",icon:"glyphicon glyphicon-th-list",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',viewMode:'kaban,tree,form'
+                              ,kaban:{code:"application_001",script:"<div class='col-md-12 col-sm-12' id='detail-panel-body-header'> <div class='col-md-3 col-sm-4'> <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.icon}}' alt='Image ' ng-click='imageClick()' height='70' width='75'></div> </div> <div  class='col-md-8 col-sm-7'> <div style='font-weight: bold;'>{{item.designation | cut:true:20:'...'}}</div> <div>{{item.shortDescription | cut:true:50:'...'}}</div> <div> <div class='col-sm-6 col-md-6 pull-left' >{{item.autor}}</div> <div class='col-sm-6 col-md-6 pull-right'><a href='{{item.website}}'>{{item.name}}</a></div> </div> </div> </div>"}},
+                          {id:-2,name:"application_update" ,hide:false, label:"MISEAJOUR",icon:"glyphicon glyphicon-refresh",entityName:"MenuModule",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',viewMode:'kaban,tree,form'
+                              ,kaban:{code:"application_001",script:"<div class='col-md-12 col-sm-12' id='detail-panel-body-header'> <div class='col-md-3 col-sm-4'> <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.icon}}' alt='Image ' ng-click='imageClick()' height='70' width='75'></div> </div> <div  class='col-md-8 col-sm-7'> <div style='font-weight: bold;'>{{item.designation | cut:true:20:'...'}}</div> <div>{{item.shortDescription | cut:true:50:'...'}}</div> <div> <div class='col-sm-6 col-md-6 pull-left' >{{item.autor}}</div> <div class='col-sm-6 col-md-6 pull-right'><a href='{{item.website}}'>{{item.name}}</a></div> </div> </div> </div>"}}                          
                        ]}                       
                  ]
 
@@ -1538,6 +1541,18 @@ angular.module("mainApp")
 //                 console.log("Vous avez cliquez sur un observateur :::: "+data[modelsplit[modelsplit.length-1]]+" ============================ "+modelsplit[modelsplit.length-1]+" ============ "+angular.toJson(template)+" ================================ "+template["fieldname"]);
                  return this;
              }   
+         };
+         /**
+          * 
+          * @param {type} value
+          * @param {type} length
+          * @returns {undefined}
+          */
+         $scope.truncateString = function(value , length){
+             if(value.length>length){
+                return value.substring(0, length);
+             }//end if(value.length>length){
+             return value;
          };
          /**
           * 
@@ -4334,7 +4349,8 @@ $scope.gererChangementFichier3 = function(event,model){
                             && commonsTools.containsLiteral(metaData.header[i].states,data.state)==false){
                                                     continue;
                     }//end if(metaData.header[i].target=='workflow'){
-                    if(metaData.header[i].type!='workflow'){
+                    if(metaData.header[i].type!='workflow' 
+                            && metaData.header[i].type!='header'){
                       var liElem =document.createElement('li');
                       ulElem.appendChild(liElem);
                       var aElem = document.createElement('button');
@@ -4352,7 +4368,7 @@ $scope.gererChangementFichier3 = function(event,model){
                       aElem.setAttribute('class',clasElem);
                       aElem.setAttribute('style','margin-right: 5px;');
                       aElem.innerHTML=metaData.header[i].fieldLabel; 
-                   }else{
+                   }else if(metaData.header[i].target=='workflow'){
                       staturbar = metaData.header[i]; 
                    }//end if(metaData.header[i].type!='workflow'){
                 }//end for(var i=0 ; i<metaData.header.length;i++)
@@ -4399,9 +4415,11 @@ $scope.gererChangementFichier3 = function(event,model){
         * @param {type} modelpath
         * @returns {Element}
         */
-        $scope.editPanelComponent = function(model , metaData , windowType,index,modelpath){   
-//            console.log("$scope.editPanelComponent ==== "+index);
-                $scope.filtertemplate = new Object();      
+        $scope.editPanelComponent = function(model , metaData , windowType,index,modelpath,extern){             
+                $scope.filtertemplate = new Object();  
+                metaData = angular.fromJson(metaData);
+              var data = $scope.getCurrentModel(model);
+              data = angular.fromJson(angular.toJson(data));
               var divElem = null ;
              if(angular.isDefined(metaData)){
                   divElem = document.createElement('div');
@@ -4413,11 +4431,13 @@ $scope.gererChangementFichier3 = function(event,model){
                    */
                   var headerDiv = document.createElement('div');
                   headerDiv.setAttribute("id","detail-panel-body-header");
+                  headerDiv.setAttribute("style","padding-bottom:10px;text-align: right;");
                   var imgspan = document.createElement('span');
                   imgspan.setAttribute('id','detail-panel-body-header-img');
                   headerDiv.appendChild(imgspan);
                   var actionsspan = document.createElement('span');
                   actionsspan.setAttribute('id','detail-panel-body-header-act');
+                  actionsspan.setAttribute('style','text-align: right;');
                   headerDiv.appendChild(actionsspan);
                   divElem.appendChild(headerDiv);
                   var formElem = document.createElement('form');
@@ -4427,6 +4447,45 @@ $scope.gererChangementFichier3 = function(event,model){
                   formElem.setAttribute('name' , metaData.entityName);
                   formElem.setAttribute("novalidate" , "novalidate");
                   formElem.setAttribute("style","margin-left:15px;");
+                  //Construction du header
+                 for(var j=0 ; j<metaData.header.length;j++){                      
+                      var header = metaData.header[j];                     
+                      if(header.type=='header'){                            
+                            var span001 = document.createElement('span');
+                            span001.setAttribute('class','trt-itemsContent');
+                            var span002 = document.createElement('span');
+                            span001.appendChild(span002);
+                            span002.setAttribute('class','trt-itemImageAndDescriptionContent');
+                            var span003 = document.createElement('span');
+                            span002.appendChild(span003);
+                            var i = document.createElement('i');
+                            span003.appendChild(i);
+                            i.setAttribute('class',header.pattern);
+                            span003.setAttribute('class','trt-itemImage');
+                            var span004 = document.createElement('span');
+                            span002.appendChild(span004);
+                            span004.setAttribute('class','trt-itemDescription');
+                            var div01 = document.createElement('div');
+                            span004.appendChild(div01);
+                            div01.setAttribute('class','trt-itemDescriptionOne');
+                            var value = angular.fromJson(angular.toJson(header.value));
+//                            console.log("$scope.editPanelComponent ==== "+value.label+" ===== entrer : === currentObject : "+data[value.label]+" === data : "+angular.toJson(data));
+                            if(angular.isDefined(value.label) 
+                                    && angular.isDefined(data[value.label])){
+                                div01.appendChild(document.createTextNode(data[value.label]));
+                            }//end if(angular.isDefined(header.label)                            
+                            var div02 = document.createElement('div');
+                            span004.appendChild(div02);
+                            div02.setAttribute('class','trt-itemDescriptiontwo');
+                            div02.appendChild(document.createTextNode(header.fieldLabel));
+                            actionsspan.appendChild(span001);
+                            if(header.states && header.states.length>0){
+                                span001.setAttribute('ng-click',"buttonAction("+header.value+" , '"+header.target+"','"+angular.toJson(header.states)+"','"+index+"',"+extern+")");
+                            }else{
+                                span001.setAttribute('ng-click',"buttonAction("+header.value+" , '"+header.target+"',null,'"+index+"',"+extern+")");
+                            }//end if(metaData.header[i].states && metaData.header[i].states.length>0)
+                      }//end if(metaData.header[i].type=='header'){
+                  }//end for(var i=0 ; i<metaData.header.length;i++){
 //                  console.log("For editPanelComponent 00i init ::::: "+model+" === Panel edit");
                   //Construction des champs
                   if(angular.isDefined(metaData.columns) && (metaData.columns.length>0)){
@@ -7342,7 +7401,7 @@ $scope.gererChangementFichier3 = function(event,model){
                       && $scope.currentAction.formView.template!=null){
                 editPanel = commonsTools.xmlViewParser($scope.currentAction.formView.template,$scope,'temporalData',metaData,null,0,'temporalData');
             }else{
-                editPanel = $scope.editPanelComponent('temporalData' , metaData,null,0,'temporalData');   
+                editPanel = $scope.editPanelComponent('temporalData' , metaData,null,0,'temporalData',true);   
             }//end if(angular.isDefined($scope.currentAction.formView)
             if(headerElem){
                viewElem.appendChild(headerElem);
