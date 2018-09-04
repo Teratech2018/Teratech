@@ -25,7 +25,7 @@
 	<menuitem id="courrier_trait_05_1" label="Relance" parent_ref="courrier_trait" entity_ref="RelanceAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="true"  hide="true"/>
 	<menu id="courrier_ref" label="Administration" parent="keren_courrier" gyphycon="glyphicon glyphicon-cog"/>
     <menuitem id="courrier_ref_01" label="Type Correspondant" parent_ref="courrier_ref" entity_ref="TypeCorrespondant" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
-    <menuitem id="courrier_ref_02" label="Priorité" parent_ref="courrier_ref" entity_ref="Priorite" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+    <menuitem id="courrier_ref_02" label="Priorité" parent_ref="courrier_ref" entity_ref="Priorite" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="tree"/>
     <menuitem id="courrier_ref_03" label="Types Dossiers" parent_ref="courrier_ref" entity_ref="TypeDossier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
     <menuitem id="courrier_ref_04" label="Dossiers" parent_ref="courrier_ref" entity_ref="DossierCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
     <menuitem id="courrier_ref_06" label="Type Courrier" parent_ref="courrier_ref" entity_ref="TypeCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />

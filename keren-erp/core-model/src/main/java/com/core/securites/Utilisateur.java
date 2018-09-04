@@ -120,6 +120,7 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
         this.state = user.state;
         this.name = user.name;
         this.actif = user.actif;
+        this.state = user.state;
         this.societeCourante = user.societeCourante;
         this.adminlevel = user.adminlevel;
         this.langue = user.langue;

@@ -47,7 +47,7 @@ angular.module("mainApp").config(['$translateProvider',
             INNERONLY:'Internal user only',
             SHOWHOURS:'Show time as',
             Libre:'Free',
-            Occupée:'Occupied',
+            Occupé:'Occupied',
             Duree:'Duration',
             CALENDAROPTIONS:'Calendar options',
             ADDELEMENT:'Add an element',
@@ -89,9 +89,9 @@ angular.module("mainApp").config(['$translateProvider',
             Voir:'Display'
         });
         $translateProvider.translations('fr',{
-            PJ:'Pièce(s) Jointe(s)',
+            PJ:'PiÃ¨ce(s) Jointe(s)',
             UPPWD:'Modifier le Mot de passe',
-            MAIL:'Boîte de réception',
+            MAIL:'BoÃ®te de rÃ©ception',
             EVENTTITLE:'Titre evenement',
             EVENTDATE:'Date evenement',
             EMAIL:'Adresse mail',
@@ -102,7 +102,7 @@ angular.module("mainApp").config(['$translateProvider',
             SHOWHOURS:'Afficher heure comme',
             CALENDAROPTIONS:'Options du calendrier',
             ADDELEMENT:'Ajouter un element',
-            MISEAJOUR:'Mise à jour',
+            MISEAJOUR:'Mise Ã  jour',
             CANAUX:'Canaux de communication',
             MENUGROUP:'Menu Elements',
             MENUACTION:'Menus Action',
@@ -112,12 +112,12 @@ angular.module("mainApp").config(['$translateProvider',
             DASHBORDVIEW:'Tableaux de bord',
             TERME:'Termes traduits',
             EXPORTBD:'Exporter le schema',
-            DBSAVE:'Sauvegarde Données' ,
-            CALENDAR_DESC:'Gestion des événements',
+            DBSAVE:'Sauvegarde DonnÃ©es' ,
+            CALENDAR_DESC:'Gestion des Ã©vÃ©nements',
             APPLI_DESC:'Gestion des Applications',
             CONFIG_DESC:'Administration de la plateforme',
             DISCUSION_DESC:'Plateforme collaborative',
-            IMPORTDATA:'Importer les données au format CVS',
+            IMPORTDATA:'Importer les donnÃ©es au format CVS',
             VALIDATETITRE:'Compte rendu validation'
         });
         $translateProvider.preferredLanguage('fr');
@@ -448,7 +448,7 @@ angular.module("mainApp")
      };
    /**
     * Function de chargement du module 
-      courant(module selectionné)
+      courant(module selectionnÃ©)
     * @param {type} module
     * @param {type} action
     * @param {type} item
@@ -799,7 +799,7 @@ angular.module("mainApp")
                     if(angular.isString(message)){
                         msge = commonsTools.createemptyMessage(instance[idParent].user,canal,user,message);
                         msge.sender=instance[idParent].user;                        
-//                        console.log("princiâl.addMessage : function(idParent,idElement,idUser,sens,photo,message,date,rootScope) ============ ")
+//                        console.log("princiÃ¢l.addMessage : function(idParent,idElement,idUser,sens,photo,message,date,rootScope) ============ ")
                         commonsTools.sendAction(msge);
                     }//end if(angular.isString(message)){     
                     instance[idParent].messages.push(msge);
@@ -820,7 +820,7 @@ angular.module("mainApp")
         if(angular.isDefined($scope.currentModule) && $scope.currentModule.name!=="discussionconf"){
             commonsTools.addToTchatContext(zoneid,$scope.currentUser,item);
             commonsTools.addChatZone(zoneid,idUser,idFriend,photoUser,photoFriend,nameFriend,$scope);
-            //Chargement des données
+            //Chargement des donnÃ©es
            var messages = new Array();
            var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/direct/"+$scope.currentUser.id+"/"+item.id+"/0/15";
            if(item.editTitle==='CANAL'){
@@ -887,9 +887,9 @@ angular.module("mainApp")
                   
           });
     //Hide Discussion login , calendar ,discussion ,others
-    //Chargement des modules de l'utilisateur connecté;
+    //Chargement des modules de l'utilisateur connectÃ©;
 //    $scope.$on("user_modules" ,function(event ,args){
-//        console.log("Felicitation vous Ãªte authentifié == "+args.modules);
+//        console.log("Felicitation vous ÃƒÂªte authentifiÃ© == "+args.modules);
 //    });
    /**
             * Reception des evenement de d'edition des etats
@@ -986,12 +986,12 @@ angular.module("mainApp")
 
            $scope.currentObject = new Object();
            
-           //Contient la liste du contenue des lignes selectionnées
+           //Contient la liste du contenue des lignes selectionnÃ©es
           $scope.selectedObjects = [];
 
           $scope.temporalDatas = [];
           
-          //Champ temporaire de stockage des données
+          //Champ temporaire de stockage des donnÃ©es
           $scope.temporalData = {};
           
           //Model temporaire
@@ -1002,7 +1002,7 @@ angular.module("mainApp")
           $scope.resourcesCache = {};
           //Show or enable report title
           $scope.showreporttitle = false;
-          //Données courantes
+          //DonnÃ©es courantes
           $scope.datas = [];
           //Liste des predicats
           $scope.predicats = new Array();
@@ -1100,7 +1100,7 @@ angular.module("mainApp")
 //                                                      console.log('$scope.loadData = function() :::::::::::::::: '+data);
                                                      if(data){
                                                          $scope.datas = data;
-                                                         //Traitement des données
+                                                         //Traitement des donnÃ©es
                                                         if($scope.calendarrecord){
                                                              for(var i=0;i<$scope.datas.length;i++){
                                                                 var data = $scope.datas[i];
@@ -1170,7 +1170,7 @@ angular.module("mainApp")
 //                                                         console.log('$scope.pagination.nextPage: = function() :::::::::::::::: '+data);
                                                         if(data){
                                                             $scope.datas = data;
-                                                             //Traitement des données
+                                                             //Traitement des donnÃ©es
                                                             if($scope.calendarrecord){
                                                                  for(var i=0;i<$scope.datas.length;i++){
                                                                     var data = $scope.datas[i];
@@ -1464,7 +1464,7 @@ angular.module("mainApp")
                      if(angular.isObject(elem)){
                          var key = commonsTools.keygenerator(this.model);
                          $scope.dataCache[""+key+""] = new Array();
-                         var obj = {id:'load' , designation:'Charger les données ....'};    
+                         var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};    
                          $scope.dataCache[""+key+""].push(elem);
                          $scope.dataCache[""+key+""].push(obj);                         
                          $timeout(function() {
@@ -1686,7 +1686,7 @@ angular.module("mainApp")
   
           /**
              Verifie que le tableau contient un element
-             @array : tableau de données
+             @array : tableau de donnÃ©es
              @item : element
           **/
           $scope.contains = function(array , item){
@@ -1703,7 +1703,7 @@ angular.module("mainApp")
           
            /**
              Verifie que le tableau contient un element
-             @array : tableau de données
+             @array : tableau de donnÃ©es
              @item : element
           **/
           $scope.containsObject = function(array , item){
@@ -1774,7 +1774,7 @@ angular.module("mainApp")
                 }else{
                     
                     item.selected =!item.selected; 
-                    var message ="Vous avez selectionné deux lignes referencant la même entitée";
+                    var message ="Vous avez selectionnÃ© deux lignes referencant la mÃªme entitÃ©e";
                     commonsTools.notifyWindow("Double selection " ,"<br/>"+message,"warning");
                 }
               }else{
@@ -2030,10 +2030,11 @@ angular.module("mainApp")
                    divElem.setAttribute('class' , 'form-group') ;                   
                    var labelElem = document.createElement('label');
                    labelElem.setAttribute('for' , field.fieldName);
+                   labelElem.setAttribute('class' , "trt-label");
                    labelElem.appendChild(document.createTextNode(labelText));              
                    divElem.appendChild(labelElem);
                    var textareaElem = document.createElement("textarea");
-                   textareaElem.setAttribute('class' , 'form-control');
+                   textareaElem.setAttribute('class' , 'form-control  trt-input');
                    if(angular.isDefined(field.optional)&&(!field.optional) || field.min){
                          textareaElem.setAttribute('class' , 'form-control required') ;        
                    }//end if(angular.isDefined(field.optional)&&(!field.optional) || field.min){
@@ -2072,9 +2073,10 @@ angular.module("mainApp")
         */
          $scope.inputTextBuilder = function(model , field , labelText, entityName,type){
                    var divElem = document.createElement('div');
-                   divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12') ;                   
+                   divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12 col-md-12  trt-widget') ;                   
                    var labelElem = document.createElement('label');
                    labelElem.setAttribute('for' , field.fieldName);
+                   labelElem.setAttribute('class' , "trt-label");
                    labelElem.appendChild(document.createTextNode(labelText)); 
                    //Traitement des observable
                    if(field.observable==true){
@@ -2094,12 +2096,12 @@ angular.module("mainApp")
                    divElem.appendChild(labelElem);
                    //Creation du composant input
                     var inputElem = document.createElement('input');
-                    inputElem.setAttribute('name' , field.fieldName);                        
+                    inputElem.setAttribute('name' , field.fieldName);    
                     if(type!="checkbox"){
-                        inputElem.setAttribute('class' , 'form-control');
+                        inputElem.setAttribute('class' , 'form-control trt-input');
                         inputElem.setAttribute('placeholder' , labelText+" .... ");
                         if(angular.isDefined(field.optional)&&(!field.optional)){
-                                inputElem.setAttribute('class' , 'form-control required');
+                                inputElem.setAttribute('class' , 'form-control required trt-input');
                                 inputElem.setAttribute('ng-required' , 'true');
                          }//end if(angular.isDefined(field.optional)&&(!field.optional)) 
                          if((field.min && field.min>0)){
@@ -2188,7 +2190,7 @@ angular.module("mainApp")
                    divElem.setAttribute('class' , 'form-check  col-sm-12  col-md-12') ;    
 //                   divElem.setAttribute('class' , 'form-group  col-sm-12  col-md-12') ;  
                    var labelElem = document.createElement('label');
-//                   labelElem.setAttribute('class' ,'form-check-label');
+                   labelElem.setAttribute('class' ,'trt-label');
                    labelElem.setAttribute('for' , field.fieldName);
                    divElem.appendChild(labelElem);
                    //Creation du composant input
@@ -2206,7 +2208,7 @@ angular.module("mainApp")
                             inputElem.setAttribute('ng-disabled', 'true'); 
                         }//end if($scope.metaData.desableupdate==false){
                     }//end if(($scope.windowType=="view")||
-                    labelElem.appendChild(inputElem);  
+                    divElem.appendChild(inputElem);  
                     labelElem.appendChild(document.createTextNode(labelText)); 
                     if(field.hide){
                         divElem.setAttribute('ng-hide',true);
@@ -2235,7 +2237,85 @@ angular.module("mainApp")
 //                  alert(divElem0.innerHTML);
                   return divElem;
               } ;
-          
+              /**
+               * 
+               * @param {type} model
+               * @param {type} field
+               * @param {type} labelText
+               * @param {type} entityName
+               * @param {type} type
+               * @returns {unresolved}
+               */
+           $scope.radioboxBuilder = function(model , field , labelText, entityName,value){
+                   //Input fields
+                   var inputs = new Array(); 
+                   var divElem = document.createElement('div');
+                   divElem.setAttribute('class' , 'form-check  col-sm-12  col-md-12') ;    
+//                   divElem.setAttribute('class' , 'form-group  col-sm-12  col-md-12') ;  
+                   var labelElem = document.createElement('label');
+                   labelElem.setAttribute('class' ,'trt-label');
+                   labelElem.setAttribute('for' , field.fieldName);
+                   divElem.appendChild(labelElem);
+                   var div00 = document.createElement('div');
+                   divElem.appendChild(div00);
+                   var values = value.split(';');
+                   for(var i=0 ; i<values.length;i++){
+                       var div001 = document.createElement('div');
+                       div001.setAttribute('class' ,'trt-radio');
+                       var labelElem = document.createElement('label');
+                       div001.appendChild(labelElem);
+                       labelElem.setAttribute('class' ,'form-check-label');
+                       var inputElem = document.createElement('input');
+                       labelElem.appendChild(inputElem);
+                       inputs.push(inputElem);
+                       labelElem.appendChild(document.createTextNode(values[i]));
+                       inputElem.setAttribute('class' , 'form-check-input');
+                       inputElem.setAttribute('type' , 'radio');
+                       inputElem.setAttribute('name' , field.fieldName);
+                       inputElem.setAttribute('id' , field.fieldName+"_"+values[i]);
+                       inputElem.setAttribute('data-toggle' , 'toggle');
+                       inputElem.setAttribute('ng-model' , model);
+                       inputElem.setAttribute('value' , ''+i);
+                       div00.appendChild(div001);
+                   }//end for(var i=0 ; i<values.length;i++){                   
+//                    $scope.constraintsProvider(field , inputElem);
+                    if(($scope.windowType=="view")||
+                            ((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))||(field.editable==false)){
+                        if($scope.metaData.desableupdate==false){
+                            for(var i=0;i<inputs.length;i++){
+                                inputs[i].setAttribute('ng-disabled', 'true'); 
+                            }//end for(var i=0;i<inputs.length;i++){
+                        }//end if($scope.metaData.desableupdate==false){
+                    }//end if(($scope.windowType=="view")||
+                    divElem.appendChild(div00);  
+                    labelElem.appendChild(document.createTextNode(labelText)); 
+                    if(field.hide){
+                        divElem.setAttribute('ng-hide',true);
+                    }//end if(field.hide)
+                    if(field.hidden!=null&&field.hidden.length>0){
+                        divElem.setAttribute('ng-hide',field.hidden);
+                    }//end if(field.hidden!=null&&field.hidden.length==0)
+                   //Traitement des observable
+                   if(field.observable==true){
+                       var observable = new Observable();
+                       $scope.observablePools[field.fieldName] = observable;
+                   }//end if(field.observable==true)
+                   if(field.observer!=null){
+                       var observer = new Observer(field.observer,model);
+                       if($scope.observablePools[field.observer.observable]){
+                           observer.register($scope.observablePools[field.observer.observable]);
+                       }else{
+                            var observable = new Observable();
+                            $scope.observablePools[field.observer.observable] = observable;
+                            observer.register($scope.observablePools[field.observer.observable]);
+                       }//end if($scope.observablePools[field.fieldName])
+                   }//end if(field.observer!=null)
+//                    var divElem0 = document.createElement('div');
+//                   divElem0.appendChild(divElem);
+//                  
+//                  alert(divElem0.innerHTML);
+                  return divElem;
+              } ;
           /**
            * 
            * @param {type} key
@@ -2344,7 +2424,7 @@ angular.module("mainApp")
                                                         $scope.dataCache['resources'] = new Array();
                                                         $scope.dataCache['names'] = new Array();   
                                                         commonsTools.hideDialogLoading();
-                                                        $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","success");
+                                                        $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a Ã©chouÃ© <br> Veuillez consulter les logs pour plus de dÃ©tails","success");
                                                     });     
                       },function(error){
                           commonsTools.showMessageDialog(error);
@@ -2383,8 +2463,8 @@ angular.module("mainApp")
                    imgElem.setAttribute('ng-src',"img\\photo.png");
                    imgElem.setAttribute('class','img-responsive');
                    imgElem.setAttribute('alt',field.fieldLabel);
-                   imgElem.setAttribute('height','50');
-                   imgElem.setAttribute('width','75');
+                   imgElem.setAttribute('height','80');
+                   imgElem.setAttribute('width','100');
                    imgElem.setAttribute('ng-click',"imageClick('"+parts[1]+"imageChooserInput')");
                    divElem.appendChild(imgElem);
                    var inputElem = document.createElement('input');
@@ -2499,7 +2579,7 @@ angular.module("mainApp")
                     $scope.dataCache['names'] = new Array();   
                     commonsTools.hideDialogLoading();
                     commonsTools.showDialogLoading(error);
-//                    commonsTools.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","success");
+//                    commonsTools.notifyWindow("ERREUR" ,"Le transfert des ressources a Ã©chouÃ© <br> Veuillez consulter les logs pour plus de dÃ©tails","success");
                 }); 
                       
              //commonsTools.gererChangementImage(imageChooserInput,imageContent,apercuImageContent);
@@ -2555,7 +2635,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     $scope.dataCache['names'] = new Array();   
                     commonsTools.hideDialogLoading();
                     commonsTools.showDialogLoading(error);
-//                    commonsTools.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","success");
+//                    commonsTools.notifyWindow("ERREUR" ,"Le transfert des ressources a Ã©chouÃ© <br> Veuillez consulter les logs pour plus de dÃ©tails","success");
                 }); 
                       
              //commonsTools.gererChangementImage(imageChooserInput,imageContent,apercuImageContent);
@@ -2607,7 +2687,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     $scope.dataCache['names'] = new Array();   
                     commonsTools.hideDialogLoading();
                     commonsTools.showDialogLoading(error);
-//                    commonsTools.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","success");
+//                    commonsTools.notifyWindow("ERREUR" ,"Le transfert des ressources a Ã©chouÃ© <br> Veuillez consulter les logs pour plus de dÃ©tails","success");
                 }); 
                       
              //commonsTools.gererChangementImage(imageChooserInput,imageContent,apercuImageContent);
@@ -2629,13 +2709,14 @@ $scope.gererChangementFichier3 = function(event,model){
                 
                //console.log("$scope.manyToOneComponent    ===      "+model+" :::::::  !!!!!!!! "+metaData.entityName);
                var divElem = document.createElement('div');
-               divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12');
+               divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12 col-md-12 trt-widget');
                var labelElem = document.createElement('label');
                labelElem.setAttribute('for' , field.fieldName);
+               labelElem.setAttribute('class' , 'trt-label');
                labelElem.appendChild(document.createTextNode(labelText));
                divElem.appendChild(labelElem);
                var divElem_1 = document.createElement('div');
-               divElem_1.setAttribute('class','input-group');
+               divElem_1.setAttribute('class','input-group trt-select');
                divElem.appendChild(divElem_1);
                var selectElem = document.createElement('select');
                selectElem.setAttribute('class','form-control');
@@ -2717,7 +2798,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     if(data && angular.isDefined(data.id)){
                       $scope.dataCache[""+key+""].push(data);
                     }
-                    var obj = {id:'load' , designation:'Charger les données ....'};
+                    var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
 //                    if($scope.dataCache[parts[1]]&&$scope.dataCache[parts[1]].length>0){
 //                        obj = {id:'loadwithsearch' , designation:'Chercher plus ...'};
 //                    }
@@ -2726,16 +2807,17 @@ $scope.gererChangementFichier3 = function(event,model){
 //                console.log("$scope.manyToOneComponent ============== filter : "+field.filter+" fieldName :"+field.fieldName+" index : "+index+" ==== model : "+model+" :::: key:"+key+" == "+angular.toJson($scope.dataCache[""+key+""]+" === teplatefilter:"+$scope.filtertemplate[key]));
                //console.log("$scope.manyToOneComponent    ===      "+model+" :::::::  !!!!!!!! "+metaData.entityName);
                var divElem = document.createElement('div');
-               divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12');
+               divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12 trt-widget');
                var labelElem = document.createElement('label');
                labelElem.setAttribute('for' , entityName);
+               labelElem.setAttribute('class' , 'trt-label');
                labelElem.appendChild(document.createTextNode(labelText));
                divElem.appendChild(labelElem);
                var divElem_1 = document.createElement('div');
-               divElem_1.setAttribute('class','input-group');
+               divElem_1.setAttribute('class','input-group trt-manytoone');
                divElem.appendChild(divElem_1);
                var selectElem = document.createElement('select');
-               selectElem.setAttribute('class','selectpicker form-control');
+               selectElem.setAttribute('class','selectpicker form-control trt-manytoone-select');
                selectElem.setAttribute('data-style' , 'btn-default');
                selectElem.setAttribute('ng-model' , model);
                if(angular.isString(index)){
@@ -2906,7 +2988,7 @@ $scope.gererChangementFichier3 = function(event,model){
                            $scope.dataCache[""+key+""].push(data[i]);
                        }                       
                     }
-                    var obj = {id:'load' , designation:'Charger les données ....'};
+                    var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
 //                    if($scope.dataCache[parts[1]]&&$scope.dataCache[parts[1]].length>0){
 //                        obj = {id:'loadwithsearch' , designation:'Chercher plus ....'};
 //                    }
@@ -2915,19 +2997,20 @@ $scope.gererChangementFichier3 = function(event,model){
 //                console.log("$scope.manyToManyComponent = === "+model+" ==== "+parts[1]);
 //               $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);
                var divElem = document.createElement('div');
-               divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12');
+               divElem.setAttribute('class' , 'form-group form-group-sm col-sm-12  col-md-12 trt-widget');
                var labelElem = document.createElement('label');
                labelElem.setAttribute('for' , entityName);
+               labelElem.setAttribute('class' , 'trt-label');
                labelElem.appendChild(document.createTextNode(labelText));
                divElem.appendChild(labelElem);
                var divElem_1 = document.createElement('div');
-               divElem_1.setAttribute('class','input-group');
+               divElem_1.setAttribute('class','input-group trt-manytoone');
                divElem.appendChild(divElem_1);
                var selectElem = document.createElement('select');
-               selectElem.setAttribute('class','selectpicker form-control');
+               selectElem.setAttribute('class','selectpicker form-control trt-manytoone-select');
                selectElem.setAttribute('multiple' , 'multiple');
                selectElem.setAttribute('data-style' , 'btn-default');
-               selectElem.setAttribute('data-selected-text-format' , 'count > 3');
+               selectElem.setAttribute('data-selected-text-format' , 'count > 4');
                selectElem.setAttribute('data-live-search','true');
                selectElem.setAttribute('ng-model' , model);
                selectElem.setAttribute('ng-change' , "getData('"+model+"',item,'"+metaData.entityName+"','"+metaData.moduleName+"',"+(index+1)+",'"+modelpath+"')");
@@ -3608,7 +3691,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 }//end if(angular.isObject(data))               
                 oldspanElem.replaceWith(spanelem);
             }//end if(oldItem!=null)
-            //Traitement de la cellule selectionnée
+            //Traitement de la cellule selectionnÃ©e
             if(id != oldId){
                 var data  = $scope.getCurrentModel(model);                
                 var pos = 0;
@@ -3771,7 +3854,7 @@ $scope.gererChangementFichier3 = function(event,model){
                          spanElem.appendChild(document.createTextNode('{{item.'+metaData.columns[i].fieldName+'}}'));
                          tdElem.appendChild(spanElem);
                          if(metaData.columns[i].type=='number'){
-                            tdElem.setAttribute('class','text-right');
+                            tdElem.setAttribute('class','text-center');
                          }
                      }else if(metaData.columns[i].type=='object'){
                           //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
@@ -3806,7 +3889,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                     spanElem.appendChild(document.createTextNode('{{item.'+metaData.groups[i].columns[j].fieldName+'}}'));
                                     tdElem.appendChild(spanElem);
                                     if(metaData.groups[i].columns[j].type=='number'){
-                                        tdElem.setAttribute('class','text-right');
+                                        tdElem.setAttribute('class','text-center');
                                     }//end if(metaData.groups[i].columns[j].type=='number'){
                                 }else if(metaData.groups[i].columns[j].type=='object'){
                                     var spanElem = document.createElement("span");
@@ -3869,14 +3952,27 @@ $scope.gererChangementFichier3 = function(event,model){
                  if(angular.isDefined(metaData.columns[i].search) && metaData.columns[i].search){
                      var tdElem = document.createElement('td');
                      if(metaData.columns[i].type!='array'&& metaData.columns[i].type!='object'
-                              && metaData.columns[i].type!='combobox'){
+                              && metaData.columns[i].type!='combobox' && metaData.columns[i].type!='color'
+                              && metaData.columns[i].type!='radio'){
                          var spanElem = document.createElement("span");
                          spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
                          spanElem.appendChild(document.createTextNode('{{obj.'+metaData.columns[i].fieldName+'}}'));
                          tdElem.appendChild(spanElem);
                          if(metaData.columns[i].type=='number'){
-                            tdElem.setAttribute('class','text-right');
+                            tdElem.setAttribute('class','text-center');
                          }//end if(metaData.columns[i].type=='number'){
+                     }else if(metaData.columns[i].type=='radio'){
+                            var spanElem = document.createElement("span");
+                            spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
+                            spanElem.appendChild(document.createTextNode("{{radioselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}"));
+                            tdElem.appendChild(spanElem);
+                     }else if(metaData.columns[i].type=='color'){
+                          var spanElem = document.createElement("span");
+                          spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
+                          spanElem.appendChild(document.createTextNode('{{obj.'+metaData.columns[i].fieldName+'}}'));
+                          tdElem.appendChild(spanElem);
+                          tdElem.setAttribute('style',"background-color:{{obj."+metaData.columns[i].fieldName+"}};");
+//                            thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
                      }else if(metaData.columns[i].type=='object'){
                           //console.log("$scope.oneToManyComponent ============= "+"{{item."+metaData.columns[i].fieldName+"['designation']}}");
                           var spanElem = document.createElement("span");
@@ -3910,9 +4006,21 @@ $scope.gererChangementFichier3 = function(event,model){
                                     spanElem.appendChild(document.createTextNode('{{obj.'+metaData.groups[i].columns[j].fieldName+'}}'));
                                     tdElem.appendChild(spanElem);
                                     if(metaData.groups[i].columns[j].type=='number'){
-                                        tdElem.setAttribute('class','text-right');
+                                        tdElem.setAttribute('class','text-center');
                                     }//end if(metaData.groups[i].columns[j].type=='number'){
-                                }else if(metaData.groups[i].columns[j].type=='object'){
+                                }else if(metaData.groups[i].columns[j].type=='radio'){
+                                        var spanElem = document.createElement("span");
+                                        spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.groups[i].columns[j].fieldName+"')}}");
+                                        spanElem.appendChild(document.createTextNode("{{radioselctionvalues(obj."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}"));
+                                        tdElem.appendChild(spanElem);
+                                 }else if(metaData.groups[i].columns[j].type=='color'){
+                                      var spanElem = document.createElement("span");
+                                      spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.groups[i].columns[j].fieldName+"')}}");
+                                      spanElem.appendChild(document.createTextNode('{{obj.'+metaData.groups[i].columns[j].fieldName+'}}'));
+                                      tdElem.appendChild(spanElem);
+                                      tdElem.setAttribute('style',"background-color:{{obj."+metaData.groups[i].columns[j].fieldName+"}};");
+//                                      spanElem.setAttribute('style',"background-color:{{obj."+metaData.groups[i].columns[j].fieldName+"}};");
+                                 }else if(metaData.groups[i].columns[j].type=='object'){
                                     var spanElem = document.createElement("span");
                                     spanElem.setAttribute("id","{{identfiantenerator(obj , '"+metaData.columns[i].fieldName+"')}}");
                                     spanElem.appendChild(document.createTextNode("{{obj."+metaData.groups[i].columns[j].fieldName+"['designation']}}"));
@@ -3936,13 +4044,21 @@ $scope.gererChangementFichier3 = function(event,model){
              scriptelem.appendChild(tdelem);
              return scriptelem;
         };
-          /**
-            Creation d'un composant table avec possibilte ajout modif suppression et consultation
+         /**
+          * Creation d'un composant table avec possibilte ajout modif suppression et consultation
             model : field to map
             labelText : the Label of the input
             entityName : name of the entity,
             metaData : MetaData which describe de object
-        **/
+          * @param {type} model
+          * @param {type} labelText
+          * @param {type} entityName
+          * @param {type} metaData
+          * @param {type} field
+          * @param {type} index
+          * @param {type} modelpath
+          * @returns {unresolved}
+          */
         $scope.manyToManyListComponent = function(model , labelText , entityName ,metaData,field,index,modelpath){
 //              console.log("$scope.manyToManyListComponent =before === "+model+"==="+labelText+" == "+"=== "+entityName+" == "+index+" === "+modelpath); 
 //             $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);
@@ -4290,7 +4406,20 @@ $scope.gererChangementFichier3 = function(event,model){
              if(angular.isDefined(metaData)){
                   divElem = document.createElement('div');
                   divElem.setAttribute('class' , 'panel-body');
-                  divElem.setAttribute("style","height:100%;");
+                  divElem.setAttribute("style","height:100%;overflow-y:initial;");
+                  /**
+                   * CONSTRUCTION DU HEADER
+                   * @type @exp;document@call;createElement
+                   */
+                  var headerDiv = document.createElement('div');
+                  headerDiv.setAttribute("id","detail-panel-body-header");
+                  var imgspan = document.createElement('span');
+                  imgspan.setAttribute('id','detail-panel-body-header-img');
+                  headerDiv.appendChild(imgspan);
+                  var actionsspan = document.createElement('span');
+                  actionsspan.setAttribute('id','detail-panel-body-header-act');
+                  headerDiv.appendChild(actionsspan);
+                  divElem.appendChild(headerDiv);
                   var formElem = document.createElement('form');
                   divElem.appendChild(formElem);
                   formElem.setAttribute('role' , 'form');
@@ -4302,7 +4431,7 @@ $scope.gererChangementFichier3 = function(event,model){
                   //Construction des champs
                   if(angular.isDefined(metaData.columns) && (metaData.columns.length>0)){
                      //$scope.panelComponent = function(model , fields , entityName)
-                       $scope.panelComponent(model , metaData.columns , metaData.entityName , formElem,null,index ,modelpath);                      
+                       $scope.panelComponent(model , metaData.columns , metaData.entityName , formElem,divElem,index ,modelpath);                      
                   }//end if(angular.isDefined(metaData.columns) && (metaData.columns.length>0))
 //                  console.log("For editPanelComponent ::::: "+model+" === Panel edit");
                  //Construction des tabpane
@@ -4320,7 +4449,7 @@ $scope.gererChangementFichier3 = function(event,model){
 //                 divElem0.appendChild(divElem);
 //                 console.log(divElem0.innerHTML);
 
-                 return formElem;
+                 return divElem;
  
              }
            
@@ -4626,8 +4755,12 @@ $scope.gererChangementFichier3 = function(event,model){
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'datetime-local');
                }else if (field.type==='password') {
                    return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'password');
+               }else if (field.type==='color') {
+                   return $scope.inputTextBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'color');
                }else if (field.type==='boolean') {
                    return $scope.checkboxBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , 'checkbox');
+               }else if (field.type==='radio') {
+                   return $scope.radioboxBuilder(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , field.value);
                }else if (field.type==='combobox') {
                    return $scope.comboBoxComponent(model+'.'+field.fieldName , field , field.fieldLabel , field.fieldName , field.value);
                }else if (field.type==='textarea') {
@@ -4664,7 +4797,7 @@ $scope.gererChangementFichier3 = function(event,model){
         * @param {type} modelpath
         * @returns {@var;viewElem}
         */
-        $scope.panelComponent = function(model , fields , entityName , viewElem , metaDataName,index,modelpath){
+        $scope.panelComponent = function(model , fields , entityName , viewElem , elem,index,modelpath){
 //            console.log("$scope.panelComponent ========== "+index);
             if(angular.isDefined(viewElem) && (viewElem!=null)){  
               var divElem = viewElem;
@@ -4682,27 +4815,42 @@ $scope.gererChangementFichier3 = function(event,model){
                   fields = $filter('orderBy')(fields,'sequence',false);
 //                  console.log(" $scope.tabPaneComponent =  "+angular.toJson(fields[0]));         
                   if(fields.length==1){
-                      divElem.appendChild($scope.getIhmComponent(model , fields[0] , entityName , metaDataName,index,modelpath));
+                      var spanElem_1 = document.createElement('span') ;
+                      spanElem_1.setAttribute('style' , 'display: inline-block;margin-right: 20px;width: 96%;');
+                      spanElem_1.appendChild($scope.getIhmComponent(model , fields[0] , entityName , null,index,modelpath));
+                      divElem.appendChild(spanElem_1);
                       return divElem;
                   }
-                  var start = 0 ;
+                  var start = 0 ;                  
 //                  if(fields[0].type=='image'){
 //                      divElem.appendChild($scope.getIhmComponent(model , fields[0] , entityName , metaDataName));
 //                      start = 1 ;
 //                  }
                   for(var i = start ; i<fields.length ; i++){
-                      if($scope.panelComponent.type != 'array'|| fields[i].type!='textarea'|| fields[i].type!='richeditor'||fields[i].target=='many-to-many'){
+                      //zend if(group==false){
+                      if(fields[i].type=='image'){
+                          var spanElem = document.createElement('span');
+                          spanElem.setAttribute('id','display: inline-block;margin-right: 20px;width: 48%;float: left;');
+                          spanElem.append($scope.getIhmComponent(model , fields[i], entityName , null,index,modelpath));
+                          var items = angular.element(elem).find("span");
+                          for(var i=0; i<items.length;i++){                 
+                            if(items.eq(i).attr("id")=="detail-panel-body-header-img"){
+//                                console.log("Youpiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+                                  items.eq(i).replaceWith(spanElem);                      
+                            }//end if(items.eq(i).attr("id")=="detail-panel-body"){  
+                          }//end for(var i=0; i<items.length;i++){ 
+                      }else if($scope.panelComponent.type != 'array'|| fields[i].type!='textarea'|| fields[i].type!='richeditor'||fields[i].target=='many-to-many'){
                           if(i%2 == 0){
 //                              console.log("$scope.panelComponent ===== "+fields[i].fieldName)
-                             spanElem_1.appendChild($scope.getIhmComponent(model , fields[i], entityName , metaDataName,index,modelpath));
+                             spanElem_1.appendChild($scope.getIhmComponent(model , fields[i], entityName , null,index,modelpath));
                           }else{
-                             spanElem_2.appendChild($scope.getIhmComponent(model , fields[i] , entityName , metaDataName,index,modelpath));
-                          }
-                        }else{
-                            
-                           divElem.appendChild($scope.getIhmComponent(model , fields[i] , entityName , metaDataName,index,modelpath));
-                           
-                        }
+                             spanElem_2.appendChild($scope.getIhmComponent(model , fields[i] , entityName , null,index,modelpath));
+                          }//end if(i%2 == 0){
+                      }else{
+
+                       divElem.appendChild($scope.getIhmComponent(model , fields[i] , entityName , null,index,modelpath));
+
+                     }//end  if($scope.panelComponent.type != 'array'|| fields[i].type!='textarea'|| fields[i].type!='richeditor'||fields[i].target=='many-to-many'){
                   }
               }
              /* var divElem0 = document.createElement('div');
@@ -4771,7 +4919,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                 labelElem.appendChild(document.createTextNode("{{'"+groups[i].metaArray[j].fieldLabel+"' | translate}}"));
                                 header.appendChild(labelElem);
                             }//end if(groups[i].metaArray[i].fieldName!=""){
-                            //Cas des données de type oneToManay et ManyToMany
+                            //Cas des donnÃ©es de type oneToManay et ManyToMany
                             var tableElem = null;
 //                            console.log(angular.toJson(groups[i].metaArray));  
                             if(groups[i].metaArray[j].target == 'one-to-many'){
@@ -4831,7 +4979,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                        if($rootScope.globals.theme!=null && $rootScope.globals.theme.form){
                                            content = $rootScope.globals.theme.form;
                                        }else{
-                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'  >{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>{{'Enregistrer' | translate}}</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-hide='hideannuler==true' ng-click='annulerAction()'>{{'Quitter' | translate}}</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> {{'PJ' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Ajouter' | translate}} </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='hideMenuActions()'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='dupliquerAction()'> {{'Dupliquer' | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='addElementAction()'> {{'Creer' | translate}} </a> </li><li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel | translate}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'> <form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> Abonnée(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnées </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
+                                          content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'> <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'> <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'> <span class='sr-only'>Toggle Navigation</span> <span class='icon-bar'></span> <span class='icon-bar'></span> <span class='icon-bar'></span> </button> <a  class='navbar-brand' href='#'  >{{metaData.editTitle}} / {{suffixedittitle}}</a> </div> <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'> <div class='btn-group'  role='group'  aria-label='group 1' ng-hide='desablecreateedit'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='saveOrUpdate()'>{{'Enregistrer' | translate}}</button> </div> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-default btn-sm' ng-hide='hideannuler==true' ng-click='annulerAction()'>{{'Quitter' | translate}}</button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='desableprintedit'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> {{'Imprimer' | translate}} <span class='caret'></span> </button> <ul  id='print_menus'  class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='printAction()'> {{'Imprimer' | translate}} </a> </li> </ul> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='iscreateOperation()'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn' ng-show='showpjmenu==true'> {{'PJ' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='piecejointebtn' id='pj_menus_id'> <li role='presentation'> <span style='display: inline-block;'> <span style='display: inline-block;margin-right: 15px;'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> Contrat de travail </a> </span> <span style='display: inline-block;'> <a style='margin-right: 50;'> <span class='glyphicon glyphicon-trash'  aria-hidden='true'></span> </a> </span> </span> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#' ng-click='printAction()'> {{'Ajouter' | translate}} </a> </li> </ul> <input type='file' id='pj_file_input' style='display: none' fileinput='file'  onchange='angular.element(this).scope().gererChangementFichier(event)'> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'   ng-hide='hideMenuActions()'> <button type='button'  class='btn btn-default btn-sm dropdown dropdown-toggle' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='actionsbtn'> {{'Actions' | translate}} <span class='caret'></span> </button> <ul class='dropdown-menu'  role='menu'  aria-labelledby='actionsbtn' id='actions_menu'> <li role='presentation'  ng-hide='showApplication==false'> <a role='menuitem' tabindex='-1' href='#'  ng-click='installAction()'> {{exportbtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='updateAction()'> {{updatebtnlabel | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='dupliquerAction()'> {{'Dupliquer' | translate}} </a> </li><li role='presentation'  ng-hide='desableupdateedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='addElementAction()'> {{'Creer' | translate}} </a> </li><li role='presentation' ng-hide='desabledeleteedit'> <a role='menuitem' tabindex='-1' href='#'  ng-click='deleteAction()'> {{deletebtnlabel | translate}} </a> </li> </ul> </div> <span class='pull-right'   ng-hide='iscreateOperation()'> <div class='btn-group'  role='group'  aria-label='group 3'> <span class='btn btn-default btn-sm'>{{pagination.currentPage}} / {{pagination.totalPages}}</span> <button type='button'  class='btn btn-default  btn-sm' ng-click='pagination.previousPage()' ng-disabled='!pagination.hasPreviousPage()'> <span class='glyphicon glyphicon-chevron-left'  aria-hidden='true'></span> </button> <button type='button'  class='btn btn-default btn-sm' ng-click='pagination.nextPage()' ng-disabled='!pagination.hasNextPage()'> <span class='glyphicon glyphicon-chevron-right'  aria-hidden='true'></span> </button> </div> </span> <div id='workflow_menu_id'></div> </div> </nav><div id='detail-panel-header'></div> <div class='panel-body panel-container' style='padding:0;border:0px;height:85%; margin-top: -15px;' > <div class='panel panel-default col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1' ><div class='panel-body'  id='detail-panel-body'><div id='detail-panel-body-header'></div><form role='form' class='form-horizontal'  name='myForm' novalidate> <span style='display: inline-block;margin-right: 20px;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <img src='img\photo.png'  class='img-responsive' alt='Image '> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='name'>Nom</label> <input type='text' class='form-control'  id='name' placeholder='Votre Nom' ng-required='true' ng-minlength='2'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='birthday'>Date de Naissance</label> <input type='date' class='form-control'  id='birthday' placeholder='Votre Nom'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='form-control'  data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <span style='display: inline-block;width: 48%;'> <div class='form-group  col-sm-12  col-md-12'> <label for='description'>Description</label> <input type='text' class='form-control'  id='description' placeholder='Votre Description' ng-minlength='3'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='heurenaissance'>Heure de Naissance</label> <input type='time' class='form-control'  id='heurenaissance' placeholder='Votre Description'> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='sexe'>Sexe</label> <div class='input-group'> <select class='selectpicker form-control'  multiple data-style='btn-default'> <option>Masculin</option> <option>Feminin</option> </select> <span class='input-group-btn'> <button type='button' class='btn btn-default my-group-button' data-toggle='modal' data-target='#myModal'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> <div class='form-group  col-sm-12  col-md-12'> <label for='actions'>undefined</label> <div class='input-group' > <select class='selectpicker form-control' bootstrap-selectpicker multiple='multiple' data-style='btn-default' ng-model='dataSelects' ng-options='item as item.name for item in currentObject.actions' ng-click='getData(actions)' >  </select> <span class='input-group-btn'> <button class='btn btn-default my-group-button' ng-click='editDialogBuilder(metaData)'> <span class='glyphicon glyphicon-plus' aria-hidden='true' style='color:blue'></span> </button> </span> </div> </div> </span> <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Nom Module</th> <th>Description</th> </tr> </thead> <tbody> <tr> <ul class='nav navbar-nav'> <li> <a href='#'   data-toggle='modal'  data-target='#myModal'  ng-click='editDialogBuilder()'> <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> </a> </li> <li> <a href='#' data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span> </a> </li> <li> <a href='#'> <span class='glyphicon glyphicon-trash' aria-hidden='true'></span> </a> </li> <li> <a href='#'  data-toggle='modal'  data-target='#myModal'> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> </a> </li> </ul> </tr> <tr > <td>GC</td> <td>Gestion Commerciale</td> </tr> <tr> <td>MT</td> <td>Gestion de la maintenance</td> </tr> </tbody> </table> </div> <div  role='tabpanel'> <ul class='nav  nav-tabs'  role='tablist'> <li role='presentation'> <a href='#profile'  aria-control='profile'  role='tab'  data-toggle='tab'> Onglet 1 </a> </li> <li role='presentation'> <a href='#message'  aria-control='message'  role='tab'  data-toggle='tab'> Onglet 2 </a> </li> </ul> <div class='tab-content'> <div role='tabpanel'  class='tab-pane active'  id='profile' > Conteneur 1 </div> <div role='tabpanel'  class='tab-pane'  id='message' >  </div> </div> </div> </form> </div> </div> <div class='col-sm-12 col-md-12' style='background-color: white;'   ng-show='shownotepanel()' style='display:none;'> <div class='panel-heading'> <div class='btn-group'  role='group'  aria-label='group 1'> <button type='button'  class='btn btn-primary btn-sm' ng-click ='messagesAction()'>Nouveau Message</button> </div> <div class='btn-group'  role='group'  aria-label='group 1' style='margin-left: 10px;'> <a href='#'  class='a-sm' style='border:none;text-decoration: none;' ng-click ='notesInterneAction()'>Enregistrer une note interne</a> </div> <span class='pull-right'> <div class='btn-group'  role='group'  aria-label='group 1' style='right: 150px;'> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==false'>Ne pas suivre<span class='glyphicon glyphicon-remove' aria-hidden='true'></button> <button type='button'  class='btn btn-default btn-sm' ng-click ='suivreAction()' ng-if='activefollower==true'> AbonnÃ©e(s) <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </button> </div> <div class='btn-group  dropdown'    role='group'  aria-label='group 2'  style='right: 120px;'> <a href='#'  class='dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='imprimerbtn'> <span class='caret'></span> <span class='glyphicon glyphicon-user' aria-hidden='true'></span> </a> <ul class='dropdown-menu'  role='menu'  aria-labelledby='imprimerbtn' id='followermenuid'> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutAborne()'> Ajouter des abonnÃ©es </a> </li> <li role='presentation'> <a role='menuitem' tabindex='-1' href='#'  ng-click='editPanelAjoutCanaux()'> Ajouter des canaux </a> </li> <li class='dropdown-divider'></li> </ul> </div> </span>  </div> <div class='panel-heading'> <div class='input-group' ng-show='enablefollowerpanel==true'> <input type='text' class='form-control'  id='name' placeholder='Saisir votre message' ng-required='true' ng-model='dataCache.messageobject.body' ng-minlength='2'> <div class='input-group-btn  dropdown'    role='group'  aria-label='group 2'> <button type='button'  class='btn btn-default dropdown dropdown-toggle btn-sm' data-toggle='dropdown' aria-haspopup='false'  aria-expanded='true' id='pjidbtn'  ng-click='imageClick(\"followerfileinput_id\")'><span class='glyphicon glyphicon-paperclip'  aria-hidden='true' style='color:blue;'></span> <span class='caret'></span> </button> <input type='file' id='followerfileinput_id' style='display: none' fileinput='file'   onchange='angular.element(this).scope().gererChangementFichier2(event)'> </div> <span class='input-group-btn'> <button type='button'  class='btn btn-default btn-sm' ng-click ='sendAction()'> <span class='glyphicon glyphicon-send' aria-hidden='true' style='color:blue'> </span> </button> </span> </div> <div><div  id='followermenu_id'></div> </div></div> <div style='height: 87%;width:100%;overflow: auto;'> <table class='table table-inbox table-hover'  id='tablefollowersid'> <tbody> <tr class='unread'> <td class='inbox-small-cells'> <input type='checkbox' class='mail-checkbox'> </td> <td class='inbox-small-cells'><i class='fa fa-star'></i></td> <td class='view-message  dont-show'>PHPClass</td> <td class='view-message '>Added a new class: Login Class Fast Site</td> <td class='view-message  inbox-small-cells'><i class='fa fa-paperclip'></i></td> <td class='view-message  text-right'>9:27 AM</td> </tr> </tbody> </table> </div>    </div> </div> </div></div>"   ;
                                        }//end if($rootScope.globals.theme!==null&&$rootScope.globals.theme.form){
                                    }else if(type==="report"){
                                        if($rootScope.globals.theme!==null&&$rootScope.globals.theme.report){
@@ -4860,7 +5008,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                     }else if(type==="import"){
                                        content = "<div class='panel panel-default' id='innerpanel' style='padding:0;height:100%;'>  <div class='panel-container' style='height: 100% ;border:0px;'> <nav id='listebar' class='navbar navbar-default detail-heading'  role='navigation'>  <div class='navbar-header  col-sm-12  col-md-12'> <button type='button'  class='navbar-toggle' data-toggle='collapse'  data-target='#Navbar'>  <span class='sr-only'>Toggle Navigation </span>  <span class='icon-bar'> </span>  <span class='icon-bar'> </span>  <span class='icon-bar'> </span> </button> <a  class='navbar-brand' href='#'>{{'IMPORTDATA' | translate}}</a> </div>  <div class='btn-toolbar' role='toolbar'  aria-label='Toolbar1'>  <div class='panel panel-default col-sm-12  col-md-12' style='margin-top: 8px;margin-bottom: 0px;border-top: solid 1px #a8a8a8;background-color: #f0eeee;background-image: linear-gradient(to bottom, #fcfcfc, #dedede);' >  <div class='collapse navbar-collapse'  style='position: center;' id='detail-panel-header'> <ul class='nav navbar-nav navbar-left left-menu-bar'> <button style='margin-right: 5px;' class='btn btn-default  btn-sm' href='#' ng-click='validerFileAction()'  ng-disabled='importData.fichier==null'>Valider</button> <button class='btn btn-default btn-sm' href='#'  ng-click='importFileAction()' ng-disabled='importData.fichier==null'>Importer</button> <button class='btn btn-default btn-sm' href='#'  ng-click='annulerAction()'>Annuler</button> </ul> </div> </div> </div> </nav>  <div class='panel-body panel-container' style='padding:0;border:0px;height:80%;' >  <div class='panel panel-default' >  <div class='panel-body col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1'  id='detail-panel-body'>  <form role='form' class='form-horizontal'  name='myForm' style='background-color: white;padding: 15px;' novalidate>  <span style='display: inline-block;margin-right: 20px;width: 48%;'>  <div class='form-group  col-sm-12  col-md-12'> <label for='name'>{{'Fichier' | translate}} </label> <input type='file' ng-model='importData.fichier'  class='form-control' id='filename_pj'  placeholder='Selectionnez le fichier' ng-required='true'  onchange='angular.element(this).scope().gererChangementFichier4(event)'> </div>  <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>{{'Format' | translate}} </label>  <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.format'>  <option>cvs</option>  <option>excel</option> </select> </div> </div>  <div class='form-group  col-sm-6  col-md-6' ng-hide='isCVS()'> <label for='separator'>{{'Separateur' | translate}} </label> <input type='text' class='form-control' ng-model='importData.separator' placeholder='Veuillez saisir le separateur'> </div> </span>  <div class='table-responsive'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>{{'Statut' | translate}} </th> <th>{{'Champ'|translate}} </th> <th>{{'Description' | translate}} </th> <th>{{'Obligatoire'|translate}}(?) </th> </tr> </thead> <tbody> <tr  ng-repeat='row in importData.fields'> <td> <input type='checkbox' name='' ng-model='row.selected'  disabled='false'> </td> <td>{{row.code}} </td> <td>{{row.description}} </td> <td> <input type='checkbox' name='' ng-model='row.optional' disabled='true'> </td> </tr> </tbody> </table> </div> </form> </div> </div> </div> </div> </div>";                                       
                                     }else if(type==="export"){
-                                       content = "<div class='modal-body' id='modalbody' style='padding:0;height:100%;'>  <div class='panel-container' style='height: 100% ;border:0px;'>  <div class='panel-body panel-container' style='padding:0;border:0px;height:85%;'>  <div   id='detail-panel-body' style='padding:0;'>  <form role='form' class='form-horizontal'  name='myForm' style='background-color:white;padding:10px;' novalidate>  <span style='display: inline-block;margin-right: 20px;width: 48%;'>  <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Type d'export </label>  <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.typeexport'>  <option value='0'>Export personalisé</option>  <option value='1'>Exporter toutes les données</option> </select> </div> </div> </span>  <span style='display: inline-block;width: 48%;'>  <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Formats d'export </label>  <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.format'>  <option>cvs</option>  <option>excel</option> </select> </div> </div> </span>  <div class='table-responsive' ng-hide='exportAll()'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Statut </th> <th>Champ </th> <th>Description </th> <th>Optional(?) </th> </tr> </thead> <tbody> <tr  ng-repeat='row in importData.fields'> <td> <input type='checkbox' name='' ng-model='row.selected'> </td> <td>{{row.code}} </td> <td>{{row.description}} </td> <td> <input type='checkbox' name='' ng-model='row.optional' disabled='true'> </td> </tr> </tbody> </table> </div> </form> </div> </div> </div> </div>";
+                                       content = "<div class='modal-body' id='modalbody' style='padding:0;height:100%;'>  <div class='panel-container' style='height: 100% ;border:0px;'>  <div class='panel-body panel-container' style='padding:0;border:0px;height:85%;'>  <div   id='detail-panel-body' style='padding:0;'>  <form role='form' class='form-horizontal'  name='myForm' style='background-color:white;padding:10px;' novalidate>  <span style='display: inline-block;margin-right: 20px;width: 48%;'>  <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Type d'export </label>  <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.typeexport'>  <option value='0'>Export personalisÃ©</option>  <option value='1'>Exporter toutes les donnÃ©es</option> </select> </div> </div> </span>  <span style='display: inline-block;width: 48%;'>  <div class='form-group  col-sm-6  col-md-6'> <label for='sexe'>Formats d'export </label>  <div class='input-group'> <select class='form-control'  data-style='btn-default'  ng-model='importData.format'>  <option>cvs</option>  <option>excel</option> </select> </div> </div> </span>  <div class='table-responsive' ng-hide='exportAll()'> <table class='table  table-striped table-bordered table-hover table-condensed'> <thead> <tr style='font-weight: bold;'> <th>Statut </th> <th>Champ </th> <th>Description </th> <th>Optional(?) </th> </tr> </thead> <tbody> <tr  ng-repeat='row in importData.fields'> <td> <input type='checkbox' name='' ng-model='row.selected'> </td> <td>{{row.code}} </td> <td>{{row.description}} </td> <td> <input type='checkbox' name='' ng-model='row.optional' disabled='true'> </td> </tr> </tbody> </table> </div> </form> </div> </div> </div> </div>";
                                     }
                                    return angular.element(content);
                              };
@@ -5190,7 +5338,7 @@ $scope.gererChangementFichier3 = function(event,model){
                       var ifobject = angular.fromJson(text);
                       $scope.removeAttribute(node , "if");
                       if(ifobject && ifobject['op1']&&ifobject['op2']&&ifobject['cond']){
-                          if(angular.isString(ifobject['op1'])){//La source données est l'object courant
+                          if(angular.isString(ifobject['op1'])){//La source donnÃ©es est l'object courant
                               var op1value = ifobject['op1'];
                               var value_1 = $scope.getnodevalue(null,data,op1value);
                               var value_2 = $scope.getnodevalue(null,data,ifobject['op2']);
@@ -6838,7 +6986,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 return ;
             }//end if(!metaData)
 //            console.log("$scope.listDialogBuilder ===== "+index+" ===== "+model+" ==== "+modelpath+" === "+angular.toJson(metaData));     
-           //Chargement des donnï¿½es
+           //Chargement des donnÃ¯Â¿Â½es
            $scope.temporalPagination.beginIndex=0;
            $scope.temporalPagination.currentPage=1;
            $scope.temporalPagination.module = metaData.moduleName;
@@ -6970,7 +7118,7 @@ $scope.gererChangementFichier3 = function(event,model){
          $scope.listDialogWithDataBuilder = function(model , metaData , datas , index){
 //            $scope.innerWindowType = true;
             $scope.dataCache[metaData.entityName] = datas;
-           //Chargement des donnï¿½es
+           //Chargement des donnÃ¯Â¿Â½es
 //           console.log("editDialogBuilder ==== nbre = "+datas.length+" == meta :"+angular.toJson(metaData));    
             //Traitement du currentObject       
                //Affeectation du model dans l'object temporaire              
@@ -7163,7 +7311,7 @@ $scope.gererChangementFichier3 = function(event,model){
          };
         /**
          * Affichage de la fenetre Dialog pour l'edition d'une entite
-          @metaData : MetaData deecrivant la structure de l'entitï¿½
+          @metaData : MetaData deecrivant la structure de l'entitÃ¯Â¿Â½
          * @param {type} metaData
          * @param {type} index
          * @param {type} link
@@ -7566,7 +7714,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 if(parts.length>1){      
                      var metaData = $scope.getCurrentMetaData(model) ;
                      var col =parts.length-1;
-                    //Ajout des donnï¿½es
+                    //Ajout des donnÃ¯Â¿Â½es
                     var items = $scope.dataCache.selectedObjects;
                     $scope.dataCache[""+key+""] = new Array();
                     var templateModel = null;
@@ -7605,7 +7753,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     $timeout(function() {
                        $('.selectpicker').selectpicker('refresh');
                     });
-                    var obj = {id:'load' , designation:'Charger les données ....'};
+                    var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
                     $scope.dataCache[""+key+""].push(obj);                    
                      var modelpart = model.split(".");
                      var fieldName = modelpart[modelpart.length-1];
@@ -8101,7 +8249,7 @@ $scope.gererChangementFichier3 = function(event,model){
 //                                $scope.validateFields(metaData.groups[i].metaArray.metaData,array[i])
 //                           }//end for(var i=0 ; i<array.length;i++){
 //                        }//end if($scope.metaData.groups[i].metaArray){
-                        //Cas des données normales
+                        //Cas des donnÃ©es normales
                         if(metaData.groups[i].columns){
                            for(var j=0 ; j<metaData.groups[i].columns.length;j++){
                                //Nom du champs
@@ -8199,7 +8347,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                .$promise.then(function(datas){                                    
                                     if(datas){
                                         $scope.datas = datas;
-                                //Traitement des données
+                                //Traitement des donnÃ©es
                                        if($scope.calendarrecord){
                                             for(var i=0;i<datas.length;i++){
                                                var data = datas[i];
@@ -8263,7 +8411,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                .then(function(response){
 //                                   console.log("$scope.saveonly = function(model ,item ,entityName,moduleName,link) ===== "+angular.toJson(response.data));
                                    commonsTools.hideDialogLoading();
-//                                   commonsTools.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");     
+//                                   commonsTools.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");     
                                    if(response.data.length>0){
                                      $rootScope.$broadcast("currentActionUpdate" ,{
                                      action:response.data[0] , verticalMenu:$scope.enabledVerticalMenu,index:0});  
@@ -8274,7 +8422,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                });
                    }else{
                         commonsTools.hideDialogLoading();
-                        commonsTools.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");     
+                        commonsTools.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");     
                    }//end if(angular.isDefined(link))
                 },
               function(error){
@@ -8465,14 +8613,14 @@ $scope.gererChangementFichier3 = function(event,model){
                                     var obj = array[array.length-1];               
                                     if(obj.id == "load"){       
                                         commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
-                                         //Chargement des donnï¿½es
+                                         //Chargement des donnÃ¯Â¿Â½es
                                          var urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/filter/0/10";
                                          $http.get(urlPath).then( 
                                            function(response){
                                                 //alert("Data: "+response.data+" === "+model);   
                                                 var parts = model.split(".");
                                                 if(parts.length>1){
-                                                     var obj = {id:'load' , designation:'Charger les données ....'};
+                                                     var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
                                 //                    if($scope.dataCache[parts[1]]&&$scope.dataCache[parts[1]].length>0){
                                 //                        obj = {id:'loadwithsearch' , designation:'Chercher plus ...'};
                                 //                    }
@@ -8538,7 +8686,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 $scope.dataCache[""+parts[1]+""] = new Array();                
                     //var obj = array[array.length-1];                   
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");               
-                     //Chargement des donnï¿½es
+                     //Chargement des donnÃ¯Â¿Â½es
                      var urlPath = "http://"+$location.host()+":"+$location.port()+"/"+angular.lowercase(moduleName)+"/"+angular.lowercase(entityName)+"/filter/"+$scope.temporalPagination.beginIndex+"/"+$scope.temporalPagination.pageSize;
                      $http.get(urlPath).then( 
                        function(response){
@@ -8567,7 +8715,7 @@ $scope.gererChangementFichier3 = function(event,model){
 
         };
        /**
-         reinitialise les données temporaires
+         reinitialise les donnÃ©es temporaires
        **/
         $scope.reset = function(){
            $scope.temporalDatas = [];
@@ -8626,7 +8774,7 @@ $scope.gererChangementFichier3 = function(event,model){
                        ||$scope.datas[0].id>0){
                    $scope.datas.unshift($scope.currentObject);
                }else{
-                   $scope.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>Veuillez enregistrer la ligne courante et réessayer","danger");
+                   $scope.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>Veuillez enregistrer la ligne courante et rÃ©essayer","danger");
                }//end if($scope.datas.length==0 
            }else{
                $scope.displayEditPanel();
@@ -8669,7 +8817,7 @@ $scope.gererChangementFichier3 = function(event,model){
                              .then(function(entity){ 
                                         //Reinitialisation du context
 //                                        $scope.reset();
-                                        //Rechargement des données
+                                        //Rechargement des donnÃ©es
                                          $scope.windowType = 'view';
                                          $scope.selectedObjects = [];         
                                         $scope.currentObject = entity;
@@ -8689,7 +8837,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                         }//end if($scope.showApplication==true){                                       
     //                                    $scope.loadData();
                                         commonsTools.hideDialogLoading();
-                                        $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");
+                                        $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");
                                         if($scope.dataCache['resources']&&$scope.dataCache['resources'].length>0){
                                             for(var i=0 ; i<$scope.dataCache['resources'].length;i++){
                                                 var arrayR = $scope.dataCache['resources'];
@@ -8713,7 +8861,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                                             $scope.dataCache['names'] = new Array();
                                                           }//end if(i==($scope.dataCache['resources'].length-1)){
                                                            $scope.displayEditPanel();
-                                                        $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","warning");
+                                                        $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a Ã©chouÃ© <br> Veuillez consulter les logs pour plus de dÃ©tails","warning");
                                                     });
                                             }//end for(var i=0 ; i<$scope.dataCache['resources'].length;i++)                                               
                                         }else{
@@ -8730,7 +8878,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                     for(var i=0; i<response.length;i++){
                                         message = message+"<br/>"+response[i].fieldLabel;
                                     }//end for(var i=0; i<response.length;i++){
-                                    $scope.notifyWindow("Les champs suivants violent la contrainte d'unicitée" ,message,"danger");
+                                    $scope.notifyWindow("Les champs suivants violent la contrainte d'unicitÃ©e" ,message,"danger");
                                     commonsTools.hideDialogLoading();
                                 }else{
                                     delete $scope.currentObject.id;
@@ -8738,7 +8886,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                             .$promise.then(function(entity){
                                          console.log("$scope.saveOrUpdate === Constraint result inner2 ==================="+$scope.windowType+" === contraints : "+angular.toJson($scope.currentObject));
                                         //Reinitialisation du context
-                                          //Rechargement des données
+                                          //Rechargement des donnÃ©es
 //                                          $http.defaults.headers.common['names']= angular.toJson($scope.dataCache['names']); 
                                             restService.findByCompareid($scope.currentObject.compareid)
                                                .$promise.then(function(data){
@@ -8777,7 +8925,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                                               commonsTools.hideDialogLoading();
                                                               commonsTools.showMessageDialog(error);
                                                           });  
-                                                    $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success"); 
+                                                    $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success"); 
                                                     if($scope.dataCache['resources']&&$scope.dataCache['resources'].length>0){
                                                         for(var i=0 ; i<$scope.dataCache['resources'].length;i++){
                                                             var arrayR = $scope.dataCache['resources'];
@@ -8802,7 +8950,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                                                         $scope.dataCache['names'] = new Array();
                                                                     }//end if(i==($scope.dataCache['resources'].length-1))
                                                                     $scope.displayEditPanel();
-                                                                    $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a échoué <br> Veuillez consulter les logs pour plus de détails","success");
+                                                                    $scope.notifyWindow("ERREUR" ,"Le transfert des ressources a Ã©chouÃ© <br> Veuillez consulter les logs pour plus de dÃ©tails","success");
                                                                 });
                                                         }//end for(var i=0 ; i<$scope.dataCache['resources'].length;i++)
                                                     }else {
@@ -8831,7 +8979,7 @@ $scope.gererChangementFichier3 = function(event,model){
                         }
                          //Reinitialisation du context
                         //$scope.reset();
-                        //Rechargement des données
+                        //Rechargement des donnÃ©es
                         //$scope.displayListPanel();                           
                      }   
                     
@@ -8885,7 +9033,7 @@ $scope.gererChangementFichier3 = function(event,model){
                           ||$scope.datas[0].id>0){
                      $scope.datas.unshift($scope.currentObject);
                   }else{
-                      $scope.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>Veuillez enregistrer la ligne courante et réessayer","danger");
+                      $scope.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>Veuillez enregistrer la ligne courante et rÃ©essayer","danger");
                   }//end if($scope.datas.length==0
                }//end if(!$scope.isEditableList())
                          
@@ -9117,22 +9265,22 @@ $scope.gererChangementFichier3 = function(event,model){
            * @returns {undefined}
            */
           $scope.deleteListAction = function(){
-              var result = confirm("Voulez vous supprimer les "+$scope.selectedObjects.length+" selectionnés ?");
+              var result = confirm("Voulez vous supprimer les "+$scope.selectedObjects.length+" selectionnÃ©s ?");
               if(result==true){
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     if($scope.selectedObjects && $scope.selectedObjects.length>0){
                        restService.deleteAll($scope.selectedObjects).$promise
                               .then(function(){
                                      $scope.reset();
-                                     //Rechargement des données
+                                     //Rechargement des donnÃ©es
                                      $scope.displayListPanel();
                                      commonsTools.hideDialogLoading();
-                                     $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");
+                                     $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");
                               },function(error){
                                   commonsTools.hideDialogLoading();
                                   commonsTools.showMessageDialog(error);
                               });
-                      //$scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");                   
+                      //$scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");                   
                  }else{
                      $scope.notifyWindow("Suppression Impossible" ,"<br/> Veuillez selectionner au moins une ligne","warning");
                  }      
@@ -9155,11 +9303,11 @@ $scope.gererChangementFichier3 = function(event,model){
                         restService.save(item).$promise
                                 .then(function(entity){
                                          $scope.reset();
-                                         //Rechargement des données
+                                         //Rechargement des donnÃ©es
                                          $scope.windowType = 'list';
                                          $scope.displayListPanel();
                                          commonsTools.hideDialogLoading();
-                                         $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");
+                                         $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");
                                   },function(error){
                                       commonsTools.hideDialogLoading();
                                       commonsTools.showMessageDialog(error);
@@ -9168,17 +9316,17 @@ $scope.gererChangementFichier3 = function(event,model){
                        restService.update(item).$promise
                              .then(function(entity){
                                         $scope.reset();
-                                        //Rechargement des données
+                                        //Rechargement des donnÃ©es
                                         $scope.windowType = 'list';
                                         $scope.displayListPanel();
                                         commonsTools.hideDialogLoading();
-                                        $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");
+                                        $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");
                                  },function(error){
                                      commonsTools.hideDialogLoading();
                                      commonsTools.showMessageDialog(error);
                                  });
                     }//end if(item.id<0){
-                      //$scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");                   
+                      //$scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");                   
                               
           };
           /**
@@ -9198,10 +9346,10 @@ $scope.gererChangementFichier3 = function(event,model){
                                           $scope.reset();
                                           //Retour precedent
                                            $scope.navigatorcontainer.gotoPreview();
-                                         //Rechargement des données
+                                         //Rechargement des donnÃ©es
                                          $scope.displayListPanel();
                                          commonsTools.hideDialogLoading();
-                                         commonsTools.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");
+                                         commonsTools.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");
                                       },function(error){
                                           commonsTools.hideDialogLoading();
                                           commonsTools.showMessageDialog(error);
@@ -9272,7 +9420,7 @@ $scope.gererChangementFichier3 = function(event,model){
                         });
                 
              }else{
-                 var message="Veuillez selectionner le fichier à importer";
+                 var message="Veuillez selectionner le fichier Ã  importer";
                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
              }//end if($scope.importData.fichier!=null){
           };
@@ -9299,7 +9447,7 @@ $scope.gererChangementFichier3 = function(event,model){
                             if(errors.length>0){
                                 $scope.showValidationMessageDialog(errors);
                             }else{
-                                commonsTools.notifyWindow("Statut opération" ,"<br/>La validation s'est déroulée avec success","success");
+                                commonsTools.notifyWindow("Statut opÃ©ration" ,"<br/>La validation s'est dÃ©roulÃ©e avec success","success");
                             }//end if(errors.length>0){
                         },function(error){
                             commonsTools.hideDialogLoading();
@@ -9307,7 +9455,7 @@ $scope.gererChangementFichier3 = function(event,model){
                         });
                 
              }else{
-                 var message="Veuillez selectionner le fichier à importer";
+                 var message="Veuillez selectionner le fichier Ã  importer";
                  commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
              }//end if($scope.importData.fichier!=null){
        };
@@ -9415,10 +9563,10 @@ $scope.gererChangementFichier3 = function(event,model){
                }//end if(session==null){
               $scope.importData.fichier = $scope.metaData.entityName;
               if($scope.tableheaderselected==false && $scope.selectedObjects.length<=0){
-                  var message="Veuillez selectionner les données à exporter";
+                  var message="Veuillez selectionner les donnÃ©es Ã  exporter";
                   commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
               }else if($scope.importData.typeexport=="0" && $scope.exportFieldSelectd()==false){
-                  var message="Veuillez selectionner les champs concernés";
+                  var message="Veuillez selectionner les champs concernÃ©s";
                   commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+message,"danger");
               }else{
                   $scope.importData.datas = new Array();
@@ -9534,7 +9682,7 @@ $scope.gererChangementFichier3 = function(event,model){
             $scope.innerWindowType = false;            
              if(model){
                 var key = commonsTools.keygenerator(model);
-                var obj = {id:'load' , designation:'Charger les données ....'};
+                var obj = {id:'load' , designation:'Charger les donnÃ©es ....'};
                 $scope.dataCache[key] = new Array();
                 $scope.dataCache[key].push(obj);
 //                alert("Vous avez ferme la fenetre modal ::::: "+model+"===="+key+" === "+angular.toJson(data));
@@ -9596,7 +9744,7 @@ $scope.gererChangementFichier3 = function(event,model){
           };
 
           /**
-             Recherche les données selon les criteres contenu dans predicats
+             Recherche les donnÃ©es selon les criteres contenu dans predicats
           **/
           $scope.searchAction = function(){
                var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
@@ -9696,7 +9844,7 @@ $scope.gererChangementFichier3 = function(event,model){
                 return message;
             };
          /**
-           Ajout d'un abornée pour un message
+           Ajout d'un abornÃ©e pour un message
          **/
          $scope.editPanelAjoutAborne = function(){            
             var url="http://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur/meta";
@@ -9738,7 +9886,7 @@ $scope.gererChangementFichier3 = function(event,model){
              lielem.appendChild(aElem);
              aElem.setAttribute("role","menuitem");aElem.setAttribute("tabindex","-1");
              aElem.setAttribute("href","#");aElem.setAttribute("ng-click","editPanelAjoutAborne()");
-             aElem.appendChild(document.createTextNode("Ajouter des abonnées"));
+             aElem.appendChild(document.createTextNode("Ajouter des abonnÃ©es"));
              //Menu canaux
              lielem = document.createElement("li");
              ulElem.appendChild(lielem);
@@ -9850,7 +9998,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     
          };
           /**
-           Ajout d'un abornée pour un message
+           Ajout d'un abornÃ©e pour un message
          **/
          $scope.editPanelAjoutCanaux = function(){
             var url="http://"+$location.host()+":"+$location.port()+"/kerencore/canal/meta";
@@ -10073,7 +10221,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                      });
                          }else{
                              commonsTools.hideDialogLoading();
-                             commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve la piÃ¨ce jointe  : "+pj.attachename,"danger");
+                             commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve la piÃƒÂ¨ce jointe  : "+pj.attachename,"danger");
                          }//end if(pj)
                      },function(error){
                          commonsTools.hideDialogLoading();
@@ -10164,7 +10312,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                      });
                          }else{
                              commonsTools.hideDialogLoading();
-                             commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve la piÃ¨ce jointe  : "+pj,"danger");
+                             commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve la piÃƒÂ¨ce jointe  : "+pj,"danger");
                          }//end if(pj)
                      
          };
@@ -10203,7 +10351,7 @@ $scope.gererChangementFichier3 = function(event,model){
                             });
                     
                 }else{
-                    commonsTools.notifyWindow("Erreur" ,"Le corps du message ne peut Ãªtre vide","danger"); 
+                    commonsTools.notifyWindow("Erreur" ,"Le corps du message ne peut ÃƒÂªtre vide","danger"); 
                 }//end if($scope.messagebody && $scope.messagebody.trim()!="")
             };
             /**
@@ -10390,7 +10538,7 @@ $scope.gererChangementFichier3 = function(event,model){
                            var url="http://"+$location.host()+":"+$location.port()+"/"+data.model+"/"+data.entity+"/"+data.method;
                            $http.post(url,template)
                                    .then(function(response){
-                                       $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");  
+                                       $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");  
                                        commonsTools.hideDialogLoading();
                                    },function(error){
                                        commonsTools.hideDialogLoading();
@@ -10409,7 +10557,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                    .then(function(response){
                                        $scope.currentObject = response.data;
                                        $scope.displayEditPanel();
-                                       $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");  
+                                       $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");  
                                        commonsTools.hideDialogLoading();
                                    },function(error){
                                        commonsTools.hideDialogLoading();
@@ -10417,7 +10565,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                    });
                        }//end if(data.model&&data.entity&&data.method)
                      }else{
-                         $scope.notifyWindow("Erreur" ,"Aucun état n'est programmé","danger");
+                         $scope.notifyWindow("Erreur" ,"Aucun Ã©tat n'est programmÃ©","danger");
                      }
                   }else if(type=='report'){
                       if(data.model&&data.entity&&data.method){
@@ -10764,6 +10912,11 @@ $scope.gererChangementFichier3 = function(event,model){
                           thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+".designation}}";
                         }else if(metaData.columns[i].type=='combobox'){
                             thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
+                        }else if(metaData.columns[i].type=='radio'){
+                            thElem.innerHTML = "{{radioselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
+                        }else if(metaData.columns[i].type=='color'){
+                            thElem.setAttribute('style',"background-color:{{obj."+metaData.columns[i].fieldName+"}};");
+//                            thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
                         }else{                            
                           thElem.innerHTML = "{{obj."+metaData.columns[i].fieldName+"}}";
                         }//end if(metaData.columns[i].type=='object'){
@@ -10789,6 +10942,11 @@ $scope.gererChangementFichier3 = function(event,model){
                                       thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+".designation}}";
                                     }else if(metaData.groups[i].columns[j].type=='combobox'){
                                         thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}";
+                                    }else if(metaData.columns[i].type=='radio'){
+                                        thElem.innerHTML = "{{radioselctionvalues(obj."+metaData.groups[i].columns[j].fieldName+",'"+metaData.groups[i].columns[j].value+"')}}";
+                                    }else if(metaData.columns[i].type=='color'){
+                                        thElem.setAttribute('style',"background-color:{{obj."+metaData.groups[i].columns[j].fieldName+"}};");
+            //                            thElem.innerHTML = "{{comboboxselctionvalues(obj."+metaData.columns[i].fieldName+",'"+metaData.columns[i].value+"')}}";
                                     }else{
                                       thElem.innerHTML = "{{obj."+metaData.groups[i].columns[j].fieldName+"}}";                                      
                                     }
@@ -11181,6 +11339,18 @@ $scope.gererChangementFichier3 = function(event,model){
           * @returns {undefined}
           */
          $scope.comboboxselctionvalues = function(selectedValue,value){
+//             console.log("$scope.comboboxselctionvalues = function(selectedValue,value){ =========== "+selectedValue+" ==== "+value)
+             var values = value.split(";");
+             var index = new Number(selectedValue);
+             return values[index];
+         };
+         /**
+          * 
+          * @param {type} selectedValue
+          * @param {type} value
+          * @returns {principal_L973.principalAnonym$41.controller.$scope.radioselctionvalues.values}
+          */
+         $scope.radioselctionvalues = function(selectedValue,value){
 //             console.log("$scope.comboboxselctionvalues = function(selectedValue,value){ =========== "+selectedValue+" ==== "+value)
              var values = value.split(";");
              var index = new Number(selectedValue);
@@ -11895,7 +12065,7 @@ $scope.gererChangementFichier3 = function(event,model){
                         $scope.showApplication = false;
                         if($scope.currentModule.name=='application'){                            
                             $scope.exportbtnlabel = 'Installer/Desinstaller';
-                            $scope.updatebtnlabel ='Mise Ã  jour';
+                            $scope.updatebtnlabel ='Mise ÃƒÂ  jour';
                             $scope.deletebtnlabel='Supprimer';
                             $scope.showApplication = true;
                         }  //end if($scope.currentModule.name=='application')                        
@@ -11977,7 +12147,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                                                             $scope.searchCriteria = new String();               
                                                                             $scope.listFramePanelBuilder(metaData);
                                                                             $scope.loadData();
-                                                                            $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success"); 
+                                                                            $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success"); 
                                                                             location.reload();
                                                                       }
                                                                       , function(error){
@@ -12023,7 +12193,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                                                             $scope.searchCriteria = new String();               
                                                                             $scope.listFramePanelBuilder(metaData);
                                                                             $scope.loadData();
-                                                                            $scope.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");  
+                                                                            $scope.notifyWindow("Status Operation" ,"L'opÃ©ration s'est dÃ©roulÃ©e avec sucess","success");  
                                                                             location.reload();
                                                                       }
                                                                       , function(error){
@@ -12268,7 +12438,7 @@ $scope.gererChangementFichier3 = function(event,model){
           $scope.$on("currentActionUpdate" , function(event , args){
                var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
                if(session==null){
-                   alert('Votre session est expirée \n Cliquez sur OK et reconnectez vous');
+                   alert('Votre session est expirÃ©e \n Cliquez sur OK et reconnectez vous');
                    $scope.deconnexion();
                    return;
                }//end if(session==null){
@@ -12453,7 +12623,7 @@ $scope.gererChangementFichier3 = function(event,model){
                                      });
                          }else{
                              commonsTools.hideDialogLoading();
-                             commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve la piÃ¨ce jointe  : "+pj,"danger");
+                             commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+"Impossible de trouve la piÃƒÂ¨ce jointe  : "+pj,"danger");
                          }//end if(pj)
                      
          };
