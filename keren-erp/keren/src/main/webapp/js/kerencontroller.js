@@ -54,13 +54,14 @@ angular.module("keren.core")
                
                $scope.$on("website" , function(event ,args){
                    var url = "http://"+$location.host()+":"+$location.port()+"/keren/#/website/"+args.website;
-//                   console.log('$scope.$on("website" , function(event ,args) :::::::::::::::: '+angular.toJson(args.currentuser));
+//                   console.log('$scope.$on("website" , function(event ,args) :::::::::::::::: '+angular.toJson(args.item));
                      //$location.path("/failed");                     
                      $http.defaults.headers.common['Authorization']='Basic '+args.currentuser.authdata;      
                      var key= "kerensession";
                      var webSiteContext = new Object();
                      webSiteContext.currentuser = $rootScope.globals.currentUser;
                      webSiteContext.website = $rootScope.website;
+                     webSiteContext.data = args.item;//                     
                      sessionStorage.setItem(key,angular.toJson(webSiteContext));
                      window.location.replace(url);
                      location.reload();

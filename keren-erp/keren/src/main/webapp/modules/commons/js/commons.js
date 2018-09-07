@@ -260,7 +260,8 @@ angular.module('keren.core.commons')
                                 scope.currentuser = webcontext.currentuser;
                                 scope.website = webcontext.website;
                                 $http.defaults.headers.common['Authorization']='Basic '+scope.currentuser.authdata;
-//                                console.log("Hello ce fichier est execute : "+key+" ====== "+angular.toJson(scope.currentuser));
+                                scope.ready(webcontext);
+//                                console.log("Hello ce fichier est execute : "+key+" ====== "+angular.toJson(webcontext));
                                 $interval.cancel(instance.promise);
                             }//end if(angular.isDefined(key)){
                         },1000);
@@ -1583,7 +1584,7 @@ angular.module('keren.core.commons')
                         },
                         function(error){
 //                             this.hideDialogLoading();
-                             this.showMessageDialog(error);
+//                             this.showMessageDialog(error);
                         }
                      );
                 

@@ -199,7 +199,7 @@ public class MetaDataUtil {
                 TableFooter annot2 = field.getAnnotation(TableFooter.class);
                 Observer annot3 = field.getAnnotation(Observer.class);
                 if(field.getType().equals(String.class)){   
-                       if(annot.target().equals("combobox")){
+                       if(annot.target().equals("combobox")||annot.target().equals("radio")){
                           String label = annot.label();
                           if(KerenSession.containKey(annot.label())){
                               label = KerenSession.getEntry(label);
@@ -425,7 +425,7 @@ public class MetaDataUtil {
                         Observer annot3 = field.getAnnotation(Observer.class);
                         metaGroup.setSequence(annot.sequence());
                         if(field.getType().equals(String.class)){   
-                               if(annot.target().equals("combobox")){
+                               if(annot.target().equals("combobox")||annot.target().equals("radio")){
                                    String label = annot.label();
                                     if(KerenSession.containKey(annot.label())){
                                         label = KerenSession.getEntry(label);

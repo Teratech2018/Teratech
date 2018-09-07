@@ -962,10 +962,11 @@ angular.module("mainApp")
                 if(action.viewMode){
                     mode = action.viewMode.split(",");
                 }//end if($scope.currentAction.viewMode) 
-//                console.log("$scope.buttonAction ======================== == == mode : "+mode+"===== "+(mode[0]=='website'));   
+//                console.log("$scope.buttonAction ======================== == == mode : "+mode+"===== "+angular.toJson(args.item));   
                 //Traitement des actions de type website
                 if(mode && mode.length>0 && mode[0]=='website'){
-                    $rootScope.$broadcast("website" , {website:action.model,currentuser:$rootScope.globals.currentUser});
+                    $rootScope.websitedata = args.item;
+                    $rootScope.$broadcast("website" , {website:action.model,currentuser:$rootScope.globals.currentUser,item:args.item});
                     return ;
                 }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
 //              console.log("customreport ================================ name ::::: "+args.action+"  action"+angular.toJson(action)); 
@@ -1566,7 +1567,7 @@ angular.module("mainApp")
           * @returns {undefined}
           */
          $scope.getActionByName = function(name,filters,headers,item){
-//             console.log("principals.getActionByName ======== action : "+name+" ==== filters : "+headers+" === item : "+item);
+//             console.log("principals.getActionByName ======== action : "+name+" ==== filters : "+headers+" === item : "+angular.toJson(item));
              if(!angular.isDefined(filters)||filters==null){
                  filters = new Array();
              }//end if(!angular.isDefined(filters)||filters==null){
@@ -4422,8 +4423,9 @@ $scope.gererChangementFichier3 = function(event,model){
         * @returns {Element}
         */
         $scope.editPanelComponent = function(model , metaData , windowType,index,modelpath,extern){             
-                $scope.filtertemplate = new Object();  
-                metaData = angular.fromJson(metaData);
+                $scope.filtertemplate = new Object(); 
+//                console.log("principal.editPanelComponent ============= "+angular.toJson(metaData));
+//                metaData = angular.fromJson(metaData);
               var data = $scope.getCurrentModel(model);
               data = angular.fromJson(angular.toJson(data));
               var divElem = null ;
@@ -4436,14 +4438,17 @@ $scope.gererChangementFichier3 = function(event,model){
                    * @type @exp;document@call;createElement
                    */
                   var headerDiv = document.createElement('div');
+                  headerDiv.setAttribute("class","col-sm-12 col-md-12");
                   headerDiv.setAttribute("id","detail-panel-body-header");
                   headerDiv.setAttribute("style","padding-bottom:10px;text-align: right;");
-                  var imgspan = document.createElement('span');
+                  var imgspan = document.createElement('div');
+                  imgspan.setAttribute('class','col-sm-4 col-md-4');
                   imgspan.setAttribute('id','detail-panel-body-header-img');
                   headerDiv.appendChild(imgspan);
-                  var actionsspan = document.createElement('span');
+                  var actionsspan = document.createElement('div');
+                  actionsspan.setAttribute('class','col-sm-6 col-md-6');
                   actionsspan.setAttribute('id','detail-panel-body-header-act');
-                  actionsspan.setAttribute('style','text-align: right;');
+                  actionsspan.setAttribute('style','text-align: right;float:right;');
                   headerDiv.appendChild(actionsspan);
                   divElem.appendChild(headerDiv);
                   var formElem = document.createElement('form');
@@ -4492,11 +4497,10 @@ $scope.gererChangementFichier3 = function(event,model){
                             }//end if(metaData.header[i].states && metaData.header[i].states.length>0)
                       }//end if(metaData.header[i].type=='header'){
                   }//end for(var i=0 ; i<metaData.header.length;i++){
-//                  console.log("For editPanelComponent 00i init ::::: "+model+" === Panel edit");
+//                  console.log("For editPanelComponent 00i init ::::: "+model+" === Panel edit ::: "+angular.toJson(metaData.columns));
                   //Construction des champs
                   if(angular.isDefined(metaData.columns) && (metaData.columns.length>0)){
-                     //$scope.panelComponent = function(model , fields , entityName)
-                       $scope.panelComponent(model , metaData.columns , metaData.entityName , formElem,divElem,index ,modelpath);                      
+                      $scope.panelComponent(model , metaData.columns , metaData.entityName , formElem,divElem,index ,modelpath);                      
                   }//end if(angular.isDefined(metaData.columns) && (metaData.columns.length>0))
 //                  console.log("For editPanelComponent ::::: "+model+" === Panel edit");
                  //Construction des tabpane
@@ -4863,7 +4867,7 @@ $scope.gererChangementFichier3 = function(event,model){
         * @returns {@var;viewElem}
         */
         $scope.panelComponent = function(model , fields , entityName , viewElem , elem,index,modelpath){
-//            console.log("$scope.panelComponent ========== "+index);
+//            console.log("$scope.panelComponent ========== "+angular.toJson(fields));
             if(angular.isDefined(viewElem) && (viewElem!=null)){  
               var divElem = viewElem;
               var spanElem_1 = document.createElement('span') ;
@@ -4872,11 +4876,8 @@ $scope.gererChangementFichier3 = function(event,model){
               var spanElem_2 = document.createElement('span');
               spanElem_2.setAttribute('style' , 'display: inline-block;width: 48%;');
               divElem.appendChild(spanElem_2);
-              if(fields.length % 2 ==1){
-                //fields.push({type:"emailpty" , search:true ,fieldName:" " , fieldLabel:" "})
-              }
-              if(angular.isDefined(fields)){
-                  //Sort of array
+              
+              if(angular.isDefined(fields)){                  //Sort of array
                   fields = $filter('orderBy')(fields,'sequence',false);
 //                  console.log(" $scope.tabPaneComponent =  "+angular.toJson(fields[0]));         
                   if(fields.length==1){
@@ -4885,38 +4886,40 @@ $scope.gererChangementFichier3 = function(event,model){
                       spanElem_1.appendChild($scope.getIhmComponent(model , fields[0] , entityName , null,index,modelpath));
                       divElem.appendChild(spanElem_1);
                       return divElem;
-                  }
+                  }//end if(fields.length==1){
                   var start = 0 ;                  
 //                  if(fields[0].type=='image'){
 //                      divElem.appendChild($scope.getIhmComponent(model , fields[0] , entityName , metaDataName));
 //                      start = 1 ;
 //                  }
-                  for(var i = start ; i<fields.length ; i++){
+                  for(var i = 0 ; i<fields.length ; i++){
                       //zend if(group==false){
-                      if(fields[i].type=='image'){
-                          var spanElem = document.createElement('span');
-                          spanElem.setAttribute('id','display: inline-block;margin-right: 20px;width: 48%;float: left;');
-                          spanElem.append($scope.getIhmComponent(model , fields[i], entityName , null,index,modelpath));
-                          var items = angular.element(elem).find("span");
-                          for(var i=0; i<items.length;i++){                 
-                            if(items.eq(i).attr("id")=="detail-panel-body-header-img"){
-//                                console.log("Youpiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-                                  items.eq(i).replaceWith(spanElem);                      
-                            }//end if(items.eq(i).attr("id")=="detail-panel-body"){  
-                          }//end for(var i=0; i<items.length;i++){ 
-                      }else if($scope.panelComponent.type != 'array'|| fields[i].type!='textarea'|| fields[i].type!='richeditor'||fields[i].target=='many-to-many'){
-                          if(i%2 == 0){
-//                              console.log("$scope.panelComponent ===== "+fields[i].fieldName)
-                             spanElem_1.appendChild($scope.getIhmComponent(model , fields[i], entityName , null,index,modelpath));
-                          }else{
-                             spanElem_2.appendChild($scope.getIhmComponent(model , fields[i] , entityName , null,index,modelpath));
-                          }//end if(i%2 == 0){
+//                      console.log("$scope.panelComponent ===== "+fields[i].fieldName+" ======= type :"+fields[i].type);
+                       if(fields[i].type==='image'){
+                                var spanElem = document.createElement('span');
+//                                spanElem.setAttribute('id','display: inline-block;margin-right: 20px;width: 48%;float: left;');
+                                spanElem.append($scope.getIhmComponent(model , fields[i], entityName , null,index,modelpath));
+                                var imgdiv = document.createElement('div');
+                                imgdiv.setAttribute('class','pull-left');
+                                imgdiv.setAttribute('id','detail-panel-body-header-img');
+                                imgdiv.append(spanElem);
+                                var items = angular.element(elem).find("div");
+                                for(var j=0; j<items.length;j++){                 
+                                  if(items.eq(j).attr("id")=="detail-panel-body-header-img"){
+      //                                console.log("Youpiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+                                        items.eq(j).append(imgdiv);                      
+                                  }//end if(items.eq(i).attr("id")=="detail-panel-body"){  
+                                }//end for(var i=0; i<items.length;i++){ 
+                       }else if(fields[i].type!= 'array'|| fields[i].type!='richeditor'){
+                           if(i%2 == 0){
+                                spanElem_1.appendChild($scope.getIhmComponent(model , fields[i], entityName , null,index,modelpath));
+                            }else{
+                               spanElem_2.appendChild($scope.getIhmComponent(model , fields[i] , entityName , null,index,modelpath));
+                            }//end if(i%2 == 0){
                       }else{
-
-                       divElem.appendChild($scope.getIhmComponent(model , fields[i] , entityName , null,index,modelpath));
-
-                     }//end  if($scope.panelComponent.type != 'array'|| fields[i].type!='textarea'|| fields[i].type!='richeditor'||fields[i].target=='many-to-many'){
-                  }
+                         divElem.appendChild($scope.getIhmComponent(model , fields[i] , entityName , null,index,modelpath));
+                      }//end  if($scope.panelComponent.type != 'array'|| fields[i].type!='textarea'|| fields[i].type!='richeditor'||fields[i].target=='many-to-many'){
+                  }//end for(var i = 0 ; i<fields.length ; i++){
               }
              /* var divElem0 = document.createElement('div');
              divElem0.appendChild(divElem);
@@ -12363,10 +12366,10 @@ $scope.gererChangementFichier3 = function(event,model){
                                     return ;
                     }//end if(mode.length>0 && mode[0]=='dashboard')
                     //Traitement des actions de type website
-                    if(mode && mode.length>0 && mode[0]=='website'){
-                        $rootScope.$broadcast("website" , {website:$scope.currentAction.model,currentuser:$rootScope.globals.currentUser});
-                        return ;
-                    }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
+//                    if(mode && mode.length>0 && mode[0]=='website'){
+//                        $rootScope.$broadcast("website" , {website:$scope.currentAction.model,currentuser:$rootScope.globals.currentUser});
+//                        return ;
+//                    }//end if(mode && mode.length>0 && mode[0]=='dashboard'){
                     //Traitement des action de type report
                     if($scope.currentAction.report!=null && $scope.currentAction.report!=""){
 //                        if($scope.windowType!='list' && !angular.isDefined(index)){

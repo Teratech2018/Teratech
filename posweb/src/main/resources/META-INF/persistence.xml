@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="posweb" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/POSWEB</jta-data-source>
+    <class>com.keren.posweb.model.Article</class>
+    <class>com.keren.posweb.model.FamilleArticle</class>
+    <class>com.keren.posweb.model.UniteAchat</class>
+    <class>com.keren.posweb.model.UniteGestion</class>
+    <class>com.keren.posweb.model.PointVente</class>
+    <class>com.keren.posweb.model.POSDevise</class>
+    <class>com.keren.posweb.model.PosSession</class>
+    <class>com.keren.posweb.model.Structure</class>
+    <class>com.keren.posweb.model.User</class>
+    <class>com.keren.posweb.model.Compte</class>
+    <class>com.keren.posweb.model.Taxe</class>
+    <class>com.keren.posweb.model.Civilite</class>
+    <class>com.keren.posweb.model.Client</class>
+    <class>com.keren.posweb.model.Commande</class>
+    <class>com.keren.posweb.model.LigneCommande</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>
