@@ -10,8 +10,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -36,7 +34,7 @@ public class PaysRSImpl
     @Manager(application = "kerencore", name = "PaysManagerImpl", interf = PaysManagerRemote.class)
     protected PaysManagerRemote manager;
     
-    public final String moduleName="kerencore";
+//    public final String moduleName="kerencore";
 
     public PaysRSImpl() {
         super();        

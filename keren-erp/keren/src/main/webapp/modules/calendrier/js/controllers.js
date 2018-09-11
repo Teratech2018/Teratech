@@ -569,10 +569,13 @@ angular.module('keren.core.calendar')
                         }//end if($scope.userslist[i].selected)
                     }//end for(var i=0;i<$scope.userslist.length;i++)
                     $http.defaults.headers.common['usersid']= angular.toJson(usersid);  
+                    $http.defaults.headers.common['startdate']= null;  
+                    $http.defaults.headers.common['enddate']= null; 
                     if($scope.currentDates!==null){
                         $http.defaults.headers.common['startdate']= angular.toJson($scope.currentDates.start);  
                         $http.defaults.headers.common['enddate']= angular.toJson($scope.currentDates.end); 
                     }//end if($scope.currentDates!=null){
+//                     console.log("calandar.controller.eventsLoader ================ "+angular.toJson($scope.currentDates));
                      var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/event/event/"+$rootScope.globals.userinfo.id; 
                      $http.get(url).then(
                             function(response){

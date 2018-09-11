@@ -1,7 +1,6 @@
 
 package com.core.calendar;
 
-import com.core.discussions.KMessage;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 import java.util.List;
 import javax.ws.rs.GET;

@@ -17,7 +17,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <serveur.jboss.repertoire.deploiement.war>D:\jboss-as-7.1.1.Final\standalone\deployments\teratechachat.war</serveur.jboss.repertoire.deploiement.war>
+        <serveur.jboss.repertoire.deploiement.war>D:\wildfly-8.0.0.Final\standalone\deployments\teratechachat.war</serveur.jboss.repertoire.deploiement.war>
         <repertoire.target.generation.war>E:\ProjetsPersonels\keren\Teratech\achats\achat-rest\target\teratechachat.war</repertoire.target.generation.war>
     </properties>
 
@@ -78,6 +78,7 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>jaxrs-api</artifactId>
             <version>3.0.5.Final</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

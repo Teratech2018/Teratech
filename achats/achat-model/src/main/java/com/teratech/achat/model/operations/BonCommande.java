@@ -26,7 +26,7 @@ import javax.persistence.OneToMany;
  * @author BEKO
  */
 @Entity
-@DiscriminatorValue("DP")
+@DiscriminatorValue("BC")
 public class BonCommande extends DocumentAchat implements Serializable{
 
      @Predicate(label = "Méthode de facturation",target = "combobox",values = "Basé sur le bon de commande;Basé sur les receptions",group = true,groupName = "group3",groupLabel = "Livraison&Factures")

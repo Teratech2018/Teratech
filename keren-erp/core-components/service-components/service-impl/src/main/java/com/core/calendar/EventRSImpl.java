@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 
 
 /**
@@ -111,7 +110,9 @@ public class EventRSImpl
         if(headers.getRequestHeader("usersid")!=null){
             ids = gson.fromJson(headers.getRequestHeader("usersid").get(0),new TypeToken<List<Long>>(){}.getType());
         }//end if(headers.getRequestHeader("usersid")!=null){
-        if(headers.getRequestHeader("startdate")!=null){
+//        System.out.println(EventRSImpl.class.toString()+" ===========================  ===start date : "+headers.getRequestHeader("startdate"));            
+        if(headers.getRequestHeader("startdate")!=null){   
+//            System.out.println(EventRSImpl.class.toString()+" ===========================  === "+headers.getRequestHeader("startdate").get(0));     
             start = gson.fromJson(headers.getRequestHeader("startdate").get(0),Date.class);
         }//end if(headers.getRequestHeader("startdate")!=null){
         if(headers.getRequestHeader("enddate")!=null){
@@ -132,6 +133,7 @@ public class EventRSImpl
             }else{
                 subquery.append(" OR "+quer);
             }//end if(index==0){
+            index++;
         }//end for(Object id : ids){
         subquery.append(" ");// 
         if(subquery.toString().trim().isEmpty()){
@@ -139,7 +141,6 @@ public class EventRSImpl
         }else{
             requete+=" OR "+subquery+" ) AND (c.start >=:start AND c.start<=:end)";
         }//end if(subquery.toString().trim().isEmpty()){        
-        System.out.println(EventRSImpl.class.toString()+" ===========================  === "+requete+" === "+start+" === "+end);
         Query query = manager.getDao().getEntityManager().createQuery(requete);
         query.setParameter("start", start, TemporalType.TIMESTAMP);
         query.setParameter("end", end, TemporalType.TIMESTAMP);

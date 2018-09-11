@@ -351,8 +351,8 @@ angular.module("mainApp")
 //                                console.log("principal.getModulesForCurrentUser ====== "+angular.toJson(data[0]))
 //                                $http.defaults.headers.common['user']= angular.toJson(data[0]);           
                                 //Chargement  des modules
-                                var url = 'http://'+$location.host()+':'+$location.port()+'/kerencore/utilisateur/application'
-                                $http.put(url , data[0]).then(
+                                var url = 'http://'+$location.host()+':'+$location.port()+'/kerencore/utilisateur/application';
+                                $http.get(url).then(
                                         function(response){
                                             $scope.modules = response.data;
                                             //console.log(angular.toJson($scope.modules));

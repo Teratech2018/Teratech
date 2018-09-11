@@ -23,7 +23,7 @@ import javax.persistence.OneToMany;
  * @author BEKO
  */
 @Entity
-@DiscriminatorValue("DP")
+@DiscriminatorValue("BR")
 public class BonReception extends DocumentAchat implements Serializable{
 
     @Predicate(label = "Document d'origine")

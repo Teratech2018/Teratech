@@ -11,7 +11,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <serveur.jboss.repertoire.deploiement.war>D:\jboss-as-7.1.1.Final\standalone\deployments\portailweb.war</serveur.jboss.repertoire.deploiement.war>
+        <serveur.jboss.repertoire.deploiement.war>D:\wildfly-8.0.0.Final\standalone\deployments\portailweb.war</serveur.jboss.repertoire.deploiement.war>
         <repertoire.target.generation.war>E:\ProjetsPersonels\keren\Teratech\PortailWeb\target\portailweb.war</repertoire.target.generation.war>
     </properties>
 
@@ -41,16 +41,19 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>jaxrs-api</artifactId>
             <version>3.0.5.Final</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-multipart-provider</artifactId>
             <version>2.2.0.GA</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
             <version>2.2.1.GA</version>
+            <scope>provided</scope>
         </dependency>
         <!-- optional, good for handle I/O task -->
         <dependency>
