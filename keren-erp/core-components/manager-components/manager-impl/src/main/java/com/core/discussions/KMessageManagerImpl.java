@@ -8,9 +8,9 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.core.securites.Utilisateur;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,6 +77,34 @@ public class KMessageManagerImpl
         return new KMessage(data);
     }
 
+    
+    @Override
+    public DiscusionSession getmessages(long userid, long lastid) {
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        List<KMessage> datas = new ArrayList<KMessage>();
+        container.addEq("reciever.id", userid);
+        container.addEq("typeMessage", 1);
+        Map<String,OrderType> map = new HashMap<String,OrderType>();
+//        map.put("date", OrderType.DESC);
+        if(lastid<=0){
+           datas = dao.filter(container.getPredicats(), map, null, 0, 10);
+        }else{
+            container.addGt("id", lastid);
+            datas = dao.filter(container.getPredicats(), map, null, 0, -1);
+        }//end if(lastid<=0){
+        List<KMessage> output = new ArrayList<KMessage>();
+        for(KMessage msge:datas){
+            output.add(new KMessage(msge));
+        }
+        DiscusionSession session = new DiscusionSession();
+        session.setMessages(output);
+        String requete ="SELECT MAX(id) FROM KMessage c";
+        Query query = dao.getEntityManager().createQuery(requete);
+        session.setMaxid((Long) query.getSingleResult());
+        return session;
+    }
+
+    
     @Override
     public List<KMessage> getmessages(long userid, long canalid, int firstResult, int maxResult) {
         String requete = "SELECT  DISTINCT  c FROM KMessage c WHERE  ((c.sender.id="+userid+" AND c.canal.id="+canalid+" AND c.typeMessage=0) OR (c.reciever.id="+userid+" AND "+"c.canal.id = "+canalid+"  AND c.typeMessage=1)) ORDER BY c.date DESC";

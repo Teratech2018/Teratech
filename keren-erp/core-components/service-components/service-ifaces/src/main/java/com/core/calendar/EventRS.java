@@ -1,7 +1,6 @@
 
 package com.core.calendar;
 
-import com.core.discussions.KMessage;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -27,5 +26,10 @@ public interface EventRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("event/{userid}")
     public List<Event> getevents(@Context HttpHeaders headers,@PathParam("userid") long userid);
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("period/{userid}")
+    public List<Event> geteventsforperiod(@Context HttpHeaders headers,@PathParam("userid") long userid);
       
 }

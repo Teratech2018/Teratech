@@ -20,7 +20,9 @@ public interface KMessageManager
     
     public List<KMessage> getmessages(long userid, long canalid, int firstResult, int maxResult);
     
-   public List<KMessage> getUsermessages(long userid, long canalid, int firstResult, int maxResult);
+    public DiscusionSession getmessages(long userid, long lastid);
+    
+    public List<KMessage> getUsermessages(long userid, long canalid, int firstResult, int maxResult);
    
    public long countcanal(long userid, long canalid);
     

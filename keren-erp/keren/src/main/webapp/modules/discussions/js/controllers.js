@@ -13,11 +13,15 @@ angular.module('keren.core.discussion')
             MSGEDIRECT:'DIRECT MESSAGES',
             INPUTMSGE:'Enter your Message',
             Administrateur:'Administrator',
-            Discussion:'Discuss'
+            Discussion:'Discuss',
+            INBOX_MSGE_ACTION :'Mark everything as read',
+            NEW_MSGE_ACTION :'New message'
         });
         $translateProvider.translations('fr',{
             MSGEDIRECT:'MESSAGES DIRECT',
-            INPUTMSGE:'Saisir votre Message'           
+            INPUTMSGE:'Saisir votre Message'  ,
+            INBOX_MSGE_ACTION :'Tout marquer comme lu',
+            NEW_MSGE_ACTION :'Nouveau message'
         });
         $translateProvider.preferredLanguage('fr');
         });
@@ -48,6 +52,7 @@ angular.module('keren.core.discussion')
                $scope.dataCache = new Object();
                $scope.windowType = "INBOX";
                $scope.searchCriteria = null;
+               $scope.to = null;
                $scope.currentModule =  { id:-1 , name:"discussionconf",label:"Discussion",selected:false,hasmenu:false,
                           groups:[
                                                       
@@ -337,6 +342,9 @@ angular.module('keren.core.discussion')
                     $http.get(url)
                             .then(function(response){
                                 $scope.connectedusers = response.data;
+                                if($scope.connectedusers.length>0){
+                                  $rootScope.$broadcast("updateconnectusernumber",{value:$scope.connectedusers.length});
+                                }//end if($scope.connectedusers.length>0){
                                 commonsTools.hideDialogLoading();
                             },function(error){
                                 commonsTools.hideDialogLoading();
@@ -357,6 +365,7 @@ angular.module('keren.core.discussion')
                 $scope.canal = canal;
                 $scope.windowTitle = "CONVERSATION / "+canal.code;
                 $scope.windowType = "CANAL";
+                $scope.to = canal.designation;
 //                alert(angular.toJson(canal));
                 if($scope.canal){ 
                     $scope.connecteduser = null;
@@ -606,9 +615,11 @@ angular.module('keren.core.discussion')
                             var msge = messages[i];
                             var liElem = document.createElement('li');
                             liElem.setAttribute("class","media");
+                            liElem.setAttribute("style","padding: 10px;");
                             ulElem.appendChild(liElem);
                             var divElem = document.createElement('div');
                             divElem.setAttribute("class","media-body");
+                            divElem.setAttribute("style","padding: 10px;");
                             liElem.appendChild(divElem);
                             //Deuxieme div
                             var divElem2 = document.createElement("div");
@@ -803,6 +814,7 @@ angular.module('keren.core.discussion')
                 $scope.connecteduser = user;
                 $scope.windowType = "DIRECT";
                 $scope.windowTitle = "CHAT / "+user.intitule;
+                $scope.to = user.designation;
 //                alert(angular.toJson(canal));
                 if($scope.connecteduser){  
                     $scope.canal = null;
@@ -857,19 +869,28 @@ angular.module('keren.core.discussion')
                 message.canal=canal;message.reciever=reciever;message.body=body;//message.senders=[];
                 return message;
             };
+            
             /**
              * 
              * @returns {undefined}
              */
-            $scope.sendAction = function(){
-                if($scope.messagebody && $scope.messagebody.trim()!=""){
+            $scope.sendAction = function(message){
+                if($scope.messagebody && $scope.messagebody.trim()!="" || angular.isDefined(message)&&message!=null){
 //                    var message = $scope.createemptyMessage($scope.canal,$scope.connecteduser,$scope.messagebody);
-                    $scope.messageobject.body = $scope.messagebody;   
+                    if(angular.isDefined(message)&&message!=null){
+                        $scope.messageobject = message ;
+                    }else{
+                        $scope.messageobject.body = $scope.messagebody;                    
+                    }//end if(angular.isDefined(message)&&message!=null){
 //                    console.log("$scope.sendAction ==== "+$scope.currentUser.id+" ===== "+angular.toJson($scope.messageobject)+" ==== ");
                     var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/smessage/send/"+$scope.currentUser.id;
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     $http.post(url,$scope.messageobject)
-                            .then(function(response){                               
+                            .then(function(response){  
+                                        if(angular.isDefined(message)&&message!=null){
+                                            commonsTools.hideDialogLoading();
+                                            return ;
+                                        }//end if(angular.isDefined(message)&&message!=null){
                                         var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/";///canal/"+$scope.currentUser.id+"/0/20";
                                         if($scope.windowType=="CANAL"){
                                             url +="canal/"+$scope.currentUser.id+"/"+$scope.messageobject.canal.id+"/0/20";
@@ -886,6 +907,7 @@ angular.module('keren.core.discussion')
                                                     $scope.messageobject = $scope.createemptyMessage($scope.canal,$scope.connecteduser,$scope.messagebody);
                                                     $scope.piecejointeMenu($scope.messageobject);
                                                     commonsTools.hideDialogLoading();
+                                                    $("#discussionModal").modal("hide");
                                                 },function(error){
                                                     commonsTools.hideDialogLoading();
                                                     commonsTools.showDialogLoading(error);
@@ -908,10 +930,10 @@ angular.module('keren.core.discussion')
                   var divElem = document.createElement('div');
                   divElem.setAttribute('class','media');
                   divElem.setAttribute('id','pjmenuid');
+                  divElem.setAttribute('style','padding: 6px;padding-left: 100px;');
                   var divElem1 = document.createElement('div');
                   divElem.appendChild(divElem1);
-                  divElem1.setAttribute("class","media-body");
-                  
+                  divElem1.setAttribute("class","media-body");                  
                   var pbjmenu = document.querySelector('#pjmenuid');
                     if(pbjmenu!=null){
                          pbjmenu.replaceWith(divElem);
@@ -1175,6 +1197,7 @@ angular.module('keren.core.discussion')
                      var object = new Object();
                      object.errors = 0 ;
                      object.promise = null;
+                     object.lastmessageid = -1;
                      return object;
                  }
                  return {
@@ -1193,6 +1216,8 @@ angular.module('keren.core.discussion')
               * @returns {undefined}
               */
              $scope.start = function(){
+                 $scope.currentUser = $rootScope.globals.userinfo;
+//                 console.log("controller.start =============================== "+angular.toJson($scope.currentUser));
                  var instance = DiscussionController.getInstance();
                  if(instance.promise===null){
                      instance.promise =   $interval(discussionwatcher,5000);
@@ -1239,20 +1264,7 @@ angular.module('keren.core.discussion')
                              //Traitement des messages
 //                             console.log("$scope.gotoselectcanal ====  "+$scope.windowType+" ===== "+$scope.connecteduser);
                             
-                            if($scope.windowType=="INBOX"){
-//                                if($scope.canal!=null||$scope.connecteduser!=null){
-//                                    return ;
-//                                }
-//                                var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/inbox/"+$scope.currentUser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
-//                                $scope.windowType="INBOX";
-//                                $http.get(url)
-//                                    .then(function(response){
-//                                        $scope.messages = response.data;
-//                                        $scope.buildMessageTableView($scope.messages);
-//                                    },function(error){
-//                                        //console.error(error);
-//                                    });
-                            }else if($scope.windowType=="CANAL"){
+                            if($scope.windowType=="CANAL"){
                                     var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/canal/"+$scope.currentUser.id+"/"+$scope.canal.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
                                     $scope.windowType="CANAL";
                                      $http.get(url)
@@ -1264,10 +1276,11 @@ angular.module('keren.core.discussion')
                                                         messages[i].imageid = "sender"+messages[i].id;
                                                          $scope.messages.unshift(messages[i]);
                                                         $scope.loadMessageResources(messages[i]);
+//                                                        $rootScope.$broadcast("refresh_message" , {message:messages[i]});
                                                     }
                                                 }
 //                                                $filter('orderBy')($scope.messages,'date',true); 
-                //                                console.log("$scope.gotoselectcanal ====  "+$scope.messages.length);
+//                                                console.log("$scope.gotoselectcanal ====  "+$scope.messages.length);
 //                                                $scope.buildMessageDivView($scope.messages);
 //                                                            $scope.piecejointeMenu($scope.messageobject);
                                                   commonsTools.hideDialogLoading();
@@ -1275,7 +1288,7 @@ angular.module('keren.core.discussion')
                                                   commonsTools.hideDialogLoading();
                                                   commonsTools.showDialogLoading(error);
                                             });
-                            }else {
+                            }else if($scope.windowType=="CANAL"){
                                     if($scope.connecteduser==null){
                                         return ;
                                     }
@@ -1291,12 +1304,28 @@ angular.module('keren.core.discussion')
                                                         messages[i].imageid = "sender"+messages[i].id;                                                        
                                                         $scope.messages.unshift(messages[i]);
                                                         $scope.loadMessageResources(messages[i]);
+//                                                        $rootScope.$broadcast("refresh_message" , {message:messages[i]});
                                                     }
                                                 }
 //                                                $filter('orderBy')($scope.messages,'date',true); 
                                            },function(error){
                                                     commonsTools.hideDialogLoading();
 //                                                           commonsTools.showDialogLoading(error);
+                                           });
+                              }else{
+                                  var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/all/"+$scope.currentUser.id+"/"+instance.lastmessageid;
+//                                  console.log("controller.discussiondispatcher =============================== "+url);
+                                  $http.get(url)
+                                          .then(function(response){
+                                               var session = response.data; 
+                                                var messages = session.messages;
+                                                instance.lastmessageid = session.maxid;
+                                                for(var i=0 ; i<messages.length;i++){
+                                                    $rootScope.$broadcast("refresh_message"  , {message:messages[i]});                                                    
+                                                }//end for(var i=0 ; i<messages.length;i++){
+                                          },function(error){
+                                                    commonsTools.hideDialogLoading();
+                                                    commonsTools.showDialogLoading(error);
                                            });
                               }//end if($scope.windowType=="INBOX")                                        
 //                                        
@@ -1305,7 +1334,8 @@ angular.module('keren.core.discussion')
                    }//end if($scope.currentUser!=null){
                 }  ; 
                 //Lancement de l'couteur
-                $scope.start();
+                $scope.start();                
+               
         });
 
 

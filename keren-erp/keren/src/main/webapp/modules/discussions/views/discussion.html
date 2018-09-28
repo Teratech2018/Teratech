@@ -4,7 +4,7 @@
             <aside class="sm-side">
                 <div class="user-head">
                     <a class="inbox-avatar" href="javascript:;">
-                        <img  width="54" hieght="50" id="mail_user_id" >
+                        <img  width="74" hieght="80" id="mail_user_id" >
                     </a>
                     <div class="user-name">
                         <h5><a href="#">{{currentUser.intitule | translate}}</a></h5>
@@ -12,9 +12,52 @@
                     </div>                   
                 </div>
                 <div class="inbox-body">
-                    <a href="#"   title="Compose"    class="btn btn-compose">
-                        Tout marquer comme lu
+                    <a ng-show="windowType==='INBOX'" href="#" title="Compose"    class="btn btn-compose">
+                        {{'INBOX_MSGE_ACTION' | translate}}
+                    </a> 
+                    <a ng-show="windowType!=='INBOX'" href="#discussionModal" data-toggle="modal"  title="Compose"    class="btn btn-compose">
+                        {{'NEW_MSGE_ACTION' | translate}}
                     </a>                    
+                     <!-- Modal -->
+                    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="discussionModal" class="modal fade" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">�</button>
+                                    <h4 class="modal-title">{{'NEW_MSGE_ACTION' | translate}}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">To</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" placeholder="" id="inputEmail1" class="form-control" ng-model="to" ng-disabled="true">
+                                            </div>
+                                        </div>                                        
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">Message</label>
+                                            <div class="col-lg-10">
+                                                <textarea rows="10" cols="30" class="form-control" id="" name="" ng-model="messagebody"></textarea>
+                                            </div>                                            
+                                        </div> 
+                                        <div  id="pjmenuid" style="padding: 6px;padding-left: 30px;"></div>
+                                        <div class="form-group">
+                                            <div class="col-lg-offset-2 col-lg-10">
+                                                <span class="btn green fileinput-button">
+                                                  <i class="fa fa-plus fa fa-white"></i>
+                                                  <span>
+                                                      <button ng-click="imageClick('pjfileinput_id')"  id="pjidbtn" style="background: transparent;border: none;"> Attachment</button>
+                                                  </span>
+                                                  <input type="file"  id="pjfileinput_id" style="display: none" fileinput="file"   onchange="angular.element(this).scope().gererChangementFichier(event)">
+                                                </span>
+                                                <button class="btn btn-send" type="button" data-dismiss="modal"   ng-click ="sendAction()">Send</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
                 </div>
                 <div  style="height: 100%;background: #9d9d9d;">
                         <ul class="inbox-nav inbox-divider">               
@@ -78,29 +121,10 @@
                     </ul>
                </div>
             </div>
-            <div class="inbox-body" style="background-color: white;width: 100%;height: 100%;overflow: auto;padding: 0;">           
-               <div class="panel-heading"  ng-hide="windowType=='INBOX'">
-                    <div class="input-group">
-                             <input type="text" class="form-control" placeholder="{{'INPUTMSGE' | translate}}"  ng-required="true" ng-minlength="2"  ng-model="messagebody"/>
-                             <div class="input-group-btn ">
-                                     <button class="btn btn-info" type="button" ng-click="imageClick('pjfileinput_id')"  id="pjidbtn">
-                                        <span class="glyphicon glyphicon-paperclip"  aria-hidden="true" style="color:blue;"> </span>                                            				  
-                                     </button>
-                                    <input type="file" id="pjfileinput_id" style="display: none" fileinput="file"   onchange="angular.element(this).scope().gererChangementFichier(event)">
-                             </div>
-                             <span class="input-group-btn">
-                                     <button class="btn btn-info" type="button" ng-click ="sendAction()">
-                                          <span class="glyphicon glyphicon-send"  aria-hidden="true" style="color:blue"></span> 
-                                     </button>
-                             </span>
-                    </div>
-                    <div  id="pjmenuid">
-
-                    </div>
-               </div>
-               <div style="height: 87%;width: 100%;background-color: white;overflow: auto;" id="tablecontainer"> 
+            <div class="inbox-body" style="background-color: white;width: 100%;height: 100%;overflow: auto;padding: 0;">      
+                 <div style="height: 87%;width: 100%;background-color: white;overflow: auto;" id="tablecontainer"> 
                        <ul class="media-list" ng-repeat="item in messages">
-                           <li class="media">
+                           <li class="media" style="padding: 10px;">
                                <div class="media-body">
                                    <div class="media">
                                        <a class="pull-left" href="#"  ng-if="item.typeMessage=='RECEPTION'">

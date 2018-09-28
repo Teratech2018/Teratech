@@ -26,7 +26,7 @@ public class UploadFileRSImpl  implements UploadFileRS{
         try {
             //To change body of generated methods, choose Tools | Templates.
             File fichier = new File(FileHelper.getStaticDirectory()+File.separator+filename);
-            System.out.println(UploadFileRSImpl.class.toString()+" ==== "+fichier.getAbsolutePath());
+//            System.out.println(UploadFileRSImpl.class.toString()+" ==== "+fichier.getAbsolutePath());
             if(!fichier.exists()||!fichier.isFile()){
                 fichier = new File(FileHelper.getStaticDirectory()+File.separator+"avatar.png");
             }

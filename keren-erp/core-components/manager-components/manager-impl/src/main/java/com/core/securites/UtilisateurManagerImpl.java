@@ -80,14 +80,16 @@ public class UtilisateurManagerImpl
         RestrictionsContainer container = RestrictionsContainer.newInstance();
         container.addNotEq("state", "system");
         predicats.addAll(container.getPredicats());
-        List<Utilisateur> datas = super.filter(predicats, orders, properties, firstResult, maxResult); 
+        List<Utilisateur> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); 
         List<Utilisateur> resultats = new ArrayList<Utilisateur>();
         if(datas!=null){
             for(Utilisateur u : datas){
-                Utilisateur user = new Utilisateur(u);
-                resultats.add(user);
-            }
-        }
+              if(!u.getState().trim().equalsIgnoreCase("system")){
+                 Utilisateur user = new Utilisateur(u);
+                 resultats.add(user);
+              }//end if(!u.getState().trim().equalsIgnoreCase("system")){
+            }//end for(Utilisateur u : datas){
+        }//nd if(datas!=null){
         return resultats;
     }
 

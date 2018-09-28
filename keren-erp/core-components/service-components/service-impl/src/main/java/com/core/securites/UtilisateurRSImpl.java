@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.core.menus.MenuModule;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -88,10 +89,11 @@ public class UtilisateurRSImpl
      * @return 
      */
     @Override
-    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers,Utilisateur user) {
+    public List<MenuModule> loadUserApplications(@Context HttpHeaders headers) {
         //To change body of generated methods, choose Tools | Templates.
-//        Gson gson = new Gson();
-//        Utilisateur user = gson.fromJson(headers.getRequestHeader("user").get(0),Utilisateur.class);
+        Gson gson = new Gson();
+        Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+        Utilisateur user = manager.find("id", userid);
         return manager.loadUserApplications(user);
     }
 

@@ -3,23 +3,23 @@ package com.core.calendar;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
-import com.core.discussions.KMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kerem.commons.DateHelper;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 
 
 /**
@@ -71,52 +71,32 @@ public class EventRSImpl
     @Override
     protected void processBeforeUpdate(Event entity) {
         if(entity.getTitle()==null||entity.getTitle().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir le titre")).build()); 
-        }
-        if(entity.getStart()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la date de debut")).build()); 
-        }
-        if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selectionner au moins un participant")).build()); 
-        }
-        if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la durée")).build());  
-        }
-        if(entity.getRappel()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selection la periode de rappel")).build());            
-        }
-        
+            throw new KerenExecption("Veuillez saisir le titre"); 
+        }else if(entity.getStart()==null){
+            throw new KerenExecption("Veuillez saisir la Date de début"); 
+        }else if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
+            throw new KerenExecption("Veuillez saisir sélectionner au moins un participants"); 
+        }else if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
+            throw new KerenExecption("Veuillez saisir la durée");             
+        }else if(entity.getRappel()==null){
+            throw new KerenExecption("Veuillez selection la periode de rappel");           
+        }        
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected void processBeforeSave(Event entity) {
-        if(entity.getTitle()==null||entity.getTitle().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir le titre")).build()); 
-        }
-        if(entity.getStart()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la date de debut")).build()); 
-        }
-        if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selectionner au moins un participant")).build()); 
-        }
-        if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez saisir la durée")).build());  
-        }
-        if(entity.getRappel()==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED)
-                    .header("cause" , new String("Veuillez selection la periode de rappel")).build());            
-        }
-        
+       if(entity.getTitle()==null||entity.getTitle().trim().isEmpty()){
+            throw new KerenExecption("Veuillez saisir le titre"); 
+        }else if(entity.getStart()==null){
+            throw new KerenExecption("Veuillez saisir la Date de début"); 
+        }else if(entity.getParticipants()==null||entity.getParticipants().isEmpty()){
+            throw new KerenExecption("Veuillez saisir sélectionner au moins un participants"); 
+        }else if(entity.getDuree()==null||entity.getDuree().trim().isEmpty()){
+            throw new KerenExecption("Veuillez saisir la durée");             
+        }else if(entity.getRappel()==null){
+            throw new KerenExecption("Veuillez selection la periode de rappel");           
+        }        
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -125,33 +105,56 @@ public class EventRSImpl
         //To change body of generated methods, choose Tools | Templates.
          Gson gson =new Gson();         
         List ids = new ArrayList();
+        Date start = null;
+        Date end = null;
         if(headers.getRequestHeader("usersid")!=null){
             ids = gson.fromJson(headers.getRequestHeader("usersid").get(0),new TypeToken<List<Long>>(){}.getType());
         }//end if(headers.getRequestHeader("usersid")!=null){
-        System.out.println(EventRSImpl.class.toString()+" ============================= userid = "+userid+" =================== users : "+ids);
-        String requete = "SELECT DISTINCT c FROM Event c , IN(c.participants) p WHERE c.owner.id="+userid;
-         String subquery = "(";
-        int index = 0 ;
+//        System.out.println(EventRSImpl.class.toString()+" ===========================  ===start date : "+headers.getRequestHeader("startdate"));            
+        if(headers.getRequestHeader("startdate")!=null){   
+//            System.out.println(EventRSImpl.class.toString()+" ===========================  === "+headers.getRequestHeader("startdate").get(0));     
+            start = gson.fromJson(headers.getRequestHeader("startdate").get(0),Date.class);
+        }//end if(headers.getRequestHeader("startdate")!=null){
+        if(headers.getRequestHeader("enddate")!=null){
+            end = gson.fromJson(headers.getRequestHeader("enddate").get(0),Date.class);
+        }//end if(headers.getRequestHeader("startdate")!=null){
+        if(start==null){
+            start = DateHelper.getFirstDayOfMonth(new Date());
+            end = DateHelper.getLastDayOfMonth(new Date());
+        }//end if(start==null){
+        String requete = "SELECT DISTINCT c FROM Event c  WHERE (c.owner.id="+userid;
+        StringBuffer subquery = new StringBuffer(" ");
+        int index = 0;
         for(Object obj : ids){
             Long id = (Long) obj;
+            String quer = "c.owner.id = "+id+" AND (c.confidentialite=0 OR c.confidentialite=2)";
             if(index==0){
-                subquery+=" p.id="+id;
+                subquery.append(quer);
             }else{
-                subquery+=" OR p.id="+id;
-            }
+                subquery.append(" OR "+quer);
+            }//end if(index==0){
             index++;
-        }//end for(Object obj : ids)
-        if(ids.size()>0){
-            subquery+=") AND (c.confidentialite=0 OR c.confidentialite=2)";
-            requete+=" OR "+subquery;
-        }//end if(ids.size()>0)
-        List<Event> datas = manager.getDao().getEntityManager().createQuery(requete).getResultList();
+        }//end for(Object id : ids){
+        subquery.append(" ");// 
+        if(subquery.toString().trim().isEmpty()){
+            requete+=") AND (c.start >=:start AND c.start<=:end)";
+        }else{
+            requete+=" OR "+subquery+" ) AND (c.start >=:start AND c.start<=:end)";
+        }//end if(subquery.toString().trim().isEmpty()){        
+        Query query = manager.getDao().getEntityManager().createQuery(requete);
+        query.setParameter("start", start, TemporalType.TIMESTAMP);
+        query.setParameter("end", end, TemporalType.TIMESTAMP);
+        List<Event> datas = query.getResultList();
         List<Event> output = new ArrayList<Event>();
-        System.out.println(EventRSImpl.class.toString()+" =========================== "+datas.size()+" === "+requete);
         for(Event evt:datas){
             output.add(new Event(evt));
         }//end for(Event evt:datas){
         return output;
+    }
+
+    @Override
+    public List<Event> geteventsforperiod(HttpHeaders headers, long userid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
    

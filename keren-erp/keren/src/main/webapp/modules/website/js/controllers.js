@@ -86,6 +86,7 @@ angular.module('keren.core.website')
              $scope.username = null;
              //Cache des données du site web
              $scope.website = new Object();
+             $scope.sessioncontext = null;
              //Web Element cache
              $scope.javascripts = new Array();
              $scope.login = function(){
@@ -94,6 +95,7 @@ angular.module('keren.core.website')
                      var webContext = null;
                      if(sessionobject!=null){
                          webContext = angular.fromJson(sessionStorage.getItem(key));
+                         $scope.sessioncontext = webContext;
                          $rootScope.globals = new Object();
                          $rootScope.globals.currentUser = webContext.currentuser;
                      }//end if(sessionobject!=null){
@@ -145,6 +147,9 @@ angular.module('keren.core.website')
                    var webSiteContext = new Object();
                    webSiteContext.currentuser = $rootScope.globals.currentUser;
                    webSiteContext.website = $rootScope.website;
+                   if($scope.sessioncontext!=null&&angular.isDefined($scope.sessioncontext.data)){
+                       webSiteContext.data = $scope.sessioncontext.data;
+                   }//end if($scope.sessioncontext!=null&&angular.isDefined($scope.sessioncontext.data)){
                    sessionStorage.setItem(key,angular.toJson(webSiteContext));
                    sessionStorage.removeItem("kerensession");
                    inputeleme.setAttribute('value',key);

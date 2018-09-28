@@ -162,6 +162,8 @@ angular.module('keren.core.calendar')
     
                 $scope.eventSources = [];
                 
+                $scope.currentDates = null;
+                
                 $scope.metaData = {};
                 
                 $scope.selectedObjects = [];
@@ -224,15 +226,29 @@ angular.module('keren.core.calendar')
                         eventAfterAllRender:function(){
                             if($scope.events.length>0 && isFirstTime){
                                 //Focus first event
-                            //      console.log("=============== "+angular.toJson(uiCalendarConfig));
+//                                  console.log("=============== "+angular.toJson(uiCalendarConfig));
                                   if(uiCalendarConfig.calendars && uiCalendarConfig.calendars.myCalendar){
                                     uiCalendarConfig.calendars.myCalendar.fullCalendar('gotoDate',$scope.events[0].start);
                                   }
                                   isFirstTime = false;
                            }//end  if($scope.events.length>0 && isFirstTime){
+                        },
+                        viewRender:function(view,element){
+                            $scope.currentDates = {
+                                start:view.start.toDate(),
+                                end:view.end.toDate()
+                            };
+//                            console.log("=============== ",view.visStart,view.visEnd,view.start.toDate(),view.end.toDate()+" ==== cuurennt : "+angular.toJson($scope.currentDates));
                         }
                     }
                 };
+                function getStart(){
+                    return $scope.currentDates;
+                }
+                $scope.$watch(getStart
+                        ,function(newVal,oldVal){
+                            $scope.eventsLoader();
+                        });
                 /**
                  * 
                  * @param {type} item
@@ -481,7 +497,6 @@ angular.module('keren.core.calendar')
                     //$scope.selectedEvent.duree = 
                     //console.log(angular.toJson($scope.selectedEvent)+"  ====  "+angular.isString($scope.selectedEvent.duree)+" === "+$scope.selectedEvent.duree);
                     $http.defaults.headers.common['userid']= $rootScope.globals.userinfo.id;  
-                    
                     //Traitement
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     var validate = commonsTools.validateFields($scope.metaData,$scope.selectedEvent);
@@ -506,8 +521,9 @@ angular.module('keren.core.calendar')
                            backendService.update($scope.selectedEvent).$promise.then(
                                    function(entity){
                                          commonsTools.hideDialogLoading();
-                                         $rootScope.$broadcast("refreshList",{event:entity});
+//                                         $rootScope.$broadcast("refreshList",{event:entity});
                                         commonsTools.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");   
+                                        $location.path('/calendar');
                                    },function(error){
                                        $scope.hideDialogLoading();
                                        commonsTools.showMessageDialog(error);
@@ -525,7 +541,7 @@ angular.module('keren.core.calendar')
                                           }else{
                                               backendService.save($scope.selectedEvent).$promise.then(
                                                  function(entity){                                             
-                                                     $rootScope.$broadcast("refreshList",{event:entity});
+                                                     $scope.eventsLoader();
                                                  },function(error){
                                                      commonsTools.hideDialogLoading();
                                                      commonsTools.showMessageDialog(error);
@@ -538,7 +554,14 @@ angular.module('keren.core.calendar')
                         }
                     }
                 };
-                $scope.$on("refreshList",function(event,args){
+                /**
+                 * 
+                 * @returns {undefined}
+                 */
+                $scope.eventsLoader = function(){
+                    if(!angular.isDefined($rootScope.globals.userinfo)){
+                        return ;
+                    }//end if(!angular.isDefined($rootScope.globals.userinfo)){
                     var usersid = new Array();
                     for(var i=0;i<$scope.userslist.length;i++){
                         if($scope.userslist[i].selected){
@@ -546,36 +569,26 @@ angular.module('keren.core.calendar')
                         }//end if($scope.userslist[i].selected)
                     }//end for(var i=0;i<$scope.userslist.length;i++)
                     $http.defaults.headers.common['usersid']= angular.toJson(usersid);  
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/event/event/"+$rootScope.globals.userinfo.id; 
+                    $http.defaults.headers.common['startdate']= null;  
+                    $http.defaults.headers.common['enddate']= null; 
+                    if($scope.currentDates!==null){
+                        $http.defaults.headers.common['startdate']= angular.toJson($scope.currentDates.start);  
+                        $http.defaults.headers.common['enddate']= angular.toJson($scope.currentDates.end); 
+                    }//end if($scope.currentDates!=null){
+//                     console.log("calandar.controller.eventsLoader ================ "+angular.toJson($scope.currentDates));
+                     var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/event/event/"+$rootScope.globals.userinfo.id; 
                      $http.get(url).then(
                             function(response){
                                 $scope.events = response.data;
-                                console.log("controllers ============================================ "+$scope.events.length);
-                                 for(var i=0;i<$scope.events.length;i++){
-                                    $scope.events[i].start = new Date($scope.events[i].start);
-                                    if(!$scope.events[i].allDay){
-                                        $scope.events[i].end = new Date($scope.events[i].end);
-                                    }else{
-                                        $scope.events[i].end = null;
-                                    }
-                                }//end for(var i=0;i<$scope.events.length;i++)
-                                $scope.uiConfig.calendar.eventAfterAllRender();
-//                                $scope.eventSources=[$scope.events];
-                               $scope.selectedEvent = null;
-                               $scope.listViewType = $scope.previousType;
-                                if($scope.listViewType=='list'){
-                                    $location.path('/list');
-                                }else if($scope.listViewType=='calendar'){
-                                    $location.path('/calendar');
-//                                    $scope.uiConfig.calendar.eventAfterAllRender();
-                                }
+                                $rootScope.$broadcast("calendarModule" , {events:response.data});
                                 commonsTools.hideDialogLoading();
 //                                commonsTools.notifyWindow("Status Operation" ,"L'opération s'est déroulée avec sucess","success");   
                             },function(error){
                                 commonsTools.hideDialogLoading();
                                 commonsTools.showMessageDialog(error);
-                            });           
-                });
+                            });   
+                };
+             
                 /**
                  * 
                  */
@@ -609,6 +622,9 @@ angular.module('keren.core.calendar')
                             //console.log(angular.toJson($scope.selectedEvent.id));
                             commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                             backendService.url('event','kerencore');
+                            if($scope.selectedEvent==null){
+                                return ;
+                            }//end if($scope.selectedEvent==null){
                             backendService.findById($scope.selectedEvent.id).$promise.then(
                                     function(entity){                                  
                                         $scope.dataCache.crrentRappel = entity.rappel;
@@ -638,10 +654,20 @@ angular.module('keren.core.calendar')
                             
                 });
                 $scope.$on("calendarModule" , function(event , args){
+                    $scope.currentUser = $rootScope.globals.userinfo;
                     var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur";
                     $http.get(url)
                             .then(function(response){
-                                $scope.userslist = response.data;
+//                                $scope.userslist = new Array();
+                                var users = response.data; 
+                                for(var i=0 ; i<users.length;i++){
+                                    if(users[i].state!='system'
+                                            && users[i].id!=$scope.currentUser.id){
+                                       if(!commonsTools.contains($scope.userslist,users[i])){
+                                           $scope.userslist.push(users[i]);
+                                       }
+                                    }//end if(users[i].state!='system'
+                                }//end for(var i=0 ; i<response.data.length;i++){
                             },function(error){
                                  commonsTools.showMessageDialog(error);
                             });
@@ -651,8 +677,9 @@ angular.module('keren.core.calendar')
                  * @param {type} item
                  * @returns {undefined}
                  */
-                $scope.userselect = function(user){                    
-                   $rootScope.$broadcast("refreshList",{event:null});
+                $scope.userselect = function(user){ 
+//                    user.selected = !user.selected;
+                   $scope.eventsLoader();
                 };
                 /**
                  * Charger par defaut calendrier
