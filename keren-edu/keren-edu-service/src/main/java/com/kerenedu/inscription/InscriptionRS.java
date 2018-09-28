@@ -48,6 +48,11 @@ public interface InscriptionRS extends GenericService<Inscription, Long>
 	public Response ficheInscriptionReport(Inscription entity);
 	
 	@PUT
+	@Produces({ "application/pdf" })
+	@Path("pdfins")
+	public Response listInscritRepoort(Inscription entity);
+	
+	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Path("changer")

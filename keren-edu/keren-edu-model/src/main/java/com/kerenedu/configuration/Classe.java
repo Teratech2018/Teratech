@@ -19,8 +19,9 @@ import com.megatim.common.annotations.Predicate;
  * @author ntchuente
  *
  */
-@Table
-@Entity(name = "e_classe")
+
+@Entity
+@Table(name = "e_classe")
 public class Classe extends BaseElement implements Serializable, Comparable<Classe> {
 	
 	
@@ -98,6 +99,29 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 		}
 		this.capacite=filiere.capacite;
 	}
+	
+	public Classe(ClasseCycle filiere) {
+		super(filiere.getId(), filiere.getDesignation(), filiere.getModuleName(),0L);
+		this.libelle = filiere.libelle;
+		if(this.niveau!=null){
+			this.niveau= new Niveau( filiere.niveau);
+		}
+	
+		this.typeformation=filiere.typeformation;
+		if(filiere.filiere!=null){
+			this.filiere= new Filiere(filiere.filiere);
+			this.cycle=filiere.getFiliere().getCycle().getId();
+		}
+		if(filiere.getSection()!=null){
+			this.section=filiere.getSection();
+		}
+		this.effectif=filiere.effectif;
+		if(filiere.professeur!=null){
+		   this.professeur= new Professeur(filiere.professeur);
+		}
+		this.capacite=filiere.capacite;
+	}
+
 
 	public String getLibelle() {
 		return libelle;
@@ -239,6 +263,11 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
+	@Override
+	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

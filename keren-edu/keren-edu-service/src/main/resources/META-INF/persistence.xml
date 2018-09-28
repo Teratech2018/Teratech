@@ -105,6 +105,23 @@
 		<class>com.kerenedu.model.report.ViewBilanServiceEleve</class>
 		<class>com.kerenedu.reglement.Recette</class>	
 		<class>com.kerenedu.reglement.FichePaiementOptionel</class>	
+		<class>com.kerenedu.reglement.FichePaiementRetard</class>
+		<class>com.kerenedu.reglement.Moratoire</class>
+		<class>com.kerenedu.personnel.ProfFichePaie</class>
+		<class>com.kerenedu.solde.Banque</class>
+		<class>com.kerenedu.solde.BulletinPaie</class>
+		<class>com.kerenedu.solde.Categorie</class>
+		<class>com.kerenedu.solde.Echellon</class>
+		<class>com.kerenedu.solde.GrilleSalaire</class>
+		<class>com.kerenedu.solde.LigneGrilleSalaire</class>
+		<class>com.kerenedu.solde.LignePaie</class>
+		<class>com.kerenedu.solde.PeriodePaie</class>
+		<class>com.kerenedu.solde.ProfilPaie</class>
+		<class>com.kerenedu.solde.RubriquePaie</class>
+		<class>com.kerenedu.solde.EltSalaireLigne</class>
+		<class>com.kerenedu.solde.EltSalaire</class>
+		<class>com.kerenedu.configuration.ClasseCycle</class>
+		
 
 		<shared-cache-mode>NONE</shared-cache-mode>
 		<properties>

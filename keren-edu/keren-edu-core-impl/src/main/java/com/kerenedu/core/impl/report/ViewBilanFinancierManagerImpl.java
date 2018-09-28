@@ -92,7 +92,6 @@ public class ViewBilanFinancierManagerImpl
 					container.addEq("classe.section.id", critere.getClasse().getSection().getId());				
 			}
 			if (critere.getSection() != null) {
-				container.addEq("classe.id", critere.getClasse().getId());
 				container.addEq("classe.section.id",critere.getSection().getId());
 			
 			

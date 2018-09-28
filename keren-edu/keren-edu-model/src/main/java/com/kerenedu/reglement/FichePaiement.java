@@ -4,13 +4,21 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Service;
@@ -66,6 +74,12 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	@Column(name = "SOLDE" )	
 	@Predicate(label="Solde ",optional=false,updatable=false,search=true, type=Long.class ,sequence=8, editable=false)
 	protected Long solde ;
+	
+	@Column(name = "DELAI")
+	@Predicate(label="DELAI PAIEMENT",optional=false,updatable=true,search=true, type=Date.class,sequence=9, target="date" )
+	@Temporal(javax.persistence.TemporalType.DATE)
+	@Observer(observable="service",source="field:delai")
+	protected Date delai;
 
 	@Column(name = "MNT_PAI_TMP")	
 	protected Long zMntTmp ;
@@ -78,6 +92,13 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	
 	@Predicate(label="Payer ",optional=false,updatable=false,search=true, type=Boolean.class ,sequence=9, editable=false, target="checkbox")
 	protected Boolean payer =false;
+	
+	@Transient
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "MORATOIRE_ID")
+	@Predicate(label = "Moratoire ", updatable = true, type = Moratoire.class, target = "one-to-many", search = true, sequence = 2,
+	group = true, groupLabel = "Moratoire", groupName = "tab1")
+	protected List<Moratoire> moratoires;
 	
 
 	
@@ -121,6 +142,8 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 		this.solde=ins.solde;
 		this.mntpayer= ins.mntpayer;
 		this.payer=ins.payer;
+		this.delai=ins.delai;
+		this.moratoires= new ArrayList<Moratoire>();
 	
 	
 	}
@@ -141,6 +164,8 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 		this.solde=ins.solde;
 		this.mntpayer= ins.mntpayer;
 		this.payer=ins.payer;
+		this.moratoires= new ArrayList<Moratoire>();
+		this.delai= new Date();
 	
 	
 	}
@@ -154,6 +179,8 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 		this.zristourne=(long) 0;
 		this.mntpayer =(long) 0;
 		this.solde=ztotal-mntpayer;
+		this.delai=service.getDelai();
+		this.moratoires= new ArrayList<Moratoire>();
 	
 	}
 
@@ -263,6 +290,16 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 	}
 
 
+	public Date getDelai() {
+		return delai;
+	}
+
+
+	public void setDelai(Date delai) {
+		this.delai = delai;
+	}
+
+
 	public Long getSolde() {
 		return this.ztotal - this.mntpayer;
 	}
@@ -295,6 +332,16 @@ public class FichePaiement extends BaseElement implements Serializable, Comparab
 
 
 
+
+
+	public List<Moratoire> getMoratoires() {
+		return moratoires;
+	}
+
+
+	public void setMoratoires(List<Moratoire> moratoires) {
+		this.moratoires = moratoires;
+	}
 
 
 	public void setAnneScolaire(String anneScolaire) {

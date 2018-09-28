@@ -26,6 +26,8 @@ public enum ReportsName {
     BULLTRIM("ebulletin_trimestre.jasper"),  
     FICHE_INSCRIPTION("eficheInscription.jasper"),  
     BILAN_SERVICE("elistingseleveservice.jasper"),
+    BADGE("ebadge.jasper"),
+    LISTE_INSCRIT("elistieeleveincrit.jasper"),
     BULLETIN("ebulletin.jasper");
 
     /**

@@ -81,7 +81,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	protected String telPere;
 	
 	@Column(name = "EMAIL_PERE")
-	@Predicate(label="Email Père",optional=true,updatable=true,search=false , target="email" , group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	@Predicate(label="Nom/Prénom  Père",optional=true,updatable=true,search=false , target="email" , group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String emailPere;
 	
 	@Column(name = "TEL_MERE")
@@ -90,7 +90,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	
 	
 	@Column(name = "EMAIL_MERE")
-	@Predicate(label="Email Mère",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
+	@Predicate(label="Nom/Prénom Mère",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
 	protected String emailMere;
 	
 	@Column(name = "TEL_TUTEUR")
@@ -99,7 +99,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	
 	
 	@Column(name = "EMAIL_TUTEUR")
-	@Predicate(label="Email Tuteur",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
+	@Predicate(label="Nom/Prénom  Tuteur",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
 	protected String emailTuteur;
 	
 

@@ -29,7 +29,8 @@ import com.kerenedu.configuration.ServiceManagerRemote;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
 import com.kerenedu.reglement.FichePaiement;
-import com.kerenedu.reglement.FichePaiementOptionel;
+import com.kerenedu.reglement.Paiement;
+import com.kerenedu.reglement.PaiementManagerRemote;
 import com.kerenedu.tools.KerenEduManagerException;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
@@ -63,6 +64,9 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 	@Manager(application = "kereneducation", name = "AnneScolaireManagerImpl", interf = AnneScolaireManagerRemote.class)
 	protected AnneScolaireManagerRemote managerAnnee;
 
+	@Manager(application = "kereneducation", name = "PaiementManagerImpl", interf = PaiementManagerRemote.class)
+	protected PaiementManagerRemote managerPaiement;
+
 	public InscriptionRSImpl() {
 		super();
 	}
@@ -86,11 +90,12 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new Inscription(), new HashMap<String, MetaData>(),
 					new ArrayList<String>());
-//			 MetaColumn workbtn = new MetaColumn("button", "work1", "Change de Classe", false, "workflow", null);
-//			 workbtn.setStates(new String[] { "crée" });
-//			 workbtn.setPattern("btn btn-primary");
-//			 workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'changer'}");
-//			 meta.getHeader().add(workbtn);
+			// MetaColumn workbtn = new MetaColumn("button", "work1", "Change de
+			// Classe", false, "workflow", null);
+			// workbtn.setStates(new String[] { "crée" });
+			// workbtn.setPattern("btn btn-primary");
+			// workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'changer'}");
+			// meta.getHeader().add(workbtn);
 
 			MetaColumn col = new MetaColumn("button", "paiementfrais", "Paiement des frais", false, "action", null);
 			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object'}}");
@@ -105,15 +110,16 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			workbtn.setStates(new String[] { "crée" });
 			meta.getHeader().add(workbtn);
 
-			//workbtn = new MetaColumn("button", "work1", "Frais de Scolarité", false, "action", null);
+			// workbtn = new MetaColumn("button", "work1", "Frais de Scolarité",
+			// false, "action", null);
 			workbtn = new MetaColumn("button", "work1", "Frais de Scolarité", false, "link", null);
 			workbtn.setValue(
-			//		"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'}}");
-			"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'},'header':['eleve']}");
+					// "{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'}}");
+					"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'},'header':['eleve']}");
 			workbtn.setStates(new String[] { "etabli" });
 			// workbtn.setPattern("btn btn-primary");
 			meta.getHeader().add(workbtn);
-			
+
 			workbtn = new MetaColumn("button", "work1", "Frais Divers", false, "link", null);
 			workbtn.setValue("{'name':'keren_education_frais_opt','template':{'eleve':'object'},'header':['eleve']}");
 			workbtn.setStates(new String[] { "etabli" });
@@ -123,7 +129,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			col = new MetaColumn("button", "changer", "Changer de classe", false, "link", null);
 			col.setValue(
 					"{'name':'keren_education_ins_chgr','template':{'classe':'object.classe','eleve':'object.eleve','section':'object.classe.section','idIns':'object.id'},'header':['eleve']}");
-		//	 meta.getHeader().add(col);
+			// meta.getHeader().add(col);
 			return meta;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -140,10 +146,22 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 
 	@Override
 	protected void processBeforeUpdate(Inscription entity) {
-//		if (entity.getzMntPaye() != 0) {
-//			throw new KerenExecption("Modification impossible<br/> L'incription " + entity.getDesignation()
-//					+ " est déjà en cours de traitement...");
-//		}
+		if (entity.getService() == null && entity.getService().size() == 0) {
+			throw new KerenExecption("Modification impossible, car l'élève n'a aucun service renseigné");
+		}
+		if (entity.getEleve() == null) {
+			throw new KerenExecption("Modification impossible, car l'élève n'est pas renseigné");
+		}
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addEq("eleve.id", entity.getId());
+		container.addNotEq("state", "annulé");
+		List<Paiement> listPaiements = managerPaiement.filter(container.getPredicats(), null, null, 0, -1);
+		System.out.println("InscriptionRSImpl.processBeforeUpdate() size list" + listPaiements.size());
+
+		if (listPaiements != null && listPaiements.size() != 0) {
+			throw new KerenExecption("Modification impossible, Bien vouloir Annuler les paiements de l'eleve !!!!");
+		}
+
 		super.processBeforeUpdate(entity); // To change body of generated
 											// methods, choose Tools |
 											// Templates.
@@ -152,7 +170,6 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 	@Override
 	public Inscription changer(HttpHeaders headers, Inscription entity) {
 		try {
-			System.out.println("InscriptionRSImpl.changer() je suis ici changer :::::");
 			if (entity.getState().equalsIgnoreCase("crée")) {
 				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
 			}
@@ -166,6 +183,13 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 
 	@Override
 	protected void processBeforeSave(Inscription entity) {
+		if (entity.getService() == null && entity.getService().size() == 0) {
+			throw new KerenExecption("Enregistrement impossible, car l'eleve n'a aucun service renseigne");
+		}
+
+		if (entity.getEleve() == null) {
+			throw new KerenExecption("Enregistrement impossible, car l'eleve n'est pas renseigne");
+		}
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("connected", true);
 		List<AnneScolaire> annee = managerAnnee.filter(container.getPredicats(), null, null, 0, -1);
@@ -182,13 +206,12 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		if ((inscit != null && inscit.size() != 0)) {
 			throw new KerenExecption("Traitement impossible<br/> ELEVE DEJA INSCRIT !!!");
 		}
-//		  for(FichePaiement ficheobligatoire:entity.getService()){
-//			  ficheobligatoire.setId(-1);
-//	        }//end  for(FichePaiement ficheobligatoire:entity.getService()){
-//		 
+		// for(FichePaiement ficheobligatoire:entity.getService()){
+		// ficheobligatoire.setId(-1);
+		// }//end for(FichePaiement ficheobligatoire:entity.getService()){
+		//
 		super.processBeforeSave(entity);
 	}
-
 
 	@Override
 	public List<FichePaiement> findmatierclasse(HttpHeaders headers) {
@@ -198,7 +221,6 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		return managerService.findmatierclasse(id);
 	}
 
-	
 	/**
 	 * Methode permettant de retourner les parametres pour le reporting
 	 *
@@ -217,17 +239,23 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			List<Inscription> records = new ArrayList<Inscription>();
 			records.add(entity);
 			if (records.isEmpty() || records.size() == 0) {
-				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionner un élève !");
+				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionner un eleve !");
 			}
 			Map parameters = this.getReportParameters();
-			if (entity.getEleve().getImage() != null) {
-				try {
-					parameters.put(ReportsParameter.PHOTO_IMAGE_REPOSITORY,ReportHelper.getPhotoBytes(entity.getEleve().getImage()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			try {
+				if (entity.getClasse().getFiliere().getCycle().getTypecycle().equals("2")) {
+					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytesC());
+				} else {
+					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytes());
 				}
 
+				if (entity.getEleve().getImage() != null) {
+					parameters.put(ReportsParameter.PHOTO_IMAGE_REPOSITORY,
+							ReportHelper.getPhotoBytes(entity.getEleve().getImage()));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			// parameters = this.getReportParameters();
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
@@ -248,10 +276,19 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			List<Inscription> records = new ArrayList<Inscription>();
 			records.add(entity);
 			if (records.isEmpty() || records.size() == 0) {
-				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionné un élève !!!");
+				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionné un eleve !!!");
 			}
 			Map parameters = this.getReportParameters();
-			// parameters = this.getReportParameters();
+			try {
+				if (entity.getClasse().getFiliere().getCycle().getTypecycle().equals("2")) {
+					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytesC());
+				} else {
+					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytes());
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -282,29 +319,56 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		return entity;
 	}
 
-//
-//	@Override
-//	public List<Inscription> filter(HttpHeaders headers, int firstResult, int maxResult) {
-//		System.out.println("InscriptionRSImpl.filter() je suis ici ::::");
-//		String header = null;
-//		RestrictionsContainer container = null;
-//		if (headers.getRequestHeader("action_param") != null) {
-//			header = headers.getRequestHeader("action_param").get(0);
-//		}
-//		 System.out.println(InscriptionRSImpl.class.toString()+" ==================================== "+header);
-//		List<Inscription> datas = new ArrayList<Inscription>();
-//		List<Inscription> results = new ArrayList<Inscription>();
-//		// To change body of generated methods, choose Tools | Templates.
-//			 container = RestrictionsContainer.newInstance();
-//			 if(header!=null){
-//			container.addLike("eleve.nom", "%" + header);
-//			 }
-//			datas = manager.filter(container.getPredicats(), null, null, firstResult, maxResult);
-//			for (Inscription data : datas) {
-//				results.add(new Inscription(data));
-//			} // end for(CourrierTous data:datas){
-//		
-//		return results;
-//	}
+	@Override
+	public Response listInscritRepoort(Inscription entity) {
+		try {
+			System.out.println("InscriptionRSImpl.listInscritRepoort() je suis ici");
+			String URL = ReportHelper.templateURL + ReportsName.LISTE_INSCRIT.getName();
+			entity.setAnneScolaire(CacheMemory.getCurrentannee());
+			List<Inscription> records = manager.getCriteres(entity);
+
+			if (records.isEmpty() || records.size() == 0) {
+				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionné un eleve !!!");
+			}
+			Map parameters = this.getReportParameters();
+			// parameters = this.getReportParameters();
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return Response.noContent().build();
+	}
+
+	//
+	// @Override
+	// public List<Inscription> filter(HttpHeaders headers, int firstResult, int
+	// maxResult) {
+	// System.out.println("InscriptionRSImpl.filter() je suis ici ::::");
+	// String header = null;
+	// RestrictionsContainer container = null;
+	// if (headers.getRequestHeader("action_param") != null) {
+	// header = headers.getRequestHeader("action_param").get(0);
+	// }
+	// System.out.println(InscriptionRSImpl.class.toString()+"
+	// ==================================== "+header);
+	// List<Inscription> datas = new ArrayList<Inscription>();
+	// List<Inscription> results = new ArrayList<Inscription>();
+	// // To change body of generated methods, choose Tools | Templates.
+	// container = RestrictionsContainer.newInstance();
+	// if(header!=null){
+	// container.addLike("eleve.nom", "%" + header);
+	// }
+	// datas = manager.filter(container.getPredicats(), null, null, firstResult,
+	// maxResult);
+	// for (Inscription data : datas) {
+	// results.add(new Inscription(data));
+	// } // end for(CourrierTous data:datas){
+	//
+	// return results;
+	// }
 
 }

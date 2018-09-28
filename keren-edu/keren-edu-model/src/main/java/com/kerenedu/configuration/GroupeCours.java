@@ -51,7 +51,7 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 	
 	
 //	@ManyToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "MATIERE_ID")
+//  @JoinColumn(name = "MATIERE_ID")
 //	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = MatiereDlt.class,search = false)
 //	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\"}]")
 //	private List<MatiereDlt> matiereList = new ArrayList<MatiereDlt>();

@@ -24,5 +24,7 @@ public interface InscriptionManager
     public Inscription changerClasse(ChangeClasse entity);
     
     public List<FichePaiement>getFicheEleve(Inscription entity);
+    
+    public List<Inscription> getCriteres(Inscription critere) ;
 
 }

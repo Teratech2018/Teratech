@@ -110,7 +110,7 @@
 	<field name="eleve.id" class="java.lang.Long"/>
 	<field name="zristourne" class="java.lang.Long"/>
 	<field name="cycle" class="java.lang.Long"/>
-	<sortField name="datePaiement"/>
+	<sortField name="datePaiement" order="Descending"/>
 	<sortField name="eleve.id"/>
 	<variable name="nbreclasse" class="java.lang.Long" resetType="Group" resetGroup="classe" calculation="Count">
 		<variableExpression><![CDATA[$F{eleve.classe.id}]]></variableExpression>

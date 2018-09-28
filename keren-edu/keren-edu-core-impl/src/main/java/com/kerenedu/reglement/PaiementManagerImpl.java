@@ -127,6 +127,11 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 
 	@Override
 	public Paiement update(Long id, Paiement entity) {
+		return super.update(id, entity);
+	}
+	
+	@Override
+	public Paiement annuler(Paiement entity) {
 		Inscription inscription = entity.getEleve();
 		inscription = daoIns.findByPrimaryKey("id", inscription.getId());
 		long montanttotalverser = entity.getzMntverser() + entity.getZremise() + entity.getZristourne();
@@ -139,12 +144,13 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 		System.out.println("PaiementManagerImpl.update() montant worker inverse "+montanttotalverser);
 		worker.setMontant(montanttotalverser);
 		worker.inversecompute();
-		// mias à jour de l'inscription
+		// mis à jour de l'inscription
 		this._apupdateInscription(entity,inscription);
 		System.out.println("PaiementManagerImpl.processAfterSave() update inscription ok ");
 		// mis à jour des fiche de paiement
 		this._apupdateReglement_new(entity);
-		return super.update(id, entity);
+		this.update(entity.getId(), entity);
+		return entity;
 	}
 
 	private PaiementWorker buildWorker(Inscription insc) {
@@ -211,6 +217,9 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 	public void processAfterSave(Paiement entity) {
 		Paiement p = dao.findByPrimaryKey("id", entity.getId());
 		p.setCode(p.getEleve().getEleve().getMatricule() + "/" + p.getId() + "/" + entity.getAnneScolaire());
+		p.setMatricule(entity.getEleve().getMatricule());
+		p.setNom(entity.getEleve().getNom());
+		p.setClasse(entity.getEleve().getClasse().getLibelle());
 		dao.update(p.getId(), p);
 		this._mouvementCaise(p);
 		super.processAfterSave(entity);
@@ -467,4 +476,6 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 			}
 		}
 	}
+
+	
 }

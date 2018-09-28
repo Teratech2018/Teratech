@@ -1,6 +1,7 @@
 
 package com.kerenedu.school;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,10 +16,10 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.FileHelper;
 import com.kerenedu.allerte.ViewHelperTrtglobal;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
-import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.model.search.EleveSearch;
 import com.megatim.common.annotations.OrderType;
 
@@ -163,6 +164,21 @@ public class EleveManagerImpl
 		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
 		// set Matricule 
 		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
+		  if(entity.getImage()!=null){
+	    	  // try {
+	    	   String imageName = entity.getImage();
+	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
+	    	   String newName = entity.getMatricule().substring(0, entity.getMatricule().length()-5)+".png";
+	           File file = new File(FileHelper.getStaticDirectory().getPath()+File.separator+imageName);
+	           file.renameTo(new File(file.getPath()+File.separator+newName));
+//	           File filerename = new File(newName);
+//	           file.renameTo(filerename);
+			  // FileHelper.moveFile(file, destfile);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+	       }
 		dao.update(entity.getId(), entity);
 		super.processAfterSave(entity);
 	}

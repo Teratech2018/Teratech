@@ -7,9 +7,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -22,12 +25,23 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 	
 	
 	@Column(name = "LIBELLE")	
-	@Predicate(label="Libellé",optional=false,updatable=true,search=true)
+	@Predicate(label="Libellé",optional=false,updatable=true,search=true, sequence=1)
 	protected String libelle;
 	
 	@Column(name = "CYCLE")
-	@Predicate(label="Type Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primare;Secondaire;Universitaire" , sequence=11)
+	@Predicate(label="Type Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primare;Secondaire;Universitaire" , sequence=2)
 	protected String typecycle="0";
+	
+	@Column(name = "LIBELLE_EN")	
+	@Predicate(label="Libellé Anglais",optional=false,updatable=true,search=true, sequence=3)
+	protected String libelleEn;
+	
+	
+	@ManyToOne
+    @JoinColumn(name = "RESP_ID")
+	@Predicate(label="Responsable/Directeur(trice)",updatable=true,type=Professeur.class , target="many-to-one",optional=false,sequence=4, search=true)
+    protected Professeur responsable;
+	
 	
 
 
@@ -41,6 +55,10 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 		super(filiere.id, filiere.designation, filiere.moduleName,0L);
 		this.libelle = filiere.libelle;
 		this.typecycle=filiere.typecycle;
+		this.libelleEn=filiere.libelleEn;
+		if(filiere.responsable!=null){
+		this.responsable= new Professeur(filiere.responsable);
+		}
 
 		
 		//this.elevelist= new ArrayList<Eleve>();
@@ -89,7 +107,17 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return  this.getlibelletype(typecycle)+"-"+ libelle;
+		return  this.getlibelletype(typecycle);
+	}
+
+
+	public String getLibelleEn() {
+		return libelleEn;
+	}
+
+
+	public void setLibelleEn(String libelleEn) {
+		this.libelleEn = libelleEn;
 	}
 
 
@@ -108,10 +136,25 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 		return valeur;
 		
 	}
+	public Professeur getResponsable() {
+		return responsable;
+	}
+
+
+	public void setResponsable(Professeur responsable) {
+		this.responsable = responsable;
+	}
+
+
 	public int compareTo(Cycle o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
+	@Override
+	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

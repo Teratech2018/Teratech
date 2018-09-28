@@ -177,6 +177,8 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		// }
 		// entity.setzMnt(entity.getServiceList().getzMnt());
 		// }
+		entity.setMatricule(entity.getEleve().getMatricule());
+		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
 
 		super.processBeforeSave(entity);
 	}
@@ -194,7 +196,7 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		eleve.setInscrit(true);
 		elevedao.update(eleve.getId(), eleve);
 		// generate allerte happybirthDay
-		if(CacheMemory.getCurrentSchool()!=null&&CacheMemory.getCurrentSchool().isAllerteanniveleve()&&entity.getDatIns()!=null){
+		if(CacheMemory.getCurrentSchool()!=null&&CacheMemory.getCurrentSchool().getAllerteanniveleve()&&entity.getDatIns()!=null){
 			this.createEventHappyBirtDay(entity);
 		}
 		
@@ -227,6 +229,27 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 
 	@Override
 	public void processBeforeUpdate(Inscription entity) {
+		
+		long apayer = (long) 0;
+		long aremise = (long) 0;
+		long aristourne = (long) 0;
+		long atotal = (long) 0;
+		for (FichePaiement fiche : entity.getService()) {
+			apayer = apayer + fiche.getZtotal();
+			aremise = aremise + fiche.getZremise();
+			aristourne = aristourne + fiche.getZristourne();
+			fiche.setMatricule(entity.getEleve().getMatricule());
+			fiche.setAnneScolaire(entity.getAnneScolaire());
+		}
+		atotal = apayer - aremise - aristourne;
+		// Initialiser les montants a zero
+		entity.setzMnt(atotal);
+		entity.setzTotal(atotal);
+		entity.setzMntPaye((long) 0);
+		entity.setzSolde(atotal);
+		entity.setzRemise((long) 0);
+		entity.setzRistourne((long) 0);
+		entity.setCycle(entity.getClasse().getFiliere().getCycle().getId());
 		// verifier si l'étudiant a déjà été inscit
 		/*
 		 * Inscription inscit =
@@ -237,7 +260,7 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		 */
 		// generate allerte happybirthDay
 		//System.out.println("InscriptionManagerImpl.processBeforeUpdate() create anniv aller"+CacheMemory.getCurrentSchool().isAllerteanniveleve());
-		if(CacheMemory.getCurrentSchool()!=null&&CacheMemory.getCurrentSchool().isAllerteanniveleve()&&entity.getDatIns()!=null){
+		if(CacheMemory.getCurrentSchool()!=null&&CacheMemory.getCurrentSchool().getAllerteanniveleve()&&entity.getDatIns()!=null){
 			System.out.println("InscriptionManagerImpl.processBeforeUpdate() create anniv aller");
 			this.createEventHappyBirtDay(entity);
 		}
@@ -254,6 +277,31 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 			}
 			if (critere.getMatricule() != null) {
 				container.addEq("eleve.matricule", critere.getMatricule());
+			}
+
+		}
+		List<Inscription> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<Inscription> result = new ArrayList<Inscription>();
+		for (Inscription ins : datas) {
+			Inscription inscription = new Inscription(ins);
+			result.add(inscription);
+		}
+		return result;
+	}
+	
+	@Override
+	public List<Inscription> getCriteres(Inscription critere) {
+
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			if (critere.getAnneScolaire() != null) {
+				container.addEq("anneScolaire", critere.getAnneScolaire());
+			}
+			if (critere.getClasse() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+			}
+			if (critere.getCycle() != 0) {
+				container.addEq("cycle", critere.getCycle());
 			}
 
 		}

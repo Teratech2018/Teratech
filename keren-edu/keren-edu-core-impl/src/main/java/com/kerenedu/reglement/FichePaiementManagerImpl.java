@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.inscription.Inscription;
@@ -26,6 +27,9 @@ public class FichePaiementManagerImpl
 
     @EJB(name = "FichePaiementDAO")
     protected FichePaiementDAOLocal dao;
+    
+    @EJB(name = "MoratoireDAO")
+    protected  MoratoireDAOLocal moratoiredao;
 
     public FichePaiementManagerImpl() {
     }
@@ -66,7 +70,12 @@ public class FichePaiementManagerImpl
    		// TODO Auto-generated method stub
    		FichePaiement data = super.find(propertyName, entityID);
    		FichePaiement result = new FichePaiement(data);		
-	   	
+	   	List<Moratoire> moratoires = new ArrayList<Moratoire>();
+	   	RestrictionsContainer container = RestrictionsContainer.newInstance();
+	   	container.addEq("service.id", data.getId());
+	   	moratoires = moratoiredao.filter(container.getPredicats(), null, null, 0, -1);
+	   	System.out.println("FichePaiementManagerImpl.find() nombre moratoire"+moratoires.size());
+	   	result.setMoratoires(moratoires);
  	return result;
 
    	}

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SygmaFiles" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
 	<property name="ireport.zoom" value="1.1000000000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="48"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
 	<style name="table">
 		<box>
@@ -103,14 +103,26 @@
 	<field name="anneScolaire" class="java.lang.String"/>
 	<field name="classe.filiere.cycle.libelle" class="java.lang.String"/>
 	<field name="cycle" class="java.lang.Long"/>
+	<field name="classe.filiere.cycle.responsable.nom" class="java.lang.String"/>
+	<field name="classe.filiere.cycle.responsable.prenon" class="java.lang.String"/>
+	<field name="classe.filiere.cycle.typecycle" class="java.lang.String"/>
+	<field name="classe.filiere.cycle.libelleEn" class="java.lang.String"/>
+	<field name="section.responsable.nom" class="java.lang.String"/>
+	<field name="section.responsable.prenon" class="java.lang.String"/>
 	<variable name="nbreOperation" class="java.lang.Long" resetType="Group" resetGroup="IpGroup" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="entetprimaire" class="java.lang.String">
+		<variableExpression><![CDATA["Je soussigné   M (Mme) "+$F{section.responsable.nom}+" "+$F{section.responsable.prenon}+ ",Directeur(trice) du "+ $F{classe.filiere.cycle.libelle}+"certifie que :"]]></variableExpression>
+	</variable>
+	<variable name="entetesecondaire" class="java.lang.String">
+		<variableExpression><![CDATA["Je soussigné  M(Mme)  "+$F{classe.filiere.cycle.responsable.nom}+" "+$F{classe.filiere.cycle.responsable.prenon}+ ",Directeur(trice) du " +$F{classe.filiere.cycle.libelle}+ " certifie que :"]]></variableExpression>
 	</variable>
 	<group name="IpGroup" isStartNewPage="true" minHeightToStartNewPage="60"/>
 	<detail>
 		<band height="625">
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
-				<reportElement style="table" mode="Transparent" x="19" y="228" width="72" height="20" backcolor="#D3D3D3" uuid="2e7897e5-81b5-4b19-b1bc-6cf66e493398"/>
+				<reportElement style="table" mode="Transparent" x="19" y="243" width="72" height="20" backcolor="#D3D3D3" uuid="2e7897e5-81b5-4b19-b1bc-6cf66e493398"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -123,14 +135,14 @@
 				<textFieldExpression><![CDATA["Nom "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" x="91" y="228" width="11" height="20" uuid="587006af-fbc9-4d78-9560-5dfecb0a93fe"/>
+				<reportElement stretchType="RelativeToTallestObject" x="91" y="243" width="11" height="20" uuid="587006af-fbc9-4d78-9560-5dfecb0a93fe"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="16" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="102" y="248" width="451" height="20" uuid="c7d421ce-571d-4ed3-83f4-24b2228e1688"/>
+				<reportElement stretchType="RelativeToTallestObject" x="102" y="263" width="451" height="20" uuid="c7d421ce-571d-4ed3-83f4-24b2228e1688"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.0"/>
@@ -144,14 +156,14 @@
 				<textFieldExpression><![CDATA[$F{eleve.prenon}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" x="91" y="248" width="11" height="20" uuid="40545b16-d6b7-4fd3-a67e-28e05ccaa0e5"/>
+				<reportElement stretchType="RelativeToTallestObject" x="91" y="263" width="11" height="20" uuid="40545b16-d6b7-4fd3-a67e-28e05ccaa0e5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="16" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
-				<reportElement style="table" mode="Transparent" x="19" y="248" width="72" height="20" backcolor="#D3D3D3" uuid="178988f6-b268-4a69-8900-695f961da33e"/>
+				<reportElement style="table" mode="Transparent" x="19" y="263" width="72" height="20" backcolor="#D3D3D3" uuid="178988f6-b268-4a69-8900-695f961da33e"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -164,7 +176,7 @@
 				<textFieldExpression><![CDATA["Prenom "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
-				<reportElement style="table" mode="Transparent" x="19" y="268" width="72" height="20" backcolor="#D3D3D3" uuid="ffbaf9f2-5037-4dac-962c-ec974bcebce5"/>
+				<reportElement style="table" mode="Transparent" x="19" y="283" width="72" height="20" backcolor="#D3D3D3" uuid="ffbaf9f2-5037-4dac-962c-ec974bcebce5"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -177,14 +189,14 @@
 				<textFieldExpression><![CDATA["Né le  "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" x="91" y="268" width="11" height="20" uuid="7f8bd691-0454-4427-b9b9-0309ab6a1289"/>
+				<reportElement stretchType="RelativeToTallestObject" x="91" y="283" width="11" height="20" uuid="7f8bd691-0454-4427-b9b9-0309ab6a1289"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="16" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="102" y="268" width="121" height="20" uuid="49959138-3c83-46f8-a068-2ce9506d8d56"/>
+				<reportElement stretchType="RelativeToTallestObject" x="102" y="283" width="121" height="20" uuid="49959138-3c83-46f8-a068-2ce9506d8d56"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.0"/>
@@ -198,7 +210,7 @@
 				<textFieldExpression><![CDATA[$F{eleve.dateNais}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
-				<reportElement style="table" mode="Transparent" x="223" y="268" width="26" height="20" backcolor="#D3D3D3" uuid="eff6ced1-1538-44ed-86e4-ff727a974b75"/>
+				<reportElement style="table" mode="Transparent" x="223" y="283" width="26" height="20" backcolor="#D3D3D3" uuid="eff6ced1-1538-44ed-86e4-ff727a974b75"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -211,14 +223,14 @@
 				<textFieldExpression><![CDATA["à "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" x="250" y="268" width="11" height="20" uuid="b777b251-6a6a-4043-9a12-eace85348166"/>
+				<reportElement stretchType="RelativeToTallestObject" x="250" y="283" width="11" height="20" uuid="b777b251-6a6a-4043-9a12-eace85348166"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="16" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="261" y="268" width="292" height="20" uuid="74c1e41d-1034-4aa8-9dce-5b04c7e3f59b"/>
+				<reportElement stretchType="RelativeToTallestObject" x="261" y="283" width="292" height="20" uuid="74c1e41d-1034-4aa8-9dce-5b04c7e3f59b"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.0"/>
@@ -232,32 +244,25 @@
 				<textFieldExpression><![CDATA[$F{eleve.lNais}]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
-				<reportElement x="19" y="331" width="534" height="35" printWhenGroupChanges="IpGroup" uuid="d74b20e7-107f-4b44-93a4-ba8e781ea2d8"/>
+				<reportElement x="19" y="331" width="534" height="19" printWhenGroupChanges="IpGroup" uuid="d74b20e7-107f-4b44-93a4-ba8e781ea2d8"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA["en classe de     "+$F{classe.libelle}+"       et que sa fréquentation est régulière."]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
-				<reportElement x="296" y="435" width="126" height="22" printWhenGroupChanges="IpGroup" uuid="6185d6a9-02ea-4b49-b254-15d480cc137c"/>
+				<reportElement x="296" y="435" width="106" height="22" printWhenGroupChanges="IpGroup" uuid="6185d6a9-02ea-4b49-b254-15d480cc137c"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Fait à ...................."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Fait à Yaoundé le "]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
-				<reportElement x="296" y="457" width="23" height="22" printWhenGroupChanges="IpGroup" uuid="51ffc217-eb3a-449e-8dbf-238e773384b7"/>
+				<reportElement x="296" y="460" width="126" height="22" printWhenGroupChanges="IpGroup" uuid="d8efab40-2e68-47e5-acc0-d699a1c6aa8a"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["le"]]></textFieldExpression>
-			</textField>
-			<textField pattern="d/M/yyyy">
-				<reportElement x="296" y="479" width="126" height="22" printWhenGroupChanges="IpGroup" uuid="d8efab40-2e68-47e5-acc0-d699a1c6aa8a"/>
-				<textElement verticalAlignment="Bottom">
-					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA["le directeur :.............."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Cachet"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="IpGroup" isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="60" y="132" width="494" height="41" printWhenGroupChanges="IpGroup" uuid="d6ef22a9-3dcf-46c5-9616-f0e603f6c193">
@@ -275,14 +280,14 @@
 				<textFieldExpression><![CDATA["CERTIFICAT DE SCOLARITE"]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
-				<reportElement x="91" y="189" width="462" height="17" printWhenGroupChanges="IpGroup" uuid="a5afe15b-657d-49ab-95bc-cf5f3c098388"/>
+				<reportElement stretchType="RelativeToTallestObject" x="91" y="185" width="462" height="38" printWhenGroupChanges="IpGroup" uuid="a5afe15b-657d-49ab-95bc-cf5f3c098388"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Je soussigné................................................ ,Le Directeur de GSBS certifie que :"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{classe.filiere.cycle.typecycle}.equals("0") ?$V{entetprimaire} : ($F{classe.filiere.cycle.typecycle}.equals("1")  ? $V{entetprimaire}.toUpperCase() :$V{entetesecondaire} ) )]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
-				<reportElement style="table" mode="Transparent" x="19" y="208" width="72" height="20" backcolor="#D3D3D3" uuid="ba26aa06-d9ea-4c9e-9a51-17990a6b32b8"/>
+				<reportElement style="table" mode="Transparent" x="19" y="223" width="72" height="20" backcolor="#D3D3D3" uuid="ba26aa06-d9ea-4c9e-9a51-17990a6b32b8"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -295,7 +300,7 @@
 				<textFieldExpression><![CDATA["Matricule "]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="102" y="208" width="451" height="20" uuid="ded1fc05-8d46-4450-9e3f-cde99f68a128"/>
+				<reportElement stretchType="RelativeToTallestObject" x="102" y="223" width="451" height="20" uuid="ded1fc05-8d46-4450-9e3f-cde99f68a128"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.0"/>
@@ -309,14 +314,14 @@
 				<textFieldExpression><![CDATA[$F{eleve.matricule}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToTallestObject" x="91" y="208" width="11" height="20" uuid="11d55615-623c-432d-bba3-374f8aa771c6"/>
+				<reportElement stretchType="RelativeToTallestObject" x="91" y="223" width="11" height="20" uuid="11d55615-623c-432d-bba3-374f8aa771c6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="16" pdfFontName="Times-Roman"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="102" y="228" width="451" height="20" uuid="1b5a1701-fdaa-40d6-9882-34550cdf2805"/>
+				<reportElement stretchType="RelativeToTallestObject" x="102" y="243" width="451" height="20" uuid="1b5a1701-fdaa-40d6-9882-34550cdf2805"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.0"/>
@@ -330,17 +335,17 @@
 				<textFieldExpression><![CDATA[$F{eleve.nom}]]></textFieldExpression>
 			</textField>
 			<textField pattern="d/M/yyyy">
-				<reportElement x="20" y="308" width="342" height="23" printWhenGroupChanges="IpGroup" uuid="0066b2ed-7543-4598-b7a7-e2ff3b02d74c"/>
+				<reportElement x="20" y="308" width="315" height="23" printWhenGroupChanges="IpGroup" uuid="0066b2ed-7543-4598-b7a7-e2ff3b02d74c"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA["est actuellement inscrit dans mon établissement depuis le"]]></textFieldExpression>
 			</textField>
 			<textField pattern="MM/dd/yyyy">
-				<reportElement x="362" y="308" width="195" height="23" printWhenGroupChanges="IpGroup" uuid="ad7d8e5b-fd50-40ad-847f-5ef70548cac1"/>
+				<reportElement x="335" y="308" width="222" height="23" printWhenGroupChanges="IpGroup" uuid="ad7d8e5b-fd50-40ad-847f-5ef70548cac1"/>
 				<box leftPadding="5"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" pdfFontName="Times-Roman"/>
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{datIns}]]></textFieldExpression>
 			</textField>
@@ -367,7 +372,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{cycle}==0 ? "MINISTRY OF BASE EDUCATION".toUpperCase() : ($F{cycle}==1 ? "MINISTRY OF BASE EDUCATION".toUpperCase() :"MINISTRY OF SECONDRY EDUCATION".toUpperCase() ) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{classe.filiere.cycle.typecycle}.equals("0") ? "MINISTRY OF BASE EDUCATION".toUpperCase() : ($F{classe.filiere.cycle.typecycle}.equals("1")  ? "MINISTRY OF BASE EDUCATION".toUpperCase() :"MINISTRY OF SECONDRY EDUCATION".toUpperCase() ) )]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="461" y="59" width="50" height="1" uuid="9d205ab1-3e4e-4c33-9bc5-771909fd1151"/>
@@ -386,7 +391,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{cycle}==0 ? "MINISTERE DE l'education de base ".toUpperCase() : ($F{cycle}==1 ? "MINISTERE DE L'education de base".toUpperCase() : "MINISTERE DES ENSEIGNEMENTS SECONDAIRES".toUpperCase() ) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{classe.filiere.cycle.typecycle}.equals("0") ? "MINISTERE DE l'education de base ".toUpperCase() : ($F{classe.filiere.cycle.typecycle}.equals("1")  ? "MINISTERE DE L'education de base".toUpperCase() : "MINISTERE DES ENSEIGNEMENTS SECONDAIRES".toUpperCase() ) )]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="245" y="18" width="101" height="63" uuid="88426ec1-3a30-4d78-88e8-3fc798dc5d04"/>
@@ -474,7 +479,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{cycle}==0 ? "bilingual nursery and primary school the sauterelles ".toUpperCase() : ($F{cycle}==1 ? "bilingual nursery and primary school the sauterelles ".toUpperCase() : "Piete bilingual college".toUpperCase() ) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{classe.filiere.cycle.libelleEn}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="462" y="81" width="50" height="1" uuid="adce89c4-f31c-429f-9eed-478885be1a00"/>
@@ -550,7 +555,26 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="8" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{cycle}==0 ? "Groupe Scolaire Bilingue les Sauterelles ".toUpperCase() : ($F{cycle}==1 ? "Groupe Scolaire Bilingue les Sauterelles ".toUpperCase() : "Collège Bilingue la piété ".toUpperCase() ) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{classe.filiere.cycle.libelle}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="422" y="106" width="131" height="12" uuid="50a684fc-cb7d-44c4-ba2d-4b881dacd1ce"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" Année Scolaire :" +($F{anneScolaire}+"-"+ (new Long($F{anneScolaire})+1))]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="412" y="437" width="110" height="20" uuid="c134487b-f95a-44fc-ba90-5557e08ae6fd"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -3,6 +3,7 @@
  */
 package com.kerenedu.inscription;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,7 +25,9 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseCycle;
 import com.kerenedu.configuration.SectionE;
+import com.kerenedu.model.report.ViewBadgeModal;
 import com.kerenedu.reglement.FichePaiement;
 import com.kerenedu.reglement.FichePaiementOptionel;
 import com.kerenedu.school.Eleve;
@@ -41,22 +44,32 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "e_inscription")
 public class Inscription extends BaseElement implements Serializable, Comparable<Inscription> {
 
+
+	@Column(name = "MATRICULE")
+	@Predicate(label = "MATRICULE", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 1, searchfields = "eleve.matricule")
+	protected String matricule;
+	
+	
+	@Column(name = "NOM")
+	@Predicate(label = "NOM", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 2, searchfields = "eleve.nom")
+	protected String nom;
+	
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "SECTION_ID")
-	@Predicate(label = "Section", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true, updatable=false)
+	@Predicate(label = "Section", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true, updatable=true)
 	private SectionE section;
 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe", updatable = false, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 4)
+//	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	//@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"section.id\"}]")
 	protected Classe classe;
 
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
-	@Predicate(label = "Elève", updatable = true, type = Eleve.class, target = "many-to-one", search = true, sequence = 3, searchfields = "nom", colsequence = 2)
+	@Predicate(label = "Elève", updatable = true, type = Eleve.class, target = "many-to-one", search = false, sequence = 3, searchfields = "matricule", colsequence = 3,optional = false)
 	protected Eleve eleve;
 
 	@Column(name = "STATUT")
@@ -64,24 +77,24 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	protected String satut = "0";
 
 	@Column(name = "DATE_INS")
-	@Predicate(label = "DATE INSCRIPTION", optional = false, updatable = true, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 3)
+	@Predicate(label = "DATE INSCRIPTION", optional = false, updatable = true, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 5)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datIns;
 
 	@Column(name = "MNT")
-	@Predicate(label = "SCOLARITE", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 5, editable = false, colsequence = 4)
+	@Predicate(label = "SCOLARITE", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 5, editable = false, colsequence = 6)
 	protected Long zMnt;
 
 	@Column(name = "MNT_PAYE")
-	@Predicate(label = "PAYER", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 7, editable = false, colsequence = 5)
+	@Predicate(label = "PAYER", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 7, editable = false, colsequence = 7)
 	protected Long zMntPaye;
 
 	@Column(name = "SOLDE")
-	@Predicate(label = "SOLDE ", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 8, colsequence = 6)
+	@Predicate(label = "SOLDE ", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 8, colsequence = 8)
 	protected Long zSolde;
 
 	@Column(name = "REMISE")
-	@Predicate(label = "REMISE", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 9, editable = false, colsequence = 7)
+	@Predicate(label = "REMISE", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 9, editable = false, colsequence = 9)
 	protected Long zRemise;
 
 	@Column(name = "RISTOURNE")
@@ -94,7 +107,8 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "FICHE_PAIE_ID")
-	@Predicate(label = "Service Obligatoire", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2, group = true, groupLabel = "Service élève", groupName = "tab1")
+	@Predicate(label = "Service Obligatoire", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2,
+	group = true, groupLabel = "Profil Financier de l' élève", groupName = "tab1")
 	@Observer(observable = "classe", source = "method:findserviceclasse")
 	protected List<FichePaiement> service;
 //
@@ -119,6 +133,13 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	protected long cycle;
 
 	private String state = "crée";
+	
+	@Transient
+	private byte[] photo ;
+	
+	
+	@Transient
+	private InputStream photostream ;
 
 	//
 	// public Service getServiceList() {
@@ -139,6 +160,8 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		this.zMnt = ins.zMnt;
 		if (ins.eleve != null) {
 			this.eleve = new Eleve(ins.eleve);
+			this.matricule=ins.eleve.getMatricule();
+			this.nom=ins.eleve.getNom()+" "+ins.eleve.getPrenon();
 		}
 
 		this.zMnt = ins.zMnt;
@@ -163,6 +186,17 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		 * Service(service)); }
 		 */
 
+	}
+	
+	public Inscription(ViewBadgeModal ins) {
+		if (ins.getClasse() != null) {
+			this.classe = new Classe(ins.getClasse());
+			// this.cycle=ins.getClasse().getCycle();
+			this.section = ins.getClasse().getSection();
+		}
+		if (ins.getSection() != null) {
+			this.cycle = ins.getSection().getId();
+		}
 	}
 
 	public Inscription(Eleve eleve, Classe classe, Inscription entity) {
@@ -211,6 +245,22 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 	public Classe getClasse() {
 		return classe;
+	}
+
+	public String getMatricule() {
+		return matricule;
+	}
+
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
 	public void setClasse(Classe classe) {
@@ -281,6 +331,14 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		return satut;
 	}
 
+	public InputStream getPhotostream() {
+		return photostream;
+	}
+
+	public void setPhotostream(InputStream photostream) {
+		this.photostream = photostream;
+	}
+
 	public List<FichePaiement> getService() {
 		return service;
 	}
@@ -303,6 +361,14 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 	public void setzRemise(Long zRemise) {
 		this.zRemise = zRemise;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 
 	public Long getzRistourne() {

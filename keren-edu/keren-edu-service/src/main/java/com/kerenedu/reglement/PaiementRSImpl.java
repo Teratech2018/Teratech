@@ -245,8 +245,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Selectionner l'elève  !!!!");
 		}
 		if (entity.getEleve().getzSolde()!=null&&entity.getEleve().getzSolde() == 0 || entity.getEleve().getzMnt() == entity.getEleve().getzMntPaye()) {
-			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Scolarite Totalement Payer pour  "
-					+ entity.getEleve().getEleve().getNom());
+			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Scolarite Totalement Payer pour  "+ entity.getEleve().getEleve().getNom());
 		}
 		if (entity.getzMntverser()!=null &&entity.getzMntverser() == 0 && entity.getModePaiement().equals("1")) {
 			throw new KerenExecption("OPERATION IMPOSSIBLE <br/>Bien vouloir Saisir le Montant !!");
@@ -316,7 +315,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			if (entity.getState().equalsIgnoreCase("annulé")) {
 				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
 			}
-			entity = manager.update(entity.getId(), entity);
+			entity = manager.annuler(entity);
 
 			return entity;
 		} catch (KerenEduManagerException ex) {

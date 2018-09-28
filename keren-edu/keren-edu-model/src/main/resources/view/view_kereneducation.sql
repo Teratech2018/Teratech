@@ -206,6 +206,14 @@ SELECT f.id+i.id,f.id,i.id,IFNULL(montantfraisclasse('NI','0',i.eleve_id,i.class
 FROM e_p_fiche f, e_inscription i
 where i.id=f.fiche_paie_id;
 
+CREATE VIEW e_zview_retard(ID,eleve_id,classe_id,service_id,FICHE_ID,DELAI,PAYER,
+DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
+DESABLEUPDATE)
+AS
+SELECT i.id, i.id,i.classe_id,f.ser_id,f.id,f.delai,f.payer,
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+FROM e_inscription i , e_p_fiche f
+where i.id=f.fiche_paie_id ;
 
 -- rank par classe sur la moyenne
 DELIMITER $$
@@ -649,3 +657,22 @@ delete FROM e_p_paie  where eleve_id=43;
 delete FROM e_p_fiche  where fiche_paie_id=43 ;
 delete FROM e_inscription  where id=43;
 delete FROM e_classe  where id=29;
+
+-- update date paiement 
+UPDATE e_p_fiche as e
+SET e.delai = ( select delai from e_service s where s.id = e.ser_id) ;
+
+UPDATE e_inscription as e
+SET e.nom = ( select nom from e_eleve s where s.id = e.eleve_id) ;
+
+UPDATE e_inscription as e
+SET e.matricule = ( select matricule from e_eleve s where s.id = e.eleve_id) ;
+
+UPDATE e_p_paie as e
+SET e.matricule = ( select s.matricule from e_eleve s, e_inscription i where i.id = e.eleve_id and s.id=i.eleve_id) ;
+
+UPDATE e_p_paie as e
+SET e.nom = ( select s.nom from e_eleve s, e_inscription i where i.id = e.eleve_id and s.id=i.eleve_id) ;
+
+UPDATE e_p_paie as e
+SET e.classe = ( select c.libelle from  e_inscription i, e_classe c where i.id = e.eleve_id and i.classe_id=c.id) ;

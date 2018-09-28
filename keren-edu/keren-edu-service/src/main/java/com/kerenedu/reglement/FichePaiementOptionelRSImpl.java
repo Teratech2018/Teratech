@@ -115,17 +115,18 @@ public class FichePaiementOptionelRSImpl
 		Gson gson = new Gson();
 		Long versement = (long) 0;
 		Long id = (long) 0;
+		Long eleve = (long) 0;
 		ServiceFilliere sfiliere = new ServiceFilliere();
 		id = gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
-		if(id>0){
+		eleve = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+		if(id>0&&eleve>0){
 		Service service = managerservice.find("id", id);
+		Inscription ins = managerins.find("id",eleve);
+		CacheMemory.setIncription(ins);
 		System.out.println("FichePaiementOptionelRSImpl.getMontant()service trouvé is  is   "+service.getLibelle());
 		if(service!=null){
 			for(ServiceFilliere sf : service.getFiliere()){
-				System.out.println("FichePaiementOptionelRSImpl.getMontant() filière  eleve "+CacheMemory.getIncription().getClasse().getFiliere().getCode());
-				
-				System.out.println("FichePaiementOptionelRSImpl.getMontant()sf filiere     "+sf.getFiliere().getCode());
-				if(sf.getFiliere().getCode().equals(CacheMemory.getIncription().getClasse().getFiliere().getCode())){
+					if(sf.getFiliere().getCode().equals(ins.getClasse().getFiliere().getCode())){
 					sfiliere = sf;
 					break;
 				}
@@ -208,6 +209,9 @@ public class FichePaiementOptionelRSImpl
 	        //List result = new ArrayList();
 	        return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
 	    }
+
+
+		
 
 
 }

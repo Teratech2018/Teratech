@@ -4,6 +4,7 @@ package com.kerenedu.personnel;
 import java.util.List;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.solde.EltSalaireLigne;
 
 
 /**
@@ -18,5 +19,7 @@ public interface ProfesseurManager
     public final static String SERVICE_NAME = "ProfesseurManager";
     
     public List<Professeur> findprofclasse(Long id );
+    
+    public List<EltSalaireLigne> getLigneSalaire(Long id);
 
 }

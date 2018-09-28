@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Service;
 import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionChoice;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
@@ -30,10 +31,9 @@ import com.megatim.common.annotations.Predicate;
 public class FichePaiementOptionel extends BaseElement implements Serializable, Comparable<FichePaiementOptionel> {
 	
 	@ManyToOne
-	@JoinColumn(name = "INS_ID")
-	@Predicate(label = "Elève", type = Inscription.class, target = "many-to-one", optional = false, search = true, sequence = 1, observable = true, searchfields = "eleve.nom",updatable=false)
+	@JoinColumn(name = "ElEVE_ID")
+	@Predicate(label = "Elève", type = Inscription.class, target = "many-to-one", optional = false, search = true, sequence = 1, observable = true, colsequence = 2, searchfields = "eleve.nom",updatable=false)
 	private Inscription eleve;
-
 
 	@ManyToOne
 	@JoinColumn(name = "SER_ID")
@@ -43,7 +43,7 @@ public class FichePaiementOptionel extends BaseElement implements Serializable, 
 		
 	@Column(name = "M_HT")	
 	@Predicate(label="Montant Attendu",search=false, type=Long.class ,sequence=3, editable=false)
-	@Observer(observable = "service", source = "method:montant", parameters = "service")
+	@Observer(observable = "service", source = "method:montant", parameters = "service,eleve")
 	protected Long zMntHt ;
 	
 	@Column(name = "QTE" )	
@@ -102,7 +102,6 @@ public class FichePaiementOptionel extends BaseElement implements Serializable, 
 		if(ins.service!=null){
 		  this.service= new Service(ins.service);
 		}
-		
 		if(ins.eleve!=null){
 			  this.eleve= new Inscription(ins.eleve);
 			}

@@ -1,6 +1,8 @@
 
 package com.kerenedu.school;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,9 @@ import javax.ws.rs.core.HttpHeaders;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kerem.core.FileHelper;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.tools.reports.ReportHelper;
 import com.megatim.common.annotations.Filter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -82,7 +86,7 @@ public class EleveRSImpl
 			MetaData meta =  MetaDataUtil.getMetaData(new Eleve(), new HashMap<String, MetaData>(),new ArrayList<String>());
 			MetaColumn col = new MetaColumn("button", "incription", "Pré-Inscription", false, "action", null);
 			col.setValue("{'name':'keren_education_ins','template':{'eleve':'object'}}");
-			meta.getHeader().add(col);
+			//meta.getHeader().add(col);
 //			
 //			MetaColumn workbtn = new MetaColumn("button", "work1", "Frais de Scolarité", false, "link", null);
 //			workbtn.setValue(
@@ -108,4 +112,7 @@ public class EleveRSImpl
 		}
 		return null;
 	}
+    
+
+  
 }

@@ -19,6 +19,7 @@ import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.notes.CoefMatiereDetail;
 import com.kerenedu.notes.CoefMatiereDetailDAOLocal;
+import com.kerenedu.solde.EltSalaireLigne;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -82,8 +83,25 @@ public class ProfesseurManagerImpl
    	}
    	
    	
+   	
+   	
 
    	@Override
+	public void processBeforeSave(Professeur entity) {
+		// set defaut valeur
+//   		this.salaire= eleve.salaire;
+//		this.thoraire=eleve.thoraire;
+//		this.numBan=eleve.numBan;
+//		this.role=eleve.role;
+//		this.zavance=eleve.zavance;
+//		this.zprime=eleve.zprime;
+//		this.zretenu=eleve.zretenu;
+//		this.salaire=eleve.salaire;
+   		entity.setSalmax((long) 0);
+		super.processBeforeSave(entity);
+	}
+
+	@Override
    	public Professeur delete(Long id) {
    		// TODO Auto-generated method stub
    		Professeur elev = super.delete(id);
@@ -116,5 +134,24 @@ public class ProfesseurManagerImpl
 			}// fin if(id>0)
 		return result;
 }
+
+	@Override
+	public List<EltSalaireLigne> getLigneSalaire(Long id) {
+		 RestrictionsContainer container = RestrictionsContainer.newInstance();
+		 List<EltSalaireLigne> result = new ArrayList<EltSalaireLigne>();
+			if(id>0){
+				// recherche l'objet classe
+				container = RestrictionsContainer.newInstance();
+				container.addEq("status","0");
+				List<Professeur> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+				if(datas!=null){
+					for(Professeur  p : datas){
+						result.add(new EltSalaireLigne(p));
+					}
+				}
+			}
+				
+		return result;
+	}
 	
 }

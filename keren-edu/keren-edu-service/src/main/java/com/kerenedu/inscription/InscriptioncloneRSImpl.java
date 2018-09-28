@@ -10,11 +10,15 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.model.report.ViewPaiementJournalier;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 
 /**
@@ -67,6 +71,40 @@ public class InscriptioncloneRSImpl
    	}
     
 
+	@Override
+    public RSNumber count(HttpHeaders headers) {
+        //To change body of generated methods, choose Tools | Templates.
+         //To change body of generated methods, choose Tools | Templates.
+        Gson gson = new Gson();
+        String header = null;
+		RestrictionsContainer container = null;
+		if (headers.getRequestHeader("action_param") != null) {
+			header = headers.getRequestHeader("action_param").get(0);
+		}
+        //Type predType = ;
+        List contraints = new ArrayList();
+        if(headers.getRequestHeader("predicats")!=null){
+            contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
+        }//end if(headers.getRequestHeader("predicats")!=null){        
+      
+         if(contraints!=null&&!contraints.isEmpty()){
+            for(Object obj : contraints){
+                FilterPredicat filter = (FilterPredicat) obj ;
+                if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+                        &&filter.getValue()!=null&&!filter.getValue().isEmpty()){
+                      container = addPredicate(container, filter);
+                }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
+            }//end  for(Object obj : contraints)
+        }//end if(contraints!=null&&!contraints.isEmpty())
+       
+         if(header!=null){
+ 			container.addLike("eleve.nom", "%" + header);
+ 			 }
+        RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
+//        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
+        return number;
+    }
+    
 	@Override
 	public List<Inscriptionclone> filter(HttpHeaders headers, int firstResult, int maxResult) {
 

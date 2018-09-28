@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <keren>
  <action id="keren_education" />
+	<menu id="keren_edu_acc" label="Accueil" parent="keren_education" gyphycon="icon-home"/>	
+	<menuitem id="keren_education_dashboard_01" label="Dashboard " parent_ref="keren_edu_acc" entity_ref="EducationDashboard" model_ref="kereneducation" method_ref="solde" gyphycon="glyphicon glyphicon-th" modal="false" view_type="dashboard" />
+	
 	<menu id="keren_education_ecole" label="Ecole" parent="keren_education" gyphycon="icon-home"/>	
-	<menuitem id="keren_education_dashboard_01" label="Dashboard " parent_ref="keren_education_ecole" entity_ref="EducationDashboard" model_ref="kereneducation" method_ref="solde" gyphycon="glyphicon glyphicon-th" modal="false" view_type="dashboard" />
 	<menuitem id="keren_education_Etb" label="Ecole" parent_ref="keren_education_ecole" entity_ref="Etablissement" model_ref="kereneducation" gyphycon="icon-home" modal="false" />
 	<menuitem id="keren_education_02" label="Fichier des Elèves" parent_ref="keren_education_ecole" entity_ref="Eleve" model_ref="kereneducation" gyphycon="glyphicon glyphicon-user blue" modal="false" />
 	<menuitem id="keren_education_ins" label="Pré-Inscription" parent_ref="keren_education_ecole" entity_ref="Inscription" model_ref="kereneducation" gyphycon="icon icon-book"/>
 	<menuitem id="keren_education_ins_search" label="Pré-Inscription" parent_ref="keren_education_ecole" entity_ref="InscriptionClone" model_ref="kereneducation" gyphycon="icon icon-book" hide="true"/>
-	
 	<menuitem id="keren_education_paie" label="Inscription/Scolarité" parent_ref="keren_education_ecole" entity_ref="Paiement" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false"   />
 	<menuitem id="keren_education_divers" label="Frais Divers" parent_ref="keren_education_ecole" entity_ref="FichePaiementOptionel" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false"   />
+	<menuitem id="keren_education_retard_link" label="Retard de paiements" parent_ref="keren_education_ecole" entity_ref="RetardPaiementModal" model_ref="kereneducation" gyphycon="glyphicon glyphicon-edit" modal="true" link="keren_education_retard" hide="true"/>
+	
+	<menuitem id="keren_education_fiche_01" label="Moratoire" parent_ref="keren_education_ecole" entity_ref="Moratoire" model_ref="kereneducation" gyphycon="icon icon-book" hide="true" modal="true"/>
+	<menuitem id="keren_education_retard" label="Moratoire de Paiements " parent_ref="keren_education_ecole" entity_ref="FichePaiementRetard" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" />
+	
 	<menuitem id="keren_education_paie_limit" label="Paiements" parent_ref="keren_education_ecole" entity_ref="Paiement" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" hide="true" />
 	<menuitem id="keren_education_ins_chgr" label="Changer classe" parent_ref="keren_education_ecole" entity_ref="ChangeClasse" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="true" hide="true" />
 	<menuitem id="keren_education_frais_opt" label="Paiements" parent_ref="keren_education_ecole" entity_ref="FichePaiementOptionel" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" hide="true" />
@@ -19,6 +25,13 @@
 	<menuitem id="keren_education_typedps" label="Type de Dépenses" parent_ref="keren_education_caisse" entity_ref="TypeDepense" model_ref="kereneducation" gyphycon="icon icon-shopping-cart"  modal="false" />
 	<menuitem id="keren_education_cai" label="Recettes" parent_ref="keren_education_caisse" entity_ref="Caisse" model_ref="kereneducation" gyphycon="icon icon-shopping-cart"  modal="false" />
 	<menuitem id="keren_education_depense" label="Dépenses" parent_ref="keren_education_caisse" entity_ref="Depense" model_ref="kereneducation" gyphycon="icon icon-shopping-cart"  modal="false" />
+	
+	<menu id="keren_education_solde" label=" Solde du personnel" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_ens" label="Fichier du Personnels" parent_ref="keren_education_solde" entity_ref="Professeur" model_ref="kereneducation" gyphycon="icon icon-group"/>
+	<menuitem id="keren_education_salaire" label="Elements de Salaires" parent_ref="keren_education_solde" entity_ref="EltSalaire" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" />
+	<menuitem id="keren_education_trt" label="Traitement de la Paie" parent_ref="keren_education_solde" entity_ref="ProfFichePaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" />
+	<menuitem id="keren_education_edtbul" label="Edition des Bulletins" parent_ref="keren_education_solde" entity_ref="ProfFichePaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="false" />
+	
 
 	<menu id="keren_education_Report" label=" Rapport" parent="keren_education" gyphycon="icon icon-cogs"/>	
     <menuitem id="keren_education_Report_01" label="Etat des Anniversaires" parent_ref="keren_education_Report" entity_ref="ViewAnniversaire" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_account_report_anniv" />
@@ -28,16 +41,23 @@
 	<menuitem id="keren_education_Report_03" label="Bilan Financiers Détaillé" parent_ref="keren_education_Report" entity_ref="ViewBilanFinancier" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="base_account_report_bilanclasse" />
 	<menuitem id="keren_education_Report_05" label="Bilan Financiers Global" parent_ref="keren_education_Report" entity_ref="ViewBilanFinancierEcole" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="base_account_report_bilan" />
 	<menuitem id="keren_education_Report_06" label="Bilan Financiers Par Service" parent_ref="keren_education_Report" entity_ref="ViewBilanServiceModal" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="base_account_report_bilan_service" />
+	<menuitem id="keren_education_Report_07" label="Badge" parent_ref="keren_education_Report" entity_ref="ViewBadgeModal" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="true" report="report_bagde_07" />
 
 	
 	<menu id="keren_education_para" label=" Paramètres" parent="keren_education" gyphycon="icon icon-cogs"/>	
-	<menuitem id="keren_education_ens" label="Fichier du Personnels" parent_ref="keren_education_para" entity_ref="Professeur" model_ref="kereneducation" gyphycon="icon icon-group"/>
     <menuitem id="keren_education_Anne" label=" Annee Scolaire, et Période" parent_ref="keren_education_para" entity_ref="AnneScolaire" model_ref="kereneducation" gyphycon="icon icon-calendar"/>
 	<menuitem id="keren_education_cla" label="Classe" parent_ref="keren_education_para" entity_ref="Classe" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
 	<menuitem id="keren_education_Fil" label="Filiere" parent_ref="keren_education_para" entity_ref="Filiere" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
 	<menuitem id="keren_education_section" label="Section" parent_ref="keren_education_para" entity_ref="SectionE" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_resp" label="Responsable" parent_ref="keren_education_para" entity_ref="Responsable" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
 	<menuitem id="keren_education_ser" label="Services Financiers" parent_ref="keren_education_para" entity_ref="Service" model_ref="kereneducation" gyphycon="icon icon-wrench"  modal="false" />
 	<menuitem id="keren_education_remise" label="Gestion des Remise" parent_ref="keren_education_para" entity_ref="Remise" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_rub" label="Rubrique de Paie" parent_ref="keren_education_para" entity_ref="RubriquePaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_Profil" label="Profil de Paie" parent_ref="keren_education_para" entity_ref="ProfilPaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_cat" label="Catègorie" parent_ref="keren_education_para" entity_ref="Categorie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_Echellon" label="Echelon" parent_ref="keren_education_para" entity_ref="Echellon" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_Banque" label="Banque" parent_ref="keren_education_para" entity_ref="Banque" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_periode" label="Periode de Paie" parent_ref="keren_education_para" entity_ref="PeriodePaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
 	
 	
 	 <reportRecord  id="base_account_report_01" label="Liste des Etudiants" action_ref="keren_education_02"  extern="true" >
@@ -46,8 +66,14 @@
              <field name="Matricule"/>			 
 		  </search>	     
 	 </reportRecord>
-	 <reportRecord  id="base_account_report_02" label="Certificat de scolarite" action_ref="keren_education_ins"  extern="true" >
+	 <reportRecord  id="base_account_report_02" label="Certificat de scolarite" action_ref="keren_education_ins"  extern="true" hide="true" >
 	      <search entity="EleveSearch" module="kereneducation" method="pdf" ignore="true">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	  <reportRecord  id="base_account_report_03" label="Liste des Inscrits/Classe" action_ref="keren_education_ins"  extern="true" >
+	      <search entity="EleveInscritSearch" module="kereneducation" method="pdf" >
 		     <field name="Nationalité"/>
              <field name="Matricule"/>			 
 		  </search>	     
@@ -112,6 +138,13 @@
 	 
 	  <reportRecord  id="base_account_report_bilan_service" label="Bilan Financier /Service" action_ref="keren_education_Report_06"  extern="true">
 	      <search entity="ViewBilanServiceModal" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	  <reportRecord  id="report_bagde_07" label="Badge" action_ref="keren_education_Report_07"  extern="true">
+	      <search entity="ViewBadgeModal" module="kereneducation" method="pdf">
 		     <field name="Nationalité"/>
              <field name="Matricule"/>			 
 		  </search>	     

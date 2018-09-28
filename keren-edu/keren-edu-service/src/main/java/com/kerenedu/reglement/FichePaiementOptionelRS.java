@@ -22,5 +22,7 @@ public interface FichePaiementOptionelRS extends GenericService<FichePaiementOpt
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("montant")
 	public Long getMontant(@Context HttpHeaders headers);
+	
+
 
 }

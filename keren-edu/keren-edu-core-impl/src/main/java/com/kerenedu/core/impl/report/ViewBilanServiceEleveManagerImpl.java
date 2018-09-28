@@ -99,7 +99,7 @@ public class ViewBilanServiceEleveManagerImpl extends AbstractGenericManager<Vie
 
 			Boolean value = false;
 			container.addEq("fiche.payer", value);
-			container.addLe("fiche.service.delai", DateHelper.formatDate(new Date()));
+			container.addLe("fiche.delai", DateHelper.formatDate(new Date()));
 
 		}
 		List<ViewBilanServiceEleve> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);

@@ -15,6 +15,7 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.CacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -120,8 +121,18 @@ public class CoefMatiereRSImpl
 	  @Override
 	    public CoefMatiere save(@Context HttpHeaders headers,CoefMatiere entity) {
 		  this.todowork(entity);
+		  
 	        return entity; 
 	    }
+
+	@Override
+	public List<CoefMatiereDetail> setid(HttpHeaders headers) {
+		List<CoefMatiereDetail>  list = new ArrayList<CoefMatiereDetail>();
+		Gson gson = new Gson();
+		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		CacheMemory.setCurentcycle(id);
+		return list;
+	}
 
 	
 	

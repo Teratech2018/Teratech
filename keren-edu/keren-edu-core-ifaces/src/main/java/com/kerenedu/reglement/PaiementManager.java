@@ -18,5 +18,7 @@ public interface PaiementManager
     public final static String SERVICE_NAME = "PaiementManager";
     
     public List<Paiement> getCriteres(Paiement critere);
+    
+    public Paiement annuler(Paiement entity);
 
 }
