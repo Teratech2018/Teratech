@@ -1,6 +1,7 @@
 
 package com.keren.courrier.jaxrs.ifaces.courrier;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -43,4 +44,6 @@ public interface CourrierDepartRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("distribuer")
     public CourrierDepart distribuer(@Context HttpHeaders headers,CourrierDepart entity);
+    
+    public List<CourrierDepart> findCourrierByDate(Date p$date);
 }

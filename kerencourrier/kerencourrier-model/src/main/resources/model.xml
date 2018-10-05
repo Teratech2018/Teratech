@@ -264,6 +264,153 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+         <element type="com.keren.courrier.model.courrier.CourrierInterneJoint"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+          <element type="com.keren.courrier.model.archivage.ArchiveDocument"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+         <element type="com.keren.courrier.model.archivage.ArmoireArchivage"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.keren.courrier.model.archivage.BoiteArchivage"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+          <element type="com.keren.courrier.model.archivage.CadreClassement"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+         <element type="com.keren.courrier.model.archivage.LocalArchivage"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.archivage.TiroirArchivage"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.keren.courrier.model.archivage.ArchiveDossier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+           <element type="com.keren.courrier.model.courrier.CourrierAArchiver"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+            <element type="com.keren.courrier.model.archivage.LiasseDocument"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+           <element type="com.keren.courrier.model.archivage.BorderoLiasse"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+          <element type="com.keren.courrier.model.archivage.BorderoLiasseR"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+            
+          <element type="com.keren.courrier.model.archivage.LigneBorderoLiasse"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+           <element type="com.keren.courrier.model.archivage.LigneBorderoLiasseR"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+       <element type="com.keren.courrier.model.archivage.LiasseDocumentTri"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+       <element type="com.keren.courrier.model.courrier.CourrierTrier"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+        <element type="com.keren.courrier.model.courrier.FichierLieTri"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+        <element type="com.keren.courrier.model.archivage.ArchiveLiasse"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+          <element type="com.keren.courrier.model.dashbord.ArchiveDashboard"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+           <element type="com.keren.courrier.model.others.CaSeqGenerator"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+     <element type="com.keren.courrier.model.others.CdepartSeqGenerator"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+       <element type="com.keren.courrier.model.others.CinterneSeqGenerator"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+         <element type="com.keren.courrier.model.others.ConfigSequence"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+          <element type="com.keren.courrier.model.others.PortionSequence"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        
+           <element type="com.keren.courrier.model.courrier.CourrierATraiter"  idclass="long"  idname="id" deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+                
+               
+        
    </elements>
     
 </model-config>

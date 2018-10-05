@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -73,6 +74,11 @@ public class BorderoCourrierR extends BaseElement implements Serializable,Compar
     @Predicate(label = "Statut",search = false,hide = true)
     private String state = "etabli";
     
+   
+    @Predicate(label = " ",search =true,type=Long.class,hide=true)
+    @Column(name = "N_CRECU")
+    private long ncrecu ; 
+    
     
      public BorderoCourrierR(BorderoCourrierR entity) {
         super(entity.id, entity.designation, entity.moduleName, entity.compareid);
@@ -91,6 +97,7 @@ public class BorderoCourrierR extends BaseElement implements Serializable,Compar
         this.emission = entity.emission;
         this.type = entity.type;
         this.daccuse = entity.daccuse;
+        this.ncrecu=entity.ncrecu;
     }
      
     public BorderoCourrierR(String code, StructureCompany service, long id, String designation, String moduleName, long comparedid) {
@@ -219,7 +226,15 @@ public class BorderoCourrierR extends BaseElement implements Serializable,Compar
         this.emission = emission;
     }
 
-    @Override
+    public long getNcrecu() {
+		return ncrecu;
+	}
+
+	public void setNcrecu(long ncrecu) {
+		this.ncrecu = ncrecu;
+	}
+
+	@Override
     public String getDesignation() {
         return code; //To change body of generated methods, choose Tools | Templates.
     }

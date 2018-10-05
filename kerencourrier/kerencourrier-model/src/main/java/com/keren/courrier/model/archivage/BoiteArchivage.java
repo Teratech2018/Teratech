@@ -32,7 +32,7 @@ public class BoiteArchivage extends BaseElement implements Serializable,Comparab
     private String type ="0";
     
     @ManyToOne
-    @JoinColumn(name = "ARM_ID")
+    @JoinColumn(name = "TIR_ID")
     @Predicate(label = "Tiroir parent",type = TiroirArchivage.class,target = "many-to-one",search = true,observable = true)    
     private TiroirArchivage tiroir ;
     

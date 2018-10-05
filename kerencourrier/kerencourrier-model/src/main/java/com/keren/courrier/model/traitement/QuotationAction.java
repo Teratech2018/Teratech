@@ -38,30 +38,32 @@ public class QuotationAction extends BaseElement implements Serializable,Compara
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dquotation;
     
-    @ManyToOne
-    @JoinColumn(name = "QUOT_ID")
-    @Predicate(label = "Quoteur",type = UtilisateurCourrier.class,optional = false,target = "many-to-one",search = true)
-    private UtilisateurCourrier quoteur ;  
-    
-     @ManyToOne
-     @JoinColumn(name = "SQUOT_ID")
-//    @Predicate(label = "Service Du Quoteur",type = StructureCompany.class,target = "many-to-one",editable = false)
-    @Observer(observable = "quoteur",source = "field:service")
-    private StructureCompany service ;
     
     @Predicate(label = "Date butoir",type = Date.class,optional = false,target = "date",search = true)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date limite ;
     
     @ManyToOne
+    @JoinColumn(name = "QUOT_ID")
+   @Predicate(label = "Quoteur",type = UtilisateurCourrier.class,optional = true,target = "many-to-one",search = true,editable = false)
+    private UtilisateurCourrier quoteur ;  
+    
+     @ManyToOne
+     @JoinColumn(name = "SQUOT_ID")
+    @Predicate(label = "Service Du Quoteur",type = StructureCompany.class,target = "many-to-one",editable = false)
+   // @Observer(observable = "quoteur",source = "field:service")
+    private StructureCompany service ;
+
+    
+    @ManyToOne
     @JoinColumn(name = "DEST_ID")
-    @Predicate(label = "Quoté",type = UtilisateurCourrier.class,target = "many-to-one",search = true,observable = true)    
+    @Predicate(label = "Quoté",type = UtilisateurCourrier.class,target = "many-to-one",search = true,observable = true,optional=false)    
     private UtilisateurCourrier quote ;
    
     
      @ManyToOne
      @JoinColumn(name = "SDEST_ID")
-    @Predicate(label = "Service Quoté",type = StructureCompany.class,target = "many-to-one",search = true)
+    @Predicate(label = "Service Quoté",type = StructureCompany.class,target = "many-to-one",search = true, optional=false)
      @Observer(observable = "quote",source = "field:service")
     private StructureCompany squote ;    
     

@@ -1,6 +1,8 @@
 
 package com.keren.courrier.jaxrs.impl.courrier;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +30,6 @@ import com.keren.courrier.core.ifaces.referentiel.PrioriteManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.StructureCompanyManagerRemote;
 import com.keren.courrier.core.ifaces.referentiel.UtilisateurCourrierManagerRemote;
 import com.keren.courrier.jaxrs.ifaces.courrier.CourrierInterneRS;
-import com.keren.courrier.model.courrier.Courrier;
 import com.keren.courrier.model.courrier.CourrierInterne;
 import com.keren.courrier.model.courrier.FichierLie;
 import com.keren.courrier.model.referentiel.Priorite;
@@ -39,8 +40,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
-import java.io.File;
-import java.io.IOException;
 
 
 /**
@@ -139,7 +138,7 @@ public class CourrierInterneRSImpl
     protected void processBeforeSave(CourrierInterne entity) {
         // TODO Auto-generated method stub
     	 if(entity.getType().equals("1")&&entity.getCourrier()==null){
-    		 throw new KerenExecption("Enregistrement impossible<br/>car le courrier arrivéé pas renseigné  !!!"); 
+    		 throw new KerenExecption("Enregistrement impossible<br/> car la souche du courrier n'est pas renseigné  !!!"); 
     	 }       
         for(FichierLie fichier:entity.getPiecesjointes()){
              fichier.setId(-1);
@@ -315,6 +314,20 @@ public class CourrierInterneRSImpl
          entity =courriermanager.traiterCourrier(entity);
          return new CourrierInterne(entity);
     }
+
+
+	@Override
+	public List<CourrierInterne> findCourrierByDate(Date p$date) {
+	List<CourrierInterne> datas = new ArrayList<CourrierInterne>();
+	List<CourrierInterne> results = new ArrayList<CourrierInterne>();
+	 RestrictionsContainer container = RestrictionsContainer.newInstance();  
+	 container.addEq("dcourrier", DateHelper.convertToString(p$date, "yyyy-MM-jj"));
+	 datas= manager.filter(container.getPredicats(), null, null, 0, -1);
+	 for(CourrierInterne c : datas){
+		 results.add(new CourrierInterne(c));
+	 }
+		return results;
+	}
 
     
 }

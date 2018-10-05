@@ -1,0 +1,18 @@
+{
+	'name':'Archivage',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Archivage',
+	'sequence':10,
+	'description':'',
+	'category':'Archivage',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\archive_menus.xml'],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

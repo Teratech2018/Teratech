@@ -14,6 +14,7 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.commons.DateHelper;
 import com.keren.courrier.core.ifaces.courrier.BorderoCourrierManagerLocal;
 import com.keren.courrier.core.ifaces.courrier.BorderoCourrierManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.BorderoCourrierDAOLocal;
@@ -25,6 +26,7 @@ import com.keren.courrier.model.courrier.LigneBorderoCourrier;
 import com.keren.courrier.model.courrier.TraitementCourrier;
 import com.keren.courrier.model.courrier.TypeTraitement;
 import com.keren.courrier.model.referentiel.StructureCompany;
+import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -81,6 +83,8 @@ public class BorderoCourrierManagerImpl
     public BorderoCourrier find(String propertyName, Long entityID) {
         BorderoCourrier data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
        BorderoCourrier entity = new BorderoCourrier(data);
+       
+       //entity.setAgentliaison(new UtilisateurCourrier(data.getAgentliaison()));
        for(LigneBorderoCourrier _instance:data.getCourriers()){
            entity.getCourriers().add(new LigneBorderoCourrier(_instance));
        }
@@ -95,12 +99,27 @@ public class BorderoCourrierManagerImpl
 
     @Override
     public void processBeforeSave(BorderoCourrier entity) {
-        
+    	if(entity.getCreation()==null){
+    		entity.setCreation(new Date());
+    	}
+    	entity.setEmission(new Date());
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
+    public void processAfterSave(BorderoCourrier entity) {
+    	if(entity.getCode()==null||entity.getCode().equals("")||entity.getCode().isEmpty()){
+    		entity.setCode("BDR/"+ entity.getType()+"/" + entity.getId() + "/"+ DateHelper.convertToString(entity.getCreation(), "dd/MM/yyyy"));
+    	}
+    	entity.setNcourrier(entity.getCourriers().size());	
+        dao.update(entity.getId(), entity);
+        super.processAfterSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
     public void processBeforeUpdate(BorderoCourrier entity) {
+    	 entity.setNcourrier(entity.getCourriers().size());	
+    	 dao.update(entity.getId(), entity);
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -122,12 +141,14 @@ public class BorderoCourrierManagerImpl
     @Override
     public BorderoCourrier distribuer(BorderoCourrier entity) {
         //To change body of generated methods, choose Tools | Templates.
+    	int nt=0;
         for(LigneBorderoCourrier ligne:entity.getCourriers()){
+        	nt=nt+1;
             CourrierClone courrier = ligne.getCourrier();
             courrier = courrierdao.findByPrimaryKey("id", courrier.getId());
             if(courrier.getPiecesjointes()!=null)courrier.getPiecesjointes().size();
             courrier.setState("transmis");
-          //========== @NTW ENREGISTRER LE TRAITEMENT========;
+          //========== @NTW ENREGISTRER LE TRAITEMENT============;
     		TraitementCourrier trtcourrier = new TraitementCourrier(new CourrierClone(courrier),TypeTraitement.TRANSMISSION);
     		daotrt.save(trtcourrier);
             courrierdao.update(courrier.getId(), courrier);
@@ -138,6 +159,7 @@ public class BorderoCourrierManagerImpl
                 courrierdao.update(courrier.getCourrier().getId(), courrier.getCourrier());
             }//end if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")){
         }//end for(LigneBorderoCourrier ligne:entity.getCourriers()){
+        entity.setNctransmis(nt);
         entity.setState("transmis");
         entity.setEmission(new Date());
         dao.update(entity.getId(), entity);

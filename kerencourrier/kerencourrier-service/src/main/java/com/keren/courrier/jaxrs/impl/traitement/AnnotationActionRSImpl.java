@@ -128,7 +128,7 @@ public class AnnotationActionRSImpl
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
         container.addEq("courrier.id", courrierid);
-        container.addEq("service", user.getService());
+        container.addEq("quoteur.service", user.getService());
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
 //        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("courrier")+" === "+firstResult+" === "+maxResult+" == ");       
@@ -163,7 +163,7 @@ public class AnnotationActionRSImpl
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
         container.addEq("courrier.id", courrierid);
-        container.addEq("service", user.getService());
+        container.addEq("quoteur.service", user.getService());
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;

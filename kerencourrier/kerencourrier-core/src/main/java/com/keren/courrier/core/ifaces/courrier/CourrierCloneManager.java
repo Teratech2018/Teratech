@@ -1,8 +1,11 @@
 
 package com.keren.courrier.core.ifaces.courrier;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.keren.courrier.model.courrier.CourrierClone;
+import com.keren.courrier.model.courrier.FichierLie;
 
 
 /**
@@ -15,5 +18,9 @@ public interface CourrierCloneManager
 {
 
     public final static String SERVICE_NAME = "CourrierCloneManager";
+    
+    public List<CourrierClone> findcourrier(long id );
+    
+    public List<FichierLie> findfichier(long id );
 
 }

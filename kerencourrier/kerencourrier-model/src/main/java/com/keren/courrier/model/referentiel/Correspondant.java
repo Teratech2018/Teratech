@@ -192,7 +192,12 @@ public class Correspondant extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return nom + " " + structure;
+		if(nature.equals("0")){
+			return nom + " " + fonction;
+		}else{
+			return sigle + " " + structure;
+		}
+		
 	}
 
 	@Override

@@ -98,7 +98,6 @@ public class ClassementActionManagerImpl extends AbstractGenericManager<Classeme
 	}
 	
 	public CourrierClone classerfonddossier(CourrierClone interne,ClassementAction entity){
-		//Traitement des enfants
 		
 		List<CourrierClone> fondsdossier = new ArrayList<CourrierClone>();
 		RestrictionsContainer container = RestrictionsContainer.newInstance();

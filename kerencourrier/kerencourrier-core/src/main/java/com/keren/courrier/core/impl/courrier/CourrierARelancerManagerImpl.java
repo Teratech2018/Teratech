@@ -12,6 +12,7 @@ import com.keren.courrier.core.ifaces.courrier.CourrierARelancerManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.CourrierARelancerDAOLocal;
 import com.keren.courrier.model.courrier.CourrierARelancer;
 import com.keren.courrier.model.courrier.FichierLie;
+import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,11 @@ public class CourrierARelancerManagerImpl
         CourrierARelancer result = new CourrierARelancer(data);       
         for(FichierLie aas:data.getPiecesjointes()){
             result.getPiecesjointes().add(new FichierLie(aas));
-        }       
+        }      
+        for (UtilisateurCourrier dest : data.getDestinataire()) {
+			result.getDestinataire().add(new UtilisateurCourrier(dest));
+		}
+
         return result;
     }
 

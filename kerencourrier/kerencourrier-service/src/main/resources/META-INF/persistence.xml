@@ -83,10 +83,36 @@
     <class>com.keren.courrier.model.referentiel.EventCourrier</class>
     <class>com.keren.courrier.model.referentiel.RappelCourrier</class>
     <class>com.keren.courrier.model.others.ViewCourrier</class>
-    <class>com.core.templates.ThemeRecord</class>
+    <class>com.keren.courrier.model.archivage.ArchiveDocument</class>
+    <class>com.keren.courrier.model.archivage.ArmoireArchivage</class>
+    <class>com.keren.courrier.model.archivage.BoiteArchivage</class>
+    <class>com.keren.courrier.model.archivage.CadreClassement</class>
+    <class>com.keren.courrier.model.archivage.LocalArchivage</class>
+    <class>com.keren.courrier.model.archivage.TiroirArchivage</class>
+    <class>com.keren.courrier.model.archivage.ArchiveDossier</class>
+    <class>com.keren.courrier.model.courrier.CourrierInterneJoint</class>
+    <class>com.keren.courrier.model.report.ViewCourrierReport</class>
+    <class>com.keren.courrier.model.courrier.CourrierAArchiver</class>
+    <class>com.keren.courrier.model.archivage.BorderoLiasse</class>
+    <class>com.keren.courrier.model.archivage.BorderoLiasseR</class>
+    <class>com.keren.courrier.model.archivage.LigneBorderoLiasse</class>
+    <class>com.keren.courrier.model.archivage.LigneBorderoLiasseR</class>
+    <class>com.keren.courrier.model.archivage.LiasseDocument</class>
+    <class>com.keren.courrier.model.archivage.LiasseDocumentTri</class>
+    <class>com.keren.courrier.model.courrier.CourrierTrier</class>
+    <class>com.keren.courrier.model.courrier.FichierLieTri</class>
+    <class>com.keren.courrier.model.archivage.ArchiveLiasse</class>
+    <class>com.keren.courrier.model.others.CinterneSeqGenerator</class>
+    <class>com.keren.courrier.model.others.CdepartSeqGenerator</class>
+    <class>com.keren.courrier.model.others.CaSeqGenerator</class>
+    <class>com.keren.courrier.model.others.PortionSequence</class>
+    <class>com.keren.courrier.model.others.ConfigSequence</class>
+    <class>com.keren.courrier.model.courrier.CourrierATraiter</class>
+      
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
     </properties>
   </persistence-unit>
 </persistence>
+

@@ -31,6 +31,7 @@ import com.keren.courrier.jaxrs.ifaces.courrier.CourrierDepartRS;
 import com.keren.courrier.model.courrier.CourrierDepart;
 import com.keren.courrier.model.courrier.CourrierInterne;
 import com.keren.courrier.model.courrier.FichierLie;
+import com.keren.courrier.model.referentiel.Correspondant;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.keren.courrier.model.referentiel.Priorite;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
@@ -206,12 +207,15 @@ public class CourrierDepartRSImpl
     	 if(entity.getType().equals("1")&&entity.getCourrier()==null){
     		 throw new KerenExecption("Enregistrement impossible<br/>car le courrier arrivéé pas renseigné  !!!"); 
     	 }
-    	 if(entity.getDcourrier().before(entity.getLimite())){
-    		 throw new KerenExecption("Enregistrement impossible<br/>Date erronné !!!"); 
-    	 }
+//    	 if(entity.getDcourrier().before(entity.getLimite())){
+//    		 throw new KerenExecption("Enregistrement impossible<br/>Date erronné !!!"); 
+//    	 }
         for(FichierLie fichier:entity.getPiecesjointes()){
              fichier.setId(-1);
         }//end for(FichierLie fichier:entity.getPiecesjointes()){
+//        for(Correspondant cores:entity.getCorrespondant()){
+//        	cores.setId(-1);
+//       }//end   for(Correspondant cores:entity.getCorrespondant()){
         entity.setState("etabli");
         entity.setCategorie("1");
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
@@ -334,5 +338,18 @@ public class CourrierDepartRSImpl
 		}
 
 		return entity;
+	}
+	
+	@Override
+	public List<CourrierDepart> findCourrierByDate(Date p$date) {
+	List<CourrierDepart> datas = new ArrayList<CourrierDepart>();
+	List<CourrierDepart> results = new ArrayList<CourrierDepart>();
+	 RestrictionsContainer container = RestrictionsContainer.newInstance();  
+	 container.addEq("dcourrier", DateHelper.convertToString(p$date, "yyyy-MM-jj"));
+	 datas= manager.filter(container.getPredicats(), null, null, 0, -1);
+	 for(CourrierDepart c : datas){
+		 results.add(new CourrierDepart(c));
+	 }
+		return results;
 	}
 }

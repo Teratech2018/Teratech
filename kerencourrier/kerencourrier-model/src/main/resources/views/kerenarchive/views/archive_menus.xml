@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+	<action id="keren_archive" />
+	
+	<menu id="archive_doc" label="Documents" parent="keren_archive" gyphycon="glyphicon glyphicon-book"/>
+    <menuitem id="archive_doc_01" label="Enliasser les documents à archiver" parent_ref="archive_doc" entity_ref="LiasseDocument" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="archive_doc_02" label="Transmission du bordereau et des liasses" parent_ref="archive_doc" entity_ref="BorderoLiasse" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+  
+
+		    
+	<menu id="archive_trans" label="Traitements" parent="keren_archive" gyphycon="glyphicon glyphicon-book"/>
+	  <menuitem id="archive_trans_011" label="Décharge du bordereau et des liasses" parent_ref="archive_trans" entity_ref="BorderoLiasseR" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="archive_trans_01" label="Tri des liasses" parent_ref="archive_trans" entity_ref="LiasseDocumentTri" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+  	<menuitem id="archive_trans_02" label="Archivage des Documents" parent_ref="archive_trans" entity_ref="ArchiveDocument" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="archive_trans_03" label="Archivage des Dossiers" parent_ref="archive_trans" entity_ref="ArchiveDossier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="archive_trans_04" label="Archivage des Liasses" parent_ref="archive_trans" entity_ref="ArchiveLiasse" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	
+	<menu id="archive_ref" label="Administration" parent="keren_archive" gyphycon="glyphicon glyphicon-cog"/>
+    <menuitem id="courrier_archi_01" label="Local Archive" parent_ref="archive_ref" entity_ref="LocalArchivage" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_archi_02" label="Boite Archive" parent_ref="archive_ref" entity_ref="BoiteArchivage" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_archi_03" label="Armoire Archive" parent_ref="archive_ref" entity_ref="ArmoireArchivage" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_archi_04" label="Tirior Archive" parent_ref="archive_ref" entity_ref="TiroirArchivage" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_archi_05" label="Cadre de classemennt" parent_ref="archive_ref" entity_ref="CadreClassement" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
+	
+	
+	
+</keren>

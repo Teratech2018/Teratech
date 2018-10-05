@@ -63,7 +63,9 @@ public class UtilisateurCourrierManagerImpl
         List<UtilisateurCourrier> datas = super.findAll(); //To change body of generated methods, choose Tools | Templates.
         List<UtilisateurCourrier> results = new ArrayList<UtilisateurCourrier>();
         for(UtilisateurCourrier data:datas){
-        	User user = new User(data.getCompte());
+        	System.out.println("UtilisateurCourrierManagerImpl.findAll() utilisateur"+data.getId());
+        	UtilisateurCourrier userc= dao.findByPrimaryKey("id", data.getId());
+        	User user = new User(userc.getCompte());
         	data.setCompte(user);
             results.add(new UtilisateurCourrier(data));
         }
@@ -106,6 +108,7 @@ public class UtilisateurCourrierManagerImpl
         container.addEq("compte.id", userid);
         List<UtilisateurCourrier> users = filter(container.getPredicats(), null, null, 0, -1);
         return users.get(0);
+        
     }
     
     

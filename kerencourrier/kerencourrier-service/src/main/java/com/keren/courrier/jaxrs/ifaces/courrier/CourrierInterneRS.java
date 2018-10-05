@@ -1,6 +1,9 @@
 
 package com.keren.courrier.jaxrs.ifaces.courrier;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -36,5 +39,8 @@ public interface CourrierInterneRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("distribuer")
     public CourrierInterne distribuer(@Context HttpHeaders headers,CourrierInterne entity);
+    
+	public List<CourrierInterne> findCourrierByDate(Date p$date);
+    
 
 }

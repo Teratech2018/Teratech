@@ -5,14 +5,15 @@
  */
 package com.keren.courrier.model.archivage;
 
-import com.core.base.BaseElement;
-import com.megatim.common.annotations.Filter;
-import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.core.base.BaseElement;
+import com.megatim.common.annotations.Predicate;
 
 /**
  *

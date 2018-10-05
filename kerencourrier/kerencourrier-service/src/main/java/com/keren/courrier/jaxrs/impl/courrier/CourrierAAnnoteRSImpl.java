@@ -73,7 +73,7 @@ public class CourrierAAnnoteRSImpl
         try {
             meta = MetaDataUtil.getMetaData(new CourrierAAnnote(), new HashMap<String, MetaData>(), new ArrayList<String>());
             MetaColumn workbtn = new MetaColumn("button", "work1", "Annoter le Courrier", false, "link", null);
-            workbtn.setValue("{'name':'courrier_trait_02_1',template:{'courrier':'object','quoteur':'object.destinataire','service':'object.destinataire.service'},'header':['courrier']}");
+            workbtn.setValue("{'name':'courrier_trait_02_1',template:{'courrier':'object','quoteur':'object.correspondant','service':'object.service'},'header':['courrier']}");
             workbtn.setStates(new String[]{"etabli"});
 //            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);  
@@ -115,6 +115,7 @@ public class CourrierAAnnoteRSImpl
         container.addNotEq("state", "transmis");
         container.addNotEq("state", "classer");
         container.addEq("categorie", "2");
+        container.addNotEq("state", "archivage partiel");
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -149,6 +150,7 @@ public class CourrierAAnnoteRSImpl
         container.addNotEq("state", "transmis");
         container.addNotEq("state", "classer");
         container.addEq("categorie", "2");
+        container.addNotEq("state", "archivage partiel");
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }

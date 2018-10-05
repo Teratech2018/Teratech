@@ -98,6 +98,8 @@ public class AnnotationActionManagerImpl
         traitement.setDoperation(entity.getDvisa());
         traitement.setOperateur(entity.getQuoteur());
         daotrt.save(traitement);
+        // mis a jour du nombre de quatation 
+        courrier.setNannotation(courrier.getNannotation()+1);
         courrierdao.update(courrier.getId(), courrier);
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }

@@ -60,6 +60,7 @@ public class BaseElement implements Serializable{
     
     protected boolean activatefollower = false ;
     
+    private String searchkeys ;
     /**
      * String that contain the state
      * "[{'draft','Draft'},{'confirmed','Confirmed'}]"
@@ -93,8 +94,14 @@ public class BaseElement implements Serializable{
     public void setCompareid(long compareid) {
         this.compareid = compareid;
     }
-    
-    
+
+    public String getSearchkeys() {
+        return searchkeys;
+    }
+
+    public void setSearchkeys(String searchkeys) {
+        this.searchkeys = searchkeys;
+    }    
 
     public long getId() {
         return id;
@@ -210,8 +217,7 @@ public class BaseElement implements Serializable{
 
     public void setDesableupdate(boolean desableupdate) {
         this.desableupdate = desableupdate;
-    }
-    
+    }   
     
    
     /**

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
@@ -81,43 +83,57 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 
 	@ManyToOne
 	@JoinColumn(name = "T_CORRES")
-	@Predicate(label = "Expéditeur", type = Correspondant.class, target = "many-to-one", search = true, editable = false, optional = false)
+	//@Predicate(label = "Expéditeur", type = Correspondant.class, target = "many-to-one", search = true, editable = false, optional = false)
 	private Correspondant correspondant;
+	
+	@ManyToOne
+	@JoinColumn(name = "T_EXPE")
+	@Predicate(label = "Expediteur du courrier", type = UtilisateurCourrier.class, target = "many-to-one", search = true, optional = false, observable = true)
+	private UtilisateurCourrier expediteur;
 
 	@ManyToOne
 	@JoinColumn(name = "T_SERV")
 	@Predicate(label = "Service Traitant", type = StructureCompany.class, target = "many-to-one", search = true, editable = false, optional = false, observable = true)
 	private StructureCompany service;
+	
 
-	@ManyToOne
-	@JoinColumn(name = "DES_ID")
-	@Predicate(label = "Destinatire", type = UtilisateurCourrier.class, target = "many-to-one", editable = false, search = true)
-	@Observer(observable = "service", source = "field:responsable")
-	private UtilisateurCourrier destinataire;
+	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL )
+	@JoinTable(name="T_CA_DEST",joinColumns=@JoinColumn(name="CA_ID"),inverseJoinColumns=@JoinColumn(name="USER_ID"))
+	@Predicate(label = "Destinataire",target = "many-to-many-list",type = UtilisateurCourrier.class,search = false, optional=true)
+	private List<UtilisateurCourrier> destinataire ;
 
+	
+	@Predicate(label = "Signataire")
+	private String signataire;
+
+	@Lob
+	@Predicate(label = "Objet", target = "textarea", editable = false)
+	private String objet;
+
+//	@ManyToOne
+//	@JoinColumn(name = "DES_ID")
+//	@Predicate(label = "Destinatire", type = UtilisateurCourrier.class, target = "many-to-one", editable = false, search = true)
+//	@Observer(observable = "service", source = "field:responsable")
+//	private UtilisateurCourrier destinataire;
+	
 	@ManyToOne
 	@JoinColumn(name = "STAT_ID")
 	// @Predicate(label = "Statut courrier",type = Statut.class,target =
 	// "many-to-one" ,optional = false,search = true)
 	private Statut statutcourrier;
-
-	@Lob
-	@Predicate(label = "Objet", target = "textarea", group = true, groupName = "group1", groupLabel = "objet/Pièces jointes", editable = false)
-	private String objet;
-
+	
+		
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "COU_ID")
 	@Predicate(label = "Pièces jointes", type = FichierLie.class, target = "one-to-many", edittable = true, editable = false, group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
 	private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
 
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "Date limite", type = Date.class, target = "date", search = false, editable = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
-	@Observer(observable = "priorite", source = "method:datelimite", parameters = "priorite")
+	//@Predicate(label = "Date limite", type = Date.class, target = "date", search = false, editable = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
+	//@Observer(observable = "priorite", source = "method:datelimite", parameters = "priorite")
 	private Date limite;
 
-	@Predicate(label = "Signataire", group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
-	private String signataire;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "T_DOS")
 	@Predicate(label = "Dossier", type = DossierCourrier.class, target = "many-to-one", editable = false, search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
@@ -127,6 +143,7 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 	@Column(name = "MOTS_CLES")
 	@Predicate(label = "Mots Clés", updatable = true, search = false, editable = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
 	protected String motscles;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "ETA_ID")
@@ -248,9 +265,10 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		if (dep.source != null) {
 			this.source = new UtilisateurCourrier(dep.source);
 		}
-		if (dep.destinataire != null) {
-			this.destinataire = new UtilisateurCourrier(dep.destinataire);
-		}
+		this.destinataire= new ArrayList<UtilisateurCourrier>();
+//		if (dep.destinataire != null) {
+//			this.destinataire = new UtilisateurCourrier(dep.destinataire);
+//		}
 		if (dep.statutcourrier != null) {
 			this.statutcourrier = new Statut(dep.statutcourrier);
 		}
@@ -265,6 +283,10 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		if (dep.sowner != null) {
 			this.sowner = new StructureCompany(dep.sowner);
 		}
+		if(dep.expediteur!=null){
+			this.expediteur= new UtilisateurCourrier(dep.expediteur);	
+		}
+		
 	}
 
 	public CourrierAAnnote(CourrierDepart dep) {
@@ -284,9 +306,9 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		this.dcourrier = dep.getDcourrier();
 		this.darrive = null;
 
-		if (dep.getCorrespondant() != null) {
-			this.correspondant = new Correspondant(dep.getCorrespondant());
-		}
+//		if (dep.getCorrespondant() != null) {
+//			this.correspondant = new Correspondant(dep.getCorrespondant());
+//		}
 
 		if (dep.getNature() != null) {
 			this.nature = new NatureCourrier(dep.getNature());
@@ -407,6 +429,9 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		if (dep.getSource() != null) {
 			this.source = new UtilisateurCourrier(dep.getSource());
 		}
+		if (this.expediteur != null) {
+			this.expediteur = new UtilisateurCourrier(dep.getExpediteur());
+		}
 		this.piecesjointes = dep.getPiecesjointes();
 
 	}
@@ -483,13 +508,7 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		this.motscles = motscles;
 	}
 
-	public UtilisateurCourrier getDestinataire() {
-		return destinataire;
-	}
-
-	public void setDestinataire(UtilisateurCourrier destinataire) {
-		this.destinataire = destinataire;
-	}
+	
 
 	public NatureCourrier getNature() {
 		return nature;
@@ -521,6 +540,14 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 
 	public void setLimite(Date limite) {
 		this.limite = limite;
+	}
+
+	public UtilisateurCourrier getExpediteur() {
+		return expediteur;
+	}
+
+	public void setExpediteur(UtilisateurCourrier expediteur) {
+		this.expediteur = expediteur;
 	}
 
 	public WorkflowAction getEtape() {
@@ -619,6 +646,14 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		this.signataire = signataire;
 	}
 
+	public List<UtilisateurCourrier> getDestinataire() {
+		return destinataire;
+	}
+
+	public void setDestinataire(List<UtilisateurCourrier> destinataire) {
+		this.destinataire = destinataire;
+	}
+
 	public CourrierAAnnote getOriganal() {
 		return origanal;
 	}
@@ -709,6 +744,9 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		if (this.correspondant != null) {
 			entity.correspondant = new Correspondant(this.correspondant);
 		}
+		if (this.expediteur != null) {
+			entity.expediteur = new UtilisateurCourrier(this.expediteur);
+		}
 
 		if (this.nature != null) {
 			entity.nature = new NatureCourrier(this.nature);
@@ -733,9 +771,10 @@ public class CourrierAAnnote extends BaseElement implements Serializable, Compar
 		if (this.source != null) {
 			entity.source = new UtilisateurCourrier(this.source);
 		}
-		if (this.destinataire != null) {
-			entity.destinataire = new UtilisateurCourrier(this.destinataire);
-		}
+//		if (this.destinataire != null) {
+//			entity.destinataire = new UtilisateurCourrier(this.destinataire);
+//		}
+		this.destinataire= new ArrayList<UtilisateurCourrier>();
 		if (this.statutcourrier != null) {
 			entity.statutcourrier = new Statut(this.statutcourrier);
 		}

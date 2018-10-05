@@ -6,6 +6,8 @@ package com.keren.courrier.model.referentiel;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -37,40 +39,63 @@ public class Company extends BaseElement implements Serializable, Comparable<Com
     @Predicate(label = "Slogan de la socièté",search = true)
     private String intitule;
     
-    @Predicate(label = "Adresse",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales",search = true)
+	@ManyToOne
+	@JoinColumn(name = "DES_ID")
+	@Predicate(label = "Destinataire Par Défaut", type = UtilisateurCourrier.class, updatable = true, target = "many-to-one",
+			 group = true, groupName = "tab1", groupLabel = "Configuration ", optional=false)
+	private UtilisateurCourrier destDefaut;
+	
+	@ManyToOne
+	@JoinColumn(name = "T_SERV")
+	@Predicate(label = "Service Traitant Par Défaut", type = StructureCompany.class, target = "many-to-one", updatable = true, 
+	optional = false,group = true, groupName = "tab1", groupLabel = "Configuration ")
+	private StructureCompany serviceTraitantdefaut;
+	
+	@ManyToOne
+	@JoinColumn(name = "T_PRIO")
+	@Predicate(label = "Priorité Par Défaut", type = Priorite.class, target = "many-to-one", optional = false
+			,group = true, groupName = "tab1", groupLabel = "Configuration ")
+	private Priorite priorite;
+	
+	@Predicate(label = "Mention du courrier Par défaut", target = "combobox", values = "Ordinaire;Confidentiel"
+			,group = true, groupName = "tab1", groupLabel = "Configuration ")
+	private String porte = "0";
+	
+	@Predicate(label = "Registre Arrivé", group = true, groupName = "tab1", groupLabel = "Configuration")
+	private String numregistrearrive;
+
+	@Predicate(label = "Registre Départ", group = true, groupName = "tab1", groupLabel = "Configuration")
+	private String numregistredepart;
+
+    @Predicate(label = "Adresse",group = true,groupName = "tab2",groupLabel = "Informations Générales",search = true)
     private String adresse;
     
-    @Predicate(label = "Téléphone",target = "tel",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales",search = true)
+    @Predicate(label = "Téléphone",target = "tel",group = true,groupName = "tab2",groupLabel = "Informations Générales",search = true)
     private String telephone;    
     
-    @Predicate(label = "Ville",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
+    @Predicate(label = "Ville",group = true,groupName = "tab2",groupLabel = "Informations Générales")
     private String ville;
     
-    @Predicate(label = "Fax" , target = "tel",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
+    @Predicate(label = "Fax" , target = "tel",group = true,groupName = "tab2",groupLabel = "Informations Générales")
     private String fax ;
     
-    @Predicate(label = "Code Postal",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales",search = true)
+    @Predicate(label = "Code Postal",group = true,groupName = "tab2",groupLabel = "Informations Générales",search = true)
     private String codePostal;
     
-    @Predicate(label = "Courriel",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales",search = true)
+    @Predicate(label = "Courriel",group = true,groupName = "tab2",groupLabel = "Informations Générales",search = true)
     private String courriel ;
     
   
-    @Predicate(label = "Numéro fiscal",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
+    @Predicate(label = "Numéro fiscal",group = true,groupName = "tab2",groupLabel = "Informations Générales")
     private String numFiscal ;
     
-    @Predicate(label = "Site Web",target = "url",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
+    @Predicate(label = "Site Web",target = "url",group = true,groupName = "tab2",groupLabel = "Informations Générales")
     private String siteWeb ;
     
-    @Predicate(label = "Registre du commerce",group = true,groupName = "infosgenerales",groupLabel = "Informations Générales")
+    @Predicate(label = "Registre du commerce",group = true,groupName = "tab2",groupLabel = "Informations Générales")
     private String registre ;
     
-    @Predicate(label = "Registre Arrivé",group = true,groupName = "tabl2",groupLabel = "Paramétres")
-    private String numregistrearrive ;
-    
-    @Predicate(label = "Registre Départ",group = true,groupName = "tabl2",groupLabel = "Paramétres")
-    private String numregistredepart;
-    
+ 
     
     
 
@@ -148,6 +173,18 @@ public class Company extends BaseElement implements Serializable, Comparable<Com
 		this.numregistrearrive=societe.numregistrearrive;
 		this.numregistredepart=societe.numregistredepart;
 		
+		if(societe.destDefaut!=null){
+			this.destDefaut= new UtilisateurCourrier(societe.destDefaut);
+		}
+		
+		if(societe.serviceTraitantdefaut!=null){
+			this.serviceTraitantdefaut= new StructureCompany(societe.serviceTraitantdefaut);
+		}
+		if(societe.priorite!=null){
+			this.priorite= new Priorite(societe.priorite);
+		}
+		this.porte=societe.porte;
+		
 	}
 
 
@@ -223,7 +260,35 @@ public String getImage() {
 
  
 
-  public String getNumFiscal() {
+  public Priorite getPriorite() {
+	return priorite;
+}
+
+
+
+
+public void setPriorite(Priorite priorite) {
+	this.priorite = priorite;
+}
+
+
+
+
+public String getPorte() {
+	return porte;
+}
+
+
+
+
+public void setPorte(String porte) {
+	this.porte = porte;
+}
+
+
+
+
+public String getNumFiscal() {
       return numFiscal;
   }
 
@@ -235,7 +300,35 @@ public String getImage() {
       return siteWeb;
   }
 
-  public void setSiteWeb(String siteWeb) {
+  public UtilisateurCourrier getDestDefaut() {
+	return destDefaut;
+}
+
+
+
+
+public void setDestDefaut(UtilisateurCourrier destDefaut) {
+	this.destDefaut = destDefaut;
+}
+
+
+
+
+public StructureCompany getServiceTraitantdefaut() {
+	return serviceTraitantdefaut;
+}
+
+
+
+
+public void setServiceTraitantdefaut(StructureCompany serviceTraitantdefaut) {
+	this.serviceTraitantdefaut = serviceTraitantdefaut;
+}
+
+
+
+
+public void setSiteWeb(String siteWeb) {
       this.siteWeb = siteWeb;
   }
 

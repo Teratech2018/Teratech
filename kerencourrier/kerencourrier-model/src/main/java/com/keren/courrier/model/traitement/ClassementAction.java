@@ -52,7 +52,7 @@ public class ClassementAction extends BaseElement implements Serializable,Compar
 //    @Observer(observable = "ordonateur",source = "field:service")
     private StructureCompany service ;
     
-    @Predicate(label = "Nature du classement",target = "combobox",values = "Sans suite;Fond de dossier",optional = false)
+    @Predicate(label = "Nature du classement",target = "combobox",values = "Sans suite;Fond de dossier,en liasser",optional = false)
     private String nature ="0";
     
      @ManyToOne

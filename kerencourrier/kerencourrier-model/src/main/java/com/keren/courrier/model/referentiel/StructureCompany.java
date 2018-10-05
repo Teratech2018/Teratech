@@ -49,7 +49,7 @@ public class StructureCompany extends BaseElement implements Serializable, Compa
 	
 	@ManyToOne
 	@JoinColumn(name="CUSER_ID")
-	@Predicate(label="Responsable",optional=false,type=UtilisateurClone.class,target="many-to-one",search=true)
+	@Predicate(label="Responsable",optional=true,type=UtilisateurClone.class,target="many-to-one",search=true)
 	private UtilisateurClone responsable ;
 	
 	@Predicate(label="Type",search=true,target="combobox",values="Antenne;Direction;Sous-direction;Service;Bureau")

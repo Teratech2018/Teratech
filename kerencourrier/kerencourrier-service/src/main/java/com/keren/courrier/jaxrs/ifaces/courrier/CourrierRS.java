@@ -5,6 +5,8 @@ import com.keren.courrier.model.courrier.Courrier;
 import com.keren.courrier.model.courrier.ServiceDiffusion;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
+
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -46,4 +48,6 @@ public interface CourrierRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("distribuer")
     public Courrier distribuer(@Context HttpHeaders headers,Courrier entity);
+    
+    public List<Courrier> findCourrierByDate(Date p$date);
 }
