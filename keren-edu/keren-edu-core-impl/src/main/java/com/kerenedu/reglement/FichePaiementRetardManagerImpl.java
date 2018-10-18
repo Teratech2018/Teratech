@@ -63,10 +63,19 @@ public class FichePaiementRetardManagerImpl extends AbstractGenericManager<Fiche
 		FichePaiementRetard elev = super.find(propertyName, entityID);
 		FichePaiementRetard inscrip = new FichePaiementRetard(elev);
 	 	List<Moratoire> moratoires = new ArrayList<Moratoire>();
+	 	List<Moratoire> datats = new ArrayList<Moratoire>();
 	   	RestrictionsContainer container = RestrictionsContainer.newInstance();
 	   	container.addEq("service.id", elev.getFiche().getId());
 	   	moratoires = moratoiredao.filter(container.getPredicats(), null, null, 0, -1);
-	   	inscrip.setMoratoires(moratoires);
+	   	if(moratoires!=null&&moratoires.size()!=0){
+	   		System.out.println("FichePaiementRetardManagerImpl.find() size "+moratoires.size());
+	   		for(Moratoire m : moratoires){
+	   			datats.add(new Moratoire(m));
+	   		}
+	   	}
+	   inscrip.setMoratoires(datats);
+	   	System.out.println("FichePaiementRetardManagerImpl.find() service select "+inscrip.getService().getLibelle());
+	   	System.out.println("FichePaiementRetardManagerImpl.find() fiche select "+inscrip.getFiche().getService().getLibelle());
 		return inscrip;
 	}
 
@@ -88,7 +97,6 @@ public class FichePaiementRetardManagerImpl extends AbstractGenericManager<Fiche
 
 	@Override
 	public FichePaiementRetard delete(Long id) {
-		// TODO Auto-generated method stub
 		FichePaiementRetard elev = super.delete(id);
 		return new FichePaiementRetard(elev);
 	}

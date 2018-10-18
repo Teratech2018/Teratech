@@ -236,13 +236,11 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		
 		this.emailTuteur = eleve.emailTuteur;
 		this.telTuteur=eleve.telTuteur;
-		if(eleve.resp!=null){
-		this.resp= eleve.resp;
-		}
+		
 		this.quartier = eleve.quartier;
 		this.bloc = eleve.bloc;
 		if(eleve.resp!=null){
-			this.resp = eleve.resp;
+			this.resp = new Responsable(eleve.resp);
 		}
 		
 		this.inscrit=eleve.inscrit;

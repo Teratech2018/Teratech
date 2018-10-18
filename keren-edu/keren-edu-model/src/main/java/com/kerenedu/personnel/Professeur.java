@@ -15,9 +15,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.Etablissement;
 import com.kerenedu.solde.Banque;
 import com.kerenedu.solde.Categorie;
 import com.kerenedu.solde.Echellon;
+import com.kerenedu.solde.Fonction;
 import com.kerenedu.solde.ProfilPaie;
 import com.megatim.common.annotations.Predicate;
 
@@ -56,9 +58,18 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	protected Date dateEmb;
 	
 
-	@Column(name = "Statut")
-	@Predicate(label = "Statut", search = true, target = "combobox", values = "Directrice(eur);Responsable Administratif;Enseignant;Animateur Pédagogique;Autres", optional = true, sequence = 7)
-	private String role = "0";
+	
+	@ManyToOne
+	@JoinColumn(name = "FON_ID")
+	@Predicate(label = "Fonction", updatable = true, type = Diplome.class, target = "many-to-one", search = false,  optional = true, sequence = 7
+			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
+	protected Fonction role;
+	
+	@ManyToOne
+	@JoinColumn(name = "STRU_ID")
+	@Predicate(label = "Structure", type = Etablissement.class, target = "many-to-one", sequence=8)
+	private Etablissement structure;
+
 
 	@Column(name = "PRENOM")
 	// @Predicate(label="PRENOM",optional=true,updatable=true,search=true ,
@@ -97,18 +108,18 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label = "Etat Civil", search = true, target = "combobox", values = "Marie(é);Celibataire Divorcé;Veuf(ve)", optional = true
 			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	private String etatcivile = "0";
-//	
-//	@ManyToOne
-//	@JoinColumn(name = "CAT_ID")
-//	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = false, optional = true
-//			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
-//	protected Categorie categorie;
-//	
-//	@ManyToOne
-//	@JoinColumn(name = "ECH_ID")
-//	@Predicate(label = "Echélon", updatable = true, type = Echellon.class, target = "many-to-one", search = false, optional = true
-//			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
-//	protected Echellon echelon;
+	
+	@ManyToOne
+	@JoinColumn(name = "CAT_ID")
+	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = false, optional = true
+			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
+	protected Categorie categorie;
+	
+	@ManyToOne
+	@JoinColumn(name = "ECH_ID")
+	@Predicate(label = "Echélon", updatable = true, type = Echellon.class, target = "many-to-one", search = false, optional = true
+			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
+	protected Echellon echelon;
 	
 	@Column(name = "LIEU")
 	@Predicate(label = "Lieu de Recrutement", optional = true, updatable = true, search = false,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
@@ -127,11 +138,11 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label = "Numéro Bancaire", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
 	private Long numBanque = new Long(0);
 	
-//	@ManyToOne
-//	@JoinColumn(name = "PROF_ID")
-//	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
-//			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
-//	protected ProfilPaie profil;
+	@ManyToOne
+	@JoinColumn(name = "PROF_ID")
+	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
+			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
+	protected ProfilPaie profil;
 
 	@Column(name = "NB_JOURS")
 	@Predicate(label = "Nombre de Jours", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
@@ -184,7 +195,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	}
 
 
-	public Professeur(String image, String nom, String matricule, String status, String sexe, Date dateEmb, String role,
+	public Professeur(String image, String nom, String matricule, String status, String sexe, Date dateEmb, Fonction role,
 			String prenon, Date dateNais, String lnais, String contact, String email, Long nefts, Diplome diplome,
 			String etatcivile, Categorie categorie, Echellon echelon, String lieu, String cv, Banque banque,
 			Long numBanque, ProfilPaie profil, Long njours, Long salaire, Long thoraire, Long salmax, Long payer,
@@ -205,13 +216,13 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.nefts = nefts;
 		this.diplome = diplome;
 		this.etatcivile = etatcivile;
-//		this.categorie = categorie;
-//		this.echelon = echelon;
+		this.categorie = categorie;
+		this.echelon = echelon;
 		this.lieu = lieu;
 		this.cv = cv;
 		this.banque = banque;
 		this.numBanque = numBanque;
-//		this.profil = profil;
+		this.profil = profil;
 		this.njours = njours;
 		this.salaire = salaire;
 		this.thoraire = thoraire;
@@ -236,6 +247,10 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		if (entity.status != null) {
 			this.status = entity.status;
 		}
+		
+		if (entity.role != null) {
+			this.role = new Fonction(entity.role);
+		}
 		this.contact = entity.contact;
 		if (entity.diplome != null) {
 			this.diplome = new Diplome(entity.diplome);
@@ -249,12 +264,12 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.contact = entity.contact;
 		this.nefts = entity.nefts;
 		this.etatcivile = entity.etatcivile;
-//		if(entity.categorie!=null){
-//			this.categorie = new Categorie(entity.categorie);
-//		}		
-//		if(entity.echelon!=null){
-//			this.echelon = new Echellon(entity.echelon);
-//		}		
+		if(entity.categorie!=null){
+			this.categorie = new Categorie(entity.categorie);
+		}		
+		if(entity.echelon!=null){
+			this.echelon = new Echellon(entity.echelon);
+		}		
 		this.lieu = entity.lieu;
 		this.cv = entity.cv;
 		if(entity.banque!=null){
@@ -263,10 +278,10 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		
 		this.numBanque = entity.numBanque;
 		
-//		if(entity.profil!=null){
-//			this.profil = new ProfilPaie(entity.profil);
-//		}
-//		
+		if(entity.profil!=null){
+			this.profil = new ProfilPaie(entity.profil);
+		}
+		
 		this.njours = entity.njours;
 		this.salmax = entity.salmax;
 		this.payer = entity.payer;
@@ -274,6 +289,10 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.zprime = entity.zprime;
 		this.zretenu = entity.zretenu;
 		this.zavance = entity.zavance;
+		
+		if (entity.structure != null) {
+			this.structure = new Etablissement(entity.structure);
+		}
 
 	}
 
@@ -300,6 +319,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		// TODO Auto-generated method stub
 		return nom + " " + prenon;
 	}
+
+	public Etablissement getStructure() {
+		return structure;
+	}
+
+
+	public void setStructure(Etablissement structure) {
+		this.structure = structure;
+	}
+
 
 	public String getEmail() {
 		return email;
@@ -349,6 +378,36 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.contact = contact;
 	}
 
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
+
+	public Echellon getEchelon() {
+		return echelon;
+	}
+
+
+	public void setEchelon(Echellon echelon) {
+		this.echelon = echelon;
+	}
+
+
+	public ProfilPaie getProfil() {
+		return profil;
+	}
+
+
+	public void setProfil(ProfilPaie profil) {
+		this.profil = profil;
+	}
+
+
 	public Date getDateNais() {
 		return dateNais;
 	}
@@ -361,11 +420,11 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.diplome = diplome;
 	}
 
-	public String getRole() {
+	public Fonction getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Fonction role) {
 		this.role = role;
 	}
 

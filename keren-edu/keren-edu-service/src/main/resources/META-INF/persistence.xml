@@ -121,12 +121,38 @@
 		<class>com.kerenedu.solde.EltSalaireLigne</class>
 		<class>com.kerenedu.solde.EltSalaire</class>
 		<class>com.kerenedu.configuration.ClasseCycle</class>
+		<class>com.kerenedu.solde.LigneConvension</class>
+		<class>com.kerenedu.solde.Convension</class>
+		<class>com.kerenedu.solde.Variable</class>
+		<class>com.kerenedu.solde.Fonction</class>
+		<class>com.kerenedu.solde.TypeContrat</class>
+		<class>com.kerenedu.solde.ParametreAvance</class>
+		<class>com.kerenedu.solde.LignePonderationSalaire</class>
+		<class>com.kerenedu.solde.LignePonderationTypeContrat</class>
+		<class>com.kerenedu.solde.PeriodePaieOpen</class>
+		<class>com.kerenedu.solde.PeriodePaieClose</class>
+		<class>com.kerenedu.solde.PrepaSalaire</class>
+		<class>com.kerenedu.solde.TraitSalaire</class>
+		<class>com.kerenedu.solde.LigneElementVariable</class>
+		<class>com.kerenedu.solde.LigneBulletinPaie</class>
+		<class>com.kerenedu.solde.Acompte</class>
+		<class>com.kerenedu.solde.AvanceSalaire</class>
+		<class>com.kerenedu.solde.CategoriePret</class>
+		<class>com.kerenedu.solde.DemandePret</class>
+		<class>com.kerenedu.solde.ElementVariable</class>
+		<class>com.kerenedu.solde.LigneRappel</class>
+		<class>com.kerenedu.solde.RemboursementAvance</class>
+		<class>com.kerenedu.solde.RemboursementPret</class>
+		<class>com.kerenedu.solde.RappelSalaire</class>
+		<class>com.kerenedu.discipline.LignePointage</class>
+		<class>com.kerenedu.personnel.Professeurclone</class>
+		
 		
 
 		<shared-cache-mode>NONE</shared-cache-mode>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.show_sql" value="true" />
+			<!-- <property name="hibernate.show_sql" value="true" /> -->
 		</properties>
 	</persistence-unit>
 </persistence>

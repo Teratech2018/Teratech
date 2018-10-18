@@ -58,7 +58,7 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	//@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, hide=true)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, hide=true)
 	private SectionE section ;
 	
     @Column(name = "CYCLE_ID")
@@ -91,7 +91,7 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 			this.cycle=filiere.getFiliere().getCycle().getId();
 		}
 		if(filiere.getSection()!=null){
-			this.section=filiere.getSection();
+			this.section=new SectionE(filiere.getSection());
 		}
 		this.effectif=filiere.effectif;
 		if(filiere.professeur!=null){

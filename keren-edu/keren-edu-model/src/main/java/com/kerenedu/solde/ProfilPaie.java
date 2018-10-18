@@ -25,7 +25,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name = "e_prof")
+@Table(name = "e_profil")
 public class ProfilPaie extends BaseElement implements Serializable, Comparable<ProfilPaie> {
 
 	@Predicate(label="Reference",optional=false,search=true, sequence=1)
@@ -45,7 +45,7 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="e_rub_profil" , joinColumns=@JoinColumn(name="PRPA_ID"),inverseJoinColumns=@JoinColumn(name="RUBR_ID"))
-	@Predicate(label="Lignes",type=RubriquePaie.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Lignes de la grille salariale")
+	@Predicate(label="Lignes",type=RubriquePaie.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Rubriques")
 	private List<RubriquePaie> rubriques = new ArrayList<RubriquePaie>();
 	
 	

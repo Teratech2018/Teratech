@@ -63,7 +63,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 4)
-//	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	//@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"section.id\"}]")
 	protected Classe classe;
 
@@ -173,7 +173,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		if (ins.classe != null) {
 			this.classe = new Classe(ins.classe);
 			// this.cycle=ins.getClasse().getCycle();
-			this.section = ins.getClasse().getSection();
+			this.section = new SectionE(ins.getClasse().getSection());
 		}
 		this.datIns = ins.getDatIns();
 		this.anneScolaire = ins.anneScolaire;
@@ -191,11 +191,13 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	public Inscription(ViewBadgeModal ins) {
 		if (ins.getClasse() != null) {
 			this.classe = new Classe(ins.getClasse());
-			// this.cycle=ins.getClasse().getCycle();
-			this.section = ins.getClasse().getSection();
+			
+		}
+		if(ins.getCycle()!=null){
+			this.cycle = ins.getCycle().getId();
 		}
 		if (ins.getSection() != null) {
-			this.cycle = ins.getSection().getId();
+			this.section = ins.getClasse().getSection();
 		}
 	}
 

@@ -4,23 +4,15 @@
 package com.kerenedu.personnel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.SectionE;
 import com.megatim.common.annotations.Filter;
-import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -37,13 +29,17 @@ public class PlanifCours extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1, observable=true)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
 	private SectionE section ;
 	
 	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2)
+	/**
+	 * fieldname : pris dans l'entité  "Classe"
+	 * value prise dans entité: section
+	 */
 	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	

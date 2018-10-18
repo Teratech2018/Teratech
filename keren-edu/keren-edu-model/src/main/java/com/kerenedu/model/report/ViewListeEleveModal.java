@@ -23,6 +23,7 @@ import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
 import com.kerenedu.dashboard.Raccourci;
 import com.kerenedu.school.Eleve;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -51,6 +52,7 @@ public class ViewListeEleveModal extends BaseElement implements Serializable, Co
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label = "Classe", updatable = false, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1)
+	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe;
 
 	public List<Raccourci> getRaccourcis() {

@@ -24,7 +24,7 @@ public class CompressorImage {
 
 	 public static void main(String args[]) throws Exception { 
 		 //    String reperttoire = "C:\\Users\\ABEGA ABEGA SERGE\\Desktop\\pdf";
-		  String reperttoire ="C:\\Users\\Nadege\\Desktop\\photo90\\photo";//"D:\\DEV_TOOLS\\serveur\\education\\jboss\\standalone\\data\\keren\\resources\\templates\\education\\photo";
+		  String reperttoire ="C:\\Users\\Nadege\\Desktop\\newphoto";//"D:\\DEV_TOOLS\\serveur\\education\\jboss\\standalone\\data\\keren\\resources\\templates\\education\\photo";
 		  File listeFiles  = new File(reperttoire);
 	    	        
 	        for(int i = 0; i<listeFiles.listFiles().length; i++){

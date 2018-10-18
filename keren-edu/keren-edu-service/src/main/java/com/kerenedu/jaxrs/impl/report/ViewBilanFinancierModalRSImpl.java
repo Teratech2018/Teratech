@@ -2,6 +2,7 @@
 package com.kerenedu.jaxrs.impl.report;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import com.kerenedu.model.report.ViewBilanFinancier;
 import com.kerenedu.model.report.ViewBilanFinancierModal;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
+import com.kerenedu.tools.reports.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -95,7 +97,7 @@ public class ViewBilanFinancierModalRSImpl
       	  System.out.println("ViewBilanFinancierModalRSImpl.buildPdfReport() size record is "+records.size());
             String URL = ReportHelper.templateURL+ReportsName.BILANFINANCIERCLASSE.getName();
             Map parameters = new HashMap();
-            parameters= this.getReportParameters();
+            parameters= this.getReportParameters();			
             return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
       } catch (FileNotFoundException ex) {
           Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);

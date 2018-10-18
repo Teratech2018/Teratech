@@ -4,22 +4,13 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Filiere;
-import com.kerenedu.inscription.Inscription;
-import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**

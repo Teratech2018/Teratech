@@ -6,7 +6,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 
 /**
  * Interface etendue par les interfaces locale et remote de la DAO
- * @since Mon Sep 10 15:39:10 WAT 2018
+ * @since Thu Oct 11 15:46:58 WAT 2018
  * 
  */
 public interface BulletinPaieDAO

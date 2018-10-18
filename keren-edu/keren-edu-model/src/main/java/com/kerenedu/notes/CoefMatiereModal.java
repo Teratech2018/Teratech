@@ -33,7 +33,7 @@ public class CoefMatiereModal extends BaseElement implements Serializable, Compa
 	@Transient
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2, observable=true)
+	//@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2, observable=true)
 	private SectionE section ;
 	
 
@@ -41,7 +41,7 @@ public class CoefMatiereModal extends BaseElement implements Serializable, Compa
 	@ManyToOne
 	@JoinColumn(name="FILIERE_ID")
 	@Predicate(label="Sélectionner la Filiere",type=Filiere.class,target="many-to-one",optional=false, sequence=2, observable=true)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	private Filiere filiere ;
 	
 //	@ManyToOne
@@ -82,13 +82,13 @@ public class CoefMatiereModal extends BaseElement implements Serializable, Compa
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return " Gestion des Coeficients ";
+		return " Gestion des Affectations des Matières ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Coeficients ";
+		return "Gestion des Affectations des Matières  ";
 	}
 
 

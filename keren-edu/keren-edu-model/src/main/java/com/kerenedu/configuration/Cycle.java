@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.personnel.Professeur;
+import com.kerenedu.personnel.Professeurclone;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -29,7 +30,7 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 	protected String libelle;
 	
 	@Column(name = "CYCLE")
-	@Predicate(label="Type Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primare;Secondaire;Universitaire" , sequence=2)
+	@Predicate(label="Type Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primaire;Secondaire;Universitaire" , sequence=2)
 	protected String typecycle="0";
 	
 	@Column(name = "LIBELLE_EN")	
@@ -39,8 +40,8 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 	
 	@ManyToOne
     @JoinColumn(name = "RESP_ID")
-	@Predicate(label="Responsable/Directeur(trice)",updatable=true,type=Professeur.class , target="many-to-one",optional=false,sequence=4, search=true)
-    protected Professeur responsable;
+	@Predicate(label="Responsable/Directeur(trice)",updatable=true,type=Professeurclone.class , target="many-to-one",optional=false,sequence=4, search=true)
+    protected Professeurclone responsable;
 	
 	
 
@@ -57,7 +58,7 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 		this.typecycle=filiere.typecycle;
 		this.libelleEn=filiere.libelleEn;
 		if(filiere.responsable!=null){
-		this.responsable= new Professeur(filiere.responsable);
+		this.responsable= new Professeurclone(filiere.responsable);
 		}
 
 		
@@ -136,12 +137,12 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 		return valeur;
 		
 	}
-	public Professeur getResponsable() {
+	public Professeurclone getResponsable() {
 		return responsable;
 	}
 
 
-	public void setResponsable(Professeur responsable) {
+	public void setResponsable(Professeurclone responsable) {
 		this.responsable = responsable;
 	}
 

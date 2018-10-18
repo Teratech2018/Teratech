@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.personnel.Professeur;
+import com.kerenedu.personnel.Professeurclone;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -34,8 +35,8 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 	
 	@ManyToOne
     @JoinColumn(name = "RESP_ID")
-	@Predicate(label="Responsable/Directeur(trice)",updatable=true,type=Professeur.class , target="many-to-one",optional=false,sequence=4, search=true)
-    protected Professeur responsable;
+	@Predicate(label="Responsable/Directeur(trice)",updatable=true,type=Professeurclone.class , target="many-to-one",optional=false,sequence=4, search=true)
+    protected Professeurclone responsable;
 	
 	
 
@@ -51,7 +52,7 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 		this.libelle=filiere.libelle;
 		this.typesection=filiere.typesection;
 		if(filiere.responsable!=null){
-		this.responsable= new Professeur(filiere.responsable);
+		this.responsable= new Professeurclone(filiere.responsable);
 		}
 
 		
@@ -89,12 +90,12 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 	}
 
 
-	public Professeur getResponsable() {
+	public Professeurclone getResponsable() {
 		return responsable;
 	}
 
 
-	public void setResponsable(Professeur responsable) {
+	public void setResponsable(Professeurclone responsable) {
 		this.responsable = responsable;
 	}
 
@@ -119,6 +120,13 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 	
 	public int compareTo(SectionE o) {
 		return 0;
+	}
+
+
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return libelle;
 	}
 	
 

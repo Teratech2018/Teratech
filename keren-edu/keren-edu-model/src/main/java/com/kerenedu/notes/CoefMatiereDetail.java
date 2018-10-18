@@ -94,13 +94,13 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return " Affectation des Coeficient et professeurs";
+		return "Gestion des Affectations des Matières / Classe";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Coeficient Matiere";
+		return "Gestion des Affectations des Matières /Classe ";
 	}
 
 	@Override

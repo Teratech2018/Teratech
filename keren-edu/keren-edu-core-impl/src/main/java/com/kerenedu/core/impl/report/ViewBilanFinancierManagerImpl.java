@@ -25,6 +25,7 @@ import com.kerenedu.inscription.InscriptionDAOLocal;
 import com.kerenedu.model.report.ViewBilanFinancier;
 import com.kerenedu.model.report.ViewBilanFinancierModal;
 import com.kerenedu.model.report.ViewBilanServiceModal;
+import com.kerenedu.model.report.ViewCouponsInformation;
 import com.kerenedu.reglement.FichePaiement;
 import com.megatim.common.annotations.OrderType;
 
@@ -132,6 +133,7 @@ public class ViewBilanFinancierManagerImpl
 		} // fin if(datas!=null)
 		return result;
 	}
+	
 	
 	public List<Inscription> getEleveElligible(ViewBilanServiceModal critere){
 		List<Inscription> result = new ArrayList<Inscription>();

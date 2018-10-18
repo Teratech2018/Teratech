@@ -14,6 +14,7 @@ import com.kerenedu.notes.Examen;
 import com.kerenedu.notes.ModelBulletin;
 import com.kerenedu.personnel.Professeur;
 import com.kerenedu.reglement.Reglement;
+import com.kerenedu.solde.PeriodePaie;
 
 /**
  * @author BEKO
@@ -46,6 +47,8 @@ public class CacheMemory implements Serializable{
 	
 	private static String currentNameStudent = new String();
 	private static String currentMatricule = null;
+	
+	private static PeriodePaie periodepaie = null ;
 
 	/**
 	 * 
@@ -181,6 +184,13 @@ public class CacheMemory implements Serializable{
 
 
 
+
+	public static PeriodePaie getPeriodepaie() {
+		return periodepaie;
+	}
+	public static void setPeriodepaie(PeriodePaie periodepaie) {
+		CacheMemory.periodepaie = periodepaie;
+	}
 	public static List<Predicat> defaultPredicats(){
 		List<Predicat> predicats = new ArrayList<Predicat>();
 	RestrictionsContainer container = RestrictionsContainer.newInstance();

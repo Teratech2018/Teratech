@@ -16,8 +16,6 @@ import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.kerenedu.inscription.Inscription;
-import com.kerenedu.inscription.InscriptionChoice;
-import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -62,8 +60,12 @@ public class Moratoire extends BaseElement implements Serializable, Comparable<M
 	public Moratoire(Moratoire ins) {
 		super(ins.id, ins.designation, ins.moduleName, 0L);
 		this.dateDeb = ins.dateDeb;
-		this.eleve = new Inscription(ins.eleve);
-		this.service = new FichePaiement(ins.service);
+		if(ins.eleve!=null){
+			this.eleve = new Inscription(ins.eleve);
+		}
+		if(ins.service!=null){
+			this.service = new FichePaiement(ins.service);
+		}
 		this.motif=ins.motif;
 		this.delai=ins.delai;
 

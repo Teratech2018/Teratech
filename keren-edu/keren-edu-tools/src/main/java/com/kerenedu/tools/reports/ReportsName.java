@@ -3,6 +3,7 @@
  */
 package com.kerenedu.tools.reports;
 
+
 /**
  * @author <a href="mailto:ntchuenna@yahoo.fr">nadège Tchuente</a>
  * 22 sept. 2016
@@ -28,6 +29,7 @@ public enum ReportsName {
     BILAN_SERVICE("elistingseleveservice.jasper"),
     BADGE("ebadge.jasper"),
     LISTE_INSCRIT("elistieeleveincrit.jasper"),
+    COUPONS_INSOLVABLE("ecouponsinsolvable.jasper"),
     BULLETIN("ebulletin.jasper");
 
     /**

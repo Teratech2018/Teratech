@@ -39,7 +39,7 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2)
-//	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
 	

@@ -109,6 +109,11 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'fiche'}");
 			workbtn.setStates(new String[] { "crée" });
 			meta.getHeader().add(workbtn);
+			
+			workbtn = new MetaColumn("button", "work3", "Badge Scolaire", false, "report", null);
+			workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'badge'}");
+			workbtn.setStates(new String[] { "crée" });
+			meta.getHeader().add(workbtn);
 
 			// workbtn = new MetaColumn("button", "work1", "Frais de Scolarité",
 			// false, "action", null);
@@ -146,6 +151,8 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 
 	@Override
 	protected void processBeforeUpdate(Inscription entity) {
+		
+		Inscription oldinscription = manager.find("id", entity.getId());
 		if (entity.getService() == null && entity.getService().size() == 0) {
 			throw new KerenExecption("Modification impossible, car l'élève n'a aucun service renseigné");
 		}
@@ -157,14 +164,29 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		container.addNotEq("state", "annulé");
 		List<Paiement> listPaiements = managerPaiement.filter(container.getPredicats(), null, null, 0, -1);
 		System.out.println("InscriptionRSImpl.processBeforeUpdate() size list" + listPaiements.size());
-
-		if (listPaiements != null && listPaiements.size() != 0) {
+		System.out.println("InscriptionRSImpl.processBeforeUpdate()valuer "+samefiliere(oldinscription, entity));
+		if(samefiliere(oldinscription, entity)==true){
+			entity.setService(oldinscription.getService());
+		}
+		if (listPaiements != null && listPaiements.size() != 0&&samefiliere(oldinscription, entity)==false) {
 			throw new KerenExecption("Modification impossible, Bien vouloir Annuler les paiements de l'eleve !!!!");
 		}
 
 		super.processBeforeUpdate(entity); // To change body of generated
 											// methods, choose Tools |
 											// Templates.
+	}
+	
+	public boolean samefiliere(Inscription old, Inscription nouveau){
+		boolean value = false;
+		System.out.println("InscriptionRSImpl.samefiliere() old classe"+old.getClasse().getLibelle());
+		System.out.println("InscriptionRSImpl.samefiliere() nouveau classe"+nouveau.getClasse().getLibelle());
+		if(old.getClasse().getFiliere().getId()==nouveau.getClasse().getFiliere().getId()){
+			value=true;
+		}else{
+			value = false;
+		}
+		return value ;
 	}
 
 	@Override
@@ -247,11 +269,6 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytesC());
 				} else {
 					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytes());
-				}
-
-				if (entity.getEleve().getImage() != null) {
-					parameters.put(ReportsParameter.PHOTO_IMAGE_REPOSITORY,
-							ReportHelper.getPhotoBytes(entity.getEleve().getImage()));
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -339,6 +356,39 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		} catch (JRException ex) {
 			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
 		}
+
+		return Response.noContent().build();
+	}
+
+	@Override
+	public Response badgeReport(Inscription entity) {
+		try {
+			String URL = ReportHelper.templateURL + ReportsName.BADGE.getName();
+			//entity.setAnneScolaire(CacheMemory.getCurrentannee());
+			List<Inscription> records = new ArrayList<Inscription>();
+
+			if (entity.getEleve().getImage() != null) {
+				entity.setPhoto(ReportHelper.getPhotoBytesEleve(entity.getEleve().getImage()));
+			}
+			records.add(entity);
+			if (records.isEmpty() || records.size() == 0) {
+				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionné un eleve !!!");
+			}
+			Map parameters = this.getReportParameters();
+
+			// parameters = this.getReportParameters();
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		
+
+	}
 
 		return Response.noContent().build();
 	}

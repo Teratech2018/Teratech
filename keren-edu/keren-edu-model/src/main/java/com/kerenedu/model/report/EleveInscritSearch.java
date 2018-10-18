@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Cycle;
+import com.kerenedu.configuration.SectionE;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -23,12 +25,18 @@ public class EleveInscritSearch extends BaseElement implements Serializable,Comp
 
 	@ManyToOne
 	@JoinColumn(name = "CYCLE_ID")
-	@Predicate(label = "Cycle :",type = Cycle.class,target = "many-to-one" , optional=false , sequence=1)
+	@Predicate(label = "Cycle :",type = Cycle.class,target = "many-to-one" , optional=true , sequence=1)
 	protected Cycle cycle ;
 	
 	@ManyToOne
+	@JoinColumn(name="SECTION_ID")
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2)
+	private SectionE section ;
+	
+	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe :",type = Classe.class,target = "many-to-one" , optional=true, sequence=2)
+	@Predicate(label = "Classe :",type = Classe.class,target = "many-to-one" , optional=true, sequence=3)
+	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
     
 
@@ -51,6 +59,9 @@ public class EleveInscritSearch extends BaseElement implements Serializable,Comp
     	if(entity.classe!=null){
     	this.classe = new Classe(entity.classe) ;
     	}
+    	if(entity.section!=null){
+        	this.section = new SectionE(entity.section) ;
+        	}
 		
 		
 	}
@@ -77,6 +88,16 @@ public class EleveInscritSearch extends BaseElement implements Serializable,Comp
 		return classe;
 	}
 
+
+
+	public SectionE getSection() {
+		return section;
+	}
+
+
+	public void setSection(SectionE section) {
+		this.section = section;
+	}
 
 
 	public void setClasse(Classe classe) {

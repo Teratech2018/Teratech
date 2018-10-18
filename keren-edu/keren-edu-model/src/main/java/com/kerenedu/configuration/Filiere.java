@@ -178,4 +178,5 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 		return 0;
 	}
 
+	
 }

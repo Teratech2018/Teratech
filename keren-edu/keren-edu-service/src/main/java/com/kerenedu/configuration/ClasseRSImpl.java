@@ -72,16 +72,16 @@ public class ClasseRSImpl
 		super.processBeforeSave(entity);
 	}
 	
-	 //
-		@Override
-		public List<Classe> filter(HttpHeaders headers, int firstResult, int maxResult) {
-
-			RestrictionsContainer container = RestrictionsContainer.newInstance();  
-	        System.out.println("ClasseRSImpl.filter() container "+container.getPredicats());
-			List<Classe>	datas = manager.filter(container.getPredicats(), null, null, firstResult, maxResult);
-			System.out.println("ClasseRSImpl.filter() nombre classe "+datas.size());
-			return datas;
-		}
+//	 //
+//		@Override
+//		public List<Classe> filter(HttpHeaders headers, int firstResult, int maxResult) {
+//
+//			RestrictionsContainer container = RestrictionsContainer.newInstance();  
+//	        System.out.println("ClasseRSImpl.filter() container "+container.getPredicats());
+//			List<Classe>	datas = manager.filter(container.getPredicats(), null, null, firstResult, maxResult);
+//			System.out.println("ClasseRSImpl.filter() nombre classe "+datas.size());
+//			return datas;
+//		}
 
 
 }

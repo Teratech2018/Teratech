@@ -148,4 +148,24 @@ public class ViewBadgeModalRSImpl
 		return list;
 	}
 
+	@Override
+	public Response certificatsReport(ViewBadgeModal entity) {
+		try {
+	      	  List<Inscription> records =manager.getCriteres(new Inscription(entity));
+	      	
+	      	  System.out.println("ViewAnniversaireModalRSImpl.buildPdfReport() size record is "+records.size());
+	            String URL = ReportHelper.templateURL+ReportsName.CERTIFICAT_SCOLAIRE.getName();
+	        	Map parameters = this.getReportParameters();
+	           
+	            return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+	      } catch (FileNotFoundException ex) {
+	          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+	          Response.serverError().build();
+	      }catch (JRException ex) {
+	          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+	      }
+
+	      return Response.noContent().build();
+	}
+
 }

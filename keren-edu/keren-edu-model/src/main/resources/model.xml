@@ -688,6 +688,156 @@ and open the template in the editor.
 	            </roles>           
 	        </element>
 	        
+	        <element type="com.kerenedu.solde.Convension" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	          <element type="com.kerenedu.solde.LigneConvension" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.solde.Variable" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.ParametreAvance" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.Fonction" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        <element type="com.kerenedu.solde.TypeContrat" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        <element type="com.kerenedu.solde.LignePonderationSalaire" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        <element type="com.kerenedu.solde.LignePonderationTypeContrat" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.solde.PeriodePaieOpen" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.solde.PeriodePaieClose" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.PrepaSalaire" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.TraitSalaire" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.BulletinPaie" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.LigneElementVariable" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.LigneBulletinPaie" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	       <element type="com.kerenedu.solde.Acompte" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	        <element type="com.kerenedu.solde.AvanceSalaire" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.CategoriePret" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	          <element type="com.kerenedu.solde.DemandePret" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	           <element type="com.kerenedu.solde.ElementVariable" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.solde.LigneRappel" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.solde.RappelSalaire" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.solde.RemboursementAvance" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	         <element type="com.kerenedu.solde.RemboursementPret" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        <element type="com.kerenedu.discipline.LignePointage" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>         
+	              
+	        </element>
+	        
+	         <element type="com.kerenedu.solde.ValiderSalaire" idclass="long"  idname="id"   deseable="false" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	         <element type="com.kerenedu.personnel.Professeurclone" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
 	             
     </elements>
     

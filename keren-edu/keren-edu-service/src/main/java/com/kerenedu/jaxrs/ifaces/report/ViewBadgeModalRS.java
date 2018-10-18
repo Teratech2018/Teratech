@@ -30,6 +30,11 @@ public interface ViewBadgeModalRS
     @Path("pdf")
     public Response buildPdfReport(ViewBadgeModal entity);
 	
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("badge")
+    public Response certificatsReport(ViewBadgeModal entity);
+	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("setid")

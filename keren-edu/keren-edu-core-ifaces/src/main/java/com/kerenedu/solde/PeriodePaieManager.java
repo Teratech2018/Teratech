@@ -1,6 +1,8 @@
 
 package com.kerenedu.solde;
 
+import java.util.Date;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 
@@ -14,5 +16,11 @@ public interface PeriodePaieManager
 {
 
     public final static String SERVICE_NAME = "PeriodePaieManager";
-
+    /**
+     * Retourne la periode contenant  
+     * cette date
+     * @param date
+     * @return
+     */
+    public PeriodePaie getPeriodeFromDate(Date date);
 }

@@ -69,8 +69,8 @@ public class FichePaiementRetardRSImpl
    			MetaData meta = MetaDataUtil.getMetaData(new FichePaiementRetard(), new HashMap<String, MetaData>(),
 					new ArrayList<String>());
 	
-   			MetaColumn workbtn = new MetaColumn("button", "work1", "Moratoire", false, "link", null);
-			workbtn.setValue("{'name':'keren_education_fiche_01',template:{'eleve':'object.eleve','service':'object.fiche','delai':'object.delai'},'header':['eleve']}");
+   			MetaColumn workbtn = new MetaColumn("button", "work1", "Moratoire", false, "action", null);
+			workbtn.setValue("{'name':'keren_education_fiche_01',template:{'eleve':'object.eleve','service':'object.fiche','delai':'object.delai'}}");
 //					"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'},'header':['eleve']}");
 			workbtn.setStates(new String[] { "etabli" });
 			// workbtn.setPattern("btn btn-primary");

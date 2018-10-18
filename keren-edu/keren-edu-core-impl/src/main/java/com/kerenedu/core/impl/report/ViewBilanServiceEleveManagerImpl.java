@@ -19,6 +19,7 @@ import com.kerenedu.core.ifaces.report.ViewBilanServiceEleveManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewBilanServiceEleveDAOLocal;
 import com.kerenedu.model.report.ViewBilanServiceEleve;
 import com.kerenedu.model.report.ViewBilanServiceModal;
+import com.kerenedu.model.report.ViewCouponsInformation;
 import com.kerenedu.model.report.ViewRetardPaiement;
 
 @TransactionAttribute
@@ -68,6 +69,38 @@ public class ViewBilanServiceEleveManagerImpl extends AbstractGenericManager<Vie
 				container.addEq("fiche.payer", value);
 
 			}
+
+		}
+		List<ViewBilanServiceEleve> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<ViewBilanServiceEleve> result = new ArrayList<ViewBilanServiceEleve>();
+		if (datas != null) {
+			for (ViewBilanServiceEleve aniv : datas) {
+				;
+				result.add(new ViewBilanServiceEleve(aniv));
+			}
+		} // fin if(datas!=null)
+		return result;
+	}
+	
+
+	@Override
+	public List<ViewBilanServiceEleve> getCriteres(ViewCouponsInformation critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+
+			if (critere.getClasse() != null) {
+				container.addEq("eleve.classe.id", critere.getClasse().getId());
+
+			}
+			if (critere.getService() != null) {
+				container.addEq("fiche.service.id", critere.getService().getId());
+
+			}
+
+			 container.addLe("fiche.delai", DateHelper.formatDate(new Date()));
+	         container.addLe("fiche.payer",false);
 
 		}
 		List<ViewBilanServiceEleve> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
