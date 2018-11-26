@@ -21,6 +21,7 @@ import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.configuration.Matiere;
 import com.kerenedu.configuration.MatiereDAOLocal;
 import com.kerenedu.configuration.MatiereDlt;
+import com.kerenedu.model.report.ViewMatiereClasseModal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -55,16 +56,16 @@ public class CoefMatiereDetailManagerImpl
     @Override
    	public List<CoefMatiereDetail> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
-   		// TODO Auto-generated method stub
-    	Classe classe = CacheMemory.getClasse();
-
-    	RestrictionsContainer container = RestrictionsContainer.newInstance();
-		
-    	if(classe!=null){
-    		 container.addEq("classe.id", classe.getId());
-    	}
-    	System.out.println("TrancheHoraireCoursManagerImpl.filter() classe memory "+classe.getId());
-    	predicats.addAll(container.getPredicats());
+//   		// TODO Auto-generated method stub
+//    	Classe classe = CacheMemory.getClasse();
+//
+//    	RestrictionsContainer container = RestrictionsContainer.newInstance();
+//		
+//    	if(classe!=null){
+//    		 container.addEq("classe.id", classe.getId());
+//    	}
+    //	System.out.println("TrancheHoraireCoursManagerImpl.filter() classe memory "+classe.getId());
+    	//predicats.addAll(container.getPredicats());
    		List<CoefMatiereDetail> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
    		List<CoefMatiereDetail> result = new ArrayList<CoefMatiereDetail>();
    		for(CoefMatiereDetail elev:datas){
@@ -78,6 +79,7 @@ public class CoefMatiereDetailManagerImpl
    		// TODO Auto-generated method stub
    		CoefMatiereDetail elev = super.find(propertyName, entityID);
    		CoefMatiereDetail data = new CoefMatiereDetail(elev);
+   		CacheMemory.setClasse(elev.getClasse());
    		return data;
    	}
 
@@ -149,5 +151,29 @@ public class CoefMatiereDetailManagerImpl
 			 System.out.println("CoefMatiereDetailManagerImpl.findprofclasse() prof classe is  is "+datas.size());
 		}
 		return datas;
+	}
+	
+	@Override
+	public List<CoefMatiereDetail> getCriteres(ViewMatiereClasseModal critere) {
+
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			
+			if (critere.getClasse() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+			}
+			
+			if (critere.getSection() != null) {
+				container.addEq("classe.section.id", critere.getSection().getId());
+			}
+
+		}
+		List<CoefMatiereDetail> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<CoefMatiereDetail> result = new ArrayList<CoefMatiereDetail>();
+		for (CoefMatiereDetail ins : datas) {
+			CoefMatiereDetail inscription = new CoefMatiereDetail(ins);
+			result.add(inscription);
+		}
+		return result;
 	}
 }

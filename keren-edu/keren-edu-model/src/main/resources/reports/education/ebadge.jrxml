@@ -93,6 +93,9 @@
 	<parameter name="PHOTO_IMAGE_REPOSITORY" class="byte[]"/>
 	<parameter name="BG_IMAGE_REPOSITORY" class="byte[]"/>
 	<parameter name="FOND_IMAGE_REPOSITORY" class="java.lang.String"/>
+	<parameter name="REPORT_IMAGE_REPOSITORY_CO" class="byte[]"/>
+	<parameter name="REPORT_IMAGE_REPOSITORY_CO_BG" class="byte[]"/>
+	<parameter name="REPORT_IMAGE_REPOSITORY_BG" class="byte[]"/>
 	<queryString>
 		<![CDATA[SELECT * FROM VIEW_IMPUTATION]]>
 	</queryString>
@@ -119,6 +122,7 @@
 	<field name="photostream" class="java.io.InputStream">
 		<fieldDescription><![CDATA[photostream]]></fieldDescription>
 	</field>
+	<field name="classe.filiere.cycle.typecycle" class="java.lang.String"/>
 	<sortField name="classe.filiere.cycle.id"/>
 	<sortField name="section.id"/>
 	<sortField name="classe.id"/>
@@ -192,9 +196,9 @@
 						<rightPen lineWidth="0.0" lineColor="#999999"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="8" pdfFontName="Times-Roman"/>
+						<font fontName="Times New Roman" size="10" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $F{section.typesection}.equals("0") ? "Reg. Number" :"Matricule"  )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $F{section.typesection}.equals("0") ? "ID Number" :"Matricule"  )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement stretchType="RelativeToBandHeight" x="55" y="81" width="7" height="15" uuid="fdaec2c4-3a2f-47e8-b40b-481aad7da5a8"/>
@@ -397,7 +401,7 @@
 				</textField>
 				<image scaleImage="FillFrame">
 					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="3" y="0" width="91" height="51" uuid="5beea4bf-ac03-4bd3-9d52-19a7e4fb247f"/>
-					<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage((byte[])$P{REPORT_IMAGE_REPOSITORY})]]></imageExpression>
+					<imageExpression><![CDATA[($F{classe.filiere.cycle.typecycle}.equals("2") ? net.sf.jasperreports.engine.util.JRImageLoader.loadImage((byte[])$P{REPORT_IMAGE_REPOSITORY_CO}) : net.sf.jasperreports.engine.util.JRImageLoader.loadImage((byte[])$P{REPORT_IMAGE_REPOSITORY}) )]]></imageExpression>
 				</image>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement stretchType="RelativeToBandHeight" x="41" y="151" width="109" height="14" uuid="3904cb6d-6353-4eb4-8eaf-b49afe8df179"/>

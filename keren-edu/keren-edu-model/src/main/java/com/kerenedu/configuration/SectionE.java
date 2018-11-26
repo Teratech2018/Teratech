@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.kerenedu.personnel.Professeur;
 import com.kerenedu.personnel.Professeurclone;
 import com.megatim.common.annotations.Predicate;
 
@@ -42,8 +41,7 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 
 
 	public SectionE() {
-		super();
-		// TODO Auto-generated constructor stub
+	
 	}
 
 

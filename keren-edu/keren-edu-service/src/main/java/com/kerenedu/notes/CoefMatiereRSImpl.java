@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -114,9 +116,17 @@ public class CoefMatiereRSImpl
 	public List<CoefMatiereDetail> findmatierclasse(HttpHeaders headers) {
 		Gson gson = new Gson();
 		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
+		List<CoefMatiereDetail> datas =  manager.findMatiereFiliere(id);
+		if(datas==null||datas.isEmpty()){
+			throw new KerenExecption("Aucune Matiere pour cette classe");
+		}else{
+			return manager.findMatiereFiliere(id);
+		}
 		
-		return manager.findMatiereFiliere(id);
+		
 	}
+	
+	
 	
 	  @Override
 	    public CoefMatiere save(@Context HttpHeaders headers,CoefMatiere entity) {
@@ -134,6 +144,38 @@ public class CoefMatiereRSImpl
 		return list;
 	}
 
+	
+	@Override
+	public CoefMatiere delete(@Context HttpHeaders headers, Long id) {
+
+		// TODO Auto-generated method stub
+		CoefMatiere entity = manager.find("id", id);
+
+		try {
+
+			// on supprimme l'objet
+			super.delete(headers, id);
+
+		} catch (Exception ex) {
+			throw new KerenExecption(
+					"Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+		}
+
+		return entity;
+	}
+
+	@Override
+	public List<CoefMatiere> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		Filiere filiere = (Filiere) CacheMemory.getValue(id, TypeCacheMemory.FILLIERE);
+		if(filiere!=null){
+			container.addEq("classe.filiere.id", filiere.getId());	
+		}//end if(filiere!=null){
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
 	
 	
 

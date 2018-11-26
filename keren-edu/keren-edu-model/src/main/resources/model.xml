@@ -838,6 +838,59 @@ and open the template in the editor.
 	                <role>ADMIN</role>
 	            </roles>           
 	        </element>
+	        
+	          <element type="com.kerenedu.configuration.UtilisateurConnect" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	           <element type="com.kerenedu.configuration.Responsabilite" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	            <element type="com.kerenedu.notes.ExamenS" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	            <element type="com.kerenedu.notes.ExamenP" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	          <element type="com.kerenedu.personnel.EnseignantSecondaire" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	            <element type="com.kerenedu.personnel.EnseignantPM" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	             <element type="com.kerenedu.notes.ImportNote" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	          <element type="com.kerenedu.discipline.ViewAbscence" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
+	        
+	           <element type="com.kerenedu.model.report.ViewNotematiere" idclass="long"  idname="id"   deseable="true" >
+	            <roles>
+	                <role>ADMIN</role>
+	            </roles>           
+	        </element>
 	             
     </elements>
     

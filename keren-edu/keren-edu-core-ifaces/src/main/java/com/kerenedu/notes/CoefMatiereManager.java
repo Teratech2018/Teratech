@@ -19,6 +19,8 @@ public interface CoefMatiereManager
     
     public List<CoefMatiereDetail> findMatiereFiliere(Long id) ;
     
+    public List<ImportNoteClasseFile> findMatiere(Long id) ;
+    
     public void generatecoefmat(CoefMatiereModal entity);
 
 }

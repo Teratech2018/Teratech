@@ -60,7 +60,9 @@ public class BaseElement implements Serializable{
     
     protected boolean activatefollower = false ;
     
-    private String searchkeys ;
+    protected String searchkeys ;
+    
+    protected boolean desabledatablock = true ;
     /**
      * String that contain the state
      * "[{'draft','Draft'},{'confirmed','Confirmed'}]"
@@ -179,7 +181,15 @@ public class BaseElement implements Serializable{
         return serial;
     }
 
-    public void setSerial(String serial) {
+    public boolean isDesabledatablock() {
+		return desabledatablock;
+	}
+
+	public void setDesabledatablock(boolean desabledatablock) {
+		this.desabledatablock = desabledatablock;
+	}
+
+	public void setSerial(String serial) {
         this.serial = serial;
     }   
 

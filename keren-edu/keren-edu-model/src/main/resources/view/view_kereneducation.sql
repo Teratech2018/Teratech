@@ -21,11 +21,11 @@ and bl.e_bul_id=b.id;
 CREATE VIEW e_zview_bulletin(ID, MAT_NOT_ID,NOTE_ID,MOY_CLA_MATIERE,EXTR_MAX,EXTR_MIN,TOTAL_POINT,TOTAL_COEF,MOY_ETUDIANT
 ,MOY_PREMIER,MOY_DERNIER,ELEVE_ID,CLASSE_ID,INS_ID,MODULE_ID,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys)
 AS
 SELECT m.id+n.id, m.id,n.id,TRUNCATE(moyclsmat(n.el_note_id),2),extrememax(n.el_note_id),extrememin(n.el_note_id),totalpointetud(n.etudiant_id),
 totalcoef(n.etudiant_id),TRUNCATE(moyetudiant(n.etudiant_id),2),20,02,e.id,c.id,i.id,mo.id,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,""
 FROM e_note_mat m ,e_notedlt n, e_eleve e, e_classe c,e_inscription i,e_coefmatdtl co, e_module mo,e_module_e_matiere mom
 where m.id=n.el_note_id
 and n.etudiant_id=e.id
@@ -37,10 +37,10 @@ and mom.e_module_id=mo.id
 
 CREATE VIEW e_zview_paiement(ID,TOTAL_TTC,MNT_PAYER,DATE_PAI,SER_ID,ELEVE_ID,CLASSE_ID,CYCLE_ID,TYP_PAI,ANNEE_ID,REMISE,RISTOURNE,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
 SELECT p.ID,p.zmnt,p.zmnt_verser,p.date_pai,p.F_ID,i.id, c.id, cy.id,p.typ_pai,p.annee_id,p.zremise,p.zristourne,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 FROM e_p_paie p ,e_inscription i , e_classe c, e_filiere f, e_cycle cy
 where p.eleve_id=i.id
 and i.classe_id=c.id
@@ -50,7 +50,7 @@ and f.cycle_id=cy.id ;
 CREATE VIEW e_zview_bf_ecole(ID,CLASSE_ID,INSCRIPTION,INSCRIPTION_ENC,I_TRAN,I_TRAN_ENC,II_TRAN,II_TRAN_ENC,III_TRAN,
 III_TRAN_ENC,REMISE,RISTOURNE,TOTAL_A,TOTAL_R,SOLDE,TX_RECO,CYCLE_ID,EFF,EFF_SOL,ANNEE_ID,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
 SELECT e.ID,c.id,IFNULL(montantfrais('A','0',c.libelle,i.annee_id), 0),IFNULL(montantfrais('R','0',c.libelle,i.annee_id), 0),IFNULL(montantfrais('A','1',c.libelle,i.annee_id), 0),
 IFNULL(montantfrais('R','1',c.libelle,i.annee_id), 0),IFNULL(montantfrais('A','2',c.libelle,i.annee_id), 0),IFNULL(montantfrais('R','2',c.libelle,i.annee_id), 0),IFNULL(montantfrais('A','3',c.libelle,i.annee_id), 0),
@@ -58,7 +58,7 @@ IFNULL(montantfrais('R','3',c.libelle,i.annee_id), 0),IFNULL(montantfrais('Re','
 IFNULL(montantfrais('TA','0',c.libelle,i.annee_id), 0),IFNULL(montantfrais('TR','0',c.libelle,i.annee_id), 0),IFNULL(montantfrais('S','0',c.libelle,i.annee_id), 0),
 ROUND(IFNULL(montantfrais('TR','0',c.libelle,i.annee_id), 0)/IFNULL(montantfrais('TA','0',c.libelle,i.annee_id), 0)*100,2),cy.id,
 IFNULL(montantfrais('NI','0',c.libelle,i.annee_id), 0),IFNULL(montantfrais('NS','0',c.libelle,i.annee_id), 0),i.annee_id,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 FROM e_p_fiche e, e_service s,e_inscription i, e_classe c, e_filiere f, e_cycle cy
 where e.ser_id=s.id
 and e.fiche_paie_id=i.id
@@ -70,7 +70,7 @@ group by c.id ,i.annee_id;
 CREATE VIEW e_zview_bf(ID,CLASSE_ID,ELEVE_ID,INSCRIPTION_ENC,I_TRAN_ENC,II_TRAN_ENC,III_TRAN_ENC,REMISE,RISTOURNE,
 TOTAL_A,TOTAL_R,SOLDE,CYCLE_ID,EFF,EFF_SOL,ANNEE_ID,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
 SELECT e.ID,c.id,i.eleve_id,IFNULL(montantfraisclasse('R','0',i.eleve_id,c.libelle,i.annee_id), 0),IFNULL(montantfraisclasse('R','1',i.eleve_id,c.libelle,i.annee_id), 0),
 IFNULL(montantfraisclasse('R','2',i.eleve_id,c.libelle,i.annee_id), 0),IFNULL(montantfraisclasse('R','3',i.eleve_id,c.libelle,i.annee_id), 0),
@@ -78,7 +78,7 @@ IFNULL(montantfraisclasse('Re','0',i.eleve_id,c.libelle,i.annee_id), 0),IFNULL(m
 IFNULL(montantfraisclasse('TA','0',i.eleve_id,c.libelle,i.annee_id), 0),(IFNULL(montantfraisclasse('TR','0',i.eleve_id,c.libelle,i.annee_id), 0)),
 IFNULL(montantfraisclasse('S','0',i.eleve_id,c.libelle,i.annee_id), 0),cy.id,IFNULL(montantfraisclasse('NI','0',i.eleve_id,c.libelle,i.annee_id), 0),
 IFNULL(montantfraisclasse('NS','0',i.eleve_id,c.libelle,i.annee_id), 0),i.annee_id,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 FROM e_p_fiche e, e_service s,e_inscription i, e_classe c, e_filiere f, e_cycle cy
 where e.ser_id=s.id
 and e.fiche_paie_id=i.id
@@ -91,7 +91,7 @@ group by i.eleve_id ,i.annee_id;
 CREATE VIEW e_zview_dashboard(ID,N_ELEVE,N_ELEVE_INS,N_ELEVE_T1,N_ELEVE_T2,N_ELEVE_T3,N_ELEVE_S,
 PRE_G,ENC_G,SOLD_G,PRE_I,ENC_I,SOLD_I,PRE_T1,ENC_T1,SOLD_T1,PRE_T2,ENC_T2,SOLD_T2,PRE_T3,ENC_T3,SOLD_T3,ANNEE_ID,TX_REU,NBRE_ADMIS,REMISE_G,RISTOURNE_G,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
 SELECT e.id,IFNULL(montantfraistotal('NE','0',i.annee_id), 0),IFNULL(montantfraistotal('NI','0',i.annee_id), 0),IFNULL(montantfraistotal('NS123','1',i.annee_id), 0),IFNULL(montantfraistotal('NS123','2',i.annee_id), 0),
 IFNULL(montantfraistotal('NS123','3',i.annee_id), 0),IFNULL(montantfraistotal('NS','0',i.annee_id), 0),
@@ -101,76 +101,76 @@ IFNULL(montantfraistotal('A','1',i.annee_id), 0),IFNULL(montantfraistotal('R','1
 IFNULL(montantfraistotal('A','2',i.annee_id), 0),IFNULL(montantfraistotal('R','2',i.annee_id), 0),IFNULL(montantfraistotal('S','2',i.annee_id), 0),
 IFNULL(montantfraistotal('A','3',i.annee_id), 0),IFNULL(montantfraistotal('R','3',i.annee_id), 0),IFNULL(montantfraistotal('S','3',i.annee_id), 0),i.annee_id,0,0,IFNULL(montantfraistotal('Re','3',i.annee_id), 0),
 IFNULL(montantfraistotal('Ri','3',i.annee_id), 0),
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 FROM e_p_fiche e , e_inscription i
 where e.fiche_paie_id=i.id
 group by i.annee_id;
 
-CREATE VIEW e_zview_note_helper(ID,MAT_NOTE_ID,CLASSE_ID,EXAMEN_ID,MATIERE_ID,NOTE_ID,ELEVE_ID,NOTE,APPRECIATION,MOY_CLA_MATIERE,
+CREATE VIEW e_zview_note_helper(ID,MAT_NOTE_ID,CLASSE_ID,EXAMEN_ID,MATIERE_ID,NOTE_ID,ELEVE_ID,NOTE,NOTE1,NOTE2,NOTE3,APPRECIATION,MOY_CLA_MATIERE,
 EXTR_MAX,EXTR_MIN,TOTAL_POINT,TOTAL_COEF,MOY_ETUDIANT,MOY_PREMIER,MOY_DERNIER,RANG,RANG_MAT,MOY_GEN_CLS,NBRE_MOY,TX_REU,ECART_TYPE,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
-SELECT e.id+n.id, e.id, e.classe_id,e.examen_id,e.matiere_id,n.id,n.etudiant_id,n.note,n.appreciation,
+SELECT e.id+n.id, e.id, e.classe_id,e.examen_id,e.matiere_id,n.id,n.etudiant_id,n.note,n.note_1,n.note_2,n.note_3,n.appreciation,
 moyclsmat(e.id,n.annee_id),extrememax(e.id,n.annee_id),extrememin(e.id,n.annee_id),
 totalpointexamen(n.etudiant_id,e.examen_id,n.annee_id),totalcoefexamen(n.etudiant_id,e.examen_id,n.annee_id),
 moyenneeleve(n.etudiant_id,e.examen_id,n.annee_id),moypremiercls(e.classe_id,e.examen_id,n.annee_id),
-moydercls(e.classe_id,e.examen_id,n.annee_id),rankmoyenne(n.etudiant_id ,e.examen_id,n.annee_id),
+moydercls(e.classe_id,e.examen_id,n.annee_id),rankmoyenne(n.etudiant_id ,e.examen_id,n.annee_id,e.classe_id),
 rankmat(n.etudiant_id  ,e.matiere_id,e.examen_id,n.annee_id),moygencls(e.classe_id,e.examen_id,n.annee_id),
 nbremoycls(e.classe_id,e.examen_id,n.annee_id),((nbremoycls(e.classe_id,e.examen_id,n.annee_id) *100)/nbreelevecls(e.classe_id,n.annee_id)),
 ecarttypemoy(e.classe_id,e.examen_id,n.annee_id),
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
  FROM e_note_mat e, e_notedlt n
  where e.id=n.el_note_id;
  
  -- helper generate bulletin
 CREATE VIEW e_zview_helper(ID,EXAMEN_ID,ETUDIANT_ID,CLASSE_ID,MOY, ANNEE_ID,TYPE_EXAMEN)
 AS
-SELECT e.etudiant_id+x.id+m.classe_id,x.id, e.etudiant_id,m.classe_id, sum(e.note*c.coef)/sum(c.coef), e.annee_id,x.libelle
+SELECT concat(e.etudiant_id,x.id,m.classe_id),x.id, e.etudiant_id,m.classe_id, IFNULL(TRUNCATE(moyelehelper(e.etudiant_id,x.id,e.annee_id),3), 0), e.annee_id,x.libelle
 from  e_notedlt e , e_note_mat m , e_coefmatdtl c , e_examen x
 where e.el_note_id=m.id and m.matiere_id=c.id  and m.examen_id=x.id
 group by e.etudiant_id ,x.id,e.annee_id ;
 
 -- bulletin global all eleve
-CREATE VIEW e_zview_bulletin(ID,INS_ID,ELEVE_ID,CLASSE_ID,CYCLE_ID,ANNEE_ID,COEF_ID,MAT_ID,EXAMEN_ID,
+CREATE VIEW e_zview_bulletin(ID,INS_ID,ELEVE_ID,CLASSE_ID,CYCLE_ID,ANNEE_ID,COEF_ID,MAT_ID,EXAMEN_ID,NOTE_ID,
 NOTE1,NOTE2,NOTE3,NOTE4,NOTE5,NOTE6,
 MOY_CLA_MATIERE,EXTR_MAX_MAT,EXTR_MIN_MAT,
 MOY1,MOY2,MOY3,MOY4,MOY5,MOY6,RANG_MAT,
 RANG_MOY,MOY_GEN_CLS,MOY_PREMIER,MOY_DERNIER,NBRE_MOY,NBRE_ELVE,TX_REU,TOTAL_POINT,TOTAL_COEF,
-RANG1,RANG2,RANG3,RANG4,RANG5,RANG6,ECART_TYPE,APP_MAT, APP,SANCTION,
+RANG1,RANG2,RANG3,RANG4,RANG5,RANG6,ECART_TYPE,APP_MAT, APP,SANCTION,ABS_ID,APP_EN,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
-select (i.id+i.eleve_id+i.classe_id+n.id), i.id ,i.eleve_id, i.classe_id,i.cycle_id, i.annee_id, mat.id , mat.matiere_id , e.examen_id,
-IFNULL(notemat(i.id ,mat.matiere_id,'0',i.annee_id), 0),IFNULL(notemat(i.id ,mat.matiere_id,'1',i.annee_id), 0) ,
-IFNULL(notemat(i.id ,mat.matiere_id,'2',i.annee_id), 0) ,IFNULL(notemat(i.id ,mat.matiere_id,'3',i.annee_id), 0) ,
-IFNULL(notemat(i.id ,mat.matiere_id,'4',i.annee_id), 0) ,IFNULL(notemat(i.id ,mat.matiere_id,'5',i.annee_id), 0) ,
+select concat(i.id,n.id,"N",e.examen_id), i.id ,i.eleve_id, i.classe_id,i.cycle_id, i.annee_id, mat.id , mat.matiere_id , e.examen_id,n.id,
+IFNULL(notemat(i.id ,mat.id,'0',i.annee_id), 0),IFNULL(notemat(i.id ,mat.id,'1',i.annee_id), 0) ,
+IFNULL(notemat(i.id ,mat.id,'2',i.annee_id), 0) ,IFNULL(notemat(i.id ,mat.id,'3',i.annee_id), 0) ,
+IFNULL(notemat(i.id ,mat.id,'4',i.annee_id), 0) ,IFNULL(notemat(i.id ,mat.id,'5',i.annee_id), 0) ,
 
 IFNULL(moyclsmat(e.id,i.annee_id), 0) ,IFNULL(extrememax(e.id,i.annee_id), 0) ,IFNULL(extrememin(e.id,i.annee_id), 0),
 IFNULL(moyeleseq(i.id,'0',i.annee_id), 0),IFNULL(moyeleseq(i.id,'1',i.annee_id), 0),
 IFNULL(moyeleseq(i.id,'2',i.annee_id), 0),IFNULL(moyeleseq(i.id,'3',i.annee_id), 0),IFNULL(moyeleseq(i.id,'4',i.annee_id), 0) ,
-IFNULL(moyeleseq(i.id,'5',i.annee_id), 0),rankmat(i.id ,mat.matiere_id,e.examen_id,i.annee_id),
-rankmoyenne(i.id ,e.examen_id,i.annee_id),
+IFNULL(moyeleseq(i.id,'5',i.annee_id), 0),rankmat(i.id ,e.matiere_id,e.examen_id,i.annee_id),
+rankmoyenne(i.id ,e.examen_id,i.annee_id,i.classe_id),
 moygencls(i.classe_id,e.examen_id,i.annee_id),moypremiercls(i.classe_id,e.examen_id,i.annee_id),
 moydercls(i.classe_id,e.examen_id,i.annee_id),nbremoycls(i.classe_id,e.examen_id,i.annee_id),nbreelevecls(i.classe_id,i.annee_id),
-((nbremoycls(i.classe_id,e.examen_id,i.annee_id) *100)/nbreelevecls(i.classe_id,i.annee_id)),
+TRUNCATE(((nbremoycls(i.classe_id,e.examen_id,i.annee_id) *100)/nbreelevecls(i.classe_id,i.annee_id)),3),
 totalpointexamen(i.id,e.examen_id,i.annee_id), totalcoefexamen(i.id,e.examen_id,i.annee_id),
-rankseqn(i.id ,'0',i.annee_id),rankseqn(i.id ,'1',i.annee_id),rankseqn(i.id ,'2',i.annee_id),rankseqn(i.id ,'3',i.annee_id),
-rankseqn(i.id ,'4',i.annee_id),rankseqn(i.id ,'5',i.annee_id),ecarttypemoy(i.classe_id,e.examen_id,i.annee_id),
-n.APPRECIATION,appreciation(e.examen_id,i.id,i.annee_id),
-santion(e.examen_id,i.id,i.annee_id),
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+rankseqn(i.id ,'0',i.annee_id,i.classe_id),rankseqn(i.id ,'1',i.annee_id,i.classe_id),rankseqn(i.id ,'2',i.annee_id,i.classe_id),rankseqn(i.id ,'3',i.annee_id,i.classe_id),
+rankseqn(i.id ,'4',i.annee_id,i.classe_id),rankseqn(i.id ,'5',i.annee_id,i.classe_id),ecarttypemoy(i.classe_id,e.examen_id,i.annee_id),
+n.APPRECIATION,appreciation(e.examen_id,i.id,i.annee_id),sanction(e.examen_id,i.id,i.annee_id),abscence(e.examen_id,i.id,i.annee_id),
+appreciationen(e.examen_id,i.id,i.annee_id),
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 from e_inscription i, e_coefmatdtl mat,e_note_mat e, e_notedlt n
 where i.id=n.etudiant_id
 and e.id=n.el_note_id
-and mat.matiere_id=e.matiere_id
+and mat.id=e.matiere_id
 
 CREATE VIEW e_zview_paiement(ID,TOTAL_TTC,MNT_PAYER,DATE_PAI,SER_ID,ELEVE_ID,CLASSE_ID,CYCLE_ID,TYP_PAI,ANNEE_ID,REMISE,RISTOURNE,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
 SELECT p.ID,p.zmnt,p.zmnt_verser,p.date_pai,p.F_ID,i.id, c.id, cy.id,p.typ_pai,p.annee_id,p.zremise,p.zristourne,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 FROM e_p_paie p ,e_inscription i , e_classe c, e_filiere f, e_cycle cy
 where p.eleve_id=i.id
 and i.classe_id=c.id
@@ -180,49 +180,76 @@ and f.cycle_id=cy.id ;
 -- help select prof classe
 CREATE VIEW e_zview_profclasse(ID,PROF_ID,CLASSE_ID,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
 SELECT c.id, c.prof_id,c.classe_id,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 from   e_coefmatdtl c 
 where e.el_note_id=m.id and m.matiere_id=c.id  and m.examen_id=x.id
 group by e.etudiant_id ,x.id,e.annee_id ;
 
 CREATE VIEW e_zview_emarg(ID,JOUR_ID,CLASSE_ID,TH_ID,ANNEE_ID,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
-SELECT j.id+e.id, j.id, j.classe_id, j.annee_id, e.id,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+SELECT concat(j.id,e.id), j.id, j.classe_id, j.annee_id, e.id,
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 from   e_th_cours e , e_jcours  j
 where j.id= e.TRANCHE_COURS_ID;
 
+CREATE VIEW e_zview_elevenew(ID,FICHE_ID,INS_ID,
+DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
+DESABLEUPDATE,searchkeys,desabledatablock)
+AS
+SELECT concat(f.id,i.id),f.id,i.id,
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
+FROM e_p_fiche f, e_inscription i
+where i.id=f.fiche_paie_id;
+
 CREATE VIEW e_zview_eleve(ID,FICHE_ID,INS_ID,EFF,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
 SELECT f.id+i.id,f.id,i.id,IFNULL(montantfraisclasse('NI','0',i.eleve_id,i.classe_id,i.annee_id),
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 FROM e_p_fiche f, e_inscription i
 where i.id=f.fiche_paie_id;
 
 CREATE VIEW e_zview_retard(ID,eleve_id,classe_id,service_id,FICHE_ID,DELAI,PAYER,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
-DESABLEUPDATE)
+DESABLEUPDATE,searchkeys,desabledatablock)
 AS
-SELECT i.id, i.id,i.classe_id,f.ser_id,f.id,f.delai,f.payer,
-"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0
+SELECT concat(f.id,i.id,f.ser_id), i.id,i.classe_id,f.ser_id,f.id,f.delai,f.payer,
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
 FROM e_inscription i , e_p_fiche f
 where i.id=f.fiche_paie_id ;
 
+CREATE VIEW e_zview_abs(ID,PERI_ID,CLASSE_ID,LIGNE_ID,ANNEE_ID,ETAT,ELEVE_ID,
+DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
+DESABLEUPDATE,searchkeys,desabledatablock)
+AS
+SELECT concat(e.id,l.id,e.peri_id), e.peri_id, e.classe_id, l.id,e.annee_id, e.etat,l.eleve_id,
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
+from   e_abs e , e_abs_lgn l
+where e.id= l.ID_ABS;
+
+CREATE VIEW e_zview_note_matiere(ID,MAT_NOTE_ID,CLASSE_ID,EXAMEN_ID,MATIERE_ID,
+DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
+DESABLEUPDATE,searchkeys,desabledatablock)
+AS
+SELECT e.id+n.id, e.id, e.classe_id,e.examen_id,e.matiere_id,
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"",""
+ FROM e_note_mat e, e_notedlt n
+ where e.id=n.el_note_id;
+
 -- rank par classe sur la moyenne
 DELIMITER $$
-CREATE FUNCTION `rankseqn`(eleve BIGINT(20),examen varchar(255), exercice varchar(255)) RETURNS decimal(38,2)
+CREATE FUNCTION `rankseqn`(eleve BIGINT(20),examen varchar(255), exercice varchar(255), classe BIGINT(20)) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
-	SELECT FIND_IN_SET(moy,(select GROUP_CONCAT(moy ORDER BY moy DESC) FROM e_zview_helper e where e.type_examen=examen  and annee_id=exercice)) into valeur from e_zview_helper e
-		where e.type_examen=examen and e.etudiant_id=eleve and annee_id=exercice;
+	SELECT FIND_IN_SET(moy,(select GROUP_CONCAT(DISTINCT moy ORDER BY moy DESC) FROM e_zview_helper e where e.type_examen=examen  and annee_id=exercice and e.classe_id=classe )) into valeur from e_zview_helper e
+		where e.type_examen=examen and e.etudiant_id=eleve and annee_id=exercice and e.classe_id=classe ;
 	return valeur ;
 
 end $$
@@ -235,7 +262,23 @@ CREATE FUNCTION `appreciation`(examen BIGINT(20),eleve BIGINT(20),exercice varch
 begin
 
     DECLARE valeur varchar(255);
-		SELECT appre into valeur FROM e_bul e where examen_id=examen and INSCRIPTION_ID=eleve;
+		SELECT moyenne into valeur FROM e_app e where e.i_deb<=(select moyenne from e_bul b where examen_id=examen and INSCRIPTION_ID=eleve) 
+		and e.i_fin>=(select moyenne from e_bul b where b.examen_id=examen and INSCRIPTION_ID=eleve); 
+
+		return valeur ;
+
+end $$
+
+DELIMITER ;
+
+--- moyennee sequence id 
+DELIMITER $$
+CREATE FUNCTION `appreciationen`(examen BIGINT(20),eleve BIGINT(20),exercice varchar(255)) RETURNS varchar(255)
+begin
+
+    DECLARE valeur varchar(255);
+		SELECT moyenne_en into valeur FROM e_app e where e.i_deb<=(select moyenne from e_bul b where examen_id=examen and INSCRIPTION_ID=eleve) 
+		and e.i_fin>=(select moyenne from e_bul b where b.examen_id=examen and INSCRIPTION_ID=eleve); 
 
 		return valeur ;
 
@@ -245,6 +288,33 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE FUNCTION `sanction`(examen BIGINT(20),eleve BIGINT(20),exercice varchar(255)) RETURNS varchar(255)
+begin
+
+    DECLARE valeur varchar(255);
+		SELECT sanction into valeur FROM e_app e where e.i_deb<=(select moyenne from e_bul b where examen_id=examen and INSCRIPTION_ID=eleve) 
+		and e.i_fin>=(select moyenne from e_bul b where b.examen_id=examen and INSCRIPTION_ID=eleve);
+
+		return valeur ;
+
+end $$
+
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE FUNCTION `abscence`(examen BIGINT(20),eleve BIGINT(20),exercice varchar(255)) RETURNS BIGINT(20)
+begin
+
+    DECLARE valeur BIGINT(20);
+		SELECT id into valeur FROM e_zview_abs e where  e.annee_id=exercice and e.eleve_id=eleve and e.peri_id=examen;
+		return valeur ;
+
+end $$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION `sanctionold`(examen BIGINT(20),eleve BIGINT(20),exercice varchar(255)) RETURNS varchar(255)
 begin
 
     DECLARE valeur varchar(255);
@@ -500,25 +570,25 @@ DELIMITER ;
 
 -- rank par classe sur la moyenne
 DELIMITER $$
-CREATE FUNCTION `rankmoyenne`(eleve BIGINT(20),examen varchar(255), exercice varchar(255)) RETURNS decimal(38,2)
+CREATE FUNCTION `rankmoyenne`(eleve BIGINT(20),examen varchar(255), exercice varchar(255),classe BIGINT(20)) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
-	SELECT FIND_IN_SET(moy,(select GROUP_CONCAT(moy ORDER BY moy DESC) FROM e_zview_helper e where e.examen_id=examen  and annee_id=exercice)) into valeur from e_zview_helper e
-		where e.examen_id=examen and e.etudiant_id=eleve and annee_id=exercice;
+	SELECT FIND_IN_SET(moy,(select GROUP_CONCAT(DISTINCT moy ORDER BY moy DESC) FROM e_zview_helper e where e.examen_id=examen  and annee_id=exercice and e.classe_id=classe )) into valeur from e_zview_helper e
+		where e.examen_id=examen and e.etudiant_id=eleve and annee_id=exercice and e.classe_id=classe ;
 	return valeur ;
 
 end $$
 
 DELIMITER ;
 
--- rank par matiere
+-- rank par matiere(("
 DELIMITER $$
 CREATE FUNCTION `rankmat`(eleve BIGINT(20),matiere BIGINT(20),seq varchar(255), exercice varchar(255)) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
-	SELECT FIND_IN_SET(note,(select GROUP_CONCAT(note ORDER BY note DESC)  FROM e_notedlt e, e_note_mat m , e_examen x
+	SELECT FIND_IN_SET(note,(select GROUP_CONCAT( DISTINCT note ORDER BY note DESC)  FROM e_notedlt e, e_note_mat m , e_examen x
 			where e.el_note_id=m.id and m.examen_id=x.id and m.examen_id=seq and m.matiere_id=matiere  and e.annee_id=exercice) ) into valeur from e_notedlt e, e_note_mat m , e_examen x
 				where e.el_note_id=m.id and m.examen_id=x.id and m.examen_id=seq and m.matiere_id=matiere and e.etudiant_id=eleve and e.annee_id=exercice;
 		return valeur ;
@@ -590,7 +660,8 @@ begin
 
     DECLARE valeur decimal(38,2);
 		SELECT sum(e.note*c.coef) into valeur from  e_notedlt e , e_note_mat m , e_coefmatdtl c
-		where e.el_note_id=m.id and m.matiere_id=c.id and e.etudiant_id=param and e.annee_id=exercice and m.examen_id=examen;
+		where e.el_note_id=m.id and m.matiere_id=c.id and e.etudiant_id=param and e.annee_id=exercice and m.examen_id=examen
+			and e.note!=0;
 
 		return valeur ;
 
@@ -605,7 +676,8 @@ begin
 
     DECLARE valeur decimal(38,2);
 		SELECT sum(c.coef) into valeur from  e_notedlt e , e_note_mat m , e_coefmatdtl c
-		where e.el_note_id=m.id and m.matiere_id=c.id and e.etudiant_id=param and e.annee_id=exercice and m.examen_id=examen;
+		where e.el_note_id=m.id and m.matiere_id=c.id and e.etudiant_id=param and e.annee_id=exercice and m.examen_id=examen
+			and e.note!=0;
 
 		return valeur ;
 
@@ -621,9 +693,23 @@ begin
 
     DECLARE valeur decimal(38,2);
 		SELECT sum(e.note*c.coef)/sum(c.coef) into valeur from  e_notedlt e , e_note_mat m , e_coefmatdtl c , e_examen x
-		where e.el_note_id=m.id and m.matiere_id=c.id  and m.examen_id=x.id   and e.etudiant_id=param and e.annee_id=exercice and x.libelle=seq;
-
+		where e.el_note_id=m.id and m.matiere_id=c.id  and m.examen_id=x.id   and e.etudiant_id=param and e.annee_id=exercice and x.libelle=seq
+		and e.note!=0;
 		return TRUNCATE(valeur,3) ;
+
+end $$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION `moyelehelper`(param BIGINT(20),seq BIGINT(20),exercice varchar(255)) RETURNS decimal(38,2)
+begin
+
+    DECLARE valeur decimal(38,2);
+		SELECT sum(e.note*c.coef)/sum(c.coef) into valeur from  e_notedlt e , e_note_mat m , e_coefmatdtl c , e_examen x
+		where e.el_note_id=m.id and m.matiere_id=c.id  and m.examen_id=x.id   and e.etudiant_id=param and e.annee_id=exercice and x.id=seq
+		and e.note!=0;
+		return valeur;
 
 end $$
 
@@ -658,6 +744,12 @@ delete FROM e_p_fiche  where fiche_paie_id=43 ;
 delete FROM e_inscription  where id=43;
 delete FROM e_classe  where id=29;
 
+-- inti note
+delete FROM e_bul_lgn ;
+delete FROM e_bul ;
+delete FROM e_notedlt ;
+delete FROM e_note_mat ;
+
 -- update date paiement 
 UPDATE e_p_fiche as e
 SET e.delai = ( select delai from e_service s where s.id = e.ser_id) ;
@@ -676,3 +768,52 @@ SET e.nom = ( select s.nom from e_eleve s, e_inscription i where i.id = e.eleve_
 
 UPDATE e_p_paie as e
 SET e.classe = ( select c.libelle from  e_inscription i, e_classe c where i.id = e.eleve_id and i.classe_id=c.id) ;
+
+ <!--    <outbound-socket-binding name="mail-smtp-gmail">
+            <remote-destination host="smtp.gmail.com" port="465"/>
+        </outbound-socket-binding>-->
+		
+sql 
+SELECT e.fiche_paie_id, sum(mnt_payer), i.mnt_paye+i.remise,sum(e.solde),i.solde FROM e_p_fiche e , e_inscription i
+where e.fiche_paie_id=i.id
+and i.classe_id=24
+group by e.fiche_paie_id;
+
+
+update e_notedlt e , e_note_mat m , e_classe c
+set Appreciation=case
+    when e.note between 18 and 20 then 'Excellent'
+    when e.note  between  16 and 17.99 then 'Very Good'
+    when e.note  between  14 and 15.99 then 'Good'
+    when e.note  between  12 and 13.99 then 'Fair'
+    when e.note  between  10 and 11.99 then 'Average'
+    when e.note  between  9 and 9.99 then 'Inadequate'
+    when e.note  between  8 and 8.99 then 'Insufficient'
+    when e.note  between  7 and 7.99 then 'Weak'
+    when e.note  between  2 and 6.99 then 'Very Weak'
+    when e.note  between  0 and 1.99 then 'Very Poor'
+
+    else 'alpha'
+end
+where e.el_note_id=m.id
+and m.classe_id=c.id
+and c.section_id=1;
+
+update e_notedlt e , e_note_mat m , e_classe c
+set Appreciation=case
+    when e.note between 18 and 20 then 'Excellent'
+    when e.note  between  16 and 17.99 then 'Très Bien'
+    when e.note  between  14 and 15.99 then 'Bien'
+    when e.note  between  12 and 13.99 then 'Assez Bien'
+    when e.note  between  10 and 11.99 then 'Passable'
+    when e.note  between  9 and 9.99 then 'Médiocre'
+    when e.note  between  8 and 8.99 then 'Insuffisant'
+    when e.note  between  7 and 7.99 then 'Faible'
+    when e.note  between  2 and 6.99 then 'Très Faible'
+    when e.note  between  0 and 1.99 then 'Null'
+
+    else 'alpha'
+end
+where e.el_note_id=m.id
+and m.classe_id=c.id
+and c.section_id=2;

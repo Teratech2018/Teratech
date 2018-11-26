@@ -30,10 +30,10 @@ public class CoefMatiereModal extends BaseElement implements Serializable, Compa
 	 */
 	private static final long serialVersionUID = -2319955732777210165L;
 	
-	@Transient
+	//@Transient
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	//@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2, observable=true)
+//	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=1)
 	private SectionE section ;
 	
 
@@ -60,8 +60,10 @@ public class CoefMatiereModal extends BaseElement implements Serializable, Compa
 	public CoefMatiereModal(CoefMatiereModal annee) {
 		super(annee.id, annee.designation, annee.moduleName,0L);
 //		this.classe = new Classe(annee.classe);
+		if(annee.filiere!=null){
 		this.filiere= new Filiere(annee.filiere);
-		this.section=annee.filiere.getSection();
+		this.section=new SectionE(annee.filiere.getSection());
+		}
 
 	}
 

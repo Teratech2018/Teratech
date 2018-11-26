@@ -126,7 +126,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	@Transient
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "REMISE_ID")
-	@Predicate(updatable = true, type = Remise.class, target = "many-to-many-list", search = true, sequence = 2, group = true, groupLabel = "Attribution des Remises", groupName = "tab1")
+	@Predicate(updatable = true, type = Remise.class, target = "many-to-many-list", search = true, sequence = 2, group = true, groupLabel = "Attribution des Remises", groupName = "tab1",editable=false)
 	@Observer(observable = "modePaiement", source = "method:getremise", parameters = "modePaiement,eleve,datePaiement")
 	protected List<Remise> listremise;
 

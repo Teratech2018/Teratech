@@ -13,10 +13,11 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.inscription.Inscription;
+import com.kerenedu.notes.CoefMatiereDetail;
 import com.kerenedu.notes.Examen;
+import com.kerenedu.notes.ExamenP;
 import com.kerenedu.notes.MatiereNote;
 import com.kerenedu.notes.NoteDetail;
 
@@ -47,7 +48,7 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 
 	@ManyToOne
 	@JoinColumn(name = "MATIERE_ID")
-	private MatiereDlt matiere;
+	private CoefMatiereDetail matiere;
 
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
@@ -59,6 +60,15 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 
 	@Column(name = "NOTE")
 	private Double note = new Double(0);
+	
+	@Column(name = "NOTE1")
+	private Double note1 = new Double(0);
+	
+	@Column(name = "NOTE2")
+	private Double note2 = new Double(0);
+	
+	@Column(name = "NOTE3")
+	private Double note3 = new Double(0);
 
 	@Column(name = "APPRECIATION")
 	private String obs;
@@ -119,7 +129,7 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 	
 	
 
-	public ViewNoteHelper(MatiereNote matiereNote, Classe classe, Examen examen, MatiereDlt matiere, Inscription eleve,
+	public ViewNoteHelper(MatiereNote matiereNote, Classe classe, Examen examen, CoefMatiereDetail matiere, Inscription eleve,
 			NoteDetail notedlt, Double note, String obs, Long rang, Long rangMat, Double moyclasMat, Double extrememax,
 			Double extremmemin, Double totalPoint, Long totalCoef, Double moyEtudiant, Double moyPremier,
 			Double moyDernnier, Double moygencls, Long nbreMoy, Double txReu, Double ecartType) {
@@ -154,11 +164,11 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 	public ViewNoteHelper(ViewNoteHelper view) {
 		super();
 		this.matiereNote = view.matiereNote;
-		this.classe = view.classe;
-		this.examen = view.examen;
-		this.matiere = view.matiere;
-		this.eleve = view.eleve;
-		this.notedlt = view.notedlt;
+		this.classe = new Classe(view.classe) ;
+		this.examen =  new Examen(view.examen);
+		this.matiere = new CoefMatiereDetail( view.matiere);
+		this.eleve= new Inscription(view.eleve);
+		this.notedlt = new NoteDetail( view.notedlt);
 		this.note = view.note;
 		this.obs = view.obs;
 		// this.model = view.model;
@@ -175,6 +185,11 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 		this.nbreMoy = view.nbreMoy;
 		this.txReu = view.txReu;
 		this.ecartType = view.ecartType;
+		this.note1 = view.note1;
+		this.note2 = view.note2;
+		this.note3 = view.note3;
+		
+		
 	}
 
 	/**
@@ -229,11 +244,11 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 		this.examen = examen;
 	}
 
-	public MatiereDlt getMatiere() {
+	public CoefMatiereDetail getMatiere() {
 		return matiere;
 	}
 
-	public void setMatiere(MatiereDlt matiere) {
+	public void setMatiere(CoefMatiereDetail matiere) {
 		this.matiere = matiere;
 	}
 
@@ -260,6 +275,48 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 	public void setNote(Double note) {
 		this.note = note;
 	}
+
+	public Double getNote1() {
+		return note1;
+	}
+
+
+
+
+	public void setNote1(Double note1) {
+		this.note1 = note1;
+	}
+
+
+
+
+	public Double getNote2() {
+		return note2;
+	}
+
+
+
+
+	public void setNote2(Double note2) {
+		this.note2 = note2;
+	}
+
+
+
+
+	public Double getNote3() {
+		return note3;
+	}
+
+
+
+
+	public void setNote3(Double note3) {
+		this.note3 = note3;
+	}
+
+
+
 
 	public Double getExtrememax() {
 		return extrememax;

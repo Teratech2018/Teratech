@@ -5,7 +5,9 @@ package com.kerenedu.configuration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
@@ -25,10 +27,14 @@ public class CacheMemory implements Serializable{
 	/**
 	 * 
 	 */
+	
+	private static Map<Long, Map<TypeCacheMemory, Object>> cacheUser ;
+	
 	private static final long serialVersionUID = -5380964887951103704L;
 	private static PeriodeScolaire  periode = null ;
 	private static Filiere filiere = null;
 	private static Classe classe = null;
+	//private static ExamenP examenp = null;
 	private static Examen examen = null;
 	private static ModelBulletin modelBulletin = null ;
 	private static List<Inscription> listdestinataire = null;
@@ -49,12 +55,15 @@ public class CacheMemory implements Serializable{
 	private static String currentMatricule = null;
 	
 	private static PeriodePaie periodepaie = null ;
+	
+	private static CacheMemory _instance ;
 
 	/**
 	 * 
 	 */
 	private  CacheMemory() {
 		// TODO Auto-generated constructor stub
+		cacheUser  = new HashMap<>();
 	}
 	public static void init(){
 		filiere = null;
@@ -70,6 +79,39 @@ public class CacheMemory implements Serializable{
 		currentMatricule = null;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param type
+	 * @param value
+	 */
+	public static synchronized void insert(long id , TypeCacheMemory type , Object value){
+		getinstance();
+		if(!cacheUser.containsKey(id)){
+			Map<TypeCacheMemory,Object> map = new HashMap<TypeCacheMemory,Object>();
+			map.put(type, value);
+			cacheUser.put(id, map);
+		}else{
+			cacheUser.get(id).put(type, value);
+		}//end if(!cacheUser.containsKey(id)){
+	}
+	
+	private static synchronized CacheMemory getinstance(){
+		if(_instance!=null) return _instance;
+		//New instance if not exists
+		_instance = new CacheMemory();
+		return _instance;
+	}
+	/**
+	 * 
+	 * @param id
+	 * @param type
+	 * @return
+	 */
+	public static synchronized Object getValue(long id , TypeCacheMemory type){
+		if(!cacheUser.containsKey(id)) return null;
+		return cacheUser.get(id).get(type);
+	}
 	public static synchronized PeriodeScolaire getPeriode() {
 		return periode;
 	}
@@ -110,6 +152,7 @@ public class CacheMemory implements Serializable{
 		CacheMemory.modelBulletin = modelBulletin;
 	}
 
+	
 	public static synchronized Examen getExamen() {
 		return examen;
 	}
@@ -206,11 +249,23 @@ public class CacheMemory implements Serializable{
 	public static Etablissement getCurrentSchool() {
 		return currentSchool;
 	}
-
+//
+//	public static ExamenP getExamenp() {
+//		return examenp;
+//	}
+//	public static void setExamenp(ExamenP examenp) {
+//		CacheMemory.examenp = examenp;
+//	}
 	public static void setCurrentSchool(Etablissement currentSchool) {
 		CacheMemory.currentSchool = currentSchool;
 	}
 
+	public static Map<Long, Map<TypeCacheMemory, Object>> getCacheUser() {
+		return cacheUser;
+	}
+	public static void setCacheUser(Map<Long, Map<TypeCacheMemory, Object>> cacheUser) {
+		CacheMemory.cacheUser = cacheUser;
+	}
 	public static List<Predicat> defaultPredicatsCycleAnnee(){
 		List<Predicat> predicats = new ArrayList<Predicat>();
 	RestrictionsContainer container = RestrictionsContainer.newInstance();

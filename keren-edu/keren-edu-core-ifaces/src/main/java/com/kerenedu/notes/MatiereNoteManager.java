@@ -1,7 +1,10 @@
 
 package com.kerenedu.notes;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.ViewMatiereClasseModal;
 
 
 /**
@@ -14,5 +17,8 @@ public interface MatiereNoteManager
 {
 
     public final static String SERVICE_NAME = "MatiereNoteManager";
+    public List<MatiereNote> getCriteres(ViewMatiereClasseModal critere);
+    
+    public void importNote(MatiereNote entity);
 
 }

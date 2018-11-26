@@ -10,12 +10,15 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.Appreciation;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Cycle;
 import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.MatiereDlt;
+import com.kerenedu.discipline.ViewAbscence;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.school.Eleve;
 
@@ -57,6 +60,14 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
 	protected Examen examen;
+
+	@ManyToOne
+	@JoinColumn(name = "ABS_ID")
+	protected ViewAbscence abscence;
+
+	@ManyToOne
+	@JoinColumn(name = "NOTE_ID")
+	protected NoteDetail notedetail;
 
 	@Column(name = "NOTE1")
 	private Double note1 = new Double(0);
@@ -110,7 +121,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	private Long rangmoy = new Long(0);
 
 	@Column(name = "MOY_GEN_CLS")
-	private Double moyGenCls ;
+	private Double moyGenCls;
 
 	@Column(name = "MOY_PREMIER")
 	private Double moyPremier = new Double(0);
@@ -132,10 +143,10 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	@Column(name = "TOTAL_COEF")
 	private Long totalCoef = new Long(0);
-	
+
 	@Column(name = "ECART_TYPE")
 	private Double eType = new Double(0);
-	
+
 	@Column(name = "RANG1")
 	private Long rang1 = new Long(0);
 
@@ -150,31 +161,38 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	@Column(name = "RANG5")
 	private Long rang5 = new Long(0);
-	
+
 	@Column(name = "RANG6")
 	private Long rang6 = new Long(0);
 
-	
 	@Column(name = "APP_MAT")
-	private String appreciationMatiere ;
-	
-	@Column(name = "APP")
-	private String appreciation ;
-	
-	@Column(name = "SANCTION")
-	private String santcion ;
+	private String appreciationMatiere;
 
+
+	@Column(name = "APP")
+	protected String app;
+
+	@Column(name = "APP_EN")
+	protected String appen;
+
+	@Column(name = "SANCTION")
+	private String santcion;
+
+	@Transient
+	private byte[] photo;
 
 	public BulletinHelperGenerate() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	
+	public NoteDetail getNotedetail() {
+		return notedetail;
+	}
 
-	
-
-
+	public void setNotedetail(NoteDetail notedetail) {
+		this.notedetail = notedetail;
+	}
 
 	public BulletinHelperGenerate(Inscription inscription, Eleve eleve, Classe classe, Cycle cycle, String anneeid,
 			CoefMatiereDetail coef, MatiereDlt matiere, Examen examen, Double note1, Double note2, Double note3,
@@ -225,18 +243,19 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.rang5 = rang5;
 	}
 
-
-
 	public BulletinHelperGenerate(BulletinHelperGenerate bull) {
 		super(bull.id, bull.designation, bull.moduleName, 0L);
-		this.inscription = bull.inscription;
-		this.eleve = bull.eleve;
-		this.classe = bull.classe;
-		this.cycle = bull.cycle;
+		this.inscription = new Inscription(bull.inscription);
+		this.eleve = new Eleve(bull.eleve);
+		this.classe = new Classe(bull.classe);
+		this.cycle = new Cycle(bull.cycle);
 		this.anneeid = bull.anneeid;
 		this.coef = bull.coef;
-		this.matiere = bull.matiere;
-		this.examen = bull.examen;
+		this.matiere = new MatiereDlt(bull.matiere);
+		this.examen = new Examen(bull.examen);
+		if (bull.abscence != null) {
+			this.abscence = new ViewAbscence(bull.abscence);
+		}
 		this.note1 = bull.note1;
 		this.note2 = bull.note2;
 		this.note3 = bull.note3;
@@ -262,16 +281,20 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.tauxReussite = bull.tauxReussite;
 		this.totalPoint = bull.totalPoint;
 		this.totalCoef = bull.totalCoef;
-		this.eType=bull.eType;
-		this.rang1 =bull.rang1;
+		this.eType = bull.eType;
+		this.rang1 = bull.rang1;
 		this.rang2 = bull.rang2;
 		this.rang3 = bull.rang3;
 		this.rang4 = bull.rang4;
 		this.rang5 = bull.rang5;
-		this.appreciation=bull.appreciation;
-		this.santcion=bull.santcion;
-		this.appreciationMatiere=bull.appreciationMatiere;
-		this.rang6=bull.rang6;
+
+		this.santcion = bull.santcion;
+		this.appreciationMatiere = bull.appreciationMatiere;
+		this.rang6 = bull.rang6;
+		this.notedetail = new NoteDetail(bull.notedetail);
+		this.app = bull.app;
+		this.appen = bull.appen;
+		//this.appreciationMatiereen = bull.appreciationMatiereen;
 	}
 
 	@Override
@@ -298,7 +321,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		return id + "";
 	}
 
-	
 	public Classe getClasse() {
 		return classe;
 	}
@@ -315,7 +337,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.eleve = eleve;
 	}
 
-
 	public Cycle getCycle() {
 		return cycle;
 	}
@@ -326,6 +347,14 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	public void setRang1(Long rang1) {
 		this.rang1 = rang1;
+	}
+
+	public ViewAbscence getAbscence() {
+		return abscence;
+	}
+
+	public void setAbscence(ViewAbscence abscence) {
+		this.abscence = abscence;
 	}
 
 	public Long getRang2() {
@@ -364,7 +393,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.cycle = cycle;
 	}
 
-	
 	public String getAnneeid() {
 		return anneeid;
 	}
@@ -377,8 +405,26 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		return coef;
 	}
 
+	public String getApp() {
+		return app;
+	}
+
 	public void setCoef(CoefMatiereDetail coef) {
 		this.coef = coef;
+	}
+
+	
+
+	public String getAppen() {
+		return appen;
+	}
+
+	public void setAppen(String appen) {
+		this.appen = appen;
+	}
+
+	public void setApp(String app) {
+		this.app = app;
 	}
 
 	public MatiereDlt getMatiere() {
@@ -389,21 +435,17 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		return rang6;
 	}
 
-
-
-
-
-
-
 	public void setRang6(Long rang6) {
 		this.rang6 = rang6;
 	}
 
+	public byte[] getPhoto() {
+		return photo;
+	}
 
-
-
-
-
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
 
 	public void setMatiere(MatiereDlt matiere) {
 		this.matiere = matiere;
@@ -413,61 +455,17 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		return appreciationMatiere;
 	}
 
-
-
-
-
-
-
 	public void setAppreciationMatiere(String appreciationMatiere) {
 		this.appreciationMatiere = appreciationMatiere;
 	}
-
-
-
-
-
-
-
-	public String getAppreciation() {
-		return appreciation;
-	}
-
-
-
-
-
-
-
-	public void setAppreciation(String appreciation) {
-		this.appreciation = appreciation;
-	}
-
-
-
-
-
-
 
 	public String getSantcion() {
 		return santcion;
 	}
 
-
-
-
-
-
-
 	public void setSantcion(String santcion) {
 		this.santcion = santcion;
 	}
-
-
-
-
-
-
 
 	public Examen getExamen() {
 		return examen;
@@ -476,7 +474,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	public void setExamen(Examen examen) {
 		this.examen = examen;
 	}
-
 
 	public Long getRangmat() {
 		return rangmat;
@@ -494,8 +491,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.rangmoy = rangmoy;
 	}
 
-	
-
 	public Long getNbreMoy() {
 		return nbreMoy;
 	}
@@ -512,467 +507,189 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.nbreElve = nbreElve;
 	}
 
-	
-
 	public Inscription getInscription() {
 		return inscription;
 	}
-
-
-
-
-
-
 
 	public void setInscription(Inscription inscription) {
 		this.inscription = inscription;
 	}
 
-
-
-
-
-
-
 	public Double getNote1() {
 		return note1;
 	}
-
-
-
-
-
-
 
 	public void setNote1(Double note1) {
 		this.note1 = note1;
 	}
 
-
-
-
-
-
-
 	public Double getNote2() {
 		return note2;
 	}
-
-
-
-
-
-
 
 	public void setNote2(Double note2) {
 		this.note2 = note2;
 	}
 
-
-
-
-
-
-
 	public Double getNote3() {
 		return note3;
 	}
-
-
-
-
-
-
 
 	public void setNote3(Double note3) {
 		this.note3 = note3;
 	}
 
-
-
-
-
-
-
 	public Double getNote4() {
 		return note4;
 	}
-
-
-
-
-
-
 
 	public void setNote4(Double note4) {
 		this.note4 = note4;
 	}
 
-
-
-
-
-
-
 	public Double getNote5() {
 		return note5;
 	}
-
-
-
-
-
-
 
 	public void setNote5(Double note5) {
 		this.note5 = note5;
 	}
 
-
-
-
-
-
-
 	public Double getNote6() {
 		return note6;
 	}
-
-
-
-
-
-
 
 	public void setNote6(Double note6) {
 		this.note6 = note6;
 	}
 
-
-
-
-
-
-
 	public Double getMoyclasMat() {
 		return moyclasMat;
 	}
-
-
-
-
-
-
 
 	public void setMoyclasMat(Double moyclasMat) {
 		this.moyclasMat = moyclasMat;
 	}
 
-
-
-
-
-
-
 	public Double getExtrememaxmat() {
 		return extrememaxmat;
 	}
-
-
-
-
-
-
 
 	public void setExtrememaxmat(Double extrememaxmat) {
 		this.extrememaxmat = extrememaxmat;
 	}
 
-
-
-
-
-
-
 	public Double getExtremmeminmat() {
 		return extremmeminmat;
 	}
-
-
-
-
-
-
 
 	public void setExtremmeminmat(Double extremmeminmat) {
 		this.extremmeminmat = extremmeminmat;
 	}
 
-
-
-
-
-
-
 	public Double getMoy1() {
 		return moy1;
 	}
-
-
-
-
-
-
 
 	public void setMoy1(Double moy1) {
 		this.moy1 = moy1;
 	}
 
-
-
-
-
-
-
 	public Double getMoy2() {
 		return moy2;
 	}
-
-
-
-
-
-
 
 	public void setMoy2(Double moy2) {
 		this.moy2 = moy2;
 	}
 
-
-
-
-
-
-
 	public Double getMoy3() {
 		return moy3;
 	}
-
-
-
-
-
-
 
 	public void setMoy3(Double moy3) {
 		this.moy3 = moy3;
 	}
 
-
-
-
-
-
-
 	public Double getMoy4() {
 		return moy4;
 	}
-
-
-
-
-
-
 
 	public void setMoy4(Double moy4) {
 		this.moy4 = moy4;
 	}
 
-
-
-
-
-
-
 	public Double getMoy5() {
 		return moy5;
 	}
-
-
-
-
-
-
 
 	public void setMoy5(Double moy5) {
 		this.moy5 = moy5;
 	}
 
-
-
-
-
-
-
 	public Double getMoy6() {
 		return moy6;
 	}
-
-
-
-
-
-
 
 	public void setMoy6(Double moy6) {
 		this.moy6 = moy6;
 	}
 
-
-
-
-
-
-
 	public Double getMoyGenCls() {
 		return moyGenCls;
 	}
-
-
-
-
-
-
 
 	public void setMoyGenCls(Double moyGenCls) {
 		this.moyGenCls = moyGenCls;
 	}
 
-
-
-
-
-
-
 	public Double getMoyPremier() {
 		return moyPremier;
 	}
-
-
-
-
-
-
 
 	public void setMoyPremier(Double moyPremier) {
 		this.moyPremier = moyPremier;
 	}
 
-
-
-
-
-
-
 	public Double getMoyDernnier() {
 		return moyDernnier;
 	}
-
-
-
-
-
-
 
 	public void setMoyDernnier(Double moyDernnier) {
 		this.moyDernnier = moyDernnier;
 	}
 
-
-
-
-
-
-
 	public Double getTauxReussite() {
 		return tauxReussite;
 	}
-
-
-
-
-
-
 
 	public void setTauxReussite(Double tauxReussite) {
 		this.tauxReussite = tauxReussite;
 	}
 
-
-
-
-
-
-
 	public Double getTotalPoint() {
 		return totalPoint;
 	}
-
-
-
-
-
-
 
 	public void setTotalPoint(Double totalPoint) {
 		this.totalPoint = totalPoint;
 	}
 
-
-
-
-
-
-
 	public Long getTotalCoef() {
 		return totalCoef;
 	}
-
-
-
-
-
-
 
 	public void setTotalCoef(Long totalCoef) {
 		this.totalCoef = totalCoef;
 	}
 
-
-
-
-
-
-
 	public Double geteType() {
 		return eType;
 	}
 
-
-
-
-
-
-
 	public void seteType(Double eType) {
 		this.eType = eType;
 	}
-
-
-
-
-
-
 
 	public int compareTo(BulletinHelperGenerate o) {
 		// TODO Auto-generated method stub

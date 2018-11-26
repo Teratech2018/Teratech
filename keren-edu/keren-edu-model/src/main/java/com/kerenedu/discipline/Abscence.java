@@ -23,11 +23,9 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.core.tools.DateHelper;
-import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
-import com.kerenedu.personnel.EmargementProfDetails;
-import com.megatim.common.annotations.Filter;
+import com.kerenedu.notes.Examen;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -40,29 +38,32 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_abs")
 public class Abscence extends BaseElement implements Serializable, Comparable<Abscence> {
 
-	
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7426874191351556828L;
-
+	
+	@ManyToOne
+	@JoinColumn(name="PERI_ID")
+	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1)
+	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
+	private Examen periode ;
 	
 	@Column(name = "DATE_ABS")
-	@Predicate(label="DATE ABSCENCE",optional=false,updatable=true,search=true, type=Date.class,sequence=1, target="date" )
+	//@Predicate(label="DATE ABSCENCE",optional=false,updatable=true,search=true, type=Date.class,sequence=1, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datAbs;
 	
 	@Transient
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=3)
+	//@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=3)
 	private SectionE section ;
 	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=4, observable=true)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
+	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
 	
@@ -80,7 +81,7 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire;
 	
-
+	@Column(name = "ETAT")
 	@Predicate(label = "Etat", hide = true, search = true)
 	private String state = "etabli";
 
@@ -123,7 +124,10 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 		this.abscences = new ArrayList<LigneAbscence>();
 		this.anneScolaire=ins.anneScolaire;
 		state = ins.state;
-	
+		if(ins.getPeriode()!=null){
+			this.periode= new Examen(ins.getPeriode());
+		}
+		this.state=ins.state;
 	
 	}
 
@@ -215,7 +219,7 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return  " /du "+DateHelper.convertToString(datAbs, "dd/MM/yyyy")+"Classe de /"+classe.getLibelle();
+		return  " /de "+periode.getDesignation()+"Classe de /"+classe.getLibelle();
 	}
 
 
@@ -254,6 +258,20 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 
 	public void setSection(SectionE section) {
 		this.section = section;
+	}
+
+
+
+
+	public Examen getPeriode() {
+		return periode;
+	}
+
+
+
+
+	public void setPeriode(Examen periode) {
+		this.periode = periode;
 	}
 
 

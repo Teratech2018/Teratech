@@ -103,7 +103,7 @@ public class UserEducation extends BaseElement implements Serializable,Comparabl
         this.name = user.name;
         this.actif = user.actif;
         this.adminlevel = user.adminlevel;
-        this.CurrentSchool=user.getCurrentSchool();
+      //  this.CurrentSchool=user.getCurrentSchool();
  
     }
     
@@ -200,7 +200,7 @@ public class UserEducation extends BaseElement implements Serializable,Comparabl
     
     @Override
     public String getModuleName() {
-        return "kerencore"; //To change body of generated methods, choose Tools | Templates.
+        return "kereneducation"; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

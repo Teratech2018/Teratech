@@ -28,12 +28,14 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	@ManyToOne
 	@JoinColumn(name = "MATIERE_ID")
-	@Predicate(label = "Matiere", target = "many-to-one", type = MatiereDlt.class, search = true, optional=false, editable = false, sequence = 1, colsequence = 1)
-	private MatiereDlt matiere= new MatiereDlt() ;
+	@Predicate(label = "Matiere", target = "many-to-one", type = MatiereDlt.class, search = true, optional=false, editable = true, sequence = 1, colsequence = 1
+			,searchfields="matiere.libelle")
+	private MatiereDlt matiere;
 
 	@ManyToOne
 	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "PROF.", target = "many-to-one", type = Professeur.class, search = true, sequence = 2, colsequence = 2)
+	@Predicate(label = "PROF.", target = "many-to-one", type = Professeur.class, search = true, sequence = 2, colsequence = 2
+			,searchfields="proffesseur.nom")
 	private Professeur proffesseur;
 
 	@Column(name = "COEF")
@@ -55,7 +57,12 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	@ManyToOne 
     @JoinColumn(name = "CLASSE_ID")
+	@Predicate(label = "classe", target = "many-to-one", type = Classe.class, search = false,hide=true)
 	private Classe classe ;
+	
+
+	@Column(name = "AN_ID")
+	protected String anneScolaire ;
 	
 	public CoefMatiereDetail() {
 		super();
@@ -80,6 +87,7 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 		if(cmatdetail.classe!=null){
 		this.classe=new Classe( cmatdetail.classe);
 		}
+		this.anneScolaire=cmatdetail.anneScolaire;
 
 	}
 
@@ -169,6 +177,14 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	public void setGroupe(GroupeCours groupe) {
 		this.groupe = groupe;
+	}
+
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
 	}
 
 	public int compareTo(CoefMatiereDetail o) {

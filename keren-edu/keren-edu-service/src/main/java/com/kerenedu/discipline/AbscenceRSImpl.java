@@ -10,8 +10,10 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -74,6 +76,23 @@ public class AbscenceRSImpl extends AbstractGenericService<Abscence, Long> imple
 			throw new WebApplicationException(
 					Response.serverError().entity(new String("MetaData parse error")).build());
 		}
+	}
+	
+	
+
+	@Override
+	protected void processBeforeSave(Abscence entity) {
+		
+		 RestrictionsContainer container = RestrictionsContainer.newInstance();
+		 container.addEq("periode.id", entity.getPeriode().getId());
+		 container.addEq("classe.id", entity.getClasse().getId());
+		List<Abscence> abs = manager.filter(container.getPredicats(), null, null, 0 , -1);
+		
+		if(abs!=null&&abs.size()!=0){
+			throw new KerenExecption("Les Abscence de cette classe ont déjà été Pris en compte pour la séquence choisi !!!");
+		}
+		entity.setState("etabli");
+		super.processBeforeSave(entity);
 	}
 
 	@Override

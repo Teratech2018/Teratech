@@ -2,6 +2,7 @@
 package com.kerenedu.notes;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +13,14 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseDAOLocal;
+import com.kerenedu.discipline.LigneAbscence;
+import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionDAOLocal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -24,6 +32,12 @@ public class NoteDetailManagerImpl
 
     @EJB(name = "NoteDetailDAO")
     protected NoteDetailDAOLocal dao;
+    
+    @EJB(name = "InscriptionDAO")
+    protected InscriptionDAOLocal daoIns;
+    
+    @EJB(name = "ClasseDAO")
+    protected ClasseDAOLocal daoClasse;
 
     public NoteDetailManagerImpl() {
     }
@@ -74,6 +88,32 @@ public class NoteDetailManagerImpl
    		NoteDetail elev = super.delete(id);
    		return new NoteDetail(elev);
    	}
+
+	@Override
+	public void importNote(List<NoteDetail> notelist, MatiereNote matiere) {
+	
+		
+	}
+
+	@Override
+	public List<NoteDetail> findeleve(long idclasse) {
+		List<NoteDetail> results = new ArrayList<NoteDetail>();
+		if(idclasse>0){
+			Classe cls = daoClasse.findByPrimaryKey("id", idclasse);
+			CacheMemory.setClasse(cls);
+			RestrictionsContainer container = RestrictionsContainer.newInstance();
+	   		 container.addEq("classe", cls.getId());
+	   		 List<Inscription>records = daoIns.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+	   		 int index =0;
+	   		 for(Inscription ins :records){
+	   			NoteDetail lgnsbs= new NoteDetail(ins);
+	   			 lgnsbs.setId(-index);
+	   			 results.add(lgnsbs);
+	   			index ++;
+	   		 }
+		}
+		return results;
+	}
 
 
 

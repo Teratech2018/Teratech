@@ -15,6 +15,9 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.allerte.ViewHelperTrtglobal;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.notes.CoefMatiereDetail;
@@ -37,6 +40,9 @@ public class ProfesseurManagerImpl
     
     @EJB(name = "ClasseDAO")
     protected ClasseDAOLocal daoclasse;
+    
+    @EJB(name = " AnneScolaireDAO")
+    protected AnneScolaireDAOLocal daoanne;
 
     public ProfesseurManagerImpl() {
     }
@@ -53,7 +59,9 @@ public class ProfesseurManagerImpl
     @Override
    	public List<Professeur> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
-   		// TODO Auto-generated method stub
+//    	RestrictionsContainer container = RestrictionsContainer.newInstance();
+//    	container.addEq("discriminant","P");   	
+//    	predicats.addAll(container.getPredicats());
    		List<Professeur> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
    		List<Professeur> result = new ArrayList<Professeur>();
    		for(Professeur elev:datas){
@@ -153,5 +161,16 @@ public class ProfesseurManagerImpl
 				
 		return result;
 	}
+	
+	@Override
+	public void processAfterSave(Professeur entity) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+		// set Matricule 
+		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
+		super.processAfterSave(entity);
+	}
+  	
 	
 }

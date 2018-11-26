@@ -218,7 +218,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA["LISTE DES ELEVES INCRITS/CLASSE  "]]></textFieldExpression>
+					<textFieldExpression><![CDATA["LISTE DES ELEVES INSCRITS/CLASSE  "]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="421" y="94" width="131" height="12" uuid="6a5093f0-6082-4b4f-b417-f5c71cbfab69"/>

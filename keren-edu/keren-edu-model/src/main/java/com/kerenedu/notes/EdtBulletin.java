@@ -4,16 +4,18 @@
 package com.kerenedu.notes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
-import com.kerenedu.configuration.SectionE;
-import com.megatim.common.annotations.Filter;
+import com.kerenedu.inscription.InscriptionChoice;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -31,7 +33,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
     @JoinColumn(name = "SEQ_ID")
-	@Predicate(label="Sequence",updatable=true,type=Examen.class , target="many-to-one", sequence=1)
+	@Predicate(label="Sequence",updatable=true,type=Examen.class , target="many-to-one", sequence=1, optional=false)
     protected Examen seq;
 
 //	@Column(name = "LIBELLE")
@@ -43,19 +45,28 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
     @JoinColumn(name = "FILIERE_ID")
 //	@Predicate(label="Selectionner La Filiere",updatable=true,type=Filiere.class , target="many-to-one", sequence=2)
     protected Filiere filiere;
-	
-	@Transient
-	@ManyToOne
-	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2)
-	private SectionE section ;
-	
+//	
+//	@Transient
+//	@ManyToOne
+//	@JoinColumn(name="SECTION_ID")
+//	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2)
+//	private SectionE section ;
+//	
 		
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=3, observable=true)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true, optional=false)
+	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
+	
+	@Predicate(label="Elève Concerne ?",target="combobox",values="Tous les élèves;Seulement les élèves selectionnés",optional=false,sequence=3)
+	//@Filter(value="[{\"fieldName\":\"classe\",\"value\":\"object.classe\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une classe\"}]")
+	private String porte ="0";
+	
+	@ManyToMany
+	@Predicate(label="EM",type=InscriptionChoice.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Elèves",hidden="temporalData.porte=='0' || temporalData.porte==null")
+	@Observer(observable="classe",source="method:getidclasse",parameters="classe")
+	private List<InscriptionChoice> concernes = new ArrayList<InscriptionChoice>();
 	
 
 	public EdtBulletin() {
@@ -68,7 +79,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 		super(bull.id, bull.designation, bull.moduleName,0L);
 		this.filiere = new Filiere(bull.filiere);
 		this.classe = new Classe(bull.classe);
-		this.section= new SectionE(bull.getSection());
+	//	this.section= new SectionE(bull.getSection());
 		this.seq=bull.seq;
 		
 
@@ -79,14 +90,14 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Editer les Bulletins à Editer ";
+		return "Traitement des notes ";
 	}
 
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Editer les Bulletins à Editer";
+		return "Traitement des notes";
 	}
 
 	@Override
@@ -125,16 +136,16 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 		return classe;
 	}
 
-
-
-	public SectionE getSection() {
-		return section;
-	}
-
-
-	public void setSection(SectionE section) {
-		this.section = section;
-	}
+//
+//
+//	public SectionE getSection() {
+//		return section;
+//	}
+//
+//
+//	public void setSection(SectionE section) {
+//		this.section = section;
+//	}
 
 
 	public void setClasse(Classe classe) {
@@ -144,6 +155,26 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 
 	public void setFiliere(Filiere filiere) {
 		this.filiere = filiere;
+	}
+
+
+	public String getPorte() {
+		return porte;
+	}
+
+
+	public void setPorte(String porte) {
+		this.porte = porte;
+	}
+
+
+	public List<InscriptionChoice> getConcernes() {
+		return concernes;
+	}
+
+
+	public void setConcernes(List<InscriptionChoice> concernes) {
+		this.concernes = concernes;
 	}
 
 

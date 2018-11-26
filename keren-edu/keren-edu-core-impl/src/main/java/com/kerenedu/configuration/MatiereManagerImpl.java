@@ -54,11 +54,15 @@ public class MatiereManagerImpl
    	public Matiere find(String propertyName, Long entityID) {
    		// TODO Auto-generated method stub
    		Matiere elev = super.find(propertyName, entityID);
+   		if(elev!=null){
    		Matiere data = new Matiere(elev);
    		for(MatiereDlt mat :elev.getMatieres()){
    			data.getMatieres().add(mat);
    		}
+   	
    		return data;
+   		}
+		return new Matiere();
    	}
 
    	@Override

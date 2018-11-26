@@ -49,7 +49,10 @@ public class Matiere extends BaseElement implements Serializable, Comparable<Mat
 
 	public Matiere(Matiere filiere) {
 		super(filiere.id, filiere.designation, filiere.moduleName,0L);
-		this.filiere=filiere.filiere;
+		if(filiere.filiere!=null){
+			this.filiere=new Filiere(filiere.filiere);
+		}
+		
 		this.matieres= new ArrayList<MatiereDlt>();
 
 	}

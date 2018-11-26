@@ -240,6 +240,16 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		if (entity.getZremise() == null) {
 			entity.setZremise((long) 0);
 		}
+		if (entity.getZremise() <0) {
+			throw new KerenExecption("La Remise Saisie ne peut etre negative !!!!!");
+		}
+		
+		if (entity.getZristourne() <0) {
+			throw new KerenExecption("Aucun montant ne peut etre negative !!!!!");
+		}
+		if (entity.getzMntverser() <0) {
+			throw new KerenExecption("Aucun montant  ne peut etre negative !!!!!");
+		}
 
 		if (entity.getEleve() == null) {
 			throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Selectionner l'elève  !!!!");
@@ -297,7 +307,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			
 			if(totalpayer==inscription.getzMnt()){
 				entity.setZremise(remise);
-				long versement = entity.getzMntverser()- remise - entity.getZristourne() ;//- remise - entity.getZristourne()
+				long versement = entity.getzMntverser();//- remise - entity.getZristourne() ;//- remise - entity.getZristourne()
 				System.out.println("PaiementRSImpl.processBeforeSave() versement is :" + versement);
 				entity.setzMntverser(versement);
 			}

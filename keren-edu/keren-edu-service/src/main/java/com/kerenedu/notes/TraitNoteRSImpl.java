@@ -15,12 +15,15 @@ import javax.ws.rs.core.HttpHeaders;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.core.ifaces.report.ViewNoteHelperManagerRemote;
+import com.kerenedu.core.ifaces.report.ViewNotematiereManagerRemote;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionManagerRemote;
-import com.kerenedu.model.report.ViewNoteHelper;
+import com.kerenedu.model.report.ViewNotematiere;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -55,6 +58,9 @@ public class TraitNoteRSImpl
     
     @Manager(application = "kereneducation", name = "InscriptionManagerImpl", interf = InscriptionManagerRemote.class)
     protected InscriptionManagerRemote managerEleve;
+    
+    @Manager(application = "kereneducation", name = "ViewNotematiereManagerImpl", interf = ViewNotematiereManagerRemote.class)
+    protected ViewNotematiereManagerRemote managerhelpernote;
 
     public TraitNoteRSImpl() {
         super();
@@ -87,20 +93,34 @@ public class TraitNoteRSImpl
 
     @Override
     public TraitNote update(@Context HttpHeaders headers,Long id, TraitNote entity) {
-    	CacheMemory.setPeriode(entity.getPeriode().getPeriode());
-    	CacheMemory.setFiliere(entity.getClasse().getFiliere());
-    	CacheMemory.setClasse(entity.getClasse());
-    	CacheMemory.setExamen(entity.getPeriode());
+//   // 	CacheMemory.setPeriode(entity.getPeriode().getPeriode());
+//    	CacheMemory.setFiliere(entity.getClasse().getFiliere());
+//    	CacheMemory.setClasse(entity.getClasse());
+//    	CacheMemory.setExamen(entity.getPeriode());
+//    	//CacheMemory.setExamenp(entity.getEvaluation());
+    	
+    	Gson gson = new Gson();
+		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+		CacheMemory.insert(iduser, TypeCacheMemory.FILLIERE, entity.getClasse().getFiliere());
+		CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, entity.getClasse());
+		CacheMemory.insert(iduser, TypeCacheMemory.EXAMEN, entity.getPeriode());
+	
         return entity; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public TraitNote save(@Context HttpHeaders headers,TraitNote entity) {
         //To change body of generated methods, choose Tools | Templates.
-    	CacheMemory.setPeriode(entity.getPeriode().getPeriode());
-    	CacheMemory.setFiliere(entity.getClasse().getFiliere());
-    	CacheMemory.setClasse(entity.getClasse());
-    	CacheMemory.setExamen(entity.getPeriode());
+  	
+    	if (!entity.getPeriode().getState().equals("etabli")) {
+			throw new KerenExecption(
+					"impossible de saisir les notes : les saisies pour cette sequence sont  cloturees !!!");
+		}
+    	Gson gson = new Gson();
+		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+		CacheMemory.insert(iduser, TypeCacheMemory.FILLIERE, entity.getClasse().getFiliere());
+		CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, entity.getClasse());
+		CacheMemory.insert(iduser, TypeCacheMemory.EXAMEN, entity.getPeriode());
     	System.out.println("TraitNoteRSImpl.save() current exercice is "+CacheMemory.getCurrentannee());
     	RestrictionsContainer container = RestrictionsContainer.newInstance();
     	List<MatiereNote> datas = new ArrayList<MatiereNote>();
@@ -126,11 +146,13 @@ public class TraitNoteRSImpl
 		
 		// recherche des note dèja enregistrer pour chaque éleve 
 		for(CoefMatiereDetail mt : listMatieres ){
+			if(mt.getMatiere().isState()){
 			container = RestrictionsContainer.newInstance();
 			container.addEq("classe.id", entity.getClasse().getId());
 			container.addEq("matiere.id", mt.getId());
 			container.addEq("examen.id",entity.getPeriode().getId());
-			List<ViewNoteHelper>notebd= managerhelper.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+		
+			List<ViewNotematiere>notebd= managerhelpernote.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 			
 			if(notebd==null||notebd.isEmpty()||notebd.size()==0){
 	   	   			MatiereNote mtrt = new MatiereNote(mt,entity.getPeriode(),eleves);
@@ -140,6 +162,7 @@ public class TraitNoteRSImpl
 //			}else{
 ////				throw new KerenExecption("ERROR: note dejà pris en compte!!!!");
 ////			}
+			}
 		} 	
     	
         return entity; 

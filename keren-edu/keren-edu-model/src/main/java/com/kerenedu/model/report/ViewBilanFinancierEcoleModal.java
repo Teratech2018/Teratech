@@ -4,23 +4,11 @@
 package com.kerenedu.model.report;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Cycle;
-import com.kerenedu.inscription.Inscription;
-import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -31,7 +19,7 @@ public class ViewBilanFinancierEcoleModal extends BaseElement implements Seriali
 
 
 	@Column(name = "CYCLE")
-	@Predicate(label="Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primare;Secondaire;Tous" , sequence=11)
+	@Predicate(label="Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primaire;Secondaire;Tous" , sequence=11)
 	protected String typecycle="0";
 	
 	public ViewBilanFinancierEcoleModal() {

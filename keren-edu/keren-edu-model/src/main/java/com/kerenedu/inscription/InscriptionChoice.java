@@ -45,14 +45,23 @@ public class InscriptionChoice extends BaseElement implements Serializable, Comp
 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1)
+	//@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1)
 //	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	//@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"section.id\"}]")
 	protected Classe classe;
+	
+	@Column(name = "MATRICULE")
+	@Predicate(label = "MATRICULE", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 1, searchfields = "eleve.matricule")
+	protected String matricule;
+	
+	
+	@Column(name = "NOM")
+	@Predicate(label = "NOM", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 2, searchfields = "eleve.nom")
+	protected String nom;
 
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
-	@Predicate(label = "Elève", updatable = true, type = Eleve.class, target = "many-to-one", search = true, sequence = 3, searchfields = "nom", colsequence = 2)
+	//@Predicate(label = "Elève", updatable = true, type = Eleve.class, target = "many-to-one", search = true, sequence = 3, searchfields = "nom", colsequence = 2)
 	protected Eleve eleve;
 
 	@Column(name = "STATUT")
@@ -136,6 +145,8 @@ public class InscriptionChoice extends BaseElement implements Serializable, Comp
 		this.zMnt = ins.zMnt;
 		if (ins.eleve != null) {
 			this.eleve = new Eleve(ins.eleve);
+			this.matricule=ins.eleve.getMatricule();
+			this.nom=ins.eleve.getNom()+" "+ins.eleve.getPrenon();
 		}
 
 		this.zMnt = ins.zMnt;
@@ -235,6 +246,22 @@ public class InscriptionChoice extends BaseElement implements Serializable, Comp
 		int hash = 7;
 		hash = 79 * hash + Objects.hashCode(this.id);
 		return hash;
+	}
+
+	public String getMatricule() {
+		return matricule;
+	}
+
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
 	public int compareTo(InscriptionChoice o) {
@@ -366,7 +393,7 @@ public class InscriptionChoice extends BaseElement implements Serializable, Comp
 	@Override
 	public boolean isCreateonfield() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

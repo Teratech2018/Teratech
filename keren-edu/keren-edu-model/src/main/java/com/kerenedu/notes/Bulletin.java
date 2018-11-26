@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.ViewHandler;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
@@ -42,21 +42,37 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	// @Predicate(label="LIBELLE",optional=false,updatable=false,search=true ,
 	// sequence=1, colsequence=1)
 	protected String code;
+	
+	
+	@Column(name = "MATRICULE")
+	@Predicate(label = "MATRICULE", optional = true, updatable = false, search = true, type = String.class, sequence=1)
+	protected String matricule;
+	
+	
+	@Column(name = "NOM")
+	@Predicate(label = "NOM", optional = true, updatable = false, search = true, type = String.class,  sequence=2)
+	protected String nom;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "INS_ID")
-	@Predicate(label = "ELEVE", updatable = false, search = true, type = Eleve.class, target = "many-to-one", sequence = 1, editable = false)
+	//@Predicate(label = "ELEVE", updatable = false, search = true, type = Eleve.class, target = "many-to-one", sequence = 1, editable = false)
 	protected Eleve eleve;
 
 	@ManyToOne
 	@JoinColumn(name = "CLS_ID")
-	@Predicate(label = "CLASSE", updatable = false, search = true, type = Classe.class, target = "many-to-one", sequence = 2, editable = false)
+	@Predicate(label = "CLASSE", updatable = false, search = true, type = Classe.class, target = "many-to-one", sequence = 3, editable = false)
 	protected Classe classe;
 
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
-	@Predicate(label = "Type Bulletin", updatable = true, type = Examen.class, target = "many-to-one", sequence = 3)
+	@Predicate(label = "Type Bulletin", updatable = true, type = ExamenS.class, target = "many-to-one", sequence = 4)
 	protected Examen model;
+	
+//	@ManyToOne
+//	@JoinColumn(name = "EXAMEN_S_ID")
+//	@Predicate(label = "Type Bulletin", updatable = true, type = ExamenS.class, target = "many-to-one", sequence = 3)
+//	protected Examen modelS;
 
 	@ManyToOne
 	@JoinColumn(name = "INSCRIPTION_ID")
@@ -152,6 +168,9 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	private Double extremmemin = new Double(0);
 
 	private String state = "etabli";
+	
+	@Transient
+	private byte[] photo ;
 
 	public Bulletin() {
 		super();
@@ -226,18 +245,38 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.retards = bulletin.retards;
 		this.appre = bulletin.appre;
 		this.sanction = bulletin.sanction;
+		this.matricule=bulletin.matricule;
+		this.nom=bulletin.nom;
 		if (bulletin.inscription != null) {
 			this.inscription = new Inscription(bulletin.inscription);
 		}
 	}
 
+	public String getMatricule() {
+		return matricule;
+	}
+
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
 	public Bulletin(ViewNoteHelper helper, Examen model) {
 		this.code = model.getId() + "";
 		this.eleve = new Eleve(helper.getEleve().getEleve());
+		this.matricule=helper.getEleve().getMatricule();
+		this.nom=helper.getEleve().getEleve().getNom()+" "+helper.getEleve().getEleve().getPrenon();
 		this.model = new Examen(model);
 		this.lignes = new ArrayList<LigneBulletinClasse>();
 		this.classe = new Classe(helper.getClasse());
-		this.tcoef = (long) helper.getMatiere().getCoeficient();
+		this.tcoef = (long) helper.getMatiere().getMatiere().getCoeficient();
 		this.tpoint = new Double(0);
 		this.rang = new Long(0);
 		this.tcoef = new Long(0);
@@ -262,6 +301,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.rang = helper.getRang();
 
 	}
+	
 
 	public String getCode() {
 		return code;
@@ -425,6 +465,14 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 	public void setSanction(String sanction) {
 		this.sanction = sanction;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 
 	public Long getExclusions() {

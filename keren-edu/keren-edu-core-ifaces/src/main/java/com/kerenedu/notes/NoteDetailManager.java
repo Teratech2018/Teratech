@@ -1,6 +1,8 @@
 
 package com.kerenedu.notes;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 
@@ -14,5 +16,9 @@ public interface NoteDetailManager
 {
 
     public final static String SERVICE_NAME = "NoteDetailManager";
+    
+    public void importNote(List<NoteDetail> notelist ,MatiereNote matiere);
+    
+    public List<NoteDetail> findeleve(long idclasse);
 
 }

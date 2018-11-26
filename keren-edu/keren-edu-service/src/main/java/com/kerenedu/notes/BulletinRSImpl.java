@@ -2,8 +2,10 @@
 package com.kerenedu.notes;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -13,10 +15,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.core.ifaces.report.ViewBulletinManagerRemote;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
@@ -155,15 +163,48 @@ public class BulletinRSImpl
               System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
               Map parameters = new HashMap();
               parameters= this.getReportParameters();
-              return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+              List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();
+              for(BulletinHelperGenerate bull:records){
+            	  if (bull.getEleve().getImage() != null) {
+            		  bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
+            	  }
+            	  datas.add(bull);
+              }
+              return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
             Response.serverError().build();
         }catch (JRException ex) {
             Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
  
         return Response.noContent().build();
     }
+    
+
+	@Override
+	public List<Bulletin> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		Classe classe = (Classe) CacheMemory.getValue(id, TypeCacheMemory.CLASSE);
+		Filiere filiere = (Filiere) CacheMemory.getValue(id, TypeCacheMemory.FILLIERE);
+
+		if (classe != null) {
+			container.addEq("classe.id", classe.getId());
+		} // end if(classe!=null)
+
+		if (filiere != null) {
+			container.addEq("classe.filiere.id", filiere.getId());
+		} // end if(mdl!=null)
+
+		
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
+	
 
 }

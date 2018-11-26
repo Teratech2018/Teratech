@@ -24,8 +24,8 @@ import com.megatim.common.annotations.Predicate;
  * @author ntchuente
  *
  */
-@Table
-@Entity(name = "e_examen")
+@Entity
+@Table(name = "e_examen")
 public class Examen extends BaseElement implements Serializable, Comparable<Examen> {
 
 	@Column(name = "CODE", unique = true)
@@ -33,26 +33,34 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	protected String code;
 
 	@Column(name = "LIBELLE")
-	@Predicate(label = "Type Séquence", optional = false, updatable = true, search = true, target = "combobox", values = "1ere Séquence;2eme Séquence;3éme Séquence;4éme Séquence;5éme Séquence;6éme Séquence", sequence = 2, colsequence = 1)
+	@Predicate(label = "Type Séquence", optional = false, updatable = true, search = true, target = "combobox", values = "1ere Séquence;2eme Séquence;3éme Séquence;4éme Séquence;5éme Séquence;6éme Séquence", sequence = 2)
 	protected String typesequence = "0";
 
-	@Column(name = "SUR")
-	@Predicate(label = "POURCENTAGE", optional = false, updatable = true, search = true, type = Long.class, sequence = 3, colsequence = 3)
-	protected long sur = new Long(100);
+	@Column(name = "EVAL_1")
+	@Predicate(label = "% Eval N1", optional = false, updatable = true, search = true, type = Double.class, sequence = 3)
+	protected Double e1 = new Double(100);
+	
+	@Column(name = "EVAL_2")
+	@Predicate(label = "% Eval N2", optional = false, updatable = true, search = true, type = Double.class, sequence = 4)
+	protected Double e2 = new Double(100);
+	
+	@Column(name = "EVAL_3")
+	@Predicate(label = "% Eval N3", optional = false, updatable = true, search = true, type = Double.class, sequence = 5)
+	protected Double e3 = new Double(100);
 
 	@ManyToOne
 	@JoinColumn(name = "PERIODE_ID")
-	@Predicate(label = "PERIODE SCOLAIRE", updatable = true, type = PeriodeScolaire.class, target = "many-to-one", search = true, sequence = 4, colsequence = 2)
+	//@Predicate(label = "PERIODE SCOLAIRE", updatable = true, type = PeriodeScolaire.class, target = "many-to-one", search = true, sequence = 6, colsequence = 2)
 	protected PeriodeScolaire periode;
 
 	@Column(name = "D_DEBUT")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "Début ", optional = false, updatable = true, type = Date.class, target = "date", sequence = 5)
+	//@Predicate(label = "Début ", optional = false, updatable = true, type = Date.class, target = "date", sequence = 7)
 	protected Date dDeb;
 
 	@Column(name = "D_FIN")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "Fin", optional = false, updatable = true, target = "date", type = Date.class, sequence = 6)
+	//@Predicate(label = "Fin", optional = false, updatable = true, target = "date", type = Date.class, sequence = 6)
 	protected Date dFin;
 
 	@Predicate(label = "Statut", search = true, hide = true)
@@ -66,7 +74,9 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	public Examen(Examen filiere) {
 		super(filiere.id, filiere.designation, filiere.moduleName, 0L);
 		this.typesequence = filiere.typesequence;
-		this.sur = filiere.sur;
+		this.e1 = filiere.e1;
+		this.e2 = filiere.e2;
+		this.e3 = filiere.e3;
 		if (filiere.periode != null) {
 			this.periode = new PeriodeScolaire(filiere.periode);
 		}
@@ -85,9 +95,7 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 		this.code = code;
 	}
 
-	public long getSur() {
-		return sur;
-	}
+
 
 	public String getTypesequence() {
 		return typesequence;
@@ -97,9 +105,7 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 		this.typesequence = typesequence;
 	}
 
-	public void setSur(long sur) {
-		this.sur = sur;
-	}
+
 
 	public PeriodeScolaire getPeriode() {
 		return periode;
@@ -169,6 +175,30 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 
 	public String getState() {
 		return state;
+	}
+
+	public Double getE1() {
+		return e1;
+	}
+
+	public void setE1(Double e1) {
+		this.e1 = e1;
+	}
+
+	public Double getE2() {
+		return e2;
+	}
+
+	public void setE2(Double e2) {
+		this.e2 = e2;
+	}
+
+	public Double getE3() {
+		return e3;
+	}
+
+	public void setE3(Double e3) {
+		this.e3 = e3;
 	}
 
 	public void setState(String state) {

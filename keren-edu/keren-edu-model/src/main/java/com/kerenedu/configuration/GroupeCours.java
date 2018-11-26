@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
@@ -27,6 +29,15 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 	@Column(name = "LIBELLE")	
 	@Predicate(label="LIBELLE",optional=false,updatable=true,search=true , sequence=2, colsequence=2)
 	protected String libelle;
+	
+	@Column(name = "LIBELLE_EN")	
+	@Predicate(label="LIBELLE Anglais",optional=false,updatable=true,search=true , sequence=2, colsequence=2)
+	protected String libelleen;
+	
+	@ManyToOne 
+	@JoinColumn(name = "CYCLE_ID")
+	@Predicate(label = "Cycle",target = "many-to-one",type = Cycle.class,search = true  , sequence=4, colsequence=4)
+	private Cycle cycle = new Cycle();
 	
 //	@Column(name = "COEF")	
 //	@Predicate(label="Coeficient",optional=true,updatable=true,search=true , sequence=3, colsequence=3, editable=false)
@@ -68,6 +79,11 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		super(annee.id, annee.designation, annee.moduleName,0L);
 		this.code = annee.code;
 		this.libelle = annee.libelle;
+		this.libelleen = annee.libelleen;
+		if(annee.cycle!=null){
+			this.cycle= new Cycle(annee.cycle);
+		}
+		
 //		this.matiereList= new ArrayList<MatiereDlt>();
 
 	}
@@ -103,6 +119,26 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		// TODO Auto-generated method stub
 		return "Gestion des Modules";
 	}
+
+	public Cycle getCycle() {
+		return cycle;
+	}
+
+
+	public void setCycle(Cycle cycle) {
+		this.cycle = cycle;
+	}
+
+
+	public String getLibelleen() {
+		return libelleen;
+	}
+
+
+	public void setLibelleen(String libelleen) {
+		this.libelleen = libelleen;
+	}
+
 
 	@Override
 	public String getModuleName() {

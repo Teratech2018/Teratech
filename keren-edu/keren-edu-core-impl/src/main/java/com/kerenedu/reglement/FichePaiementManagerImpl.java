@@ -14,6 +14,9 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.KerenExecption;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.inscription.Inscription;
 import com.megatim.common.annotations.OrderType;
@@ -30,6 +33,9 @@ public class FichePaiementManagerImpl
     
     @EJB(name = "MoratoireDAO")
     protected  MoratoireDAOLocal moratoiredao;
+    
+    @EJB(name = "AnneScolaireDAO")
+    protected  AnneScolaireDAOLocal anneedao;
 
     public FichePaiementManagerImpl() {
     }
@@ -102,12 +108,33 @@ public class FichePaiementManagerImpl
 
 	@Override
 	public void processBeforeSave(FichePaiement entity) {
-		// recuperer la classe 
+		
+		entity.setAnneScolaire(this.getanneeScolairecourant().getCode());
 		
 
 		super.processBeforeSave(entity);
 	}
+	
+	@Override
+	public void processBeforeUpdate(FichePaiement entity) {
+		
+		entity.setAnneScolaire(this.getanneeScolairecourant().getCode());
+		
 
+		super.processBeforeUpdate(entity);
+	}
+
+
+	
+	private AnneScolaire getanneeScolairecourant(){
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = anneedao.filter(container.getPredicats(), null, null, 0, -1);
+		if (annee == null || annee.size() == 0) {
+			throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
+		}
+		return annee.get(0);
+	}
 
    	
 }

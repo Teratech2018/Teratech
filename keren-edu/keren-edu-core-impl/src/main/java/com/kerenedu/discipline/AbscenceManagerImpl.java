@@ -118,13 +118,13 @@ public class AbscenceManagerImpl
 	    }
 	    for(LigneAbscence lgn : entity.getAbscences()){
 	    	lgn.setId(-1);
-	    	if(lgn.getHdebut().equals("00:00")){
-	    		throw new KerenExecption("Renseigner l'heure de Début!!!");
-	    	}
-	    	if(lgn.getHfin().equals("00:00")){
-	    		throw new KerenExecption("Renseigner l'heure de Fin !!!");
-	    	}
-	    	lgn.setHeuretotal(DateHelper.hours(lgn.getHdebut(), lgn.getHfin(),new Date()));
+//	    	if(lgn.getHdebut().equals("00:00")){
+//	    		throw new KerenExecption("Renseigner l'heure de Début!!!");
+//	    	}
+//	    	if(lgn.getHfin().equals("00:00")){
+//	    		throw new KerenExecption("Renseigner l'heure de Fin !!!");
+//	    	}
+//	    	lgn.setHeuretotal(DateHelper.hours(lgn.getHdebut(), lgn.getHfin(),new Date()));
 	    	ligne.add(lgn);
 	    }
 	    entity.setAbscences(ligne);

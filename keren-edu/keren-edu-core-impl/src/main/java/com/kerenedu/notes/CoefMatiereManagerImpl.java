@@ -16,6 +16,8 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerem.core.KerenExecption;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseDAOLocal;
@@ -45,6 +47,9 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 
 	@EJB(name = "FiliereDAO")
 	protected FiliereDAOLocal filieredao;
+	
+	@EJB(name = "AnneScolaireDAO")
+	protected AnneScolaireDAOLocal annedao;
 
 	public CoefMatiereManagerImpl() {
 	}
@@ -63,11 +68,11 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 	public List<CoefMatiere> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		if(CacheMemory.getFiliere() !=null){
-			container.addEq("classe.filiere.id", CacheMemory.getFiliere().getId());	
-		}
-		predicats.addAll(container.getPredicats());
+//		RestrictionsContainer container = RestrictionsContainer.newInstance();
+//		if(CacheMemory.getFiliere() !=null){
+////			container.addEq("classe.filiere.id", CacheMemory.getFiliere().getId());	
+//		}
+//		predicats.addAll(container.getPredicats());
 		List<CoefMatiere> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<CoefMatiere> result = new ArrayList<CoefMatiere>();
 		for (CoefMatiere elev : datas) {
@@ -143,6 +148,7 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 				System.out.println(
 						"CoefMatiereManagerImpl.findMatiereFiliere() filiere id is" + classe.getFiliere().getId());
 				container.addEq("filiere.id", classe.getFiliere().getId());
+				
 				Matiere mat = matieredao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1).get(0);
 				List<MatiereDlt> lisyMatiere = mat.getMatieres();
 				long index = 1;
@@ -158,6 +164,34 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 					datas.add(new CoefMatiereDetail(mftl));
 				}
 			} // end if(result==null||result.isEmpty())
+
+		} // end if(id!=-1){
+		return datas;
+	}
+	
+	public List<ImportNoteClasseFile> findMatiere(Long id) {
+		
+		List<ImportNoteClasseFile> datas = new ArrayList<ImportNoteClasseFile>();
+		List<CoefMatiereDetail> result = new ArrayList<CoefMatiereDetail>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (id > 0) {
+			container = RestrictionsContainer.newInstance();
+			container.addEq("id", id);
+			Classe classe = classedao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1).get(0);
+
+			container = RestrictionsContainer.newInstance();
+			container.addEq("classe.id", id);
+			result = coefDltdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+
+			if (result != null&&!result.isEmpty()) {
+				int index =0;
+				for(CoefMatiereDetail mat : result){
+					ImportNoteClasseFile file = new ImportNoteClasseFile(mat);
+					file.setId(-index);
+					index++;
+					datas.add(file);
+				}
+			} // end if (result != null&&!result.isEmpty()) {
 
 		} // end if(id!=-1){
 		return datas;
@@ -178,7 +212,14 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("filiere.id", filiere.getId());
 		matieres = matieredao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-
+		
+		 container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0, -1);
+		if (annee == null || annee.size() == 0) {
+			throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
+		}
+		
 		// recherche des classe dejà coefficier
 
 		container = RestrictionsContainer.newInstance();
@@ -195,8 +236,11 @@ public class CoefMatiereManagerImpl extends AbstractGenericManager<CoefMatiere, 
 				CoefMatiereDetail cmdlt = new CoefMatiereDetail();
 				for (MatiereDlt matdlt : matieres.get(0).getMatieres()) {
 					cmdlt = new CoefMatiereDetail(matdlt);
+					
 					cmdlt.setId(-1);
 					cmdlt.setClasse(cls);
+					cmdlt.setAnneScolaire(annee.get(0).getCode());
+
 					if(filiere.getCycle().getTypecycle().equals("0")||filiere.getCycle().getTypecycle().equals("1")){
 						cmdlt.setProffesseur(cls.getProfesseur());
 					}

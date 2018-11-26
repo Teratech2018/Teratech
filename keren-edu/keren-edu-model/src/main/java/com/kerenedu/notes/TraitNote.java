@@ -11,10 +11,6 @@ import javax.persistence.ManyToOne;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
-import com.kerenedu.configuration.PeriodeScolaire;
-import com.kerenedu.personnel.Professeur;
-import com.megatim.common.annotations.Filter;
-import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -33,10 +29,17 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1)
 	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
 	private Examen periode ;
-		
+	
+//	@ManyToOne
+//	@JoinColumn(name="PERI_ID")
+//	@Predicate(label="Evaluation",type=ExamenP.class,target="many-to-one",optional=false, sequence=2)
+//	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
+//	//@Filter(value="[{\"fieldName\":\"periode\",\"value\":\"object\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner un examen \"}]")
+//	private ExamenP evaluation ;
+//		
 	@ManyToOne
 	@JoinColumn(name="CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=2)
+	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=3)
 	private Classe classe ;
 	
 	/**
@@ -77,6 +80,10 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	
 	public TraitNote(TraitNote prepa) {
 		super(prepa.id, prepa.designation, prepa.moduleName,0L);
+		
+//		if(prepa.evaluation!=null){
+//			this.evaluation = new ExamenP(prepa.evaluation);
+//		}
 		if(prepa.periode!=null){
 			this.periode = new Examen(prepa.periode);
 		}
@@ -93,6 +100,14 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	public Examen getPeriode() {
 		return periode;
 	}
+
+//	public ExamenP getEvaluation() {
+//		return evaluation;
+//	}
+//
+//	public void setEvaluation(ExamenP evaluation) {
+//		this.evaluation = evaluation;
+//	}
 
 	public void setPeriode(Examen periode) {
 		this.periode = periode;

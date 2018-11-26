@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SygmaFiles" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
 	<property name="ireport.zoom" value="1.1000000000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="276"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
 	<style name="table">
 		<box>
@@ -117,7 +117,7 @@
 	<field name="eleve.resp.sexe" class="java.lang.String"/>
 	<field name="eleve.resp.tel" class="java.lang.String"/>
 	<field name="eleve.resp.email" class="java.lang.String"/>
-	<field name="eleve.resp.dateNais" class="java.lang.String"/>
+	<field name="eleve.resp.dateNais" class="java.util.Date"/>
 	<field name="eleve.allerte" class="java.lang.String"/>
 	<field name="eleve.referenceHopital" class="java.lang.String"/>
 	<field name="eleve.adressehop" class="java.lang.String"/>
@@ -346,7 +346,7 @@
 					<pen lineWidth="0.5" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
 				<reportElement x="396" y="29" width="168" height="11" uuid="02bd6342-dd0c-464a-825c-2076d4657321"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -357,9 +357,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{cycle}==0 ? "MINISTRY OF BASE EDUCATION".toUpperCase() : ($F{cycle}==1 ? "MINISTRY OF BASE EDUCATION".toUpperCase() :"MINISTRY OF SECONDRY EDUCATION".toUpperCase() ) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{cycle}==1 ? "MINISTRY OF BASE EDUCATION".toUpperCase() : ($F{cycle}==2 ? "MINISTRY OF BASE EDUCATION".toUpperCase() :"MINISTRY OF SECONDRY EDUCATION".toUpperCase() ) )]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
 				<reportElement x="1" y="29" width="181" height="11" uuid="415378f5-f874-434b-a8c6-1b2ca46f9b8b"/>
 				<box>
 					<topPen lineWidth="0.0"/>
@@ -370,7 +370,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="7" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{cycle}==0 ? "MINISTERE DE l'education de base ".toUpperCase() : ($F{cycle}==1 ? "MINISTERE DE L'education de base".toUpperCase() : "MINISTERE DES ENSEIGNEMENTS SECONDAIRES".toUpperCase() ) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{cycle}==1 ? "MINISTERE DE l'education de base ".toUpperCase() : ($F{cycle}==2 ? "MINISTERE DE L'education de base".toUpperCase() : "MINISTERE DES ENSEIGNEMENTS SECONDAIRES".toUpperCase() ) )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="1" y="1" width="181" height="11" uuid="22db0c96-5c11-41cf-8fa1-c50085c11f18"/>
@@ -648,7 +648,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="14" isItalic="false" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{eleve.telMere}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{eleve.emailPere}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto" isBlankWhenNull="true">
 				<reportElement style="table" mode="Transparent" x="18" y="406" width="195" height="20" backcolor="#D3D3D3" uuid="1160ef02-a9e8-4d17-8b2e-ac336b7ca3b3"/>
@@ -695,7 +695,7 @@
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="14" isBold="true" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Email Père"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Contact Père"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement stretchType="RelativeToTallestObject" x="415" y="383" width="11" height="20" uuid="004f22e7-127f-46df-8546-4c991af8be1e"/>
@@ -729,7 +729,7 @@
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="Times New Roman" size="14" isBold="true" pdfFontName="Times-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Email Mère"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Contact Mère"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement stretchType="RelativeToTallestObject" x="212" y="432" width="11" height="20" uuid="b33cd799-70f6-4b9c-8c1e-4eb50d7ec18f"/>
@@ -1202,7 +1202,7 @@
 				<reportElement x="16" y="141" width="154" height="109" uuid="051d8b66-3d15-4ef5-a7a5-ac975d50b96b"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage((byte[])$P{PHOTO_IMAGE_REPOSITORY})]]></imageExpression>
 			</image>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
 				<reportElement x="387" y="81" width="180" height="12" uuid="0d8b1ed2-af84-4156-a625-e337cc07410c"/>
 				<box>
 					<topPen lineWidth="0.0"/>

@@ -4,6 +4,7 @@
 package com.kerenedu.reglement;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -119,6 +120,7 @@ public class FichePaiementRetard extends BaseElement implements Serializable, Co
 		this.mntpayer = entity.getFiche().getMntpayer();
 		this.solde = entity.getFiche().getSolde();
 		this.service = new Service(entity.fiche.getService());
+		moratoires = new ArrayList<Moratoire>();
 
 	}
 

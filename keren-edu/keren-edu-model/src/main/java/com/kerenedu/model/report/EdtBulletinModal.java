@@ -16,8 +16,12 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Bulletin;
 import com.kerenedu.notes.Examen;
+import com.kerenedu.notes.ExamenP;
+import com.kerenedu.notes.ExamenS;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -35,10 +39,15 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	private static final long serialVersionUID = -4609375799032659501L;
 	
 
-	@Column(name = "LIBELLE")
-	@Predicate(label="Type Bulletin",optional=false,updatable=true,search=true, target="combobox", values="1ere Sequence;2eme Sequence;3eme Sequence;4eme Sequence;5eme Sequence;6eme Sequence;1ere Trimestre;2éme Trimestre;3éme Trimestre" , sequence=1,colsequence=1)
-	protected String typebulletin="0";
+//	@Column(name = "LIBELLE")
+//	@Predicate(label="Type Bulletin",optional=false,updatable=true,search=true, target="combobox", values="1ere Sequence;2eme Sequence;3eme Sequence;4eme Sequence;5eme Sequence;6eme Sequence;1ere Trimestre;2éme Trimestre;3éme Trimestre" , sequence=1,colsequence=1)
+//	protected String typebulletin="0";
 	
+	@ManyToOne
+	@JoinColumn(name="PERI_ID")
+	@Predicate(label="Examen",type=Examen.class,target="many-to-one",optional=false, sequence=1)
+	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
+	private Examen periode ;
 	
 	@ManyToOne
     @JoinColumn(name = "CLASSE_ID")
@@ -46,16 +55,21 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
     protected Classe classe;
 	
 	@Predicate(label="Elève Concerne ?",target="combobox",values="Tous les élèves;Seulement les élèves selectionnés",optional=false,sequence=2)
-	@Observer(observable="classe",source="method:getidclasse",parameters="classe")
+//	@Observer(observable="classe",source="method:getidclasse",parameters="classe")
+	//@Filter(value="[{\"fieldName\":\"classe\",\"value\":\"object.classe\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une classe\"}]")
 	private String porte ="0";
 	
 	
 	@ManyToMany
-	@Predicate(label="EM",type=Inscription.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Elèves",hidden="temporalData.porte=='0' || temporalData.porte==null")
-	private List<Inscription> concernes = new ArrayList<Inscription>();
+	@Predicate(label="EM",type=InscriptionChoice.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Elèves",hidden="temporalData.porte=='0' || temporalData.porte==null")
+	@Observer(observable="classe",source="method:getidclasse",parameters="classe")
+	private List<InscriptionChoice> concernes = new ArrayList<InscriptionChoice>();
 	
 	@Transient
-	private List<Examen> examens = new ArrayList<Examen>();
+	private List<Examen> examen = new ArrayList<Examen>();
+	
+//	@Transient
+//	private List<ExamenP> examenp = new ArrayList<ExamenP>();
 	
 		
 	
@@ -70,19 +84,19 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	public EdtBulletinModal(EdtBulletinModal bull) {
 		super(bull.id, bull.designation, bull.moduleName,0L);
 		this.classe = new Classe(bull.classe);
-		this.typebulletin=bull.typebulletin;
+//		this.typebulletin=bull.typebulletin;
 		this.porte=bull.porte;
-		this.concernes= new ArrayList<Inscription>();
+		this.concernes= new ArrayList<InscriptionChoice>();
 		
 
 	}
 	
 	public EdtBulletinModal(Bulletin bull) {
 		this.classe = new Classe(bull.getClasse());
-		this.typebulletin=bull.getModel().getTypesequence();
+//		this.typebulletin=bull.getModel().getTypesequence();
 		this.porte="1" ;
-		this.examens.add(bull.getModel());
-		this.concernes.add(bull.getInscription());
+		this.examen.add(bull.getModel());
+	//	this.concernes.add(bull.getInscription());
 
 	}
 
@@ -91,24 +105,24 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Impression des Bulletins ";
+		return "Impression des bulletins Séquentiels";
 	}
 
 
-	public String getTypebulletin() {
-		return typebulletin;
-	}
-
-
-	public void setTypebulletin(String typebulletin) {
-		this.typebulletin = typebulletin;
-	}
+//	public String getTypebulletin() {
+//		return typebulletin;
+//	}
+//
+//
+//	public void setTypebulletin(String typebulletin) {
+//		this.typebulletin = typebulletin;
+//	}
 
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Impression des Bulletin";
+		return "Impression des bulletins Séquentiels";
 	}
 
 	@Override
@@ -149,12 +163,12 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	}
 
 
-	public List<Inscription> getConcernes() {
+	public List<InscriptionChoice> getConcernes() {
 		return concernes;
 	}
 
 
-	public void setConcernes(List<Inscription> concernes) {
+	public void setConcernes(List<InscriptionChoice> concernes) {
 		this.concernes = concernes;
 	}
 
@@ -165,13 +179,25 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	}
 
 
-	public List<Examen> getExamens() {
-		return examens;
+	public List<Examen> getExamen() {
+		return examen;
 	}
 
 
-	public void setExamens(List<Examen> examens) {
-		this.examens = examens;
+	public Examen getPeriode() {
+		return periode;
+	}
+
+
+
+
+	public void setPeriode(Examen periode) {
+		this.periode = periode;
+	}
+
+
+	public void setExamen(List<Examen> examens) {
+		this.examen = examens;
 	}
 	
 

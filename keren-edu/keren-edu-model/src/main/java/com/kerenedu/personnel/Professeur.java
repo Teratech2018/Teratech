@@ -32,6 +32,10 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "e_professeur")
 public class Professeur extends BaseElement implements Serializable, Comparable<Professeur> {
 
+//	@Column(name = "DISC")
+//	//@Predicate(label = "PHOTO", target = "image", sequence = 1)
+//	private String discriminant="P";
+	
 	@Column(name = "PHOTO")
 	@Predicate(label = "PHOTO", target = "image", sequence = 1)
 	private String image;
@@ -41,7 +45,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	protected String nom;
 
 	@Column(name = "MAT", unique = true)
-	@Predicate(label = "Matricule", optional = false, updatable = true, search = true, sequence = 3)
+	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 3,editable=false)
 	protected String matricule;
 
 	@Column(name = "STATUS_ID")
@@ -67,7 +71,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name = "STRU_ID")
-	@Predicate(label = "Structure", type = Etablissement.class, target = "many-to-one", sequence=8)
+//	@Predicate(label = "Structure", type = Etablissement.class, target = "many-to-one", sequence=8, editable=false)
 	private Etablissement structure;
 
 
@@ -317,7 +321,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return nom + " " + prenon;
+		return nom ;
 	}
 
 	public Etablissement getStructure() {

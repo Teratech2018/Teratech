@@ -50,24 +50,24 @@ public class BulletinManagerImpl extends AbstractGenericManager<Bulletin, Long>
 	public List<Bulletin> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		ModelBulletin mdl = CacheMemory.getModelBulletin();
-		Filiere filiere = CacheMemory.getFiliere();
-		Classe classe = CacheMemory.getClasse();
-
-		if (classe != null) {
-			container.addEq("classe.id", classe.getId());
-		} // end if(classe!=null)
-
-		if (filiere != null) {
-			container.addEq("classe.filiere.id", filiere.getId());
-		} // end if(mdl!=null)
-
-		if (mdl != null) {
-			container.addEq("model.id", mdl.getId());
-		} // end if(mdl!=null){
-
-		predicats.addAll(container.getPredicats());
+//		RestrictionsContainer container = RestrictionsContainer.newInstance();
+//		ModelBulletin mdl = CacheMemory.getModelBulletin();
+//		Filiere filiere = CacheMemory.getFiliere();
+//		Classe classe = CacheMemory.getClasse();
+//
+//		if (classe != null) {
+//			container.addEq("classe.id", classe.getId());
+//		} // end if(classe!=null)
+//
+//		if (filiere != null) {
+//			container.addEq("classe.filiere.id", filiere.getId());
+//		} // end if(mdl!=null)
+//
+//		if (mdl != null) {
+//			container.addEq("model.id", mdl.getId());
+//		} // end if(mdl!=null){
+//
+//		predicats.addAll(container.getPredicats());
 
 		List<Bulletin> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<Bulletin> result = new ArrayList<Bulletin>();
@@ -135,14 +135,19 @@ public class BulletinManagerImpl extends AbstractGenericManager<Bulletin, Long>
 	
 	@Override
 	public void processBeforeSave(Bulletin entity) {
-		System.out.println("BulletinManagerImpl.processBeforeSave() get long value moyenne"+entity.getMoyenne().longValue());
+		System.out.println("BulletinManagerImpl.processBeforeSave() get long value moyenne"+entity.getMoyenne());
+		if(entity.getMoyenne()!=null){
 		Appreciation value = daoapp.getAppreciation(entity.getMoyenne().longValue());
 		if(value!=null){
 		entity.setAppre(value.getLibelle());
 		entity.setSanction(value.getSanction());
 		}else{
-			entity.setAppre("default");
-			entity.setSanction("default");
+			entity.setAppre("null");
+			entity.setSanction("null");
+		}
+		}else{
+		entity.setAppre("null");
+		entity.setSanction("null");
 		}
 		super.processBeforeSave(entity);
 	}

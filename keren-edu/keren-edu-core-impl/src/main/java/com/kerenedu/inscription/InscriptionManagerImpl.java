@@ -210,7 +210,9 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		if(CacheMemory.getCurrentSchool()!=null&&CacheMemory.getCurrentSchool().getAllerteanniveleve()&&entity.getDatIns()!=null){
 			this.createEventHappyBirtDay(entity);
 		}
-		
+		entity.setMatricule(entity.getEleve().getMatricule());
+		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
+
 		super.processAfterSave(entity);
 	}
 

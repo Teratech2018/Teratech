@@ -34,6 +34,10 @@ public class MatiereDlt extends BaseElement implements Serializable, Comparable<
 	@Predicate(label="Coef.",optional=false,updatable=true,search=true , sequence=3, colsequence=3, type=Integer.class)
 	protected int coeficient;
 	
+	@Column(name = "STATE" )	
+	@Predicate(label="Statut",optional=false,updatable=true, sequence=4, target = "checkbox", search=true)
+	private Boolean state=Boolean.TRUE;
+	
 	
 
 	public MatiereDlt() {
@@ -47,6 +51,7 @@ public class MatiereDlt extends BaseElement implements Serializable, Comparable<
 		this.code=mat.code;
 		this.libelle=mat.libelle;
 		this.coeficient=mat.coeficient;
+		this.state=mat.state;
 
 	}
 
@@ -104,6 +109,16 @@ public class MatiereDlt extends BaseElement implements Serializable, Comparable<
 	}
 
 
+	public boolean isState() {
+		return state;
+	}
+
+
+	public void setState(boolean state) {
+		this.state = state;
+	}
+
+
 	public void setCoeficient(int coeficient) {
 		this.coeficient = coeficient;
 	}
@@ -111,7 +126,7 @@ public class MatiereDlt extends BaseElement implements Serializable, Comparable<
 
 	public int compareTo(MatiereDlt o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return code.compareTo(o.code);
 	}
 	
 

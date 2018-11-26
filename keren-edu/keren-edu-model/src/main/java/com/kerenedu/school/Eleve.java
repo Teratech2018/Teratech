@@ -81,7 +81,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	protected String telPere;
 	
 	@Column(name = "EMAIL_PERE")
-	@Predicate(label="Nom/Prénom  Père",optional=true,updatable=true,search=false , target="email" , group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	@Predicate(label="Nom/Prénom  Père",optional=true,updatable=true,search=false  , group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String emailPere;
 	
 	@Column(name = "TEL_MERE")
@@ -401,16 +401,6 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 
 
 
-	public String getEmailPere() {
-		return emailPere;
-	}
-
-
-
-	public void setEmailPere(String emailPere) {
-		this.emailPere = emailPere;
-	}
-
 
 
 	public String getTelPere() {
@@ -614,6 +604,22 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 
 	public void setAllerte(String allerte) {
 		this.allerte = allerte;
+	}
+
+
+
+
+
+	public String getEmailPere() {
+		return emailPere;
+	}
+
+
+
+
+
+	public void setEmailPere(String emailPere) {
+		this.emailPere = emailPere;
 	}
 
 

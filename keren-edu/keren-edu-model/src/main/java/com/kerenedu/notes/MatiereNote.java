@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -20,6 +21,7 @@ import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.personnel.Professeur;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -30,31 +32,40 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_note_mat")
 public class MatiereNote extends BaseElement implements Serializable, Comparable<MatiereNote> {
 	
-	@ManyToOne
-	@JoinColumn(name = "PROF")
-	@Predicate(label="PROF",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=1,colsequence=2	,editable=false, searchfields="prof.nom")
-	protected Professeur prof;
 	
-	@ManyToOne
-    @JoinColumn(name = "MATIERE_ID")
-	@Predicate(label="MATIERE",optional=true,updatable=false,search=true , sequence=2, colsequence=1,type=CoefMatiereDetail.class ,editable=false, searchfields="matiere.matiere.libelle")
-	protected CoefMatiereDetail matiere;
 	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=3	,colsequence=3,editable=false)
+	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1	,colsequence=3,editable=false, optional=false)
 	protected Classe classe;
 	
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
-	@Predicate(label="EXAMEN",updatable=true,type=Examen.class , target="many-to-one",search=true , sequence=4	,editable=false,colsequence=4)
+	@Predicate(label="EXAMEN",updatable=true,type=Examen.class , target="many-to-one",search=true , sequence=2	,editable=false,colsequence=4, optional=false)
 	protected Examen examen;
+	
+	@ManyToOne
+    @JoinColumn(name = "MATIERE_ID")
+	@Predicate(label="MATIERE",optional=true,updatable=true,search=true , sequence=3, colsequence=1,type=CoefMatiereDetail.class ,editable=false , observable=true)
+	protected CoefMatiereDetail matiere;
+	
+	@ManyToOne
+	@JoinColumn(name = "PROF")
+	@Predicate(label="PROF",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=4,colsequence=2	,editable=false, searchfields="prof.nom")
+	@Observer(observable = "matiere", source = "field:proffesseur")
+	protected Professeur prof;
+
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "EL_NOTE_ID")
 	@Predicate(group = true,groupName = "tab1",groupLabel = "Saisies des notes",target ="one-to-many",type = NoteDetail.class
 	,search = false,edittable=true)
+	@Observer(observable="classe",source="method:findeleveclasse",parameters="classe")
 	private List<NoteDetail> notelisttr = new ArrayList<NoteDetail>();
+	
+
+	@Column(name = "ANNEE")
+	protected String anneScolaire ;
 	
 	
 	public MatiereNote() {
@@ -79,12 +90,20 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		if(filiere.prof!=null){
 			this.prof = new Professeur(filiere.prof);
 		}
+		this.anneScolaire=filiere.anneScolaire;
 	
 		this.notelisttr= new ArrayList<NoteDetail>();
 	
 		
 	}
 	
+	@Override
+	public String toString() {
+		return "MatiereNote [classe=" + classe + ", examen=" + examen + ", matiere=" + matiere + ", prof=" + prof
+				+ ", notelisttr=" + notelisttr + ", anneScolaire=" + anneScolaire + "]";
+	}
+
+
 	public MatiereNote(MatiereDlt filiere, List<Inscription> listEleve) {
 		this.matiere = new CoefMatiereDetail(filiere);
 		this.notelisttr= new ArrayList<NoteDetail>();
@@ -97,8 +116,11 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	public MatiereNote(CoefMatiereDetail coefmat,Examen examen, List<Inscription> listEleve) {
 		this.matiere = new CoefMatiereDetail(coefmat);
 		this.classe= new Classe(coefmat.getClasse());
+		if(coefmat.getProffesseur()!=null){
 		this.prof=new Professeur(coefmat.getProffesseur());
+		}
 		this.examen= new Examen(examen);
+		
 		this.notelisttr= new ArrayList<NoteDetail>();
 		for(Inscription el : listEleve){
 			this.notelisttr.add(new NoteDetail(el));
@@ -204,6 +226,16 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		return "Gestion des Notes";
 	}
 
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
+	}
+
+
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
@@ -213,7 +245,7 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return "Enseignant. "+matiere.getProffesseur().getNom();
+		return "Matière. "+matiere.getMatiere().getCode();
 	}
 
 

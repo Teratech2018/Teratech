@@ -13,7 +13,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.model.report.EdtBulletinModal;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
@@ -30,10 +30,22 @@ public interface EdtBulletinModalRS extends GenericService<EdtBulletinModal, Lon
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Path("pdf")
 	public Response buildPdfReport(EdtBulletinModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("trim")
+	public Response buildPdfReportTrim(EdtBulletinModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("ann")
+	public Response buildPdfReportAnn(EdtBulletinModal entity, @Context HttpHeaders headers);
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("getidclasse")
-	public List<Inscription> getidclasse(@Context HttpHeaders headers);
+	public List<InscriptionChoice> getidclasse(@Context HttpHeaders headers);
 
 }

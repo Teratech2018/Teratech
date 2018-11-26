@@ -1,7 +1,9 @@
 
 package com.kerenedu.notes;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,12 +18,12 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.Appreciation;
 import com.kerenedu.configuration.AppreciationDAOLocal;
-import com.kerenedu.configuration.CacheMemory;
-import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.PeriodeScolaire;
-import com.kerenedu.personnel.Professeur;
+import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionDAOLocal;
+import com.kerenedu.model.report.ViewMatiereClasseModal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -34,6 +36,12 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 
 	@EJB(name = "AppreciationDAO")
 	protected AppreciationDAOLocal daoapp;
+	
+	@EJB(name = "AnneScolaireDAO")
+	protected AnneScolaireDAOLocal annedao;
+	
+	@EJB(name = "InscriptionDAO")
+	protected InscriptionDAOLocal elevedao;
 
 	public MatiereNoteManagerImpl() {
 	}
@@ -51,22 +59,8 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 	@Override
 	public List<MatiereNote> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
-		// TODO Auto-generated method stub
-		PeriodeScolaire periode = CacheMemory.getPeriode();
-		Classe classe = CacheMemory.getClasse();
-		Examen examen = CacheMemory.getExamen();
-		Professeur prof = CacheMemory.getProf();
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		if (periode != null) {
-			container.addEq("examen.id", examen.getId());
-		} // end if(periode!=null)
-		if (classe != null) {
-			container.addEq("classe.id", classe.getId());
-		} // end if(classe!=null)
-		if (prof != null) {
-			container.addEq("prof.id", prof.getId());
-		} // end if(classe!=null)
-		predicats.addAll(container.getPredicats());
+	
+		//predicats.addAll(container.getPredicats());
 		List<MatiereNote> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<MatiereNote> result = new ArrayList<MatiereNote>();
 		for (MatiereNote elev : datas) {
@@ -114,19 +108,29 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 	public void processBeforeSave(MatiereNote entity) {
 		// appreciation
 		List<NoteDetail> notes = new ArrayList<NoteDetail>();
-		if (entity.getExamen().getState().equals("etabli")) {
-			throw new KerenExecption(
-					"impossible de saisir les notes : les saisies pour cette séquence ont déjà étté cloturé !!!");
-		} else {
 			for (NoteDetail not : entity.getNotelisttr()) {
 				if (not.getNote() > 20) {
 					throw new KerenExecption("la note ne peut etre supèrieure à 20 !!!");
 				}
-				not.setObs(this.getAppreciation(not.getNote().longValue()));
+				if(entity.getClasse().getSection().getTypesection().equals("0")){
+					not.setObs(this.getAppreciation(not.getNote().longValue()).getLibelleen());
+				}else{
+					not.setObs(this.getAppreciation(not.getNote().longValue()).getLibelle());
+				}
+				
+				not.setMatricule(not.getEleve().getEleve().getMatricule());
+				not.setNom(not.getEleve().getEleve().getNom()+" "+not.getEleve().getEleve().getPrenon());
 				notes.add(not);
 			}
 			entity.setNotelisttr(notes);
-		}
+			RestrictionsContainer container = RestrictionsContainer.newInstance();
+			container.addEq("connected", true);
+			List<AnneScolaire> annee = annedao.filter(container.getPredicats(), null, null, 0, -1);
+			if (annee == null || annee.size() == 0) {
+				throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
+			}
+			//entity.setAnneScolaire(CacheMemory.getCurrentannee());
+			entity.setAnneScolaire(annee.get(0).getCode());
 
 		super.processBeforeSave(entity);
 	}
@@ -139,10 +143,57 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 					"impossible de saisir les notes : les saisies pour cette séquence sont cloturée !!!");
 		} else {
 			for (NoteDetail not : entity.getNotelisttr()) {
+			
+				double note1=0 ;double note2=0;double notmoy=0;double note3=0;
+				if(not.getNote1()==0&&not.getNote2()!=0&&not.getNote3()!=0){
+					 note1=0;
+					 note2=not.getNote2()*entity.getExamen().getE3();
+					 note3=not.getNote3()*entity.getExamen().getE3();
+				}else if(not.getNote2()==0&&not.getNote1()!=0&&not.getNote3()!=0){
+					 note2=0;
+					 note1=not.getNote1()*entity.getExamen().getE3();
+					 note3=not.getNote3()*entity.getExamen().getE3();
+				}else if(not.getNote1()==0&&not.getNote2()==0&&not.getNote3()!=0){
+					 note2=0;
+					 note1=0;
+					 note3=not.getNote3();
+				}else if(not.getNote1()!=0&&not.getNote2()==0&&not.getNote3()==0){
+					note2=(double) 0;
+					note3=(double) 0;
+					note1=not.getNote1();
+				}else if(not.getNote1()==0&&not.getNote2()!=0&&not.getNote3()==0){
+					note1=(double) 0;
+					note3=(double) 0;
+					note2=not.getNote2();
+				}
+				else if(not.getNote1()!=0&&not.getNote2()!=0&&not.getNote3()!=0){
+					note3=not.getNote3()*entity.getExamen().getE3();
+					note2=not.getNote2()*entity.getExamen().getE2();
+					note1=not.getNote1()*entity.getExamen().getE1();
+				}else if(not.getNote1()!=0&&not.getNote2()!=0&&not.getNote3()==0){
+					note1=(double) 0;
+					note2=not.getNote2()*entity.getExamen().getE3();
+					note3=not.getNote1()*entity.getExamen().getE3();
+				}
+
+				 notmoy= note1+note2+note3;
+				 BigDecimal bd = new BigDecimal(notmoy);
+				 bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
+				 notmoy = bd.doubleValue();
+
+				not.setNote(notmoy);
 				if (not.getNote() > 20) {
 					throw new KerenExecption("la note ne peut etre supèrieure à 20 !!!");
 				}
-				not.setObs(this.getAppreciation(not.getNote().longValue()));
+				if (not.getNote()<  0) {
+					throw new KerenExecption("Mauvaise note  !!!");
+				}
+				if(entity.getClasse().getSection().getTypesection().equals("0")){
+					not.setObs(this.getAppreciation(not.getNote().longValue()).getLibelleen());
+				}else{
+					not.setObs(this.getAppreciation(not.getNote().longValue()).getLibelle());
+				}
+				
 				notes.add(not);
 			}
 			entity.setNotelisttr(notes);
@@ -151,15 +202,75 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 		super.processAfterUpdate(entity);
 	}
 
-	private String getAppreciation(long note) {
-		String app = " default";
+	private Appreciation getAppreciation(long note) {
+		Appreciation app ;
 		Appreciation value = daoapp.getAppreciation(note);
 		if (value != null) {
-			app = value.getLibelle();
+			app =value;
 		} else {
-			app = "Default";
+			Appreciation a = new Appreciation();
+			a.setLibelle("RAS");
+			a.setLibelleen("nothing");
+			app =a;
 		}
 		return app;
 	}
+
+	@Override
+	public List<MatiereNote> getCriteres(ViewMatiereClasseModal critere) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			
+			if (critere.getClasse() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+			}
+			
+			if (critere.getSection() != null) {
+				container.addEq("classe.section.id", critere.getSection().getId());
+			}
+
+		}
+		List<MatiereNote> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<MatiereNote> result = new ArrayList<MatiereNote>();
+		for (MatiereNote ins : datas) {
+			MatiereNote note = find("id", ins.getId());
+			MatiereNote inscription = new MatiereNote(ins);
+			inscription.setNotelisttr(note.getNotelisttr());
+			result.add(inscription);
+		}
+		return result;
+	}
+
+	@Override
+	public void importNote(MatiereNote entity) {
+		List<NoteDetail> datas = new ArrayList<NoteDetail>();
+		MatiereNote mtnote= new MatiereNote();
+		if(entity.getNotelisttr()!=null||!entity.getNotelisttr().isEmpty()){
+		for(NoteDetail notes: entity.getNotelisttr()){
+			RestrictionsContainer container = RestrictionsContainer.newInstance();
+			if (notes.getMatricule() != null) {
+				container.addEq("eleve.matricule", notes.getMatricule());//+"/"+entity.getAnneScolaire());
+			}
+			
+			List<Inscription> eleve = elevedao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			if(eleve!=null&&!eleve.isEmpty()){
+				notes.setEleve(eleve.get(0));
+				notes.setMatricule(eleve.get(0).getMatricule());
+				notes.setNom(eleve.get(0).getEleve().getNom()+" "+eleve.get(0).getEleve().getPrenon());
+				notes.setAnneScolaire(entity.getAnneScolaire());
+				datas.add(notes);
+			}
+		}
+			//System.out.println("MatiereNoteManagerImpl.importNote() nombre de note"+datas.toString()+" size"+datas.size());
+			 mtnote= new MatiereNote(entity);
+			 mtnote.setNotelisttr(datas);
+			// System.out.println("MatiereNoteManagerImpl.importNote() note taille"+mtnote.getNotelisttr().size());
+			this.update(mtnote.getId(), mtnote);
+				
+			
+		}
+	}
+		
+	
 
 }

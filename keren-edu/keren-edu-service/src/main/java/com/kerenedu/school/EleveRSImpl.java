@@ -1,8 +1,6 @@
 
 package com.kerenedu.school;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +11,7 @@ import javax.ws.rs.core.HttpHeaders;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kerem.core.FileHelper;
 import com.kerem.core.MetaDataUtil;
-import com.kerenedu.tools.reports.ReportHelper;
 import com.megatim.common.annotations.Filter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;

@@ -26,6 +26,7 @@ import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireManagerRemote;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.ServiceManagerRemote;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
 import com.kerenedu.reglement.FichePaiement;
@@ -179,8 +180,6 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 	
 	public boolean samefiliere(Inscription old, Inscription nouveau){
 		boolean value = false;
-		System.out.println("InscriptionRSImpl.samefiliere() old classe"+old.getClasse().getLibelle());
-		System.out.println("InscriptionRSImpl.samefiliere() nouveau classe"+nouveau.getClasse().getLibelle());
 		if(old.getClasse().getFiliere().getId()==nouveau.getClasse().getFiliere().getId()){
 			value=true;
 		}else{
@@ -218,7 +217,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		if (annee == null || annee.size() == 0) {
 			throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
 		}
-		entity.setAnneScolaire(CacheMemory.getCurrentannee());
+	//	entity.setAnneScolaire(CacheMemory.getCurrentannee());
 		entity.setAnneScolaire(annee.get(0).getCode());
 		// verifier si l'étudiant a déjà été inscit
 		container = RestrictionsContainer.newInstance();
@@ -264,16 +263,10 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionner un eleve !");
 			}
 			Map parameters = this.getReportParameters();
-			try {
-				if (entity.getClasse().getFiliere().getCycle().getTypecycle().equals("2")) {
-					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytesC());
-				} else {
-					parameters.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytes());
+				if (entity.getEleve().getImage() != null) {
+					entity.setPhoto(ReportHelper.getPhotoBytesEleve(entity.getEleve().getImage()));
 				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 			// parameters = this.getReportParameters();
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
 		} catch (FileNotFoundException ex) {
@@ -281,6 +274,9 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 			Response.serverError().build();
 		} catch (JRException ex) {
 			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return Response.noContent().build();
@@ -393,6 +389,15 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		return Response.noContent().build();
 	}
 
+	@Override
+	public Inscription find(HttpHeaders headers, String propertyName, Long id) {
+		Inscription result = super.find(headers, propertyName, id);
+		Gson gson = new Gson();
+		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+		CacheMemory.insert(iduser, TypeCacheMemory.INSCRIPTION, result.getId());
+		return result;
+	}
+
 	//
 	// @Override
 	// public List<Inscription> filter(HttpHeaders headers, int firstResult, int
@@ -420,5 +425,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 	//
 	// return results;
 	// }
+	
+	
 
 }

@@ -4,6 +4,7 @@ package com.kerenedu.notes;
 import java.util.List;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.ViewMatiereClasseModal;
 
 
 /**
@@ -20,5 +21,9 @@ public interface CoefMatiereDetailManager
     public List<CoefMatiereDetail> findMatiereFiliere(Long id) ;
     
     public List<CoefMatiereDetail> findprofclasse(Long id);
+    
+    public List<CoefMatiereDetail> getCriteres(ViewMatiereClasseModal critere);
+    
+    
 
 }
