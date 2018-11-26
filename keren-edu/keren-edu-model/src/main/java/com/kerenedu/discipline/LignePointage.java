@@ -252,13 +252,14 @@ public class LignePointage extends BaseElement implements Serializable, Comparab
 		return true;
 	}
 
+	public int compareTo(LignePointage o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
-	public int compareTo(LignePointage o) {
-		// TODO Auto-generated method stub
-		return employe.compareTo(o.employe);
-	}
+
 
 }

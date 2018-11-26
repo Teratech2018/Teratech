@@ -248,13 +248,14 @@ public class AvanceSalaire extends BaseElement implements Serializable, Comparab
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
 	public int compareTo(AvanceSalaire o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	
 
 }

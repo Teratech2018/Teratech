@@ -207,7 +207,7 @@ public class ParametreAvance extends BaseElement implements Serializable, Compar
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public int compareTo(ParametreAvance arg0) {
 		// TODO Auto-generated method stub
 		return type.compareTo(arg0.type);

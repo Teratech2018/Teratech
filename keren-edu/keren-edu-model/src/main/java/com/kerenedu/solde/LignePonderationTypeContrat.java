@@ -123,7 +123,7 @@ public class LignePonderationTypeContrat extends BaseElement implements Serializ
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public int compareTo(LignePonderationTypeContrat arg0) {
 		// TODO Auto-generated method stub
 		return fonction.compareTo(arg0.fonction);

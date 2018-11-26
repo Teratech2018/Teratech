@@ -3,24 +3,17 @@ package com.kerenedu.configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
-import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
-import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
 
 
 /**
@@ -41,8 +34,8 @@ public class SectionERSImpl
     @Manager(application = "kereneducation", name = "SectionEManagerImpl", interf = SectionEManagerRemote.class)
     protected SectionEManagerRemote manager;
     
-    @Manager(application = "kereneducation", name = "UtilisateurConnectManagerImpl", interf = UtilisateurConnectManagerRemote.class)
-    protected UtilisateurConnectManagerRemote usermanager;
+//    @Manager(application = "kereneducation", name = "UtilisateurConnectManagerImpl", interf = UtilisateurConnectManagerRemote.class)
+//    protected UtilisateurConnectManagerRemote usermanager;
     
     @Manager(application = "kereneducation", name = "SectionEManagerImpl", interf = SectionEManagerRemote.class)
     protected SectionEManagerRemote sectionmanager;

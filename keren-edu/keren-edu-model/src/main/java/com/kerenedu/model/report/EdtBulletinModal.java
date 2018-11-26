@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -15,13 +14,9 @@ import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Bulletin;
 import com.kerenedu.notes.Examen;
-import com.kerenedu.notes.ExamenP;
-import com.kerenedu.notes.ExamenS;
-import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 

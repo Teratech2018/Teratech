@@ -827,7 +827,7 @@ and open the template in the editor.
 	              
 	        </element>
 	        
-	         <element type="com.kerenedu.solde.ValiderSalaire" idclass="long"  idname="id"   deseable="false" >
+	         <element type="com.kerenedu.solde.ValiderSalaire" idclass="long"  idname="id"   deseable="true" >
 	            <roles>
 	                <role>ADMIN</role>
 	            </roles>           

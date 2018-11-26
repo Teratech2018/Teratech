@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.core.referentiels.Societe;
 import com.kerenedu.configuration.Etablissement;
 import com.megatim.common.annotations.Predicate;
 

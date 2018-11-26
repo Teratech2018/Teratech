@@ -17,7 +17,6 @@ import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
-import com.core.referentiels.Societe;
 import com.kerenedu.configuration.Etablissement;
 import com.megatim.common.annotations.Predicate;
 
@@ -292,7 +291,7 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public int compareTo(RemboursementPret o) {
 		// TODO Auto-generated method stub
 		return 0;

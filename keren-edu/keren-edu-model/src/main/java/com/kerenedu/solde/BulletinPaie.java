@@ -533,11 +533,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
-	public int compareTo(BulletinPaie arg0) {
-		// TODO Auto-generated method stub
-		return employe.compareTo(arg0.employe);
-	}
+	
 
 	public Double getSalaireBrut() {
 		return salaireBrut;
@@ -755,5 +751,11 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		value = anneeint + " ans ," + mois + " mois ," + jour + " jours";
 		return value;
 	}
+
+	public int compareTo(BulletinPaie o) {
+		// TODO Auto-generated method stub
+		return employe.compareTo(o.employe);
+	}
+
 
 }

@@ -13,11 +13,9 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.notes.CoefMatiereDetail;
 import com.kerenedu.notes.Examen;
-import com.kerenedu.notes.ExamenP;
 import com.kerenedu.notes.MatiereNote;
 import com.kerenedu.notes.NoteDetail;
 

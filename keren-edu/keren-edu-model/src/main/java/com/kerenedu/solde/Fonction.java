@@ -134,7 +134,7 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 		return code+"-"+intitule;
 	}
 
-	@Override
+	//@Override
 	public int compareTo(Fonction o) {
 		// TODO Auto-generated method stub
 		return code.compareTo(o.code);

@@ -140,7 +140,7 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+//	@Override
 	public int compareTo(PrepaSalaire o) {
 		// TODO Auto-generated method stub
 		return 0;

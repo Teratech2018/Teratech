@@ -123,7 +123,7 @@ public class LignePonderationSalaire extends BaseElement implements Serializable
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public int compareTo(LignePonderationSalaire arg0) {
 		// TODO Auto-generated method stub
 		return fonction.compareTo(arg0.fonction);

@@ -6,7 +6,7 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 
 /**
  * Interface etendue par les interfaces locale et remote du manager
- * @since Sun Nov 25 21:34:28 WAT 2018
+ * @since Mon Nov 26 15:38:38 WAT 2018
  * 
  */
 public interface ValiderSalaireManager

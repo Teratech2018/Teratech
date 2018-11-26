@@ -81,7 +81,7 @@ public class PeriodePaieClose extends BaseElement implements Serializable, Compa
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+//	@Override
 	public int compareTo(PeriodePaieClose o) {
 		// TODO Auto-generated method stub
 		return 0;

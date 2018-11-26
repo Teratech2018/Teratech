@@ -165,7 +165,7 @@ public class ValiderSalaire extends BaseElement implements Serializable, Compara
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+//	@Override
 	public int compareTo(ValiderSalaire o) {
 		// TODO Auto-generated method stub
 		return 0;

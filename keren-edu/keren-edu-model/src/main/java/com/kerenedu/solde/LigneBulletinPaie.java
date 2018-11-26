@@ -200,7 +200,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public int compareTo(LigneBulletinPaie o) {
 		// TODO Auto-generated method stub
 		return rubrique.compareTo(o.rubrique);

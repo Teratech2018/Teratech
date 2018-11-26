@@ -263,13 +263,14 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
-	public int compareTo(Acompte arg0) {
+	public int compareTo(Acompte o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+
 
 }

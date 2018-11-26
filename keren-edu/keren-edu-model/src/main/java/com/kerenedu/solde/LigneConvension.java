@@ -178,7 +178,7 @@ public class LigneConvension extends BaseElement implements Serializable, Compar
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+//	@Override
 	public int compareTo(LigneConvension arg0) {
 		// TODO Auto-generated method stub
 		return 0;

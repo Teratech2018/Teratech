@@ -103,7 +103,7 @@ public class LigneElementVariable extends BaseElement implements Serializable, C
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public int compareTo(LigneElementVariable arg0) {
 		// TODO Auto-generated method stub
 		return variable.compareTo(arg0.variable);

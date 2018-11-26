@@ -114,7 +114,7 @@ public class TypeContrat extends BaseElement implements Serializable, Comparable
 		return code;
 	}
 
-	@Override
+	//@Override
 	public int compareTo(TypeContrat o) {
 		// TODO Auto-generated method stub
 		return code.compareTo(o.code);

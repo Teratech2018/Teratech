@@ -113,7 +113,7 @@ public class TraitSalaire extends BaseElement implements Serializable, Comparabl
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public int compareTo(TraitSalaire o) {
 		// TODO Auto-generated method stub
 		return 0;

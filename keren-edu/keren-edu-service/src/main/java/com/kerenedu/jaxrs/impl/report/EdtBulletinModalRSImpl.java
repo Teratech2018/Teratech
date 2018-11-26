@@ -26,7 +26,6 @@ import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseManagerRemote;
 import com.kerenedu.configuration.TypeCacheMemory;
-import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.jaxrs.ifaces.report.EdtBulletinModalRS;
 import com.kerenedu.model.report.EdtBulletinModal;
@@ -34,10 +33,6 @@ import com.kerenedu.notes.BulletinHelperGenerate;
 import com.kerenedu.notes.BulletinHelperGenerateManagerRemote;
 import com.kerenedu.notes.Examen;
 import com.kerenedu.notes.ExamenManagerRemote;
-import com.kerenedu.notes.ExamenP;
-import com.kerenedu.notes.ExamenPManagerRemote;
-import com.kerenedu.notes.ExamenS;
-import com.kerenedu.notes.ExamenSManagerRemote;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
 import com.kerenedu.tools.reports.ReportsParameter;
@@ -73,11 +68,11 @@ public class EdtBulletinModalRSImpl
     @Manager(application = "kereneducation", name = "ExamenManagerImpl", interf = ExamenManagerRemote.class)
     protected ExamenManagerRemote managerExamen;
     
-    @Manager(application = "kereneducation", name = "ExamenPManagerImpl", interf = ExamenPManagerRemote.class)
-    protected ExamenPManagerRemote managerExamenp;
-    
-    @Manager(application = "kereneducation", name = "ExamenSManagerImpl", interf = ExamenSManagerRemote.class)
-    protected ExamenSManagerRemote managerExamenS;
+//    @Manager(application = "kereneducation", name = "ExamenPManagerImpl", interf = ExamenPManagerRemote.class)
+//    protected ExamenPManagerRemote managerExamenp;
+//    
+//    @Manager(application = "kereneducation", name = "ExamenSManagerImpl", interf = ExamenSManagerRemote.class)
+//    protected ExamenSManagerRemote managerExamenS;
 
     public EdtBulletinModalRSImpl() {
         super();
