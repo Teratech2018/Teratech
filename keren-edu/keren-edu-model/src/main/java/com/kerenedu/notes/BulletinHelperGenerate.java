@@ -13,10 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
-import com.kerenedu.configuration.Appreciation;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Cycle;
-import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.discipline.ViewAbscence;
 import com.kerenedu.inscription.Inscription;

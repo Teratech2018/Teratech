@@ -25,7 +25,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_REPRP")
+@Table(name="e_remprt")
 public class RemboursementPret extends BaseElement implements Serializable, Comparable<RemboursementPret> {
 
 	/**
@@ -48,8 +48,8 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	@Predicate(label="Structure",type=Etablissement.class,target="many-to-one",search=false)
 	private Etablissement societe ;
 	
-	@Predicate(label="Date",type=Date.class,target="date",optional=false,search=true)
-	@Temporal(TemporalType.DATE)
+	@Predicate(label="Date Effet",type=Date.class,target="date",optional=false,search=true)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date date ;
 	
 	@Predicate(label="Montant",type=Double.class,optional=false,search=true,updatable=false)

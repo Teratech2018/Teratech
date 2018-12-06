@@ -20,8 +20,10 @@ public enum ReportsName {
     BILANFINANCIERCLASSE("ebilanfinancierclasse.jasper"),
     RETARD_PAIELMENT("eretardpaiement.jasper"),
     LINSTINGPAIEMENT("elistingpaiement.jasper"),
+    LINSTINGPAIEMENT_TYPE("elistingpaiementtype.jasper"),
     LINSTINGRETARD("elistingretard.jasper"),
     BULLSEQUENTIEL("ebulletin_sequence.jasper"), 
+    BULLSEQUENTIEL_PRIMAIRE("ebulletin_sequence_primaire.jasper"), 
     EMARGEMENT("eficheemarge.jasper"),  
     PLANNING_COURS("eemploitemps.jasper"),  
     BULLTRIM("ebulletin_trimestre.jasper"),  
@@ -34,7 +36,9 @@ public enum ReportsName {
     FICHE_NOTE_TD("enotematieretd.jasper"),
     FICHE_MOYENNE_TD("emoyennetd.jasper"),
     FICHE_MATIERE("ematiereclasse.jasper"),
-    BULLETIN("ebulletin.jasper");
+    BULLETIN("ebulletin.jasper"),
+    BULLETIN_PAIE("ebulletinpaie.jasper"),
+    VIREMENT("evirementsalairetd.jasper") ;
 
     /**
      * Nom de l'etat sans extension

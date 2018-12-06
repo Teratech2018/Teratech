@@ -84,8 +84,15 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "LGN_BUL_ID")
-	@Predicate(label = "Lignes", type = LigneBulletinClasse.class, target = "one-to-many", updatable = false, editable = false, group = true, groupName = "group1", groupLabel = "Notes/Matieres", edittable = true)
+	@Predicate(label = "Lignes", type = LigneBulletinClasse.class, target = "one-to-many", updatable = false, editable = false, group = true, 
+	groupName = "group1", groupLabel = "Notes/Matieres", edittable = true)
 	private List<LigneBulletinClasse> lignes = new ArrayList<LigneBulletinClasse>();
+	
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//	@JoinColumn(name = "LGN_BUL_ID")
+//	@Predicate(label = "Lignes", type = LigneBulletinClassePrimaire.class, target = "one-to-many", updatable = false, editable = false,
+//	group = true, groupName = "group1", groupLabel = "Notes/Matieres", edittable = true ,hidden = "currentObject.classe.filiere.cycle.typecycle!=1")
+//	private List<LigneBulletinClassePrimaire> lignesprimaire = new ArrayList<LigneBulletinClassePrimaire>();
 
 	@Column(name = "T_POINT")
 	private Double tpoint = new Double(0);
@@ -221,6 +228,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 			this.model = new Examen(bulletin.model);
 		}
 		this.lignes = new ArrayList<LigneBulletinClasse>();
+		//this.lignesprimaire = new ArrayList<LigneBulletinClassePrimaire>();
 		this.classe = new Classe(bulletin.classe);
 		this.tpoint = bulletin.tpoint;
 		this.rang = bulletin.rang;
@@ -310,6 +318,14 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+//	public List<LigneBulletinClassePrimaire> getLignesprimaire() {
+//		return lignesprimaire;
+//	}
+//
+//	public void setLignesprimaire(List<LigneBulletinClassePrimaire> lignesprimaire) {
+//		this.lignesprimaire = lignesprimaire;
+//	}
 
 	@Override
 	public String getEditTitle() {

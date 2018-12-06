@@ -44,20 +44,32 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	private Long sur = new Long(0) ;
 		
 	@Column(name = "NOTE_1")
-	@Predicate(label = "Q1",type = Double.class,search = true  , sequence=3 )
+	@Predicate(label = "Q1/Mois 1",type = Double.class,search = true  , sequence=3 )
 	private Double note1 = new Double(0) ;
 	
 	@Column(name = "NOTE_2")
-	@Predicate(label = "Q2",type = Double.class,search = true  , sequence=4 )
+	@Predicate(label = "Q2/Mois 2",type = Double.class,search = true  , sequence=4 )
 	private Double note2 = new Double(0) ;
 	
 	@Column(name = "NOTE_3")
-	@Predicate(label = "SEQ",type = Double.class,search = true  , sequence=5)
+	@Predicate(label = "SEQ/Mois 3",type = Double.class,search = true  , sequence=5)
 	private Double note3 = new Double(0) ;
 
 	@Column(name = "NOTE")
 	@Predicate(label = "Note",type = Double.class,search = true  , sequence=6, editable=false )
 	private Double note = new Double(0) ;
+	
+	@Column(name = "S_NOTE_1")
+	//@Predicate(label = "Q1/Mois1",type = Double.class,search = true  , sequence=3 ,editable=false)
+	private Double snote1 = new Double(0) ;
+	
+	@Column(name = "S_NOTE_2")
+	//@Predicate(label = "Q2/Mois2",type = Double.class,search = true  , sequence=4 ,editable=false)
+	private Double snote2 = new Double(0) ;
+	
+	@Column(name = "S_NOTE_3")
+	//@Predicate(label = "SEQ/Mois3",type = Double.class,search = true  , sequence=5,editable=false )
+	private Double snote3 = new Double(0) ;
 	
 	
 	@Column(name = "APPRECIATION")
@@ -91,6 +103,9 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 		this.anneScolaire=notedetail.anneScolaire;
 		this.matricule=notedetail.matricule;
 		this.nom=notedetail.nom;
+		this.snote1 = notedetail.snote1;
+		this.snote2 = notedetail.snote2;
+		this.snote3 = notedetail.snote3;
 
 	}
 	
@@ -102,6 +117,9 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 		this.note= new Double(0);
 		this.sur= new Long(20);
 		this.anneScolaire=eleve.getAnneScolaire();
+		this.snote1 = new Double(0);
+		this.snote2 = new Double(0);
+		this.snote3 = new Double(0);
 
 	}
 
@@ -222,6 +240,36 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 
 	public Double getNote3() {
 		return note3;
+	}
+
+
+	public Double getSnote1() {
+		return snote1;
+	}
+
+
+	public void setSnote1(Double snote1) {
+		this.snote1 = snote1;
+	}
+
+
+	public Double getSnote2() {
+		return snote2;
+	}
+
+
+	public void setSnote2(Double snote2) {
+		this.snote2 = snote2;
+	}
+
+
+	public Double getSnote3() {
+		return snote3;
+	}
+
+
+	public void setSnote3(Double snote3) {
+		this.snote3 = snote3;
 	}
 
 

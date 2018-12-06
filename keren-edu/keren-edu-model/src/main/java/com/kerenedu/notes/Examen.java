@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.kerenedu.configuration.Cycle;
 import com.kerenedu.configuration.PeriodeScolaire;
 import com.megatim.common.annotations.Predicate;
 
@@ -28,24 +29,31 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "e_examen")
 public class Examen extends BaseElement implements Serializable, Comparable<Examen> {
 
+	
+	@ManyToOne 
+	@JoinColumn(name = "CYCLE_ID")
+	@Predicate(label = "Cycle",target = "many-to-one",type = Cycle.class,search = true  , sequence=1, colsequence=1, optional=false)
+	private Cycle cycle = new Cycle();
+	
+	@Column(name = "LIBELLE")
+	@Predicate(label = "Type Séquence", optional = false, updatable = true, search = true, target = "combobox", values = "1ere Séquence;2eme Séquence;3éme Séquence;4éme Séquence;5éme Séquence;6éme Séquence;1er Trimestre;2éme Trimestre;3éme Trimestre", sequence = 2)
+	protected String typesequence = "0";
+	
+	
 	@Column(name = "CODE", unique = true)
-	@Predicate(label = "CODE", optional = false, updatable = false, search = false, sequence = 1)
+	@Predicate(label = "CODE", optional = true, updatable = false, search = false, sequence = 3, hide=true)
 	protected String code;
 
-	@Column(name = "LIBELLE")
-	@Predicate(label = "Type Séquence", optional = false, updatable = true, search = true, target = "combobox", values = "1ere Séquence;2eme Séquence;3éme Séquence;4éme Séquence;5éme Séquence;6éme Séquence", sequence = 2)
-	protected String typesequence = "0";
-
 	@Column(name = "EVAL_1")
-	@Predicate(label = "% Eval N1", optional = false, updatable = true, search = true, type = Double.class, sequence = 3)
+	@Predicate(label = "% Eval N1", optional = false, updatable = true, search = true, type = Double.class, sequence =4)
 	protected Double e1 = new Double(100);
 	
 	@Column(name = "EVAL_2")
-	@Predicate(label = "% Eval N2", optional = false, updatable = true, search = true, type = Double.class, sequence = 4)
+	@Predicate(label = "% Eval N2", optional = false, updatable = true, search = true, type = Double.class, sequence =5 )
 	protected Double e2 = new Double(100);
 	
 	@Column(name = "EVAL_3")
-	@Predicate(label = "% Eval N3", optional = false, updatable = true, search = true, type = Double.class, sequence = 5)
+	@Predicate(label = "% Eval N3", optional = false, updatable = true, search = true, type = Double.class, sequence =6 )
 	protected Double e3 = new Double(100);
 
 	@ManyToOne
@@ -65,6 +73,10 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 
 	@Predicate(label = "Statut", search = true, hide = true)
 	private String state = "etabli";
+	
+	@Column(name = "TYPE_CYCLE_ID")
+	@Predicate(label ="typecycle", search = true, hide = true)
+    protected String typecycle;
 
 	public Examen() {
 		super();
@@ -80,10 +92,14 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 		if (filiere.periode != null) {
 			this.periode = new PeriodeScolaire(filiere.periode);
 		}
+		if (filiere.cycle != null) {
+			this.cycle = new Cycle(filiere.cycle);
+		}
 		this.code = filiere.code;
 		this.dDeb = filiere.dDeb;
 		this.dFin = filiere.dFin;
 		this.state=filiere.state;
+		this.typecycle= filiere.typecycle;
 
 	}
 
@@ -146,7 +162,14 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 			return "4éme Séquence";
 		} else if (typesequence.equals("3")) {
 			return "5éme Séquence";
-		} else {
+		}else if (typesequence.equals("6")) {
+			return "1er Trimestre";
+		}else if (typesequence.equals("7")) {
+			return "2éme Trimestre";
+		}else if (typesequence.equals("8")) {
+			return "3éme Trimestre";
+		} 
+		else {
 			return "6éme Séquence";
 		}
 	}
@@ -201,6 +224,22 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 		this.e3 = e3;
 	}
 
+	public Cycle getCycle() {
+		return cycle;
+	}
+
+	public String getTypecycle() {
+		return typecycle;
+	}
+
+	public void setTypecycle(String typecycle) {
+		this.typecycle = typecycle;
+	}
+
+	public void setCycle(Cycle cycle) {
+		this.cycle = cycle;
+	}
+
 	public void setState(String state) {
 		this.state = state;
 	}
@@ -209,7 +248,7 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
 		List<State> states = new ArrayList<State>();
-		State state = new State("etabli", "fermé");
+		State state = new State("etabli", "etabli");
 		states.add(state);
 		state = new State("ouvert", "Ouvert");
 		states.add(state);

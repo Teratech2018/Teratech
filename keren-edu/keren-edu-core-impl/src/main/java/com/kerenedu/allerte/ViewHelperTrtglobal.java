@@ -24,18 +24,18 @@ public class ViewHelperTrtglobal {
 	 }
 	 
 	 public static String getMatricule(EnseignantPM eleve , AnneScolaire annee){
-		 String matricule = "M"+eleve.getId()+"/"+annee.getCode();
+		 String matricule = "M"+eleve.getId();
 		 
 		 return matricule;
 	 }
 	 
 	 public static String getMatricule(EnseignantSecondaire eleve , AnneScolaire annee){
-		 String matricule = "M"+eleve.getId()+"/"+annee.getCode();
+		 String matricule = "M"+eleve.getId();
 		 
 		 return matricule;
 	 }
 	 public static String getMatricule(Professeur eleve , AnneScolaire annee){
-		 String matricule = "M"+eleve.getId()+"/"+annee.getCode();
+		 String matricule = "M"+eleve.getId();
 		 
 		 return matricule;
 	 }

@@ -27,8 +27,12 @@ public class Nationalite extends BaseElement implements Serializable, Comparable
 	protected String code;
 
 	@Column(name = "DESCRIPTION")
-	@Predicate(label="DESCRIPTION",optional=false,updatable=false,search=true)
+	@Predicate(label="DESCRIPTION",optional=false,updatable=true,search=true)
 	protected String description;
+	
+	@Column(name = "DESCRIPTION_EN")
+	@Predicate(label="DESCRIPTION/english",optional=false,updatable=true,search=true)
+	protected String descriptionen;
 	
 	public Nationalite() {
 		super();
@@ -46,6 +50,7 @@ public class Nationalite extends BaseElement implements Serializable, Comparable
 		super(nationalite.id, nationalite.designation, nationalite.moduleName,0L);
 		this.code = nationalite.code;
 		this.description = nationalite.description;
+		this.descriptionen = nationalite.descriptionen;
 	}
 
 	public String getCode() {
@@ -69,6 +74,14 @@ public class Nationalite extends BaseElement implements Serializable, Comparable
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
 		return "Nationalité";
+	}
+
+	public String getDescriptionen() {
+		return descriptionen;
+	}
+
+	public void setDescriptionen(String descriptionen) {
+		this.descriptionen = descriptionen;
 	}
 
 	@Override

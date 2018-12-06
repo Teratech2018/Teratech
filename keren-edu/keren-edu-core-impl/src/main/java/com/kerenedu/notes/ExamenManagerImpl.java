@@ -22,7 +22,10 @@ public class ExamenManagerImpl
     implements ExamenManagerLocal, ExamenManagerRemote
 {
 
-    @EJB(name = "ExamenDAO")
+   
+
+
+	@EJB(name = "ExamenDAO")
     protected ExamenDAOLocal dao;
 
     public ExamenManagerImpl() {
@@ -72,6 +75,13 @@ public class ExamenManagerImpl
    		// TODO Auto-generated method stub
    		Examen elev = super.delete(id);
    		return new Examen(elev);
+   	}
+
+    @Override
+   	public void processAfterSave(Examen entity) {
+   	entity.setCode(entity.getCycle().getTypecycle()+"SEQ"+entity.getId());
+   	dao.update(entity.getId(), entity);
+   		super.processAfterSave(entity);
    	}
 
 

@@ -58,7 +58,7 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 		this.typecycle=filiere.typecycle;
 		this.libelleEn=filiere.libelleEn;
 		if(filiere.responsable!=null){
-		this.responsable= new Professeurclone(filiere.responsable);
+			this.responsable= new Professeurclone(filiere.responsable);
 		}
 
 		

@@ -59,12 +59,19 @@ public class RubriquePaieManagerImpl
 	@Override
    	public RubriquePaie find(String propertyName, Long entityID) {
    		// TODO Auto-generated method stub
-   		RubriquePaie elev = super.find(propertyName, entityID);
-   		RubriquePaie inscrip = new RubriquePaie(elev);
-//   		for(Eleve serv: elev.getElevelist()){
-//   			inscrip.getElevelist().add(new Eleve(serv));
-//   		}
-   		return inscrip;
+   		RubriquePaie data = super.find(propertyName, entityID);
+   		RubriquePaie rub = new RubriquePaie(data);
+   		for (ForfaitCategorie forfait : data.getForfaitscat()) {
+			rub.getForfaitscat().add(new ForfaitCategorie(forfait));
+		}
+		
+		for (ForfaitCycle forfait : data.getForfaitscycle()) {
+			rub.getForfaitscycle().add(new ForfaitCycle(forfait));
+		}
+		for (ForfaitPersonnel forfait : data.getForfaitsperso()) {
+			rub.getForfaitsperso().add(new ForfaitPersonnel(forfait));
+		}
+   		return rub;
    	}
 
    	@Override
@@ -81,13 +88,6 @@ public class RubriquePaieManagerImpl
    	}
    	
    	
-
-   	@Override
-   	public RubriquePaie delete(Long id) {
-   		// TODO Auto-generated method stub
-   		RubriquePaie elev = super.delete(id);
-   		return new RubriquePaie(elev);
-   	}
 
 
 }

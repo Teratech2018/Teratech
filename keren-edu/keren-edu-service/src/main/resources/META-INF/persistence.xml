@@ -131,8 +131,7 @@
 		<class>com.kerenedu.solde.LignePonderationTypeContrat</class>
 		<class>com.kerenedu.solde.PeriodePaieOpen</class>
 		<class>com.kerenedu.solde.PeriodePaieClose</class>
-		<class>com.kerenedu.solde.PrepaSalaire</class>
-		<class>com.kerenedu.solde.TraitSalaire</class>
+
 		<class>com.kerenedu.solde.LigneElementVariable</class>
 		<class>com.kerenedu.solde.LigneBulletinPaie</class>
 		<class>com.kerenedu.solde.Acompte</class>
@@ -153,6 +152,16 @@
 		<class>com.kerenedu.discipline.ViewAbscence</class>
 		<class>com.kerenedu.model.report.ViewNotematiere</class>
 		<class>com.kerenedu.inscription.InscriptionChoice</class>
+		<class>com.kerenedu.solde.ForfaitCycle</class>
+		<class>com.kerenedu.solde.ForfaitCategorie</class>
+		<class>com.kerenedu.solde.ForfaitPersonnel</class>
+		<class>com.kerenedu.solde.PrepaSalaire</class>
+		<class>com.kerenedu.solde.TraitSalaire</class>
+		<class>com.kerenedu.personnel.ProfesseurChoice</class>
+		<class>com.kerenedu.model.report.ViewBulletinPaieHelper</class>
+		<class>com.kerenedu.notes.BulletinHelperGeneratePrimaire</class>
+<!-- 		<class>com.kerenedu.notes.LigneBulletinClassePrimaire</class> -->
+<!-- 		<class>com.kerenedu.notes.NoteDetailPr</class> -->
 <!-- 		<class>com.kerenedu.notes.ExamenP</class> -->
 <!-- 		<class>com.kerenedu.notes.ExamenS</class> -->
 		

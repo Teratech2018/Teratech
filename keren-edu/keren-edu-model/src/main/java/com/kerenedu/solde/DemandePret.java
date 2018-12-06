@@ -37,8 +37,8 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	private static final long serialVersionUID = 5896264921413540741L;
 	
 	@ManyToOne
-	@JoinColumn(name="CAPR_ID")
-	@Predicate(label="Type de prêt",target="many-to-one",type=CategoriePret.class,optional=false,updatable=false,search=true,observable=true)
+	@JoinColumn(name="CATPR_ID")
+	@Predicate(label="Type de prêt",target="many-to-one",type=CategoriePret.class,optional=false,search=true)
 	private CategoriePret typepret;
 	
 	@ManyToOne
@@ -47,11 +47,11 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	private Professeur employe ;
 	
 	@Predicate(label="Date demande de prêt",type=Date.class,target="date",search=true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dpret ;
 	
 	@Predicate(label="Date début de remboursement",type=Date.class,target="date",search=true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date drembour;
 	
 	@Predicate(label="Montant sollicité par l'employé",type=Double.class,search=true)
@@ -64,7 +64,7 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	@Observer(observable="typepret",source="field:duree")
 	private Short duree = 0 ;
 	
-	@Predicate(label="Quotité cessible",type=Double.class,search=true)
+	//@Predicate(label="Quotité cessible",type=Double.class,search=false)
 	private Double quotite=0.0;
 	
 	@Predicate(label="c",target="textarea",group=true,groupName="group2",groupLabel="Commentaire")
@@ -256,7 +256,7 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kereneducation";
 	}
 
 	@Override

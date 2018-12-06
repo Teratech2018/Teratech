@@ -34,7 +34,7 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 	@Predicate(label="Intitulé",optional=false,search=true)
 	private String intitule ;
 	
-	@Predicate(label="Type",search=true,target="combobox",values="Employé;Agent de Maitrise;cadre")
+	@Predicate(label="Type",search=true,target="combobox",values="Directrice;Enseignat(e);Surveillant Genéral, Principal")
 	private String type = "0" ;
 	
 	@Predicate(label="Descrition ",group=true,groupName="group1",groupLabel="Description de la fonction",target="textarea")

@@ -17,6 +17,7 @@ import com.kerenedu.configuration.Classe;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Bulletin;
 import com.kerenedu.notes.Examen;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -39,15 +40,18 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 //	protected String typebulletin="0";
 	
 	@ManyToOne
+    @JoinColumn(name = "CLASSE_ID")
+	@Predicate(label="Selectionner La Classe",updatable=true,type=Classe.class , target="many-to-one", sequence=1, observable=true, optional=false)
+    protected Classe classe;
+	
+	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Examen",type=Examen.class,target="many-to-one",optional=false, sequence=1)
+	@Predicate(label="Examen",type=Examen.class,target="many-to-one",optional=false, sequence=2)
+	@Filter(value = "[{\"fieldName\":\"cycle\",\"value\":\"object.classe\",\"searchfield\":\"typecycle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
 	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
 	private Examen periode ;
 	
-	@ManyToOne
-    @JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Selectionner La Classe",updatable=true,type=Classe.class , target="many-to-one", sequence=3, observable=true, optional=false)
-    protected Classe classe;
+
 	
 	@Predicate(label="Elève Concerne ?",target="combobox",values="Tous les élèves;Seulement les élèves selectionnés",optional=false,sequence=2)
 //	@Observer(observable="classe",source="method:getidclasse",parameters="classe")

@@ -14,10 +14,13 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.core.securites.Groupe;
 import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.GroupeCours;
+import com.kerenedu.configuration.GroupeCoursManagerRemote;
 import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.core.ifaces.report.ViewNoteHelperManagerRemote;
 import com.kerenedu.core.ifaces.report.ViewNotematiereManagerRemote;
@@ -61,6 +64,8 @@ public class TraitNoteRSImpl
     
     @Manager(application = "kereneducation", name = "ViewNotematiereManagerImpl", interf = ViewNotematiereManagerRemote.class)
     protected ViewNotematiereManagerRemote managerhelpernote;
+    @Manager(application = "kereneducation", name = "GroupeCoursManagerImpl", interf = GroupeCoursManagerRemote.class)
+    protected GroupeCoursManagerRemote managermodule;
 
     public TraitNoteRSImpl() {
         super();
@@ -111,18 +116,12 @@ public class TraitNoteRSImpl
     @Override
     public TraitNote save(@Context HttpHeaders headers,TraitNote entity) {
         //To change body of generated methods, choose Tools | Templates.
-  	
-    	if (!entity.getPeriode().getState().equals("etabli")) {
-			throw new KerenExecption(
-					"impossible de saisir les notes : les saisies pour cette sequence sont  cloturees !!!");
-		}
     	Gson gson = new Gson();
 		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 		CacheMemory.insert(iduser, TypeCacheMemory.FILLIERE, entity.getClasse().getFiliere());
 		CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, entity.getClasse());
 		CacheMemory.insert(iduser, TypeCacheMemory.EXAMEN, entity.getPeriode());
-    	System.out.println("TraitNoteRSImpl.save() current exercice is "+CacheMemory.getCurrentannee());
-    	RestrictionsContainer container = RestrictionsContainer.newInstance();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
     	List<MatiereNote> datas = new ArrayList<MatiereNote>();
 		if(entity.getPeriode()!=null){
 			container.addEq("examen.id", entity.getPeriode().getId());
@@ -136,6 +135,15 @@ public class TraitNoteRSImpl
 		container.addEq("classe.id", entity.getClasse().getId());
 		List<Inscription> eleves = managerEleve.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 		System.out.println("TraitNoteRSImpl.save() nombre d'elève trouvés is ====="+eleves.size());
+	//	if(eleves!=null&&!eleves.isEmpty()){
+			// verifier que la période de saisir n'ets pas dépasser
+			
+			if (!entity.getPeriode().getState().equals("etabli")) {
+				throw new KerenExecption(
+						"impossible de saisir les notes : les saisies pour cette sequence sont  cloturees !!!");
+			}
+			
+    	    	
 		//2- les matiere de la classe
 		
 		container = RestrictionsContainer.newInstance();
@@ -163,7 +171,9 @@ public class TraitNoteRSImpl
 ////				throw new KerenExecption("ERROR: note dejà pris en compte!!!!");
 ////			}
 			}
-		} 	
+	//	} 	
+    	}
+	//	}
     	
         return entity; 
     }

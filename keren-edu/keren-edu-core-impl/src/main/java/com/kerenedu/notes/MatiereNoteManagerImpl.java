@@ -78,6 +78,9 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 		for (NoteDetail detail : note.getNotelisttr()) {
 			data.getNotelisttr().add(new NoteDetail(detail));
 		}
+//		for (NoteDetailPr detail : note.getNotesprimaire()) {
+//			data.getNotesprimaire().add(new NoteDetailPr(detail));
+//		}
 
 		return data;
 	}
@@ -142,6 +145,39 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 			throw new KerenExecption(
 					"impossible de saisir les notes : les saisies pour cette séquence sont cloturée !!!");
 		} else {
+			if(entity.getClasse().getFiliere().getCycle().getTypecycle().equals("1")){
+				for (NoteDetail not : entity.getNotelisttr()) {
+					double snote1=0 ;double snote2=0;double notmoy=0;double snote3=0;
+					snote1=not.getNote1()*entity.getExamen().getE1()/entity.getMatiere().getCoef();
+					snote2=not.getNote2()*entity.getExamen().getE2()/entity.getMatiere().getCoef();
+					snote3=not.getNote3()*entity.getExamen().getE2()/entity.getMatiere().getCoef();
+				
+					notmoy=(snote1+snote2+snote3)/3;
+					 BigDecimal bd = new BigDecimal(notmoy);
+					 bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
+					 notmoy = bd.doubleValue();
+
+					not.setNote(notmoy);
+					not.setSnote1(snote1);
+					not.setSnote2(snote2);
+					not.setSnote3(snote3);
+					
+					if (not.getNote() > 20) {
+						throw new KerenExecption("la note ne peut etre supèrieure à 20 !!!");
+					}
+					if (not.getNote()<  0) {
+						throw new KerenExecption("Mauvaise note  !!!");
+					}
+					if(entity.getClasse().getSection().getTypesection().equals("0")){
+						not.setObs(this.getAppreciation(not.getNote().longValue()).getLibelleen());
+					}else{
+						not.setObs(this.getAppreciation(not.getNote().longValue()).getLibelle());
+					}
+					
+					notes.add(not);
+				}
+				
+			}else if(entity.getClasse().getFiliere().getCycle().getTypecycle().equals("2")){
 			for (NoteDetail not : entity.getNotelisttr()) {
 			
 				double note1=0 ;double note2=0;double notmoy=0;double note3=0;
@@ -195,6 +231,7 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 				}
 				
 				notes.add(not);
+			}
 			}
 			entity.setNotelisttr(notes);
 		}

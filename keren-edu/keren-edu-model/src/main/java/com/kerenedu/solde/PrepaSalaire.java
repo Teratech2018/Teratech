@@ -13,13 +13,12 @@ import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
 import com.kerenedu.personnel.Professeur;
+import com.kerenedu.personnel.ProfesseurChoice;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
-/**
- * @author BEKO
- *
- */
+//@Entity
+//@Table(name="e_prepa")
 public class PrepaSalaire extends BaseElement implements Serializable, Comparable<PrepaSalaire> {
 
 	/**
@@ -37,8 +36,8 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	private String porte ="0";
 	
 	@ManyToMany
-	@Predicate(label="EM",type=Professeur.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte=='0' || temporalData.porte==null")
-	private List<Professeur> concernes = new ArrayList<Professeur>();
+	@Predicate(label="EM",type=ProfesseurChoice.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Employés",hidden="temporalData.porte!='1'")
+	private List<ProfesseurChoice> concernes = new ArrayList<ProfesseurChoice>();
 	
 	/**
 	 * 
@@ -69,7 +68,7 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	 * @param concernes
 	 */
 	public PrepaSalaire(long id, String designation, String moduleName, PeriodePaie periode, String porte,
-			List<Professeur> concernes) {
+			List<ProfesseurChoice> concernes) {
 		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		this.porte = porte;
@@ -82,7 +81,7 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 			this.periode = new PeriodePaie(prepa.periode);
 		}
 		this.porte = prepa.porte;
-//		this.concernes = concernes;
+		this.concernes = new ArrayList<ProfesseurChoice>();
 	}
 	
 	
@@ -103,11 +102,11 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 		this.porte = porte;
 	}
 
-	public List<Professeur> getConcernes() {
+	public List<ProfesseurChoice> getConcernes() {
 		return concernes;
 	}
 
-	public void setConcernes(List<Professeur> concernes) {
+	public void setConcernes(List<ProfesseurChoice> concernes) {
 		this.concernes = concernes;
 	}
 	

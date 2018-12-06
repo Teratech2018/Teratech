@@ -58,17 +58,17 @@ public class AvanceSalaireRSImpl
         try {
                    MetaData meta = MetaDataUtil.getMetaData(new AvanceSalaire(), new HashMap<String, MetaData>(),new ArrayList<String>());
                     MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'echeancier'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'avancesalaire','method':'echeancier'}");
             workbtn.setStates(new String[]{"etabli","confirme"});
             workbtn.setPattern("btn btn-info");
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'confirme'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'avancesalaire','method':'confirme'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-success");
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'avancesalaire','method':'annule'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'avancesalaire','method':'annule'}");
             workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);	           

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -24,10 +25,17 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	 */
 	private static final long serialVersionUID = 4083876520606273661L;
 
+	
+	@ManyToOne
+	@JoinColumn(name="CLASSE_ID")
+	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1, observable=true)
+	private Classe classe ;
+	
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1)
-	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
+	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=2)
+	@Filter(value="[{\"fieldName\":\"cycle\",\"value\":\"object.classe\",\"searchfield\":\"typecycle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
+	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	private Examen periode ;
 	
 //	@ManyToOne
@@ -37,10 +45,7 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 //	//@Filter(value="[{\"fieldName\":\"periode\",\"value\":\"object\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner un examen \"}]")
 //	private ExamenP evaluation ;
 //		
-	@ManyToOne
-	@JoinColumn(name="CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=3)
-	private Classe classe ;
+
 	
 	/**
 	 * 

@@ -121,7 +121,7 @@ public class RemboursementAvanceManagerImpl
         if(element==null){
             element = new ElementVariable();
             element.setSalarie(entity.getAvance().getEmploye());
-            element.setPeiode(periode);		
+            element.setPeriode(periode);		
             variabledao.save(element);
             datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
 

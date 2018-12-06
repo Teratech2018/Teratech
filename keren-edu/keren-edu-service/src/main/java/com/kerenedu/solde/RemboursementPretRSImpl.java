@@ -3,13 +3,21 @@ package com.kerenedu.solde;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.TypeCacheMemory;
+import com.kerenedu.notes.CoefMatiere;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -35,7 +43,7 @@ public class RemboursementPretRSImpl
     protected RemboursementPretManagerRemote manager;
     
 
-    @Manager(application = "kerenpaie", name = "PeriodePaieManagerImpl", interf = PeriodePaieManagerRemote.class)
+    @Manager(application = "kereneducation", name = "PeriodePaieManagerImpl", interf = PeriodePaieManagerRemote.class)
     protected PeriodePaieManagerRemote periodemanager;
 
     public RemboursementPretRSImpl() {
@@ -60,12 +68,12 @@ public class RemboursementPretRSImpl
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new RemboursementPret(), new HashMap<String, MetaData>(),new ArrayList<String>());
 		    MetaColumn workbtn = new MetaColumn("button", "work1", "Valider", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'remboursementpret','method':'confirme'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'remboursementpret','method':'confirme'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-success");
             meta.getHeader().add(workbtn);   
             workbtn = new MetaColumn("button", "work1", "Refuser", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'remboursementpret','method':'refuse'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'remboursementpret','method':'refuse'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);   
@@ -177,8 +185,6 @@ public class RemboursementPretRSImpl
 		  PeriodePaie periode = periodemanager.getPeriodeFromDate(entity.getDate());
 		  if(periode==null){
 			  throw new KerenExecption("Impossible de trouver une période contenant cette date");
-		  }else if(!periode.getActif()){
-			  throw new KerenExecption("Veuillez activer le période : "+periode.getDesignation());
 		  }else if(periode.getState().equalsIgnoreCase("etabli")){
 			  throw new KerenExecption("La periode "+periode.getDesignation()+" n'est pas ouverte <br/> Veuillez ouvrir la periode");
 		  }else if(periode.getState().equalsIgnoreCase("ferme")){
@@ -186,5 +192,14 @@ public class RemboursementPretRSImpl
 		  }
 		  return periode;
 	}
+	
+	@Override
+	public List<RemboursementPret> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		container.addNotEq("state", "annule");	
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
+	
 
 }

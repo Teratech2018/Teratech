@@ -16,7 +16,6 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.reglement.FichePaiement;
-import com.kerenedu.reglement.FichePaiementOptionel;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute

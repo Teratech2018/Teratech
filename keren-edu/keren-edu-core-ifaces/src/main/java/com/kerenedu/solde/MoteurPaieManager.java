@@ -25,13 +25,7 @@ public interface MoteurPaieManager
      */
     public Double eval(RubriquePaie rubrique,Professeur salarie,PeriodePaie periode,Etablissement structure);
     
-    /**
-     * Evaluation d'une variable de paie
-     * @param variable
-     * @param salarie
-     * @return
-     */
-    public Double eval(Variable variable,Professeur salarie,PeriodePaie periode,Etablissement structure);
+  
     
    
     /**

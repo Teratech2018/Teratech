@@ -23,22 +23,24 @@ public class ReportHelper {
      */
     //public static final String reportFileChemin = "src/main/resources/reports/";
     public static final String reportFileChemin = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
+    public static final String reportFileCheminPaie = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
     
     public static final String reportimages = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"logo.png";
     
     public static final String reportimagescg = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"logoc.png";
     
     public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
+    public static final String templatepaieURL = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
     
     public static final String photourl = FileHelper.getStaticDirectory()+File.separator;
     public static final String reportimagesURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator ;
     
     public static final String reportphoto = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"photomin"+File.separator ;
     
-    public static final String titre1 = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"a.png";
+    public static final String titre1 = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"c.png";
     public static final String titre2 = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"b.png";
     
-    public static final String reportimagesbgc = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"bgcc.png";
+    public static final String reportimagesbgc = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"bgccc.png";
     public static final String reportimagesbgs = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"bgss.png";
     /**
      * Chemin de base des report
@@ -124,9 +126,35 @@ public class ReportHelper {
           return os.toByteArray();
        }
     }
+    public static byte[] getBytescol() throws IOException
+    {
+    	InputStream stream = new FileInputStream(reportFileChemin+File.separator+"images"+File.separator+"logoc.png");
+       try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+          byte[] buffer = new byte[1024];
+          for (int len = 0; (len = stream.read(buffer)) != -1;) {
+             os.write(buffer, 0, len);
+          }
+          os.flush();
+          return os.toByteArray();
+       }
+    }
     public static byte[] getBytesC() throws IOException
     {
     	InputStream stream = new FileInputStream(reportimagescg);
+       try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
+          byte[] buffer = new byte[1024];
+          for (int len = 0; (len = stream.read(buffer)) != -1;) {
+             os.write(buffer, 0, len);
+          }
+          os.flush();
+          System.out.println("ReportHelper.getBytesC() image "+os.toByteArray());
+          return os.toByteArray();
+       }
+    }
+    
+    public static byte[] getBytesbgc() throws IOException
+    {
+    	InputStream stream = new FileInputStream(reportimagesbgc);
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -137,9 +165,9 @@ public class ReportHelper {
        }
     }
     
-    public static byte[] getBytesbgc() throws IOException
+    public static byte[] getBytestitrcee(String image) throws IOException
     {
-    	InputStream stream = new FileInputStream(reportimagesbgc);
+    	InputStream stream = new FileInputStream(titre1);
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {

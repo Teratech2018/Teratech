@@ -40,27 +40,44 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 	protected Professeur prof;
 	
 	@Column(name = "NOTE_1")
-	@Predicate(label = "Q1",type = Double.class,search = true  , sequence=3 ,editable=false)
+	@Predicate(label = "Q1/Mois1",type = Double.class,search = true  , sequence=3 ,editable=false)
 	private Double note1 = new Double(0) ;
 	
 	@Column(name = "NOTE_2")
-	@Predicate(label = "Q2",type = Double.class,search = true  , sequence=4 ,editable=false)
+	@Predicate(label = "Q2/Mois2",type = Double.class,search = true  , sequence=4 ,editable=false)
 	private Double note2 = new Double(0) ;
 	
 	@Column(name = "NOTE_3")
-	@Predicate(label = "SEQ",type = Double.class,search = true  , sequence=5,editable=false )
+	@Predicate(label = "SEQ/Mois3",type = Double.class,search = true  , sequence=5,editable=false )
 	private Double note3 = new Double(0) ;
+	
+	@Column(name = "S_NOTE_1")
+	//@Predicate(label = "Q1/Mois1",type = Double.class,search = true  , sequence=3 ,editable=false)
+	private Double snote1 = new Double(0) ;
+	
+	@Column(name = "S_NOTE_2")
+	//@Predicate(label = "Q2/Mois2",type = Double.class,search = true  , sequence=4 ,editable=false)
+	private Double snote2 = new Double(0) ;
+	
+	@Column(name = "S_NOTE_3")
+	//@Predicate(label = "SEQ/Mois3",type = Double.class,search = true  , sequence=5,editable=false )
+	private Double snote3 = new Double(0) ;
 
 	@Column(name = "NOTE")
 	@Predicate(label = "Note",type = Double.class,search = true  , sequence=6, editable=false )
 	private Double note = new Double(0) ;
+	
+//	@Column(name = "S_NOTE")
+//	//@Predicate(label = "Note",type = Double.class,search = true  , sequence=6, editable=false )
+//	private Double snote = new Double(0) ;
+
 
 	@Column(name = "COEF")
 	@Predicate(label = "Coef", type = Long.class, search = true, sequence = 7, updatable = false)
 	private Long coef = new Long(0);
 
 	@Column(name = "TOTAL")
-	@Predicate(label = "Totaux", type = Double.class, search = true, sequence = 8, updatable = false)
+//	@Predicate(label = "Totaux", type = Double.class, search = true, sequence = 8, updatable = false)
 	private Double totaux = new Double(0);
 
 	@ManyToOne
@@ -131,6 +148,11 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		this.note1 = filiere.note1;
 		this.note2 = filiere.note2;
 		this.note3 = filiere.note3;
+		
+//		this.snote = filiere.snote;
+		this.snote1 = filiere.snote1;
+		this.snote2 = filiere.snote2;
+		this.snote3 = filiere.snote3;
 
 	}
 
@@ -150,6 +172,19 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		this.rang=helper.getRangMat();
 //		System.out.println("LigneBulletinClasse.LigneBulletinClasse() note1"+helper.getNote1()+" note2"+helper.getNote2()+"note 3"+helper.getNote3());
 	//	double note1=0 ;double note2=0;double notmoy=0;double note3=0;
+		if(helper.getClasse().getFiliere().getCycle().getTypecycle().equals("1")){
+			
+			this.note1=helper.getNote1()*helper.getExamen().getE1()/helper.getMatiere().getCoef();
+			this.note2=helper.getNote2()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+			this.note3=helper.getNote3()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+			
+			this.snote1=helper.getNote1()*helper.getExamen().getE1()/helper.getMatiere().getCoef();
+			this.snote2=helper.getNote2()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+			this.snote3=helper.getNote3()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+			
+			this.note=(this.note1+this.note2+this.note3)/3;
+			
+		}else if(helper.getClasse().getFiliere().getCycle().getTypecycle().equals("2")){
 		if(helper.getNote1()==0&&helper.getNote2()!=0&&helper.getNote3()!=0){
 			this.note1=(double) 0;
 			this.note2=helper.getNote2()*helper.getExamen().getE3();
@@ -179,6 +214,7 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 			this.note1=(double) 0;
 			this.note2=helper.getNote2()*helper.getExamen().getE3();
 			this.note3=helper.getNote1()*helper.getExamen().getE3();
+		}
 		}
 //
 //		
@@ -287,6 +323,38 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 	public Double getExtremeMax() {
 		return extremeMax;
 	}
+//
+//	public Double getSnote1() {
+//		return snote1;
+//	}
+//
+//	public void setSnote1(Double snote1) {
+//		this.snote1 = snote1;
+//	}
+//
+//	public Double getSnote2() {
+//		return snote2;
+//	}
+//
+//	public void setSnote2(Double snote2) {
+//		this.snote2 = snote2;
+//	}
+//
+//	public Double getSnote3() {
+//		return snote3;
+//	}
+//
+//	public void setSnote3(Double snote3) {
+//		this.snote3 = snote3;
+//	}
+//
+//	public Double getSnote() {
+//		return snote;
+//	}
+//
+//	public void setSnote(Double snote) {
+//		this.snote = snote;
+//	}
 
 	public void setExtremeMax(Double extremeMax) {
 		this.extremeMax = extremeMax;
@@ -310,6 +378,30 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 
 	public void setNote1(Double note1) {
 		this.note1 = note1;
+	}
+
+	public Double getSnote1() {
+		return snote1;
+	}
+
+	public void setSnote1(Double snote1) {
+		this.snote1 = snote1;
+	}
+
+	public Double getSnote2() {
+		return snote2;
+	}
+
+	public void setSnote2(Double snote2) {
+		this.snote2 = snote2;
+	}
+
+	public Double getSnote3() {
+		return snote3;
+	}
+
+	public void setSnote3(Double snote3) {
+		this.snote3 = snote3;
 	}
 
 	public Double getNote2() {

@@ -35,7 +35,7 @@ public class AcompteRSImpl
     @Manager(application = "kereneducation", name = "AcompteManagerImpl", interf = AcompteManagerRemote.class)
     protected AcompteManagerRemote manager;
     
-    @Manager(application = "kerenpaie", name = "PeriodePaieManagerImpl", interf = PeriodePaieManagerRemote.class)
+    @Manager(application = "kereneducation", name = "PeriodePaieManagerImpl", interf = PeriodePaieManagerRemote.class)
     protected PeriodePaieManagerRemote periodemanager;
     
 
@@ -63,17 +63,17 @@ public class AcompteRSImpl
 
             MetaData meta = MetaDataUtil.getMetaData(new Acompte(), new HashMap<String, MetaData>(),new ArrayList<String>());
             MetaColumn workbtn = new MetaColumn("button", "work1", "Confirmer", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'confirme'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'confirme'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-success");
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Payer", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'paye'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'paye'}");
             workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
-            workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'annule'}");
             workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);	           
@@ -100,7 +100,7 @@ public class AcompteRSImpl
 
     @Override
     protected void processBeforeSave(Acompte entity) {
-
+    	entity.setState("etabli");
         // TODO Auto-generated method stub
         if(entity.getEmploye()==null){
                 throw new KerenExecption("Le Salarié concerné est obligatoire");

@@ -15,6 +15,7 @@ import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
 import com.kerenedu.inscription.InscriptionChoice;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -32,8 +33,14 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	private static final long serialVersionUID = -4609375799032659501L;
 	
 	@ManyToOne
+	@JoinColumn(name = "CLASSE_ID")
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=1, observable=true, optional=false)
+	protected Classe classe ;
+
+	@ManyToOne
     @JoinColumn(name = "SEQ_ID")
-	@Predicate(label="Sequence",updatable=true,type=Examen.class , target="many-to-one", sequence=1, optional=false)
+	@Predicate(label="Sequence",updatable=true,type=Examen.class , target="many-to-one", sequence=2, optional=false)
+	@Filter(value="[{\"fieldName\":\"cycle\",\"value\":\"object.classe\",\"searchfield\":\"typecycle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
     protected Examen seq;
 
 //	@Column(name = "LIBELLE")
@@ -52,13 +59,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 //	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2)
 //	private SectionE section ;
 //	
-		
-	@ManyToOne
-	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true, optional=false)
-	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
-	protected Classe classe ;
-	
+
 	@Predicate(label="Elève Concerne ?",target="combobox",values="Tous les élèves;Seulement les élèves selectionnés",optional=false,sequence=3)
 	//@Filter(value="[{\"fieldName\":\"classe\",\"value\":\"object.classe\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une classe\"}]")
 	private String porte ="0";

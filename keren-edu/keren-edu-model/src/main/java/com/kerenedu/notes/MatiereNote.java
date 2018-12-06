@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.personnel.Professeur;
@@ -46,8 +47,15 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
     @JoinColumn(name = "MATIERE_ID")
-	@Predicate(label="MATIERE",optional=true,updatable=true,search=true , sequence=3, colsequence=1,type=CoefMatiereDetail.class ,editable=false , observable=true)
+	@Predicate(label="MATIERE",optional=true,updatable=true,search=true , sequence=3, colsequence=1,type=CoefMatiereDetail.class ,editable=false , observable=true
+			)
 	protected CoefMatiereDetail matiere;
+	
+//	@ManyToOne
+//    @JoinColumn(name = "MODULE_ID")
+//	@Predicate(label="MODULE",optional=true,updatable=true,search=true , sequence=3, colsequence=1,type=GroupeCours.class ,editable=false , observable=true
+//	,hidden="currentObject.classe.filiere.cycle.typeccyle!=1")
+//	protected GroupeCours module;
 	
 	@ManyToOne
 	@JoinColumn(name = "PROF")
@@ -62,6 +70,13 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	,search = false,edittable=true)
 	@Observer(observable="classe",source="method:findeleveclasse",parameters="classe")
 	private List<NoteDetail> notelisttr = new ArrayList<NoteDetail>();
+	
+//	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+//    @JoinColumn(name = "EL_NOTE_ID")
+//	@Predicate(group = true,groupName = "tab1",groupLabel = "Saisies des notes",target ="one-to-many",type = NoteDetailPr.class
+//	,search = false,edittable=true , hidden = "currentObject.classe.filiere.cycle.typecycle!=1")
+//	@Observer(observable="classe",source="method:findeleveclasse",parameters="classe")
+//	private List<NoteDetailPr> notesprimaire = new ArrayList<NoteDetailPr>();
 	
 
 	@Column(name = "ANNEE")
@@ -90,9 +105,13 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		if(filiere.prof!=null){
 			this.prof = new Professeur(filiere.prof);
 		}
+//		if(filiere.module!=null){
+//			this.module = new GroupeCours(filiere.module);
+//		}
 		this.anneScolaire=filiere.anneScolaire;
 	
 		this.notelisttr= new ArrayList<NoteDetail>();
+	//	this.notesprimaire= new ArrayList<NoteDetailPr>();
 	
 		
 	}
@@ -125,6 +144,21 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		for(Inscription el : listEleve){
 			this.notelisttr.add(new NoteDetail(el));
 		}
+	
+	}
+	
+	public MatiereNote(GroupeCours coefmat,Examen examen, List<Inscription> listEleve, Classe classe) {
+		//this.module = new GroupeCours(coefmat);
+		this.classe= new Classe(classe);
+		//if(coefmat.getProffesseur()!=null){
+		this.prof=new Professeur(new Professeur());
+		//}
+		this.examen= new Examen(examen);
+		
+//		this.notesprimaire= new ArrayList<NoteDetailPr>();
+//		for(Inscription el : listEleve){
+//			this.notesprimaire.add(new NoteDetailPr(el));
+//		}
 	
 	}
 	public MatiereNote(CoefMatiereDetail coefmat,Examen examen,Inscription eleve) {
@@ -213,12 +247,32 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		this.prof = prof;
 	}
 
+//
+//	public GroupeCours getModule() {
+//		return module;
+//	}
+//
+//
+//	public void setModule(GroupeCours module) {
+//		this.module = module;
+//	}
+
 
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
 		return "Gestion des Notes";
 	}
+
+//	public List<NoteDetailPr> getNotesprimaire() {
+//		return notesprimaire;
+//	}
+//
+//
+//	public void setNotesprimaire(List<NoteDetailPr> notesprimaire) {
+//		this.notesprimaire = notesprimaire;
+//	}
+
 
 	@Override
 	public String getListTitle() {

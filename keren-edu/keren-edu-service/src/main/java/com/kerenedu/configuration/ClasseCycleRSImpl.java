@@ -3,6 +3,7 @@ package com.kerenedu.configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -14,7 +15,9 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.model.report.ViewBadgeModal;
+import com.kerenedu.notes.CoefMatiere;
 import com.kerenedu.notes.CoefMatiereDetail;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -67,6 +70,18 @@ public class ClasseCycleRSImpl
    			throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
    		} 
    	}
+
+
+	@Override
+	public List<ClasseCycle> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		Cycle filiere = (Cycle) CacheMemory.getValue(BuilderHttpHeaders.getidUsers(arg0), TypeCacheMemory.CYCLE);
+		if(filiere!=null){
+			container.addEq("cycle",  CacheMemory.getCurentcycle());
+		}//end if(filiere!=null){
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
 
 	
 

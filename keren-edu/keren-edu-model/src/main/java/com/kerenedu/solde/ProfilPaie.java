@@ -43,7 +43,7 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 	private String state="etabli";
 	
 	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(name="e_rub_profil" , joinColumns=@JoinColumn(name="PRPA_ID"),inverseJoinColumns=@JoinColumn(name="RUBR_ID"))
+	@JoinTable(name="e_rub_profil" , joinColumns=@JoinColumn(name="PRO_ID"),inverseJoinColumns=@JoinColumn(name="RUBR_ID"))
 	@Predicate(label="Lignes",type=RubriquePaie.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Rubriques")
 	private List<RubriquePaie> rubriques = new ArrayList<RubriquePaie>();
 	

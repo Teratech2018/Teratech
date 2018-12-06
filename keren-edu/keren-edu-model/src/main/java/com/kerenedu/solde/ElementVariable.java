@@ -5,6 +5,7 @@ package com.kerenedu.solde;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
@@ -41,7 +43,17 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@ManyToOne
 	@JoinColumn(name="PEPA_ID")
 	@Predicate(label="Periode de Paie",type=PeriodePaie.class,target="many-to-one",optional=false,updatable=false,editable=false,search=false)
-	private PeriodePaie peiode;
+	private PeriodePaie periode;
+	
+	@Predicate(label="Date Debut",type=Date.class,target="date",search=true)
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date ddeb ;
+	
+	@Predicate(label="Date Fin",type=Date.class,target="date",search=true)
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date dfin;
+	
+	
 
 	
 	@OneToMany(mappedBy="eltVariable",fetch=FetchType.LAZY)
@@ -141,9 +153,12 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		if(elem.salarie0!=null){
 			this.salarie0 = new Professeur(elem.salarie0);
 		}		
-		if(elem.peiode!=null){
-			this.peiode = new PeriodePaie(elem.peiode);
+		if(elem.periode!=null){
+			this.periode = new PeriodePaie(elem.periode);
 		}
+		this.ddeb=elem.ddeb;
+		this.dfin=elem.dfin;
+		
 	}	
 	
 
@@ -158,13 +173,6 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 
 
-	public PeriodePaie getPeiode() {
-		return peiode;
-	}
-
-	public void setPeiode(PeriodePaie peiode) {
-		this.peiode = peiode;
-	}		
 	
 
 	public Professeur getSalarie0() {
@@ -179,6 +187,22 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 	public List<RemboursementAvance> getAvances() {
 		return avances;
+	}
+
+	public Date getDdeb() {
+		return ddeb;
+	}
+
+	public void setDdeb(Date ddeb) {
+		this.ddeb = ddeb;
+	}
+
+	public Date getDfin() {
+		return dfin;
+	}
+
+	public void setDfin(Date dfin) {
+		this.dfin = dfin;
 	}
 
 	public void setAvances(List<RemboursementAvance> avances) {
@@ -218,6 +242,8 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	public void setCongePrisPeriode(Short congePrisPeriode) {
 		this.congePrisPeriode = congePrisPeriode;
 	}
+
+	
 
 	public Short getCumulCongePris() {
 		return cumulCongePris;
@@ -300,6 +326,14 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		this.cumulAvantageNat = cumulAvantageNat;
 	}
 
+	public PeriodePaie getPeriode() {
+		return periode;
+	}
+
+	public void setPeriode(PeriodePaie periode) {
+		this.periode = periode;
+	}
+
 	public Double getCumulHeureTrav() {
 		return cumulHeureTrav;
 	}
@@ -380,7 +414,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kereneducation";
 	}
 
 	@Override

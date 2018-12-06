@@ -28,7 +28,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_RAPPP")
+@Table(name="e_rapsal")
 public class RappelSalaire extends BaseElement implements Serializable, Comparable<RappelSalaire> {
 
 	/**
@@ -45,11 +45,11 @@ public class RappelSalaire extends BaseElement implements Serializable, Comparab
 	private String type = "0";
 
 	@Predicate(label="Date de début",type=Date.class,target="date",search=true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date debut ;
 	
 	@Predicate(label="Date de fin",type=Date.class,target="date",search=true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date fin ;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
@@ -197,7 +197,7 @@ public class RappelSalaire extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kereneducation";
 	}
 
 	@Override

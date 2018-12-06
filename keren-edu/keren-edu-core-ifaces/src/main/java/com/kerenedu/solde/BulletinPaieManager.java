@@ -4,6 +4,7 @@ package com.kerenedu.solde;
 import java.util.List;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.EdtPeriodeModal;
 
 
 /**
@@ -19,4 +20,6 @@ public interface BulletinPaieManager
     //public List<BulletinPaie> getCriteres(BPaie critere);
     
     public List<BulletinPaie> getCriteres(BulletinPaie critere);
+    
+    public List<BulletinPaie> getCriteres(EdtPeriodeModal critere);
 }

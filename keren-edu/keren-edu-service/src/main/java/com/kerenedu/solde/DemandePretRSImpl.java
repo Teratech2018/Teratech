@@ -3,11 +3,14 @@ package com.kerenedu.solde;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
@@ -59,17 +62,17 @@ public class DemandePretRSImpl
         try {
                 MetaData meta = MetaDataUtil.getMetaData(new DemandePret(), new HashMap<String, MetaData>(),new ArrayList<String>());
                 MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
-                workbtn.setValue("{'model':'kerenpaie','entity':'demandepret','method':'echeancier'}");
+                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'echeancier'}");
                 workbtn.setStates(new String[]{"etabli","confirme"});
                 workbtn.setPattern("btn btn-info");
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
-                workbtn.setValue("{'model':'kerenpaie','entity':'demandepret','method':'confirme'}");
+                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'confirme'}");
                 workbtn.setStates(new String[]{"etabli"});
                 workbtn.setPattern("btn btn-success");
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
-                workbtn.setValue("{'model':'kerenpaie','entity':'demandepret','method':'annule'}");
+                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'annule'}");
                 workbtn.setStates(new String[]{"confirme"});
                 workbtn.setPattern("btn btn-danger");
                 meta.getHeader().add(workbtn);	           
@@ -298,5 +301,14 @@ public class DemandePretRSImpl
 
         return entity;
     }
+    
+    @Override
+	public List<DemandePret> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		container.addNotEq("state", "annule");	
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
+	
 
 }

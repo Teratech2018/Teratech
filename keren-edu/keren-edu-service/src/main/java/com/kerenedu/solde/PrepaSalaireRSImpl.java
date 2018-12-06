@@ -12,7 +12,9 @@ import javax.ws.rs.core.Response;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -36,7 +38,7 @@ public class PrepaSalaireRSImpl
     @Manager(application = "kereneducation", name = "PrepaSalaireManagerImpl", interf = PrepaSalaireManagerRemote.class)
     protected PrepaSalaireManagerRemote manager;
     
-    @Manager(application = "kerenpaie", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
+    @Manager(application = "kereneducation", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
     protected MoteurPaieManagerRemote moteurmanager;
 
     public PrepaSalaireRSImpl() {
@@ -89,7 +91,7 @@ public class PrepaSalaireRSImpl
 		// TODO Auto-generated method stub
 		processBeforeSave(entity);
 		entity = moteurmanager.preparerPaie(entity);
-		CacheMemory.setPeriodepaie(entity.getPeriode());
+		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.PERIODE, entity.getPeriode());
 		processAfterSave(entity);
 		return entity;
 	}

@@ -31,6 +31,11 @@ public class ReportsParameter {
     public static final String TRIMESTRE="TRIMESTRE";
     public static final String REPORT_IMAGE_REPOSITORY_CO_BG ="REPORT_IMAGE_REPOSITORY_CO_BG";
     public static final String REPORT_IMAGE_REPOSITORY_BG ="REPORT_IMAGE_REPOSITORY_BG";
+    public static final String REPORT_IMAGE_REPOSITORY_TITRE ="REPORT_IMAGE_REPOSITORY_TITRE";
+    public static final String REPORT_IMAGE_REPOSITORY_TITRE_EN ="REPORT_IMAGE_REPOSITORY_TITRE_EN";
+    public static final String REPORT_IMAGE="REPORT_IMAGE";
+    public static final String REPORT_IMAGE_CO="REPORT_IMAGE_CO";
+    
     
 
    

@@ -39,7 +39,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 //	@Predicate(label="Rubriques",type=Rubrique.class,target="many-to-one",optional=false,search=true)
 	private RubriquePaie rubrique;
 	
-	@Predicate(label="Valeurs",type=Double.class,editable=false,updatable=false,search=true)
+	@Predicate(label="Base",type=Double.class,editable=false,updatable=false,search=true)
 	private Double valeur =0.0;
 	
 	@Predicate(label="Part Salarial",type=Double.class,editable=false,updatable=false,search=true,compute=true,values="this.valeur;*;this.rubrique.tauxsal")

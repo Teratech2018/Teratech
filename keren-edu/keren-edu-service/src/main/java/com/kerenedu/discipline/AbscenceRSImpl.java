@@ -3,6 +3,7 @@ package com.kerenedu.discipline;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -15,6 +16,12 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.TypeCacheMemory;
+import com.kerenedu.notes.CoefMatiere;
+import com.kerenedu.notes.Examen;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -107,5 +114,18 @@ public class AbscenceRSImpl extends AbstractGenericService<Abscence, Long> imple
 	public Abscence valider(HttpHeaders headers, Abscence entity) {
 		return manager.valider(entity);
 	}
+	
+	@Override
+	public List<Abscence> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+	
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		Examen periode = (Examen) CacheMemory.getValue(BuilderHttpHeaders.getidUsers(arg0), TypeCacheMemory.FILLIERE);
+		if(periode!=null){
+			container.addEq("periode.id", periode.getId());	
+		}//end if(filiere!=null){
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
+	
 
 }

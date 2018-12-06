@@ -85,6 +85,8 @@ public class ClasseRSImpl
 	@Override
 	protected void processBeforeSave(Classe entity) {
 		entity.setEffectif(new Long("0"));
+		entity.setTypecycle(entity.getFiliere().getCycle().getTypecycle());
+		entity.setCycle(entity.getFiliere().getCycle().getId());
 		super.processBeforeSave(entity);
 	}
 	

@@ -1,10 +1,7 @@
 
 package com.kerenedu.core.impl.report;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +22,7 @@ import com.kerenedu.core.ifaces.report.ViewDltPaiementManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewDltPaiementDAOLocal;
 import com.kerenedu.model.report.ViewDltPaiement;
 import com.kerenedu.model.report.ViewDltPaiementModal;
-import com.kerenedu.reglement.Paiement;
+import com.kerenedu.model.report.ViewListingPModal;
 import com.kerenedu.reglement.PaiementDAOLocal;
 import com.megatim.common.annotations.OrderType;
 
@@ -113,6 +110,32 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 //				System.out.println("ViewDltPaiementManagerImpl.getCriteres() fin "+critere.getDatepaifin());
 //				container.addLe("datepai", critere.getDatepaifin());
 //			}
+
+		}
+		List<ViewDltPaiement> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<ViewDltPaiement> result = new ArrayList<ViewDltPaiement>();
+		if (datas != null) {
+			for (ViewDltPaiement p : datas) {
+				result.add(new ViewDltPaiement(p));
+			}
+		} // fin if(datas!=null)
+		return result;
+	}
+	
+	@Override
+	public List<ViewDltPaiement> getCriteres(ViewListingPModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+			container.getPredicats().addAll(CacheMemory.defaultPredicats());
+			if (critere.getClasse() != null) {
+				container.addEq("eleve.classe.id", critere.getClasse().getId());
+			}
+			if (critere.getTypePaiment() != null) {
+				container.addEq("typePaiment", critere.getTypePaiment());
+			}
+			container.addEq("state", "etabli");
 
 		}
 		List<ViewDltPaiement> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);

@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.TypeCacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -81,9 +82,9 @@ public class AbscenceModalRSImpl extends AbstractGenericService<AbscenceModal, L
 	
 	@Override
 	public AbscenceModal save(HttpHeaders headers, AbscenceModal entity) {
-		Gson gson = new Gson();
-		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
-		CacheMemory.insert(id, TypeCacheMemory.EXAMEN, entity.getPeriode());
+
+		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.EXAMEN,
+				entity.getPeriode());
 		return entity;
 	}
 

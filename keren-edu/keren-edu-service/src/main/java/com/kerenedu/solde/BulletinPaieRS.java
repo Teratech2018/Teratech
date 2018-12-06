@@ -3,11 +3,13 @@ package com.kerenedu.solde;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
@@ -27,12 +29,12 @@ public interface BulletinPaieRS
     @Path("calculer")
     public BulletinPaie calculer(@Context HttpHeaders headers,BulletinPaie entity);
 	
-//	@PUT
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    @Produces({"application/pdf"})
-//    @Path("printbulletin")
-//    public Response printbulletin(@Context HttpHeaders headers,BulletinPaie bulletin);
-//	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({"application/pdf"})
+    @Path("print")
+    public Response printbulletin(@Context HttpHeaders headers,BulletinPaie bulletin);
+	
 //	@PUT
 //    @Produces({"application/pdf"})
 //    @Path("pdf")

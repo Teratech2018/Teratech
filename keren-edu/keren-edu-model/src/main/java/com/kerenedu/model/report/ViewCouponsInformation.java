@@ -7,19 +7,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Cycle;
-import com.kerenedu.configuration.SectionE;
+import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.Service;
-import com.kerenedu.school.Eleve;
-import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -43,12 +38,17 @@ public class ViewCouponsInformation extends BaseElement implements Serializable,
 	//@Predicate(label="Statut",optional=false,updatable=false,search=false, target="combobox", values="Solvables;Non Solvables" , sequence=2, observable=true)
 	protected String statut="0";
 	
-	
+	@Transient
+	@ManyToOne
+	@JoinColumn(name = "FILIERE_ID")
+	@Predicate(label="Filiere",type=Filiere.class , target="many-to-one",search=true , sequence=3, optional=true)
+//	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	protected Filiere filiere ;
 	
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=3)
+	//@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=3, optional=false)
 //	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
@@ -78,6 +78,9 @@ public class ViewCouponsInformation extends BaseElement implements Serializable,
 		
 		if(ins.classe!=null){
 			this.classe = new Classe(ins.classe);
+		}
+		if(ins.filiere!=null){
+			this.filiere = new Filiere(ins.filiere);
 		}
 		this.type=ins.type;
 		this.statut=ins.statut;
@@ -167,6 +170,22 @@ public class ViewCouponsInformation extends BaseElement implements Serializable,
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+
+
+
+
+	public Filiere getFiliere() {
+		return filiere;
+	}
+
+
+
+
+
+	public void setFiliere(Filiere filiere) {
+		this.filiere = filiere;
 	}
 
 

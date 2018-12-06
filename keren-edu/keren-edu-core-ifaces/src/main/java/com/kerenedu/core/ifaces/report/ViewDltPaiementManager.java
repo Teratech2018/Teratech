@@ -6,6 +6,7 @@ import java.util.List;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerenedu.model.report.ViewDltPaiement;
 import com.kerenedu.model.report.ViewDltPaiementModal;
+import com.kerenedu.model.report.ViewListingPModal;
 
 
 /**
@@ -20,5 +21,7 @@ public interface ViewDltPaiementManager
     public final static String SERVICE_NAME = "ViewDltPaiementManager";
     
 	public List<ViewDltPaiement> getCriteres(ViewDltPaiementModal critere);
+	
+	public List<ViewDltPaiement> getCriteres(ViewListingPModal critere) ;
 
 }

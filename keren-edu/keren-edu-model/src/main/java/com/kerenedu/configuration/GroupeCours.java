@@ -23,7 +23,7 @@ import com.megatim.common.annotations.Predicate;
 public class GroupeCours extends BaseElement implements Serializable, Comparable<GroupeCours> {
 	
 	@Column(name = "CODE", unique=true)	
-	@Predicate(label="CODE",optional=false,updatable=true,search=true , sequence=1, colsequence=1)
+	@Predicate(label="CODE",optional=true,updatable=false,search=true , sequence=1, colsequence=1, editable=false)
 	protected String code;
 	
 	@Column(name = "LIBELLE")	
@@ -38,6 +38,10 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 	@JoinColumn(name = "CYCLE_ID")
 	@Predicate(label = "Cycle",target = "many-to-one",type = Cycle.class,search = true  , sequence=4, colsequence=4)
 	private Cycle cycle = new Cycle();
+	
+	@Column(name = "NOTE_SUR" )	
+	@Predicate(label="Note/",optional=false,updatable=true,search=true , sequence=3, colsequence=3, type=Integer.class)
+	protected int coeficient =0;
 	
 //	@Column(name = "COEF")	
 //	@Predicate(label="Coeficient",optional=true,updatable=true,search=true , sequence=3, colsequence=3, editable=false)
@@ -83,6 +87,7 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		if(annee.cycle!=null){
 			this.cycle= new Cycle(annee.cycle);
 		}
+		this.coeficient=annee.coeficient;
 		
 //		this.matiereList= new ArrayList<MatiereDlt>();
 
@@ -127,6 +132,16 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 
 	public void setCycle(Cycle cycle) {
 		this.cycle = cycle;
+	}
+
+
+	public int getCoeficient() {
+		return coeficient;
+	}
+
+
+	public void setCoeficient(int coeficient) {
+		this.coeficient = coeficient;
 	}
 
 

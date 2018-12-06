@@ -63,6 +63,7 @@ public class ExamenRSImpl
   		// TODO Auto-generated method stub
   		try {
   			return MetaDataUtil.getMetaData(new Examen(), new HashMap<String, MetaData>(),new ArrayList<String>());
+  			
   		} catch (InstantiationException e) {
   			// TODO Auto-generated catch block
   			e.printStackTrace();
@@ -75,18 +76,20 @@ public class ExamenRSImpl
     
     @Override
     protected void processBeforeSave(Examen entity) {
+    	entity.setState("etabli");
+    	entity.setTypecycle(entity.getCycle().getTypecycle());
         // find exercice
-    	RestrictionsContainer container = RestrictionsContainer.newInstance();
-    	container.addEq("code", entity.getCode());
-    	AnneScolaire annee = managerAnne.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-        // TODO Auto-generated method stub
-        if(entity.getdDeb().after(entity.getdFin())){
-           throw new KerenExecption("La date debut est incorrecte");
-        }else if(!DateHelper.between(entity.getdDeb(), annee.getDdeb(), annee.getDfin())){
-            throw new KerenExecption("L'intervalle de temps est incorrect, la periode doit etre incluse dans l'exerice");
-        }else if(!DateHelper.between(entity.getdFin(),  annee.getDdeb(), annee.getDfin())){
-            throw new KerenExecption("L'intervalle de temps est incorrect, la periode doit etre incluse dans l'exerice");
-        }
+//    	RestrictionsContainer container = RestrictionsContainer.newInstance();
+//    	container.addEq("code", entity.getCode());
+//    	AnneScolaire annee = managerAnne.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
+//        // TODO Auto-generated method stub
+//        if(entity.getdDeb().after(entity.getdFin())){
+//           throw new KerenExecption("La date debut est incorrecte");
+//        }else if(!DateHelper.between(entity.getdDeb(), annee.getDdeb(), annee.getDfin())){
+//            throw new KerenExecption("L'intervalle de temps est incorrect, la periode doit etre incluse dans l'exerice");
+//        }else if(!DateHelper.between(entity.getdFin(),  annee.getDdeb(), annee.getDfin())){
+//            throw new KerenExecption("L'intervalle de temps est incorrect, la periode doit etre incluse dans l'exerice");
+//        }
         
         super.processBeforeSave(entity);
     }

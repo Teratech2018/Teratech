@@ -90,7 +90,7 @@ public class MatiereNoteRSImpl
 			workbtn.setValue("{'name':'keren_education_importnote',template:{'prof':'object.prof','matiere':'object.matiere','examen':'object.examen','classe':'object.classe','idmat':'object.id'}}");
 			workbtn.setStates(new String[] { "etabli" });
 			// workbtn.setPattern("btn btn-primary");
-			meta.getHeader().add(workbtn);
+			//meta.getHeader().add(workbtn);
   			
   			return meta;
   		} catch (InstantiationException e) {

@@ -21,6 +21,7 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerRemote;
 import com.kerenedu.core.ifaces.report.ViewBilanServiceEleveManagerRemote;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.jaxrs.ifaces.report.ViewCouponsInformationRS;
 import com.kerenedu.model.report.ViewBilanServiceEleve;
 import com.kerenedu.model.report.ViewBilanServiceModal;

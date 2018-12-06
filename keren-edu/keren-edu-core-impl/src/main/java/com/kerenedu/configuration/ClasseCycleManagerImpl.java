@@ -42,9 +42,7 @@ public class ClasseCycleManagerImpl
    	public List<ClasseCycle> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
    			int firstResult, int maxResult) {
    		// TODO Auto-generated method stub
-    	RestrictionsContainer container = RestrictionsContainer.newInstance();
-    	container.addEq("cycle",  CacheMemory.getCurentcycle());
-    	predicats.addAll(container.getPredicats());
+    
    		List<ClasseCycle> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
    		List<ClasseCycle> result = new ArrayList<ClasseCycle>();
    		for(ClasseCycle elev:datas){

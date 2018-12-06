@@ -131,12 +131,12 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 	@Override
 	public List<Inscription> findAll() {
 		// TODO Auto-generated method stub
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-   		container.getPredicats().addAll(CacheMemory.defaultPredicatsCycleAnnee());
-   		if (CacheMemory.getClasse() != null) {
-   			container.addEq("classe.id",  CacheMemory.getClasse().getId());
-   		}
-   		List<Inscription> datas = super.filter(container.getPredicats(), null, null, 0, -1);
+//		RestrictionsContainer container = RestrictionsContainer.newInstance();
+//   		container.getPredicats().addAll(CacheMemory.defaultPredicatsCycleAnnee());
+//   		if (CacheMemory.getClasse() != null) {
+//   			container.addEq("classe.id",  CacheMemory.getClasse().getId());
+//   		}
+   		List<Inscription> datas = super.findAll();// filter(container.getPredicats(), null, null, 0, -1);
 		List<Inscription> result = new ArrayList<Inscription>();
 		for (Inscription elev : datas) {
 			result.add(new Inscription(elev));
@@ -212,7 +212,7 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		}
 		entity.setMatricule(entity.getEleve().getMatricule());
 		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
-
+		dao.update(entity.getId(), entity);
 		super.processAfterSave(entity);
 	}
 

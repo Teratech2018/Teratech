@@ -11,10 +11,7 @@ import com.core.base.BaseElement;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
-/**
- * @author BEKO
- *
- */
+
 public class PeriodePaieOpen extends BaseElement implements Serializable, Comparable<PeriodePaieOpen> {
 
 	

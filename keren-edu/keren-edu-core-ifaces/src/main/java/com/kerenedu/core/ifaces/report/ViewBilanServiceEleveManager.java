@@ -4,6 +4,7 @@ package com.kerenedu.core.ifaces.report;
 import java.util.List;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.model.report.ViewBilanServiceEleve;
 import com.kerenedu.model.report.ViewBilanServiceModal;
 import com.kerenedu.model.report.ViewCouponsInformation;
@@ -26,5 +27,7 @@ public interface ViewBilanServiceEleveManager
     public List<ViewBilanServiceEleve> getCriteresRetard(ViewRetardPaiement critere) ;
     
     public List<ViewBilanServiceEleve> getCriteres(ViewCouponsInformation critere) ;
+    
+    public List<Inscription> getCriteresinscrit(ViewCouponsInformation critere) ;
 
 }

@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.kerenedu.configuration.Etablissement;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
 
@@ -66,6 +67,18 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	// @Predicate(label = "Anciennité",type = Double.class,editable =
 	// false,updatable = false ,sequence=7)
 	private Double anciennite = 0.0;
+	
+	@Column(name = "NOM")
+	//@Predicate(label = "Nom", search = true, optional = false)
+	protected String nom;
+
+	@Column(name = "CONTACT")
+	//@Predicate(label = "Contacts", search = true, optional = false)
+	protected String contacts;
+	
+	@Column(name = "ADR")
+	//@Predicate(label = "Code Postal", search = true, optional = false)
+	protected String adresse;
 
 	@Transient
 	@Predicate(label = "Anciennité", type = Double.class, editable = false, updatable = false, sequence = 6)
@@ -94,33 +107,17 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "BUPA_ID")
-	@Predicate(label = "VARIABLES", type = LigneElementVariable.class, target = "one-to-many", group = true, groupName = "group2", groupLabel = "VARIABLES", edittable = true)
+	//@Predicate(label = "VARIABLES", type = LigneElementVariable.class, target = "one-to-many", group = true, groupName = "group2", groupLabel = "VARIABLES", edittable = true)
 	private List<LigneElementVariable> variables = new ArrayList<LigneElementVariable>();
 
 	@Column(name = "SBB")
 	@Predicate(label = "Salaire Brut", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double salaireBrut = 0.0;
-
-	@Column(name = "STA")
-	@Predicate(label = "Salaire Taxable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double salaireTaxable = 0.0;
-
-	@Column(name = "TAAV")
-	@Predicate(label = "Taxe sur Avantages", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double taxeAvantages = 0.0;
-
-	@Column(name = "SCO")
-	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double salaireCotisable = 0.0;
-
-	@Column(name = "SEX")
-	@Predicate(label = "Salaire Exceptionel", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double salaireExcep = 0.0;
-
-	@Column(name = "ANG")
-	@Predicate(label = "Anciennité Gélée", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double ancienniteGelee = 0.0;
-
+	
+	@Column(name = "SNET")
+	@Predicate(label = "Salaire Net", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double netapayer = 0.0;
+	
 	@Column(name = "CPA")
 	@Predicate(label = "Charge Patronale", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double chargePatronale = 0.0;
@@ -128,17 +125,52 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Column(name = "CSA")
 	@Predicate(label = "Charge Salariale", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double chargeSalariale = 0.0;
+	
+	@Column(name = "CSB")
+	@Predicate(label = "Cumul Salaire de Base", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double cumulSalaireBrut = 0.0;
+	
+	@Column(name = "CCS")
+	//@Predicate(label = "Cumul Charges Salariale", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double cumulChargeSalariale = 0.0;
+
+	@Column(name = "CCP")
+	//@Predicate(label = "Cumul Charges Patronale", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double cumulChargePatronale = 0.0;
+	
+
+	@Column(name = "STA")
+	//@Predicate(label = "Salaire Taxable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double salaireTaxable = 0.0;
+
+	@Column(name = "TAAV")
+	//@Predicate(label = "Taxe sur Avantages", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double taxeAvantages = 0.0;
+
+	@Column(name = "SCO")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double salaireCotisable = 0.0;
+
+	@Column(name = "SEX")
+	//@Predicate(label = "Salaire Exceptionel", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double salaireExcep = 0.0;
+
+	@Column(name = "ANG")
+//	@Predicate(label = "Anciennité Gélée", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double ancienniteGelee = 0.0;
+
+	
 
 	@Column(name = "ANA")
-	@Predicate(label = "Avantage en nature", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Avantage en nature", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double avantageNature = 0.0;
 
 	@Column(name = "CPR")
-	@Predicate(label = "Congés Pris", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Congés Pris", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double congespris = 0.0;
 
 	@Column(name = "CRE")
-	@Predicate(label = "Solde Congé", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Solde Congé", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double congesRestant = 0.0;
 
 	@Column(name = "CACP")
@@ -148,35 +180,27 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	private Double congesprisPeriode = 0.0;
 
 	@Column(name = "CAC")
-	@Predicate(label = "Congés Acquis", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Congés Acquis", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double congesAcquis = 0.0;
 
-	@Column(name = "CSB")
-	@Predicate(label = "Cumul Salaire de Base", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double cumulSalaireBrut = 0.0;
+
 
 	@Column(name = "CST")
-	@Predicate(label = "Cumul Salaire Taxable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Cumul Salaire Taxable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireTaxable = 0.0;
 
 	@Column(name = "CSC")
-	@Predicate(label = "Cumul Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Cumul Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireCotisable = 0.0;
 
 	@Column(name = "CSE")
-	@Predicate(label = "Cumul Salaire Exceptionnel", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Cumul Salaire Exceptionnel", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double cumulSalaireExcep = 0.0;
 
-	@Column(name = "CCS")
-	@Predicate(label = "Cumul Charges Salariale", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double cumulChargeSalariale = 0.0;
 
-	@Column(name = "CCP")
-	@Predicate(label = "Cumul Charges Patronale", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
-	private Double cumulChargePatronale = 0.0;
 
 	@Column(name = "CAN")
-	@Predicate(label = "Cumul Avantages en Nature", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	//@Predicate(label = "Cumul Avantages en Nature", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double cumulAvantageNature = 0.0;
 
 	@Column(name = "CHT")
@@ -191,11 +215,9 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 	private String state = "etabli";
 
-	@Transient
 	private String netLettre = "";
 
-	@Transient
-	private Double netapayer = 0.0;
+	
 
 	@Transient
 	private String lastperiode;
@@ -273,12 +295,15 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	 * @param dpayement
 	 * @param periode
 	 */
-	public BulletinPaie(String code, Professeur employe, Date dpayement, PeriodePaie periode) {
+	public BulletinPaie(String code, Professeur employe, Date dpayement, PeriodePaie periode, Etablissement structure) {
 		super(-1, null, null, 0L);
 		this.code = code;
 		this.employe = employe;
 		this.dpayement = dpayement;
 		this.periode = periode;
+		this.nom=structure.getNom();
+		this.adresse=structure.getAdresse();
+		this.contacts=structure.getContacts();
 	}
 
 	public BulletinPaie(BulletinPaie bulletin) {
@@ -295,34 +320,33 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		}
 
 		this.state = bulletin.state;
+		this.nom=bulletin.getNom();
+		this.adresse=bulletin.getAdresse();
+		this.contacts=bulletin.getContacts();
 		salaireBrut = bulletin.salaireBrut;
-		salaireTaxable = bulletin.salaireTaxable;
-		salaireCotisable = bulletin.salaireCotisable;
-		salaireExcep = bulletin.salaireExcep;
+	
 		anciennite = bulletin.anciennite;
-		this.taxeAvantages = bulletin.taxeAvantages;
-		ancienniteGelee = bulletin.ancienniteGelee;
+		
 		chargePatronale = bulletin.chargePatronale;
 		chargeSalariale = bulletin.chargeSalariale;
 		avantageNature = bulletin.avantageNature;
-		congespris = bulletin.congespris;
-		this.congesAcquisPeriode = bulletin.congesAcquisPeriode;
-		this.congesprisPeriode = bulletin.congesprisPeriode;
-		congesRestant = bulletin.congesRestant;
-		congesAcquis = bulletin.congesAcquis;
+		
 		cumulSalaireBrut = bulletin.cumulSalaireBrut;
 		cumulSalaireTaxable = bulletin.cumulSalaireTaxable;
 		cumulSalaireCotisable = bulletin.cumulSalaireCotisable;
-		cumulSalaireExcep = bulletin.cumulSalaireExcep;
+
 		cumulChargeSalariale = bulletin.cumulChargeSalariale;
 		cumulChargePatronale = bulletin.cumulChargePatronale;
-		cumulAvantageNature = bulletin.cumulAvantageNature;
-		cumulHeureTravailles = bulletin.cumulHeureTravailles;
-		cumulHeuresSup = bulletin.cumulHeuresSup;
+	
 		this.netLettre = bulletin.netLettre;
 		this.netapayer = bulletin.netapayer;
-		this.categorie = bulletin.getEmploye().getCategorie().getCode() + "";
+		if(bulletin.getEmploye().getCategorie()!=null){
+		  this.categorie = bulletin.getEmploye().getCategorie().getCode() + "";
+		}
+		
+		if(bulletin.getEmploye().getEchelon()!=null){
 		this.echellon = bulletin.getEmploye().getEchelon().getCode();
+		}
 		this.ancienniteString = this.getAnciennete(this.getAnciennite(), this.periode.getDfin());
 	}
 
@@ -335,6 +359,30 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 	public String getCode() {
 		return code;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(String contacts) {
+		this.contacts = contacts;
+	}
+
+	public String getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
 	}
 
 	public void setCode(String code) {
@@ -462,7 +510,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kereneducation";
 	}
 
 	@Override

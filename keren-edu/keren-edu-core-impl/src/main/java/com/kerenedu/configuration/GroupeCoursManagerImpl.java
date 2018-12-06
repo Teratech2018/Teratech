@@ -13,6 +13,8 @@ import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.inscription.Inscription;
+import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -81,5 +83,12 @@ public class GroupeCoursManagerImpl
  	}
 
  
+ 	@Override
+	public void processAfterSave(GroupeCours entity) {
+	entity.setCode("MOD"+entity.getId());
+	dao.update(entity.getId(), entity);
+		super.processAfterSave(entity);
+	}
+
  	
 }

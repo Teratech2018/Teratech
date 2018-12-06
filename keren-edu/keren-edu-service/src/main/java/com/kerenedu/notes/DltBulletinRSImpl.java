@@ -10,7 +10,9 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.core.ifaces.report.ViewNoteHelperManagerRemote;
 import com.kerenedu.inscription.InscriptionManagerRemote;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -88,8 +90,9 @@ public class DltBulletinRSImpl extends AbstractGenericService<DltBulletin, Long>
 	@Override
 	public DltBulletin save(@Context HttpHeaders headers,DltBulletin entity) {
 		// To change body of generated methods, choose Tools | Templates.
-		CacheMemory.setFiliere(entity.getFiliere());
-		CacheMemory.setClasse(entity.getClasse());
+		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.FILLIERE, entity.getFiliere());
+		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.CLASSE, entity.getClasse());
+
 		return entity;
 	}
 

@@ -142,7 +142,7 @@ public class CategoriePret extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kereneducation";
 	}
 
 	@Override

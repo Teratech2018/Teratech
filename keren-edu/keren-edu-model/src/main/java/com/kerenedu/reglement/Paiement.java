@@ -62,7 +62,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	protected String modePaiement = "0";
 
 	@Column(name = "TYP_PAI")
-	@Predicate(label = "Type Paiement", optional = false, updatable = true, search = false, target = "combobox", values = "especes;Espress Union", sequence = 6)
+	@Predicate(label = "Type Paiement", optional = false, updatable = true, search = true, target = "combobox", values = "especes;Espress Union", colsequence = 6, sequence = 6)
 	protected String typePaiment = "0";
 
 	@Column(name = "CODE", unique = true)

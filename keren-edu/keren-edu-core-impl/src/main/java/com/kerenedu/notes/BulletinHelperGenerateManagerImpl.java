@@ -92,6 +92,26 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 		return records;
 	}
 	
+	@Override
+	public List<BulletinHelperGenerate> getCriteres(Bulletin critere) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<BulletinHelperGenerate> records = new ArrayList<BulletinHelperGenerate>();
+				
+		if (critere != null) {
+
+			container.addEq("examen.id", critere.getModel().getId());
+
+			if (critere.getClasse() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+			}
+			container.addEq("inscription.id", critere.getInscription().getId());
+			List<BulletinHelperGenerate> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1,0);
+			records.addAll(datas);
+		}
+
+		return records;
+	}
+	
 
 	@Override
 	public List<BulletinHelperGenerate> getCriteres(EdtBulletinTrimModal critere) {

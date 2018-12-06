@@ -36,11 +36,11 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 	search=true, sequence=2)
 	private AnneScolaire exercice ;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="Date de debut",type=Date.class,target="date",search=true, sequence=3)
 	private Date ddebut;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label="Date de fin",type=Date.class,target="date",search=true, sequence=4)
 	private Date dfin ;
 	

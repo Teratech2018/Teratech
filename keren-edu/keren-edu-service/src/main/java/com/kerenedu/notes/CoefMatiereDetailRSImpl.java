@@ -14,6 +14,7 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireManagerRemote;
 import com.kerenedu.configuration.CacheMemory;
@@ -88,7 +89,7 @@ public class CoefMatiereDetailRSImpl
 	if (annee == null || annee.size() == 0) {
 		throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
 	}
-	entity.setAnneScolaire(CacheMemory.getCurrentannee());
+//	entity.setAnneScolaire(CacheMemory.getCurrentannee());
 	entity.setAnneScolaire(annee.get(0).getCode());
 	
 		super.processBeforeSave(entity);
@@ -106,7 +107,7 @@ public class CoefMatiereDetailRSImpl
 	if (annee == null || annee.size() == 0) {
 		throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
 	}
-	entity.setAnneScolaire(CacheMemory.getCurrentannee());
+//	entity.setAnneScolaire(CacheMemory.getCurrentannee());
 	entity.setAnneScolaire(annee.get(0).getCode());
 	
 		super.processBeforeSave(entity);
@@ -115,15 +116,24 @@ public class CoefMatiereDetailRSImpl
 	@Override
 	public List<CoefMatiereDetail> filter(HttpHeaders arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
-		Gson gson = new Gson();
-		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
-		Classe classe = (Classe) CacheMemory.getValue(id, TypeCacheMemory.CLASSE);
+		Classe classe = (Classe) CacheMemory.getValue(BuilderHttpHeaders.getidUsers(arg0), TypeCacheMemory.CLASSE);
 		if(classe!=null){
    		 container.addEq("classe.id", classe.getId());
 		}
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
 	}
+
+	@Override
+	public CoefMatiereDetail find(HttpHeaders headers, String propertyName, Long id) {
+		CoefMatiereDetail elev = super.find(headers, propertyName, id);
+   		CoefMatiereDetail data = new CoefMatiereDetail(elev);
+   		Gson gson = new Gson();
+		long idusers = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+   		CacheMemory.insert(idusers, TypeCacheMemory.CLASSE, elev.getClasse());
+		return data;
+	}
+	
 	
 
 }

@@ -65,7 +65,7 @@ public class PeriodePaieManagerImpl
 
    	@Override
 	public void processBeforeSave(PeriodePaie entity) {
-	
+   		entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
 

@@ -63,6 +63,9 @@ public class BulletinRSImpl
     
     @Manager(application = "kereneducation", name = "BulletinHelperGenerateManagerImpl", interf = BulletinHelperGenerateManagerRemote.class)
     protected BulletinHelperGenerateManagerRemote managerbullview;
+    
+    @Manager(application = "kereneducation", name = "BulletinHelperGeneratePrimaireManagerImpl", interf = BulletinHelperGeneratePrimaireManagerRemote.class)
+    protected BulletinHelperGeneratePrimaireManagerRemote managerbp;
 
     public BulletinRSImpl() {
         super();
@@ -157,21 +160,38 @@ public class BulletinRSImpl
     @Override
     public Response buildPdfReport(Bulletin bulletin) {
         try {
-        	  List<BulletinHelperGenerate> records =managerbullview.getCriteres(new EdtBulletinModal(bulletin));
-        	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
-              String URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
-              System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
-              Map parameters = new HashMap();
-              parameters= this.getReportParameters();
-              List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();
-              for(BulletinHelperGenerate bull:records){
-            	  if (bull.getEleve().getImage() != null) {
-            		  bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
-            	  }
-            	  datas.add(bull);
-              }
-              return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
-        } catch (FileNotFoundException ex) {
+        	  String URL ="";  Map parameters = new HashMap();
+        	if(bulletin.getClasse().getTypecycle().equals("1")){
+        		 List<BulletinHelperGeneratePrimaire> records =managerbp.getCriteres(bulletin);
+           	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
+                  URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL_PRIMAIRE.getName();
+                 System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
+               
+                 parameters= this.getReportParameters();
+                 List<BulletinHelperGeneratePrimaire> datas = new ArrayList<BulletinHelperGeneratePrimaire>();
+                 for(BulletinHelperGeneratePrimaire bull:records){
+               	  if (bull.getEleve().getImage() != null) {
+               		  bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
+               	  }
+               	  datas.add(bull);
+                 }
+                 return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
+        	}else if(bulletin.getClasse().getTypecycle().equals("1")){
+        		 List<BulletinHelperGenerate> records =managerbullview.getCriteres(bulletin);
+           	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
+                  URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
+                 System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
+                 parameters= this.getReportParameters();
+                 List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();
+                 for(BulletinHelperGenerate bull:records){
+               	  if (bull.getEleve().getImage() != null) {
+               		  bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
+               	  }
+               	  datas.add(bull);
+                 }
+                 return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
+        	}
+         } catch (FileNotFoundException ex) {
             Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
             Response.serverError().build();
         }catch (JRException ex) {

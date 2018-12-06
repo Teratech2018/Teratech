@@ -14,6 +14,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.core.tools.DateHelper;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -94,7 +95,8 @@ public class RappelSalaireManagerImpl
 		ElementVariable element = null ;
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("salarie0", entity.getEmploye());
-		container.addEq("peiode", periode);
+		container.addGe("ddeb", DateHelper.formatDate(entity.getDebut()));
+		container.addLe("dfin", DateHelper.formatDate(entity.getFin()));
 		List<ElementVariable> datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
 		if(datas!=null && datas.size()>0){
 			element = datas.get(0);
@@ -102,7 +104,9 @@ public class RappelSalaireManagerImpl
 		if(element==null){
 			element = new ElementVariable();
 			element.setSalarie(entity.getEmploye());
-			element.setPeiode(periode);	
+			element.setPeriode(periode);	
+			element.setDdeb(entity.getDebut());
+			element.setDfin(entity.getFin());
 			variabledao.save(element);
 			datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
 			if(datas!=null && datas.size()>0){

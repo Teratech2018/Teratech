@@ -17,6 +17,8 @@ import com.core.tools.DateHelper;
 import com.kerenedu.core.ifaces.report.ViewBilanServiceEleveManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewBilanServiceEleveManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewBilanServiceEleveDAOLocal;
+import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionDAOLocal;
 import com.kerenedu.model.report.ViewBilanServiceEleve;
 import com.kerenedu.model.report.ViewBilanServiceModal;
 import com.kerenedu.model.report.ViewCouponsInformation;
@@ -29,6 +31,9 @@ public class ViewBilanServiceEleveManagerImpl extends AbstractGenericManager<Vie
 
 	@EJB(name = "ViewBilanServiceEleveDAO")
 	protected ViewBilanServiceEleveDAOLocal dao;
+	
+	@EJB(name = "InscriptionDAO")
+	protected InscriptionDAOLocal daoins;
 
 	public ViewBilanServiceEleveManagerImpl() {
 	}
@@ -90,8 +95,8 @@ public class ViewBilanServiceEleveManagerImpl extends AbstractGenericManager<Vie
 		if (critere != null) {
 			container = RestrictionsContainer.newInstance();
 
-			if (critere.getClasse() != null) {
-				container.addEq("eleve.classe.id", critere.getClasse().getId());
+			if (critere.getFiliere() != null) {
+				container.addEq("eleve.classe.filiere.id", critere.getFiliere().getId());
 
 			}
 			if (critere.getService() != null) {
@@ -144,6 +149,33 @@ public class ViewBilanServiceEleveManagerImpl extends AbstractGenericManager<Vie
 			}
 		} // fin if(datas!=null)
 		return result;
+	}
+	
+	@Override
+	public List<Inscription> getCriteresinscrit(ViewCouponsInformation critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+
+			if (critere.getFiliere() != null) {
+				container.addEq("classe.filiere.id", critere.getFiliere().getId());
+
+			}
+			/*if (critere.getService() != null) {
+				container.addEq("fiche.service.id", critere.getService().getId());
+
+			}
+
+			Boolean value = false;
+			container.addEq("fiche.payer", value);
+			container.addLe("fiche.delai", DateHelper.formatDate(new Date()));*/
+
+		}
+		List<Inscription> datas = daoins.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<Inscription> result = new ArrayList<Inscription>();
+		
+		return datas;
 	}
 
 }

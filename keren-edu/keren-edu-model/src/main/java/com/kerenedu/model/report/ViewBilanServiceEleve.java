@@ -4,12 +4,19 @@
 package com.kerenedu.model.report;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ArrayBlockingQueue;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.inscription.Inscription;
@@ -25,11 +32,17 @@ public class ViewBilanServiceEleve extends BaseElement implements Serializable, 
 
 	@ManyToOne
 	@JoinColumn(name = "FICHE_ID")
-	protected FichePaiement fiche ;
+	protected  FichePaiement fiche ;
 	
 	@ManyToOne
 	@JoinColumn(name = "INS_ID")
 	protected Inscription eleve ;
+	
+	@Transient
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "FICHE_PAIE_ID")
+	protected List<FichePaiement> serviceimpayes;
+	
 	
 	
 	
@@ -47,6 +60,7 @@ public class ViewBilanServiceEleve extends BaseElement implements Serializable, 
 		if(ins.fiche!=null){
 			this.fiche = new FichePaiement(ins.fiche);
 		}
+		this.serviceimpayes= new ArrayList<FichePaiement>();
 	
 		
 			
@@ -132,6 +146,16 @@ public class ViewBilanServiceEleve extends BaseElement implements Serializable, 
 
 	public Inscription getEleve() {
 		return eleve;
+	}
+
+
+	public List<FichePaiement> getServiceimpayes() {
+		return serviceimpayes;
+	}
+
+
+	public void setServiceimpayes(List<FichePaiement> serviceimpayes) {
+		this.serviceimpayes = serviceimpayes;
 	}
 
 

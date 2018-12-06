@@ -26,5 +26,7 @@ public interface BulletinHelperGenerateManager
 	 public List<BulletinHelperGenerate> getCriteres(EdtBulletinTrimModal critere);
 	 
 	 public List<BulletinHelperGenerate> getCriteres(EdtBulletinAnnModal critere);
+	 
+		public List<BulletinHelperGenerate> getCriteres(Bulletin critere) ;
 
 }

@@ -29,9 +29,19 @@ public class DltBulletin extends BaseElement implements Serializable, Comparable
 	 */
 	private static final long serialVersionUID = -4609375799032659501L;
 	
+		
+		
+	@ManyToOne
+	@JoinColumn(name = "CLASSE_ID")
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=1, observable=true)
+	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	protected Classe classe ;
+
+
 	@ManyToOne
     @JoinColumn(name = "SEQ_ID")
-	@Predicate(label="Sequence",updatable=true,type=Examen.class , target="many-to-one", sequence=1)
+	@Predicate(label="Sequence",updatable=true,type=Examen.class , target="many-to-one", sequence=2)
+	@Filter(value="[{\"fieldName\":\"cycle\",\"value\":\"object.classe\",\"searchfield\":\"typecycle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
     protected Examen seq;
 
 //	@Column(name = "LIBELLE")
@@ -50,13 +60,7 @@ public class DltBulletin extends BaseElement implements Serializable, Comparable
 //	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2)
 	private SectionE section ;
 	
-		
-	@ManyToOne
-	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
-//	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
-	protected Classe classe ;
-	
+
 
 	public DltBulletin() {
 		super();

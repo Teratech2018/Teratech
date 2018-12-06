@@ -15,6 +15,7 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
@@ -74,10 +75,8 @@ public class InscriptionChoiceRSImpl
 	@Override
 	public List<InscriptionChoice> filter(HttpHeaders arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
-		Gson gson = new Gson();
-		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
-		Classe classe = (Classe) CacheMemory.getValue(id, TypeCacheMemory.CLASSE);
+		Classe classe = (Classe) CacheMemory.getValue(BuilderHttpHeaders.getidUsers(arg0), TypeCacheMemory.CLASSE);
 		if(classe!=null){
 			container.addEq("classe.id", classe.getId());	
 		}//end if(filiere!=null){

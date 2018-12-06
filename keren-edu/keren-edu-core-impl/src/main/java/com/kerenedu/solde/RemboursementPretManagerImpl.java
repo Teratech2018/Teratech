@@ -96,7 +96,7 @@ public class RemboursementPretManagerImpl
 		if(element==null){
 			element = new ElementVariable();
 			element.setSalarie(entity.getDemande().getEmploye());
-			element.setPeiode(periode);		
+			element.setPeriode(periode);		
 			variabledao.save(element);
 			datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
 			if(datas!=null && datas.size()>0){

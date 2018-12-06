@@ -14,10 +14,7 @@ import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
-/**
- * @author BEKO
- *
- */
+
 public class TraitSalaire extends BaseElement implements Serializable, Comparable<TraitSalaire> {
 
 	/**

@@ -99,7 +99,7 @@ public class AcompteManagerImpl
 		ElementVariable element = null ;
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("salarie0", entity.getEmploye());
-		container.addEq("peiode", periode);
+		container.addEq("periode", periode);
 		List<ElementVariable> datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
 		if(datas!=null && datas.size()>0){
 			element = datas.get(0);
@@ -107,7 +107,7 @@ public class AcompteManagerImpl
 		if(element==null){
 			element = new ElementVariable();
 			element.setSalarie(entity.getEmploye());
-			element.setPeiode(periode);	
+			element.setPeriode(periode);	
 			variabledao.save(element);
 			datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
 			if(datas!=null && datas.size()>0){

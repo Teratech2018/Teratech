@@ -26,7 +26,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_ACOMP")
+@Table(name="e_acompte")
 public class Acompte extends BaseElement implements Serializable, Comparable<Acompte> {
 
 	/**
@@ -40,10 +40,9 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	private Professeur employe ;
 	
 	@ManyToOne
-	@JoinColumn(name="VAR_ID")
-	@Predicate(label="Variable Liée",type=Variable.class,target="many-to-one",optional=false,search=true)
-	@Filter(value="[{\"fieldName\":\"code\",\"value\":\"MTACOMPTE\",\"optional\":false,\"message:\":\"Impossible de trouver la Variable MTACOMPTE\"}]")
-	private Variable variable ;
+	@JoinColumn(name="RUBR_ID")
+	@Predicate(label="Rubrique",type=RubriquePaie.class,target="many-to-one",optional=false,search=true)
+	private RubriquePaie rubrique;
 	
 	@Predicate(label="Date",type=Date.class,target="date",optional=false,search=true)
 	@Temporal(TemporalType.DATE)
@@ -55,7 +54,7 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	@Predicate(label=" ",target="textarea",group=true,groupName="grou1",groupLabel="Commentaire")
 	private String description ;
 	
-        @Predicate(label = "Statut",search = true,hide = true)
+   @Predicate(label = "Statut",search = true,hide = true)
 	private String state="etabli";
 	
 	@ManyToOne
@@ -112,8 +111,8 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 			this.eltVariable = new ElementVariable(acompte.eltVariable);
 		}
 		
-		if(acompte.variable!=null){
-			this.variable = new Variable(acompte.variable);
+		if(acompte.rubrique!=null){
+			this.rubrique = new RubriquePaie(acompte.rubrique);
 		}
 //		if(acompte.rubrique!=null){
 //			this.rubrique = new Rubrique(acompte.rubrique);
@@ -191,7 +190,7 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kereneducation";
 	}
 
 	@Override
@@ -200,15 +199,6 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 		return employe.getDesignation();
 	}
 	
-	
-
-	public Variable getVariable() {
-		return variable;
-	}
-
-	public void setVariable(Variable variable) {
-		this.variable = variable;
-	}
 
 	@Override
 	public String getSerial() {
@@ -255,6 +245,14 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 		    states.add(state);		
                 }//end if(state.equalsIgnoreCase("etabli")){
 		return states;
+	}
+
+	public RubriquePaie getRubrique() {
+		return rubrique;
+	}
+
+	public void setRubrique(RubriquePaie rubrique) {
+		this.rubrique = rubrique;
 	}
 
 	@Override

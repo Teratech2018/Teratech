@@ -59,7 +59,7 @@ public class RappelSalaireRSImpl
         try {
                 MetaData meta = MetaDataUtil.getMetaData(new RappelSalaire(), new HashMap<String, MetaData>(),new ArrayList<String>());
                 MetaColumn workbtn = new MetaColumn("button", "work1", "Valider", false, "workflow", null);
-                workbtn.setValue("{'model':'kerenpaie','entity':'rappel','method':'engage'}");
+                workbtn.setValue("{'model':'kereneducation','entity':'rappelsalaire','method':'engage'}");
                 workbtn.setStates(new String[]{"etabli"});
                 workbtn.setPattern("btn btn-success");
                 meta.getHeader().add(workbtn);                  
@@ -90,7 +90,7 @@ public class RappelSalaireRSImpl
 
     @Override
     protected void processBeforeSave(RappelSalaire entity) {
-        
+        entity.setState("etabli");
         // TODO Auto-generated method stub
         if(entity.getEmploye()==null){
                 throw new KerenExecption("Le Salarié converné est obligatoire");

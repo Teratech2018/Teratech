@@ -25,7 +25,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_REAVP") 
+@Table(name="e_remavc") 
 public class RemboursementAvance extends BaseElement implements Serializable, Comparable<RemboursementAvance> {
 
 	/**

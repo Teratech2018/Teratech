@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Cycle;
+import com.kerenedu.configuration.CycleManagerRemote;
 import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.TypeCacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -43,6 +45,9 @@ public class CoefMatiereRSImpl
     
     @Manager(application = "kereneducation", name = "CoefMatiereDetailManagerImpl", interf = CoefMatiereDetailManagerRemote.class)
     protected CoefMatiereDetailManagerRemote managercoefDlt;
+    
+    @Manager(application = "kereneducation", name = "CycleManagerImpl", interf = CycleManagerRemote.class)
+    protected CycleManagerRemote managercycle;
 
     public CoefMatiereRSImpl() {
         super();
@@ -140,7 +145,10 @@ public class CoefMatiereRSImpl
 		List<CoefMatiereDetail>  list = new ArrayList<CoefMatiereDetail>();
 		Gson gson = new Gson();
 		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
-		CacheMemory.setCurentcycle(id);
+		Cycle cycle = managercycle.find("id", id);
+		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+		CacheMemory.insert(iduser, TypeCacheMemory.CYCLE, cycle);
+		//CacheMemory.setCurentcycle(id);
 		return list;
 	}
 

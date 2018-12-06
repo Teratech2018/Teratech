@@ -16,6 +16,8 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.model.report.EdtPeriodeModal;
+import com.kerenedu.personnel.ProfesseurChoice;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -71,13 +73,13 @@ public class BulletinPaieManagerImpl
 		BulletinPaie data = super.find(propertyName, entityID);
 		BulletinPaie result = new BulletinPaie(data);
 		for (LigneBulletinPaie ligne : data.getLignes()) {
-			if(ligne.getValeur()!=0){
+			//if(ligne.getValeur()!=0){
 				result.getLignes().add(new LigneBulletinPaie(ligne));	
-			} // end if(ligne.getValeur()!=0)
+			//} // end if(ligne.getValeur()!=0)
 		} // end for(LigneBulletinPaie ligne:data.getLignes())
-		for (LigneElementVariable ligne : data.getVariables()) {
-			result.getVariables().add(new LigneElementVariable(ligne));
-		} // end for(LigneElementVariable ligne:data.getVariables())
+//		for (LigneElementVariable ligne : data.getVariables()) {
+//			result.getVariables().add(new LigneElementVariable(ligne));
+//		} // end for(LigneElementVariable ligne:data.getVariables())
 		return result;
 	}
 
@@ -131,7 +133,6 @@ public class BulletinPaieManagerImpl
 		List<BulletinPaie> records = new ArrayList<BulletinPaie>();
 		if (critere != null) {
 
-			critere.setPeriode(CacheMemory.getPeriodepaie());
 			if (critere.getPeriode() != null) {
 				container.addEq("periode.id", critere.getPeriode().getId());
 			}
@@ -144,9 +145,48 @@ public class BulletinPaieManagerImpl
 				for (LigneBulletinPaie ligne : result.getLignes()) {
 					data.getLignes().add(new LigneBulletinPaie(ligne));
 				} // end for(LigneBulletinPaie ligne:data.getLignes())
-				for (LigneElementVariable ligne : result.getVariables()) {
-					data.getVariables().add(new LigneElementVariable(ligne));
-				} // end for(LigneElementVariable ligne:data.getVariables())
+//				for (LigneElementVariable ligne : result.getVariables()) {
+//					data.getVariables().add(new LigneElementVariable(ligne));
+//				} // end for(LigneElementVariable ligne:data.getVariables())
+
+				records.add(data);
+			}
+
+		return records;
+	}
+	
+	@Override
+	public List<BulletinPaie> getCriteres(EdtPeriodeModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+		List<BulletinPaie> records = new ArrayList<BulletinPaie>();
+		
+		if(critere.getPorte().equals("0")){// tous les employes
+			if (critere != null) {
+				container = RestrictionsContainer.newInstance();
+				if (critere.getPeriode() != null) {
+					container.addEq("periode.id", critere.getPeriode().getId());
+				}
+			}
+			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			
+		}else if(critere.getPorte().equals("1")){ // employes select
+			for(ProfesseurChoice pc : critere.getConcernes()){
+				container = RestrictionsContainer.newInstance();
+				container.addEq("periode.id", critere.getPeriode().getId());
+				container.addEq("employe.id", pc.getId());
+				records = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+				datas.addAll(records);
+			}
+			
+		}
+			for (BulletinPaie b : datas) {
+				BulletinPaie result =  super.find("id", b.getId());
+				BulletinPaie data = new BulletinPaie(result);
+				for (LigneBulletinPaie ligne : result.getLignes()) {
+					data.getLignes().add(new LigneBulletinPaie(ligne));
+				} // end for(LigneBulletinPaie ligne:data.getLignes())
 
 				records.add(data);
 			}

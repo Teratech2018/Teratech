@@ -48,7 +48,7 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 	protected String contacts;
 
 	@Column(name = "ADR")
-	@Predicate(label = "Adresse", search = true, optional = false)
+	@Predicate(label = "Code Postal", search = true, optional = false)
 	protected String adresse;
 
 	@Column(name = "EMAIL")

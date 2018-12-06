@@ -27,7 +27,7 @@ import com.megatim.common.annotations.Predicate;
  *
  */
 @Entity
-@Table(name="T_AVSAP")
+@Table(name="e_avcsal")
 public class AvanceSalaire extends BaseElement implements Serializable, Comparable<AvanceSalaire> {
 
 	/**
@@ -46,7 +46,7 @@ public class AvanceSalaire extends BaseElement implements Serializable, Comparab
 	private Professeur employe;
 	
 	@Predicate(label="Date",type=Date.class,target="date",optional=false,search=true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date date ;
 	
 	@Predicate(label="Montant",type=Double.class,optional=false,search=true)
@@ -204,7 +204,7 @@ public class AvanceSalaire extends BaseElement implements Serializable, Comparab
 	@Override
 	public String getModuleName() {
 		// TODO Auto-generated method stub
-		return "kerenpaie";
+		return "kereneducation";
 	}
 
 	@Override

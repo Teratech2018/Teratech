@@ -35,6 +35,11 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 //	@Column(name = "DISC")
 //	//@Predicate(label = "PHOTO", target = "image", sequence = 1)
 //	private String discriminant="P";
+
+	@Column(name = "MAT", unique = true)
+	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 3,editable=false)
+	protected String matricule;
+
 	
 	@Column(name = "PHOTO")
 	@Predicate(label = "PHOTO", target = "image", sequence = 1)
@@ -44,31 +49,27 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label = "NOM", optional = false, updatable = true, search = true, sequence = 2)
 	protected String nom;
 
-	@Column(name = "MAT", unique = true)
-	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 3,editable=false)
-	protected String matricule;
-
 	@Column(name = "STATUS_ID")
-	@Predicate(label = "Type Contrat", optional = true, updatable = true, search = false, target = "combobox", values = "Vacataire;Permanent(e)", sequence = 4)
+	@Predicate(label = "Type Contrat", optional = true, updatable = true, search = true, target = "combobox", values = "Vacataire;Permanent(e)", sequence = 4)
 	protected String status;
 	
 	@Column(name = "SEXE")
 	@Predicate(label = "SEXE", optional = false, updatable = true, search = false, target = "combobox", values = "Masculin;Feminin", sequence = 5)
 	protected String sexe = "0";
 	
-	@Column(name = "DATEEMB")
+	@Column(name = "D_EMB")
 	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label = "Date Embauche.", optional = false, updatable = true, search = true, type = Date.class, target = "date", sequence = 6)
-	protected Date dateEmb;
+	protected Date dateembauche;
 	
-
 	
 	@ManyToOne
 	@JoinColumn(name = "FON_ID")
-	@Predicate(label = "Fonction", updatable = true, type = Diplome.class, target = "many-to-one", search = false,  optional = true, sequence = 7
+	@Predicate(label = "Fonction", updatable = true, type = Fonction.class, target = "many-to-one", search = true,  optional = true, sequence = 7
 			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	protected Fonction role;
 	
+
 	@ManyToOne
 	@JoinColumn(name = "STRU_ID")
 //	@Predicate(label = "Structure", type = Etablissement.class, target = "many-to-one", sequence=8, editable=false)
@@ -82,7 +83,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 
 	@Column(name = "DATENAIS")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "DATE NAISS.", optional = true, updatable = true, search = true, type = Date.class, target = "date",
+	@Predicate(label = "DATE NAISS.", optional = true, updatable = true, search = false, type = Date.class, target = "date",
 			group = true, groupLabel = "Information Personelles", groupName = "tab1")
 	protected Date dateNais;
 	
@@ -109,13 +110,13 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	protected Diplome diplome;
 
 	@Column(name = "T_CIVI")
-	@Predicate(label = "Etat Civil", search = true, target = "combobox", values = "Marie(é);Celibataire Divorcé;Veuf(ve)", optional = true
+	@Predicate(label = "Etat Civil", search = false, target = "combobox", values = "Marie(é);Celibataire ; Divorcé;Veuf(ve)", optional = true
 			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	private String etatcivile = "0";
 	
 	@ManyToOne
 	@JoinColumn(name = "CAT_ID")
-	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = false, optional = true
+	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = false
 			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
 	protected Categorie categorie;
 	
@@ -132,19 +133,25 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label = "Curriculum Vitae", target = "file", group = true, groupName = "tab2", groupLabel = "Informations professionnelles")
 	private String cv;
 	
+	@Column(name = "NAT_PAI")
+	@Predicate(label = "Mode Paiement", optional = false, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", sequence =8, observable = true,
+			group = true, groupLabel = "Comptabilité", groupName = "tab3")
+	protected String modePaiement = "0";
+	
 	@ManyToOne
 	@JoinColumn(name = "BAN_ID")
 	@Predicate(label = "Banque", updatable = true, type = Banque.class, target = "many-to-one", search = false, optional = true
-			,group = true, groupLabel = "Comptabilité", groupName = "tab3")
+			,group = true, groupLabel = "Comptabilité", groupName = "tab3", hidden="currentObject.modePaiement!==1")
 	protected Banque banque;
 	
 	@Column(name = "NUM_BAN")
-	@Predicate(label = "Numéro Bancaire", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
+	@Predicate(label = "Numéro Bancaire", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3"
+			,hidden="currentObject.modePaiement!==1")
 	private Long numBanque = new Long(0);
 	
 	@ManyToOne
 	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
+	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = false
 			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
 	protected ProfilPaie profil;
 
@@ -154,11 +161,11 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	
 	@Column(name = "SAL")
-	@Predicate(label = "SALAIRE", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité ", groupName = "tab3")
-	private Long salaire = new Long(0);
+	@Predicate(label = "SALAIRE DE BASE", type = Double.class, search = false, sequence = 12, editable=false,pattern = "[0-9]", group = true, groupLabel = "Comptabilité ", groupName = "tab3")
+	private Double salaire =0.0; 
 
 	@Column(name = "Tx_H")
-	@Predicate(label = "TAUX HORAIRE", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
+	@Predicate(label = "TAUX HORAIRE", type = Long.class, search = false, sequence = 13, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
 	private Long thoraire = new Long(0);
 
 
@@ -202,7 +209,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	public Professeur(String image, String nom, String matricule, String status, String sexe, Date dateEmb, Fonction role,
 			String prenon, Date dateNais, String lnais, String contact, String email, Long nefts, Diplome diplome,
 			String etatcivile, Categorie categorie, Echellon echelon, String lieu, String cv, Banque banque,
-			Long numBanque, ProfilPaie profil, Long njours, Long salaire, Long thoraire, Long salmax, Long payer,
+			Long numBanque, ProfilPaie profil, Long njours, Double salaire, Long thoraire, Long salmax, Long payer,
 			Long solde, Long zprime, Long zretenu, Long zavance) {
 		super();
 		this.image = image;
@@ -210,7 +217,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.matricule = matricule;
 		this.status = status;
 		this.sexe = sexe;
-		this.dateEmb = dateEmb;
+		
 		this.role = role;
 		this.prenon = prenon;
 		this.dateNais = dateNais;
@@ -263,7 +270,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.thoraire = entity.thoraire;
 		this.role = entity.role;
 		this.matricule = entity.matricule;
-		this.dateEmb = entity.dateEmb;
+		this.dateembauche = entity.dateembauche;
 		this.lnais =entity.lnais;
 		this.contact = entity.contact;
 		this.nefts = entity.nefts;
@@ -297,6 +304,28 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		if (entity.structure != null) {
 			this.structure = new Etablissement(entity.structure);
 		}
+		this.modePaiement=entity.modePaiement;
+
+	}
+	
+	public Professeur(ProfesseurChoice entity) {
+		super(entity.getId(), entity.getDesignation(), entity.getModuleName(), 0L);
+		this.dateNais = entity.dateNais;
+		this.nom = entity.nom;
+		//this.email = entity.email;
+		this.prenon = entity.prenon;
+		this.sexe = entity.sexe;
+		this.matricule=entity.matricule;
+		if(entity.profil!=null){
+		this.profil= new ProfilPaie(entity.getProfil());
+		}
+		this.dateembauche=entity.dateembauche;
+		
+		if(entity.categorie!=null){
+			this.categorie= new Categorie(entity.getCategorie());
+			}
+		this.modePaiement=entity.getModePaiement();
+		this.role=new Fonction(entity.role); 
 
 	}
 
@@ -353,6 +382,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	public String getPrenon() {
 		return prenon;
 	}
+
+	public String getModePaiement() {
+		return modePaiement;
+	}
+
+
+	public void setModePaiement(String modePaiement) {
+		this.modePaiement = modePaiement;
+	}
+
 
 	public void setPrenon(String prenon) {
 		this.prenon = prenon;
@@ -444,11 +483,11 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.dateNais = dateNais;
 	}
 
-	public Long getSalaire() {
+	public Double getSalaire() {
 		return salaire;
 	}
 
-	public void setSalaire(Long salaire) {
+	public void setSalaire(Double salaire) {
 		this.salaire = salaire;
 	}
 
@@ -504,6 +543,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.payer = payer;
 	}
 
+	public Date getDateembauche() {
+		return dateembauche;
+	}
+
+
+	public void setDateembauche(Date dateembauche) {
+		this.dateembauche = dateembauche;
+	}
+
+
 	public Long getSolde() {
 		return solde;
 	}
@@ -545,15 +594,6 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.matricule = matricule;
 	}
 
-
-	public Date getDateEmb() {
-		return dateEmb;
-	}
-
-
-	public void setDateEmb(Date dateEmb) {
-		this.dateEmb = dateEmb;
-	}
 
 
 	public String getLnais() {

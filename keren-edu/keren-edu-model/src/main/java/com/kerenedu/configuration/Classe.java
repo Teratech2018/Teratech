@@ -62,7 +62,12 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	private SectionE section ;
 	
     @Column(name = "CYCLE_ID")
+    @Predicate(label = "cycle", search = true, hide = true, type=Long.class)
     protected long cycle;
+    
+    @Column(name = "TYPE_CYCLE_ID")
+    @Predicate(label ="typecycle", search = true, hide = true)
+    protected String typecycle;
 	
 //	
 //	@ManyToMany(fetch = FetchType.LAZY )
@@ -98,6 +103,7 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 		   this.professeur= new Professeur(filiere.professeur);
 		}
 		this.capacite=filiere.capacite;
+		this.typecycle=filiere.typecycle;
 	}
 	
 	public Classe(ClasseCycle filiere) {
@@ -263,6 +269,16 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	public String getTypecycle() {
+		return typecycle;
+	}
+
+
+	public void setTypecycle(String typecycle) {
+		this.typecycle = typecycle;
+	}
+
 
 	@Override
 	public boolean isCreateonfield() {

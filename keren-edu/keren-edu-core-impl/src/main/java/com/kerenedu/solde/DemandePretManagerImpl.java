@@ -96,15 +96,15 @@ public class DemandePretManagerImpl
         int duree = entity.getDuree();
         
         if(entity.getTypepret() == null){
-            System.out.println(" ====== >>> TESSS 01");
+           // System.out.println(" ====== >>> TESSS 01");
         }
         
         if(entity.getTypepret().getGelee() == null){
-            System.out.println(" ====== >>> TESSS 02");
+         //   System.out.println(" ====== >>> TESSS 02");
         }
         
         if(entity.getTypepret().getGelee()){
-            duree = entity.getTypepret().getDuree();
+            duree = entity.getDuree();
         }
 
         Long traite = (long) (entity.getMontantpro()/duree);
@@ -114,7 +114,8 @@ public class DemandePretManagerImpl
         for(int i=0;i<duree;i++){
 
             RemboursementPret rem = new RemboursementPret();
-            rem.setDemande(entity);rem.setActif(true);
+            rem.setDemande(entity);
+            rem.setActif(true);
             rem.setPret(entity.getTypepret());
           //  rem.setSociete(entity.getEmploye().getStructure());
             rem.setDate(DateHelper.nextMonth(entity.getDrembour(), i));
@@ -145,9 +146,14 @@ public class DemandePretManagerImpl
 
     @Override
     public DemandePret annule(DemandePret entity) {
-
         // TODO Auto-generated method stub
         entity.setState("annule");
+        DemandePret pret = dao.findByPrimaryKey("id", entity.getId());
+        List<RemboursementPret> remlist = new ArrayList<RemboursementPret>();
+        for(RemboursementPret rem: pret.getRemboursements()){
+        	rem.setState("annule");
+        }
+        entity.setRemboursements(remlist);
         dao.update(entity.getId(), entity);
         return entity;
     }
