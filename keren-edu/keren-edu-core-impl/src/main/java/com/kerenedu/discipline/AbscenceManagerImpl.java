@@ -97,7 +97,7 @@ public class AbscenceManagerImpl
 	public void processBeforeUpdate(Abscence entity) {
 		 List<LigneAbscence> ligne = new ArrayList<LigneAbscence>();
 		for(LigneAbscence lgn : entity.getAbscences()){
-	    	lgn.setHeuretotal(DateHelper.hours(lgn.getHdebut(), lgn.getHfin(),new Date()));
+	    //	lgn.setHeuretotal(DateHelper.hours(lgn.getHdebut(), lgn.getHfin(),new Date()));
 	    	ligne.add(lgn);
 	    }
 	    entity.setAbscences(ligne);

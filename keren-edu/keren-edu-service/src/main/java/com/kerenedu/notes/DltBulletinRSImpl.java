@@ -92,6 +92,7 @@ public class DltBulletinRSImpl extends AbstractGenericService<DltBulletin, Long>
 		// To change body of generated methods, choose Tools | Templates.
 		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.FILLIERE, entity.getFiliere());
 		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.CLASSE, entity.getClasse());
+		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.EXAMEN, entity.getSeq());
 
 		return entity;
 	}

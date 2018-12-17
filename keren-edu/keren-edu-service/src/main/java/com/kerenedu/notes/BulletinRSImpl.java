@@ -161,7 +161,8 @@ public class BulletinRSImpl
     public Response buildPdfReport(Bulletin bulletin) {
         try {
         	  String URL ="";  Map parameters = new HashMap();
-        	if(bulletin.getClasse().getTypecycle().equals("1")){
+        /*	if(bulletin.getClasse().getTypecycle().equals("1")){
+        		System.out.println("BulletinRSImpl.buildPdfReport() BULLETIN PRIMAIRE"+bulletin.getClasse().getTypecycle());
         		 List<BulletinHelperGeneratePrimaire> records =managerbp.getCriteres(bulletin);
            	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
                   URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL_PRIMAIRE.getName();
@@ -176,7 +177,8 @@ public class BulletinRSImpl
                	  datas.add(bull);
                  }
                  return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
-        	}else if(bulletin.getClasse().getTypecycle().equals("1")){
+        	}else if(bulletin.getClasse().getTypecycle().equals("1")){*/
+        		System.out.println("BulletinRSImpl.buildPdfReport() BULLETIN Secondaire"+bulletin.getClasse().getTypecycle());
         		 List<BulletinHelperGenerate> records =managerbullview.getCriteres(bulletin);
            	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
                   URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
@@ -190,7 +192,7 @@ public class BulletinRSImpl
                	  datas.add(bull);
                  }
                  return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
-        	}
+        	//}
          } catch (FileNotFoundException ex) {
             Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
             Response.serverError().build();
@@ -213,6 +215,7 @@ public class BulletinRSImpl
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
 		Classe classe = (Classe) CacheMemory.getValue(id, TypeCacheMemory.CLASSE);
 		Filiere filiere = (Filiere) CacheMemory.getValue(id, TypeCacheMemory.FILLIERE);
+		Examen examen = (Examen) CacheMemory.getValue(id, TypeCacheMemory.EXAMEN);
 
 		if (classe != null) {
 			container.addEq("classe.id", classe.getId());
@@ -221,6 +224,10 @@ public class BulletinRSImpl
 		if (filiere != null) {
 			container.addEq("classe.filiere.id", filiere.getId());
 		} // end if(mdl!=null)
+		
+		if (classe != null) {
+			container.addEq("model.id", examen.getId());
+		} // end if(classe!=null)
 
 		
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);

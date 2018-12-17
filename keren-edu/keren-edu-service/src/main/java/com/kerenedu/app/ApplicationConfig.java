@@ -89,11 +89,14 @@ import com.kerenedu.notes.CoefMatiereRSImpl;
 import com.kerenedu.notes.DltBulletinRSImpl;
 import com.kerenedu.notes.ExamenRSImpl;
 import com.kerenedu.notes.HelpProfClasseRSImpl;
+import com.kerenedu.notes.ImportHeureProfRSImpl;
 import com.kerenedu.notes.ImportNoteClasseFileRSImpl;
 import com.kerenedu.notes.ImportNoteClasseRSImpl;
 import com.kerenedu.notes.NoteDetailRSImpl;
 import com.kerenedu.notes.NoteRSImpl;
 import com.kerenedu.personnel.DiplomeRSImpl;
+import com.kerenedu.personnel.EmargementDtlPeriodeRSImpl;
+import com.kerenedu.personnel.EmargementPeriodeRSImpl;
 import com.kerenedu.personnel.EmargementProfDetailsRSImpl;
 import com.kerenedu.personnel.EmargementProfRSImpl;
 import com.kerenedu.personnel.EnseignantPMRSImpl;
@@ -396,6 +399,9 @@ public class ApplicationConfig extends Application {
 		resources.add(ConsulterSalaireRSImpl.class);
 		resources.add(ViewBulletinPaieHelperRSImpl.class);
 		resources.add(BulletinHelperGeneratePrimaireRSImpl.class);
+		resources.add(EmargementPeriodeRSImpl.class);
+		resources.add(EmargementDtlPeriodeRSImpl.class);
+		resources.add(ImportHeureProfRSImpl.class);
 		
 		
 		

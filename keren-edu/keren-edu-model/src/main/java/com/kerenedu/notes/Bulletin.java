@@ -66,7 +66,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
-	@Predicate(label = "Type Bulletin", updatable = true, type = Examen.class, target = "many-to-one", sequence = 4)
+	@Predicate(label = "Type Bulletin", updatable = false, type = Examen.class, target = "many-to-one", sequence = 4, search=true)
 	protected Examen model;
 	
 //	@ManyToOne
@@ -102,67 +102,67 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	private Long rang = new Long(0);
 
 	@Column(name = "MOY_PREMIER")
-	@Predicate(label = "Moy. Premier", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
+	//@Predicate(label = "Moy. Premier", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
 	private Double moypremier = new Double(0);
 
 	@Column(name = "MOY_DER")
-	@Predicate(label = "Moy. Dernier", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
+	//@Predicate(label = "Moy. Dernier", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
 	private Double moydernier = new Double(0);
 
 	@Column(name = "NB_MOY")
-	@Predicate(label = "Nbre. Moyenne", type = Long.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
+	//@Predicate(label = "Nbre. Moyenne", type = Long.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
 	private Long nbreMoy = new Long(0);
 
 	@Column(name = "MOY_CLA")
-	@Predicate(label = "Moy. Classe", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
+	//@Predicate(label = "Moy. Classe", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
 	private Double moyenneClas = new Double(0);
 
 	@Column(name = "TX_REU")
-	@Predicate(label = "Taux. Reussite", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
+	//@Predicate(label = "Taux. Reussite", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
 	private Double txreusitte = new Double(0);
 
 	@Column(name = "ECRAT_TYPE")
-	@Predicate(label = "Ecart Type", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
+	//@Predicate(label = "Ecart Type", type = Double.class, updatable = false, editable = false, group = true, groupName = "group2", groupLabel = "Profil de la classe", edittable = true)
 	private Double eType = new Double(0);
 
 	@Column(name = "NB_ABS_N")
-	@Predicate(label = "Abscences Non Just.", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Abscences Non Just.", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Long nbreAbsNonJus = new Long(0);
 
 	@Column(name = "NB_ABS")
-	@Predicate(label = "Abscences Just.", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Abscences Just.", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Long nbreAbsJus = new Long(0);
 
 	@Column(name = "CONSIGNE")
-	@Predicate(label = "Consignes", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Consignes", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Long consigne = new Long(0);
 
 	@Column(name = "Exclusions")
-	@Predicate(label = "Exclusions", type = Long.class, updatable = true,group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Exclusions", type = Long.class, updatable = true,group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Long exclusions = new Long(0);
 
 	@Column(name = "RETARD")
-	@Predicate(label = "Retards", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Retards", type = Long.class, updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Long retards = new Long(0);
 
 	@Column(name = "AVERT")
-	@Predicate(label = "Avert. Conduite.", type = Boolean.class, target = "checkbox", updatable = true,  group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Avert. Conduite.", type = Boolean.class, target = "checkbox", updatable = true,  group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Boolean avert = false;
 
 	@Column(name = "BLAME")
-	@Predicate(label = "Blâme. Conduite.", type = Boolean.class, target = "checkbox", updatable = true,  group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Blâme. Conduite.", type = Boolean.class, target = "checkbox", updatable = true,  group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Boolean blame = false;
 
 	@Column(name = "CON_DIS")
-	@Predicate(label = "Conseil. Discipline.", type = Boolean.class, target = "checkbox", updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
+	//@Predicate(label = "Conseil. Discipline.", type = Boolean.class, target = "checkbox", updatable = true, group = true, groupName = "group3", groupLabel = "Conduite", edittable = true)
 	private Boolean conseil = false;
 
 	@Column(name = "APPRE")
-	@Predicate(label = "Appreciation", type = String.class, updatable = false, editable = false, group = true, groupName = "group4", groupLabel = "Apprecistion du Travail", edittable = true)
+	//@Predicate(label = "Appreciation", type = String.class, updatable = false, editable = false, group = true, groupName = "group4", groupLabel = "Apprecistion du Travail", edittable = true)
 	private String appre;
 
 	@Column(name = "Sanction")
-	@Predicate(label = "Sanction du Travail", type = String.class, updatable = false, editable = false, group = true, groupName = "group4", groupLabel = "Apprecistion du Travail", edittable = true)
+	//@Predicate(label = "Sanction du Travail", type = String.class, updatable = false, editable = false, group = true, groupName = "group4", groupLabel = "Apprecistion du Travail", edittable = true)
 	private String sanction;
 
 	@Column(name = "T_COEF")
@@ -173,6 +173,25 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 	@Column(name = "EXTR_MIN")
 	private Double extremmemin = new Double(0);
+	
+	
+	@Column(name = "MOYT1")
+	private Double moyt1 = new Double(0);
+
+	@Column(name = "MOYT2")
+	private Double moyt2 = new Double(0);
+
+	@Column(name = "MOYT3")
+	private Double moyt3 = new Double(0);
+	
+	@Column(name = "MOYANN")
+	private Double moyan = new Double(0);
+	
+	@Column(name = "ANNEE_ID")
+	private String anneeScolaire ;
+	
+	@Column(name = "NB_ELEVE")
+	private Long nbreElve;
 
 	private String state = "etabli";
 	
@@ -258,6 +277,11 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		if (bulletin.inscription != null) {
 			this.inscription = new Inscription(bulletin.inscription);
 		}
+		this.moyt1 = bulletin.moyt1;
+		this.moyt2 = bulletin.moyt2;
+		this.moyt3 = bulletin.moyt3;
+		this.moyan = bulletin.moyan;
+		this.nbreElve= bulletin.nbreElve;
 	}
 
 	public String getMatricule() {
@@ -284,10 +308,9 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.model = new Examen(model);
 		this.lignes = new ArrayList<LigneBulletinClasse>();
 		this.classe = new Classe(helper.getClasse());
-		this.tcoef = (long) helper.getMatiere().getMatiere().getCoeficient();
-		this.tpoint = new Double(0);
-		this.rang = new Long(0);
-		this.tcoef = new Long(0);
+		this.tcoef = (long) helper.getTotalCoef();
+		this.tpoint = helper.getTotalPoint();
+		this.rang = helper.getRang();
 		this.moypremier = helper.getMoyPremier();
 		this.moydernier = helper.getMoyDernnier();
 		this.nbreMoy = helper.getNbreMoy();
@@ -305,8 +328,14 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.exclusions = new Long(0);
 		this.retards = new Long(0);
 		this.inscription = helper.getEleve();
-		this.moyenne = helper.getMoyEtudiant();
+		this.moyenne =helper.getMoyEtudiant();
 		this.rang = helper.getRang();
+		this.moyt1 =  new Double(0);
+		this.moyt2 = new Double(0);
+		this.moyt3 =  new Double(0);
+		this.moyan =  new Double(0);
+		this.anneeScolaire=helper.getEleve().getAnneScolaire();
+		this.nbreElve=helper.getNbreEleve();
 
 	}
 	
@@ -330,7 +359,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Bulletin de classe";
+		return "Bulletin de classe" ;
 	}
 
 	@Override
@@ -439,8 +468,24 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		return avert;
 	}
 
+	public String getAnneeScolaire() {
+		return anneeScolaire;
+	}
+
+	public void setAnneeScolaire(String anneeScolaire) {
+		this.anneeScolaire = anneeScolaire;
+	}
+
 	public void setAvert(Boolean avert) {
 		this.avert = avert;
+	}
+
+	public Long getNbreElve() {
+		return nbreElve;
+	}
+
+	public void setNbreElve(Long nbreElve) {
+		this.nbreElve = nbreElve;
 	}
 
 	public Boolean getBlame() {
@@ -465,6 +510,38 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 	public void setConsigne(Long consigne) {
 		this.consigne = consigne;
+	}
+
+	public Double getMoyt1() {
+		return moyt1;
+	}
+
+	public void setMoyt1(Double moyt1) {
+		this.moyt1 = moyt1;
+	}
+
+	public Double getMoyt2() {
+		return moyt2;
+	}
+
+	public void setMoyt2(Double moyt2) {
+		this.moyt2 = moyt2;
+	}
+
+	public Double getMoyt3() {
+		return moyt3;
+	}
+
+	public void setMoyt3(Double moyt3) {
+		this.moyt3 = moyt3;
+	}
+
+	public Double getMoyan() {
+		return moyan;
+	}
+
+	public void setMoyan(Double moyan) {
+		this.moyan = moyan;
 	}
 
 	public String getAppre() {

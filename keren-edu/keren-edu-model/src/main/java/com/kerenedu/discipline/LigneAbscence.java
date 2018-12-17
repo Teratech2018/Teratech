@@ -44,7 +44,7 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 	
 	
 	@Column(name = "NOM")
-	@Predicate(label = "NOM", optional = true, updatable = false, search = true, type = String.class,  sequence=2)
+	@Predicate(label = "NOM", optional = true, updatable = true, search = true, type = String.class,  sequence=2)
 	protected String nom;
 
 	@Column(name = "HD")
@@ -56,23 +56,23 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 	protected String hfin;
 	
 	@Column(name = "ABSJUST")
-	@Predicate(label = "Absence Just.(H)", updatable = false, search = true, sequence = 3, type = Double.class, editable = true)
+	@Predicate(label = "Absence Just.(H)", updatable = true, search = true, sequence = 3, type = Double.class, editable = true)
 	protected Double absjust=(double) 0;
 	
 	@Column(name = "ABSNJUST")
-	@Predicate(label = "Absence Non Just.(H)", updatable = false, search = true, sequence = 4, type = Double.class, editable = true)
+	@Predicate(label = "Absence Non Just.(H)", updatable = true, search = true, sequence = 4, type = Double.class, editable = true)
 	protected Double absnonjust=(double) 0;
 		
 	@Column(name = "CONSIGNE")
-	@Predicate(label = "Consignes.(H)", updatable = false, search = true, sequence = 7, type = Double.class, editable = true)
+	@Predicate(label = "Consignes.(H)", updatable = true, search = true, sequence = 7, type = Double.class, editable = true)
 	protected Double consigne=(double) 0;
 	
 	@Column(name = "EXCLUSIONS")
-	@Predicate(label = "Exclusions.(J)", updatable = false, search = true, sequence = 8, type = Double.class, editable = true)
+	@Predicate(label = "Exclusions.(J)", updatable = true, search = true, sequence = 8, type = Double.class, editable = true)
 	protected Double exclusion=(double) 0;
 	
 	@Column(name = "RETARD")
-	@Predicate(label = "Exclusions.(J)", updatable = false, search = true, sequence = 9, type = Double.class, editable = true)
+	@Predicate(label = "Exclusions.(J)", updatable = true, search = true, sequence = 9, type = Double.class, editable = true)
 	protected Double retard=(double) 0;
 	
 	@Predicate(label = "Avertissement Conduite", type = Boolean.class, search = true , sequence =5)

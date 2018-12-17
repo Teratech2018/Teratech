@@ -110,7 +110,12 @@ public class CacheMemory implements Serializable{
 	 */
 	public static synchronized Object getValue(long id , TypeCacheMemory type){
 		if(!cacheUser.containsKey(id)) return null;
-		return cacheUser.get(id).get(type);
+		if(cacheUser!=null){
+			return cacheUser.get(id).get(type) ;
+		}else{
+			return null;
+		}
+		
 	}
 	public static synchronized PeriodeScolaire getPeriode() {
 		return periode;

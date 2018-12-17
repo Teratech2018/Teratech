@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.Appreciation;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Cycle;
 import com.kerenedu.configuration.MatiereDlt;
@@ -28,6 +29,15 @@ import com.kerenedu.school.Eleve;
 @Entity(name = "e_zview_bulletin")
 public class BulletinHelperGenerate extends BaseElement implements Serializable, Comparable<BulletinHelperGenerate> {
 
+	
+	@ManyToOne
+	@JoinColumn(name = "LGN_ID")
+	protected LigneBulletinClasse lignes;
+	
+	@ManyToOne
+	@JoinColumn(name = "BULL_ID")
+	protected Bulletin bulletin;
+	
 	@ManyToOne
 	@JoinColumn(name = "INS_ID")
 	protected Inscription inscription;
@@ -41,32 +51,15 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	protected Classe classe;
 
 	@ManyToOne
-	@JoinColumn(name = "CYCLE_ID")
-	protected Cycle cycle;
-
-	@Column(name = "ANNEE_ID")
-	private String anneeid;
-
-	@ManyToOne
-	@JoinColumn(name = "COEF_ID")
-	protected CoefMatiereDetail coef;
-
-	@ManyToOne
-	@JoinColumn(name = "MAT_ID")
-	protected MatiereDlt matiere;
-
-	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
-	protected Examen examen;
-
-	@ManyToOne
-	@JoinColumn(name = "ABS_ID")
-	protected ViewAbscence abscence;
-
-	@ManyToOne
-	@JoinColumn(name = "NOTE_ID")
-	protected NoteDetail notedetail;
-
+	protected Examen examen ;
+	
+	@Column(name = "MOY")
+	private Double moy = new Double(0);
+	
+	@Column(name = "RANG")
+	private Long rang = new Long(0);
+	
 	@Column(name = "NOTE1")
 	private Double note1 = new Double(0);
 
@@ -84,16 +77,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	@Column(name = "NOTE6")
 	private Double note6 = new Double(0);
-
-	@Column(name = "MOY_CLA_MATIERE")
-	private Double moyclasMat = new Double(0);
-
-	@Column(name = "EXTR_MAX_MAT")
-	private Double extrememaxmat = new Double(0);
-
-	@Column(name = "EXTR_MIN_MAT")
-	private Double extremmeminmat = new Double(0);
-
+	
 	@Column(name = "MOY1")
 	private Double moy1 = new Double(0);
 
@@ -112,39 +96,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	@Column(name = "MOY6")
 	private Double moy6 = new Double(0);
 
-	@Column(name = "RANG_MAT")
-	private Long rangmat = new Long(0);
-
-	@Column(name = "RANG_MOY")
-	private Long rangmoy = new Long(0);
-
-	@Column(name = "MOY_GEN_CLS")
-	private Double moyGenCls;
-
-	@Column(name = "MOY_PREMIER")
-	private Double moyPremier = new Double(0);
-
-	@Column(name = "MOY_DERNIER")
-	private Double moyDernnier = new Double(0);
-
-	@Column(name = "NBRE_MOY")
-	private Long nbreMoy = new Long(0);
-
-	@Column(name = "NBRE_ELVE")
-	private Long nbreElve = new Long(0);
-
-	@Column(name = "TX_REU")
-	private Double tauxReussite = new Double(0);
-
-	@Column(name = "TOTAL_POINT")
-	private Double totalPoint = new Double(0);
-
-	@Column(name = "TOTAL_COEF")
-	private Long totalCoef = new Long(0);
-
-	@Column(name = "ECART_TYPE")
-	private Double eType = new Double(0);
-
 	@Column(name = "RANG1")
 	private Long rang1 = new Long(0);
 
@@ -162,20 +113,168 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	@Column(name = "RANG6")
 	private Long rang6 = new Long(0);
-
-	@Column(name = "APP_MAT")
-	private String appreciationMatiere;
-
-
-	@Column(name = "APP")
-	protected String app;
-
-	@Column(name = "APP_EN")
-	protected String appen;
+	
+	@Column(name = "APPRECIATION")
+	private String appreciation;
 
 	@Column(name = "SANCTION")
 	private String santcion;
 
+	@Column(name = "APP_EN")
+	protected String appen;
+	
+	@ManyToOne
+	@JoinColumn(name = "ABS_ID")
+	protected ViewAbscence abscence;
+
+	@Column(name = "RANGT1")
+	private Long rangt1 = new Long(0);
+	
+	@Column(name = "RANGT2")
+	private Long rangt2 = new Long(0);
+	
+	
+	@Column(name = "RANGT3")
+	private Long rangt3 = new Long(0);
+	
+	@Column(name = "NBMOYT1")
+	private Double nbmoyt1 = new Double(0);
+	
+	@Column(name = "ECARTT1")
+	private Double ecartt1 = new Double(0);
+	
+	@Column(name = "MINMOYT1")
+	private Double minmoyt1 = new Double(0);
+	
+	@Column(name = "MYGENT1")
+	private Double moygent1 = new Double(0);
+	
+	@Column(name = "MAXMOYT1")
+	private Double maxmoyt1 = new Double(0);
+	
+	@Column(name = "NBMOYT2")
+	private Double nbmoyt2 = new Double(0);
+	
+	@Column(name = "ECARTT2")
+	private Double ecartt2 = new Double(0);
+	
+	@Column(name = "MINMOYT2")
+	private Double minmoyt2 = new Double(0);
+	
+	@Column(name = "MYGENT2")
+	private Double moygent2 = new Double(0);
+	
+	@Column(name = "MAXMOYT2")
+	private Double maxmoyt2 = new Double(0);
+	
+	@Column(name = "NBMOYT3")
+	private Double nbmoyt3 = new Double(0);
+	
+	@Column(name = "ECARTT3")
+	private Double ecartt3 = new Double(0);
+	
+	@Column(name = "MINMOYT3")
+	private Double minmoyt3 = new Double(0);
+	
+	@Column(name = "MYGENT3")
+	private Double moygent3 = new Double(0);
+	
+	@Column(name = "MAXMOYT3")
+	private Double maxmoyt3 = new Double(0);
+	
+	@Column(name = "ANNEE_ID")
+	private String anneeid;
+
+	@Transient
+	@Column(name = "MOY_CLA_MATIERE")
+	private Double moyclasMat = new Double(0);
+
+	@Transient
+	@Column(name = "EXTR_MAX_MAT")
+	private Double extrememaxmat = new Double(0);
+
+	@Transient
+	@Column(name = "EXTR_MIN_MAT")
+	private Double extremmeminmat = new Double(0);
+	
+	@Column(name = "RANKMATT1")
+	private Long rankmatt1 = new Long(0);
+	
+	@Column(name = "RANKMATT2")
+	private Long rankmatt2 = new Long(0);
+	
+	@Column(name = "RANKMATT3")
+	private Long rankmatt3 = new Long(0);
+	
+	@Column(name = "MOYMATT1")
+	private Double moymatt1 = new Double(0);
+	
+	@Column(name = "MOYMATT2")
+	private Double moymatt2 = new Double(0);
+	
+	@Column(name = "MOYMATT3")
+	private Double moymatt3 = new Double(0);
+	
+	@ManyToOne
+	@JoinColumn(name = "ABST0")
+	protected ViewAbscence abscencet0;
+	
+	@ManyToOne
+	@JoinColumn(name = "ABST1")
+	protected ViewAbscence abscencet1;
+	
+	@ManyToOne
+	@JoinColumn(name = "APPT1")
+	protected Appreciation appt1;
+	
+	@ManyToOne
+	@JoinColumn(name = "APPT2")
+	protected Appreciation appt2;
+	
+	@ManyToOne
+	@JoinColumn(name = "APPT3")
+	protected Appreciation appt3;
+	
+	@ManyToOne
+	@JoinColumn(name = "APPMOY1")
+	protected Appreciation apptmoy1;
+
+	
+	@Transient
+	private Cycle cycle;
+	
+	@Transient
+	private MatiereDlt matiere;
+	
+	@Transient
+	private Long rangmat ;
+	@Transient
+	private Long rangmoy ;
+	
+	@Transient
+	private Double moyGenCls ;
+	
+	@Transient
+	private Double moyPremier ;
+	
+	@Transient
+	private Double moyDernnier;
+	
+	@Transient
+	private Long nbreMoy;
+	
+	@Transient
+	private Long nbreElve;
+	
+	@Transient
+	private Double tauxReussite;
+	@Transient
+	private Double totalPoint;
+	@Transient
+	private Long totalCoef;
+	@Transient
+	private Double eType;
+	
 	@Transient
 	private byte[] photo;
 
@@ -184,45 +283,88 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		// TODO Auto-generated constructor stub
 	}
 
-	public NoteDetail getNotedetail() {
-		return notedetail;
-	}
 
-	public void setNotedetail(NoteDetail notedetail) {
-		this.notedetail = notedetail;
-	}
 
-	public BulletinHelperGenerate(Inscription inscription, Eleve eleve, Classe classe, Cycle cycle, String anneeid,
-			CoefMatiereDetail coef, MatiereDlt matiere, Examen examen, Double note1, Double note2, Double note3,
-			Double note4, Double note5, Double note6, Double moyclasMat, Double extrememaxmat, Double extremmeminmat,
-			Double moy1, Double moy2, Double moy3, Double moy4, Double moy5, Double moy6, Long rangmat, Long rangmoy,
-			Double moyGenCls, Double moyPremier, Double moyDernnier, Long nbreMoy, Long nbreElve, Double tauxReussite,
-			Double totalPoint, Long totalCoef, Double eType, Long rang1, Long rang2, Long rang3, Long rang4,
-			Long rang5) {
+
+	public BulletinHelperGenerate(LigneBulletinClasse lignes, Bulletin bulletin, Inscription inscription, Eleve eleve,
+			Classe classe, Examen examen, Double moy, Long rang, Double note1, Double note2, Double note3, Double note4,
+			Double note5, Double note6, Double moy1, Double moy2, Double moy3, Double moy4, Double moy5, Double moy6,
+			Long rang1, Long rang2, Long rang3, Long rang4, Long rang5, Long rang6, String appreciation,
+			String santcion, String appen, ViewAbscence abscence, Long rangt1, Long rangt2, Long rangt3, Double nbmoyt1,
+			Double ecartt1, Double minmoyt1, Double moygent1, Double maxmoyt1, Double nbmoyt2, Double ecartt2,
+			Double minmoyt2, Double moygent2, Double maxmoyt2, Double nbmoyt3, Double ecartt3, Double minmoyt3,
+			Double moygent3, Double maxmoyt3, String anneeid, Double moyclasMat, Double extrememaxmat,
+			Double extremmeminmat, Long rankmatt1, Long rankmatt2, Long rankmatt3, Double moymatt1, Double moymatt2,
+			Double moymatt3, ViewAbscence abscencet0, ViewAbscence abscencet1, Appreciation appt1, Appreciation appt2,
+			Appreciation appt3, Cycle cycle, MatiereDlt matiere, Long rangmat, Long rangmoy, Double moyGenCls,
+			Double moyPremier, Double moyDernnier, Long nbreMoy, Long nbreElve, Double tauxReussite, Double totalPoint,
+			Long totalCoef, Double eType, byte[] photo) {
 		super();
+		this.lignes = lignes;
+		this.bulletin = bulletin;
 		this.inscription = inscription;
 		this.eleve = eleve;
 		this.classe = classe;
-		this.cycle = cycle;
-		this.anneeid = anneeid;
-		this.coef = coef;
-		this.matiere = matiere;
 		this.examen = examen;
+		this.moy = moy;
+		this.rang = rang;
 		this.note1 = note1;
 		this.note2 = note2;
 		this.note3 = note3;
 		this.note4 = note4;
 		this.note5 = note5;
 		this.note6 = note6;
-		this.moyclasMat = moyclasMat;
-		this.extrememaxmat = extrememaxmat;
-		this.extremmeminmat = extremmeminmat;
 		this.moy1 = moy1;
 		this.moy2 = moy2;
 		this.moy3 = moy3;
 		this.moy4 = moy4;
 		this.moy5 = moy5;
 		this.moy6 = moy6;
+		this.rang1 = rang1;
+		this.rang2 = rang2;
+		this.rang3 = rang3;
+		this.rang4 = rang4;
+		this.rang5 = rang5;
+		this.rang6 = rang6;
+		this.appreciation = appreciation;
+		this.santcion = santcion;
+		this.appen = appen;
+		this.abscence = abscence;
+		this.rangt1 = rangt1;
+		this.rangt2 = rangt2;
+		this.rangt3 = rangt3;
+		this.nbmoyt1 = nbmoyt1;
+		this.ecartt1 = ecartt1;
+		this.minmoyt1 = minmoyt1;
+		this.moygent1 = moygent1;
+		this.maxmoyt1 = maxmoyt1;
+		this.nbmoyt2 = nbmoyt2;
+		this.ecartt2 = ecartt2;
+		this.minmoyt2 = minmoyt2;
+		this.moygent2 = moygent2;
+		this.maxmoyt2 = maxmoyt2;
+		this.nbmoyt3 = nbmoyt3;
+		this.ecartt3 = ecartt3;
+		this.minmoyt3 = minmoyt3;
+		this.moygent3 = moygent3;
+		this.maxmoyt3 = maxmoyt3;
+		this.anneeid = anneeid;
+		this.moyclasMat = moyclasMat;
+		this.extrememaxmat = extrememaxmat;
+		this.extremmeminmat = extremmeminmat;
+		this.rankmatt1 = rankmatt1;
+		this.rankmatt2 = rankmatt2;
+		this.rankmatt3 = rankmatt3;
+		this.moymatt1 = moymatt1;
+		this.moymatt2 = moymatt2;
+		this.moymatt3 = moymatt3;
+		this.abscencet0 = abscencet0;
+		this.abscencet1 = abscencet1;
+		this.appt1 = appt1;
+		this.appt2 = appt2;
+		this.appt3 = appt3;
+		this.cycle = cycle;
+		this.matiere = matiere;
 		this.rangmat = rangmat;
 		this.rangmoy = rangmoy;
 		this.moyGenCls = moyGenCls;
@@ -234,12 +376,11 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.totalPoint = totalPoint;
 		this.totalCoef = totalCoef;
 		this.eType = eType;
-		this.rang1 = rang1;
-		this.rang2 = rang2;
-		this.rang3 = rang3;
-		this.rang4 = rang4;
-		this.rang5 = rang5;
+		this.photo = photo;
 	}
+
+
+
 
 	public BulletinHelperGenerate(BulletinHelperGenerate bull) {
 		super(bull.id, bull.designation, bull.moduleName, 0L);
@@ -248,7 +389,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.classe = new Classe(bull.classe);
 		this.cycle = new Cycle(bull.cycle);
 		this.anneeid = bull.anneeid;
-		this.coef = bull.coef;
 		this.matiere = new MatiereDlt(bull.matiere);
 		this.examen = new Examen(bull.examen);
 		if (bull.abscence != null) {
@@ -260,38 +400,48 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.note4 = bull.note4;
 		this.note5 = bull.note5;
 		this.note6 = bull.note6;
-		this.moyclasMat = bull.moyclasMat;
-		this.extrememaxmat = bull.extrememaxmat;
-		this.extremmeminmat = bull.extremmeminmat;
+		this.moyclasMat = bull.getLignes().getMoyeClasse();
+		this.extrememaxmat = bull.getLignes().getExtremeMax();
+		this.extremmeminmat = bull.getLignes().getExtremeMin();
 		this.moy1 = bull.moy1;
 		this.moy2 = bull.moy2;
 		this.moy3 = bull.moy3;
 		this.moy4 = bull.moy4;
 		this.moy5 = bull.moy5;
 		this.moy6 = bull.moy6;
-		this.rangmat = bull.rangmat;
-		this.rangmoy = bull.rangmoy;
-		this.moyGenCls = bull.moyGenCls;
-		this.moyPremier = bull.moyPremier;
-		this.moyDernnier = bull.moyDernnier;
-		this.nbreMoy = bull.nbreMoy;
-		this.nbreElve = bull.nbreElve;
-		this.tauxReussite = bull.tauxReussite;
-		this.totalPoint = bull.totalPoint;
-		this.totalCoef = bull.totalCoef;
-		this.eType = bull.eType;
+		this.rangmat = bull.getLignes().getRang();
+		this.rangmoy = bull.getRang();
+		this.moyGenCls = bull.getBulletin().getMoyenneClas();
+		this.moyPremier = bull.getBulletin().getMoypremier();
+		this.moyDernnier = bull.getBulletin().getMoydernier();
+		this.nbreMoy = bull.getBulletin().getNbreMoy();
+		this.nbreElve = bull.getBulletin().getNbreElve();
+		this.tauxReussite = bull.getBulletin().getTxreusitte();
+		this.totalPoint = bull.getBulletin().getTpoint();
+		this.totalCoef = bull.getBulletin().getTcoef();
+		this.eType = bull.getBulletin().geteType();
 		this.rang1 = bull.rang1;
 		this.rang2 = bull.rang2;
 		this.rang3 = bull.rang3;
 		this.rang4 = bull.rang4;
 		this.rang5 = bull.rang5;
+		this.rang6 = bull.rang6;
 
 		this.santcion = bull.santcion;
-		this.appreciationMatiere = bull.appreciationMatiere;
-		this.rang6 = bull.rang6;
-		this.notedetail = new NoteDetail(bull.notedetail);
-		this.app = bull.app;
 		this.appen = bull.appen;
+		
+		this.rankmatt1 = bull.rankmatt1;
+		this.rankmatt2 = bull.rankmatt2;
+		this.rankmatt3 = bull.rankmatt3;
+		this.moymatt1 = bull.moymatt1;
+		this.moymatt2 = bull.moymatt2;
+		this.moymatt3 = bull.moymatt3;
+		this.abscencet0 = new ViewAbscence(bull.abscencet0);
+		this.abscencet1 = new ViewAbscence(bull.abscencet1);;
+		this.appt1 = new Appreciation(bull.appt1);
+		this.appt2 = new Appreciation(bull.appt2);
+		this.appt3 = new Appreciation(bull.appt3);
+		this.apptmoy1 = new Appreciation(bull.apptmoy1);
 		//this.appreciationMatiereen = bull.appreciationMatiereen;
 	}
 
@@ -363,6 +513,20 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.rang2 = rang2;
 	}
 
+	public Appreciation getApptmoy1() {
+		return apptmoy1;
+	}
+
+
+
+
+	public void setApptmoy1(Appreciation apptmoy1) {
+		this.apptmoy1 = apptmoy1;
+	}
+
+
+
+
 	public Long getRang3() {
 		return rang3;
 	}
@@ -399,17 +563,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.anneeid = anneeid;
 	}
 
-	public CoefMatiereDetail getCoef() {
-		return coef;
-	}
 
-	public String getApp() {
-		return app;
-	}
-
-	public void setCoef(CoefMatiereDetail coef) {
-		this.coef = coef;
-	}
 
 	
 
@@ -421,10 +575,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.appen = appen;
 	}
 
-	public void setApp(String app) {
-		this.app = app;
-	}
-
+	
 	public MatiereDlt getMatiere() {
 		return matiere;
 	}
@@ -432,6 +583,116 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	public Long getRang6() {
 		return rang6;
 	}
+
+	public Long getRankmatt1() {
+		return rankmatt1;
+	}
+
+
+	public void setRankmatt1(Long rankmatt1) {
+		this.rankmatt1 = rankmatt1;
+	}
+
+
+	public Long getRankmatt2() {
+		return rankmatt2;
+	}
+
+
+	public void setRankmatt2(Long rankmatt2) {
+		this.rankmatt2 = rankmatt2;
+	}
+
+
+	public Long getRankmatt3() {
+		return rankmatt3;
+	}
+
+
+	public void setRankmatt3(Long rankmatt3) {
+		this.rankmatt3 = rankmatt3;
+	}
+
+
+	public Double getMoymatt1() {
+		return moymatt1;
+	}
+
+
+	public void setMoymatt1(Double moymatt1) {
+		this.moymatt1 = moymatt1;
+	}
+
+
+	public Double getMoymatt2() {
+		return moymatt2;
+	}
+
+
+	public void setMoymatt2(Double moymatt2) {
+		this.moymatt2 = moymatt2;
+	}
+
+
+	public Double getMoymatt3() {
+		return moymatt3;
+	}
+
+
+	public void setMoymatt3(Double moymatt3) {
+		this.moymatt3 = moymatt3;
+	}
+
+
+	public ViewAbscence getAbscencet0() {
+		return abscencet0;
+	}
+
+
+	public void setAbscencet0(ViewAbscence abscencet0) {
+		this.abscencet0 = abscencet0;
+	}
+
+
+	public ViewAbscence getAbscencet1() {
+		return abscencet1;
+	}
+
+
+	public void setAbscencet1(ViewAbscence abscencet1) {
+		this.abscencet1 = abscencet1;
+	}
+
+
+	public Appreciation getAppt1() {
+		return appt1;
+	}
+
+
+	public void setAppt1(Appreciation appt1) {
+		this.appt1 = appt1;
+	}
+
+
+	public Appreciation getAppt2() {
+		return appt2;
+	}
+
+
+	public void setAppt2(Appreciation appt2) {
+		this.appt2 = appt2;
+	}
+
+
+	public Appreciation getAppt3() {
+		return appt3;
+	}
+
+
+	public void setAppt3(Appreciation appt3) {
+		this.appt3 = appt3;
+	}
+
 
 	public void setRang6(Long rang6) {
 		this.rang6 = rang6;
@@ -449,13 +710,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.matiere = matiere;
 	}
 
-	public String getAppreciationMatiere() {
-		return appreciationMatiere;
-	}
 
-	public void setAppreciationMatiere(String appreciationMatiere) {
-		this.appreciationMatiere = appreciationMatiere;
-	}
 
 	public String getSantcion() {
 		return santcion;
@@ -676,6 +931,236 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	public Long getTotalCoef() {
 		return totalCoef;
 	}
+
+	public LigneBulletinClasse getLignes() {
+		return lignes;
+	}
+
+
+	public void setLignes(LigneBulletinClasse lignes) {
+		this.lignes = lignes;
+	}
+
+
+	public Bulletin getBulletin() {
+		return bulletin;
+	}
+
+
+	public void setBulletin(Bulletin bulletin) {
+		this.bulletin = bulletin;
+	}
+
+
+	public Double getMoy() {
+		return moy;
+	}
+
+
+	public void setMoy(Double moy) {
+		this.moy = moy;
+	}
+
+
+	public Long getRang() {
+		return rang;
+	}
+
+
+	public void setRang(Long rang) {
+		this.rang = rang;
+	}
+
+
+	public String getAppreciation() {
+		return appreciation;
+	}
+
+
+	public void setAppreciation(String appreciation) {
+		this.appreciation = appreciation;
+	}
+
+
+	public Long getRangt1() {
+		return rangt1;
+	}
+
+
+	public void setRangt1(Long rangt1) {
+		this.rangt1 = rangt1;
+	}
+
+
+	public Long getRangt2() {
+		return rangt2;
+	}
+
+
+	public void setRangt2(Long rangt2) {
+		this.rangt2 = rangt2;
+	}
+
+
+	public Long getRangt3() {
+		return rangt3;
+	}
+
+
+	public void setRangt3(Long rangt3) {
+		this.rangt3 = rangt3;
+	}
+
+
+	public Double getNbmoyt1() {
+		return nbmoyt1;
+	}
+
+
+	public void setNbmoyt1(Double nbmoyt1) {
+		this.nbmoyt1 = nbmoyt1;
+	}
+
+
+	public Double getEcartt1() {
+		return ecartt1;
+	}
+
+
+	public void setEcartt1(Double ecartt1) {
+		this.ecartt1 = ecartt1;
+	}
+
+
+	public Double getMinmoyt1() {
+		return minmoyt1;
+	}
+
+
+	public void setMinmoyt1(Double minmoyt1) {
+		this.minmoyt1 = minmoyt1;
+	}
+
+
+	public Double getMoygent1() {
+		return moygent1;
+	}
+
+
+	public void setMoygent1(Double moygent1) {
+		this.moygent1 = moygent1;
+	}
+
+
+	public Double getMaxmoyt1() {
+		return maxmoyt1;
+	}
+
+
+	public void setMaxmoyt1(Double maxmoyt1) {
+		this.maxmoyt1 = maxmoyt1;
+	}
+
+
+	public Double getNbmoyt2() {
+		return nbmoyt2;
+	}
+
+
+	public void setNbmoyt2(Double nbmoyt2) {
+		this.nbmoyt2 = nbmoyt2;
+	}
+
+
+	public Double getEcartt2() {
+		return ecartt2;
+	}
+
+
+	public void setEcartt2(Double ecartt2) {
+		this.ecartt2 = ecartt2;
+	}
+
+
+	public Double getMinmoyt2() {
+		return minmoyt2;
+	}
+
+
+	public void setMinmoyt2(Double minmoyt2) {
+		this.minmoyt2 = minmoyt2;
+	}
+
+
+	public Double getMoygent2() {
+		return moygent2;
+	}
+
+
+	public void setMoygent2(Double moygent2) {
+		this.moygent2 = moygent2;
+	}
+
+
+	public Double getMaxmoyt2() {
+		return maxmoyt2;
+	}
+
+
+	public void setMaxmoyt2(Double maxmoyt2) {
+		this.maxmoyt2 = maxmoyt2;
+	}
+
+
+	public Double getNbmoyt3() {
+		return nbmoyt3;
+	}
+
+
+	public void setNbmoyt3(Double nbmoyt3) {
+		this.nbmoyt3 = nbmoyt3;
+	}
+
+
+	public Double getEcartt3() {
+		return ecartt3;
+	}
+
+
+	public void setEcartt3(Double ecartt3) {
+		this.ecartt3 = ecartt3;
+	}
+
+
+	public Double getMinmoyt3() {
+		return minmoyt3;
+	}
+
+
+	public void setMinmoyt3(Double minmoyt3) {
+		this.minmoyt3 = minmoyt3;
+	}
+
+
+	public Double getMoygent3() {
+		return moygent3;
+	}
+
+
+	public void setMoygent3(Double moygent3) {
+		this.moygent3 = moygent3;
+	}
+
+
+	public Double getMaxmoyt3() {
+		return maxmoyt3;
+	}
+
+
+	public void setMaxmoyt3(Double maxmoyt3) {
+		this.maxmoyt3 = maxmoyt3;
+	}
+
 
 	public void setTotalCoef(Long totalCoef) {
 		this.totalCoef = totalCoef;

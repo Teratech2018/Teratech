@@ -45,7 +45,7 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1)
+	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1, search=true)
 	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
 	private Examen periode ;
 	

@@ -116,6 +116,9 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 	
 	@Column(name = "ECART_TYPE")
 	private Double ecartType = new Double(0);
+	
+	@Column(name = "NBRE_ELEVE")
+	private Long nbreEleve = new Long(0);
 
 	/**
 	 * 
@@ -160,7 +163,7 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 
 
 	public ViewNoteHelper(ViewNoteHelper view) {
-		super();
+		super(view.id, view.designation, view.moduleName, 0L);
 		this.matiereNote = view.matiereNote;
 		this.classe = new Classe(view.classe) ;
 		this.examen =  new Examen(view.examen);
@@ -186,6 +189,7 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 		this.note1 = view.note1;
 		this.note2 = view.note2;
 		this.note3 = view.note3;
+		this.nbreEleve=view.nbreEleve;
 		
 		
 	}
@@ -357,6 +361,20 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 	public void setMoygencls(Double moygencls) {
 		this.moygencls = moygencls;
 	}
+
+
+
+	public Long getNbreEleve() {
+		return nbreEleve;
+	}
+
+
+
+
+	public void setNbreEleve(Long nbreEleve) {
+		this.nbreEleve = nbreEleve;
+	}
+
 
 
 

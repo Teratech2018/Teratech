@@ -85,7 +85,7 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 	protected GroupeCours module;
 
 	@Column(name = "RANG")
-	@Predicate(label = "Rang", type = Long.class, search = true, sequence =9, updatable = false)
+	//@Predicate(label = "Rang", type = Long.class, search = true, sequence =9, updatable = false)
 	private Long rang = new Long(0);
 
 	@Column(name = "APPRECIATION")
@@ -106,6 +106,24 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 
 	@Column(name = "EXTR_MAX")
 	private Double extremeMax = new Double(0);
+	
+	@ManyToOne
+	@JoinColumn(name = "COEF_ID")
+	private CoefMatiereDetail coeff;
+	
+
+	@Column(name = "NOTET1")
+	private Double notet1 = new Double(0);
+
+	@Column(name = "NOTET2")
+	private Double notet2 = new Double(0);
+
+	@Column(name = "NOTET3")
+	private Double notet3 = new Double(0);
+	
+	@Column(name = "NOTETAN")
+	private Double notean = new Double(0);
+
 
 	public LigneBulletinClasse() {
 		super();
@@ -153,6 +171,12 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		this.snote1 = filiere.snote1;
 		this.snote2 = filiere.snote2;
 		this.snote3 = filiere.snote3;
+		
+		this.coeff = new CoefMatiereDetail(filiere.coeff);
+		this.notet1 = filiere.notet1;
+		this.notet2 = filiere.notet2;
+		this.notet3 = filiere.notet3;
+		this.notean = filiere.notean;
 
 	}
 
@@ -170,6 +194,7 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		this.module = helper.getMatiereNote().getMatiere().getGroupe();
 		this.moyenne=helper.getMoyEtudiant();
 		this.rang=helper.getRangMat();
+		this.coeff= helper.getMatiere();
 //		System.out.println("LigneBulletinClasse.LigneBulletinClasse() note1"+helper.getNote1()+" note2"+helper.getNote2()+"note 3"+helper.getNote3());
 	//	double note1=0 ;double note2=0;double notmoy=0;double note3=0;
 		if(helper.getClasse().getFiliere().getCycle().getTypecycle().equals("1")){
@@ -376,8 +401,48 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		return note1;
 	}
 
+	public CoefMatiereDetail getCoeff() {
+		return coeff;
+	}
+
+	public void setCoeff(CoefMatiereDetail coeff) {
+		this.coeff = coeff;
+	}
+
 	public void setNote1(Double note1) {
 		this.note1 = note1;
+	}
+
+	public Double getNotet1() {
+		return notet1;
+	}
+
+	public void setNotet1(Double notet1) {
+		this.notet1 = notet1;
+	}
+
+	public Double getNotet2() {
+		return notet2;
+	}
+
+	public void setNotet2(Double notet2) {
+		this.notet2 = notet2;
+	}
+
+	public Double getNotet3() {
+		return notet3;
+	}
+
+	public void setNotet3(Double notet3) {
+		this.notet3 = notet3;
+	}
+
+	public Double getNotean() {
+		return notean;
+	}
+
+	public void setNotean(Double notean) {
+		this.notean = notean;
 	}
 
 	public Double getSnote1() {

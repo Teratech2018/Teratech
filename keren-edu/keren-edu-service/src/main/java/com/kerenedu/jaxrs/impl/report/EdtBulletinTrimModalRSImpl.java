@@ -151,9 +151,6 @@ public class EdtBulletinTrimModalRSImpl
         }
         Examen exam = (Examen)datas.get(0);
         entity.getExamen().add(exam);
-        
-
-
 
         URL = ReportHelper.templateURL + ReportsName.BULLTRIM.getName();
         parameters = getReportParameters();

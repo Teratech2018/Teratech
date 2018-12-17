@@ -120,7 +120,7 @@ public class AbscenceRSImpl extends AbstractGenericService<Abscence, Long> imple
 		// TODO Auto-generated method stub
 	
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
-		Examen periode = (Examen) CacheMemory.getValue(BuilderHttpHeaders.getidUsers(arg0), TypeCacheMemory.FILLIERE);
+		Examen periode = (Examen) CacheMemory.getValue(BuilderHttpHeaders.getidUsers(arg0), TypeCacheMemory.EXAMEN);
 		if(periode!=null){
 			container.addEq("periode.id", periode.getId());	
 		}//end if(filiere!=null){

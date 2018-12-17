@@ -910,6 +910,28 @@ and open the template in the editor.
 					<role>ADMIN</role>
 				</roles>
 			</element>
+			
+			<element type="com.kerenedu.personnel.EmargementPeriode" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+			<element type="com.kerenedu.personnel.EmargementDtlPeriode" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+			
+			<element type="com.kerenedu.notes.BulletinHelper" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+			<element type="com.kerenedu.notes.LigneHelper" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
 	             
     </elements>
     

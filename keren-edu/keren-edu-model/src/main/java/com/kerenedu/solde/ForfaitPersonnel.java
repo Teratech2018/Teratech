@@ -37,7 +37,7 @@ public class ForfaitPersonnel extends BaseElement implements Serializable, Compa
 	@Predicate(label="Valeur",type=Double.class,optional=false,search=true)
 	private Double valeur =0.0;
 
-	@Predicate(label="Mesure",target="combobox",values="Montant Fixe;Pourcentage salaire de base" ,search=true)
+	@Predicate(label="Mesure",target="combobox",values="Montant Fixe;Par Heures" ,search=true)
 	private String mesure="0";
 	
 	

@@ -41,29 +41,12 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 	 * On injecte un Gestionnaire d'entites
 	 * 
 	 */
-	@Manager(application = "kereneducation", name = "BulletinManagerImpl", interf = BulletinManagerRemote.class)
-	protected BulletinManagerRemote managerBul;
 
-	@Manager(application = "kereneducation", name = "BulletinHelperGenerateManagerImpl", interf = BulletinHelperGenerateManagerRemote.class)
-	protected BulletinHelperGenerateManagerRemote managerHelper;
-
-	@Manager(application = "kereneducation", name = "ModelBulletinManagerImpl", interf = ModelBulletinManagerRemote.class)
-	protected ModelBulletinManagerRemote managerModel;
-
-	@Manager(application = "kereneducation", name = "InscriptionManagerImpl", interf = InscriptionManagerRemote.class)
-	protected InscriptionManagerRemote managerinscrit;
-
-	@Manager(application = "kereneducation", name = "ViewNoteHelperManagerImpl", interf = ViewNoteHelperManagerRemote.class)
-	protected ViewNoteHelperManagerRemote managerNoteHelper;
-	
-	@Manager(application = "kereneducation", name = "ExamenManagerImpl", interf = ExamenManagerRemote.class)
-	protected ExamenManagerRemote managerxamen;
-	
-	@Manager(application = "kereneducation", name = "NoteDetailManagerImpl", interf = NoteDetailManagerRemote.class)
-	protected NoteDetailManagerRemote managernotedlt;
-	
     @Manager(application = "kereneducation", name = "ClasseManagerImpl", interf = ClasseManagerRemote.class)
     protected ClasseManagerRemote managerClasse;
+    
+    @Manager(application = "kereneducation", name = "MoteurBulletinManagerImpl", interf = MoteurBulletinManagerRemote.class)
+    protected MoteurBulletinManagerRemote moteurmanager;
 	
 
 	public EdtBulletinRSImpl() {
@@ -109,116 +92,45 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 		CacheMemory.insert(iduser, TypeCacheMemory.FILLIERE, entity.getClasse().getFiliere());
 		CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, entity.getClasse());
+		CacheMemory.insert(iduser, TypeCacheMemory.EXAMEN, entity.getSeq());
 		return entity; // To change body of generated methods, choose Tools |
 						// Templates.
 	}
 
 	@Override
 	public EdtBulletin save(@Context HttpHeaders headers,EdtBulletin entity) {
-		// To change body of generated methods, choose Tools | Templates.
-//		CacheMemory.setFiliere(entity.getFiliere());
-//		CacheMemory.setClasse(entity.getClasse());
+		System.out.println("EdtBulletinRSImpl.save() =================Début traitement des notes ========= ");
 		Gson gson = new Gson();
 		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 		CacheMemory.insert(iduser, TypeCacheMemory.FILLIERE, entity.getClasse().getFiliere());
 		CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, entity.getClasse());
+		CacheMemory.insert(iduser, TypeCacheMemory.EXAMEN, entity.getSeq());
+		
+		moteurmanager.preparerNotes(entity);
+		
+		System.out.println("EdtBulletinRSImpl.processAfterSave() ====== DEBUT CUMMUL MOYENNE TRIMESTRIEL ====================");
+		moteurmanager.aggregateNote(entity);
+		System.out.println("EdtBulletinRSImpl.processAfterSave() ====== FIN CUMMUL MOYENNE TRIMESTRIEL ====================");
+		
+		
 
-		// generate bulletin
-		System.out.println(
-				"EdtBulletinRSImpl.save() ============ Début genration des bulletins ===== de la classe de :::======"+ entity.getClasse().getLibelle());
-		this.generateBulletin(entity);
-		System.out.println(
-				"EdtBulletinRSImpl.save() ============ Fin de la generation des bulletins =======de la classe de :::======"+ entity.getClasse().getLibelle());
+//		// generate bulletin
+//		System.out.println(
+//				"EdtBulletinRSImpl.save() ============ Début genration des bulletins ===== de la classe de :::======"+ entity.getClasse().getLibelle());
+//		this.generateBulletin(entity);
 		// affectation des rangs enfonction des moyennes
 		return entity;
 	}
-
-	private void generateBulletin(EdtBulletin critere) {
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		List<Bulletin> datas = new ArrayList<Bulletin>();
-		List<Bulletin> datasdlt = new ArrayList<Bulletin>();
-		List<Inscription> eleves = new ArrayList<Inscription>();
-		List<Inscription> elevesdlt = new ArrayList<Inscription>();
-		
-		// verifier porte
-		if (critere.getPorte().equals("0")) {
-			// tous les eleve de la classe
-			container = RestrictionsContainer.newInstance();
-			if (critere.getClasse() != null) {
-				container.addEq("classe.id", critere.getClasse().getId());
-			}
-			datas = managerBul.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-			//recherche les élèves inscrit de la classe
-			eleves = managerinscrit.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		}else{
-			//les eleve selectionné
-			if(critere.getConcernes()==null||critere.getConcernes().isEmpty()){
-				throw new KerenExecption("Sectionner les eleves concernes");
-			}
-			for(InscriptionChoice ins :critere.getConcernes()){
-				container = RestrictionsContainer.newInstance();
-				container.addEq("inscription.id", ins.getId());
-				if (critere.getClasse() != null) {
-					container.addEq("classe.id", critere.getClasse().getId());
-				}
-				datasdlt = managerBul.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-				datas.addAll(datasdlt);
-				
-				container = RestrictionsContainer.newInstance();
-				container.addEq("id", ins.getId());
-				container.addEq("classe.id", critere.getClasse().getId());
-				elevesdlt = managerinscrit.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-				// eleve inscrit 
-				eleves.addAll(elevesdlt);
-				
-			}	
-		}
-		
-		System.out.println("EdtBulletinRSImpl.generateBulletin() Buletin dejà generé trouvée " + datas.size());
-		System.out.println("EdtBulletinRSImpl.generateBulletin()eleve size" + eleves.size());
-		
-		// 0- supprimer les bulletin trouvé et regenerer
-		for (Bulletin b : datas) {
-			managerBul.delete(b.getId());
-		} // end for(Bulletin b : datas) to delete
-
-//		// 1- recherche des élève inscrit dans la classe
-//		container = new RestrictionsContainer();
-//		if (critere.getClasse() != null) {
-//			container.addEq("classe.id", critere.getClasse().getId());
-//		}
-//		 eleves = managerinscrit.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-//		System.out.println(
-//				"EdtBulletinRSImpl.generateBulletin() nombre eleve de la classe ============== " + eleves.size());
-		if (eleves == null || eleves.isEmpty()) {
-			throw new KerenExecption("Aucun Eleve inscrit dans la classe choisis !!!");
-		}
-		//find examen 
-		Examen examen = managerxamen.find("id", critere.getSeq().getId());
-			for (Inscription inscrit : eleves) {
-				container = RestrictionsContainer.newInstance();
-				container.addEq("classe.id", critere.getClasse().getId());
-				container.addEq("eleve.id", inscrit.getId());
-				container.addEq("examen.id", examen.getId());
-				List<ViewNoteHelper> noteeleves = managerNoteHelper.filter(container.getPredicats(), null,
-						new HashSet<String>(), 0, -1);
-				System.out.println("EdtBulletinRSImpl.generateBulletin() nobre note"+noteeleves.size());
-				List<LigneBulletinClasse> lignelist = new ArrayList<LigneBulletinClasse>();
-				Bulletin bulletin = new Bulletin();
-				for (ViewNoteHelper h : noteeleves) {
-					bulletin = new Bulletin(h,examen);
-					LigneBulletinClasse ligne = new LigneBulletinClasse(h);
-					ligne.setId(-1);
-					lignelist.add(ligne);
-				} // fin for (ViewNoteHelper h : noteeleves) {
-				bulletin.setId(-1);
-				bulletin.setLignes(lignelist);
-				managerBul.save(bulletin);
-				System.out.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "+ inscrit.getEleve().getNom());
-			} // fin for(Inscription inscrit : eleves)
-
-	}// fin
 	
+
+
+	
+	@Override
+	protected void processAfterSave(EdtBulletin entity) {
+		
+		
+	}
+
 	@Override
 	public List<InscriptionChoice> getidclasse(HttpHeaders headers) {
 		Gson gson = new Gson();

@@ -136,6 +136,7 @@ public class BulletinManagerImpl extends AbstractGenericManager<Bulletin, Long>
 	@Override
 	public void processBeforeSave(Bulletin entity) {
 		System.out.println("BulletinManagerImpl.processBeforeSave() get long value moyenne"+entity.getMoyenne());
+		entity.setAnneeScolaire(entity.getInscription().getAnneScolaire());
 		if(entity.getMoyenne()!=null){
 		Appreciation value = daoapp.getAppreciation(entity.getMoyenne().longValue());
 		if(value!=null){

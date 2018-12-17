@@ -83,8 +83,7 @@ public class AbscenceModalRSImpl extends AbstractGenericService<AbscenceModal, L
 	@Override
 	public AbscenceModal save(HttpHeaders headers, AbscenceModal entity) {
 
-		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.EXAMEN,
-				entity.getPeriode());
+		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.EXAMEN,entity.getPeriode());
 		return entity;
 	}
 
