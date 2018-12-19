@@ -1,0 +1,22 @@
+
+===================== TODO LIST KEREN SCHOOL =====================================
+1- Gestion de la Pai scolaire
+		-edition des états de la solde
+		- prise en compte des emargement des enseignant vacataire (import du cumul des heures mensuel)
+2- Gestion multi-etablissement
+3- utiliser le nouveau noyau keren-framework
+4- opération de cloture d'une année scolaire
+	- transfert des éleves automatiquement vers une classe supèrieure
+	- gélé la saisie des notes
+	- permettre l'edition des bulletins
+5- gestion du Budgget scolaire
+	- prévision
+		= recettes
+		= dépenses
+	- Réalisation
+		= recettes
+		= dépenses
+6- valider l'edition des bulletins de 2 3 et annuel
+
+7- intégrer innov-SMS à keren-school
+	

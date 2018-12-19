@@ -1,0 +1,13 @@
+
+===================== TODO LIST INNOV PROJECT =====================================
+
+-  acquissition d'un espace serveur en ligne
+-  template des offres commerciales  --> voir napi
+-  plaquette des produits --> voir napi
+-  rediger la charte graphique de la plateforme
+-  creation d'entreprise 
+	- un nom 
+	- un logo
+	-
+
+	
