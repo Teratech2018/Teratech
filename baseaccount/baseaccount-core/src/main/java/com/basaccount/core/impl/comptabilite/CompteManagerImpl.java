@@ -44,7 +44,7 @@ public class CompteManagerImpl
 
     @Override
     public List<Compte> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
-        List<Compte> datas =  super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
+        List<Compte> datas =  dao.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<Compte> result = new ArrayList<Compte>();
         for(Compte data:datas){
             result.add(new Compte(data));

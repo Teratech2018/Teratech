@@ -44,7 +44,7 @@ public class MiseAJourCompteur extends BaseElement implements Serializable,Compa
     @Predicate(label = "Dernière valeur",type = Double.class,editable = false,search = true)
     private Double oldvalue ;
     
-    @Predicate(label = "Date",target = "date",type = Date.class,editable = false,search = true)
+    @Predicate(label = "Dernière mise à jour",target = "date",type = Date.class,editable = false,search = true)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date olddate ;
     

@@ -202,7 +202,7 @@ public class CourrierDashboardRSImpl
         Gson gson = new Gson();
         Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
         UtilisateurCourrier user = usermanager.getUserByAcompte(userid);
-        if(user.getCompte()!=null&&user.getCompte().getAutorisations()!=null){
+        if(user.getCompte().getAutorisations()!=null){
             user.getCompte().getAutorisations().size();
         }//end  if(user.getAutorisations()!=null){
         CourrierDashboard entity = new CourrierDashboard();

@@ -52,8 +52,8 @@ public class DemandePrix extends DocumentAchat implements Serializable{
     @JoinColumn(name = "CORE_ID")
     @Predicate(label = "Conditions de règlement",type = ConditionPaiement.class,target = "many-to-one",group = true,groupName = "group3",groupLabel = "Livraison&Factures")
     private ConditionPaiement condreglement ;
-    
-    
+   
+     
     public DemandePrix() {
         this.typedocument = DocumentAchatState.DEMANDE_PRIX;
     }
@@ -127,8 +127,10 @@ public class DemandePrix extends DocumentAchat implements Serializable{
         this.condreglement = da.getCondreglement();
         this.state = da.getState();
         this.typedocument = da.typedocument;
+        this.state = da.state;
     }
 
+     
     public Date getDateoffre() {
         return dateoffre;
     }
@@ -177,7 +179,16 @@ public class DemandePrix extends DocumentAchat implements Serializable{
         this.condreglement = condreglement;
     }
     
-    
+    @Override
+    public String getState() {
+        return state;
+    }
+
+    @Override
+    public void setState(String state) {
+        this.state = state;
+    }
+
 
     @Override
     public boolean isActivatefollower() {
@@ -186,18 +197,24 @@ public class DemandePrix extends DocumentAchat implements Serializable{
 
     @Override
     public List<State> getStates() {
-        List<State> states = new ArrayList<State>();
-        State state = new State("etabli", "Pro-Forma");
-        states.add(state);
+        List<State> s = new ArrayList<>();
+        State stat = new State("etabli", "Pro-Forma");
+        stat.setIcone("fa fa-circle");
+        stat.setCouleur("#d9534f");
+        s.add(stat);
 //        state = new State("envoye", "Envoyée au fornisseur");
 //        states.add(state);
-        state = new State("confirme", "Confirmé");
-        states.add(state);
-        state = new State("annule", "Annulée");
-        states.add(state);
+        stat = new State("confirme", "Confirmé");
+        stat.setIcone("fa fa-circle");
+        stat.setCouleur("#008b8b");
+        s.add(stat);
+        stat = new State("annule", "Annulée");
+        stat.setIcone("fa fa-circle");
+        stat.setCouleur("#d5575e");
+        s.add(stat);
 //        state = new State("termine", "Terminée");
 //        states.add(state);
-        return states; //To change body of generated methods, choose Tools | Templates.
+        return s; //To change body of generated methods, choose Tools | Templates.
     }
 
 

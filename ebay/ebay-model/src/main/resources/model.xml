@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<model-config xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
+	xmlns="http://www.megatimgroup.net/model-config">
+    <elements>
+        <element type="com.megatimgroup.model.operations.DeclarationPP"  idclass="Long"  idname="id"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.operations.DeclarationPM"  idclass="Long"  idname="id"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.operations.DeclarationFinanciere"  idclass="Long"  idname="id"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.operations.Modele"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.megatimgroup.model.operations.Champ"  idclass="Long"  idname="id"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <!-- Ele;ent du pqckqge referentiel-->
+        <element type="com.megatimgroup.model.referentiels.Motif"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.Pays"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.TypeOperation"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.Devise"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.SensOperation"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.Classe"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.megatimgroup.model.referentiels.Groupe"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Division"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Section"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+       <element type="com.megatimgroup.model.referentiels.NatureJuridique"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.PrecisionDateNaissance"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Ville"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.StatusResidence"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.NatureClientele"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Nationalite"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Titre"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Qualite"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <!-- Ele;ent du pqckqge parametrage-->
+        <element type="com.megatimgroup.model.parametres.Societe"  idclass="String"  idname="code"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+    </elements>
+</model-config>

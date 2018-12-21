@@ -36,6 +36,9 @@ angular.module('keren.core.discussion')
               * @returns {undefined}
               */
            function($scope,$rootScope,$translate,commonsTools,restService,$http,$filter,$location,$interval,$compile){
+               $scope.hostname = $location.host();    
+               $scope.portvalue = $location.port();
+               $scope.protocol = $location.protocol(); 
                $scope.currentUser = null;
                //Canaux de communications
                $scope.canaux = new Array();
@@ -76,7 +79,7 @@ angular.module('keren.core.discussion')
                          $scope.pagination.currentPage=1;
                          $scope.pagination.beginIndex = 0;
                          $scope.pagination.totalPages = data.value ;                                                  
-                         var url="http://"+$location.host()+":"+$location.port()+"/kerencore/";
+                         var url=$location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/";
                          //Chargement des donnes
                          if($scope.windowType=="INBOX"){
                             url+="rmessage/inbox/"+$scope.currentUser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
@@ -128,7 +131,7 @@ angular.module('keren.core.discussion')
                                          commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                                          //this.currentPage = (this.currentPage*this.pageSize)%this.totalPages; 
                                          $scope.pagination.beginIndex = $scope.pagination.endIndex+1;                                        
-                                         var url="http://"+$location.host()+":"+$location.port()+"/kerencore/";
+                                         var url=$location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/";
                                          //Chargement des donnes
                                          if($scope.windowType=="INBOX"){
                                              url+="rmessage/inbox/"+$scope.currentUser.id+"/"+this.beginIndex+"/"+this.pageSize;
@@ -195,7 +198,7 @@ angular.module('keren.core.discussion')
                                          if(this.endIndex<=0){
                                             this.endIndex = this.pageSize;                                                             
                                          }//end if(this.endIndex<=0)
-                                         var url="http://"+$location.host()+":"+$location.port()+"/kerencore/";
+                                         var url=$location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/";
                                          //Chargement des donnes
                                          if($scope.windowType=="INBOX"){
                                              url+="rmessage/inbox/"+$scope.currentUser.id+"/"+this.beginIndex+"/"+this.pageSize;
@@ -246,7 +249,7 @@ angular.module('keren.core.discussion')
             };
             $scope.loadCurrentUser = function(){
                 $scope.reset();
-                var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur/bystringproperty/courriel/"+$rootScope.globals.currentUser.username;
+                var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur/bystringproperty/courriel/"+$rootScope.globals.currentUser.username;
                 commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");  
                 $http.get(url)
                         .then(function(response){
@@ -266,7 +269,7 @@ angular.module('keren.core.discussion')
              * @returns {undefined}
              */
             $scope.loadInboxMessages = function(){
-//                   var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/nonlus/"+$scope.currentUser.id;
+//                   var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/nonlus/"+$scope.currentUser.id;
 //                    $http.get(url)
 //                            .then(function(response){
 //                                $scope.numberofnewmessages = response.data;                         
@@ -279,13 +282,13 @@ angular.module('keren.core.discussion')
                     $scope.connecteduser=null;
                     $scope.canal = null;
                     $scope.windowType = "INBOX";                
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/inboxcount/"+$scope.currentUser.id;
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/inboxcount/"+$scope.currentUser.id;
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     $http.get(url)
                             .then(function(response){
                                 $scope.pagination.beginIndex = 0 ;
                                 $scope.pagination.totalPages = response.data;
-                                 var url2 = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/inbox/"+$scope.currentUser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                                 var url2 = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/inbox/"+$scope.currentUser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
                                 $http.get(url2)
                                         .then(function(response){
                                             $scope.messages = response.data;
@@ -315,7 +318,7 @@ angular.module('keren.core.discussion')
             $scope.loadCanaux = function(){
                  $scope.currentUser = $rootScope.globals.userinfo;
 //                 console.log(angular.toJson($scope.currentUser));
-                var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/canal/canaux/"+$scope.currentUser.courriel;
+                var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/canal/canaux/"+$scope.currentUser.courriel;
                 commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                 $http.get(url)
                         .then(function(response){
@@ -337,7 +340,7 @@ angular.module('keren.core.discussion')
                        return ;
                    }
 //                 console.log(angular.toJson($scope.currentUser));
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/canal/directe/"+$scope.currentUser.courriel;
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/canal/directe/"+$scope.currentUser.courriel;
     //                commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     $http.get(url)
                             .then(function(response){
@@ -371,12 +374,12 @@ angular.module('keren.core.discussion')
                     $scope.connecteduser = null;
                     $scope.messageobject = $scope.createemptyMessage($scope.canal,$scope.connecteduser,$scope.messagebody);
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                    var url0 ="http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/countcanal/"+$scope.currentUser.id+"/"+$scope.canal.id;
+                    var url0 =$location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/countcanal/"+$scope.currentUser.id+"/"+$scope.canal.id;
                     $http.get(url0)
                             .then(function(response){
                                 $scope.pagination.beginIndex=0;
                                 $scope.pagination.totalPages = response.data;
-                                var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/canal/"+$scope.currentUser.id+"/"+$scope.canal.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                                var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/canal/"+$scope.currentUser.id+"/"+$scope.canal.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
                                 $http.get(url)
                                         .then(function(response){
                                             $scope.messages = response.data;
@@ -820,12 +823,12 @@ angular.module('keren.core.discussion')
                     $scope.canal = null;
                     $scope.messageobject = $scope.createemptyMessage($scope.canal,$scope.connecteduser,$scope.messagebody);
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/countdirect/"+$scope.currentUser.id+"/"+$scope.connecteduser.id;
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/countdirect/"+$scope.currentUser.id+"/"+$scope.connecteduser.id;
                     $http.get(url)
                             .then(function(response){
                                 $scope.pagination.beginIndex = 0;
                                 $scope.pagination.totalPages = response.data;
-                                 var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/direct/"+$scope.currentUser.id+"/"+$scope.connecteduser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                                 var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/direct/"+$scope.currentUser.id+"/"+$scope.connecteduser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
 //                    console.log("$scope.gotodirectdiscussion = =========== "+url);
                                 $http.get(url)
                                         .then(function(response){
@@ -883,7 +886,7 @@ angular.module('keren.core.discussion')
                         $scope.messageobject.body = $scope.messagebody;                    
                     }//end if(angular.isDefined(message)&&message!=null){
 //                    console.log("$scope.sendAction ==== "+$scope.currentUser.id+" ===== "+angular.toJson($scope.messageobject)+" ==== ");
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/smessage/send/"+$scope.currentUser.id;
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/smessage/send/"+$scope.currentUser.id;
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     $http.post(url,$scope.messageobject)
                             .then(function(response){  
@@ -891,7 +894,7 @@ angular.module('keren.core.discussion')
                                             commonsTools.hideDialogLoading();
                                             return ;
                                         }//end if(angular.isDefined(message)&&message!=null){
-                                        var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/";///canal/"+$scope.currentUser.id+"/0/20";
+                                        var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/";///canal/"+$scope.currentUser.id+"/0/20";
                                         if($scope.windowType=="CANAL"){
                                             url +="canal/"+$scope.currentUser.id+"/"+$scope.messageobject.canal.id+"/0/20";
                                         }else{
@@ -1068,13 +1071,13 @@ angular.module('keren.core.discussion')
               $scope.dataCache['resources'].push(file);
               $scope.dataCache['names'].push(filename);
               //transfert des resources et mise a jour du menu
-//              var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/piecejointe";
+//              var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/piecejointe";
               var data = {id:-1,compareid:-1,designation:"",editTitle:""
                     ,listTitle:"",moduleName:'kerencore',selected:false,createonfield:true,desablecreate:false,
                     serial:"1234",activefilelien:false,desabledelete:false,filename:filename,attachename:file.name,entityserial:null,entityid:null};
              $scope.messageobject.piecesjointe.push(data);
              commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%"); 
-//             var url2 = "http://"+$location.host()+":"+$location.port()+"/kerencore/resource/temporalupload";
+//             var url2 = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/resource/temporalupload";
 //             console.log("$scope.gererChangementFichier = function(event) =============== "+url2);
             $http.defaults.headers.common['names']= angular.toJson($scope.dataCache['names']); 
             restService.uploadFile2($scope.dataCache['resources'])
@@ -1107,7 +1110,7 @@ angular.module('keren.core.discussion')
          $scope.marquerlu = function(msgeID){
              //@Path("marquer/{messageid}/{userid}/{index}/{max}")
              commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%"); 
-             var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/marquer/"+msgeID+"/"+$scope.currentUser.id+"/0/20";
+             var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/marquer/"+msgeID+"/"+$scope.currentUser.id+"/0/20";
              $http.get(url)
                      .then(function(response){
                             $scope.messages = response.data;
@@ -1128,7 +1131,7 @@ angular.module('keren.core.discussion')
          };
         $scope.piecejointedeleteAction = function(filename){
                 commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%"); 
-                var url2 = "http://"+$location.host()+":"+$location.port()+"/kerencore/resource/temporal/"+filename;
+                var url2 = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/resource/temporal/"+filename;
                 $http({method:"DELETE" , url:url2
                 }).then(function(response){
                      for(var i=0 ; i<$scope.messageobject.piecesjointe.length;i++){
@@ -1249,7 +1252,7 @@ angular.module('keren.core.discussion')
                        return ;
                    }//end if(instance.errors>4){
                    if($scope.currentUser!=null){
-                            var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/nonlus/"+$scope.currentUser.id;
+                            var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/rmessage/nonlus/"+$scope.currentUser.id;
                             $http.get(url)
                                     .then(function(response){
                                         instance.errors = 0;
@@ -1265,7 +1268,7 @@ angular.module('keren.core.discussion')
 //                             console.log("$scope.gotoselectcanal ====  "+$scope.windowType+" ===== "+$scope.connecteduser);
                             
                             if($scope.windowType=="CANAL"){
-                                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/canal/"+$scope.currentUser.id+"/"+$scope.canal.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/canal/"+$scope.currentUser.id+"/"+$scope.canal.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
                                     $scope.windowType="CANAL";
                                      $http.get(url)
                                             .then(function(response){
@@ -1293,7 +1296,7 @@ angular.module('keren.core.discussion')
                                         return ;
                                     }
                                     $scope.windowType="DIRECT";
-                                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/direct/"+$scope.currentUser.id+"/"+$scope.connecteduser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
+                                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/direct/"+$scope.currentUser.id+"/"+$scope.connecteduser.id+"/"+$scope.pagination.beginIndex+"/"+$scope.pagination.pageSize;
 //                    console.log("$scope.gotodirectdiscussion = =========== "+url);
                                    $http.get(url)
                                            .then(function(response){
@@ -1313,7 +1316,7 @@ angular.module('keren.core.discussion')
 //                                                           commonsTools.showDialogLoading(error);
                                            });
                               }else{
-                                  var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/all/"+$scope.currentUser.id+"/"+instance.lastmessageid;
+                                  var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/all/"+$scope.currentUser.id+"/"+instance.lastmessageid;
 //                                  console.log("controller.discussiondispatcher =============================== "+url);
                                   $http.get(url)
                                           .then(function(response){

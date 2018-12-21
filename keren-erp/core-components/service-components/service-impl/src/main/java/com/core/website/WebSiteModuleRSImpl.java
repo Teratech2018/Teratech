@@ -77,4 +77,13 @@ public class WebSiteModuleRSImpl
         return null;
     }
 
+    @Override
+    public String getWebSiteCategorie(HttpHeaders headers, String website) {
+        //To change body of generated methods, choose Tools | Templates.
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("code", website);
+        List<WebSiteModule> modules = manager.filter(container.getPredicats(), null, null, 0, -1);
+        return modules!=null&&!modules.isEmpty()? modules.get(0).getCategorie():"web_site";
+    }
+
 }

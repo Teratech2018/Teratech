@@ -44,45 +44,45 @@ public interface UploadFileRS {
     @GET
     @Path("static/{filename}")
     @Produces("image/png")
-    public Response downloadImageFileFree(@PathParam("filename") String filename);
+    public Response downloadImageFileFree(@Context HttpHeaders headers,@PathParam("filename") String filename);
     
     @GET
     @Path("png/{filename}")
     @Produces("image/png")
-    public Response downloadImageFile(@PathParam("filename") String filename);
+    public Response downloadImageFile(@Context HttpHeaders headers , @PathParam("filename") String filename);
     
     @GET
     @Path("img/{filename}/{name}")
     @Produces("image/png")
-    public Response downloadImageFile2(@PathParam("filename") String filename,@PathParam("name") String name);
+    public Response downloadImageFile2(@Context HttpHeaders headers,@PathParam("filename") String filename,@PathParam("name") String name);
     
     @GET
     @Path("pdf/{filename}/{name}")
     @Produces("application/pdf")
-    public Response downloadPdfFile(@PathParam("filename") String filename,@PathParam("name") String name);
+    public Response downloadPdfFile(@Context HttpHeaders headers,@PathParam("filename") String filename,@PathParam("name") String name);
     
     @GET
     @Path("text/{filename}/{name}")
     @Produces("text/plain")
-    public Response downloadTextFile(@PathParam("filename") String filename,@PathParam("name") String name);
+    public Response downloadTextFile(@Context HttpHeaders headers,@PathParam("filename") String filename,@PathParam("name") String name);
     
     @GET
     @Path("file/{filename}/{name}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response downloadFile(@PathParam("filename") String filename,@PathParam("name") String name);
+    public Response downloadFile(@Context HttpHeaders headers,@PathParam("filename") String filename,@PathParam("name") String name);
     
     @GET
     @Path("exportbd")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response exportdatabase();
+    public Response exportdatabase(@Context HttpHeaders headers);
     
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
     @Path("{filename}")
-    public void deleteFile(@PathParam("filename") String filename);
+    public void deleteFile(@Context HttpHeaders headers,@PathParam("filename") String filename);
     
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
     @Path("temporal/{filename}")
-    public void deleteTempFile(@PathParam("filename") String filename);
+    public void deleteTempFile(@Context HttpHeaders headers,@PathParam("filename") String filename);
 }

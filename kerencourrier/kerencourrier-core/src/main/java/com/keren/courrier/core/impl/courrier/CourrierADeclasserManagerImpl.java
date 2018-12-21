@@ -1,15 +1,9 @@
 
 package com.keren.courrier.core.impl.courrier;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
@@ -17,9 +11,13 @@ import com.keren.courrier.core.ifaces.courrier.CourrierADeclasserManagerLocal;
 import com.keren.courrier.core.ifaces.courrier.CourrierADeclasserManagerRemote;
 import com.keren.courrier.dao.ifaces.courrier.CourrierADeclasserDAOLocal;
 import com.keren.courrier.model.courrier.CourrierADeclasser;
+import com.keren.courrier.model.courrier.CourrierADeclasser;
 import com.keren.courrier.model.courrier.FichierLie;
-import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.OrderType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @TransactionAttribute
 @Stateless(mappedName = "CourrierADeclasserManager")
@@ -77,10 +75,6 @@ public class CourrierADeclasserManagerImpl
         for(FichierLie aas:data.getPiecesjointes()){
             result.getPiecesjointes().add(new FichierLie(aas));
         }       
-        for (UtilisateurCourrier dest : data.getDestinataire()) {
-			result.getDestinataire().add(new UtilisateurCourrier(dest));
-		}
-
         return result;
     }
 

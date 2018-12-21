@@ -7,6 +7,7 @@ package com.core.menus;
 
 import com.core.application.Manifest;
 import com.core.base.BaseElement;
+import com.core.templates.Template;
 import com.core.templates.ThemeRecord;
 import com.core.views.FormRecord;
 import com.core.views.TreeRecord;
@@ -89,7 +90,8 @@ public class MenuModule extends BaseElement implements Serializable,Comparable<M
      //@Predicate(label = "menus" ,target = "one-to-many" ,updatable = false ,group = true,groupName = "group1",groupLabel = "MENUS",type = MenuGroupActions.class)
      private List<MenuGroupActions> groups = new ArrayList<MenuGroupActions>();
 
-     
+     @OneToMany(mappedBy = "module",fetch = FetchType.LAZY)
+     private List<Template> templates = new ArrayList<Template>();
      
      /**
       * Constructeur par defaut
@@ -338,6 +340,22 @@ public MenuModule(Manifest manifest) {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+//
+//    public Boolean getActive() {
+//        return active;
+//    }
+//
+//    public void setActive(Boolean active) {
+//        this.active = active;
+//    }
+
+    public List<Template> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(List<Template> templates) {
+        this.templates = templates;
     }
     
     

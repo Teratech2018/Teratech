@@ -21,7 +21,6 @@ import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +58,7 @@ public class JournalSaisieManagerImpl
     @Override
     public List<JournalSaisie> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
         //To change body of generated methods, choose Tools | Templates.
-        List<JournalSaisie> datas = super.filter(predicats, orders, properties, firstResult, maxResult); 
+        List<JournalSaisie> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); 
         List<JournalSaisie> result = new ArrayList<JournalSaisie>();
         for(JournalSaisie data:datas){
             result.add(new JournalSaisie(data));

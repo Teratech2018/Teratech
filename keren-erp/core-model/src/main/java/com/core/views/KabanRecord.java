@@ -21,7 +21,7 @@ import javax.persistence.OneToOne;
 public class KabanRecord extends Record{ 
     
     @OneToOne
-    @JoinColumn(name="T_ITEM_ID")
+    @JoinColumn(name="K_ITEM_ID")
     @Predicate(label = "Menu Item Parent" ,type = MenuAction.class,group = true,groupName = "group2",groupLabel = "MENUS ACTIONS",search = true)
     private MenuAction action ;
 

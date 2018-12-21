@@ -170,9 +170,10 @@ public class BonCommandeRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("confirme")){
-            throw new KerenExecption("Ce bon de commande est déjà confirmé");
         }
+//        else if(entity.getState().equalsIgnoreCase("confirme")){
+//            throw new KerenExecption("Ce bon de commande est déjà confirmé");
+//        }
         validateLigneDP(entity);        
         manager.confirmer(entity);
         return entity;
@@ -191,9 +192,10 @@ public class BonCommandeRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("etabli")){
-            throw new KerenExecption("Veuillez confirmer le bon de commande");
         }
+//        else if(entity.getState().equalsIgnoreCase("etabli")){
+//            throw new KerenExecption("Veuillez confirmer le bon de commande");
+//        }
         validateLigneDP(entity);       
         return  manager.reception(entity);
        

@@ -57,6 +57,11 @@ angular.module('keren.core.commons')
                   }
                 };
 }]);
+/**
+ * CommonsTools Factory for Keren-ERP
+ * @param {type} param1
+ * @param {type} param2
+ */
 angular.module('keren.core.commons')
         .factory('commonsTools',function($filter,$compile,$http,$location,$interval){
             //Liste des contraintes
@@ -166,7 +171,7 @@ angular.module('keren.core.commons')
                         return instance;
                     }
                 };
-            })();
+            })();         
             var WebSiteContext = (function(){
                 var instance;
                 function createInstance(){
@@ -248,6 +253,13 @@ angular.module('keren.core.commons')
                 var nbreTchatBox = 0;
                 var listeTchatBox = {};
             return {
+                isexternemodule:function(name){
+                    if(name=='discussionconf' || name=='calandar'||name=='configuration'||name=='application'){
+                        return false ;
+                    }else{
+                        return true;
+                    }//end if(name=='discussionconf' || name=='calandar'||name=='configuration'||name=='application'){
+                },
                 setWebContext:function(currentuser){return WebSiteContext.setInstance(currentuser);},
                 getWebContext:function(){return WebSiteContext.getInstance();},
                 startWebsiteWorker:function(scope){
@@ -281,7 +293,7 @@ angular.module('keren.core.commons')
                     
                 },
                 backtocore : function(scope){
-                     var url = "http://"+$location.host()+":"+$location.port()+"/keren";
+                     var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren";
                      var key = $('#website_cache').attr('value');
                      var session = angular.fromJson(sessionStorage.getItem(key));
                      key= "kerensession";
@@ -303,10 +315,10 @@ angular.module('keren.core.commons')
                  * @returns {undefined}
                  */
                 goto : function(scope, websiteid,templateid , fragment){
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/indexpage/"+websiteid;
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/indexpage/"+websiteid;
                     if(angular.isDefined(templateid)
                             && templateid!=null){
-                          url = "http://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/fragment/"+websiteid+"/"+templateid;
+                          url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/fragment/"+websiteid+"/"+templateid;
                     }//end if(angular.isDefined(args.cible)
                     this.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     var stopmoteur = function(IdMoteur){clearInterval(IdMoteur);};
@@ -330,19 +342,19 @@ angular.module('keren.core.commons')
                                     var type = item.attr('type');
                                     var src = item.attr("src");
                                     if(type=='css'){
-                                        var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                                        var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
                                         var linkElem = document.createElement('style');
                                         linkElem.setAttribute('type','text/css');
                                         linkElem.innerHTML='@import url("'+url+'");';
                                         item.replaceWith(linkElem);
                                     }else if(type=='less'){
-                                        var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                                        var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
                                         var linkElem = document.createElement('style');
                                         linkElem.setAttribute('type','text/less');
                                         linkElem.innerHTML='@import url("'+url+'");';
                                         item.replaceWith(linkElem);
                                     }else if(type=='javascript'){
-                                        var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                                        var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
                                         $('<script />', { type : 'text/javascript', src : url}).appendTo('body');
 //                                        scope.javascripts.push(url);
              //                           var scriptElem = document.createElement('script');
@@ -364,6 +376,68 @@ angular.module('keren.core.commons')
                                 hidenFn();
 //                                this.showMessageDialog(error); 
                             });                       
+                },
+                /**
+                 * 
+                 * @param {type} model
+                 * @param {type} fieldname
+                 * @returns {undefined}
+                 */
+                keyupevent : function(target,model, fieldname,scope){
+                    $('#'+target+'-'+fieldname+' .form-control').on('keyup',
+                              function(event){
+                                  var value =$('#'+target+'-'+fieldname+' input[class="form-control"]').val();
+//                                  console.log("commons.selectpickerKeyup ================  :::  === "+fieldname+" === "+value);
+                                  scope.keyupDataLoarder(model+'.'+fieldname,value);
+                            });
+                    $('#'+target+'-'+fieldname+' .form-control').on('show.bs.select',
+                              function(event){
+                                  var value =$('#'+target+'-'+fieldname+' input[class="form-control"]').val();
+//                                  console.log("commons.selectpickerKeyup ================  :::  === "+fieldname+" === "+value);
+                                  scope.keyupDataLoarder(model+'.'+fieldname,value);
+                            });
+                },
+                searchkeyevent:function(id,scope){
+//                    console.log("commons.searchkeyevent ================  :::  === "+scope.searchCriteria+" === "+id);
+                    $('#'+id).on('keyup',
+                              function(event){
+                                  scope.searchCriteria = $('#'+id).val();
+//                                  console.log("commons.searchkeyevent ================  :::  === "+scope.searchCriteria+" === "+id);
+                                  scope.loadDataSearch();
+                              });
+                },
+                /**
+                 * Attache keyup event on many-to-one and many-to-many 
+                 * components
+                 * @param {type} metaData
+                 * @returns {undefined}
+                 */
+                selectpickerKeyup : function(metaData,model,scope){
+                    if(!angular.isDefined(metaData)||metaData==null){
+                        return ;
+                    }//end if(!angular.isDefined(metaData)||metaData==null){
+//                    console.log("commons.selectpickerKeyup ================  ::: "+model);
+                    for(var i=0;i<metaData.columns.length;i++){
+                        var field = metaData.columns[i];
+                        if(field.type=='object'){
+//                            console.log("0 - commons.selectpickerKeyup ================  ::: "+field.fieldName+" === ");
+                            this.keyupevent('manytoone',model,field.fieldName,scope);
+                        }else if(field.target=='many-to-many'){
+                            this.keyupevent('manytomany',model,field.fieldName,scope);
+                        }//end if(field.type=='object'
+                    }//end for(var i=0;i<metaData.columns.length;i++){
+                    for(var i=0;i<metaData.groups.length;i++){
+                        var group = metaData.groups[i];
+                        for(var j=0;j<group.columns.length;j++){
+                            var field = group.columns[j];
+                            if(field.type=='object'){
+                                this.keyupevent('manytoone',model,field.fieldName,scope);
+                            }else if(field.target=='many-to-many'){
+                                this.keyupevent('manytomany',model,field.fieldName,scope);
+                            }//end if(field.type=='object'
+                        }//end for(var j=0;j<group.columns.length;j++){
+                        //Cas des MetaArray
+                    }//end for(var i=0;i<metaData.groups.length;i++){
                 },
                //Tchat Session
                createBodyChatContent : function(){
@@ -531,6 +605,14 @@ angular.module('keren.core.commons')
                         rootScope.$broadcast("new_message" , {message:msge});
                     }//end if(angular.isString(message)){                   
                }, 
+               /**
+                * 
+                * @param {type} sender
+                * @param {type} canal
+                * @param {type} reciever
+                * @param {type} body
+                * @returns {commons_L61.commonsAnonym$6.createemptyMessage.message|Object}
+                */
               createemptyMessage : function(sender , canal,reciever,body){
                 var message = new Object();
                 message.id = -1;message.compareid=-1;message.designation=null;
@@ -542,8 +624,13 @@ angular.module('keren.core.commons')
                 message.canal=canal;message.reciever=reciever;message.body=body;//message.senders=[];
                 return message;
             }, 
+            /**
+             * 
+             * @param {type} message
+             * @returns {undefined}
+             */
             sendAction : function(message){
-                var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/smessage/send/"+message.sender.id;
+                var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/smessage/send/"+message.sender.id;
 //                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                 $http.post(url,message)
                         .then(function(response){                                                        
@@ -553,30 +640,67 @@ angular.module('keren.core.commons')
                         });
                 
             },
-                /**
-                 * Builder of the custom principal screen
-                 * @param {type} theme
-                 * @returns {undefined}
-                 */
-                principalScreenBuilder:function(theme,scope){
+            /**
+             * Parse theme to inject javascript ,css and less file content
+             * @param {type} view
+             * @returns {undefined}
+             */
+            themeParser:function(view){
+                var container = angular.element(view);
+                var items = container.find("include");
+                for(var i=0; i<items.length;i++){ 
+                       var item = items.eq(i);
+                       var type = item.attr('type');
+                       var src = item.attr("src");
+                       if(type=='css'){
+                           var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                           var linkElem = document.createElement('style');
+                           linkElem.setAttribute('type','text/css');
+                           linkElem.innerHTML='@import url("'+url+'");';
+                           item.replaceWith(linkElem);
+                       }else if(type=='less'){
+                           var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                           var linkElem = document.createElement('style');
+                           linkElem.setAttribute('type','text/less');
+                           linkElem.innerHTML='@import url("'+url+'");';
+                           item.replaceWith(linkElem);
+                       }else if(type=='javascript'){
+                           var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                           $('<script />', { type : 'text/javascript', src : url}).appendTo('body');
+//                            scope.javascripts.push(url);
+//                           var scriptElem = document.createElement('script');
+//                           scriptElem.setAttribute('src',url);
+                           item.remove();
+                       }//end if(type=='css'){
+                }//end for(var i=0; i<items.length;i++){
+                return container;
+            },
+            /**
+             * Builder of the custom principal screen
+             * @param {type} theme
+             * @returns {undefined}
+             */
+            principalScreenBuilder:function(theme,scope){
 //                    console.log("commons.principalScreenBuilder(theme,scope) ======== "+theme.script);
-                    if(angular.isDefined(theme) && angular.isDefined(theme.script)){
-                         var viewElem = document.createElement("div");
-                         viewElem.setAttribute('id' , 'modulescontainer');
-                         viewElem.setAttribute('style' , "height: 100%;width: 100%;position: absolute;");
-                         viewElem.innerHTML = theme.script;
-                         var compileFn = $compile(viewElem);
-                         compileFn(scope);
-                         var items = $(document).find("div");
-                         for(var i=0; i<items.length;i++){                 
-                             if(items.eq(i).attr("id")==="modulescontainer"){
-                                   items.eq(i).replaceWith(viewElem);
-                                   scope.defaultui = false;
+                if(angular.isDefined(theme) && angular.isDefined(theme.script)){
+                    //Parse the HTML theme
+                    var viewElem = document.createElement("div");
+                    viewElem.setAttribute('id' , 'modulescontainer');
+                    viewElem.setAttribute('style' , "height: 100%;width: 100%;position: absolute;");
+                    viewElem.innerHTML = theme.script;                
+                    var container = this.themeParser(viewElem);
+                    var compileFn = $compile(container);
+                     compileFn(scope);
+                     var items = $(document).find("div");
+                     for(var i=0; i<items.length;i++){                 
+                         if(items.eq(i).attr("id")==="modulescontainer"){
+                               items.eq(i).replaceWith(container);
+                               scope.defaultui = false;
 //                                   console.log("commons.principalScreenBuilder =============== trouve");
-                             }//end if(items.eq(i).attr("id")=="datatable"){ 
-                         }//end for(var i=0; i<items.length;i++){      
-                    }//end if(angular.isDefined(theme) && angular.isDefined(theme.script)){                    
-                },
+                         }//end if(items.eq(i).attr("id")=="datatable"){ 
+                     }//end for(var i=0; i<items.length;i++){                    
+                }//end if(angular.isDefined(theme) && angular.isDefined(theme.script)){                    
+            },
                 /**
                  * 
                  * @param {type} theme
@@ -599,6 +723,9 @@ angular.module('keren.core.commons')
                              }//end if(items.eq(i).attr("id")=="datatable"){ 
                          }//end for(var i=0; i<items.length;i++){      
                     }//end if(angular.isDefined(theme) && angular.isDefined(theme.script)){
+                },
+                reportHTMLTemplateParser: function(scope, script){
+                    
                 },
                 /**
                  * Return le container de navigation
@@ -992,13 +1119,12 @@ angular.module('keren.core.commons')
             * @returns {undefined}
             */
           removeFromArray: function(array , item){
-               if(angular.isDefined(array)){
-                  
+              if(angular.isDefined(array)){                  
                   for(var i=0 ; i<array.length;i++){
                      if(array[i].id == item.id){
                         array.splice(i , 1);
-                     }
-                  }
+                     }//end  if(array[i].id == item.id){
+                  }//end if(angular.isDefined(array)){       
                   //console.log(array+" ====== "+item);                             
               }
           },
@@ -1036,7 +1162,24 @@ angular.module('keren.core.commons')
                }//end if(metaData.groups){
                 return map;
             },
-
+            /**
+             * 
+             * @param {type} template
+             * @param {type} scope
+             * @param {type} model
+             * @param {type} metaData
+             * @returns {undefined}
+             */
+            xmlListParser : function(template){
+//                console.log("commons.xmlListParser ================== "+template);
+                if(!angular.isDefined(template)
+                        ||template==null){
+                    return null;
+                }//end if(angular.isDefined(template)
+                var container = document.createElement('div');
+                container.innerHTML = template;
+                return container;
+            },
            /**
             * 
             * @param {type} template
@@ -1072,7 +1215,36 @@ angular.module('keren.core.commons')
 //                      items.eq(i).replaceWith(titleheader);                  
                  }//end for(var i=0; i<items.length;i++){   
                  return container;
+            },  /**
+            * 
+            * @returns {undefined}
+            */
+           preParser:function(script ,module){
+               var container = angular.element(script);
+               var items = container.find("ng-include");
+               for(var i=0 ;i<items.length;i++){
+                   var item = items.eq(i);
+                   var attr = item.attr("src");
+//                   console.log("commsTools.preParser ================== "+angular.toJson(attr));
+                   if(angular.isDefined(attr)&& attr!=""){
+                       this.itemPreParser(item,attr,module);
+                   }//end if(angular.isDefined(attr)&& attr!=""){
+               }//end for(var i=0 ;i<items.length;i++){  
+//               items = container.find('?xml');
+//               console.log("commsTools.preParser ================== "+items.length);
+               return container;               
             },
+            /**
+             * 
+             */
+           itemPreParser:function(item , name,module){
+//                 console.log("commsTools.itemPreParser ================== "+angular.toJson(module.templates));
+                 for(var i=0 ;i<module.templates.length;i++){
+                     var template = module.templates[i];
+                     item.replaceWith(angular.element(template.script));
+                 }//end for(var i=0 ;i<module.templates.length;i++){
+           } ,
+
             /**
              * 
              * @param {type} error
@@ -1825,14 +1997,14 @@ angular.module('keren.core.commons')
                         aElem.setAttribute('role','menuitem');
                         aElem.setAttribute('tabindex','-1');
                         aElem.setAttribute('href','#');
-                        aElem.setAttribute('ng-click',"updateAction("+terme+")");
+                        aElem.setAttribute('ng-click',"refreshApplication("+terme+")");
                         aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
                         liElem.appendChild(aElem);
                     }else{
                         var liElem = document.createElement('li');
                         var aElem = document.createElement('a');                        
                         liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desableupdate');
+                        liElem.setAttribute('ng-hide',"!canUpdate("+terme+")");
                         ulelem.appendChild(liElem);
                         aElem = document.createElement('a');
                         aElem.setAttribute('role','menuitem');
@@ -1842,8 +2014,9 @@ angular.module('keren.core.commons')
                         aElem.appendChild(document.createTextNode('{{updatebtnlabel | translate}}')) ;
                         liElem.appendChild(aElem);
                         //Bloc dupliquer
+                        liElem = document.createElement('li');
                         liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desablecreate');
+                        liElem.setAttribute('ng-hide',"!canCreate("+terme+")");
                         ulelem.appendChild(liElem);
                         aElem = document.createElement('a');
                         aElem.setAttribute('role','menuitem');
@@ -1855,7 +2028,7 @@ angular.module('keren.core.commons')
                         //Bloc 3
                         liElem = document.createElement('li');
                         liElem.setAttribute('role','presentation');
-                        liElem.setAttribute('ng-hide','desabledelete');
+                        liElem.setAttribute('ng-hide',"!canDelete("+terme+")");
                         ulelem.appendChild(liElem);
                         aElem = document.createElement('a');
                         aElem.setAttribute('role','menuitem');
@@ -2045,7 +2218,11 @@ angular.module('keren.core.commons')
                         key = part[0];                        
                     }else{
                         key+=part[0];
-                    }
+                    }//end if(i==1){     
+//                    if(part.length>1){
+//                        var left = part[1].split(']');
+//                        key+=left[0];
+//                    }//end if(part.length>1){
                 }
                 return key;
             },
@@ -2187,14 +2364,7 @@ angular.module('keren.core.commons')
                }//end for(var i=0 ; i<metaData.groups.length;i++){
                return entity;
            },
-           /**
-            * 
-            * @returns {undefined}
-            */
-           websiteTemplate:function(){
-               
-           }
-
+         
        };
             
  });
@@ -2211,7 +2381,7 @@ angular.module('keren.core.commons')
              Build the restName base of the entityName
             **/
             url:function(entityName,moduleName){
-                 urlPath = "http://"+$location.host()+":"+$location.port()+"/"+moduleName+"/"+entityName+"/";
+                 urlPath = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/"+moduleName+"/"+entityName+"/";
                  restResource = $resource(urlPath+":path/:first/:max/:propertyname/:id"
                        ,{path:'@path',first:'@first',max:'@max',id:'@id'}
                        ,{search:{
@@ -2357,7 +2527,7 @@ angular.module('keren.core.commons')
             */
            uploadFile:function(files){
                //URL de la resource responsable de transfert du fichier
-               var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/resource/upload";
+               var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/resource/upload";
                var fd = new FormData();
                //Take the first select 
                for(var i=0;i<files.length;i++){

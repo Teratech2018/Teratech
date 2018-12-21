@@ -115,6 +115,9 @@ public class EntreeRSImpl
         //Traitement des ligne
         for(LigneDocumentStock ligne : entity.getLignes()){
             //Controle sur la ligne
+            if(ligne.getId()<0){
+                ligne.setId(-1);
+            }//end if(ligne.getId()<0){
             computeLigne(ligne, entity.getEmplacement());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
@@ -172,6 +175,7 @@ public class EntreeRSImpl
         //Traitement des ligne
         for(LigneDocumentStock ligne : entity.getLignes()){
            //Controle sur la ligne
+            ligne.setId(-1);
             computeLigne(ligne, entity.getEmplacement());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){

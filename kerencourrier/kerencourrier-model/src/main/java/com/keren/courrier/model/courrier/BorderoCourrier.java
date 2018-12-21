@@ -5,13 +5,17 @@
  */
 package com.keren.courrier.model.courrier;
 
+import com.core.base.BaseElement;
+import com.core.base.State;
+import com.keren.courrier.model.others.UtilisateurClone;
+import com.keren.courrier.model.referentiel.Correspondant;
+import com.keren.courrier.model.referentiel.StructureCompany;
+import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -19,13 +23,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-
-import com.core.base.BaseElement;
-import com.core.base.State;
-import com.keren.courrier.model.referentiel.Correspondant;
-import com.keren.courrier.model.referentiel.StructureCompany;
-import com.keren.courrier.model.referentiel.UtilisateurCourrier;
-import com.megatim.common.annotations.Predicate;
 
 /**
  *
@@ -35,7 +32,7 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "T_BORCOUGC")
 public class BorderoCourrier extends BaseElement implements Serializable,Comparable<BorderoCourrier>{
 
-    @Predicate(label = "Bordero",optional = true,unique = true,search = true , editable=false)
+    @Predicate(label = "Bordero",optional = false,unique = true,search = true)
     private String code; 
     
     
@@ -49,13 +46,13 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
     
     @ManyToOne
     @JoinColumn(name = "EXCIB_ID")
-    @Predicate(label = "Entité Cible",type = Correspondant.class,updatable = false,target = "many-to-one",search = false,hidden="currentObject.type==null||currentObject.type!='1'")
+    @Predicate(label = "Entité Cible",type = Correspondant.class,updatable = false,target = "many-to-one",search = true,hidden="currentObject.type==null||currentObject.type!='1'")
     private Correspondant excible;
    
     @ManyToOne
     @JoinColumn(name = "UTCL_ID")
-    @Predicate(label = "Agent liaison",type = UtilisateurCourrier.class,target = "many-to-one",optional = true,search = true)
-    private UtilisateurCourrier agentliaison ;
+    @Predicate(label = "Agent liaison",type = UtilisateurClone.class,target = "many-to-one",optional = true,search = true)
+    private UtilisateurClone agentliaison ;
     
     @ManyToOne
     @JoinColumn(name = "CIB_ID")
@@ -67,7 +64,7 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
     private Date creation;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Predicate(label = "Date émission",type = Date.class,target = "date",editable =false,search = true)
+    @Predicate(label = "Date émission",type = Date.class,target = "date",editable =true,search = true)
     private Date emission;
     
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -76,19 +73,11 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
     
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "BORD_ID")
-    @Predicate(label ="",type = LigneBorderoCourrier.class,target = "many-to-many-list",group = true,groupName = "group1",groupLabel = "Listes des Courriers",edittable = true)
+    @Predicate(label ="",type = LigneBorderoCourrier.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Listes des Courriers",edittable = true)
     private List<LigneBorderoCourrier> courriers = new ArrayList<LigneBorderoCourrier>();
 
     @Predicate(label = "Statut",search = false,hide = true)
     private String state = "etabli";
-   
-    @Predicate(label = " ",search =true,type=Long.class,hide=true)
-    @Column(name = "N_COU")
-    private long ncourrier ; 
-    
-    @Predicate(label = " ",search =true,type=Long.class,hide=true)
-    @Column(name = "N_CTRANS")
-    private long nctransmis ; 
     
     
      public BorderoCourrier(BorderoCourrier entity) {
@@ -102,14 +91,12 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
             this.cible = new StructureCompany(entity.cible);
         }
         if(entity.agentliaison!=null){
-            this.agentliaison = new UtilisateurCourrier(entity.agentliaison);
+            this.agentliaison = new UtilisateurClone(entity.agentliaison);
         }
         this.creation = entity.creation;
         this.emission = entity.emission;
         this.type = entity.type;
         this.daccuse = entity.daccuse;
-        this.ncourrier= entity.ncourrier;
-        this.nctransmis=entity.nctransmis;
     }
      
     public BorderoCourrier(String code, StructureCompany service, long id, String designation, String moduleName, long comparedid) {
@@ -225,21 +212,11 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
         this.type = type;
     }
 
-  
-
-	public long getNctransmis() {
-		return nctransmis;
-	}
-
-	public void setNctransmis(long nctransmis) {
-		this.nctransmis = nctransmis;
-	}
-
-	public UtilisateurCourrier getAgentliaison() {
+    public UtilisateurClone getAgentliaison() {
         return agentliaison;
     }
 
-    public void setAgentliaison(UtilisateurCourrier agentliaison) {
+    public void setAgentliaison(UtilisateurClone agentliaison) {
         this.agentliaison = agentliaison;
     }
 
@@ -278,15 +255,7 @@ public class BorderoCourrier extends BaseElement implements Serializable,Compara
         return states; //To change body of generated methods, choose Tools | Templates.
     }
 
-    public long getNcourrier() {
-		return ncourrier;
-	}
-
-	public void setNcourrier(long ncourrier) {
-		this.ncourrier = ncourrier;
-	}
-
-	@Override
+    @Override
     public String getSerial() {
         return super.getSerial(); //To change body of generated methods, choose Tools | Templates.
     }

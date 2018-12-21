@@ -98,6 +98,9 @@ angular.module('keren.core.calendar' ,['ui.calendar','pascalprecht.translate','n
 angular.module('keren.core.calendar')
         .controller('calendarCtrl',['$rootScope','$scope','$translate','$timeout','$location','$http','uiCalendarConfig','commonsTools','backendService'
         , function($rootScope,$scope,$translate,$timeout,$location,$http , uiCalendarConfig,commonsTools,backendService){
+                $scope.hostname = $location.host();    
+                $scope.portvalue = $location.port();
+                $scope.protocol = $location.protocol(); 
                 $scope.tableheaderselected = false;
                 $scope.userslist = new Array();
                 $scope.calandarModule = { id:-1 , name:"calandar",label:"Agenda",selected:false,hasmenu:false,
@@ -320,7 +323,7 @@ angular.module('keren.core.calendar')
                  * @returns {undefined}
                  */
                 $scope.showEditDialog = function(){
-                    var url="http://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur";
+                    var url= $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur";
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                     $http.get(url)
                             .then(function(response){
@@ -356,7 +359,7 @@ angular.module('keren.core.calendar')
 //                  console.log(angular.toJson(item));
                   if($scope.dataCache.users.length<=0 || $scope.dataCache.users[0].id=='load'){  
                     $scope.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur";
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur";
                     $http.get(url).then(
                             function(response){
                                 $scope.dataCache.users = response.data;
@@ -382,7 +385,7 @@ angular.module('keren.core.calendar')
                     //console.log(angular.toJson($scope.dataCache.rappels));
                     if($scope.dataCache.rappels.length<=0 || $scope.dataCache.rappels[0].id=='load'){  
                         commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                        var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
+                        var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
                         $http.get(url).then(
                                 function(response){
                                     $scope.dataCache.rappels = response.data;
@@ -419,7 +422,7 @@ angular.module('keren.core.calendar')
                 };
                 $scope.addRappel = function(){
                     commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/rappel";
                     if($scope.dataCache.crrentRappel.titre==null||$scope.dataCache.crrentRappel.quantite==null
                             ||$scope.dataCache.crrentRappel.unite==null){
                             //console.log(angular.toJson($scope.dataCache.crrentRappel));
@@ -576,7 +579,7 @@ angular.module('keren.core.calendar')
                         $http.defaults.headers.common['enddate']= angular.toJson($scope.currentDates.end); 
                     }//end if($scope.currentDates!=null){
 //                     console.log("calandar.controller.eventsLoader ================ "+angular.toJson($scope.currentDates));
-                     var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/event/event/"+$rootScope.globals.userinfo.id; 
+                     var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/event/event/"+$rootScope.globals.userinfo.id; 
                      $http.get(url).then(
                             function(response){
                                 $scope.events = response.data;
@@ -655,7 +658,7 @@ angular.module('keren.core.calendar')
                 });
                 $scope.$on("calendarModule" , function(event , args){
                     $scope.currentUser = $rootScope.globals.userinfo;
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur";
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur";
                     $http.get(url)
                             .then(function(response){
 //                                $scope.userslist = new Array();

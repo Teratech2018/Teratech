@@ -27,7 +27,7 @@ import javax.persistence.Table;
 public class Pays extends BaseElement implements Serializable,Comparable<Pays>{
     
      @Predicate(label = "image",target = "image",search = false)
-     private String image ;
+     private String image ="avatar.png";
      
     @Predicate(label = "Nom du pays" ,optional = false,unique = true,search = true)
     private String intitule ;

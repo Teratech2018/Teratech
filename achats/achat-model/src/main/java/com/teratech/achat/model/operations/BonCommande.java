@@ -49,6 +49,7 @@ public class BonCommande extends DocumentAchat implements Serializable{
 //    @Predicate(label = "Factures",type = Facture.class,target = "one-to-many",editable = false,group = true,groupName = "group4",groupLabel = "Factures")
     private List<Facture> factures = new ArrayList<Facture>();
     
+    
     /**
      * 
      * @param code
@@ -151,6 +152,7 @@ public class BonCommande extends DocumentAchat implements Serializable{
         this.condreglement = condreglement;
     }
 
+   
     @Override
     public boolean isActivatefollower() {
         return true; //To change body of generated methods, choose Tools | Templates.

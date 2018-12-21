@@ -52,6 +52,8 @@ public class BonReceptionManagerImpl
     
     @EJB(name = "LotDAO")
     protected LotDAOLocal lotdao;
+    
+    
 
     public BonReceptionManagerImpl() {
     }

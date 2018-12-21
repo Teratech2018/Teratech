@@ -8,7 +8,8 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 
 
 /**
- * Classe d'implementation du Web Service JAX-RS
+ * Classe d'implementation du Web Service JAX-RS
+
  * @since Wed Aug 22 20:59:04 GMT+01:00 2018
  * 
  */

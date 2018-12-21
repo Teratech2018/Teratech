@@ -15,7 +15,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.HttpHeaders;
@@ -78,26 +77,6 @@ public class ClasseurCourrierRSImpl
         
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
-
-	@Override
-	protected void processAfterSave(ClasseurCourrier entity) {
-		ClasseurCourrier clc = manager.find("id", entity.getId());
-		List<CompartimentClasseur> cpcls= new ArrayList<CompartimentClasseur>();
-		 for(CompartimentClasseur comp:clc.getCompartiments()){
-	        	comp.setIdclasseur(clc.getId());
-	        	cpcls.add(comp);
-	        }//for(CompartimentClasseur comp:entity.getCompartiments()){
-		 clc.setCompartiments(cpcls);
-		 manager.update(clc.getId(), clc);
-		super.processAfterSave(entity);
-	}
-
-	@Override
-	protected void processBeforeUpdate(ClasseurCourrier entity) {
-		
-		super.processBeforeUpdate(entity);
-	}
-    
     
     
 

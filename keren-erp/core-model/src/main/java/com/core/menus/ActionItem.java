@@ -26,8 +26,10 @@ public class ActionItem extends  MenuAction implements Serializable{
    
    @Column(name = "requete")
    @Predicate(label = "Value",optional = false,target = "textarea",group = true,groupName = "group1",groupLabel = "Requête")
-   private String value ;
+   private String value ;   
    
+   private String state = null;
+  
    
    /**
     * 
@@ -55,6 +57,7 @@ public class ActionItem extends  MenuAction implements Serializable{
         this.type = item.type;
         this.label = item.label;
         this.value = item.value;
+        this.state = item.state;
         this.setActions(null);
     }
     /**
@@ -87,7 +90,16 @@ public class ActionItem extends  MenuAction implements Serializable{
 //        this.parentRef = parentRef;
 //    }
 
-   
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    
+    
+
     public String getValue() {
         return value;
     }

@@ -47,6 +47,12 @@ public class ReportRecord extends Record implements Serializable{
     
     private String clazz ;
     
+    private String format ;
+    
+    private String unit ;
+    
+    private String orientation ;
+    
     private boolean extern = false ;
     
    
@@ -88,6 +94,9 @@ public class ReportRecord extends Record implements Serializable{
         model = report.model;
         entity = report.entity;
         search = report.search;
+        this.format = report.format;
+        this.orientation = report.orientation;
+        this.unit = report.unit;
         //this.action = action;
     }
 
@@ -139,8 +148,29 @@ public class ReportRecord extends Record implements Serializable{
         this.clazz = clazz;
     }
 
-    
-    
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }   
     
     
     @Override

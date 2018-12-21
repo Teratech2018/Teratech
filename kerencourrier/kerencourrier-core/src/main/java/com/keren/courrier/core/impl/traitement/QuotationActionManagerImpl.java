@@ -1,15 +1,9 @@
 
 package com.keren.courrier.core.impl.traitement;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
@@ -24,8 +18,13 @@ import com.keren.courrier.model.courrier.CourrierClone;
 import com.keren.courrier.model.courrier.LigneBorderoCourrier;
 import com.keren.courrier.model.courrier.TraitementCourrier;
 import com.keren.courrier.model.courrier.TypeTraitement;
+import com.keren.courrier.model.others.UtilisateurClone;
 import com.keren.courrier.model.traitement.QuotationAction;
 import com.megatim.common.annotations.OrderType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @TransactionAttribute
 @Stateless(mappedName = "QuotationActionManager")
@@ -112,88 +111,55 @@ public class QuotationActionManagerImpl
 
     @Override
     public void processBeforeSave(QuotationAction entity) {
-//        CourrierClone courrier = entity.getCourrier();
-//        courrier = courrierdao.findByPrimaryKey("id",courrier.getId());
-//        TraitementCourrier traitement = new TraitementCourrier(courrier, TypeTraitement.QUOTATION);
-//        traitement.setAvis(entity.getNote());
-//        traitement.setDoperation(entity.getDquotation());
-//        traitement.setOperateur(entity.getQuoteur());
-//        
-//        traitement.setDestinataire(entity.getQuote());
-//        traitement.setCible(entity.getSquote());
-//        daotrt.save(traitement);
-//        entity.setService(courrier.getService());
-//        entity.setQuoteur(new UtilisateurCourrier(entity.getService().getResponsable()));
-        
-//        
-//        //Cas des bordero
-//        BorderoCourrier bordero = null;
-//        String type = "0";
-//        if(courrier.getPorte().trim().equalsIgnoreCase("1")){
-//            type ="2";
-//        }else if(courrier.getCategorie().trim().equalsIgnoreCase("1")){
-//            type ="1";
-//        }//end if(courrier.getPorte().trim().equalsIgnoreCase("1")){
-////        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoteur "+entity.getQuoteur().getService().getCode());
-////        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoté "+entity.getQuote().getService().getCode());
-//        
-//        if(entity.getQuote()!=null&&entity.getQuote().getService().compareTo(entity.getQuoteur().getService())!=0){
-//            bordero = borderodao.checkBordero(entity.getQuoteur().getService(), entity.getQuote().getService(),type);
-//        }else if(entity.getSquote()!=null&&entity.getSquote().compareTo(entity.getQuoteur().getService())!=0){
-//            bordero = borderodao.checkBordero(entity.getQuoteur().getService(), entity.getSquote(),type);
-//        }//end if(entity.getSquote()!=null&&entity.getSquote().compareTo(entity.getQuoteur().getService())!=0){         
-//        if(courrier.getBordero()==null){
-//            courrier.setBordero(bordero);
-//        }//end if(courrier.getBordero()==null){
-//        courrierdao.update(courrier.getId(), courrier);
-//        //Ajout du courrier dans le bordero
-//        if (bordero != null) {
-//                LigneBorderoCourrier ligne = new LigneBorderoCourrier();
-//                ligne.setCourrier(new CourrierClone(courrier));
-//                ligne.setInstruction(entity.getNote());
-////                System.out.println(QuotationActionManagerImpl.class.toString()+".processBeforeSave(QuotationAction entity) ======================= bordero cree : "+bordero+" ==== bordero entity : "+courrier.getBordero());
-//                if(courrier.getBordero().compareTo(bordero)==0){
-//                    ligne.setNature("0");
-//                }else{
-//                    ligne.setNature("1");
-//                }//end if(courrier.getBordero().compareTo(bordero)==0){
-//                bordero.getCourriers().add(ligne);                
-//                borderodao.update(bordero.getId(), bordero);
-//        } // end if(entity.getBordero()!=null){
-//        entity.setBordero(bordero);
-        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
-    
-    
-
-
-	@Override
-	public QuotationAction save(QuotationAction entity) {
-		// TODO Auto-generated method stub
-		return super.save(entity);
-	}
-
-	@Override
-	public void processAfterSave(QuotationAction entity) {
         CourrierClone courrier = entity.getCourrier();
         courrier = courrierdao.findByPrimaryKey("id",courrier.getId());
         TraitementCourrier traitement = new TraitementCourrier(courrier, TypeTraitement.QUOTATION);
         traitement.setAvis(entity.getNote());
         traitement.setDoperation(entity.getDquotation());
         traitement.setOperateur(entity.getQuoteur());
+        
         traitement.setDestinataire(entity.getQuote());
         traitement.setCible(entity.getSquote());
         daotrt.save(traitement);
+        //Cas des bordero
+        BorderoCourrier bordero = null;
+        String type = "0";
+        if(courrier.getPorte().trim().equalsIgnoreCase("1")){
+            type ="2";
+        }else if(courrier.getCategorie().trim().equalsIgnoreCase("1")){
+            type ="1";
+        }//end if(courrier.getPorte().trim().equalsIgnoreCase("1")){
+//        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoteur "+entity.getQuoteur().getService().getCode());
+//        System.out.println("QuotationActionManagerImpl.processBeforeSave() service quoté "+entity.getQuote().getService().getCode());
         
-        // mis a jour du nombre de quatation 
-        courrier.setNquotation(courrier.getNquotation()+1);
+        if(entity.getQuote()!=null&&entity.getQuote().getService().compareTo(entity.getQuoteur().getService())!=0){
+            bordero = borderodao.checkBordero(entity.getQuoteur().getService(), entity.getQuote().getService(),type);
+        }else if(entity.getSquote()!=null&&entity.getSquote().compareTo(entity.getQuoteur().getService())!=0){
+            bordero = borderodao.checkBordero(entity.getQuoteur().getService(), entity.getSquote(),type);
+        }//end if(entity.getSquote()!=null&&entity.getSquote().compareTo(entity.getQuoteur().getService())!=0){         
+        if(courrier.getBordero()==null){
+            courrier.setBordero(bordero);
+        }//end if(courrier.getBordero()==null){
         courrierdao.update(courrier.getId(), courrier);
-		super.processAfterSave(entity);
-	}
+        //Ajout du courrier dans le bordero
+        if (bordero != null) {
+                LigneBorderoCourrier ligne = new LigneBorderoCourrier();
+                ligne.setCourrier(new CourrierClone(courrier));
+                ligne.setInstruction(entity.getNote());
+//                System.out.println(QuotationActionManagerImpl.class.toString()+".processBeforeSave(QuotationAction entity) ======================= bordero cree : "+bordero+" ==== bordero entity : "+courrier.getBordero());
+                if(courrier.getBordero().compareTo(bordero)==0){
+                    ligne.setNature("0");
+                }else{
+                    ligne.setNature("1");
+                }//end if(courrier.getBordero().compareTo(bordero)==0){
+                bordero.getCourriers().add(ligne);                
+                borderodao.update(bordero.getId(), bordero);
+        } // end if(entity.getBordero()!=null){
+        entity.setBordero(bordero);
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
 
-	@Override
+    @Override
     public void processBeforeUpdate(QuotationAction entity) {
         QuotationAction old = find("id", entity.getId());
         entity.setBordero(old.getBordero());

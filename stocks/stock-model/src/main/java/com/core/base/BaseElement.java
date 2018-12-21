@@ -27,6 +27,12 @@ public class BaseElement implements Serializable{
     //@Predicate(label = "id" , nullable = false,optional = false,type = Long.class)
     protected long id =-1;
     
+    /**
+     * Owner of the entity module where the link file and images are store
+     * override this if the current module is not the owner of the entity
+     */
+    private String ownermodule ;
+    
     protected long compareid  ;
     
     protected String designation ;
@@ -59,6 +65,8 @@ public class BaseElement implements Serializable{
     protected String footerScript = null;
     
     protected boolean activatefollower = false ;
+    
+    protected String searchkeys ;
     
     /**
      * String that contain the state
@@ -93,8 +101,14 @@ public class BaseElement implements Serializable{
     public void setCompareid(long compareid) {
         this.compareid = compareid;
     }
-    
-    
+
+    public String getSearchkeys() {
+        return searchkeys;
+    }
+
+    public void setSearchkeys(String searchkeys) {
+        this.searchkeys = searchkeys;
+    }    
 
     public long getId() {
         return id;
@@ -210,8 +224,15 @@ public class BaseElement implements Serializable{
 
     public void setDesableupdate(boolean desableupdate) {
         this.desableupdate = desableupdate;
+    }   
+
+    public String getOwnermodule() {
+        return ownermodule;
     }
-    
+
+    public void setOwnermodule(String ownermodule) {
+        this.ownermodule = ownermodule;
+    } 
     
    
     /**

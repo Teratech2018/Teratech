@@ -18,7 +18,6 @@ import com.teratech.stock.model.base.Emplacement;
 import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.operations.LigneDocumentStock;
 import com.teratech.stock.model.operations.Lot;
-import com.teratech.stock.model.operations.Sortie;
 import com.teratech.stock.model.operations.Transfert;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,6 +110,9 @@ public class TransfertRSImpl
         canSatisfied(entity);
         //Traitement des ligne
         for(LigneDocumentStock ligne : entity.getLignes()){
+            if(ligne.getId()<0){
+               ligne.setId(-1);
+            }//end if(ligne.getId()<0){
             lignecompute(ligne,entity.getEmplacement());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
@@ -147,6 +149,7 @@ public class TransfertRSImpl
         canSatisfied(entity);
         //Traitement des ligne
         for(LigneDocumentStock ligne : entity.getLignes()){
+            ligne.setId(-1);
             lignecompute(ligne,entity.getEmplacement());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){

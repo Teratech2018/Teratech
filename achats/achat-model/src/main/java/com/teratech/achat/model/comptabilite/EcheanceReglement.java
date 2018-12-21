@@ -36,7 +36,7 @@ public class EcheanceReglement extends BaseElement implements Serializable,Compa
     @Predicate(label = "Mode de règlement",type = ModeReglement.class,target = "many-to-one",optional = false,search = true)
     private ModeReglement mode ;
 
-    @Predicate(label = "Etat",type = Boolean.class,updatable = false,editable = false,search = true)
+    @Predicate(label = "Etat",type = Boolean.class,updatable = false,editable = true,search = true)
     private Boolean etat =Boolean.FALSE;
     
     

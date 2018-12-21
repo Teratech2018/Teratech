@@ -40,65 +40,65 @@ public class TraitementDI extends BaseElement implements Serializable,Comparable
 
     private static final long serialVersionUID = -170720181413L;
     
-    @Predicate(label = "Demande intervantion",optional = false,unique = true,search = true)
+    @Predicate(label = "Demande intervantion",optional = false,unique = true,search = true,editable = false)
     private String code ;
    
     @ManyToOne
     @JoinColumn(name = "EM_ID")
-    @Predicate(label = "Emetteur",type = Intervenant.class,target = "many-to-one",optional = false,search = true)
+    @Predicate(label = "Emetteur",type = Intervenant.class,target = "many-to-one",optional = false,search = true,editable = false)
     private Intervenant emetteur ;
     
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Predicate(label = "Début incident",type = Date.class,target = "date",optional = false,search = true)
+    @Predicate(label = "Début incident",type = Date.class,target = "date",optional = false,search = true,editable = false)
     private Date dincident ;
     
-    @Predicate(label = "Heure incident",target = "time",optional = false,search = true)
+    @Predicate(label = "Heure incident",target = "time",optional = false,search = true,editable = false)
     private String hincident ;
     
      @ManyToOne
     @JoinColumn(name = "DE_ID")
-    @Predicate(label = "Destinataire",type = Intervenant.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Destinataire",type = Intervenant.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private Intervenant destinataire ;
      
     @ManyToOne
     @JoinColumn(name = "RU_ID")
-    @Predicate(label = "Rubrique",type = Rubrique.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Rubrique",type = Rubrique.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
      private Rubrique rubrique ;
      
     @ManyToOne
     @JoinColumn(name = "EQUI_ID")
-    @Predicate(label = "Equipement",type = Equipement.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Equipement",type = Equipement.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
      private Equipement equipement ;
      
      @ManyToOne
     @JoinColumn(name = "ETEQ_ID")
-    @Predicate(label = "Etat équipement",type = EtatEquipement.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Etat équipement",type = EtatEquipement.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private EtatEquipement etatEquipement ;
      
     @ManyToOne
     @JoinColumn(name = "ORG_ID")
-    @Predicate(label = "Organe",type = Organe.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Organe",type = Organe.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private Organe organe ;
      
     @ManyToOne
     @JoinColumn(name = "ETOR_ID")
-    @Predicate(label = "Etat organe",type = EtatEquipement.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Etat organe",type = EtatEquipement.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private EtatEquipement etatOrgane ;
 
     @ManyToOne
     @JoinColumn(name = "PRIO_ID")
-    @Predicate(label = "Priorité",type = Priorite.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Priorité",type = Priorite.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private Priorite priorite ;
     
     @ManyToOne
     @JoinColumn(name = "SYM_ID")
-    @Predicate(label = "Symptôme",type = Symptome.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Symptôme",type = Symptome.class,target = "many-to-one",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private Symptome symptome ;
     
-    @Predicate(label = "Localisation",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Localisation",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private String localisation;
     
-    @Predicate(label = "Observation",group = true,groupName = "group1",groupLabel = "Général")
+    @Predicate(label = "Observation",group = true,groupName = "group1",groupLabel = "Général",editable = false)
     private String observation;
     
     @ManyToOne
@@ -108,29 +108,29 @@ public class TraitementDI extends BaseElement implements Serializable,Comparable
     
     @ManyToOne
     @JoinColumn(name = "PRO_ID")
-    @Predicate(label = "Projet",type = Projet.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Compléments")
+    @Predicate(label = "Projet",type = Projet.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Compléments",editable = false)
     private Projet projet;
     
     @ManyToOne
     @JoinColumn(name = "CON_ID")
-    @Predicate(label = "Contrat",type = Contrat.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Compléments")
+    @Predicate(label = "Contrat",type = Contrat.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Compléments",editable = false)
     private Contrat contrat;
     
     @ManyToOne
     @JoinColumn(name = "UNGE_ID")
-    @Predicate(label = "Unité compteur",type = UniteGestion.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Compléments")
+    @Predicate(label = "Unité compteur",type = UniteGestion.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Compléments",editable = false)
     private UniteGestion unite ;
     
-    @Predicate(label = "Valeur compteur",type = Double.class,group = true,groupName = "group2",groupLabel = "Compléments")
+    @Predicate(label = "Valeur compteur",type = Double.class,group = true,groupName = "group2",groupLabel = "Compléments",editable = false)
     private Double valcompter ;
     
-    @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group3",groupLabel = "Commentaire/Docs")
+    @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group3",groupLabel = "Commentaire/Docs",editable = false)
     @Lob
     private String commentaire ;
     
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "DI_ID")
-    @Predicate(label = "Pièces jointes",type = FichierLie.class,target = "one-to-many",edittable = true,group = true,groupName = "group3",groupLabel = "Commentaire/Docs")
+    @Predicate(label = "Pièces jointes",type = FichierLie.class,target = "one-to-many",edittable = true,group = true,groupName = "group3",groupLabel = "Commentaire/Docs",updatable = false)
     private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
     
     @Predicate(label = "",target = "richeditor",group = true,groupName = "group4",groupLabel = "Reponse")
@@ -143,9 +143,116 @@ public class TraitementDI extends BaseElement implements Serializable,Comparable
     
     private String state = "etabli";
     
+    /**
+     * 
+     */
     public TraitementDI() {
     }
 
+    /**
+     * 
+     * @param code
+     * @param emetteur
+     * @param dincident
+     * @param hincident
+     * @param destinataire
+     * @param rubrique
+     * @param equipement
+     * @param etatEquipement
+     * @param organe
+     * @param etatOrgane
+     * @param priorite
+     * @param symptome
+     * @param localisation
+     * @param observation
+     * @param bontravail
+     * @param projet
+     * @param contrat
+     * @param unite
+     * @param valcompter
+     * @param commentaire
+     * @param reponse
+     * @param id
+     * @param designation
+     * @param moduleName
+     * @param comparedid 
+     */
+    public TraitementDI(String code, Intervenant emetteur, Date dincident, String hincident, Intervenant destinataire, Rubrique rubrique, Equipement equipement, EtatEquipement etatEquipement, Organe organe, EtatEquipement etatOrgane, Priorite priorite, Symptome symptome, String localisation, String observation, BonTravail bontravail, Projet projet, Contrat contrat, UniteGestion unite, Double valcompter, String commentaire, String reponse, long id, String designation, String moduleName, long comparedid) {
+        super(id, designation, moduleName, comparedid);
+        this.code = code;
+        this.emetteur = emetteur;
+        this.dincident = dincident;
+        this.hincident = hincident;
+        this.destinataire = destinataire;
+        this.rubrique = rubrique;
+        this.equipement = equipement;
+        this.etatEquipement = etatEquipement;
+        this.organe = organe;
+        this.etatOrgane = etatOrgane;
+        this.priorite = priorite;
+        this.symptome = symptome;
+        this.localisation = localisation;
+        this.observation = observation;
+        this.bontravail = bontravail;
+        this.projet = projet;
+        this.contrat = contrat;
+        this.unite = unite;
+        this.valcompter = valcompter;
+        this.commentaire = commentaire;
+        this.reponse = reponse;
+    }
+
+    public TraitementDI(TraitementDI entity) {
+        super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+        this.code = entity.code;
+        if(entity.emetteur!=null){
+            this.emetteur = new Intervenant(entity.emetteur);
+        }
+        this.dincident = entity.dincident;
+        this.hincident = entity.hincident;
+        if(entity.destinataire!=null){
+            this.destinataire = new Intervenant(entity.destinataire);
+        }
+        if(entity.rubrique!=null){
+            this.rubrique = new Rubrique(entity.rubrique);
+        }
+        if(entity.equipement!=null){
+            this.equipement = new Equipement(entity.equipement);
+        }
+        if(entity.etatEquipement!=null){
+            this.etatEquipement = new EtatEquipement(entity.etatEquipement);
+        }
+        if(entity.organe!=null){
+            this.organe = new Organe(entity.organe);
+        }
+        if(entity.etatOrgane!=null){
+            this.etatOrgane = new EtatEquipement(entity.etatOrgane);
+        }
+        if(entity.priorite!=null){
+            this.priorite = new Priorite(entity.priorite);
+        }
+        if(entity.symptome!=null){
+            this.symptome = new Symptome(entity.symptome);
+        }
+        this.localisation = entity.localisation;
+        this.observation = entity.observation;
+        if(entity.bontravail!=null){
+            this.bontravail = new BonTravail(entity.bontravail);
+        }
+        if(entity.projet!=null){
+            this.projet = new Projet(entity.projet);
+        }
+        if(entity.contrat!=null){
+            this.contrat = new Contrat(entity.contrat);
+        }
+        if(entity.unite!=null){
+            this.unite = entity.unite;
+        }
+        this.valcompter = entity.valcompter;
+        this.commentaire = entity.commentaire;
+        this.reponse = entity.reponse;
+    }
+    
     public String getCode() {
         return code;
     }
@@ -389,6 +496,16 @@ public class TraitementDI extends BaseElement implements Serializable,Comparable
 
     @Override
     public boolean isCreateonfield() {
+        return false; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesabledelete() {
+        return true; //To change body of generated methods, choose Tools | Templates.
+    }
+//
+    @Override
+    public boolean isDesablecreate() {
         return true; //To change body of generated methods, choose Tools | Templates.
     }
     

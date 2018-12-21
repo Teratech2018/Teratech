@@ -7,11 +7,8 @@ package com.core.templates;
 
 import com.core.base.BaseElement;
 import com.core.menus.MenuModule;
-import com.core.views.Record;
-import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;

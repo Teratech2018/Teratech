@@ -10,6 +10,9 @@ angular.module("keren.core",['keren.core.login','mainApp','keren.core.website','
 //        });    
 angular.module("keren.core")
         .controller("kerenCtrl" ,function($scope,$rootScope,$http,$location,$interval,commonsTools,authenticationService){
+              $scope.hostname = $location.host();    
+              $scope.portvalue = $location.port();
+              $scope.protocol = $location.protocol(); 
               $scope.level = "login";
               $scope.activemodule = "login";
               //Login de l'utilisateur
@@ -26,7 +29,7 @@ angular.module("keren.core")
                     $scope.level = "authenticate";
                     //Chargement des données de l'utilisateur authentifié   
 //                    commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
-                    var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur/bystringproperty/courriel/"+$scope.username;
+                    var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/utilisateur/bystringproperty/courriel/"+$scope.username;
                     $http.get(url)
                             .then(function(response){
 //                                console.log("Kerencontroller :::::::  "+angular.toJson(response.data));
@@ -53,7 +56,7 @@ angular.module("keren.core")
                });
                
                $scope.$on("website" , function(event ,args){
-                   var url = "http://"+$location.host()+":"+$location.port()+"/keren/#/website/"+args.website;
+                   var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/#/website/"+args.website;
 //                   console.log('$scope.$on("website" , function(event ,args) :::::::::::::::: '+angular.toJson(args.item));
                      //$location.path("/failed");                     
                      $http.defaults.headers.common['Authorization']='Basic '+args.currentuser.authdata;      

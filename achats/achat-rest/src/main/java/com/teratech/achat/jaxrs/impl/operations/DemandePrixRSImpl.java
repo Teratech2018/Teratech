@@ -3,6 +3,7 @@ package com.teratech.achat.jaxrs.impl.operations;
 
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.commons.KerenCoreMDBHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -17,6 +18,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.JMSException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
@@ -39,6 +44,12 @@ public class DemandePrixRSImpl
      */
     @Manager(application = "teratechachat", name = "DemandePrixManagerImpl", interf = DemandePrixManagerRemote.class)
     protected DemandePrixManagerRemote manager;
+    
+    @Resource(lookup = "java:/kerencore/coreConnectionFactory")
+    ConnectionFactory connectionFactory;
+    
+    @Resource(lookup = "java:/kerencore/coremdb")
+    Destination destination;
 
     public DemandePrixRSImpl() {
         super();
@@ -98,19 +109,23 @@ public class DemandePrixRSImpl
 
     @Override
     protected void processBeforeUpdate(DemandePrix entity) {
-        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-            throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
+        try {
+            if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+                throw new KerenExecption("Veuillez saisir la reference");
+            }else if(entity.getDatecommande()==null){
+                throw new KerenExecption("Veuillez saisir la date de la commande");
+            }else if(entity.getFornisseur()==null){
+                throw new KerenExecption("Veuillez saisir le fournisseur");
+            }else if(entity.getEmplacement()==null){
+                throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
+            }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+                throw new KerenExecption("Veuillez saisir au moins un article");
+            }
+            KerenCoreMDBHelper.textMessageProducer("Hello I am the new MDB", connectionFactory, destination);
+            super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+        } catch (JMSException ex) {
+            Logger.getLogger(DemandePrixRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
-        super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

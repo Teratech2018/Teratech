@@ -42,7 +42,7 @@ public class EcritureTierManagerImpl
 
     @Override
     public List<EcritureTier> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
-        List<EcritureTier> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
+        List<EcritureTier> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<EcritureTier> result = new ArrayList<EcritureTier>();
         for(EcritureTier data:datas){
             result.add(new EcritureTier(data));

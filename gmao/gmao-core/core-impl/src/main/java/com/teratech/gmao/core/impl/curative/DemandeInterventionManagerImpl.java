@@ -79,6 +79,12 @@ public class DemandeInterventionManagerImpl
         DemandeIntervention entity =new DemandeIntervention(data);
         return entity;
     }
+
+    @Override
+    public void processBeforeSave(DemandeIntervention entity) {
+        entity.setState("etabli");
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 

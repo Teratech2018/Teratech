@@ -8,10 +8,12 @@ package com.megatimgroup.generic.jax.rs.layer.ifaces;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.megatim.common.annotations.OrderType;
+import com.megatimgroup.generic.jax.rs.layer.impl.AbstractTreeContainer;
 import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.ImportData;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
+import com.megatimgroup.generic.jax.rs.layer.impl.TreeNode;
 import com.megatimgroup.mgt.commons.tools.ValidatorError;
 import java.io.Serializable;
 import java.util.List;
@@ -57,8 +59,8 @@ public interface GenericService<T ,PK extends Serializable> {
 
         /**
          * 
-         * @param entities
-         * @return 
+     * @param headers
+         * @param entities 
          */
         @POST
         @Consumes({MediaType.APPLICATION_JSON})
@@ -80,6 +82,7 @@ public interface GenericService<T ,PK extends Serializable> {
 	
         /**
          * 
+     * @param headers
          * @param entity :Entity describing the import meta data
      * @return 
          */
@@ -97,6 +100,7 @@ public interface GenericService<T ,PK extends Serializable> {
         
         /**
          * 
+     * @param headers
          * @param entity
          * @return 
          */
@@ -108,6 +112,7 @@ public interface GenericService<T ,PK extends Serializable> {
         
         /**
 	 * Methode generique de mise a jour d'une entite
+     * @param headers
          * @param entities
 	 */
         @PUT
@@ -144,7 +149,6 @@ public interface GenericService<T ,PK extends Serializable> {
      * @param headers
          * @param propertyName
 	 * @param id	ID de l'entite
-	 * @param properties Conteneur de Proprietes a charger immediatement
 	 * @return Entite recherchee
 	 */
         @GET
@@ -168,7 +172,6 @@ public interface GenericService<T ,PK extends Serializable> {
          /**
          * 
      * @param headers
-     * @param value
          * @return 
          */
         @GET
@@ -232,7 +235,6 @@ public interface GenericService<T ,PK extends Serializable> {
      * @param headers
 	 * @param propertyName	Nom de la propriete Unique
 	 * @param propertyValue	Valeur de la propriete Unique
-	 * @param properties	Ensemble des proprietes a charger en EAGER
 	 * @return	Objet recherche
 	 */
          @GET
@@ -245,7 +247,6 @@ public interface GenericService<T ,PK extends Serializable> {
      * @param headers
 	 * @param propertyName	Nom de la propriete Unique
 	 * @param propertyValue	Valeur de la propriete Unique
-	 * @param properties	Ensemble des proprietes a charger en EAGER
 	 * @return	Objet recherche
 	 */
          @GET
@@ -266,6 +267,18 @@ public interface GenericService<T ,PK extends Serializable> {
     @Path("filter/{first}/{max}")
     public List<T> filter(@Context HttpHeaders headers ,@PathParam("first") int firstResult, @PathParam("max") int maxResult);
     
+    /**
+     * Build the tree node data
+     * to override by the user
+     * @param headers
+     * @param firstResult
+     * @param maxResult
+     * @return 
+     */
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("tree/{first}/{max}")
+    public List<TreeNode> treefilter(@Context HttpHeaders headers ,@PathParam("first") int firstResult, @PathParam("max") int maxResult);
     
     /**
      * methode de filtre des entites d'une classe en fonction des prédicats de filtres

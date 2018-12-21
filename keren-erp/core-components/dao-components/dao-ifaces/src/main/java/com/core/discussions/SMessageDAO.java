@@ -27,7 +27,7 @@ public interface SMessageDAO
      * @param message
      * @return 
      */
-    public List<RMessage> send(long userid,SMessage message);
+    public List<RMessage> send(SMessage message);
     
     /**
      * 

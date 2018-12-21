@@ -82,7 +82,7 @@ public class EcritureSearchRSImpl extends AbstractGenericService<EcritureSearch,
     }
 
     @Override
-    public Response somethingspdf(EcritureSearch param,@Context HttpHeaders headers) {
+    public Response somethingspdf(@Context HttpHeaders headers , EcritureSearch param) {
         try {
             Gson gson = new Gson();
             List<FilterPredicat> filter = new ArrayList<FilterPredicat>();

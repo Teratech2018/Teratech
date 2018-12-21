@@ -139,9 +139,11 @@ public class DemandeIntervention extends BaseElement implements Serializable,Com
     @OneToMany(mappedBy = "demande" , fetch = FetchType.LAZY)
     @Predicate(label = "Activites",type = ActiviteHBT.class,editable = false,updatable = false,target = "one-to-many",group = true,groupName = "group6",groupLabel = "Récapitulatifs")
     private List<ActiviteHBT> activites = new ArrayList<ActiviteHBT>();
-    
+       
+    private String state = "etabli";
     
     public DemandeIntervention() {
+        state = "etabli";
     }
 
     /**
@@ -431,6 +433,16 @@ public class DemandeIntervention extends BaseElement implements Serializable,Com
     public void setActivites(List<ActiviteHBT> activites) {
         this.activites = activites;
     }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    
+    
 
     @Override
     public String getSerial() {

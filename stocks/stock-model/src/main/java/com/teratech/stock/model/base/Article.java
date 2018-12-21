@@ -176,6 +176,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
         this.garantie = art.garantie;
         this.achete = art.getAchete();
         this.vendu = art.getVendu();
+        setOwnermodule(art.getOwnermodule());
     }
 
     public String getCode() {

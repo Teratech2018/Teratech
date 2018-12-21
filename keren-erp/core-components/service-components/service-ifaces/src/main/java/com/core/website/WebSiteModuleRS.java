@@ -28,6 +28,11 @@ public interface WebSiteModuleRS
      
      @GET
      @Produces({MediaType.APPLICATION_JSON})
+     @Path("categorie/{website}")
+     public String getWebSiteCategorie(@Context HttpHeaders headers , @PathParam("website") String website );
+     
+     @GET
+     @Produces({MediaType.APPLICATION_JSON})
      @Path("fragment/{website}/{id}")
      public WebSiteComponent getWebSiteTemplate(@Context HttpHeaders headers , @PathParam("website") String website, @PathParam("id") String fragment );
 }

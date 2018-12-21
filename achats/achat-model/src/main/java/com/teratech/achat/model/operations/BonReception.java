@@ -27,11 +27,12 @@ import javax.persistence.OneToMany;
 public class BonReception extends DocumentAchat implements Serializable{
 
     @Predicate(label = "Document d'origine")
-    private String origine ;
+    private String origine ;    
     
     @OneToMany(mappedBy = "docachat",fetch = FetchType.LAZY)
 //    @Predicate(label = "Factures",type = Facture.class,target = "one-to-many",editable = false,group = true,groupName = "group4",groupLabel = "Factures")
     private List<Facture> factures = new ArrayList<Facture>();
+    
     /**
      * 
      * @param code
@@ -100,8 +101,8 @@ public class BonReception extends DocumentAchat implements Serializable{
     public void setOrigine(String origine) {
         this.origine = origine;
     }
-    
-     @Override
+
+    @Override
     public boolean isActivatefollower() {
         return true; //To change body of generated methods, choose Tools | Templates.
     }

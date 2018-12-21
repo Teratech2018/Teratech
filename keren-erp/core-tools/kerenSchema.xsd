@@ -18,6 +18,7 @@
                 <xs:element ref="tns:kabanentry"  minOccurs="0" maxOccurs="unbounded" />
                 <xs:element ref="tns:theme"  minOccurs="0" maxOccurs="1" />
                 <xs:element ref="tns:website"  minOccurs="0" maxOccurs="1" />
+                <xs:element ref="tns:template"  minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -31,6 +32,7 @@
             <xs:attribute name="name" type="xs:string"/>
             <xs:attribute name="label" type="xs:string"/>
             <xs:attribute name="value" type="xs:string"/>
+            <xs:attribute name="states" type="xs:string"/>
         </xs:complexType>       
     </xs:element>
      
@@ -131,7 +133,8 @@
     <xs:element name="treeRecord">
         <xs:complexType>            
             <xs:sequence>
-                <xs:element ref="tns:field"   minOccurs="1" maxOccurs="unbounded"/>                
+                <xs:element ref="tns:field"   minOccurs="1" maxOccurs="unbounded"/>   
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>             
             </xs:sequence>
             <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="label"  type="xs:string" />
@@ -165,6 +168,9 @@
             <xs:attribute name="parent" type="xs:string" />
             <xs:attribute name="action_ref" type="xs:string" />
             <xs:attribute name="extern" type="xs:boolean" default="false" />
+            <xs:attribute name="format" type="xs:string" default="a4" />
+            <xs:attribute name="orientation" type="xs:string" default="l" />
+            <xs:attribute name="unit" type="xs:string" default="pt" />
         </xs:complexType>
     </xs:element>   
      <xs:element name="container"  type="xs:string">

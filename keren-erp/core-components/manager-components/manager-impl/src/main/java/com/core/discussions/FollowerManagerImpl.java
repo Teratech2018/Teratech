@@ -94,7 +94,7 @@ public class FollowerManagerImpl
                         msge.setCanaux(follower.getCanaux());
                         msge.setRecievers(follower.getAbonnes());
                          msge.setDate(new Date());
-                        smsgedao.send(userid, msge);
+                        smsgedao.send(msge);
                     }//end if(msge.getId()<0)
                 }//end if(msge.getSender()!=null&&msge.getReciever()!=null&&msge.getSender().equals(msge.getReciever())){
             }//end for(SMessage msge:follower.getMessages()){

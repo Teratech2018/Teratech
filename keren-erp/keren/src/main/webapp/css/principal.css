@@ -233,3 +233,7 @@ input.trt-input{
 .trt-itemImage,.itemDescriptionOne{
 	color:#387cb0;
 }
+
+@media print {
+    footer {page-break-after: always;}
+}

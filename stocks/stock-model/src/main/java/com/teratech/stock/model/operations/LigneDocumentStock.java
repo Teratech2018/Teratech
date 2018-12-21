@@ -6,6 +6,7 @@
 package com.teratech.stock.model.operations;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.UniteGestion;
@@ -29,16 +30,18 @@ public class LigneDocumentStock extends BaseElement implements Serializable,Comp
 
     @ManyToOne
     @JoinColumn(name = "ART_ID")
-    @Predicate(label = "Article concerné",type = Article.class,target = "many-to-one",optional = false,nullable = true,search = true)
+    @Predicate(label = "Article concerné",type = Article.class,target = "many-to-one",optional = false,nullable = true,search = true,observable = true)
     private Article article ;
     
     @ManyToOne
     @JoinColumn(name = "UNG_ID")
     @Predicate(label = "Unité de gestion",type = UniteGestion.class,target = "many-to-one",editable = false,search = true)
+    @Observer(observable = "article" ,source = "field:unitevente")
     private UniteGestion unite ;
     
     
     @Predicate(label = "PU HT",type = Double.class,optional = false,search = true)
+    @Observer(observable = "article" ,source = "field:uniteachat")
     private Double puht ;
     
     @Predicate(label = "Quantité",type = Double.class,optional = false,search = true)

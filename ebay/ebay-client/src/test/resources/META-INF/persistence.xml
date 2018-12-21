@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="ebay_test" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.megatimgroup.model.operations.DeclarationFinanciere</class>
+    <class>com.megatimgroup.model.operations.DeclarationPM</class>
+    <class>com.megatimgroup.model.operations.DeclarationPP</class>
+    <class>com.megatimgroup.model.parametres.Societe</class>
+    <class>com.megatimgroup.model.referentiels.Classe</class>
+    <class>com.megatimgroup.model.referentiels.Devise</class>
+    <class>com.megatimgroup.model.referentiels.Division</class>
+    <class>com.megatimgroup.model.referentiels.Groupe</class>
+    <class>com.megatimgroup.model.referentiels.Motif</class>
+    <class>com.megatimgroup.model.referentiels.Nationalite</class>
+    <class>com.megatimgroup.model.referentiels.NatureClientele</class>
+    <class>com.megatimgroup.model.referentiels.NatureJuridique</class>
+    <class>com.megatimgroup.model.referentiels.Pays</class>
+    <class>com.megatimgroup.model.referentiels.PrecisionDateNaissance</class>
+    <class>com.megatimgroup.model.referentiels.Qualite</class>
+    <class>com.megatimgroup.model.referentiels.Section</class>
+    <class>com.megatimgroup.model.referentiels.SensOperation</class>
+    <class>com.megatimgroup.model.referentiels.StatusResidence</class>
+    <class>com.megatimgroup.model.referentiels.Titre</class>
+    <class>com.megatimgroup.model.referentiels.TypeOperation</class>
+    <class>com.megatimgroup.model.referentiels.Ville</class>
+    <class>com.megatimgroup.model.operations.Champ</class>
+    <class>com.megatimgroup.model.operations.Modele</class>
+    <class>com.megatimgroup.model.reporting.BordereauBP</class>
+    <class>com.megatimgroup.model.parametres.User</class>
+    <class>com.megatimgroup.model.echange.ViewOperationFinanciere</class>
+    <class>com.megatimgroup.model.archivage.ArchiveOperation</class>
+    <!--     <properties> -->
+    <!--       <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedDerbyDialect"/> -->
+    <!--       <property name="hibernate.archive.detection" value="class, hbm"/> -->
+    <!--       <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derby_db;create=true"/> -->
+    <!--       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/> -->
+    <!--       <property name="eclipselink.cache.shared.default" value="false"/> -->
+    <!--       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/> -->
+    <!--       <property name="eclipselink.logging.level" value="FINE"/> -->
+    <!--       <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/> -->
+    <!--     </properties> -->
+    <class>com.megatimgroup.model.parametres.WesternRefSeqGenerator</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+      <property name="hibernate.archive.detection" value="class, hbm"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@192.168.1.30:1521:orcl"/>
+      <property name="javax.persistence.jdbc.password" value="editbp"/>
+      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+      <property name="javax.persistence.jdbc.user" value="editbp"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+    </properties>
+  </persistence-unit>
+</persistence>

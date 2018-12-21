@@ -18,6 +18,8 @@ import com.core.menus.MenuGroupActions;
 import com.core.menus.MenuGroupActionsDAOLocal;
 import com.core.menus.MenuModule;
 import com.core.menus.MenuModuleDAOLocal;
+import com.core.templates.Template;
+import com.core.templates.TemplateDAOLocal;
 import com.kerem.commons.KerenSession;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
@@ -51,6 +53,9 @@ public class UtilisateurManagerImpl
     
     @EJB(name = "TermeDAO")
     protected TermeDAOLocal termedao;   
+    
+    @EJB(name = "TemplateDAO")
+    protected TemplateDAOLocal templatedao;   
 
     public UtilisateurManagerImpl() {
     }
@@ -194,6 +199,8 @@ public class UtilisateurManagerImpl
                 }else if(grp.getModule().getAction()!=null){
                    mod.setAction(new MenuAction(grp.getModule().getAction()));
                 }
+                //Chargement des templates du modules
+                mod.setTemplates(getTemplates(mod));
                 result.add(mod);
             }//end for(Groupe grp : user.getAutorisations()){
        }else{
@@ -213,6 +220,7 @@ public class UtilisateurManagerImpl
                     }else if(data.getAction()!=null){
                        mod.setAction(new MenuAction(data.getAction()));
                     }//end if(mod.isHasmenu()){
+                    mod.setTemplates(getTemplates(mod));
                     result.add(mod);
                }//end for(MenuModule data : datas){
            }//end if(datas!=null){
@@ -220,6 +228,21 @@ public class UtilisateurManagerImpl
         return result;
     }
     
+    /**
+     * R
+     * @param module
+     * @return 
+     */
+    private List<Template> getTemplates(MenuModule module){
+          RestrictionsContainer container = RestrictionsContainer.newInstance();
+          container.addEq("module", module);
+          List<Template> templates = templatedao.filter(container.getPredicats(), null, null, 0, -1);
+          List<Template> output = new ArrayList<Template>();
+          for(Template tmp : templates){
+              output.add(new Template(tmp));
+          }//end for(Template tmp : templates){
+          return output;
+    }
     /**
      * Chargement des 
      * @param module

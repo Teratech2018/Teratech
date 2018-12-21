@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.keren.courrier.model.others.UtilisateurClone;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -29,63 +28,13 @@ public class UtilisateurCourrier extends BaseElement implements Serializable, Co
 
 	@ManyToOne
 	@JoinColumn(name = "USER_ID")
-	@Predicate(label = "Compte lié", type = User.class, target = "many-to-one", optional = false, sequence=1)
+	@Predicate(label = "Compte lié", type = User.class, target = "many-to-one", optional = false, search = true)
 	private User compte;
-	
-	@Column(name = "NOM")
-	@Predicate(label = "Nom ", optional = true, updatable = true, search = true, sequence=2)
-	private String nom;
-
-	@Column(name = "PRENOM")
-	@Predicate(label = "Prénom ", optional = true, updatable = true, search = false, sequence=3)
-	private String prenom;
 
 	@ManyToOne
 	@JoinColumn(name = "SERV_ID")
-	@Predicate(label = "Service affectation", type = StructureCompany.class, target = "many-to-one", optional = false, search = true, sequence=4)
+	@Predicate(label = "Service affectation", type = StructureCompany.class, target = "many-to-one", optional = false, search = true)
 	private StructureCompany service;
-	
-	@Column(name = "FONTION")
-	@Predicate(label = "Fonction ", optional = false, updatable = true, search = true, sequence=5)
-	private String fonction;
-
-	@ManyToOne
-	@JoinColumn(name = "J_CIV")
-	@Predicate(label = "Civilité ", optional = true, updatable = true, search = false, type = Civilite.class, target = "many-to-one",sequence=6)
-	protected Civilite civilite;
-
-
-	@Predicate(label = "Adresse", group = true, groupName = "group1", groupLabel = "Adresse",sequence=7)
-	private String adress;
-
-	@Predicate(label = "Boîte postale", group = true, groupName = "group1", groupLabel = "Adresse",sequence=8)
-	private String bp;
-
-	@Predicate(label = "Courriel ", group = true, groupName = "group1", groupLabel = "Adresse",sequence=9)
-	private String courriel;
-
-	@Predicate(label = "Pays", group = true, groupName = "group1", groupLabel = "Adresse",sequence=10)
-	private String pays;
-
-	@Predicate(label = "Ville", group = true, groupName = "group1", groupLabel = "Adresse",sequence=11)
-	private String ville;
-
-	@Predicate(label = "Téléphone", group = true, groupName = "group1", groupLabel = "Adresse",sequence=12)
-	private String telephone;
-
-	@Predicate(label = "Fax", group = true, groupName = "group1", groupLabel = "Adresse",sequence=13)
-	private String fax;
-	@Predicate(label = "Site internet", group = true, groupName = "group1", groupLabel = "Adresse",sequence=14)
-	private String site;
-	
-	
-
-
-
-	@Column(name = "SIG")
-	// @Predicate(label="Sigle Structure
-	// ",optional=true,updatable=true,search=false)
-	private String sigle;
 
 	// @Predicate(label="Nature du
 	// Contact",optional=false,updatable=false,search=true, target="combobox",
@@ -102,6 +51,50 @@ public class UtilisateurCourrier extends BaseElement implements Serializable, Co
 	protected TypeCorrespondant type;
 
 	// Particulier
+	@Column(name = "NOM")
+	@Predicate(label = "Nom ", optional = true, updatable = true, search = true)
+	private String nom;
+
+	@Column(name = "PRENOM")
+	@Predicate(label = "Prénom ", optional = true, updatable = true, search = false)
+	private String prenom;
+
+	@ManyToOne
+	@JoinColumn(name = "J_CIV")
+	@Predicate(label = "Civilité ", optional = true, updatable = true, search = false, type = Civilite.class, target = "many-to-one")
+	protected Civilite civilite;
+
+	@Column(name = "FONTION")
+	@Predicate(label = "Fonction ", optional = true, updatable = true, search = false)
+	private String fonction;
+
+	@Column(name = "SIG")
+	// @Predicate(label="Sigle Structure
+	// ",optional=true,updatable=true,search=false)
+	private String sigle;
+
+	@Predicate(label = "Adresse", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String adress;
+
+	@Predicate(label = "Boîte postale", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String bp;
+
+	@Predicate(label = "Courriel ", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String courriel;
+
+	@Predicate(label = "Pays", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String pays;
+
+	@Predicate(label = "Ville", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String ville;
+
+	@Predicate(label = "Téléphone", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String telephone;
+
+	@Predicate(label = "Fax", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String fax;
+	@Predicate(label = "Site internet", group = true, groupName = "group1", groupLabel = "Adresse")
+	private String site;
 
 	/*
 	 * @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -161,38 +154,11 @@ public class UtilisateurCourrier extends BaseElement implements Serializable, Co
 		this.fax = entity.fax;
 		this.site = entity.site;
 		this.nature = entity.nature;
-//		if (entity.compte != null) {
-//			this.compte = new User(entity.compte);
-//		}
+		if (entity.compte != null) {
+			this.compte = new User(entity.compte);
+		}
 		if (entity.service != null) {
 			this.service = new StructureCompany(entity.service);
-		}
-	}
-	
-	
-	public UtilisateurCourrier(UtilisateurClone entity) {
-		super(entity.getId(), entity.getDesignation(), entity.getModuleName(), entity.getCompareid());
-		this.type = entity.getType();
-		this.sigle = entity.getSigle();
-		this.civilite = entity.getCivilite();
-		this.nom = entity.getNom();
-		this.prenom = entity.getPrenom();
-		this.fonction = entity.getFonction();
-		this.courriel = entity.getCourriel();
-		// this.obs = entity.obs;
-		this.adress = entity.getAdress();
-		this.bp = entity.getBp();
-		this.pays = entity.getPays();
-		this.ville = entity.getVille();
-		this.telephone = entity.getTelephone();
-		this.fax = entity.getFax();
-		this.site = entity.getSite();
-		this.nature = entity.getNature();
-		if (entity.getCompte() != null) {
-			this.compte = new User(entity.getCompte());
-		}
-		if (entity.getService() != null) {
-			this.service = new StructureCompany(entity.getService());
 		}
 	}
 	
@@ -226,7 +192,7 @@ public class UtilisateurCourrier extends BaseElement implements Serializable, Co
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return nom + " " +fonction;
+		return nom + " " + prenom;
 	}
 
 	@Override

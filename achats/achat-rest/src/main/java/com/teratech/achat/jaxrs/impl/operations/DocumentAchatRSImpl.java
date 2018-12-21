@@ -9,7 +9,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.operations.DocumentAchatManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.operations.DocumentAchatRS;
-import com.teratech.achat.model.operations.AppelOffre;
 import com.teratech.achat.model.operations.DocumentAchat;
 import java.util.ArrayList;
 import java.util.HashMap;

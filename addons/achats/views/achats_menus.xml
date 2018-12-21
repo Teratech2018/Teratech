@@ -12,11 +12,12 @@
 	 <menuitem id="teratech_achat_fac_1" label="Sur facture brouillon" parent_ref="teratech_achat_facturation" entity_ref="Facture" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_fac_2" label="Sur ligne de commande" parent_ref="teratech_achat_facturation" entity_ref="BonCommande" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menu id="teratech_achat_structure" label="Structures." parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
-	 <menuitem id="teratech_achat_str_1" label="Articles." parent_ref="teratech_achat_structure" entity_ref="Article" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_str_1" label="Articles." parent_ref="teratech_achat_structure" entity_ref="Article" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="kaban,tree,form"/>
 	 <menuitem id="teratech_achat_str_2" label="Familles. Articles" parent_ref="teratech_achat_structure" entity_ref="FamilleArticle" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_str_3" label="Arbre Familles" parent_ref="teratech_achat_structure" entity_ref="FamilleArticle" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" view_type="list"/>
 	 <menu id="teratech_achat_comptabilite" label="Comptabilité.." parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
 	 <menuitem id="teratech_achat_com_1" label="Plan. comptable." parent_ref="teratech_achat_comptabilite" entity_ref="Compte" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
-	 <menuitem id="teratech_achat_com_2" label="Fournisseur." parent_ref="teratech_achat_comptabilite" entity_ref="Tier" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_com_2" label="Fournisseur." parent_ref="teratech_achat_comptabilite" entity_ref="Tier" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false"   view_type="kaban,tree,form"/>
 	 <menuitem id="teratech_achat_com_3" label="Plan Analytique.." parent_ref="teratech_achat_comptabilite" entity_ref="CompteAnalytique" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_com_4" label="Journal comptable." parent_ref="teratech_achat_comptabilite" entity_ref="JournalComptable" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_com_5" label="Taxes.." parent_ref="teratech_achat_comptabilite" entity_ref="Taxe" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
@@ -27,6 +28,72 @@
 	 <menuitem id="teratech_achat_conf_4" label="Unité d'achat." parent_ref="teratech_achat_configuration" entity_ref="UniteAchat" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_conf_5" label="Catégorie de produit." parent_ref="teratech_achat_configuration" entity_ref="CategorieProduit" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_conf_6" label="Régions .." parent_ref="teratech_achat_configuration" entity_ref="Region" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
-	 <menuitem id="teratech_achat_conf_7" label="Pays.." parent_ref="teratech_achat_configuration" entity_ref="Pays" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_achat_conf_7" label="Pays" parent_ref="teratech_achat_configuration" entity_ref="Pays" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="kaban,tree,form"/>
 	 <menuitem id="teratech_achat_conf_8" label="Civilité .." parent_ref="teratech_achat_configuration" entity_ref="Civilite" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <kabanentry id="article_kaban_ach_01" parent_ref="teratech_achat_str_1">
+	    <template>
+		    <![CDATA[				   
+			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
+				 <div class='col-md-3 col-sm-4'>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'>
+				  </div> 
+				 </div>
+				 <div  class='col-md-8 col-sm-7'>
+				  <div style='font-weight: bold;'>{{item.code | cut:true:20:'...'}}
+				  </div>
+				  <div>{{item.intitule | cut:true:50:'...'}}
+				  </div> 
+				  <div> 
+					<div class='col-sm-6 col-md-6 pull-left' >{{item.reference}}
+					</div>	
+				  </div> 
+				 </div> 
+			  </div>
+		  ]]>		
+		</template>
+	 </kabanentry>
+	 <kabanentry id="four_kaban_ach_01" parent_ref="teratech_achat_com_2">
+	    <template>
+		    <![CDATA[				   
+			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
+				 <div class='col-md-3 col-sm-4'>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'>
+				  </div> 
+				 </div>
+				 <div  class='col-md-8 col-sm-7'>
+				  <div style='font-weight: bold;'>{{item.code | cut:true:20:'...'}}
+				  </div>
+				  <div>{{item.label | cut:true:50:'...'}}
+				  </div> 
+				  <div> 
+					<div class='col-sm-6 col-md-6 pull-left' >{{item.adresse | cut:true:20:'...'}}
+					</div>	
+				  </div> 
+				 </div> 
+			  </div>
+		  ]]>		
+		</template>
+	 </kabanentry>
+	 <kabanentry id="pays_kaban_ach_01" parent_ref="teratech_achat_conf_7">
+	    <template>
+		    <![CDATA[				   
+			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
+				 <div class='col-md-3 col-sm-4'>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'>
+				  </div> 
+				 </div>
+				 <div  class='col-md-8 col-sm-7'>
+				  <div style='font-weight: bold;'>{{item.code | cut:true:20:'...'}}
+				  </div>
+				  <div>{{item.intitule | cut:true:50:'...'}}
+				  </div> 
+				  <div> 
+					<div class='col-sm-6 col-md-6 pull-left' >{{item.devise.designation | cut:true:20:'...'}}
+					</div>	
+				  </div> 
+				 </div> 
+			  </div>
+		  ]]>		
+		</template>
+	 </kabanentry>
 </keren>

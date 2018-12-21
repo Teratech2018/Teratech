@@ -114,11 +114,12 @@ public class BonReceptionRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("transfere")){
-             throw new KerenExecption("Impossible de modifier un bon transféré");
-        }else if(entity.getState().equalsIgnoreCase("confirme")){
-             throw new KerenExecption("Impossible de modifier un bon contrôlé");
         }
+//        else if(entity.getState().equalsIgnoreCase("transfere")){
+//             throw new KerenExecption("Impossible de modifier un bon transféré");
+//        }else if(entity.getState().equalsIgnoreCase("confirme")){
+//             throw new KerenExecption("Impossible de modifier un bon contrôlé");
+//        }
         validateLigneBR(entity, Boolean.FALSE);
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
@@ -154,13 +155,14 @@ public class BonReceptionRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("confirme")){
-            throw new KerenExecption("Ce bon de reception est déjà confirmé");
-        }else if(entity.getState().equalsIgnoreCase("transfere")){
-            throw new KerenExecption("Impossible de confirmer un bon déja transféré");
-        }else if(entity.getState().equalsIgnoreCase("annule")){
-            throw new KerenExecption("Impossible de confirmer un bon annulé");
         }
+//        else if(entity.getState().equalsIgnoreCase("confirme")){
+//            throw new KerenExecption("Ce bon de reception est déjà confirmé");
+//        }else if(entity.getState().equalsIgnoreCase("transfere")){
+//            throw new KerenExecption("Impossible de confirmer un bon déja transféré");
+//        }else if(entity.getState().equalsIgnoreCase("annule")){
+//            throw new KerenExecption("Impossible de confirmer un bon annulé");
+//        }
         validateLigneBR(entity, Boolean.TRUE);
         //To change body of generated methods, choose Tools | Templates.
         return manager.confirmer(entity);
@@ -178,11 +180,12 @@ public class BonReceptionRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("transfere")){
-            throw new KerenExecption("Impossible de rejeter un bon transféré");
-        }else if(entity.getState().equalsIgnoreCase("annule")){
-            throw new KerenExecption("Impossible de rejeter un bon annulé");
         }
+//        else if(entity.getState().equalsIgnoreCase("transfere")){
+//            throw new KerenExecption("Impossible de rejeter un bon transféré");
+//        }else if(entity.getState().equalsIgnoreCase("annule")){
+//            throw new KerenExecption("Impossible de rejeter un bon annulé");
+//        }
        //To change body of generated methods, choose Tools | Templates.
         return manager.rejeter(entity);
     }
@@ -200,13 +203,14 @@ public class BonReceptionRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("transfere")){
-            throw new KerenExecption("ce bon a déja transféré");
-        }else if(entity.getState().equalsIgnoreCase("annule")){
-            throw new KerenExecption("Impossible de transférer un bon annulé");
-        }else if(entity.getState().equalsIgnoreCase("rejete")){
-            throw new KerenExecption("Impossible de transférer un bon rejeté <br/>Veuillez refaire le contrôle de la qualité");
         }
+//        else if(entity.getState().equalsIgnoreCase("transfere")){
+//            throw new KerenExecption("ce bon a déja transféré");
+//        }else if(entity.getState().equalsIgnoreCase("annule")){
+//            throw new KerenExecption("Impossible de transférer un bon annulé");
+//        }else if(entity.getState().equalsIgnoreCase("rejete")){
+//            throw new KerenExecption("Impossible de transférer un bon rejeté <br/>Veuillez refaire le contrôle de la qualité");
+//        }
         validateLigneBR(entity, Boolean.TRUE);
         return manager.transferer(entity);
     }
@@ -239,9 +243,10 @@ public class BonReceptionRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("transfere")){
-            throw new KerenExecption("Annulation impossible le bon à déja fait l'objet d'un transfert");
         }
+//        else if(entity.getState().equalsIgnoreCase("transfere")){
+//            throw new KerenExecption("Annulation impossible le bon à déja fait l'objet d'un transfert");
+//        }
         return manager.annuler(entity);
     }
     
@@ -288,11 +293,12 @@ public class BonReceptionRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("annule")){
-            throw new KerenExecption("Impossible de facturer un bon annulé");
-        }else if(entity.getState().equalsIgnoreCase("rejete")){
-            throw new KerenExecption("Impossible de transférer un bon rejeté <br/>Veuillez refaire le contrôle de la qualité");
         }
+//        else if(entity.getState().equalsIgnoreCase("annule")){
+//            throw new KerenExecption("Impossible de facturer un bon annulé");
+//        }else if(entity.getState().equalsIgnoreCase("rejete")){
+//            throw new KerenExecption("Impossible de transférer un bon rejeté <br/>Veuillez refaire le contrôle de la qualité");
+//        }
         validateLigneBR(entity, Boolean.TRUE);
         if(!isValideBC(entity)){
             throw new KerenExecption("Ce bon de reception a déjà fait l'objet d'une facturation");

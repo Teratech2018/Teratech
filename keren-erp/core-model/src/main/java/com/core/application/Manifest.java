@@ -17,6 +17,8 @@ public class Manifest implements Serializable,Comparable<Manifest>{
 
     private String name ;
     
+    private String icon ;
+    
     private String version ;
     
     private String summary ;
@@ -224,6 +226,15 @@ public class Manifest implements Serializable,Comparable<Manifest>{
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+    
     
     
     @Override

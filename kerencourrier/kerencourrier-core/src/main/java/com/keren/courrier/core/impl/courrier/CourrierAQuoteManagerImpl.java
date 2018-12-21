@@ -15,7 +15,6 @@ import com.keren.courrier.model.courrier.CourrierAQuote;
 import com.keren.courrier.model.courrier.FichierLie;
 import com.keren.courrier.model.courrier.ServiceDiffusion;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
-import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.keren.courrier.model.traitement.QuotationActionGele;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
@@ -79,10 +78,6 @@ public class CourrierAQuoteManagerImpl
         for(FichierLie aas:data.getPiecesjointes()){
             result.getPiecesjointes().add(new FichierLie(aas));
         } 
-        
-        for (UtilisateurCourrier dest : data.getDestinataire()) {
-			result.getDestinataire().add(new UtilisateurCourrier(dest));
-		}
 //        for(QuotationActionGele quot:data.getQuotations()){
 //            result.getQuotations().add(new QuotationActionGele(quot));
 //        }

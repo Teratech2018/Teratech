@@ -47,6 +47,11 @@ public abstract class AGateway {
 
 	private QueueManager queueManager;
 
+        
+        /**
+         * 
+         * @param id 
+         */
 	public AGateway(String id)
 	{
 		this.gatewayId = id;

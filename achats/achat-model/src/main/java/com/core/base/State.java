@@ -18,6 +18,10 @@ public class State implements Serializable{
     private String code ;
     
     private String intitule ;
+    
+    private String icone ;
+    
+    private String couleur;
 
     /**
      * 
@@ -28,6 +32,22 @@ public class State implements Serializable{
         this.code = code;
         this.intitule = intitule;
     }
+
+    /**
+     * 
+     * @param code
+     * @param intitule
+     * @param icone
+     * @param couleur 
+     */
+    public State(String code, String intitule, String icone, String couleur) {
+        this.code = code;
+        this.intitule = intitule;
+        this.icone = icone;
+        this.couleur = couleur;
+    }
+    
+    
 
     public State() {
     }
@@ -46,6 +66,22 @@ public class State implements Serializable{
 
     public void setIntitule(String intitule) {
         this.intitule = intitule;
+    }
+
+    public String getIcone() {
+        return icone;
+    }
+
+    public void setIcone(String icone) {
+        this.icone = icone;
+    }
+
+    public String getCouleur() {
+        return couleur;
+    }
+
+    public void setCouleur(String couleur) {
+        this.couleur = couleur;
     }
     
     

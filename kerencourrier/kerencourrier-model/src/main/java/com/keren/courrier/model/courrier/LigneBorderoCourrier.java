@@ -68,14 +68,6 @@ public class LigneBorderoCourrier extends BaseElement implements Serializable,Co
         this.nature = nature;
     }
     
-    public LigneBorderoCourrier(CourrierClone courrier) {
-        super(-1, null, courrier.getModuleName(), 0L);
-        this.courrier = new CourrierClone(courrier);
-        this.naturecourrier = new NatureCourrier(courrier.getNature());
-        this.objet = courrier.getObjet();
-        this.nature = "0";
-    }
-    
     /**
      * 
      * @param entity 

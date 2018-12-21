@@ -123,7 +123,9 @@ public class Emplacement extends BaseElement implements Serializable,Comparable<
             this.edepot = new Entrepot(empl.edepot);
         }
         this.parent = empl.parent;
-        this.proprio = empl.proprio;
+        if(empl.proprio!=null){
+            this.proprio = new Tier(empl.proprio);
+        }
         this.couloir = empl.couloir;
         this.rayon = empl.rayon;
         this.hauteur = empl.hauteur;

@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<model-config xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.megatimgroup.net/model-config ../xsd/model-config.xsd"
+	xmlns="http://www.megatimgroup.net/model-config">
+    <elements>
+        <element type="com.megatimgroup.model.operations.DeclarationPP"  idclass="Long"  idname="id"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>  
+             <exclures>
+                <exclure name="id" all="true"/>
+                <exclure name="nom" search="true"/>   
+                <exclure name="prenom" search="true"/> 
+                <exclure name="dateNaissance" search="true"/>  
+                <exclure name="lieuNaissance" search="true"/>    
+                <exclure name="nomJeuneFille" search="true"/>    
+                <exclure name="nationalite" search="true"/>    
+                <exclure name="profession" search="true"/>
+                <exclure name="natureClientele" search="true"/>
+                <exclure name="statusResidence" search="true"/>
+                <exclure name="adresse_1" search="true"/>    
+                <exclure name="adresse_2" search="true"/>    
+                <exclure name="adresse_3" search="true"/>    
+                <exclure name="boitepostale" search="true"/>    
+                <exclure name="precisionDatenaissance" search="true"/>    
+<!--                <exclure name="email" search="true"/>    
+                <exclure name="siteWeb" search="true"/>           
+                <exclure name="contacts" search="true"/>     -->
+            </exclures>       
+        </element> 
+        <element type="com.megatimgroup.model.operations.DeclarationPM"  idclass="Long"  idname="id"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>     
+            <exclures>
+                <exclure name="id" all="true"/>   
+                <exclure name="raisonSocial" search="true"/>   
+                <exclure name="sigle" search="true"/> 
+                <exclure name="siegeSocial" search="true"/>  
+                <exclure name="registreCommerce" search="true"/>    
+                <exclure name="nomAbrege" search="true"/>    
+                <exclure name="codeStatistique" search="true"/>    
+                <exclure name="dateCreation" search="true"/>
+                <exclure name="natureClientele" search="true"/>
+                <exclure name="objetSocial" search="true"/>
+                <exclure name="statusResidence" search="true"/>
+                <exclure name="adresse_1" search="true"/>    
+                <exclure name="adresse_2" search="true"/>    
+                <exclure name="adresse_3" search="true"/>    
+                <exclure name="boitepostale" search="true"/>    
+                <exclure name="fax" search="true"/>    
+                <exclure name="telephone1" search="true"/>    
+                <exclure name="telephone2" search="true"/>           
+                <exclure name="telephone3" search="true"/>   
+                <exclure name="email" search="true"/>   
+                <exclure name="division" search="true"/>   
+                <exclure name="groupe" search="true"/>   
+                <exclure name="classe" search="true"/>     
+            </exclures>             
+        </element> 
+        <element type="com.megatimgroup.model.operations.DeclarationFinanciere"  idclass="Long"  idname="id"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>   
+            <exclures>
+                <exclure name="id" all="true"/>   
+                <exclure name="designation" search="true"/>   
+                <exclure name="montant" search="true"/> 
+                <exclure name="type" search="true"/>  
+                <exclure name="pays" search="true"/>    
+                <exclure name="motif" search="true"/>    
+                <exclure name="commentaire" search="true"/>               
+            </exclures>               
+        </element> 
+<!--        <element type="com.megatimgroup.model.operations.Modele"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.operations.Champ"  idclass="Long"  idname="id"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>-->
+        <!-- Ele;ent du pqckqge referentiel-->
+        <element type="com.megatimgroup.model.referentiels.Motif"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.Pays"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.TypeOperation"  idclass="String"  idname="code"   test="false"  deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.Devise"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.SensOperation"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element> 
+        <element type="com.megatimgroup.model.referentiels.Classe"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+         <element type="com.megatimgroup.model.referentiels.Groupe"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Division"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Section"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+       <element type="com.megatimgroup.model.referentiels.NatureJuridique"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.PrecisionDateNaissance"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Ville"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.StatusResidence"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.NatureClientele"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Nationalite"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Titre"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.megatimgroup.model.referentiels.Qualite"  idclass="String"  idname="code"   test="false"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <!-- Ele;ent du pqckqge parametrage-->
+        <element type="com.megatimgroup.model.parametres.Societe"  idclass="String"  idname="code"   test="true"  deseable="false">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+    </elements>
+</model-config>

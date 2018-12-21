@@ -180,8 +180,6 @@ public class CourrierRSImpl
         container.addEq("categorie", "0");
         container.addNotEq("state", "receptionne");
         container.addNotEq("state", "classer");
-        container.addNotEq("state", "archivage partiel");
-        container.addNotEq("state", "annulé");
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -215,8 +213,6 @@ public class CourrierRSImpl
         container.addEq("categorie", "0");
         container.addNotEq("state", "receptionne");
         container.addNotEq("state", "classer");
-        container.addNotEq("state", "archivage partiel");
-        container.addNotEq("state", "annulé");
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }
@@ -310,9 +306,6 @@ public class CourrierRSImpl
         for(FichierLie fichier:entity.getPiecesjointes()){
              fichier.setId(-1);
         }//end for(FichierLie fichier:entity.getPiecesjointes()){
-        for(UtilisateurCourrier user:entity.getDestinataire()){
-        	user.setId(-1);
-       }//end for(UtilisateurCourrier user:entity.getDestinataire()){
         entity.setState("etabli");
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
@@ -354,19 +347,6 @@ public class CourrierRSImpl
 //         }//end if(serviceid>0){
          return new ArrayList<ServiceDiffusion>();
     }
-
-	@Override
-	public List<Courrier> findCourrierByDate(Date p$date) {
-	List<Courrier> datas = new ArrayList<Courrier>();
-	List<Courrier> results = new ArrayList<Courrier>();
-	 RestrictionsContainer container = RestrictionsContainer.newInstance();  
-	 container.addEq("dcourrier", DateHelper.convertToString(p$date, "yyyy-MM-jj"));
-	 datas= manager.filter(container.getPredicats(), null, null, 0, -1);
-	 for(Courrier c : datas){
-		 results.add(new Courrier(c));
-	 }
-		return results;
-	}
 
     
 

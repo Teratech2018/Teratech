@@ -1,19 +1,8 @@
 
 package com.keren.courrier.jaxrs.impl.courrier;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
+import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,6 +14,9 @@ import com.keren.courrier.core.ifaces.courrier.LigneBorderoCourrierManagerRemote
 import com.keren.courrier.core.ifaces.referentiel.UtilisateurCourrierManagerRemote;
 import com.keren.courrier.jaxrs.ifaces.courrier.BorderoCourrierRS;
 import com.keren.courrier.model.courrier.BorderoCourrier;
+import com.keren.courrier.model.courrier.BorderoCourrierR;
+import com.keren.courrier.model.courrier.CourrierClone;
+import com.keren.courrier.model.courrier.CourrierDepart;
 import com.keren.courrier.model.courrier.LigneBorderoCourrier;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -33,6 +25,15 @@ import com.megatimgroup.generic.jax.rs.layer.impl.FilterPredicat;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.RSNumber;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 
 
 /**

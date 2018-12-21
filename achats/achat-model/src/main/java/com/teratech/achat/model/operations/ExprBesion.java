@@ -39,7 +39,7 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
    @ManyToOne
    @JoinColumn(name = "UTIL_ID")
    @Predicate(label = "Employé",type = Tier.class,target = "many-to-one",optional = false,nullable = false,search = true)
-   @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"2\"}]")
+   @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"1\"}]")
    private Tier utilisateur ;
    
    @Temporal(TemporalType.DATE)

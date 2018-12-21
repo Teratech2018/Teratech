@@ -165,10 +165,6 @@ public class DossierCourrier extends BaseElement implements Serializable, Compar
             return code.compareTo(o.code); //To change body of generated methods, choose Tools | Templates.
         }
         
-    	@Override
-    	public boolean isCreateonfield() {
-    		return true; // To change body of generated methods, choose Tools |
-    						// Templates.
-    	}
+        
 
 }

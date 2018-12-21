@@ -18,7 +18,7 @@
     <class>com.core.calendar.Rappel</class>
     <class>com.core.views.FormRecord</class>
     <class>com.core.views.Record</class>
-    <class>com.core.views.TreeRecord</class>
+    <class>com.core.views.TreeRecord</class> 
     <class>com.core.menus.ActionItem</class>
     <class>com.core.views.ReportRecord</class>
     <class>com.core.referentiels.PieceJointe</class>
@@ -36,6 +36,7 @@
     <class>com.core.views.KabanRecord</class>
     <class>com.core.website.WebSiteComponent</class>
     <class>com.core.website.WebSiteModule</class>
+    <class>com.core.templates.Template</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

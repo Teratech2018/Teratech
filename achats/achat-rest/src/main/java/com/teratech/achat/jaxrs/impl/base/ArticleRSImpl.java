@@ -7,11 +7,13 @@ import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.TreeNode;
 import com.teratech.achat.core.ifaces.base.ArticleManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.base.ArticleRS;
 import com.teratech.achat.model.base.Article;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.HttpHeaders;
@@ -67,7 +69,7 @@ public class ArticleRSImpl
 
     @Override
     protected void processBeforeUpdate(Article entity) {
-        for(int i=0;i<=entity.getStockages().size();i++){
+        for(int i=0;i<entity.getStockages().size();i++){
             if(entity.getStockages().get(i).getId()<=0){
                 entity.getStockages().get(i).setId(-1);
             }//end if(entity.getStockages().get(i).getId()<=0){
@@ -77,14 +79,15 @@ public class ArticleRSImpl
 
     @Override
     protected void processBeforeSave(Article entity) {
-        for(int i=0;i<=entity.getStockages().size();i++){
+        for(int i=0;i<entity.getStockages().size();i++){
             if(entity.getStockages().get(i).getId()<=0){
                 entity.getStockages().get(i).setId(-1);
             }//end if(entity.getStockages().get(i).getId()<=0){
         }//end for(int i=0;i<=entity.getStockages().size();i++){
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+      
     
 
 }

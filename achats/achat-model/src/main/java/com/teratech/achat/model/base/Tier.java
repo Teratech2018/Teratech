@@ -30,7 +30,7 @@ import javax.persistence.Table;
 public class Tier extends BaseElement implements Serializable,Comparable<Tier>{
 
     @Predicate(label = "image",target = "image")
-    private String image ;
+    private String image ="avatar.png";
     
     @Predicate(label = "Actif",type = Boolean.class,search = false)
     private Boolean active = true;

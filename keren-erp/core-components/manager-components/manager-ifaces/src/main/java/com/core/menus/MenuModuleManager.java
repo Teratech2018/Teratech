@@ -29,5 +29,12 @@ public interface MenuModuleManager
      * @throws java.lang.Exception 
      */
     public void uninstallApplication(MenuModule module) throws Exception;
+    
+    /**
+     * Refresh the application informations
+     * @param module
+     * @throws Exception 
+     */
+    public void refreshApplication(MenuModule module) throws Exception;
 
 }

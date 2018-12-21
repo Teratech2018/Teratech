@@ -37,7 +37,7 @@ public class ClotureJournalManagerImpl
     @Override
     public ClotureJournal save(ClotureJournal entity) {
          //To change body of generated methods, choose Tools | Templates.
-        System.out.println(ClotureJournalManagerImpl.class.getName()+" =============== Vous avez cliquez pour cloturer : "+entity);
+//        System.out.println(ClotureJournalManagerImpl.class.getName()+" =============== Vous avez cliquez pour cloturer : "+entity);
         return new ClotureJournal();
     }
     

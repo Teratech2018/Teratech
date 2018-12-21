@@ -58,11 +58,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-dao\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-dao\src\main\java</outputDirectory>
                             <layer>dao</layer>
                             <sublayer>interface</sublayer>
-                            <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>                       
+                            <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>                       
                             <specification>ejb</specification>                                   
                         </configuration>  
                         <id>dao-ifaces-generate</id>                                           
@@ -72,11 +72,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-dao\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-dao\src\main\java</outputDirectory>
                             <layer>dao</layer>
                             <sublayer>implementation</sublayer>
-                             <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
+                             <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
                             <persistanceunitname>kerencourrier</persistanceunitname>   
                             <specification>ejb</specification>
                             <session>stateless</session>                           
@@ -90,11 +90,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-core\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-core\src\main\java</outputDirectory>
                             <layer>manager</layer>
                             <sublayer>interface</sublayer>
-                             <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
+                             <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
                             <specification>ejb</specification>                              
                         </configuration>   
                         <id>manager-ifaces-generate</id>                     
@@ -104,11 +104,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-core\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-core\src\main\java</outputDirectory>
                             <layer>manager</layer>
                             <sublayer>implementation</sublayer>
-                             <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
+                             <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
                             <persistanceunitname>kerencourrier</persistanceunitname>     
                             <specification>ejb</specification>
                             <session>stateless</session>                            
@@ -122,11 +122,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-service\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-service\src\main\java</outputDirectory>
                             <layer>jax-rs</layer>
                             <sublayer>interface</sublayer>
-                             <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
+                             <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
                             <specification>jax-rs</specification>                              
                         </configuration>   
                         <id>services-ifaces-generate</id>                     
@@ -136,11 +136,11 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-service\src\main\java</outputDirectory>
+                            <outputDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-service\src\main\java</outputDirectory>
                             <layer>jax-rs</layer>
                             <sublayer>implementation</sublayer>
-                            <sourcesDirectory>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
-                            <xmlfile>D:\WORKSPACE\KEREN\RH-PAIE\src\courrier\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
+                            <sourcesDirectory>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\java</sourcesDirectory>
+                            <xmlfile>D:\JBOSS_WORKSPACE\SOURCES_KORIS_ERP\kerencourrier\kerencourrier-model\src\main\resources\model.xml</xmlfile>     
                             <specification>jax-rs</specification>   
                             <application>kerencourrier</application>     
                             <module></module>                      

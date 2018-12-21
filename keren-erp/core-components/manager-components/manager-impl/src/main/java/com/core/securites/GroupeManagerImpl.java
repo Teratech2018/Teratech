@@ -16,6 +16,7 @@ import com.core.menus.MenuModule;
 import com.core.menus.MenuModuleDAOLocal;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -163,10 +164,13 @@ public class GroupeManagerImpl
                 List<MenuAction> actions = menuitemdao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
                 if(actions!=null){
                     for(MenuAction act : actions){
-                        GroupeDetail detail = new GroupeDetail(new MenuAction(act), "0");
-                        detail.setId(-index);
-                        droits.add(detail);
-                        index ++;
+                        if(act.getHide()==Boolean.FALSE){
+                            GroupeDetail detail = new GroupeDetail(new MenuAction(act), "0");
+                            detail.setId(-index);
+                            detail.setCompareid(index);
+                            droits.add(detail);
+                            index ++;
+                        }//end if(act.getHide()==Boolean.FALSE){
                     }//end for(MenuAction act : actions){
                 }//end if(actions!=null){
             }//end for(MenuGroupActions menu : menus){

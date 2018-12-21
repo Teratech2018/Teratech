@@ -27,6 +27,12 @@ public class BaseElement implements Serializable{
     //@Predicate(label = "id" , nullable = false,optional = false,type = Long.class)
     protected long id =-1;
     
+    /**
+     * Owner of the entity module where the link file and images are store
+     * override this if the current module is not the owner of the entity
+     */
+    private String ownermodule ;
+    
     protected long compareid  ;
     
     protected String designation ;
@@ -60,7 +66,8 @@ public class BaseElement implements Serializable{
     
     protected boolean activatefollower = false ;
     
-    private String searchkeys ;
+    protected String searchkeys ;
+    
     /**
      * String that contain the state
      * "[{'draft','Draft'},{'confirmed','Confirmed'}]"
@@ -218,6 +225,14 @@ public class BaseElement implements Serializable{
     public void setDesableupdate(boolean desableupdate) {
         this.desableupdate = desableupdate;
     }   
+
+    public String getOwnermodule() {
+        return ownermodule;
+    }
+
+    public void setOwnermodule(String ownermodule) {
+        this.ownermodule = ownermodule;
+    } 
     
    
     /**

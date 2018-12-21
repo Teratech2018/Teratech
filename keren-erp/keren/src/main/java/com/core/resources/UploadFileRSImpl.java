@@ -5,12 +5,15 @@
  */
 package com.core.resources;
 
+import com.google.gson.Gson;
 import com.kerem.core.CommonTools;
 import com.kerem.core.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 /**
@@ -21,9 +24,18 @@ import javax.ws.rs.core.Response;
 public class UploadFileRSImpl  implements UploadFileRS{
 
      @Override
-    public Response downloadImageFileFree(String filename) {
+    public Response downloadImageFileFree(@Context HttpHeaders headers ,String filename) {
         //To change body of generated methods, choose Tools | Templates.
         try {
+            Gson gson = new Gson();
+            String _module = null;
+            if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+                _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
+                FileHelper.setCurrentModule(null);
+            }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+            if(_module!=null && !_module.isEmpty()){
+                FileHelper.setCurrentModule(_module);
+            }//end if(_module!=null && !_module.isEmpty()){
             //To change body of generated methods, choose Tools | Templates.
             File fichier = new File(FileHelper.getStaticDirectory()+File.separator+filename);
 //            System.out.println(UploadFileRSImpl.class.toString()+" ==== "+fichier.getAbsolutePath());
@@ -38,9 +50,18 @@ public class UploadFileRSImpl  implements UploadFileRS{
     }
 
      @Override
-    public Response downloadTextFile(String filename) {
+    public Response downloadTextFile(@Context HttpHeaders headers ,String filename) {
        //To change body of generated methods, choose Tools | Templates.
-         try{
+         try{   Gson gson = new Gson();
+                String _module = null;
+                if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+                    _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
+                    FileHelper.setCurrentModule(null);
+                }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+                if(_module!=null && !_module.isEmpty()){
+                    FileHelper.setCurrentModule(_module);
+                }//end if(_module!=null && !_module.isEmpty()){
+                FileHelper.setCurrentModule(_module);
                 String resourceDir = FileHelper.getStaticDirectory()+File.separator+filename;
                 File file = new File(resourceDir);
                 if(file.exists()){
@@ -54,9 +75,19 @@ public class UploadFileRSImpl  implements UploadFileRS{
     }
 
     @Override
-    public String getTextFileContaint(String filename) {
+    public String getTextFileContaint(@Context HttpHeaders headers ,String filename) {
         //To change body of generated methods, choose Tools | Templates.
          try{
+                Gson gson = new Gson();
+                String _module = null;
+                if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+                    _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
+                    FileHelper.setCurrentModule(null);
+                }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+                if(_module!=null && !_module.isEmpty()){
+                    FileHelper.setCurrentModule(_module);
+                }//end if(_module!=null && !_module.isEmpty()){
+                FileHelper.setCurrentModule(_module);
                 String resourceDir = FileHelper.getStaticDirectory()+File.separator+filename;
                 File file = new File(resourceDir);
                 if(file.exists()){

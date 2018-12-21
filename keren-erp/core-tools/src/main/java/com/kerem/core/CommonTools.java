@@ -31,16 +31,12 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaGroup;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -51,16 +47,9 @@ import javax.imageio.ImageIO;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
@@ -92,7 +81,7 @@ public class CommonTools {
         if(item.getAction()!=null){
             for(Action act:item.getAction()){
                 ActionItem data = new ActionItem(act.getId(),act.getType(), act.getLabel(), act.getValue());
-//                data.set
+               data.setState(act.getStates());
                 actions.add(data);
             }
         }
@@ -125,9 +114,29 @@ public class CommonTools {
         FormRecord record = new FormRecord();
         record.setCode(view.getId());
         record.setScript(FileHelper.transformJaxBToScript(view));
-        record.setTemplate(view.getTemplate());
+        String template = FileHelper.ngTemplateParse(view.getTemplate());
+        record.setTemplate(template);
         record.setTitre(view.getLabel());
         return record;
+    }
+    
+    /**
+     * 
+     * @param template
+     * @return 
+     */
+    public static com.core.templates.Template getTemplate(Template template) throws JAXBException{
+        com.core.templates.Template record = new com.core.templates.Template();
+        record.setCode(template.getId());
+        String temp = FileHelper.ngTemplateParse(template.getScript());
+        record.setScript(temp);
+        record.setName(template.getName());
+        record.setType(template.getType());
+        record.setIndex(template.isIndex());
+        record.setModuleName(template.getModelRef());
+        record.setEntityRef(template.getEntityRef());
+        record.setMethodRef(template.getMethodRef());
+        return record ;
     }
     
     /**
@@ -155,7 +164,8 @@ public class CommonTools {
     public static KabanRecord getKabanentry(com.kerem.genarated.Kabanentry view) throws JAXBException{
         KabanRecord record = new KabanRecord();
         record.setCode(view.getId());
-        record.setScript(view.getTemplate());
+        String template = FileHelper.ngTemplateParse(view.getTemplate());
+        record.setScript(template);
 //        record.setTitre(view.getLabel());
         return record;
     }
@@ -171,36 +181,46 @@ public class CommonTools {
 //        if(view.getPri)
 //        record.setScript(view.getP);
         if(view.getPrincipal()!=null){
-            record.setScript(view.getPrincipal().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getPrincipal().getTemplate());
+            record.setScript(template);
         }//end if(view.getPrincipal()!=null){
         if(view.getDiscussiontemplate()!=null){
-            record.setDiscussion(view.getDiscussiontemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getDiscussiontemplate().getTemplate());
+            record.setDiscussion(template);
         }
         if(view.getFormtemplate()!=null){
-            record.setForm(view.getFormtemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getFormtemplate().getTemplate());
+            record.setForm(template);
         }
 //        record.setScript(view.get);
         if(view.getTreetemplate()!=null){
-            record.setTree(view.getTreetemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getTreetemplate().getTemplate());
+            record.setTree(template);
 //            record.setContainer(view.getContainertemplate().getTemplate());
         }
         if(view.getContainertemplate()!=null){
-            record.setContainer(view.getContainertemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getContainertemplate().getTemplate());
+            record.setContainer(template);
         }
         if(view.getReporttemplate()!=null){
-            record.setReport(view.getReporttemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getReporttemplate().getTemplate());
+            record.setReport(template);
         }
         if(view.getDashboardtemplate()!=null){
-            record.setDashbord(view.getDashboardtemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getDashboardtemplate().getTemplate());
+            record.setDashbord(template);
         }
         if(view.getCalendartemplate()!=null){
-            record.setCalendar(view.getCalendartemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getCalendartemplate().getTemplate());
+            record.setCalendar(template);
         }
         if(view.getImporttemplate()!=null){
-            record.setImporter(view.getImporttemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getImporttemplate().getTemplate());
+            record.setImporter(template);
         }
         if(view.getExporttemplate()!=null){
-            record.setExport(view.getExporttemplate().getTemplate());
+            String template = FileHelper.ngTemplateParse(view.getExporttemplate().getTemplate());
+            record.setExport(template);
         }
 //        record.setTitre("Theme Keren");
         return record;
@@ -219,6 +239,11 @@ public class CommonTools {
         record.setCode(view.getId());
         record.setTitre(view.getLabel());
         record.setExtern(view.isExtern());
+        String template = FileHelper.ngTemplateParse(view.getTemplate());
+        record.setScript(template);
+        record.setFormat(view.getFormat());
+        record.setOrientation(view.getOrientation());
+        record.setUnit(view.getUnit());
         if(view.getSearch()!=null){
             record.setEntity(view.getSearch().getEntity());
             record.setModel(view.getSearch().getModule());
@@ -226,28 +251,8 @@ public class CommonTools {
             record.setSearch(FileHelper.transformJaxBToScript(view.getSearch()));
             record.setClazz(view.getSearch().getClazz());
             record.setIgnore(view.getSearch().isIgnore());
-        }//end if(view.getSearch()!=null)        
+        }//end if(view.getSearch()!=null)          
 //        System.out.println(CommonTools.class.toString()+" ========================================= "+view.getTemplate());
-        if(view.getTemplate()!=null&&!view.getTemplate().trim().isEmpty()){
-            DocumentBuilderFactory odbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder odb = odbf.newDocumentBuilder();
-            InputStream stream = new ByteArrayInputStream(view.getTemplate().getBytes(StandardCharsets.UTF_8.name()));
-            Document odoc = odb.parse(stream);
-    //        DOMParser parser = new DOMParser();
-    //        parser.parse(view.getTemplate());
-    //        Document document = parser.getDocument();
-//            StringWriter xmlWriter = new StringWriter() ;
-//            XMLSerializer ser = new XMLSerializer(xmlWriter,
-//              new OutputFormat("xml", "UTF-8", true));
-//            ser.serialize(odoc);
-            DOMSource domSource = new DOMSource(odoc);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.transform(domSource, result);
-            record.setScript(writer.toString());
-        }//end if(view.getTemplate()!=null&&!view.getTemplate().trim().isEmpty()){
         return record;
     }
     
@@ -272,7 +277,7 @@ public class CommonTools {
      * @param entity
      * @return 
      */
-    public static WebSiteModule getWebSiteRecord(Website entity){
+    public static WebSiteModule getWebSiteRecord(Website entity) throws JAXBException{
         WebSiteModule record = new WebSiteModule();
         record.setCode(entity.getId());
         record.setCategorie(entity.getCategorie());
@@ -281,7 +286,9 @@ public class CommonTools {
             WebSiteComponent comp = new WebSiteComponent();
             comp.setCode(temp.getId());comp.setEntity(temp.getEntityRef());
             comp.setIndexPage(temp.isIndex());comp.setMethod(temp.getMethodRef());
-            comp.setScript(temp.getScript());comp.setType(temp.getType());
+            String template = FileHelper.ngTemplateParse(temp.getScript());
+            comp.setScript(template);
+            comp.setType(temp.getType());
             comp.setVar(temp.getVarRef());comp.setModele(temp.getModelRef());
             Date date = new Date();
             comp.setCompareid(date.getTime());comp.setCreateonfield(true);
@@ -300,6 +307,8 @@ public class CommonTools {
         TreeRecord record = new TreeRecord();
         record.setCode(view.getId());
         record.setScript(FileHelper.transformJaxBToScript(view));
+        String template = FileHelper.ngTemplateParse(view.getTemplate());
+        record.setTemplate(template);
         record.setTitre(view.getLabel());
         return record;
     }
@@ -536,6 +545,45 @@ public class CommonTools {
         }while(ligne!=null);
         return buffer.toString().trim();
     }
+    
+    /**
+     * 
+     * @param filename
+     * @return 
+     */
+    private static String getFileType(String filename){
+        String[] part = filename.split(".");
+        if(part.length>1){
+            return part[part.length-1];            
+        }//end if(part.length>1){
+        return null;
+    }
+    
+    private static String getMimeType(String type){
+        if(type.equalsIgnoreCase("pdf"))
+            return "application/pdf";
+        else if(type.equalsIgnoreCase("png")||type.equalsIgnoreCase("jpeg"))
+            return "image/png";
+        else if(type.equalsIgnoreCase("doc")||type.equalsIgnoreCase("dot"))
+            return "application/msword";
+        else if(type.equalsIgnoreCase("docx")||type.equalsIgnoreCase("dotx"))
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        else if(type.equalsIgnoreCase("xls")||type.equalsIgnoreCase("xlt")||type.equalsIgnoreCase("xla"))
+            return type = "application/vnd.ms-excel";
+        else if(type.equalsIgnoreCase("xlsx")||type.equalsIgnoreCase("xltx"))
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        else if(type.equalsIgnoreCase("ppt")||type.equalsIgnoreCase("pot")||type.equalsIgnoreCase("pps")||type.equalsIgnoreCase("ppa"))
+            return "application/vnd.ms-powerpoint";
+        else if(type.equalsIgnoreCase("pptx"))
+            return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        else if(type.equalsIgnoreCase("mdb"))
+            return "application/vnd.ms-access";
+        else if(type.equalsIgnoreCase("rar"))
+            return "application/x-rar-compressed, application/octet-stream";
+        else if(type.equalsIgnoreCase("odt"))
+            return "application/vnd.oasis.opendocument.text";
+        return null;
+    }
     /**
      * 
      * @param file
@@ -544,12 +592,28 @@ public class CommonTools {
      * @throws FileNotFoundException 
      */
      public static Response getStream(File file,String filename) throws FileNotFoundException{
-        String[] names = file.getName().split(".");
-        FileInputStream fileInputStream = new FileInputStream(file);
-        Response.ResponseBuilder responseBuilder = Response.ok((Object)fileInputStream);
-//        responseBuilder.type("text/plain");
-        responseBuilder.header("Content-Disposition", "attachment; filename="+filename);
-        return responseBuilder.build();
+       /* String extension =getFileType(file.getName());
+        if(extension.equalsIgnoreCase("pdf")){
+            return getPdf(file, filename);
+        }else if(extension.equalsIgnoreCase("txt") || extension.equalsIgnoreCase("sql")){
+            return getText(file, filename);
+        }else if(extension.equalsIgnoreCase("png")){
+            try {
+                return getImage(file, filename);
+            } catch (IOException ex) {
+               throw  new FileNotFoundException(ex.getMessage());
+            }
+        }else*/{
+            String[] names = file.getName().split(".");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            Response.ResponseBuilder responseBuilder = Response.ok((Object)fileInputStream);
+//            String mimetype = getMimeType(extension);
+//            if(mimetype!=null){
+//                responseBuilder.type(mimetype);
+//            }//end if(mimetype!=null){
+            responseBuilder.header("Content-Disposition", "attachment; filename="+file.getName());
+            return responseBuilder.build();
+        }//end  if(extension.equalsIgnoreCase("pdf")){
     }
     /**
      * 

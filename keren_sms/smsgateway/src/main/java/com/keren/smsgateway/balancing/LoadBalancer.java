@@ -32,6 +32,7 @@ public class LoadBalancer {
 	 *            Message to be sent.
 	 * @param candidates
 	 *            List of candidate gateways to choose from
+         * @return 
 	 */
 	public AGateway balance(OutboundMessage msg, ArrayList<AGateway> candidates)
 	{

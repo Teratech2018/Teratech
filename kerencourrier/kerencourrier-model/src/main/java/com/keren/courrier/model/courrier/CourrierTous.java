@@ -284,9 +284,9 @@ public class CourrierTous extends BaseElement implements Serializable, Comparabl
 		this.dcourrier = dep.getDcourrier();
 		this.darrive = null;
 
-//		if (dep.getCorrespondant() != null) {
-//			this.correspondant = new Correspondant(dep.getCorrespondant());
-//		}
+		if (dep.getCorrespondant() != null) {
+			this.correspondant = new Correspondant(dep.getCorrespondant());
+		}
 
 		if (dep.getNature() != null) {
 			this.nature = new NatureCourrier(dep.getNature());

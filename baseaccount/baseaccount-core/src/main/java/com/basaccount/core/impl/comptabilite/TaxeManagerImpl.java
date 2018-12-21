@@ -12,7 +12,6 @@ import com.basaccount.model.comptabilite.Taxe;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.core.referentiels.Societe;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class TaxeManagerImpl
 
     @Override
     public List<Taxe> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
-        List<Taxe> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
+        List<Taxe> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<Taxe> result = new ArrayList<Taxe>();
         for(Taxe data:datas){
             result.add(new Taxe(data));

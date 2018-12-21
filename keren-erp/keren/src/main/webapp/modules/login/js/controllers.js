@@ -24,8 +24,11 @@ angular.module('keren.core.login')
              * 
              * @returns {undefined}
              */
-            $scope.login = function(){
-                //console.log("Authentication Login methode === "+$scope.username+" === "+$scope.password);
+            $scope.login = function(e){
+//                console.log("Authentication Login methode === "+$scope.username+" === "+$scope.password+" ====== event : "+e.key);
+                if(angular.isDefined(e) && e.key!="Enter"){
+                    return ;
+                }//end if(angular.isDefined(e) && e.key!="Enter"){
                 authenticationService.login($scope.username,$scope.password)
                         .then(function(response){
                             var urlPath = "http://"+$location.host()+":"+$location.port()+"/keren/auth/login/crypto"; 

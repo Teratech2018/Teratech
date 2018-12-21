@@ -50,7 +50,7 @@
 	</kabanentry>
 	<menuitem id="courrier_ref_10" label="Statut" parent_ref="courrier_ref" entity_ref="Statut" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />
     <menuitem id="courrier_ref_11" label="Services" parent_ref="courrier_ref" entity_ref="StructureCompany" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
-	<menuitem id="courrier_ref_12" label="Paramètrage des workflow" parent_ref="courrier_ref" entity_ref="WorkflowAction" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
+	<menuitem id="courrier_ref_12" label="Paramètrage des workflow" parent_ref="courrier_ref" entity_ref="StructureCompany" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" view_type="list"/>	
 	<menuitem id="courrier_ref_13" label="Actions courriers" parent_ref="courrier_ref" entity_ref="ActionCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
 	<menuitem id="courrier_ref_14" label="Corbeilles" parent_ref="courrier_ref" entity_ref="Corbeille" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	
 	<menuitem id="courrier_ref_15" label="Classeurs" parent_ref="courrier_ref" entity_ref="ClasseurCourrier" model_ref="kerencourrier" gyphycon="glyphicon glyphicon-th" modal="false" />	

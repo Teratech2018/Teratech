@@ -37,7 +37,7 @@ public class ClotureExerciceComptableManagerImpl
     @Override
     public ClotureExerciceComptable save(ClotureExerciceComptable entity) {
          //To change body of generated methods, choose Tools | Templates.
-        System.out.println(ClotureExerciceComptableManagerImpl.class.getName()+" Vous voulez cloturer : "+entity);
+//        System.out.println(ClotureExerciceComptableManagerImpl.class.getName()+" Vous voulez cloturer : "+entity);
         return new ClotureExerciceComptable();
     }
 

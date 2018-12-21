@@ -40,7 +40,7 @@ public class CompteAnalytique extends BaseElement implements Serializable,Compar
     @Predicate(label = "Actif" , type = Boolean.class,search = false)
     private Boolean active = true ;
     
-    @Predicate(label = "Niveau d'analyse",type = CompteAnalytique.class,target = "many-to-one",search = true)
+    @Predicate(label = "Niveau d'analyse",type = NiveauAnalyse.class,target = "many-to-one",search = true)
     @ManyToOne
     @JoinColumn(name = "NA_ID")
     private NiveauAnalyse niveau ;

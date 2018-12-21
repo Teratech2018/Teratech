@@ -12,6 +12,7 @@ import com.core.securites.Groupe;
 import com.core.securites.GroupeDAOLocal;
 import com.core.securites.Utilisateur;
 import com.core.securites.UtilisateurDAOLocal;
+import com.core.templates.TemplateDAOLocal;
 import com.core.templates.ThemeRecord;
 import com.core.templates.ThemeRecordDAOLocal;
 import com.core.views.CalendarRecordDAOLocal;
@@ -34,6 +35,7 @@ import com.kerem.genarated.Keren;
 import com.kerem.genarated.Menu;
 import com.kerem.genarated.Menuitem;
 import com.kerem.genarated.ReportRecord;
+import com.kerem.genarated.Template;
 import com.kerem.genarated.TreeRecord;
 import com.kerem.security.DESEncrypter;
 import java.io.IOException;
@@ -96,6 +98,9 @@ public class MenuModuleManagerImpl
     @EJB(name = "UtilisateurDAO")
     protected UtilisateurDAOLocal uuserdao;
     
+    @EJB(name = "TemplateDAO")
+    protected TemplateDAOLocal tmpldao;
+    
     public MenuModuleManagerImpl() {
     }
 
@@ -119,8 +124,14 @@ public class MenuModuleManagerImpl
     public MenuModule find(String propertyName, Long id) {
         MenuModule mod =  super.find(propertyName, id); //To change body of generated methods, choose Tools | Templates.
         if(mod!=null){
-            return new MenuModule(mod);
-        }
+            MenuModule result = new MenuModule(mod);
+            if(mod.getTemplates()!=null && ! mod.getTemplates().isEmpty()){
+                for(com.core.templates.Template tmp : mod.getTemplates()){
+                    result.getTemplates().add(new com.core.templates.Template(tmp));
+                }//end for(com.core.templates.Template tmp : mod.getTemplates()){
+            }//end if(mod.getTemplates()!=null && ! mod.getTemplates().isEmpty()){
+            return result;
+        }//end if(mod!=null){
         return null ;
     }
 
@@ -190,6 +201,9 @@ public class MenuModuleManagerImpl
             if(module.getTheme()!=null){
                 module.setInstallable(false);
             }//end if(module.getTheme()!=null){
+            //Copy de l'icon dans le repertoire static            
+            String icon = FileHelper.processIcon(manifest);            
+            module.setIcon(icon);
             dao.update(module.getId(), module);
             //Deplacement des artefacts javaee
             FileHelper.processCore(manifest);
@@ -197,14 +211,50 @@ public class MenuModuleManagerImpl
             FileHelper.processReporting(manifest);
             //Copies des images 
             FileHelper.processImages(manifest);
+            
     }    
+    
+    
+    @Override
+    public void refreshApplication(MenuModule module) throws Exception {
+        //To change body of generated methods, choose Tools | Templates.
+         //To change body of generated methods, choose Tools | Templates.
+            if(module==null) return ;   
+            //Verifier si le module a deja fait l'object d'une installation
+             if(!module.isActive()) return ;
+            //Lecture du fichier manifest liée
+             Manifest manifest = FileHelper.getManifest(module);
+             //On arrete si le fichier manifest est introuvable
+             if(manifest==null) return ;           
+            //Chargement des Vues
+            List<Keren> views = FileHelper.getViews(module);
+            //Creation ou mise ajour de la vue
+            applicationMenusBulder(module, views);
+            //Creation du theme
+            //Mise a jour du module
+            module.setActive(true);
+            if(module.getTheme()!=null){
+                module.setInstallable(false);
+            }//end if(module.getTheme()!=null){
+            //Copy de l'icon dans le repertoire static            
+            String icon = FileHelper.processIcon(manifest);            
+            module.setIcon(icon);
+            dao.update(module.getId(), module);
+            //Copies des templates reports
+            FileHelper.processReporting(manifest);
+            //Copies des images 
+            FileHelper.processImages(manifest);
+    }
+
+    
 
     /**
      * 
      * @param module 
+     * @throws java.io.IOException 
      */
     @Override
-    public void uninstallApplication(MenuModule module) {
+    public void uninstallApplication(MenuModule module) throws IOException {
         //To change body of generated methods, choose Tools | Templates.
         if(module==null||!module.isActive()) return ;
         module = dao.findByPrimaryKey("id", module.getId());
@@ -212,6 +262,12 @@ public class MenuModuleManagerImpl
         if(module.getTheme()!=null){//Desinstallation du theme
             themedao.delete(module.getTheme().getId());
         }//end if(module.getTheme()!=null){
+        if(module.getTemplates()!=null && !module.getTemplates().isEmpty()){
+            for(com.core.templates.Template template:module.getTemplates()){
+                tmpldao.delete(template.getId());
+            }//end for(com.core.templates.Template template:module.getTemplates()){
+            module.setTemplates(null);
+        }//end if(module.getTemplates()!=null && !module.getTemplates().isEmpty()){
         if(!module.isHasmenu()){
             RestrictionsContainer container = RestrictionsContainer.newInstance();
             container.addEq("module.id", module.getId());
@@ -225,7 +281,14 @@ public class MenuModuleManagerImpl
         //Mise a jour du status du module
         module.setActive(false);
         dao.update(module.getId(), module);
+        //Lecture du fichier manifest liée
+//        Manifest manifest = FileHelper.getManifest(module);
+        //Suppression des images
+//        FileHelper.unProcessImages(manifest);
+        //Suppression du repertoire des tempates
+//        FileHelper.unProcessReporting(manifest);
     }
+    
     
     /**
      * Suppression des groupes
@@ -390,7 +453,7 @@ public class MenuModuleManagerImpl
              //Traitement Views
                 if(data.getWebsite()!=null){
                     WebSiteModule website = CommonTools.getWebSiteRecord(data.getWebsite());
-                    System.out.println(MenuModuleManagerImpl.class.toString()+" ==Nbre of Templates : "+website.getWebcomponents().size());
+//                    System.out.println(MenuModuleManagerImpl.class.toString()+" ==Nbre of Templates : "+website.getWebcomponents().size());
                     MenuAction action = menuitemdao.findByPrimaryKey("name", data.getWebsite().getActionRef());
                     if(action==null) continue;
                     website.setAction(action);
@@ -409,7 +472,7 @@ public class MenuModuleManagerImpl
                     website = websitedao.findByPrimaryKey("code", website.getCode());
                     for(WebSiteComponent template:templates){
                         template.setWebsite(website);
-                        System.out.println(MenuModuleManagerImpl.class.toString()+" Le ID du site web "+template);                    
+//                        System.out.println(MenuModuleManagerImpl.class.toString()+" Le ID du site web "+template);                    
                         templatedao.save(template);
                     }//end for(WebSiteComponent template:templates){     
                     /**
@@ -509,6 +572,20 @@ public class MenuModuleManagerImpl
                         }
                     }
                 }//end if(data.getReportRecord()!=null)
+                //Traitement des template
+                if(data.getTemplate()!=null && !data.getTemplate().isEmpty()){
+                    for(Template template : data.getTemplate()){
+                        com.core.templates.Template record = CommonTools.getTemplate(template);
+                        record.setModule(module);
+                        com.core.templates.Template old_record = tmpldao.findByPrimaryKey("code", record.getCode());
+                        if(old_record!=null){
+                            record.setId(old_record.getId());
+                            tmpldao.update(record.getId(), record);
+                        }else{
+                            tmpldao.save(record);
+                        }//end if(old_record!=null){
+                    }//end for(Template template : data.getTemplate()){
+                }//end if(data.getTemplate()!=null && !data.getTemplate().isEmpty()){
                 if(data.getKabanentry()!=null){
                     for(Kabanentry view:data.getKabanentry()){
                         com.core.views.KabanRecord record = CommonTools.getKabanentry(view);

@@ -187,6 +187,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
         this.achete = art.getAchete();
         this.vendu = art.getVendu();
         this.politique = art.politique;
+        this.setOwnermodule(art.getOwnermodule());
     }
 
     public String getCode() {

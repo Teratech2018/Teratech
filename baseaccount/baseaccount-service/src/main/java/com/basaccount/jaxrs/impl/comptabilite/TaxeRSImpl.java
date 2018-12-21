@@ -63,15 +63,7 @@ public class TaxeRSImpl
      @Override
     public MetaData getMetaData(@Context HttpHeaders headers) {
         try {
-            Gson gson = new Gson();
-            MenuAction action = gson.fromJson(headers.getRequestHeader("action").get(0),MenuAction.class);
-            if(action==null||action.getId()<=0){
-                return MetaDataUtil.getMetaData(new Taxe(),new HashMap<String, MetaData>(),new ArrayList<String>());
-            }else{
-                action = actionmanager.find("id", action.getId());
-                return CommonTools.xmlViewParser(Taxe.class, action.getFormView(), action.getTreeView());
-            }
-            
+            return MetaDataUtil.getMetaData(new Taxe(),new HashMap<String, MetaData>(),new ArrayList<String>());
         } catch (Exception ex) {
            throw new WebApplicationException(ex);
         }        

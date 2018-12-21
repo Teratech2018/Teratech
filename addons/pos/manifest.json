@@ -1,0 +1,19 @@
+{
+	'name':'POS',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Point de Vente',
+	'sequence':10,
+	'description':'',
+	'category':'siteweb',
+	'website':'http://www.keren.com',
+	'images': [],
+	'depends' : [],
+	'views' : ['views\\layout.xml'],
+	'templates':[],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

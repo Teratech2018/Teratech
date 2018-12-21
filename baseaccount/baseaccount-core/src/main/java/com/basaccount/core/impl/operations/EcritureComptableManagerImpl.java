@@ -61,7 +61,7 @@ public class EcritureComptableManagerImpl
 
     @Override
     public List<EcritureComptable> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
-        List<EcritureComptable> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
+        List<EcritureComptable> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<EcritureComptable> result = new ArrayList<EcritureComptable>();
         for(EcritureComptable ecrit:datas){
             result.add(new EcritureComptable(ecrit));

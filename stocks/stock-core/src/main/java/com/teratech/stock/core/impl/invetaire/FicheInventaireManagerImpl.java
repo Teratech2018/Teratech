@@ -89,16 +89,14 @@ public class FicheInventaireManagerImpl
 
     public RegulInventaire confirmer(FicheInventaire dmde) {
         //To change body of generated methods, choose Tools | Templates.
-        RegulInventaire data = new RegulInventaire(dmde);
-        
-        RestrictionsContainer container = RestrictionsContainer.newInstance();
-        
+        RegulInventaire data = new RegulInventaire(dmde);        
+        RestrictionsContainer container = RestrictionsContainer.newInstance();        
         if(dmde.getFentrepot()!=null){
             container.addEq("entrepot", data.getFentrepot());
-        }
+        }//end if(dmde.getFentrepot()!=null){
         if(dmde.getFemplacement()!=null){
             container.addEq("emplacement", data.getFemplacement());
-        }
+        }//end if(dmde.getFemplacement()!=null){
         //Chargement des lignes
         List<LArticleEmplacementLot> datas = laremlodao.filter(container.getPredicats(), null, null, 0, -1);
         List<LigneInventaire> lignes = new ArrayList<LigneInventaire>();
@@ -117,7 +115,7 @@ public class FicheInventaireManagerImpl
         data.setLignes(lignes);
         dao.delete(dmde.getId());
         reguldao.save(data);
-        return data;
+        return new RegulInventaire(data);
     }
     
     

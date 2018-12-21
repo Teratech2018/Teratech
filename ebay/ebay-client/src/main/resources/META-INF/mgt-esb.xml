@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<services-config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:nsi='http://www.megatimgroup.net/services-config'
+    xsi:schemaLocation='http://www.megatimgroup.net/services-config model-config.xsd'>
+    
+    <nsi:services>
+        <nsi:service  name="WESTERN UNION" cycle="30">
+            <nsi:listener composer-class="com.megatimgroup.views.helper.WesternComposer" />
+            <nsi:actions>
+                <nsi:action name="laoding" class="com.megatimgroup.views.helper.LoadingEsbJob">
+                    <nsi:property name="propertyName"  value="propertyValue" />
+                </nsi:action>
+            </nsi:actions>
+        </nsi:service>
+    </nsi:services>
+</services-config>

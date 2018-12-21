@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<smooks-resource-list xmlns="http://www.milyn.org/xsd/smooks-1.1.xsd"
+                      xmlns:jb="http://www.milyn.org/xsd/smooks/javabean-1.2.xsd"
+                      xmlns:ftl="http://www.milyn.org/xsd/smooks/freemarker-1.1.xsd">
+
+    
+    <jb:bean beanId="items" class="java.util.ArrayList"
+            createOnElement="list">
+            <jb:wiring beanIdRef="item" />
+    </jb:bean>	
+    <jb:bean beanId="item" class="com.megatimgroup.ebaytools.client.EbayItem" createOnElement="com.megatimgroup.ebaytools.client.EbayItem">
+        <jb:value data="reference" property="reference"/>
+        <jb:value data="nom" property="nom"/>
+        <jb:value data="prenom" property="prenom"/>
+    </jb:bean>
+
+    <ftl:freemarker applyOnElement="com.megatimgroup.ebaytools.client.EbayItem">
+        <ftl:template>EBayItem_config.ftl</ftl:template>
+    </ftl:freemarker>
+
+</smooks-resource-list>

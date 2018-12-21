@@ -49,7 +49,7 @@ public class PwdUserRSImpl extends AbstractGenericService<PwdUser, Long> impleme
 //        System.out.println(PwdUserRSImpl.class.toString()+" ========================================= pwd : "+entity.getPassword()+" ===== encrypte : "+DESEncrypter.getInstance().encryptText(entity.getPassword().trim()));
         //To change body of generated methods, choose Tools | Templates.
         Utilisateur user = usermanager.find("id", entity.getCle());    
-        if(!user.getPassword().equalsIgnoreCase(entity.getPassword())){
+        if(user.getPassword()==null||!user.getPassword().equalsIgnoreCase(entity.getPassword())){
             user.setPassword(DESEncrypter.getInstance().encryptText(entity.getPassword()));
             user = usermanager.update(user.getId(), user);           
         }//end if(user.getPassword().equalsIgnoreCase(entity.getPassword())){

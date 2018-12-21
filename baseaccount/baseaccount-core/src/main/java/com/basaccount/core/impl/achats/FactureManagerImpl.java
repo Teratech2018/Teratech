@@ -50,7 +50,7 @@ public class FactureManagerImpl
          RestrictionsContainer container = RestrictionsContainer.newInstance();
         container.addEq("typedocument", DocumentAchatState.COMPTABILITE);
         predicats.addAll(container.getPredicats());
-        List<Facture> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
+        List<Facture> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<Facture> result = new ArrayList<Facture>();
         for(Facture fac:datas){
             result.add(new Facture(fac));

@@ -84,7 +84,7 @@ public class SMessageManagerImpl
     @Override
     public List<RMessage> send(long userid, SMessage message) {
         //To change body of generated methods, choose Tools | Templates.
-        return dao.send(userid, message);
+        return dao.send(message);
     }
 
 

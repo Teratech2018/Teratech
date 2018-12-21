@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 import com.teratech.achat.core.ifaces.base.TierManagerLocal;
@@ -45,6 +46,9 @@ public class TierManagerImpl
     
     @Override
     public List<Tier> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("type", "1");
+        predicats.addAll(container.getPredicats());
         List<Tier> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<Tier> result = new ArrayList<Tier>();
         for(Tier data:datas){

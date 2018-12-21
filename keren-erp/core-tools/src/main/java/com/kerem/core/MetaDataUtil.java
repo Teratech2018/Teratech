@@ -160,7 +160,7 @@ public class MetaDataUtil {
         //Creation des etates
         List<com.megatimgroup.generic.jax.rs.layer.impl.State> states = new ArrayList<>();
         for(State state : ((BaseElement)obj).getStates()){
-            states.add(new com.megatimgroup.generic.jax.rs.layer.impl.State(state.getCode(), state.getIntitule()));
+            states.add(new com.megatimgroup.generic.jax.rs.layer.impl.State(state.getCode(), state.getIntitule(),state.getIcone(),state.getCouleur()));
         }//end for(State state : ((BaseElement)obj).getStates())
         metaData.setStates(states);        
         //Mise a jour ShareClass
@@ -686,7 +686,7 @@ public class MetaDataUtil {
         //Creation des etates
         List<com.megatimgroup.generic.jax.rs.layer.impl.State> states = new ArrayList<>();
         for(State state : ((BaseElement)obj).getStates()){
-            states.add(new com.megatimgroup.generic.jax.rs.layer.impl.State(state.getCode(), state.getIntitule()));
+            states.add(new com.megatimgroup.generic.jax.rs.layer.impl.State(state.getCode(), state.getIntitule(),state.getIcone(),state.getCouleur()));
         }//end for(State state : ((BaseElement)obj).getStates())
         metaData.setStates(states);
         

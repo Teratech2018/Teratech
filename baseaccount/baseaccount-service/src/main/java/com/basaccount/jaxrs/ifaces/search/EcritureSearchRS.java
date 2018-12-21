@@ -44,6 +44,6 @@ public interface EcritureSearchRS {
     @PUT
     @Produces({"application/pdf"})
     @Consumes({MediaType.APPLICATION_JSON})
-    @Path("pdf")
-    public Response somethingspdf(EcritureSearch param,@Context HttpHeaders headers);
+    @Path("bi/pdf")
+    public Response somethingspdf(@Context HttpHeaders headers,EcritureSearch param);
 }

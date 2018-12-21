@@ -149,9 +149,10 @@ public class FactureRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("confirme")){
-            throw new KerenExecption("Cette facture a déjà fait l'objet <br/>d'un transfert en comptabilité");
         }
+//        else if(entity.getState().equalsIgnoreCase("confirme")){
+//            throw new KerenExecption("Cette facture a déjà fait l'objet <br/>d'un transfert en comptabilité");
+//        }
         //To change body of generated methods, choose Tools | Templates.
         return manager.confirmer(entity);
     }
@@ -168,9 +169,10 @@ public class FactureRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("etabli")){
-            throw new KerenExecption("Veuillez d'abord confirmer la facture");
         }
+//        else if(entity.getState().equalsIgnoreCase("etabli")){
+//            throw new KerenExecption("Veuillez d'abord confirmer la facture");
+//        }
          //To change body of generated methods, choose Tools | Templates.
         return manager.transfert(entity);
     }
@@ -187,9 +189,10 @@ public class FactureRSImpl
             throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getState().equalsIgnoreCase("transfere")){
-            throw new KerenExecption("Impossible d'annuler une facture <br/> transferée en comptabilité");
         }
+//        else if(entity.getState().equalsIgnoreCase("transfere")){
+//            throw new KerenExecption("Impossible d'annuler une facture <br/> transferée en comptabilité");
+//        }
        //To change body of generated methods, choose Tools | Templates.
         return manager.annule(entity);
     }

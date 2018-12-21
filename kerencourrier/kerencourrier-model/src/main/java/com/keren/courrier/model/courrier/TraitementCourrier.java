@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.keren.courrier.model.archivage.BoiteArchivage;
 import com.keren.courrier.model.others.UtilisateurClone;
 import com.keren.courrier.model.referentiel.ClasseurCourrier;
 import com.keren.courrier.model.referentiel.CompartimentClasseur;
@@ -76,10 +75,6 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 	@ManyToOne
 	@JoinColumn(name = "COCL_ID")
 	private CompartimentClasseur compartiment;
-	
-	@ManyToOne
-	@JoinColumn(name = "BOIARCH_ID")
-	private BoiteArchivage boite;
 
 	/**
 	* 
@@ -134,10 +129,6 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 			this.courrier= new CourrierClone(dep.courrier);
 		}
 		
-		if(dep.boite!=null){
-			this.boite= new BoiteArchivage(dep.boite);
-		}
-		
 	}
 
 	/**
@@ -157,21 +148,6 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 		}
 
 	}
-	
-	public TraitementCourrier(CourrierAArchiver courrier, TypeTraitement type) {
-		super(-1, null, null, 0L);
-		this.type = type;
-		this.doperation = courrier.getDcourrier();
-		this.operateur = new UtilisateurCourrier(courrier.getSource());
-		if (courrier.getSowner() != null) {
-			this.sowner = new StructureCompany(courrier.getSowner());
-		}
-		if (courrier.getBordero() != null) {
-			this.bordero = new BorderoCourrier(courrier.getBordero());
-		}
-
-	}
-
 
 	/**
 	 * 
@@ -192,8 +168,6 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 		this.courrier=new CourrierClone(courrier);
 
 	}
-
-	
 
 	public TypeTraitement getType() {
 		return type;
@@ -281,14 +255,6 @@ public class TraitementCourrier extends BaseElement implements Serializable, Com
 
 	public void setCompartiment(CompartimentClasseur compartiment) {
 		this.compartiment = compartiment;
-	}
-
-	public BoiteArchivage getBoite() {
-		return boite;
-	}
-
-	public void setBoite(BoiteArchivage boite) {
-		this.boite = boite;
 	}
 
 	@Override

@@ -16,13 +16,11 @@ import com.teratech.stock.jaxrs.ifaces.operations.SortieRS;
 import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.Emplacement;
 import com.teratech.stock.model.base.LienEmplacement;
-import com.teratech.stock.model.operations.Entree;
 import com.teratech.stock.model.operations.LigneDocumentStock;
 import com.teratech.stock.model.operations.Lot;
 import com.teratech.stock.model.operations.Sortie;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.WebApplicationException;
@@ -110,7 +108,9 @@ public class SortieRSImpl
         //Traitement des ligne
         for(LigneDocumentStock ligne : entity.getLignes()){  
             //Controle de validité de la ligne
-//            System.out.println(SortieRSImpl.class.toString()+" === "+ligne);     
+            if(ligne.getId()<0){
+                ligne.setId(-1);
+            }//end if(ligne.getId()<0){
             lignecompute(ligne,entity.getEmplacement());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
@@ -133,8 +133,8 @@ public class SortieRSImpl
         //Traitement des ligne
         for(LigneDocumentStock ligne : entity.getLignes()){             
             //Controle de validité de la ligne
-//            System.out.println(SortieRSImpl.class.toString()+" === "+ligne);                    
-            lignecompute(ligne,entity.getEmplacement());
+           ligne.setId(-1);
+           lignecompute(ligne,entity.getEmplacement());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.

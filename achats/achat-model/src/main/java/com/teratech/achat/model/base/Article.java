@@ -176,6 +176,7 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
         this.garantie = art.garantie;
         this.achete = art.getAchete();
         this.vendu = art.getVendu();
+        this.setOwnermodule(art.getOwnermodule());
     }
 
     public String getCode() {
@@ -309,6 +310,13 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
     public String getModuleName() {
         return "teratechachat"; //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public String getOwnermodule() {
+        return "achats"; //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
     @Override
     public String getListTitle() {

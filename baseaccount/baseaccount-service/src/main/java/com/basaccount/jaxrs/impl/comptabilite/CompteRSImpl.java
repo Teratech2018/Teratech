@@ -64,18 +64,7 @@ public class CompteRSImpl
      @Override
     public MetaData getMetaData(@Context HttpHeaders headers) {       
         try {
-            Gson gson = new Gson();
-            MenuAction action = null;
-            if(headers.getRequestHeader("action")!=null){
-                action = gson.fromJson(headers.getRequestHeader("action").get(0),MenuAction.class);
-            }
-            if(action==null||action.getId()<=0){
-                return MetaDataUtil.getMetaData(new Compte(),new HashMap<String, MetaData>(),new ArrayList<String>());
-            }else{
-                action = actionmanager.find("id", action.getId());
-                return CommonTools.xmlViewParser(Compte.class, action.getFormView(), action.getTreeView());
-            }
-            
+             return MetaDataUtil.getMetaData(new Compte(),new HashMap<String, MetaData>(),new ArrayList<String>());            
         } catch (Exception ex) {
            throw new WebApplicationException(ex);
         }  

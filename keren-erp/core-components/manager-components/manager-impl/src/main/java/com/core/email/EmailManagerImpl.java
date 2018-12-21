@@ -92,8 +92,7 @@ public class EmailManagerImpl
 
     @Override
     public void sendmailFromDB() {
-        //To change body of generated methods, choose Tools | Templates.
-        
+        //To change body of generated methods, choose Tools | Templates.        
         List<Email> datas = dao.filter(RestrictionsContainer.newInstance().getPredicats(), null, null, 0, -1);
         for(Email mail:datas){
             try {

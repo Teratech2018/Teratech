@@ -10,6 +10,7 @@ import com.megatim.common.annotations.Predicate;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 /**
@@ -24,6 +25,9 @@ public class TreeRecord extends Record{
     @JoinColumn(name="T_ITEM_ID")
     @Predicate(label = "Menu Item Parent" ,type = MenuAction.class,group = true,groupName = "group2",groupLabel = "MENUS ACTIONS",search = true)
     private MenuAction action ;
+    
+    @Lob
+    private String template ;
 
     /**
      * 
@@ -37,7 +41,7 @@ public class TreeRecord extends Record{
      */
     public TreeRecord(TreeRecord record) {
         super(record.code, record.titre, record.modele, record.sequence, record.script, record.id, record.designation, record.moduleName);
-        //this.action = record.action;
+        this.template = record.template;
     }
     
     
@@ -49,7 +53,16 @@ public class TreeRecord extends Record{
     public void setAction(MenuAction action) {
         this.action = action;
     }   
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template;
+    }
    
+    
 
     @Override
     public String getListTitle() {

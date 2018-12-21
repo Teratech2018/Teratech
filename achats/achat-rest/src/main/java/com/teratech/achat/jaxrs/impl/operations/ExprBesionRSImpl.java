@@ -61,14 +61,19 @@ public class ExprBesionRSImpl
         try {
             //To change body of generated methods, choose Tools | Templates.
             MetaData meta = MetaDataUtil.getMetaData(new ExprBesion(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Etape suivante", false, "workflow", null);
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Accorder", false, "workflow", null);
             workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'valider'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-primary");
-             meta.getHeader().add(workbtn);
+            meta.getHeader().add(workbtn);
+            //Buton de validation
+            workbtn = new MetaColumn("button", "work2", "Valider ", false, "workflow", null);
+            workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'valider'}");
+            workbtn.setStates(new String[]{"accorde"});
+            meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Annuler", false, "workflow", null);
             workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'annule'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"etabli","accorde"});
             meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);

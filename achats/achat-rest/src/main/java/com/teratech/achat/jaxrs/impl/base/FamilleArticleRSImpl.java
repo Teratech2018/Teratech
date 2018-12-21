@@ -7,12 +7,14 @@ import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+import com.megatimgroup.generic.jax.rs.layer.impl.TreeNode;
 import com.teratech.achat.core.ifaces.base.FamilleArticleManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.base.FamilleArticleRS;
-import com.teratech.achat.model.base.Civilite;
+import com.teratech.achat.jaxrs.impl.tree.FamilleArticleTNContainer;
 import com.teratech.achat.model.base.FamilleArticle;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.HttpHeaders;
@@ -65,4 +67,14 @@ public class FamilleArticleRSImpl
         }
         return null;
     }
+
+    @Override
+    public List<TreeNode> treefilter(HttpHeaders headers, int firstResult, int maxResult) {
+        List<FamilleArticle> familles = super.filter(headers, firstResult, maxResult);
+        FamilleArticleTNContainer container = new FamilleArticleTNContainer();
+        System.out.println(FamilleArticleRSImpl.class.toString()+" =======================================");
+        return container.buildTree(familles); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

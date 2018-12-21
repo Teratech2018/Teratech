@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<ns:services-config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:ns='http://www.megatimgroup.net/services-config'
+    xsi:schemaLocation='http://www.megatimgroup.net/services-config ../../../../target/classes/META-INF/services-config.xsd'>
+    <ns:services>
+        <ns:service name="WESTERN UNION" cycle="30">
+            <ns:listener composer-class="com.megatimgroup.views.helper.WesternComposer" >
+                <ns:property name="inbound" value="TR"></ns:property> 
+            </ns:listener>
+            <ns:actions>
+                <ns:action name="laoding" class="com.megatimgroup.views.helper.LoadingEsbJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action> 
+                <ns:action name="convertion" class="com.megatimgroup.views.helper.ConversionWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.ErrorsFSJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>   
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.CreateWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>                               
+            </ns:actions>
+        </ns:service>    
+        <!-- Service de gestion des fichiers de personnes physiques  -->
+        <ns:service name="PERSONNES PHYSIQUES" cycle="30">
+            <ns:listener composer-class="com.megatimgroup.views.helper.WesternComposer" >
+                <ns:property name="inbound" value="PP"></ns:property> 
+            </ns:listener>
+            <ns:actions>
+                <ns:action name="laoding" class="com.megatimgroup.views.helper.LoadingEsbJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action> 
+                <ns:action name="convertion" class="com.megatimgroup.views.helper.ConversionWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.ErrorsFSJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>   
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.CreateWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>                               
+            </ns:actions>
+        </ns:service>
+        <!-- Service de gestion des fichiers de personnes physiques  -->
+        <ns:service name="PERSONNES MORALES" cycle="30">
+            <ns:listener composer-class="com.megatimgroup.views.helper.WesternComposer" >
+                <ns:property name="inbound" value="PM"></ns:property> 
+            </ns:listener>
+            <ns:actions>
+                <ns:action name="laoding" class="com.megatimgroup.views.helper.LoadingEsbJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action> 
+                <ns:action name="convertion" class="com.megatimgroup.views.helper.ConversionWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.ErrorsFSJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>   
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.CreateWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>                               
+            </ns:actions>
+        </ns:service>
+        <!-- Service de gestion des fichiers de personnes physiques  -->
+        <ns:service name="Operations" cycle="30">
+            <ns:listener composer-class="com.megatimgroup.views.helper.WesternComposer" >
+                <ns:property name="inbound" value="OF"></ns:property> 
+            </ns:listener>
+            <ns:actions>
+                <ns:action name="laoding" class="com.megatimgroup.views.helper.LoadingEsbJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action> 
+                <ns:action name="convertion" class="com.megatimgroup.views.helper.ConversionWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.ErrorsFSJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>   
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.CreateWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>                               
+            </ns:actions>
+        </ns:service>    
+        <!-- Service de gestion des fichiers de personnes physiques  -->
+        <ns:service name="Operations" cycle="30">
+            <ns:listener composer-class="com.megatimgroup.views.helper.DBComposer" >
+                <ns:property name="inbound" value="DB"></ns:property> 
+            </ns:listener>
+            <ns:actions>
+<!--                <ns:action name="laoding" class="com.megatimgroup.views.helper.LoadingEsbJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action> -->
+                <ns:action name="convertion" class="com.megatimgroup.views.helper.ConversionWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.ErrorsFSJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>   
+                <ns:action name="pulling" class="com.megatimgroup.views.helper.CreateWUJob">
+                    <ns:property name="propertyName" value="propertyValue"></ns:property>                    
+                </ns:action>                               
+            </ns:actions>
+        </ns:service>       
+    </ns:services>
+
+</ns:services-config>

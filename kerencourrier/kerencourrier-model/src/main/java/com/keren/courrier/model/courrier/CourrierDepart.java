@@ -13,9 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,7 +21,6 @@ import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
-import com.keren.courrier.model.referentiel.Company;
 import com.keren.courrier.model.referentiel.Correspondant;
 import com.keren.courrier.model.referentiel.DossierCourrier;
 import com.keren.courrier.model.referentiel.LigneDiffusion;
@@ -33,6 +30,7 @@ import com.keren.courrier.model.referentiel.StructureCompany;
 import com.keren.courrier.model.referentiel.TypeCourrier;
 import com.keren.courrier.model.referentiel.UtilisateurCourrier;
 import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -44,24 +42,21 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 
 	private static final long serialVersionUID = -12411984333486963L;
 
-	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true, editable = false , updatable=false, sequence=2)
+	@Predicate(label = "Numéro du Courrier", search = true, optional = true, unique = true, editable = false)
 	private String code;
 	
-	//@Predicate(label = "Reférence d'envoie", search = true, optional = true, unique = true , sequence=2)
+	@Predicate(label = "Reférence du Courrier", search = true, optional = true, unique = true )
 	private String reference;
 
 	@ManyToOne
 	@JoinColumn(name = "T_NATURE")
-	@Predicate(label = "Nature", type = NatureCourrier.class, target = "many-to-one", search = true, sequence=1)
+	@Predicate(label = "Nature", type = NatureCourrier.class, target = "many-to-one", search = true)
 	private NatureCourrier nature;
 
-//	@Predicate(label="Réponse ?",search=false,type=Boolean.class)
-//	private Boolean type = Boolean.FALSE;
-	
-	@Predicate(label = "Type courrier départ", target = "combobox", values = "Initial;Réponse", search = false, sequence=3 ,observable=true)
+	@Predicate(label = "Type courrier départ", target = "combobox", values = "Initial;Réponse", search = false)
 	private String type = "0";
 
-	@Predicate(label = "Mention", target = "combobox", values = "Ordinaire;Confidentiel", search = true, sequence=4)
+	@Predicate(label = "Mention du courrier", target = "combobox", values = "Ordinaire;Confidentiel", search = true)
 	private String porte = "0";
 
 	@Column(name = "T_CAT")
@@ -81,48 +76,37 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 	private Priorite priorite;
 
 	@Column(name = "D_COUR")
-	@Predicate(label = "Date de l'expédition", optional = true, updatable = true, search = false, type = Date.class, target = "date", sequence=5)
+	@Predicate(label = "Date de l'expédition", optional = false, updatable = true, search = false, type = Date.class, target = "date")
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dcourrier;
 
-	@ManyToMany(fetch = FetchType.LAZY )
-	@JoinColumn(name ="DES_ID", unique=true)
-	@Predicate(label = "Destinataire",target = "many-to-many-list",type = Correspondant.class,search = false, sequence=9)
-	private List<Correspondant> correspondant = new ArrayList<Correspondant>();
-	
-	
-//	@ManyToMany(fetch = FetchType.LAZY)
-//	@Predicate(label = "Destinataire", type = Correspondant.class, updatable = false, target = "many-to-many", search = false, sequence=9, optional=true)
-//	private List<Correspondant> correspondant;
+	@ManyToOne
+	@JoinColumn(name = "T_CORRES")
+	@Predicate(label = "Destinataire", type = Correspondant.class, target = "many-to-one", search = true, optional = false)
+	private Correspondant correspondant;
 
 	@ManyToOne
 	@JoinColumn(name = "T_SERV")
-	@Predicate(label = "Service initiateur", type = StructureCompany.class, target = "many-to-one", search = true, optional = false,
-	observable = true, updatable = false, sequence=8)
+	@Predicate(label = "Service initiateur", type = StructureCompany.class, target = "many-to-one", search = true, optional = false, observable = true, updatable = false)
 	private StructureCompany service;
 
 	@ManyToOne
-	@JoinColumn(name = "SOCIETE_EXP_ID")
-	@Predicate(label = "Expéditeur", type = Company.class, target = "many-to-one", search = true, sequence=10,editable=false)
-	private Company expediteur;
+	@JoinColumn(name = "DES_ID")
+	@Predicate(label = "Expéditeur", type = UtilisateurCourrier.class, target = "many-to-one", search = true)
+	@Observer(observable = "service", source = "field:responsable")
+	private UtilisateurCourrier expediteur;
 
 	@ManyToOne
 	@JoinColumn(name = "C_COUR")
-	@Predicate(label = "Courrier Arrivé", type = Courrier.class, target = "many-to-one", optional = true, hidden = "currentObject.type=='0'||currentObject.type==null"
-			, sequence=12)
+	@Predicate(label = "Courrier Arrivéé", type = Courrier.class, target = "many-to-one", optional = true, hidden = "currentObject.type=='0'")
 	private Courrier courrier;
 
+	@Predicate(label = "Signataire", group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
+	private String signataire;
 
 	@Lob
-	@Predicate(label = "Objet", target = "textarea" , optional=false, sequence=11)
+	@Predicate(label = "Objet", target = "textarea", group = true, groupName = "group1", groupLabel = "objet/Pièces jointes")
 	private String objet;
-	
-	
-	
-	@ManyToOne
-	@JoinColumn(name = "SIGN_ID")
-	@Predicate(label = "Signataire", optional=false, sequence=7,type = UtilisateurCourrier.class, target = "many-to-one")
-	private UtilisateurCourrier signataire;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "COU_ID")
@@ -130,8 +114,8 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 	private List<FichierLie> piecesjointes = new ArrayList<FichierLie>();
 
 	@Temporal(javax.persistence.TemporalType.DATE)
-//	@Predicate(label = "Date limite", type = Date.class, target = "date", search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
-//	@Observer(observable = "priorite", source = "method:datelimite", parameters = "priorite")
+	@Predicate(label = "Date limite", type = Date.class, target = "date", search = false, group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
+	@Observer(observable = "priorite", source = "method:datelimite", parameters = "priorite")
 	private Date limite;
 
 	@ManyToOne
@@ -185,7 +169,7 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 
 	public CourrierDepart(String code, NatureCourrier nature, String porte, String type, String categorie,
 			TypeCourrier typecourrier, Courrier courrier, Priorite priorite, Date dcourrier,
-			Correspondant correspondant, StructureCompany service, Company expediteur, UtilisateurCourrier signataire,
+			Correspondant correspondant, StructureCompany service, UtilisateurCourrier expediteur, String signataire,
 			String objet, List<FichierLie> piecesjointes, List<LigneDiffusion> diffusions, Date limite,
 			DossierCourrier dossier, String motscles, String state, UtilisateurCourrier source,
 			BorderoCourrier bordero) {
@@ -199,6 +183,7 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		this.courrier = courrier;
 		this.priorite = priorite;
 		this.dcourrier = dcourrier;
+		this.correspondant = correspondant;
 		this.service = service;
 		this.expediteur = expediteur;
 		this.signataire = signataire;
@@ -224,8 +209,9 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		}
 		// this.confidentiel = dep.confidentiel;
 		this.dcourrier = dep.dcourrier;
-		this.correspondant = new ArrayList<Correspondant>();
-
+		if (dep.correspondant != null) {
+			this.correspondant = new Correspondant(dep.correspondant);
+		}
 		this.nature = dep.nature;
 		this.objet = dep.objet;
 		this.limite = dep.limite;
@@ -235,17 +221,14 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		}
 		this.state = dep.state;
 		// this.motscles = dep.motscles;
-		if(dep.dossier!=null){
-			this.dossier = new DossierCourrier(dep.dossier);
-		}
-		 
+		// this.dossier = dep.dossier;
 		if (dep.source != null) {
 			this.source = new UtilisateurCourrier(dep.source);
 		}
 		if (dep.expediteur != null) {
-			this.expediteur = new Company(dep.expediteur);
+			this.expediteur = new UtilisateurCourrier(dep.expediteur);
 		}
-		this.signataire = new UtilisateurCourrier(dep.signataire);
+		this.signataire = dep.signataire;
 		this.porte = dep.porte;
 
 		if (dep.courrier != null) {
@@ -258,7 +241,6 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 			this.bordero = new BorderoCourrier(dep.getBordero());
 		}
 		this.type = dep.type;
-		this.motscles=dep.motscles;
 		
 		this.reference=dep.getReference();
 	}
@@ -376,11 +358,11 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		this.limite = limite;
 	}
 
-	public Company getExpediteur() {
+	public UtilisateurCourrier getExpediteur() {
 		return expediteur;
 	}
 
-	public void setExpediteur(Company expediteur) {
+	public void setExpediteur(UtilisateurCourrier expediteur) {
 		this.expediteur = expediteur;
 	}
 
@@ -392,11 +374,11 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		this.dcourrier = dcourrier;
 	}
 
-	public List<Correspondant> getCorrespondant() {
+	public Correspondant getCorrespondant() {
 		return correspondant;
 	}
 
-	public void setCorrespondant(List<Correspondant>  correspondant) {
+	public void setCorrespondant(Correspondant correspondant) {
 		this.correspondant = correspondant;
 	}
 
@@ -448,11 +430,11 @@ public class CourrierDepart extends BaseElement implements Serializable, Compara
 		this.source = source;
 	}
 
-	public UtilisateurCourrier getSignataire() {
+	public String getSignataire() {
 		return signataire;
 	}
 
-	public void setSignataire(UtilisateurCourrier signataire) {
+	public void setSignataire(String signataire) {
 		this.signataire = signataire;
 	}
 

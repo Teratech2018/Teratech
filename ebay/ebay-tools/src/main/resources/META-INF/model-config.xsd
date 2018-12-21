@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.megatimgroup.net/services-config"
+           xmlns:tns="http://www.megatimgroup.net/services-config"
+           elementFormDefault="qualified">
+
+
+    <xs:element name="services-config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:services" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="services">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:service" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="service">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:listener" minOccurs="1" maxOccurs="1" />
+                <xs:element ref="tns:actions" minOccurs="1" maxOccurs="1" />               
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="cycle" type="xs:int" use="required" />           
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="listener">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:property" minOccurs="0" maxOccurs="unbounded" />                                  
+            </xs:sequence>	
+            <xs:attribute name="composer-class" type="xs:string" use="required" />
+            <!--<xs:attribute name="inbound" type="xs:string" use="required" default="TR" />-->		
+        </xs:complexType>
+    </xs:element>
+        
+    <xs:element name="actions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:action" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>			
+        </xs:complexType>
+    </xs:element>  
+        
+    <xs:element name="action"  >
+        <xs:complexType>
+             <xs:sequence>
+                <xs:element ref="tns:property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />	
+            <xs:attribute name="class" type="xs:string" use="required"  />            	
+        </xs:complexType>
+    </xs:element>
+        
+    <xs:element name="property">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="value" type="xs:string" use="required" />           	
+        </xs:complexType>
+    </xs:element>   
+</xs:schema>

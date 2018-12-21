@@ -3,257 +3,37 @@
     <theme>
 	     <principal>
 		       <template>
-			          <![CDATA[				   
-						  <!-- Navigation -->
-						 <style>
-						     .principal-background {
-							      background: url(http://localhost:8080/keren/auth/resource/static/material.jpg) ;
-                                  background-repeat: initial;
-							 }
-							 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
-								   background-color: white;
-								}
-						     .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
-								   background-color: #efefef;
-								}
-							 .modal-header{
-							      padding:15px;
-								  border-bottom:1px solid #e5e5e5;
-								  background-color:#f5f5f5;
-							   }
-							 .modal-footer{
-							     padding:15px;
-								 border-top:1px solid #e5e5e5;
-								 background-color:#f5f5f5;
-								 text-align:right;
-							  }
-							 .navbar-inverse{
-							    background-color
-							 }
-						 </style>
-                         <div ng-show="principalscreen==true">						 
-							 <nav class="navbar navbar-inverse navbar-fixed-top navbar-sm">
-							  <div class="container-fluid">
-								<div class="navbar-header">
-								  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-									<span class="sr-only">Toggle navigation</span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-								  </button>
-								  <!-- <a class="navbar-brand" href="#">Project name</a> -->
-								</div>
-								<div id="navbar" class="navbar-collapse collapse ">         
-									<ul class="nav navbar-nav navbar-right left-menu-bar">   
-									   <li style="margin: 0px;">                  
-											<a href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="auto" title="{{'MAIL' | translate}}">
-												<span > 
-													<span class="glyphicon glyphicon-bell"  aria-hidden="true" style="display: inline-block;margin: 0px;">                                    
-													</span>
-													<span class="label label-danger" ng-hide="numberofnewmessages==0" style="display: inline-block;font-size: 70%;margin: 0px;">
-													  {{numberofnewmessages}}
-												   </span> 
-											   </span>  
-											</a> 
-															
-									  </li>    
-									  <li style="margin: 0px;">
-										  <a  data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin: 0px;"  data-toggle="tooltip" data-placement="bottom"  title="{{'Conversation' | translate}}">
-											<span class="glyphicon glyphicon-comment"  aria-hidden="true" style="margin: 0px;"></span>
-										  </a> 
-										  <ul class="dropdown-menu media-list"  role="menu">
-											   <li role="presentation" class="media" style="padding-left: 5px;"   ng-repeat="item in tchatinput">                           
-													<div class="media-body">
-														<div class="media">
-															<a class="pull-left" href="#"   ng-click="tchatwindow(item)">
-																<img class="media-object img-circle" style="max-height:40px;" src="img/photo.png" />
-															</a>                                        
-															<div class="media-body" >
-																<a href="#" ng-click="tchatwindow(item)">
-																	<h5 class="text-muted">{{item.designation | translate}}</h5>   
-																</a>
-																								
-															</div>
-														</div>
-													</div>                        
-											 </li>                     
-										  </ul>                     
-									  </li>         
-									  <li  class="dropdown">
-										  <a  id="Administration" data-target="#" data-toggle="dropdown" 
-											  aria-haspopup="true" role="button" aria-expanded="true">
-												{{'Administration' | translate}}
-											   <span class="caret"></span>
-										  </a> 
-										  <ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" >{{'Documentation' | translate}}</a>
-											 </li>
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" >{{'Assistance' | translate}}</a>
-											 </li>
-											 <li role="presentation" class="divider"></li>
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" >{{'Préference' | translate}}</a>                     
-											 </li>
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" ng-click="updatePassword()">{{'UPPWD' | translate}}</a>                     
-											 </li>
-											 <li role="presentation">
-												 <a role="menuitem"   tabindex="-1" href="#" ng-click="deconnexion()">{{'Déconnexion' | translate}}</a>
-											 </li>
-										  </ul>                                     
-									  </li>
-								  </ul>
-								  <!-- <form class="navbar-form navbar-right">
-									<input type="text" class="form-control" placeholder="Search...">
-								  </form>  -->        
-								</div>
-							  </div>
-							</nav>
-								<!-- Page Content -->
-							<div class="container-fluid" style="margin: auto;position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);">
-							 <div class="row">       
-								  <div class="col-lg-2 col-md-2 col-sm-2  col-xs-3  text-center"  style="padding-bottom: 30px;height: 100px;width: 100px;">
-									<a href="#" ng-click="discussionModule()"   data-toggle="tooltip" data-placement="auto" title="{{'DISCUSION_DESC' | translate}}">
-									  <img class="img-fluid img-thumbnail" src="img\\discuss.png" alt="" style="width: 100%;height: 80%;">
-									</a>
-									<small style="color: white;">{{'Discussion' | translate}}</small>
-								  </div>   
-								  <div class="col-lg-2 col-md-2 col-sm-2  col-xs-3  text-center" style="padding-bottom: 30px;height: 100px;width: 100px;" >
-									<a href="#" ng-click="calendrierModule()"   data-toggle="tooltip" data-placement="auto" title="{{'CALENDAR_DESC' | translate}}">
-									  <img class="img-fluid img-thumbnail" src="img\\calendar.png" alt="" style="width: 100%;height: 80%;">
-									</a>
-									<small style="color: white;">{{'Calendrier' | translate}}</small>
-								  </div>  
-								  <div class="col-lg-2 col-md-2 col-sm-2  col-xs-3  text-center"  style="padding-bottom: 30px;height: 100px;width: 100px;" ng-repeat="module in modules" >
-									<a href="#" ng-click="getModule(module)"    data-toggle="tooltip" data-placement="auto" title="{{module.shortDescription | translate}}" >
-									  <img class="img-fluid img-thumbnail" id="application{{module.id}}" ng-src="http://localhost:8080/keren/auth/resource/static/{{module.icon}}" alt="" style="width: 100%;height: 80%;">
-									</a>
-									<small style="color: white;">{{module.label | translate}}</small>
-								  </div>
-								  <div class="col-lg-2 col-md-2 col-sm-2  col-xs-3  text-center" style="padding-bottom: 30px;height: 100px;width: 100px;" ng-hide="hideApplicationModule()" >
-									<a href="#" ng-click="applicationModule()"   data-toggle="tooltip" data-placement="auto" title="{{'APPLI_DESC' | translate}}">
-									  <img class="img-fluid img-thumbnail" src="img\\application.png" alt="" style="width: 100%;height: 80%;">
-									</a>
-									<small style="color: white;">{{'Application' | translate}}</small>
-								  </div>  
-								  <div  ng-hide="hideConfiguration()" class="col-lg-2 col-md-2 col-sm-2  col-xs-3  text-center"  style="padding-bottom: 30px;height: 100px;width: 100px;">
-									<a href="#" ng-click="configurationModuleAction()"   data-toggle="tooltip" data-placement="auto" title="{{'CONFIG_DESC' | translate}}">
-									  <img class="img-fluid img-thumbnail" src="img\\config.png" alt="" style="width: 100%;height: 80%;">
-									</a>
-									<small style="color: white;">{{'Configuration' | translate}}</small>
-								  </div>  							  
-								</div>
-							</div>
-					     </div>
-						 <!-- Navigation -->
-						<div id="modulecontainer" ng-show="principalscreen==false" style="position: absolute;width: 100%;height: 100%;">
-							 <nav class="navbar navbar-inverse navbar-fixed-top navbar-sm">
-							  <div class="container-fluid">
-								<div class="navbar-header">
-								  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar2" aria-expanded="false" aria-controls="navbar2">
-									<span class="sr-only">Toggle navigation</span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-								  </button>
-								  <a class="navbar-brand" href="#" ng-click="gotoModulesMenu()">
-									 <span class="glyphicon glyphicon-th"  aria-hidden="true" ></span>  
-									 {{currentModule.label | translate}}
-								  </a>
-								</div>
-								<div id="navbar2" class="navbar-collapse collapse">					 
-                                    <ul class="nav navbar-nav navbar-left"  ng-repeat="menu in currentModule.groups"  ng-hide="menu.showmenu==false"> 
-										  <li  class="dropdown">
-											  <a  id="menu{{menu.id}}" data-target="#" data-toggle="dropdown" 
-												  aria-haspopup="true" role="button" aria-expanded="true">
-													{{menu.label | translate}}
-												   <span class="caret"></span>
-											  </a> 
-											  <ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">
-												 <li role="presentation" ng-repeat="item in menu.actions"   ng-hide="item.securitylevel==3" ng-if="item.hide==false" ng-class="getMenuClass(item)">
-												   <a role="menuitem"   tabindex="-1" href="#" ng-click="getSelectAction(item)"  ng-class="{'activemenu-color':item.name==currentAction.name}">{{item.label | translate}}</a>
-												 </li>                     
-											  </ul>                                     
-										  </li>
-									</ul>								
-									<ul class="nav navbar-nav navbar-right left-menu-bar">   
-									   <li style="margin: 0px;">                  
-											<a href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="auto" title="{{'MAIL' | translate}}">
-												<span > 
-													<span class="glyphicon glyphicon-bell"  aria-hidden="true" style="display: inline-block;margin: 0px;">                                    
-													</span>
-													<span class="label label-danger" ng-hide="numberofnewmessages==0" style="display: inline-block;font-size: 70%;margin: 0px;">
-													  {{numberofnewmessages}}
-												   </span> 
-											   </span>
-											</a> 
-															
-									  </li>    
-									  <li style="margin: 0px;">
-										  <a  data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin: 0px;"  data-toggle="tooltip" data-placement="bottom"  title="{{'Conversation' | translate}}">
-											<span class="glyphicon glyphicon-comment"  aria-hidden="true" style="margin: 0px;"></span>
-										  </a> 
-										  <ul class="dropdown-menu media-list"  role="menu">
-											   <li role="presentation" class="media" style="padding-left: 5px;"   ng-repeat="item in tchatinput">                           
-													<div class="media-body">
-														<div class="media">
-															<a class="pull-left" href="#"   ng-click="tchatwindow(item)">
-																<img class="media-object img-circle" style="max-height:40px;" src="img/photo.png" />
-															</a>                                        
-															<div class="media-body" >
-																<a href="#" ng-click="tchatwindow(item)">
-																	<h5 class="text-muted">{{item.designation | translate}}</h5>   
-																</a>
-																								
-															</div>
-														</div>
-													</div>                        
-											 </li>                     
-										  </ul>                     
-									  </li>         
-									  <li  class="dropdown">
-										  <a  id="Administration" data-target="#" data-toggle="dropdown" 
-											  aria-haspopup="true" role="button" aria-expanded="true">
-												{{'Administration' | translate}}
-											   <span class="caret"></span>
-										  </a> 
-										  <ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" >{{'Documentation' | translate}}</a>
-											 </li>
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" >{{'Assistance' | translate}}</a>
-											 </li>
-											 <li role="presentation" class="divider"></li>
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" >{{'Préference' | translate}}</a>                     
-											 </li>
-											 <li role="presentation">
-											   <a role="menuitem"   tabindex="-1" href="#" ng-click="updatePassword()">{{'UPPWD' | translate}}</a>                     
-											 </li>
-											 <li role="presentation">
-												 <a role="menuitem"   tabindex="-1" href="#" ng-click="deconnexion()">{{'Déconnexion' | translate}}</a>
-											 </li>
-										  </ul>                                     
-									  </li>
-								  </ul>								        
-								</div>
-							  </div>
-							</nav>						    	
-							<div class="row" style="height: 100%;margin-right:-20px;background-color:#ffffff;">   
-								 <header-builder entity-metadata="{{metaData}}"  full-screen="false" 
-											   select-action="{{currentAction}}"     data-value="{{modules}}"   ng-show="hideOther==false">             
-								 </header-builder>        
-								<div ng-controller="calendarCtrl" style="height: 100%;background-color: white;">
-								  <ng-include src="'modules/calendrier/views/calendar.html'"  ng-show = "showCalendar==true"></ng-include>
-								 </div>
-								 <div ng-controller="discussionCtrl"  style="width: 100%;margin-left: 15.5px;">
-								  <ng-include src="'modules/discussions/views/discussion.html'"  ng-show = "showDiscussion==true"></ng-include>
-								 </div>								 
-							</div>						    
-						</div>
+			          <![CDATA[
+						<div  style="height: 100%;width:100%;">					  
+							  <!-- Navigation -->					    
+							 <style>
+								 .principal-background {
+									  background: url(http://localhost:8080/keren/auth/resource/static/material.jpg) ;
+									  background-repeat: initial;
+								 }
+								 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+									   background-color: white;
+									}
+								 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+									   background-color: #efefef;
+									}
+								 .modal-header{
+									  padding:15px;
+									  border-bottom:1px solid #e5e5e5;
+									  background-color:#f5f5f5;
+								   }
+								 .modal-footer{
+									 padding:15px;
+									 border-top:1px solid #e5e5e5;
+									 background-color:#f5f5f5;
+									 text-align:right;
+								  }
+								 .navbar-inverse{
+									background-color
+								 }
+							 </style>
+							 <ng-template src="theme/views/principaltemplate.xml"></ng-template>
+					   </div>
                       ]]>		
 			    </template>			 
 		 </principal>	
@@ -267,354 +47,78 @@
 		 </containertemplate>	
          <treetemplate>
 		   <template>
-		     <![CDATA[ 
-			      <style type="text/css">
-					  .search__field {
-						background-color: transparent;
-						border: solid 1px #f5f5f5;
-						width: 100%;
-						border-bottom: solid 1px #dddddd;
-						border-radius: 0;
-						cursor: pointer; 
-					   }
-					.search__icon {
-					  position: absolute;
-					  top: 0;
-					  right: 0;
-					  background-color: #e9f1f4;
-					  width: 10px;
-					  height: 20px;
-					  font-size: 1.35em;
-					  text-align: center;
-					  border-color: transparent;
-					  border-radius: 50%;
-					  pointer-events: none;
-					  display: inline-block; 
-					}
-					.panel-container{
-						background: #9d9d9d ;
-					}
-					.calendar-panel{
-					     background-color: white;
-						 margin: 20px;
-						 padding: 5px;
-					}
-					.dashboard-header{
-					     background-color: #f5f5f5 !important;
-                         color:#897575 !important;
-                         border-color:#f5f5f5 !important;						 
-					}
-					.dashboard-body{
-					   
-					}
-					</style>
-					<div class="col-sm-12  col-md-12  panel-container"  id="innerpanel"  style="margin-bottom: -20px;height:100%;">
-					   <div class="panel panel-defaul container-panel"  style="margin-bottom: 0px;">
-								 <div class="btn-toolbar" role="toolbar"   aria-label="Toolbar1"  style="margin-bottom: -20px; ">
-									 <nav aria-label="breadcrumb">
-									  <ol class="breadcrumb">
-										<li class="breadcrumb-item"  ng-repeat="item in navigatorcontainer.mementos">
-										   <a href="#"  ng-click="getActionByName(item.action,null,null,item.item)">{{item.label | translate}}</a>
-										</li> 
-										<li>                   
-										  <div class="input-group col-md-4 pull-right" >
-											<input class="search__field" type="text"  ng-model="searchCriteria" name="x" placeholder="Search term..." >
-											<span class="input-group-btn">
-											  <button class="btn btn-default btn-sm" type="button" ng-click="searchAction()" style="margin-top: -7px;border:solid 1px #f5f5f5;">
-												  <span class="glyphicon glyphicon-search">
-													<span class="sr-only">Search...</span>
-												  </span>
-											  </button>
-											</span>
-										  </div>   
-										</li>                   
-									  </ol>
-									</nav>                       
-								  </div> 
-								 <div class="btn-toolbar" role="toolbar"  aria-label="Toolbar2" style="background-color: #f5f5f5;padding: 10px;">
-									  <div class="btn-group"  role="group"  aria-label="group 1" ng-hide="showback==false">
-										  <button type="button"  class="btn btn-default btn-sm" ng-click="backAction()">{{'Quitter' | translate}}</button>                       
-									   </div>
-									   <div class="btn-group"  role="group"  aria-label="group 2"  ng-hide="desablecreate==true">
-										  <button type="button"  class="btn btn-primary  btn-sm" ng-click="addElementAction()">{{'Creer' | translate}}</button>                       
-									   </div>
-									   <div class="btn-group dropdown"  role="group"  aria-label="group 3"  ng-hide="desableupdate==true">
-										  <button type="button"  class="btn btn-default  btn-sm"  ng-click="importAction()" id="importerbtn">{{'Importer' | translate}}</button>                            
-									   </div>
-									   <div class="btn-group"    role="group"  aria-label="group 4" ng-hide="desableprint==true">
-										  <button type="button"  class="btn btn-default  btn-sm dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" id="imprimerbtn">{{'Imprimer' | translate}}
-											  <span class="caret"></span>
-										  </button>    
-										  <ul  id="print_menus" class="dropdown-menu" role="menu"   aria-labelledby="imprimerbtn">
-												<li role="presentation">
-												  <a role="menuitem" tabindex="-1" href="#"  ng-click="printAction()">
-													 {{'Imprimer' | translate}} 
-												  </a>                            
-											    </li>       
-										  </ul>                  
-									   </div>
-									   <div class="btn-group"    role="group"  aria-label="group 5" ng-hide="desableprint==true">
-										  <button type="button"  class="btn btn-default  btn-sm dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" id="actionsbtn" ng-show="showActions()">
-											  {{'Actions' | translate}}
-											  <span class="caret"></span>
-										  </button>    
-										  <ul class="dropdown-menu" role="menu"   aria-labelledby="actionsbtn"  id="actions_menu">
-												<li role="presentation">
-												  <a role="menuitem" tabindex="-1" href="#"  ng-click="exportAction()">
-													 {{exportbtnlabel | translate}}
-												  </a>                            
-											   </li>
-											   <li role="presentation">
-												  <a role="menuitem" tabindex="-1" href="#"  ng-click="updateAction()" ng-hide="desableupdate==true">
-													 {{updatebtnlabel | translate}}
-												  </a>                            
-											   </li>
-											   <li role="presentation">
-												  <a role="menuitem" tabindex="-1" href="#"  ng-click="deleteListAction()" ng-hide="desabledelete==true">
-													 {{deletebtnlabel | translate}}
-												  </a>                            
-											   </li>       
-										  </ul>                  
-									   </div>
-									  <span class="pull-right">
-										    <span style="margin-left: 10px;display: inline-block;">
-												  <div class="btn-group"  role="group"  aria-label="group 6">
-													<span class="btn btn-default  btn-sm">
-													   {{pagination.currentPage}}-{{pagination.endIndex}} / {{pagination.totalPages}}
-													</span>
-													<button type="button"  class="btn btn-default  btn-sm" ng-click="pagination.previous()" ng-disabled="!pagination.hasprevious()">
-													   <span class="glyphicon glyphicon-chevron-left"  aria-hidden="true"></span>
-													</button>  
-													<button type="button"  class="btn btn-default  btn-sm" ng-click="pagination.next()" ng-disabled="!pagination.hasnext()">
-													   <span class="glyphicon glyphicon-chevron-right"  aria-hidden="true"></span>
-													</button>                   
-												 </div> 
-											</span>	
-                                            <span >
-												  <div class="btn-group"  role="group"  aria-label="group 7" id="viewmodeid">
-																	
-												 </div> 
-											</span>																						
-									  </span>         
-								 </div>
-							  </div>
-							  <div class="panel-body"  style="padding: 0px;height:85.3%;overflow:auto;" id="datatable">
-							    <div id="datawidget" class="">
-								  <table  class="table table-striped table-hover  table-responsive">
-									  <thead>
-										  <tr>
-											<th><input type="checkbox" ng-model="module.selected"
-													   ng-click="onCheckboxClick()"></th>
-											<th>Module Name</th>     
-											<th>Module Description</th>                            
-										  </tr>
-									  </thead>
-									  <tbody>
-										 <tr ng-repeat=" module in modules">
-										   <td><input type="checkbox" ng-model="module.selected"></td>
-											<td>{{module.name}}</td>
-											<td>{{module.shortDescription}}</td>
-										 </tr>
-									  </tbody>                  
-								  </table>
-								</div>  
-							  </div>          
-						   </div>
-					</div>
+		     <![CDATA[
+                <div  style="height: 100%;width:100%;">			 
+					  <style type="text/css">
+					      .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+									   background-color: white;
+									}
+						  .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+							   background-color: #efefef;
+							}
+						  .search__field {
+							background-color: transparent;
+							border: solid 1px #f5f5f5;
+							width: 100%;
+							border-bottom: solid 1px #dddddd;
+							border-radius: 0;
+							cursor: pointer; 
+						   }
+						.search__icon {
+						  position: absolute;
+						  top: 0;
+						  right: 0;
+						  background-color: #e9f1f4;
+						  width: 10px;
+						  height: 20px;
+						  font-size: 1.35em;
+						  text-align: center;
+						  border-color: transparent;
+						  border-radius: 50%;
+						  pointer-events: none;
+						  display: inline-block; 
+						}
+						.panel-container{
+							background: #9d9d9d ;
+						}
+						.calendar-panel{
+							 background-color: white;
+							 margin: 20px;
+							 padding: 5px;
+						}
+						.dashboard-header{
+							 background-color: #f5f5f5 !important;
+							 color:#897575 !important;
+							 border-color:#f5f5f5 !important;						 
+						}
+						.dashboard-body{
+						   
+						}
+
+						</style>
+						<ng-template src="theme/views/treetemplate.xml"></ng-template>
+				 </div>
 			 ]]>
 		   </template>
          </treetemplate>
          <formtemplate>
 		     <template>
 			     <![CDATA[ 
-				     <style type="text/css">
-					    .panel-container{
-							background: #9d9d9d ;
-						}
-						.workflowbar{
-							margin-top: -10px;
-							margin-bottom: 0px;
-							border-top:solid 1px #a8a8a8;
-							background-color: #f0eeee;
-							background-image: linear-gradient(to bottom, #fcfcfc, #dedede);
-						}
-					</style>
-				     <div class="col-sm-12 col-md-12"  id="innerpanel" style="height: 100%;">    
-						<div class="panel panel-default" style="padding:0;height:100%;">
-						  <div class="panel-container" style="height: 100% ;border:0px;">
-							  <div class="btn-toolbar" role="toolbar"   aria-label="Toolbar1"  style="margin-bottom: -20px; ">
-								 <nav aria-label="breadcrumb">
-								  <ol class="breadcrumb">
-									<li class="breadcrumb-item" ng-repeat="item in navigatorcontainer.mementos">
-										<a href="#"  ng-click="getActionByName(item.action,null,null,item.item)">{{item.label | translate}}</a>
-									</li>                                          
-								  </ol>
-								</nav>                       
-							  </div> 
-							   <div class="btn-toolbar" role="toolbar"  aria-label="Toolbar2" style="background-color: #f5f5f5;padding: 10px;margin-bottom:5px;">
-									  <div class="btn-group"  role="group"  aria-label="group 1"     ng-hide="desablecreateedit">
-										<button type="button"  class="btn btn-primary btn-sm" ng-click ="saveOrUpdate()">{{'Enregistrer' | translate}}</button>                    
-									  </div>
-									  <div class="btn-group"  role="group"  aria-label="group 1">                    
-										<button type="button"  class="btn btn-default btn-sm" ng-hide="hideannuler===true" ng-click="annulerAction()">{{'Quitter' | translate}}</button>
-									  </div>               
-									  <div class="btn-group  dropdown"    role="group"  aria-label="group 2"   ng-hide="desableprintedit">                     
-										  <button type="button"  class="btn btn-default dropdown dropdown-toggle btn-sm" data-toggle="dropdown"
-																aria-haspopup="false"  aria-expanded="true" id="imprimerbtn">
-											   {{'Imprimer' | translate}} 
-											   <span class="caret"></span>
-										  </button>
-										  <ul class="dropdown-menu"  role="menu"  aria-labelledby="imprimerbtn" id="print_menus">  
-											 <li role="presentation">
-												<a role="menuitem" tabindex="-1" href="#" ng-click="printAction()">
-												   {{'Imprimer' | translate}}
-												</a>                            
-											 </li>                         
-										  </ul>                        
-									 </div>
-									 <div class="btn-group  dropdown"    role="group"  aria-label="group 2"   ng-hide="iscreateOperation()">          
-										  <button type="button"  class="btn btn-default dropdown dropdown-toggle btn-sm" data-toggle="dropdown"
-																aria-haspopup="false"  aria-expanded="true" id="pjbtn" ng-show="showpjmenu==true">
-											   {{'PJ' | translate}} 
-											   <span class="caret"></span>
-										  </button>
-										  <ul class="dropdown-menu"  role="menu"  aria-labelledby="piecejointebtn" id="pj_menus_id">               
-											 <li role="presentation">
-												<a role="menuitem" tabindex="-1" href="#" ng-click="printAction()">
-												   {{'Ajouter' | translate}}
-												</a>
-											 </li>                         
-										  </ul> 
-										  <input type="file" id="pj_file_input" style="display: none" fileinput="file" onchange="angular.element(this).scope().gererChangementFichier(event)">                       
-									 </div>
-									 <div class="btn-group  dropdown"    role="group"  aria-label="group 2"   ng-hide="hideMenuActions()">            
-										 <button type="button"  class="btn btn-default btn-sm dropdown dropdown-toggle" data-toggle="dropdown"
-																aria-haspopup="false"  aria-expanded="true" id="actionsbtn">
-															  {{'Actions' | translate}} 
-											  <span class="caret"></span>
-										  </button>
-										  <ul class="dropdown-menu"  role="menu"  aria-labelledby="actionsbtn" id="actions_menu">  
-											 <li role="presentation"  ng-hide="showApplication==false">
-												<a role="menuitem" tabindex="-1" href="#"  ng-click="installAction()">
-												   {{exportbtnlabel | translate}}
-												</a>                            
-											 </li>
-											 <li role="presentation"  ng-hide="desableupdateedit">
-												<a role="menuitem" tabindex="-1" href="#"  ng-click="updateAction()">
-												   {{updatebtnlabel | translate}}
-												</a>                            
-											 </li>
-											  <li role="presentation"  ng-hide="desableupdateedit || hideannuler===true">
-												<a role="menuitem" tabindex="-1" href="#"  ng-click="dupliquerAction()">
-												   {{'Dupliquer' | translate}}
-												</a>                            
-											 </li>
-											 <li role="presentation"  ng-hide="desableupdateedit || hideannuler===true">
-												<a role="menuitem" tabindex="-1" href="#"  ng-click="addElementAction()">
-												   {{'Creer' | translate}}
-												</a>                            
-											 </li>
-											 <li role="presentation"  ng-hide="desabledeleteedit">
-												<a role="menuitem" tabindex="-1" href="#"  ng-click="deleteAction()">
-												   {{deletebtnlabel | translate}}
-												</a>                            
-											 </li>
-										  </ul>                      
-									 </div>
-									  <span class="pull-right"  ng-hide="iscreateOperation()">
-										<span style="margin-left: 10px;display: inline-block;">
-											  <div class="btn-group"  role="group"  aria-label="group 6">
-												<span class="btn btn-default  btn-sm">
-												   {{pagination.currentPage}}/ {{pagination.totalPages}}
-												</span>
-												<button type="button"  class="btn btn-default  btn-sm" ng-click="pagination.previousPage()" ng-disabled="!pagination.hasPreviousPage()">
-												   <span class="glyphicon glyphicon-chevron-left"  aria-hidden="true"></span>
-												</button>  
-												<button type="button"  class="btn btn-default  btn-sm" ng-click="pagination.nextPage()" ng-disabled="!pagination.hasNextPage()">
-												   <span class="glyphicon glyphicon-chevron-right"  aria-hidden="true"></span>
-												</button>                   
-											 </div> 
-										</span>                    
-									  </span>         
-								 </div>
-								 <div class="btn-toolbar" role="toolbar"   aria-label="Toolbar1"  style="margin-bottom: -20px;margin-top: -15px;" id="workflow_menu_id"></div> 
-								<!-- BODY PANEL -->
-							  <div id="detail-panel-header"></div> 
-							  <div class="panel-body panel-container" style="border:0px;height:79%; margin-top: 25px;overflow: auto;padding-bottom:40px;">          
-								   <div  style="margin-left:4%;margin-right:4%;margin-top:2%;background-color:white;padding:30px;">
-									  <div id="detail-panel-body"></div> 
-								   </div>
-                                   <div class="col-sm-12 col-md-12" style="background-color: white;padding:0;"   ng-show="shownotepanel()">
-									   <div class="panel-heading">
-											<div class="btn-group"  role="group"  aria-label="group 1">
-											  <button type="button"  class="btn btn-primary btn-sm" ng-click ="messagesAction()">
-													Nouveau Message
-											  </button>                    
-										   </div>
-										   <div class="btn-group"  role="group"  aria-label="group 1" style="margin-left: 10px;">
-											  <a href="#"  class="a-sm" style="border:none;text-decoration: none;" ng-click ="notesInterneAction()">Enregistrer une note interne</a>                    
-										   </div>
-										  <span class="pull-right">
-												 <div class="btn-group"  role="group"  aria-label="group 1" style="right: 150px;">
-													<button type="button"  class="btn btn-default btn-sm" ng-click ="suivreAction()" ng-if="activefollower==false">
-														 Ne pas suivre
-														 <span class="glyphicon glyphicon-remove" aria-hidden="true">
-													</button> 
-													<button type="button"  class="btn btn-default btn-sm" ng-click ="suivreAction()" ng-if="activefollower==true">
-														 Abonnée(s) <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-													</button>                    
-												 </div>
-												<div class="btn-group  dropdown"    role="group"  aria-label="group 2"  style="right: 120px;">                     
-													<a href="#"  class="dropdown dropdown-toggle btn-sm" data-toggle="dropdown"
-																		  aria-haspopup="false"  aria-expanded="true" id="followerbtn">                                     
-														 <span class="caret"></span>
-														 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-													</a>
-													<ul class="dropdown-menu"  role="menu"  aria-labelledby="followerbtn" id="followermenuid">  
-													   <li role="presentation">
-														  <a role="menuitem" tabindex="-1" href="#"  ng-click="editPanelAjoutAborne()">
-															 Ajouter des abonnées
-														  </a>                            
-													   </li>      
-													   <li role="presentation">
-														  <a role="menuitem" tabindex="-1" href="#"  ng-click="editPanelAjoutCanaux()">
-															 Ajouter des canaux
-														  </a>                            
-													   </li>    
-													   <li class="dropdown-divider"></li>                  
-													</ul>                        
-											   </div>
-										  </span>
-									   </div>
-									   <div class="panel-heading">
-										  <div class="input-group"  ng-show="enablefollowerpanel==true">
-											  <input type="text" class="form-control" id="name" placeholder="Votre message" ng-required="true" ng-model="dataCache.messageobject.body" ng-minlength="2">
-											  <div class="input-group-btn dropdown" role="group" aria-label="group 2">
-												 <button type="button" class="btn btn-default dropdown dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" id="pjidbtn" ng-click="imageClick('followerfileinput_id')">
-													<span class="glyphicon  glyphicon-paperclip" aria-hidden="true" style="color: blue;"></span>
-													<span class="caret"></span>
-												 </button>
-												 <input type="file" id="followerfileinput_id" style="display: none" fileinput="file"   onchange="angular.element(this).scope().gererChangementFichier2(event)"> 
-											  </div>
-											  <span  class="input-group-btn">
-												 <button type="button" class="btn btn-default btn-sm"  ng-click="sendAction()">
-													<span class="glyphicon glyphicon-send" aria-hidden="true" style="color: blue;"></span>
-												 </button>
-											  </span>
-										  </div>
-										  <div>
-											  <div id="followermenu_id"></div>
-										  </div>
-									   </div>
-									   <div style="height: 87%;width: 100%;overflow: auto;">
-										  <table class="table table-inbox table-hover"  id="tablefollowersid"></table>
-									   </div>
-							   </div>
-							   								   
-							   </div>
-							  </div>							   
-						  </div>     
-						</div>
+				   <div style="height: 100%;width:100%;">
+						 <style type="text/css">
+							.panel-container{
+								background: #9d9d9d ;
+							}
+							.workflowbar{
+								margin-top: -10px;
+								margin-bottom: 0px;
+								border-top:solid 1px #a8a8a8;
+								background-color: #f0eeee;
+								background-image: linear-gradient(to bottom, #fcfcfc, #dedede);
+							}
+						</style>
+						<ng-template src="theme/views/formtemplate.xml"></ng-template>
+					</div>				  
 				 ]]>
 			 </template>
 		 </formtemplate>		 

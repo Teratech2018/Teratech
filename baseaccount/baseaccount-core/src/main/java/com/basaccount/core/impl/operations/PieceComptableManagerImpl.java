@@ -68,7 +68,7 @@ public class PieceComptableManagerImpl
 
     @Override
     public List<PieceComptable> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
-        List<PieceComptable> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
+        List<PieceComptable> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<PieceComptable> results = new ArrayList<PieceComptable>();
         for(PieceComptable piece: datas){
             results.add(new PieceComptable(piece));

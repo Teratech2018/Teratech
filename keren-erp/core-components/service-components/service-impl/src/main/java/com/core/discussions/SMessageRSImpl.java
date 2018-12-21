@@ -79,44 +79,6 @@ public class SMessageRSImpl
         //To change body of generated methods, choose Tools | Templates.
         manager.save(message);
         return manager.send(userid, message);
-//        Utilisateur user = usermanager.find("id", userid);
-//        List<RMessage> results = new ArrayList<RMessage>();
-//        if(user!=null){
-//            message.setSender(user);
-//            if(message.getCanal()!=null&&message.getCanal().getMembres()!=null){
-//                for(Utilisateur mem : message.getCanal().getMembres()){
-//                    if(!mem.equals(user)){//exclusion de l'emeteur du message
-//                        RMessage rmess = new RMessage(message);
-//                        rmess.setSender(user);
-//                        rmess.setReciever(mem);
-//                        rmsgemanager.save(rmess);
-//                        results.add(rmess);
-//                    }//end if(!mem.equals(user))
-//                }//end for(Utilisateur mem : message.getCanal().getMembres())
-//            }//end if(message.getCanal()!=null)
-//            if(message.getReciever()!=null){
-//                RMessage rmess = new RMessage(message);
-//                rmess.setReciever(message.getReciever());
-//                rmess.setSender(user);
-//                rmsgemanager.save(rmess);
-//                results.add(rmess);
-//            }//end if(message.getReciever()!=null)
-//            manager.save(message);
-//           try {
-//                //Traitement des pieces jointes
-//                if(message.getPiecesjointe()!=null){
-//                    for(PieceJointe pj:message.getPiecesjointe()){
-//
-//                            String sourceName = FileHelper.getTemporalDirectory()+File.separator+pj.getFilename();
-//                            String ciblename = FileHelper.getStaticDirectory()+File.separator+pj.getFilename();
-//                            FileHelper.moveFile(new File(sourceName), new File(ciblename));                  
-//                    }
-//                }//end if(message.getPiecesjointe()!=null)
-//           } catch (IOException ex) {
-//                throw new WebApplicationException(Response.serverError().build());
-//            }
-//        }
-//        return results;
     }
 
    

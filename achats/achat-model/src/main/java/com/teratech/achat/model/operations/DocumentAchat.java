@@ -69,8 +69,10 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
     @Predicate(label = "AC",type = LigneDocumentAchat.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Articles",customfooter = true)
     @TableFooter(value = "<tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td style='font-weight: bold;'>Total HT</td><td></td> <td class='text-right'>this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Taxes</td><td></td> <td  class='text-right'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};/;100</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Total TTC</td><td></td><td  class='text-right'  style='font-weight: bold;'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;(;100;+;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};);/;100</td> </tr>")
     protected List<LigneDocumentAchat> lignes = new ArrayList<LigneDocumentAchat>();
+         
+    @Predicate(label = " ",target = "state",hide = true,search = true)
+     protected String state ="etabli" ;
     
-    protected String state ="etabli" ;
 
     protected DocumentAchatState typedocument ;
     
@@ -81,9 +83,7 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
      * @param fornisseur
      * @param datecommande
      * @param codefourni
-     * @param emplacement
-     * @param dateoffre
-     * @param validiteoffre 
+     * @param emplacement 
      */
     public DocumentAchat(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement) {
         this.code = code;
@@ -103,8 +103,6 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
      * @param datecommande
      * @param codefourni
      * @param emplacement
-     * @param dateoffre
-     * @param validiteoffre
      * @param id
      * @param designation
      * @param moduleName 

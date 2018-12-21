@@ -27,8 +27,12 @@ public interface MenuModuleRS
     public Manifest getManifest();
     
     @POST
-    @Path("refresh")
+    @Path("refreshall")
     public void updateApplications();
+    
+     @POST
+    @Path("refresh")
+    public void updateApplications(MenuModule module);
     
     @POST
     @Path("install")

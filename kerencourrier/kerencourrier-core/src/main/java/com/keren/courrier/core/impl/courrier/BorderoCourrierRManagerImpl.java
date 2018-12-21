@@ -97,9 +97,7 @@ public class BorderoCourrierRManagerImpl
         //To change body of generated methods, choose Tools | Templates.
         entity.setDaccuse(new Date());
         entity.setState("receptionne");
-        int nr = 0;
         for(LigneBorderoCourrierR ligne:entity.getCourriers()){
-        	nr=nr+1;
             CourrierClone courrier = ligne.getCourrier();   
             courrier  = courrierdao.findByPrimaryKey("id", courrier.getId());
             if(courrier.getPiecesjointes()!=null){
@@ -143,7 +141,6 @@ public class BorderoCourrierRManagerImpl
                 }//end if(courrier.getType()!=null&&courrier.getType().trim().equalsIgnoreCase("1")){
             }//end if(ligne.getNature().trim().equalsIgnoreCase("0")){
         }//end for(LigneBorderoCourrierR ligne:entity.getCourriers()){
-        entity.setNcrecu(nr);
         dao.update(entity.getId(), entity);
         return entity;
     }

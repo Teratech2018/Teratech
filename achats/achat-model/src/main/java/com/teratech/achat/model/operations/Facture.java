@@ -35,7 +35,7 @@ public class Facture extends DocumentAchat implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "DOAC_ID")
-    @Predicate(label = "Document source",type = DocumentAchat.class,target = "many-to-one")
+    @Predicate(label = "Document source",type = BonCommande.class,target = "many-to-one")
     private BonCommande docachat;
     
     @Predicate(label = "Document d'origine")
@@ -56,21 +56,23 @@ public class Facture extends DocumentAchat implements Serializable{
     
     private Double transport=0.0;
     
-    @Predicate(label = "Acomptes",type = Acompte.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "ACOMPTES")
+    @Predicate(label = "Acomptes",type = Acompte.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "ACOMPTES",edittable = true)
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "FAC_ID")
     private List<Acompte> acomptes = new ArrayList<Acompte>();
     
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "ECRE_ID")
-    @Predicate(label = "Echeances",type = EcheanceReglement.class,target = "one-to-many",group = true,groupName = "group4",groupLabel = "ECHEANCES")
+    @Predicate(label = "Echeances",type = EcheanceReglement.class,target = "one-to-many",group = true,groupName = "group4",groupLabel = "ECHEANCES",edittable = true)
     private List<EcheanceReglement> echeances = new ArrayList<EcheanceReglement>();
+    
+    
     /**
      * 
      */
     public Facture() {
         this.typedocument = DocumentAchatState.FACTURE;
-        this.state = "etabli";
+//        this.state = "etabli";
     }
 
     /**
@@ -85,7 +87,7 @@ public class Facture extends DocumentAchat implements Serializable{
     public Facture(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement) {
         super(code, date, fornisseur, datecommande, codefourni, emplacement);
         this.typedocument = DocumentAchatState.FACTURE;
-        this.state = "etabli";
+//        this.state = "etabli";
     }
 
     /**
@@ -103,7 +105,7 @@ public class Facture extends DocumentAchat implements Serializable{
     public Facture(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement, long id, String designation, String moduleName) {
         super(code, date, fornisseur, datecommande, codefourni, emplacement, id, designation, moduleName);
         this.typedocument = DocumentAchatState.FACTURE;
-        this.state = "etabli";
+//        this.state = "etabli";
     }
 
     /**
@@ -116,7 +118,7 @@ public class Facture extends DocumentAchat implements Serializable{
         this.docachat = new BonCommande(da);
         this.source = da.getCode();
         this.typedocument = DocumentAchatState.FACTURE;
-        this.state = "etabli";
+//        this.state = "etabli";
        
     }
 
@@ -127,7 +129,7 @@ public class Facture extends DocumentAchat implements Serializable{
         this.docachat = new BonCommande(da);
         this.source = da.getCode();
         this.typedocument = DocumentAchatState.FACTURE;
-        this.state = "etabli";       
+//        this.state = "etabli";       
     }
 
    
@@ -209,8 +211,8 @@ public class Facture extends DocumentAchat implements Serializable{
     public void setCompte(Compte compte) {
         this.compte = compte;
     }
-    
-    
+
+   
 
     @Override
     public List<State> getStates() {

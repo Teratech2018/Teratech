@@ -39,7 +39,7 @@ public class SMessageDAOImpl
     }
 
     @Override
-    public List<RMessage> send(long userid, SMessage message) {
+    public List<RMessage> send(SMessage message) {
         //To change body of generated methods, choose Tools | Templates.
 //        System.out.println(SMessageDAOImpl.class.toString()+" ===== "+message+" === "+message.getSender());
         Utilisateur user = message.getSender();

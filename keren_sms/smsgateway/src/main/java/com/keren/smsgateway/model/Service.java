@@ -732,7 +732,7 @@ public class Service {
 	 * @see #queueMessage(OutboundMessage)
 	 */
 	public boolean queueMessage(OutboundMessage msg, String gatewayId)
-	{
+	{       
 		if (getServiceStatus() == ServiceStatus.STOPPED) return false;
 		msg.setGatewayId(gatewayId);
 		return queueMessage(msg);

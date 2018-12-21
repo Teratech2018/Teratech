@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+  <action id="keren_pos"/> 
+  <menu id="keren_pos_dashboard" label="Tableaux de bord" parent="keren_pos" gyphycon="glyphicon glyphicon-scale"/>
+  <menuitem id="keren_pos_dashboard_001" label="Tableau de bord" parent_ref="keren_pos_dashboard" entity_ref="PosWebDashboard" model_ref="posweb" method_ref="posweb" gyphycon="glyphicon glyphicon-th" modal="false" view_type="dashboard" />
+  <menuitem id="keren_pos_dashboard_002" label="Courriers recus" parent_ref="keren_pos_dashboard" entity_ref="PosWebDashboard" model_ref="posweb" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true" view_type="website"/>
+  <menu id="keren_pos_cmde" label="Commandes" parent="keren_pos" gyphycon="glyphicon glyphicon-scale"/>
+  <menuitem id="keren_pos_cmde_001" label="Commandes" parent_ref="keren_pos_cmde" entity_ref="Commande" model_ref="posweb"  gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree,form" />
+  <menuitem id="keren_pos_cmde_002" label="Sessions" parent_ref="keren_pos_cmde" entity_ref="Session" model_ref="posweb"  gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree,form" />
+  <menuitem id="keren_pos_cmde_003" label="Articles" parent_ref="keren_pos_cmde" entity_ref="Article" model_ref="posweb"  gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree,form" />
+  <menu id="keren_pos_conf" label="Configuration" parent="keren_pos" gyphycon="glyphicon glyphicon-scale"/>
+  <menuitem id="keren_pos_conf_001" label="Paramètres" parent_ref="keren_pos_conf" entity_ref="Article" model_ref="posweb"  gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree,form" />
+  <menuitem id="keren_pos_conf_002" label="Point de Ventes" parent_ref="keren_pos_conf" entity_ref="PointVente" model_ref="posweb"  gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree,form" />
+  <menuitem id="keren_pos_conf_003" label="Catégories de points de vente" parent_ref="keren_pos_conf" entity_ref="Article" model_ref="posweb"  gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree,form" />
+  <menuitem id="keren_pos_conf_004" label="Nomenclatures code barre" parent_ref="keren_pos_conf" entity_ref="Article" model_ref="posweb"  gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree,form" />
+  <dashboardRecord id="dashboard_keren_pos_dashboard_001" label="Portail Web"  action_ref="keren_pos_dashboard_001" entity_ref="PosWebDashboard"  model_ref="posweb" method_ref="posweb">
+	     <dashboard  id="dashboard_keren_pos_dashboard001" parent_ref="dashboard_keren_pos_dashboard_001" label="Point de Vente">
+		      <dashboardentry id="dashentry_keren_pos_dashboard001" type="template" parent_ref="dashboard_keren_pos_dashboard001" label="Point de Vente" entity_ref="PosWebDashboard"  model_ref="posweb" method_ref="website">
+			       <template>
+                     <![CDATA[				   
+						 <div class="form-group  col-sm-12  col-md-12">
+                             <label for="sexe">Caisse</label>
+                             <div class="input-group">
+                                 <select class="form-control"  data-style="btn-default" ng-model='temporalData.poste' ng-options="item as item.designation for item in temporalData.postes"">
+                                 </select>
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default my-group-button" data-toggle="modal" data-target="#myModal" deseable>
+									  <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color:blue"></span>
+									</button>
+								</span>                                 
+                             </div>							 											
+                         </div>
+						 <button type="button"  class="btn btn-primary btn-sm" style"margin:20px;" ng-click ="getActionByName('keren_pos_dashboard_002',null,null,temporalData.poste)" ng-diseabled="temporalData.poste==null">{{'Demarrer' | translate}}</button>  
+					     <button type="button"  class="btn btn-default btn-sm" style"margin:20px;" ng-click="annulerAction()"  ng-disabled="temporalData.poste==null">{{'Fermer' | translate}}</button>			
+                      ]]>						
+					</template>
+			  </dashboardentry>			  
+		 </dashboard>         	 
+	 </dashboardRecord>
+  <website  id="posweb" action_ref="keren_pos_dashboard_002">
+     <template id="pos_index" name="index" type="page" index="true">
+	      <script>
+		     <![CDATA[
+                 <div>			 
+                    <style>
+					   .outer-div{ text-align: center; } .inner-div{ display: inline-block; padding: 10px; } .trt-select-btn{ background-color: #325c89; color: white; height: 30px; width: 200px; padding: 5px; text-align: center; display: inline-block; } .trt-payment-btn{ background-color: green; color: white; height: 50px; width: 200px; padding: 5px; margin-top: -13px; text-align: center; display: inline-block; vertical-align: middle; line-height: 40px; } .trt-select-div{ padding: 5px; cursor: pointer; } .trt-sale-container{height: 92%; background-color: #e4e2e4;  } .trt-card-img{ width: 100%; padding: 3px; height: 100px; background-color: ##c1c0b5; }  .card-img-top{ border:1px solid #e5e5e1; border-radius: 1px; -webkit-border-radius:1px; -moz-border-radius:1px; -webkit-box-shadow:1px 1px 5px #999; -moz-box-shadow:1px 1px 5px #999; background-color: #e5e5e1; width: 110px; height: 90px; }  .tr-card-container{ box-shadow: 1px 1px 1px #d9d7d9; border: solid 2px #d9d7d9; text-align: center; padding: 6px; margin: 0; padding-left: 0; padding-right: 0; background-color: #fffeff; cursor: pointer; } .trt-resume-table{ background-color: #fffeff; } .trt-resume-row{ height: 10px; } .trt-input-tr{ height: 20px; width: 60px; text-align: center; } .trt-td-middle{ border-top: hidden !important; }
+					</style>
+					<div class="container-fluid"  style="position: absolute;height: 100%;width: 100%;margin-left:0;overflow: hidden;padding: 0;">
+					   <div class="row" style="height: 100%;margin-left:0;">
+						  <header>
+							 <nav class="navbar navbar-inverse navbar-fixed-top navbar-sm">
+								<div class="container-fluid">
+								  <div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+									  <span class="sr-only">Toggle navigation</span>
+									  <span class="icon-bar"></span>
+									  <span class="icon-bar"></span>
+									  <span class="icon-bar"></span>
+									</button>
+									 <a class="navbar-brand" href="#" ng-click="backtocore()">
+										<span class="glyphicon glyphicon-th"  aria-hidden="true" ></span>  
+										 {{pos.designation}}        
+									</a>
+									
+								  </div>
+								  <div id="navbar" class="navbar-collapse collapse ">                
+									
+									 <ul class="nav navbar-nav navbar-right left-menu-bar">   
+									   <li  class="dropdown">
+											<a  id="Administration" data-target="#" data-toggle="dropdown" 
+												aria-haspopup="true" role="button" aria-expanded="true">
+												  Bekondo Dieunedort
+												 <span class="caret"></span>
+											</a> 
+											<ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">
+											   <li role="presentation">
+												 <a role="menuitem"   tabindex="-1" href="#" >Documentation</a>
+											   </li>
+											   <li role="presentation">
+												 <a role="menuitem"   tabindex="-1" href="#" >Assistance</a>
+											   </li>
+											   <li role="presentation" class="divider"></li>
+											   <li role="presentation">
+												 <a role="menuitem"   tabindex="-1" href="#" >Préference</a>                     
+											   </li>
+											   <li role="presentation">
+												 <a role="menuitem"   tabindex="-1" href="#" >Déconnexion</a>
+											   </li>
+											</ul>                                     
+										</li>
+									</ul>
+									<!-- <form class="navbar-form navbar-right">
+									  <input type="text" class="form-control" placeholder="Search...">
+									</form>  -->        
+								  </div>
+								</div>
+							  </nav>        
+						  </header>
+						   <div   class="col-md-12 trt-sale-container">
+							 <div class="col-md-8" style="height: 100%;padding: 0;">
+									<div  style="padding: 0;margin-left: -10px;" role="toolbar"   aria-label="Toolbar1">
+									   <nav aria-label="breadcrumb">
+										<ol class="breadcrumb">
+										  <li>                   
+											  <div class="input-group col-md-4 pull-right" >
+												  <input class="search__field" type="text"  ng-model="searchCriteria" name="x" placeholder="Search term..."  style="width: 300px;height: 30px;">
+												  <span class="input-group-btn">
+													<button class="btn btn-default btn-sm" type="button" ng-click="searchAction()" style=";border:solid 1px #f5f5f5;">
+													  <span class="glyphicon glyphicon-search">
+														 <span class="sr-only">Search...</span>
+													  </span>
+													</button>
+												  </span>
+											  </div>   
+											</li>                   
+										</ol>
+									  </nav>                       
+									</div> 
+									<div class="row" style="height: 87%;overflow: auto; margin-left: 0;">   
+										<div class="col-md-2 tr-card-container" ng-repeat="item in articles">
+										  <div class="card" ng-click="productSelect(item)">
+											<span class="label label-default pull-right" >{{item.puvente}}</span>
+											<div class="trt-card-img">
+											   <img class="card-img-top" src="http://localhost:8080/keren/auth/resource/static/{{item.image}}" alt="Card image cap">
+											</div>
+											<div class="card-body">
+											  <h5 class="card-title">{{item.designation}}</h5>                                  
+											</div>
+										  </div>
+										</div>                   
+								  </div>
+							 </div>
+							 <div class="col-md-4"  style="height: 100%; margin: 0;padding: 0;background-color: #fffeff;">
+								  <div class="col-md-12" style="height:60%; padding: 0;border: solid 2px #b3b2b4;">
+								   <div class="trt-resume-table"> 
+									 <table class="table  table-hover table-condensed table-sm" style="margin-bottom: 0;">
+																  <thead>
+																	  <tr style="font-weight: bold;">
+																		  <th>Product</th>
+																		  <th></th>
+																		  <th></th>
+																		  <th>Price</th>																		  
+																	  </tr>
+																  </thead>
+																  <tbody>                                                
+																	<tr ng-repeat="item in commande.lignes">
+																		<td style="font-weight: bold;">{{item.article.designation}}</td>
+																		<td><input type="text" name="" class="trt-input-tr" ng-model="item.quantite" ng-keyup="totalFn()"></td>
+																		<td><span class="glyphicon glyphicon-trash" aria-hidden="true" style="color: #d5575e;cursor:pointer;" ng-click="removeProduct(item)"></span></td>
+																		<td  style="font-weight: bold;">{{item.article.puvente}}</td>                                             
+																	</tr>																	
+																  </tbody>
+															 </table>
+										</div>
+										<div> 
+										   <table class="table  table-hover table-condensed" >
+											   <tbody>                                               
+																   
+														  <tr >
+															  <td>Sous Total</td>
+															  <td>{{subtotal}}</td>                                         
+														  </tr>
+														  <tr >
+															  <td>Total Taxes</td>
+															  <td>{{totaltaxes}}</td>                                         
+														  </tr>
+														  <tr style="background-color: #f6fbff;">
+															  <td  style="font-weight: bold;color: #66a6c5;">Total</td>
+															  <td   style="font-weight: bold;color: #66a6c5;">{{total}}</td>                                         
+														  </tr>
+											  </tbody>
+															 
+										   </table>  
+										</div>
+								  </div>
+								  <div class="col-md-12" style="height: 40%;padding: 10px;padding-left: 50px;">
+									  <div class="col-md-8 outer-div">
+										   <div class="col-md-12 trt-select-div">
+											   <span class="trt-select-btn">
+												  <i class="fa fa-user" aria-hidden="true"></i>
+												  SELECT CUSTOMER
+											   </span>
+										   </div>
+										   <div class="col-md-12  trt-select-div">
+											 <span class="trt-select-btn">
+												<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+												SELECT PAYMENT METHOD
+											 </span>
+										   </div>   
+										   <div class="col-md-12  trt-select-div">
+											 <span class="trt-payment-btn">												
+												PAYMENT
+											 </span>
+										   </div>                            
+									  </div>
+								  </div>
+							 </div>
+						   </div>
+						  <footer>
+							
+						  </footer>
+					   </div>
+					  </div>
+					<include src="posweb.js"  type="javascript" />
+					<include src="clean-blog.min.js"  type="javascript" />	
+                </div>						
+			 ]]>
+		  </script>
+	 </template>     
+  </website>
+</keren>

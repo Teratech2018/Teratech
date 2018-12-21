@@ -11,7 +11,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
@@ -99,15 +97,11 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 	@Predicate(label = "Service Traitant", type = StructureCompany.class, target = "many-to-one", search = true, optional = false, observable = true)
 	private StructureCompany service;
 
-//	@ManyToOne
-//	@JoinColumn(name = "DES_ID")
-//	@Predicate(label = "Destinatire", type = UtilisateurCourrier.class, target = "many-to-one", search = true)
-//	private UtilisateurCourrier destinataire;
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL )
-	@JoinTable(name="T_CA_DEST",joinColumns=@JoinColumn(name="CA_ID"),inverseJoinColumns=@JoinColumn(name="USER_ID"))
-	@Predicate(label = "Destinataire",target = "many-to-many-list",type = UtilisateurCourrier.class,search = false, optional=true)
-	private List<UtilisateurCourrier> destinataire ;
+	@ManyToOne
+	@JoinColumn(name = "DES_ID")
+	@Predicate(label = "Destinatire", type = UtilisateurCourrier.class, target = "many-to-one", search = true)
+	@Observer(observable = "service", source = "field:responsable")
+	private UtilisateurCourrier destinataire;
 
 	@ManyToOne
 	@JoinColumn(name = "STAT_ID")
@@ -129,10 +123,8 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 	@Observer(observable = "priorite", source = "method:datelimite", parameters = "priorite")
 	private Date limite;
 
-	@ManyToOne
-	@JoinColumn(name = "SIGN_ID")
-	@Predicate(label = "Signataire", optional=false, sequence=11,type = UtilisateurCourrier.class, target = "many-to-one")
-	private UtilisateurCourrier signataire;
+	@Predicate(label = "Signataire", group = true, groupLabel = "Informations Complémentaires", groupName = "group2")
+	private String signataire;
 
 	@ManyToOne
 	@JoinColumn(name = "T_DOS")
@@ -186,14 +178,6 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 	
 	@Column(name = "LAST_TRT")
 	private String lastState;
-	
-	@Predicate(label = " ",search =true,type=Long.class,hide=true)
-    @Column(name = "N_QUOTATION")
-    private long nquotation ; 
-	
-	@Predicate(label = " ",search =true,type=Long.class,hide=true)
-    @Column(name = "N_ANNO")
-    private long nannotation ; 
 
 	public CourrierClone(String categorie, String niveauDeTraitement, TypeCourrier typecourrier, Priorite priorite,
 			boolean confidentiel, Date dcourrier, Date darrive, Correspondant correspondant, Boolean limite,
@@ -272,15 +256,9 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 
 			this.source = new UtilisateurCourrier(dep.source);
 		}
-		
-		if (dep.signataire != null) {
-
-			this.signataire = new UtilisateurCourrier(dep.signataire);
+		if (dep.destinataire != null) {
+			this.destinataire = new UtilisateurCourrier(dep.destinataire);
 		}
-		this.destinataire= new ArrayList<UtilisateurCourrier>();
-//		if (dep.destinataire != null) {
-//			this.destinataire = new UtilisateurCourrier(dep.destinataire);
-//		}
 		if (dep.statutcourrier != null) {
 			this.statutcourrier = new Statut(dep.statutcourrier);
 		}
@@ -305,9 +283,6 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		}
 		this.typeclassement = dep.typeclassement;
 		this.lastState= dep.lastState;
-		
-		this.nannotation= dep.nannotation;
-		this.nquotation=dep.nquotation;
 	}
 
 	public CourrierClone(CourrierDepart dep) {
@@ -327,9 +302,9 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		this.dcourrier = dep.getDcourrier();
 		this.darrive = null;
 
-		//if (dep.getCorrespondant() != null) {
-		//this.correspondant = new Correspondant(dep.getCorrespondant());
-		//		}
+		if (dep.getCorrespondant() != null) {
+			this.correspondant = new Correspondant(dep.getCorrespondant());
+		}
 
 		if (dep.getNature() != null) {
 			this.nature = new NatureCourrier(dep.getNature());
@@ -456,8 +431,6 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		if (dep.getExpediteur() != null) {
 			this.expediteur = new UtilisateurCourrier(dep.getExpediteur());
 		}
-		
-
 
 	}
 
@@ -557,7 +530,12 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		this.motscles = motscles;
 	}
 
-	
+	public UtilisateurCourrier getDestinataire() {
+		return destinataire;
+	}
+
+
+
 	public String getLastState() {
 		return lastState;
 	}
@@ -566,7 +544,9 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		this.lastState = lastState;
 	}
 
-
+	public void setDestinataire(UtilisateurCourrier destinataire) {
+		this.destinataire = destinataire;
+	}
 
 	public NatureCourrier getNature() {
 		return nature;
@@ -582,22 +562,6 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 
 	public void setObjet(String objet) {
 		this.objet = objet;
-	}
-
-	public long getNquotation() {
-		return nquotation;
-	}
-
-	public void setNquotation(long nquotation) {
-		this.nquotation = nquotation;
-	}
-
-	public long getNannotation() {
-		return nannotation;
-	}
-
-	public void setNannotation(long nannotation) {
-		this.nannotation = nannotation;
 	}
 
 	public List<FichierLie> getPiecesjointes() {
@@ -704,11 +668,11 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		this.source = source;
 	}
 
-	public UtilisateurCourrier getSignataire() {
+	public String getSignataire() {
 		return signataire;
 	}
 
-	public void setSignataire(UtilisateurCourrier signataire) {
+	public void setSignataire(String signataire) {
 		this.signataire = signataire;
 	}
 
@@ -722,14 +686,6 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 
 	public String getPorte() {
 		return porte;
-	}
-
-	public List<UtilisateurCourrier> getDestinataire() {
-		return destinataire;
-	}
-
-	public void setDestinataire(List<UtilisateurCourrier> destinataire) {
-		this.destinataire = destinataire;
 	}
 
 	public void setPorte(String porte) {
@@ -824,7 +780,9 @@ public class CourrierClone extends BaseElement implements Serializable, Comparab
 		if (this.source != null) {
 			entity.source = new UtilisateurCourrier(this.source);
 		}
-		this.destinataire= new ArrayList<UtilisateurCourrier>();
+		if (this.destinataire != null) {
+			entity.destinataire = new UtilisateurCourrier(this.destinataire);
+		}
 		if (this.statutcourrier != null) {
 			entity.statutcourrier = new Statut(this.statutcourrier);
 		}

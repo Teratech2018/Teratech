@@ -39,7 +39,7 @@ public class Langue extends BaseElement implements Serializable,Comparable<Langu
     @Predicate(label = "Séparateur décimal",search = true)
     private String formatDecimal ;
     
-    @Predicate(label = "Séparateur des milliers",search = true)
+    @Predicate(label = "Séparateur milliers",search = true)
     private String formatMillier ;
     
     @Predicate(label = "Format de date",search = true)

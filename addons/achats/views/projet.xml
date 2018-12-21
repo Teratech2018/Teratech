@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="projet_bkd" />
+	 <menu id="projet_acceuil" label="Acceuil" parent="projet_bkd" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="projet_acceuil_1" label="Presentation" parent_ref="projet_acceuil" entity_ref="ExprBesion" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="projet_acceuil_2" label="Bureaugraphie" parent_ref="projet_acceuil" entity_ref="ExprBesion" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" /><menu id="projet_service" label="Services" parent="projet_bkd" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menu id="projet_service" label="Services" parent="projet_bkd" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="projet_service_1" label="Developpement" parent_ref="projet_service" entity_ref="AppelOffre" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="projet_service_2" label="Reseaux" parent_ref="projet_service" entity_ref="AppelOffre" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
+</keren>

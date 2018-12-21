@@ -42,7 +42,7 @@ public class TierManagerImpl
 
     @Override
     public List<Tier> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
-        List<Tier> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
+        List<Tier> datas = dao.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<Tier>  result = new ArrayList<Tier>(); 
         for(Tier data : datas){
             result.add(new Tier(data));

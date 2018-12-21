@@ -32,7 +32,13 @@ public class RoundRobinLoadBalancer extends LoadBalancer{
 	@Override
 	public AGateway balance(OutboundMessage msg, ArrayList<AGateway> candidates)
 	{
+                 for(int i=0;i<candidates.size();i++){    
+                        AGateway gateway = candidates.get(i);
+                        System.out.println(RoundRobinLoadBalancer.class.toString()+"   "+gateway.getClass().toString());
+                 }//end for(int i=0;i<candidates.size();i++){                 
 		if (this.currentGateway >= candidates.size()) this.currentGateway = 0;
-		return (candidates.get(this.currentGateway++));
+                AGateway gateway = candidates.get(this.currentGateway++);
+                gateway.setFrom("BKD");
+		return (gateway);
 	}
 }

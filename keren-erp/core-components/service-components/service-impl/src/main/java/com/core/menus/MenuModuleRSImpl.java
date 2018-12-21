@@ -141,6 +141,17 @@ public class MenuModuleRSImpl
             throw new WebApplicationException(ex);
         }
     }
+
+    @Override
+    public void updateApplications(MenuModule module) {
+        //To change body of generated methods, choose Tools | Templates.
+        try {
+            //To change body of generated methods, choose Tools | Templates.
+            manager.refreshApplication(module);
+        } catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
+    }
     
    
 

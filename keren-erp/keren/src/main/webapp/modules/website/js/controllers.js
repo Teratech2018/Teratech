@@ -83,6 +83,9 @@ angular.module('keren.core.website')
               * Section des variables
               * @returns {undefined}
               */
+             $scope.hostname = $location.host();    
+             $scope.portvalue = $location.port();
+             $scope.protocol = $location.protocol(); 
              $scope.username = null;
              //Cache des données du site web
              $scope.website = new Object();
@@ -108,11 +111,23 @@ angular.module('keren.core.website')
                              $http.defaults.headers.common['Authorization']='Basic '+$rootScope.globals.currentUser.authdata; 
                              $rootScope.$broadcast("gotowebsite" , {username:$rootScope.globals.currentUser.username});
                       }else{
-                         var urlPath = "http://"+$location.host()+":"+$location.port()+"/keren/auth/login/crypto"; 
+                         var urlPath = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/login/crypto"; 
                                 $http.post(urlPath ,{username:"website@website",password:"websiteteratech2013"})
                                         .then(function(response){
-    //                                        console.log("$scope.login = function() remember == encrypt pwd : "+response.data);                            
+    //                                        console.log("$scope.login = function() remember == encrypt pwd : "+response.data);                                           
                                             authenticationService.setCredentialWithoutBroatcast("website@website",response.data);
+                                              //Chargement du module website pour besion de securité
+                                            var url2 = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/categorie/"+$rootScope.website;
+                                            $http.get(url2)
+                                                    .then(function(response){
+//                                                        console.log("websitemode.controller.===================== "+response.data);
+                                                        if(response.data!='web_site'){
+                                                            $rootScope.$broadcast("login" , {  });  
+                                                            commonsTools.hideDialogLoading();
+                                                        }//end if(response.data=='web_site'){
+                                                    },function(error){
+                                                        commonsTools.showMessageDialog(error);     
+                                                    });
                                             $rootScope.$broadcast("gotowebsite" , {username:$rootScope.globals.currentUser.username});
                                         },function(error){
                                             commonsTools.showMessageDialog(error);                                            
@@ -121,8 +136,10 @@ angular.module('keren.core.website')
                            
                };
               /**
-               * 
+               * HTML parser parse the HTML 
+               * treatment of javascript file css, less file
                * @param {type} template
+               * @param {type} cible
                * @param {type} position
                * @returns {undefined}
                */
@@ -171,19 +188,19 @@ angular.module('keren.core.website')
                        var type = item.attr('type');
                        var src = item.attr("src");
                        if(type=='css'){
-                           var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                           var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
                            var linkElem = document.createElement('style');
                            linkElem.setAttribute('type','text/css');
                            linkElem.innerHTML='@import url("'+url+'");';
                            item.replaceWith(linkElem);
                        }else if(type=='less'){
-                           var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                           var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
                            var linkElem = document.createElement('style');
                            linkElem.setAttribute('type','text/less');
                            linkElem.innerHTML='@import url("'+url+'");';
                            item.replaceWith(linkElem);
                        }else if(type=='javascript'){
-                           var url = "http://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
+                           var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren/auth/resource/text/"+src;
                            $('<script />', { type : 'text/javascript', src : url}).appendTo('body');
                            $scope.javascripts.push(url);
 //                           var scriptElem = document.createElement('script');
@@ -218,7 +235,7 @@ angular.module('keren.core.website')
                    //Chargement des données
                    if(template.modele!=null && template.method!=null
                            && template.entity!=null &&template.var!=null){
-                        var url = "http://"+$location.host()+":"+$location.port()+"/"+template.modele+"/"+template.entity+"/"+template.method;
+                        var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/"+template.modele+"/"+template.entity+"/"+template.method;
                         $http.get(url).then(
                                 function(response){
                                     $scope.website[template.var] = response.data;
@@ -251,10 +268,10 @@ angular.module('keren.core.website')
                 $scope.$on("gotowebsite",function(event,args){
                        $scope.username = args.username;
                        //Chargement du module web
-                       var url = "http://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/indexpage/"+$rootScope.website;
+                       var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/indexpage/"+$rootScope.website;
                        if(angular.isDefined(args.cible)
                                && args.cible!=null){
-                             url = "http://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/fragment/"+$rootScope.website+"/"+args.cible;
+                             url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/websitemodule/fragment/"+$rootScope.website+"/"+args.cible;
                        }//end if(angular.isDefined(args.cible)
                        commonsTools.showDialogLoading("Chargement ...","white","#9370db","0%","0%");
                        $http.get(url).then(
