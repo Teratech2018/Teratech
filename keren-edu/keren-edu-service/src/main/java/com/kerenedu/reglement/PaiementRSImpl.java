@@ -23,8 +23,9 @@ import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
-import com.kerenedu.configuration.UserEducation;
 import com.kerenedu.configuration.UserEducationManagerRemote;
+import com.kerenedu.configuration.UtilisateurConnect;
+import com.kerenedu.configuration.UtilisateurConnectManagerRemote;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionManagerRemote;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
@@ -72,6 +73,9 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 
 	@Manager(application = "kereneducation", name = "RemiseManagerImpl", interf = RemiseManagerRemote.class)
 	protected RemiseManagerRemote managerRemise;
+	
+	@Manager(application = "kereneducation", name = "UtilisateurConnectManagerImpl", interf = UtilisateurConnectManagerRemote.class)
+	protected UtilisateurConnectManagerRemote managerUserc;
 
 	public PaiementRSImpl() {
 		super();
@@ -345,10 +349,12 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			// String userid = headers.getRequestHeader("userid").get(0);
 			Gson gson = new Gson();
 			long id = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
-			UserEducation user = managerUser.find("id", id);
-			System.out.println("PaiementRSImpl.facture() user found is ====" + user.getName());
-
-			entity.setUsername(user.getName());
+			 RestrictionsContainer container = RestrictionsContainer.newInstance();
+			 container = RestrictionsContainer.newInstance();
+			 container.addEq("compte.id",id);
+			 UtilisateurConnect user = managerUserc.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1).get(0);		
+			System.out.println("PaiementRSImpl.facture() user found is ====" + user.getNom());
+			entity.setUsername(user.getNom());
 			return this.buildPdfReport(entity);
 		} catch (KerenEduManagerException ex) {
 			throw new KerenExecption(ex.getMessage());

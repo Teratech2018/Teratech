@@ -2,6 +2,7 @@
 package com.kerenedu.notes;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.inscription.Inscription;
 
 
 /**
@@ -18,7 +19,9 @@ public interface MoteurBulletinManager
    
     public EdtBulletin preparerNotes(EdtBulletin prepa);
     
-    public EdtBulletin aggregateNote(EdtBulletin critere);
+    public void aggregateNote(Inscription param,EdtBulletin critere);
+    
+    public void aggregateNote(EdtBulletin prepa);
     
    
 }

@@ -23,21 +23,31 @@ import com.kerenedu.inscription.Inscription;
 @Entity(name = "e_zview_helper_bull")
 public class BulletinHelper extends BaseElement implements Serializable, Comparable<BulletinHelper> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -125011589521185156L;
+
+
 	@ManyToOne
-	@JoinColumn(name = "INS_ID")
+	@JoinColumn(name ="INS_ID")
 	protected Inscription inscription;
 
 
 	@ManyToOne
-	@JoinColumn(name = "CLASSE_ID")
+	@JoinColumn(name ="CLASSE_ID")
 	protected Classe classe;
 
 	@ManyToOne
-	@JoinColumn(name = "BULL_ID")
+	@JoinColumn(name ="BULL_ID")
 	protected Bulletin bulletin;
 
-	@Column(name = "ANNEE_ID")
+	@Column(name ="ANNEE_ID")
 	private String anneeid;
+	
+//	@ManyToOne
+//	@JoinColumn(name = "EXAMEN_ID")
+//	protected Examen examen;
 
 	
 	@Column(name = "MOYT1")
@@ -85,6 +95,7 @@ public class BulletinHelper extends BaseElement implements Serializable, Compara
 		this.moyt2 = bull.moyt2;
 		this.moyt3 = bull.moyt3;
 		this.moyan = bull.moyan;
+	//	this.examen=new Examen(bull.examen);
 		
 	}
 
@@ -218,5 +229,17 @@ public class BulletinHelper extends BaseElement implements Serializable, Compara
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+//
+//
+//	public Examen getExamen() {
+//		return examen;
+//	}
+//
+//
+//
+//	public void setExamen(Examen examen) {
+//		this.examen = examen;
+//	}
 
 }

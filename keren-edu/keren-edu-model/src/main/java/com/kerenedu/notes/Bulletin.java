@@ -330,10 +330,16 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.inscription = helper.getEleve();
 		this.moyenne =helper.getMoyEtudiant();
 		this.rang = helper.getRang();
-		this.moyt1 =  new Double(0);
-		this.moyt2 = new Double(0);
-		this.moyt3 =  new Double(0);
-		this.moyan =  new Double(0);
+		if(model.getTypesequence().equals("0")||model.getTypesequence().equals("1")){
+			this.moyt1 =this.moyt1+ this.moyenne/2;
+		}
+		if(model.getTypesequence().equals("2")||model.getTypesequence().equals("3")){
+			this.moyt2 =this.moyt1+ this.moyenne/2;
+		}
+		if(model.getTypesequence().equals("4")||model.getTypesequence().equals("5")){
+			this.moyt3 =this.moyt1+ this.moyenne/2;
+		}
+		this.moyan =this.moyt1+ this.moyt2+this.moyt3;
 		this.anneeScolaire=helper.getEleve().getAnneScolaire();
 		this.nbreElve=helper.getNbreEleve();
 

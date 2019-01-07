@@ -14,9 +14,7 @@ import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.Cycle;
 import com.kerenedu.configuration.SectionE;
-import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
@@ -71,10 +69,6 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 	
 			
 	}
-	
-
-	
-
 
 	public Classe getClasse() {
 		return classe;

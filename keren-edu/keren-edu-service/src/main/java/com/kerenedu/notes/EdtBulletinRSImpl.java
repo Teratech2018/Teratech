@@ -105,11 +105,14 @@ public class EdtBulletinRSImpl extends AbstractGenericService<EdtBulletin, Long>
 		CacheMemory.insert(iduser, TypeCacheMemory.FILLIERE, entity.getClasse().getFiliere());
 		CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, entity.getClasse());
 		CacheMemory.insert(iduser, TypeCacheMemory.EXAMEN, entity.getSeq());
-		
+	//	System.out.println("EdtBulletinRSImpl.save() set cache memory ok .... audit .....");
 		moteurmanager.preparerNotes(entity);
 		
 		System.out.println("EdtBulletinRSImpl.processAfterSave() ====== DEBUT CUMMUL MOYENNE TRIMESTRIEL ====================");
+//		if(entity.getSeq().getTypesequence().equals("1")||entity.getSeq().getTypesequence().equals("3")||
+//				entity.getSeq().getTypesequence().equals("5")){
 		moteurmanager.aggregateNote(entity);
+		//}
 		System.out.println("EdtBulletinRSImpl.processAfterSave() ====== FIN CUMMUL MOYENNE TRIMESTRIEL ====================");
 		
 		

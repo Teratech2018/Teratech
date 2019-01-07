@@ -241,6 +241,17 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 			this.note3=helper.getNote1()*helper.getExamen().getE3();
 		}
 		}
+		if(helper.getExamen().getTypesequence().equals("0")||helper.getExamen().getTypesequence().equals("1")){
+			this.notet1 =this.notet1+ this.note/2;
+		}
+		if(helper.getExamen().getTypesequence().equals("2")||helper.getExamen().getTypesequence().equals("3")){
+			this.notet2 =this.notet2+ this.note/2;
+		}
+		if(helper.getExamen().getTypesequence().equals("4")||helper.getExamen().getTypesequence().equals("5")){
+			this.notet3 =this.notet3+ this.note/2;
+		}
+		this.notean =this.notet1+ this.notet2+this.notet3;
+
 //
 //		
 //		this.note1 = helper.getNote1()*helper.getExamen().getE1();

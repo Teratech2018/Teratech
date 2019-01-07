@@ -80,6 +80,8 @@ import com.kerenedu.jaxrs.impl.report.ViewNotematiereRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewPaiementJournalierRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewRecapMoyenneModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewRetardPaiementRSImpl;
+import com.kerenedu.notes.BuilderLigneNoteRSImpl;
+import com.kerenedu.notes.BuilderNoteRSImpl;
 import com.kerenedu.notes.BulletinHelperGeneratePrimaireRSImpl;
 import com.kerenedu.notes.BulletinRSImpl;
 import com.kerenedu.notes.CloseExamenRSImpl;
@@ -402,6 +404,8 @@ public class ApplicationConfig extends Application {
 		resources.add(EmargementPeriodeRSImpl.class);
 		resources.add(EmargementDtlPeriodeRSImpl.class);
 		resources.add(ImportHeureProfRSImpl.class);
+		resources.add(BuilderNoteRSImpl.class);
+		resources.add(BuilderLigneNoteRSImpl.class);
 		
 		
 		

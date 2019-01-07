@@ -119,7 +119,7 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 		worker.compute();
 		// mias à jour de l'inscription
 		this._updateInscription(entity,inscription);
-		System.out.println("PaiementManagerImpl.processAfterSave() update inscription ok ");
+	//	System.out.println("PaiementManagerImpl.processAfterSave() update inscription ok ");
 		// mis à jour des fiche de paiement
 		this._updateReglement_new(entity);
 		return super.save(entity);
@@ -295,8 +295,8 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 		Long solde = ins.getzMnt() - entity.getZremise() - entity.getZristourne() - newPayer;
 		ins.setzMntPaye(newPayer);
 		ins.setzSolde(solde);
-		ins.setzRemise(entity.getZremise());
-		ins.setzRistourne(entity.getZristourne());
+		ins.setzRemise(inscription.getzRemise()+entity.getZremise());
+		ins.setzRistourne(inscription.getzRistourne()+entity.getZristourne());
 		daoIns.update(ins.getId(), ins);
 	}
 

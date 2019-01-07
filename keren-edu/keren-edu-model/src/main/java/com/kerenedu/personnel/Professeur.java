@@ -59,7 +59,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	@Column(name = "D_EMB")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "Date Embauche.", optional = false, updatable = true, search = true, type = Date.class, target = "date", sequence = 6)
+	@Predicate(label = "Date Embauche.", optional = true, updatable = true, search = true, type = Date.class, target = "date", sequence = 6)
 	protected Date dateembauche;
 	
 	
@@ -116,7 +116,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name = "CAT_ID")
-	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = false
+	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = true
 			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
 	protected Categorie categorie;
 	
@@ -134,7 +134,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	private String cv;
 	
 	@Column(name = "NAT_PAI")
-	@Predicate(label = "Mode Paiement", optional = false, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", sequence =8, observable = true,
+	@Predicate(label = "Mode Paiement", optional = true, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", sequence =8, observable = true,
 			group = true, groupLabel = "Comptabilité", groupName = "tab3")
 	protected String modePaiement = "0";
 	
@@ -151,7 +151,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = false
+	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
 			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
 	protected ProfilPaie profil;
 

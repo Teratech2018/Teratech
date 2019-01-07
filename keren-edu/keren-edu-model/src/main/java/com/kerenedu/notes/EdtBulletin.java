@@ -65,7 +65,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	private String porte ="0";
 	
 	@ManyToMany
-	@Predicate(label="EM",type=InscriptionChoice.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Elèves",hidden="temporalData.porte=='0' || temporalData.porte==null")
+	@Predicate(label="EM",type=InscriptionChoice.class,target="many-to-many-list",group=true,groupName="group1",groupLabel="Liste des Elèves",hidden="temporalData.porte!='1'")
 	@Observer(observable="classe",source="method:getidclasse",parameters="classe")
 	private List<InscriptionChoice> concernes = new ArrayList<InscriptionChoice>();
 	

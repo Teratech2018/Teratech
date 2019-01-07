@@ -56,7 +56,7 @@ public class EnseignantSecondaireRSImpl
     {
       try
       {
-        return MetaDataUtil.getMetaData(new ImportNoteClasseFile(), new HashMap<String, MetaData>(), new ArrayList<String>());
+        return MetaDataUtil.getMetaData(new EnseignantSecondaire(), new HashMap<String, MetaData>(), new ArrayList<String>());
       }
       catch (Exception e) {
         throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());

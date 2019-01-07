@@ -111,7 +111,7 @@ public class EnseignantPM
 	
 	@ManyToOne
 	@JoinColumn(name = "CAT_ID")
-	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = false
+	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = true
 			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
 	protected Categorie categorie;
 	
@@ -129,7 +129,7 @@ public class EnseignantPM
 	private String cv;
 	
 	@Column(name = "NAT_PAI")
-	@Predicate(label = "Mode Paiement", optional = false, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", sequence =8, observable = true,
+	@Predicate(label = "Mode Paiement", optional = true, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", sequence =8, observable = true,
 			group = true, groupLabel = "Comptabilité", groupName = "tab3")
 	protected String modePaiement = "0";
 	
@@ -146,7 +146,7 @@ public class EnseignantPM
 	
 	@ManyToOne
 	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = false
+	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
 			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
 	protected ProfilPaie profil;
 

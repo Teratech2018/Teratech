@@ -45,9 +45,9 @@ public class LigneHelper extends BaseElement implements Serializable, Comparable
 	@JoinColumn(name = "MAT_ID")
 	protected MatiereDlt matiere;
 	
-	@ManyToOne
-	@JoinColumn(name = "EXAMEN_ID")
-	protected Examen examen;
+//	@ManyToOne
+//	@JoinColumn(name = "EXAMEN_ID")
+//	protected Examen examen;
 
 	@Column(name = "ANNEE_ID")
 	private String anneeid;
@@ -97,7 +97,7 @@ public class LigneHelper extends BaseElement implements Serializable, Comparable
 		this.notean = bull.notean;
 		this.ligne= new LigneBulletinClasse(bull.ligne);
 		this.matiere= new MatiereDlt(bull.matiere);
-		this.examen= new Examen(bull.examen);
+		//this.examen= new Examen(bull.examen);
 		
 	}
 
@@ -236,17 +236,17 @@ public class LigneHelper extends BaseElement implements Serializable, Comparable
 		this.matiere = matiere;
 	}
 
-
-
-	public Examen getExamen() {
-		return examen;
-	}
-
-
-
-	public void setExamen(Examen examen) {
-		this.examen = examen;
-	}
+//
+//
+//	public Examen getExamen() {
+//		return examen;
+//	}
+//
+//
+//
+//	public void setExamen(Examen examen) {
+//		this.examen = examen;
+//	}
 
 
 

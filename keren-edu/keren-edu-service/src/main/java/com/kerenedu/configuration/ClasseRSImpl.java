@@ -145,8 +145,8 @@ public class ClasseRSImpl
 	 	        	container.addEq("cycle", resp.getCycle().getId());
 	 	        	container.addEq("section.id", resp.getSection().getId());
 	 	        	
-	 	        	System.out.println("ClasseRSImpl.count()cycle"+ resp.getCycle().getId());
-	 	        	System.out.println("ClasseRSImpl.count()section"+ resp.getSection().getId());
+//	 	        	System.out.println("ClasseRSImpl.count()cycle"+ resp.getCycle().getId());
+//	 	        	System.out.println("ClasseRSImpl.count()section"+ resp.getSection().getId());
 	 	        	
 	 	        	numberall += getManager().count(container.getPredicats());
 	 	        	
@@ -213,9 +213,9 @@ public class ClasseRSImpl
 			        	container.addEq("cycle", resp.getCycle().getId());
 			        	container.addEq("section.id", resp.getSection().getId());
 			        	
-			        	System.out.println("ClasseRSImpl.count()cycle"+ resp.getCycle().getId());
-			        	System.out.println("ClasseRSImpl.count()section"+ resp.getSection().getId());
-			        	
+//			        	System.out.println("ClasseRSImpl.count()cycle"+ resp.getCycle().getId());
+//			        	System.out.println("ClasseRSImpl.count()section"+ resp.getSection().getId());
+//			        	
 			        	datas =getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
 			        	results.addAll(datas);
 			        }
@@ -268,22 +268,22 @@ public class ClasseRSImpl
 		    datascycle.removeAll(datasc);
 		    listcontainer = new ArrayList<Predicat>(); 
 		    container = RestrictionsContainer.newInstance();
-		    System.out.println("ClasseRSImpl.getlisteCriteria() after data value section "+datassection.size());
-			   System.out.println("ClasseRSImpl.getlisteCriteria() after data value cycle "+datascycle.size());
+//		    System.out.println("ClasseRSImpl.getlisteCriteria() after data value section "+datassection.size());
+//			   System.out.println("ClasseRSImpl.getlisteCriteria() after data value cycle "+datascycle.size());
 			   
 		for (Cycle c : datasc) {
 			container.addNotEq("cycle", c.getId());
-			System.out.println("ClasseRSImpl.getlisteCriteria() value criteria "+container.toString());
+			//System.out.println("ClasseRSImpl.getlisteCriteria() value criteria "+container.toString());
 			listcontainer.addAll(container.getPredicats());
 		}
 
 		for (SectionE sect : datas) {
 			container.addNotEq("section.id", sect.getId());
-			System.out.println("ClasseRSImpl.getlisteCriteria() value criteria "+container.toString());
+			//System.out.println("ClasseRSImpl.getlisteCriteria() value criteria "+container.toString());
 			listcontainer.addAll(container.getPredicats());
 		}
 		  
-		  System.out.println("ClasseRSImpl.getlisteCriteria() size "+listcontainer.size());   
+		//  System.out.println("ClasseRSImpl.getlisteCriteria() size "+listcontainer.size());   
 		   
 		return listcontainer;
 		   

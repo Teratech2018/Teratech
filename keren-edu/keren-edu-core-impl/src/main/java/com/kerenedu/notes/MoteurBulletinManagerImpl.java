@@ -193,85 +193,153 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 				} // fin for (ViewNoteHelper h : noteeleves) {
 				bulletin.setId(-1);
 				bulletin.setLignes(lignelist);
-				// set les cummul des 
-//				for(LigneBulletinClasse lgn : bulletin.getLignes()){
-//					cumulCoef+=lgn.getCoef();
-//					cumulPoint=cumulPoint+lgn.getNote()*lgn.getCoef();
-//				}
-				//Double moy = cumulPoint/cumulCoef;
-//				BigDecimal moybid = new BigDecimal(moy);
-//				BigDecimal moytruncate = moybid.setScale(2, RoundingMode.DOWN);
-//				bulletin.setMoyenne(moytruncate.doubleValue());
 				bulletin=dao.save(bulletin);
 			
 				System.out.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "+ inscrit.getEleve().getNom());
+				//this.aggregateNote(inscrit,critere);
 			} // fin for(Inscription inscrit : eleves)
 
 	}// fin
 
 	@Override
-	public EdtBulletin aggregateNote(EdtBulletin critere) {
+	public void aggregateNote(EdtBulletin critere) {
 		// set moyenne trimestre
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		List<Bulletin> datas = new ArrayList<Bulletin>();
 		List<Bulletin> datasdlt = new ArrayList<Bulletin>();
-		container = RestrictionsContainer.newInstance();
-		//find examen 
-				Examen examen = daoexamen.findByPrimaryKey("id", critere.getSeq().getId());
+		List<Inscription> eleves = new ArrayList<Inscription>();
+		List<Inscription> elevesdlt = new ArrayList<Inscription>();
+		
+		Double cumulPoint =0.0;
+		Long cumulCoef =(long) 0;
+		
+		
 		// verifier porte
-				if (critere.getPorte().equals("0")) {
-					// tous les eleve de la classe
-					container = RestrictionsContainer.newInstance();
-					container.addEq("model.id", examen.getId());
-					if (critere.getClasse() != null) {
-						container.addEq("classe.id", critere.getClasse().getId());
-					}
-					datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-				}else{
-					//les eleve selectionné
-					if(critere.getConcernes()==null||critere.getConcernes().isEmpty()){
-						throw new KerenExecption("Sectionner les eleves concernes");
-					}
-					for(InscriptionChoice ins :critere.getConcernes()){
-						container = RestrictionsContainer.newInstance();
-						container.addEq("inscription.id", ins.getId());
-						if (critere.getClasse() != null) {
-							container.addEq("classe.id", critere.getClasse().getId());
-						}
-						container.addEq("model.id", examen.getId());
-						datasdlt = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-						datas.addAll(datasdlt);
-					}	
-				}
-		for(Bulletin bulletin : datas){
-			System.out.println("EdtBulletinRSImpl.processAfterSave()************* DEBUT CUMMUL MOYENNE TRIMESTRIEL  eleve**********"+bulletin.getInscription().getNom());
-			Bulletin entity = dao.findByPrimaryKey("id", bulletin.getId());
+		if (critere.getPorte().equals("0")) {
+			// tous les eleve de la classe
 			container = RestrictionsContainer.newInstance();
-			container.addEq("bulletin.id", entity.getId());
-			BulletinHelper helper = daobullhelper.filter(container.getPredicats(), null,new HashSet<String>(), 0, -1).get(0);
-			System.out.println("bulletin helper id ******:  "+helper.getId());
-		//	System.out.println("MoteurBulletinManagerImpl.generateBulletin() helper is *******:  "+helper.toString());
+			container.addEq("model.id", critere.getSeq().getId());
+			if (critere.getClasse() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+			}
+			datas= new ArrayList<Bulletin>();
+			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+			
+			container = RestrictionsContainer.newInstance();
+			if (critere.getClasse() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+			}
+			//recherche les élèves inscrit de la classe
+			eleves = daoinscription.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+		}else{
+			//les eleve selectionné
+			if(critere.getConcernes()==null||critere.getConcernes().isEmpty()){
+				throw new KerenExecption("Sectionner les eleves concernes");
+			}
+			for(InscriptionChoice ins :critere.getConcernes()){
+				datas= new ArrayList<Bulletin>();
+				container = RestrictionsContainer.newInstance();
+				container.addEq("model.id", critere.getSeq().getId());
+				container.addEq("inscription.id", ins.getId());
+				if (critere.getClasse() != null) {
+					container.addEq("classe.id", critere.getClasse().getId());
+				}
+				datasdlt = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+				datas.addAll(datasdlt);
+				
+				container = RestrictionsContainer.newInstance();
+				container.addEq("id", ins.getId());
+				container.addEq("classe.id", critere.getClasse().getId());
+				elevesdlt = daoinscription.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+				// eleve inscrit 
+				eleves.addAll(elevesdlt);
+				
+			}	
+		}
+		for(Inscription param : eleves){
+			// helper
+			container = RestrictionsContainer.newInstance();
+			container.addEq("inscription.id", param.getId()); 
+			//container.addEq("examen.id", "1"); 
+			container.addEq("classe.id", param.getClasse().getId());
+			//System.out.println("MoteurBulletinManagerImpl.aggregateNote() test id0000 ...."+param.getId());
+			//System.out.println("MoteurBulletinManagerImpl.aggregateNote() classe id0000 ...."+param.getClasse().getId());
+			List<BulletinHelper>  listhelper = daobullhelper.filter(container.getPredicats(), null,new HashSet<String>(), 0, -1);
+					
+			container = RestrictionsContainer.newInstance();
+			container.addEq("inscription.id", param.getId());
+			container.addEq("model.id",critere.getSeq().getId());
+			//System.out.println("MoteurBulletinManagerImpl.aggregateNote() recherche des bulletin !!!");
+			List<Bulletin> bullist = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+			//System.out.println("MoteurBulletinManagerImpl.aggregateNote() icii !!!");
+			for(Bulletin bulletin : bullist){
+				BulletinHelper helper=listhelper.get(0);
+				Bulletin entity = dao.findByPrimaryKey("id", bulletin.getId());
+				entity.setMoyt1(helper.getMoyt1());
+				entity.setMoyt2(helper.getMoyt2());
+				entity.setMoyt3(helper.getMoyt3());
+				entity.setMoyan(helper.getMoyan());
+				dao.update(entity.getId(), entity);
+				List<LigneBulletinClasse> dataslignes = entity.getLignes();
+				for(LigneBulletinClasse ligne :dataslignes){
+					container = RestrictionsContainer.newInstance();
+					LigneBulletinClasse lgn = daoligne.findByPrimaryKey("id", ligne.getId());
+					container.addEq("inscription.id", entity.getInscription().getId());
+					container.addEq("matiere.id", lgn.getMatiere().getId());
+					container.addEq("classe.id", entity.getClasse().getId());
+					List<LigneHelper>list =daolignehelper.filter(container.getPredicats(), null,new HashSet<String>(), 0, -1);
+					//System.out.println("MoteurBulletinManagerImpl.aggregateNote() je suis iici ....0");
+					LigneHelper helperligne =list.get(0);
+					lgn.setNotet1(helperligne.getNotet1());
+					lgn.setNotet2(helperligne.getNotet2());
+					lgn.setNotet3(helperligne.getNotet3());
+					lgn.setNotean(helperligne.getNotean());
+					daoligne.update(lgn.getId(), lgn);
+					//break;
+				}
+			}
+		
+				
+			System.out.println("EdtBulletinRSImpl.processAfterSave() ***** FIN CUMMUL MOYENNE TRIMESTRIEL  eleve ******"+param.getNom());
+		}
+		}
+
+	@Override
+	public void aggregateNote(Inscription param,EdtBulletin critere) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+//		container = RestrictionsContainer.newInstance();
+//		container.addEq("inscription.id", param.getId()); 
+//		container.addEq("examen.id", "1"); 
+//		container.addEq("classe.id", param.getClasse().getId());
+//		System.out.println("MoteurBulletinManagerImpl.aggregateNote() test id0000 ...."+param.getId());
+//		System.out.println("MoteurBulletinManagerImpl.aggregateNote() classe id0000 ...."+param.getClasse().getId());
+//		System.out.println("MoteurBulletinManagerImpl.aggregateNote() "+new Long(param.getId()+""+critere.getSeq().getId()));
+		List<BulletinHelper>  listhelper = daobullhelper.findByPrimaryKey("id", new Long(param.getId()+""+2));
+				
+		container = RestrictionsContainer.newInstance();
+		container.addEq("inscription.id", param.getId());
+		container.addEq("model.id",critere.getSeq().getId());
+		//System.out.println("MoteurBulletinManagerImpl.aggregateNote() recherche des bulletin !!!");
+		List<Bulletin> bullist = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+		//System.out.println("MoteurBulletinManagerImpl.aggregateNote() icii !!!");
+		for(Bulletin bulletin : bullist){
+			BulletinHelper helper=listhelper.get(0);
+			Bulletin entity = dao.findByPrimaryKey("id", bulletin.getId());
 			entity.setMoyt1(helper.getMoyt1());
 			entity.setMoyt2(helper.getMoyt2());
 			entity.setMoyt3(helper.getMoyt3());
 			entity.setMoyan(helper.getMoyan());
 			dao.update(entity.getId(), entity);
 			List<LigneBulletinClasse> dataslignes = entity.getLignes();
-		
 			for(LigneBulletinClasse ligne :dataslignes){
 				container = RestrictionsContainer.newInstance();
 				LigneBulletinClasse lgn = daoligne.findByPrimaryKey("id", ligne.getId());
-				container.addEq("ligne.id", lgn.getId());
+				container.addEq("inscription.id", entity.getInscription().getId());
+				container.addEq("matiere.id", lgn.getMatiere().getId());
+				container.addEq("classe.id", entity.getClasse().getId());
 				List<LigneHelper>list =daolignehelper.filter(container.getPredicats(), null,new HashSet<String>(), 0, -1);
-				System.out.println("MoteurBulletinManagerImpl.aggregateNote() size "+list.size());
+			//	System.out.println("MoteurBulletinManagerImpl.aggregateNote() je suis iici ....0");
 				LigneHelper helperligne =list.get(0);
-				//System.out.println("MoteurBulletinManagerImpl.generateBulletin() helperligne is *******:  "+helperligne.toString());
-				System.out.println("ligne bulletin ******:  "+helperligne.getLigne().getId());
-				System.out.println("ligne ******:  "+ligne.getId());
-				System.out.println("ligne helper id ******:  "+helperligne.getId());
-				System.out.println("MoteurBulletinManagerImpl.generateBulletin()  helperligne.getNotet1()******:  "+helperligne.getNotet1());
-				System.out.println("MoteurBulletinManagerImpl.generateBulletin()  helperligne.getNotet2()******:  "+helperligne.getNotet2());
-				System.out.println("MoteurBulletinManagerImpl.generateBulletin()  helperligne.getNotet3()******:  "+helperligne.getNotet3());
 				lgn.setNotet1(helperligne.getNotet1());
 				lgn.setNotet2(helperligne.getNotet2());
 				lgn.setNotet3(helperligne.getNotet3());
@@ -279,11 +347,10 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 				daoligne.update(lgn.getId(), lgn);
 				//break;
 			}
-		
-		
-			System.out.println("EdtBulletinRSImpl.processAfterSave() ***** FIN CUMMUL MOYENNE TRIMESTRIEL  eleve ******"+bulletin.getInscription().getNom());
 		}
-		
-		return critere;
+	
+			
+		System.out.println("EdtBulletinRSImpl.processAfterSave() ***** FIN CUMMUL MOYENNE TRIMESTRIEL  eleve ******"+param.getNom());
 	}
+		
 }

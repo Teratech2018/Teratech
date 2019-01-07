@@ -31,6 +31,12 @@ public interface BulletinRS
 	@PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({"application/pdf"})
+    @Path("bi/printbulletin")
+    public Response printbulletinbi(@Context HttpHeaders headers,Bulletin bulletin);
+	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({"application/pdf"})
     @Path("printbulletin")
     public Response printbulletin(@Context HttpHeaders headers,Bulletin bulletin);
 	
@@ -38,5 +44,12 @@ public interface BulletinRS
     @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(Bulletin bulletin);
+	
+
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(Bulletin bulletin);
+
 
 }

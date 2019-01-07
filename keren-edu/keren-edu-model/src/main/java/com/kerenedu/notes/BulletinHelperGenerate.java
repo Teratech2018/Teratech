@@ -114,14 +114,15 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	@Column(name = "RANG6")
 	private Long rang6 = new Long(0);
 	
-	@Column(name = "APPRECIATION")
-	private String appreciation;
+	@ManyToOne
+	@JoinColumn(name = "APPS")
+	private Appreciation appreciation;
 
-	@Column(name = "SANCTION")
-	private String santcion;
-
-	@Column(name = "APP_EN")
-	protected String appen;
+//	@Column(name = "SANCTION")
+//	private String santcion;
+//
+//	@Column(name = "APP_EN")
+//	protected String appen;
 	
 	@ManyToOne
 	@JoinColumn(name = "ABS_ID")
@@ -224,6 +225,22 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	protected ViewAbscence abscencet1;
 	
 	@ManyToOne
+	@JoinColumn(name = "ABST2")
+	protected ViewAbscence abscencet2;
+	
+	@ManyToOne
+	@JoinColumn(name = "ABST3")
+	protected ViewAbscence abscencet3;
+	
+	@ManyToOne
+	@JoinColumn(name = "ABST4")
+	protected ViewAbscence abscencet4;
+	
+	@ManyToOne
+	@JoinColumn(name = "ABST5")
+	protected ViewAbscence abscencet5;
+	
+	@ManyToOne
 	@JoinColumn(name = "APPT1")
 	protected Appreciation appt1;
 	
@@ -238,6 +255,26 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	@ManyToOne
 	@JoinColumn(name = "APPMOY1")
 	protected Appreciation apptmoy1;
+	
+	@Column(name = "TCOEFS1")
+	private Long tcoefs1 = new Long(0);
+	
+	@Column(name = "TCOEFS2")
+	private Long tcoefs2 = new Long(0);
+	
+
+	@Column(name = "TCOEFS3")
+	private Long tcoefs3 = new Long(0);
+	
+	@Column(name = "TCOEFS4")
+	private Long tcoefs4 = new Long(0);
+	
+
+	@Column(name = "TCOEFS5")
+	private Long tcoefs5 = new Long(0);
+	
+	@Column(name = "TCOEFS6")
+	private Long tcoefs6 = new Long(0);
 
 	
 	@Transient
@@ -326,9 +363,9 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.rang4 = rang4;
 		this.rang5 = rang5;
 		this.rang6 = rang6;
-		this.appreciation = appreciation;
-		this.santcion = santcion;
-		this.appen = appen;
+	//	this.appreciation = appreciation;
+//		this.santcion = santcion;
+//		this.appen = appen;
 		this.abscence = abscence;
 		this.rangt1 = rangt1;
 		this.rangt2 = rangt2;
@@ -427,8 +464,8 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.rang5 = bull.rang5;
 		this.rang6 = bull.rang6;
 
-		this.santcion = bull.santcion;
-		this.appen = bull.appen;
+//		this.santcion = bull.santcion;
+//		this.appen = bull.appen;
 		
 		this.rankmatt1 = bull.rankmatt1;
 		this.rankmatt2 = bull.rankmatt2;
@@ -437,11 +474,22 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.moymatt2 = bull.moymatt2;
 		this.moymatt3 = bull.moymatt3;
 		this.abscencet0 = new ViewAbscence(bull.abscencet0);
-		this.abscencet1 = new ViewAbscence(bull.abscencet1);;
+		this.abscencet1 = new ViewAbscence(bull.abscencet1);
+		this.abscencet2 = new ViewAbscence(bull.abscencet2);
+		this.abscencet3 = new ViewAbscence(bull.abscencet3);
+		this.abscencet4 = new ViewAbscence(bull.abscencet4);
+		this.abscencet5 = new ViewAbscence(bull.abscencet5);
 		this.appt1 = new Appreciation(bull.appt1);
 		this.appt2 = new Appreciation(bull.appt2);
 		this.appt3 = new Appreciation(bull.appt3);
 		this.apptmoy1 = new Appreciation(bull.apptmoy1);
+		this.appreciation = new Appreciation(bull.appreciation);
+		this.tcoefs1=bull.tcoefs1;
+		this.tcoefs2=bull.tcoefs2;
+		this.tcoefs3=bull.tcoefs3;
+		this.tcoefs4=bull.tcoefs4;
+		this.tcoefs5=bull.tcoefs5;
+		this.tcoefs6=bull.tcoefs6;
 		//this.appreciationMatiereen = bull.appreciationMatiereen;
 	}
 
@@ -492,6 +540,62 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	public Long getRang1() {
 		return rang1;
 	}
+
+	public ViewAbscence getAbscencet2() {
+		return abscencet2;
+	}
+
+
+
+
+	public void setAbscencet2(ViewAbscence abscencet2) {
+		this.abscencet2 = abscencet2;
+	}
+
+
+
+
+	public ViewAbscence getAbscencet3() {
+		return abscencet3;
+	}
+
+
+
+
+	public void setAbscencet3(ViewAbscence abscencet3) {
+		this.abscencet3 = abscencet3;
+	}
+
+
+
+
+	public ViewAbscence getAbscencet4() {
+		return abscencet4;
+	}
+
+
+
+
+	public void setAbscencet4(ViewAbscence abscencet4) {
+		this.abscencet4 = abscencet4;
+	}
+
+
+
+
+	public ViewAbscence getAbscencet5() {
+		return abscencet5;
+	}
+
+
+
+
+	public void setAbscencet5(ViewAbscence abscencet5) {
+		this.abscencet5 = abscencet5;
+	}
+
+
+
 
 	public void setRang1(Long rang1) {
 		this.rang1 = rang1;
@@ -547,6 +651,34 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		return rang5;
 	}
 
+	public Long getTcoefs1() {
+		return tcoefs1;
+	}
+
+
+
+
+	public void setTcoefs1(Long tcoefs1) {
+		this.tcoefs1 = tcoefs1;
+	}
+
+
+
+
+	public Long getTcoefs2() {
+		return tcoefs2;
+	}
+
+
+
+
+	public void setTcoefs2(Long tcoefs2) {
+		this.tcoefs2 = tcoefs2;
+	}
+
+
+
+
 	public void setRang5(Long rang5) {
 		this.rang5 = rang5;
 	}
@@ -567,13 +699,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	
 
-	public String getAppen() {
-		return appen;
-	}
-
-	public void setAppen(String appen) {
-		this.appen = appen;
-	}
 
 	
 	public MatiereDlt getMatiere() {
@@ -710,15 +835,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.matiere = matiere;
 	}
 
-
-
-	public String getSantcion() {
-		return santcion;
-	}
-
-	public void setSantcion(String santcion) {
-		this.santcion = santcion;
-	}
 
 	public Examen getExamen() {
 		return examen;
@@ -972,15 +1088,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	}
 
 
-	public String getAppreciation() {
-		return appreciation;
-	}
-
-
-	public void setAppreciation(String appreciation) {
-		this.appreciation = appreciation;
-	}
-
 
 	public Long getRangt1() {
 		return rangt1;
@@ -1142,6 +1249,20 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	}
 
 
+	public Appreciation getAppreciation() {
+		return appreciation;
+	}
+
+
+
+
+	public void setAppreciation(Appreciation appreciation) {
+		this.appreciation = appreciation;
+	}
+
+
+
+
 	public Double getMoygent3() {
 		return moygent3;
 	}
@@ -1173,6 +1294,62 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	public void seteType(Double eType) {
 		this.eType = eType;
 	}
+
+	public Long getTcoefs3() {
+		return tcoefs3;
+	}
+
+
+
+
+	public void setTcoefs3(Long tcoefs3) {
+		this.tcoefs3 = tcoefs3;
+	}
+
+
+
+
+	public Long getTcoefs4() {
+		return tcoefs4;
+	}
+
+
+
+
+	public void setTcoefs4(Long tcoefs4) {
+		this.tcoefs4 = tcoefs4;
+	}
+
+
+
+
+	public Long getTcoefs5() {
+		return tcoefs5;
+	}
+
+
+
+
+	public void setTcoefs5(Long tcoefs5) {
+		this.tcoefs5 = tcoefs5;
+	}
+
+
+
+
+	public Long getTcoefs6() {
+		return tcoefs6;
+	}
+
+
+
+
+	public void setTcoefs6(Long tcoefs6) {
+		this.tcoefs6 = tcoefs6;
+	}
+
+
+
 
 	public int compareTo(BulletinHelperGenerate o) {
 		// TODO Auto-generated method stub

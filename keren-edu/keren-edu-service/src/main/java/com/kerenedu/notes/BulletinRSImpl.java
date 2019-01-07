@@ -145,6 +145,19 @@ public class BulletinRSImpl
 		}
 	}
 	
+	@Override
+	public Response printbulletinbi(HttpHeaders headers, Bulletin bulletin) {
+		// TODO Auto-generated method stub
+		if (bulletin.getEleve()==null) {
+			throw new KerenExecption("Ce bulletin est nulle <br/> ");
+		} // end if(entity.getState().trim().equalsIgnoreCase("valide")){
+		try {
+			return this.buildPdfReport(bulletin);
+		} catch (KerenEduManagerException ex) {
+			throw new KerenExecption(ex.getMessage());
+		}
+	}
+	
 	/**
      * Methode permettant de retourner les parametres pour le reporting
      *
@@ -159,6 +172,55 @@ public class BulletinRSImpl
 
     @Override
     public Response buildPdfReport(Bulletin bulletin) {
+        try {
+        	  String URL ="";  Map parameters = new HashMap();
+        /*	if(bulletin.getClasse().getTypecycle().equals("1")){
+        		System.out.println("BulletinRSImpl.buildPdfReport() BULLETIN PRIMAIRE"+bulletin.getClasse().getTypecycle());
+        		 List<BulletinHelperGeneratePrimaire> records =managerbp.getCriteres(bulletin);
+           	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
+                  URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL_PRIMAIRE.getName();
+                 System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
+               
+                 parameters= this.getReportParameters();
+                 List<BulletinHelperGeneratePrimaire> datas = new ArrayList<BulletinHelperGeneratePrimaire>();
+                 for(BulletinHelperGeneratePrimaire bull:records){
+               	  if (bull.getEleve().getImage() != null) {
+               		  bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
+               	  }
+               	  datas.add(bull);
+                 }
+                 return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
+        	}else if(bulletin.getClasse().getTypecycle().equals("1")){*/
+        		System.out.println("BulletinRSImpl.buildPdfReport() BULLETIN Secondaire"+bulletin.getClasse().getTypecycle());
+        		 List<BulletinHelperGenerate> records =managerbullview.getCriteres(bulletin);
+           	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
+                  URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
+                 System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
+                 parameters= this.getReportParameters();
+                 List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();
+                 for(BulletinHelperGenerate bull:records){
+               	  if (bull.getEleve().getImage() != null) {
+               		  bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
+               	  }
+               	  datas.add(bull);
+                 }
+                 return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
+        	//}
+         } catch (FileNotFoundException ex) {
+            Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Response.serverError().build();
+        }catch (JRException ex) {
+            Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+ 
+        return Response.noContent().build();
+    }
+    
+    @Override
+    public Response buildPdfReportbi(Bulletin bulletin) {
         try {
         	  String URL ="";  Map parameters = new HashMap();
         /*	if(bulletin.getClasse().getTypecycle().equals("1")){

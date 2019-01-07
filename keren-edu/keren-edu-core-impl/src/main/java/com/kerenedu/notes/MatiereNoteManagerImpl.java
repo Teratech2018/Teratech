@@ -210,6 +210,10 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 					note1=(double) 0;
 					note2=not.getNote2()*entity.getExamen().getE3();
 					note3=not.getNote1()*entity.getExamen().getE3();
+				}else if(not.getNote1()==0&&not.getNote2()!=0&&not.getNote3()==0){
+					note1=(double) 0;
+					note2=(double) 0;
+					note3=(double) 0;
 				}
 
 				 notmoy= note1+note2+note3;
