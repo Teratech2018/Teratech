@@ -24,10 +24,10 @@ public class LigneExprBesion extends BaseElement implements Serializable,Compara
 
     @ManyToOne
     @JoinColumn(name = "ART_ID")
-    @Predicate(label = "Article",type = Article.class,target = "many-to-one",optional = false,search = true)
+    @Predicate(label = "ARTICLE",type = Article.class,target = "many-to-one",optional = false,search = true)
     private Article article ;
     
-    @Predicate(label = "Quantité",type = Double.class,optional = false,search = true)
+    @Predicate(label = "QUANTITY",type = Double.class,optional = false,search = true)
     private Double quantite ;
 
     /**

@@ -14,12 +14,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -69,12 +71,17 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
     @Predicate(label = "NIVEAU ADMINISTRATION" ,target = "combobox" ,values = "Aucun;Applications;Configuration;Applications & Configuration",search = false,sequence = 7)
     private String adminlevel = "0" ;   
     
-    @Predicate(label = "PROFIL UTILISATEUR" ,type = Groupe.class,group = true,groupName = "group1",groupLabel = "PROFIL UTILISATEUR",target = "many-to-many-list",searchfields = "code")
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "T_USER_RIGTH",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "RIGTH_ID"))
-    private List<Groupe> autorisations = new ArrayList<Groupe>();
+//    @Predicate(label = "PROFIL UTILISATEUR" ,type = Groupe.class,group = true,groupName = "group1",groupLabel = "PROFIL UTILISATEUR",target = "many-to-many-list",searchfields = "code")
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "T_USER_RIGTH",
+//            joinColumns = @JoinColumn(name = "USER_ID"),
+//            inverseJoinColumns = @JoinColumn(name = "RIGTH_ID"))
+//    private List<Groupe> autorisations = new ArrayList<Groupe>();
+    
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "USAU_ID")
+    @Predicate(label = "Autorisations" ,type = UserAutorisation.class,group = true,groupName = "group1",groupLabel = "PROFIL UTILISATEUR",target = "many-to-many-list",searchfields = "code",edittable = true)
+    private List<UserAutorisation> autorisations = new ArrayList<UserAutorisation>();
     
     @ManyToOne
     @JoinColumn(name = "LANG_ID")
@@ -195,11 +202,11 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
         this.societeAutorisees = societeAutorisees;
     }
 
-    public List<Groupe> getAutorisations() {
+    public List<UserAutorisation> getAutorisations() {
         return autorisations;
     }
 
-    public void setAutorisations(List<Groupe> autorisations) {
+    public void setAutorisations(List<UserAutorisation> autorisations) {
         this.autorisations = autorisations;
     }
 

@@ -183,7 +183,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 }else {
                     datas = FileHelper.excelToJavaConverter(filename,entity.getFields().size());
                 }//end if(entity.getFormat().equalsIgnoreCase("cvs")){
-//                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
+                System.out.println(AbstractGenericService.class.toString()+".importData(ImportData entity) : "+entity+" ==== \n contenu fichier :"+datas+"====== import File : "+filename+" === data Type :"+data);
                //Construction of RulesContainer
                 RulesContainer container = RulesContainer.newInstance();
                 for(ImportLigne ligne:entity.getFields()){
@@ -587,6 +587,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
             contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
         } //end if(headers.getRequestHeader("predicats")!=null){     
         String searchText = null;
+
         String liveSearch = null;
         if(headers.getRequestHeader("search_text")!=null && !headers.getRequestHeader("search_text").isEmpty()){
             searchText = gson.fromJson(headers.getRequestHeader("search_text").get(0),String.class);
@@ -594,6 +595,7 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         if(headers.getRequestHeader("live_search")!=null && !headers.getRequestHeader("live_search").isEmpty()){
             liveSearch = gson.fromJson(headers.getRequestHeader("live_search").get(0),String.class);
         } //end if(headers.getRequestHeader("predicats")!=null){     
+
 //        System.out.println(AbstractGenericService.class.toString()+" === "+headers.getRequestHeader("predicats")+" === "+firstResult+" === "+maxResult+" == "+contraints);   
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
         if(contraints!=null&&!contraints.isEmpty()){
@@ -605,11 +607,13 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
+
         if(liveSearch!=null&&!liveSearch.trim().isEmpty()){
             container.addLike("searchkeys", liveSearch);
         }else if(searchText!=null&&!searchText.trim().isEmpty()){
             container.addLike("searchkeys", searchText);
         }//end if(searchText!=null&&!searchText.trim().isEmpty()){        
+
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }
@@ -662,6 +666,15 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         if(headers.getRequestHeader("predicats")!=null){
             contraints = gson.fromJson(headers.getRequestHeader("predicats").get(0),new TypeToken<List<FilterPredicat>>(){}.getType());
         }//end if(headers.getRequestHeader("predicats")!=null){        
+         String searchText = null;
+
+        String liveSearch = null;
+        if(headers.getRequestHeader("search_text")!=null && !headers.getRequestHeader("search_text").isEmpty()){
+            searchText = gson.fromJson(headers.getRequestHeader("search_text").get(0),String.class);
+        } //end if(headers.getRequestHeader("predicats")!=null){     
+        if(headers.getRequestHeader("live_search")!=null && !headers.getRequestHeader("live_search").isEmpty()){
+            liveSearch = gson.fromJson(headers.getRequestHeader("live_search").get(0),String.class);
+        } //end if(headers.getRequestHeader("predicats")!=null){     
         RestrictionsContainer container = RestrictionsContainer.newInstance();  
          if(contraints!=null&&!contraints.isEmpty()){
             for(Object obj : contraints){
@@ -672,6 +685,11 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
                 }//end if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
             }//end  for(Object obj : contraints)
         }//end if(contraints!=null&&!contraints.isEmpty())
+         if(liveSearch!=null&&!liveSearch.trim().isEmpty()){
+            container.addLike("searchkeys", liveSearch);
+        }else if(searchText!=null&&!searchText.trim().isEmpty()){
+            container.addLike("searchkeys", searchText);
+        }//end if(searchText!=null&&!searchText.trim().isEmpty()){        
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;

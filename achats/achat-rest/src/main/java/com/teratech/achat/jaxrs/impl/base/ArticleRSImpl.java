@@ -6,14 +6,13 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
+import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
-import com.megatimgroup.generic.jax.rs.layer.impl.TreeNode;
 import com.teratech.achat.core.ifaces.base.ArticleManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.base.ArticleRS;
 import com.teratech.achat.model.base.Article;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.HttpHeaders;
@@ -57,14 +56,19 @@ public class ArticleRSImpl
 
     @Override
     public MetaData getMetaData(HttpHeaders headers) {
+        MetaData meta = null;
         try {
-            return MetaDataUtil.getMetaData(new Article(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
+            meta = MetaDataUtil.getMetaData(new Article(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Emplacements de stockage", false, "link", null);
+            workbtn.setValue("{'name':'teratech_achat_str_1_1',template:{'article':'object'},'header':['article']}");
+//            workbtn.setStates(new String[]{"etabli"});
+            meta.getHeader().add(workbtn);
         } catch (InstantiationException ex) {
             Logger.getLogger(ArticleRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             Logger.getLogger(ArticleRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return meta;
     }
 
     @Override

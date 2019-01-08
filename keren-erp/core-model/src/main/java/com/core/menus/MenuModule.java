@@ -69,13 +69,16 @@ public class MenuModule extends BaseElement implements Serializable,Comparable<M
      @Predicate(label = "DESCRIPTION DETAILLEE DU MODULE",group = true,groupName = "group_1",groupLabel = "DESCRIPTION DETAILLEE",target = "richeditor",search = false,unique = false)
      private String longDescription ;
      
-     private boolean installable = Boolean.TRUE;
+     @Predicate(label = "Installable",type = Boolean.class,target = "checkbox",search = true)
+     private Boolean installable = Boolean.TRUE;
      
-     private boolean application = Boolean.TRUE;
+     @Predicate(label = "Application",type = Boolean.class,target = "checkbox",search = true)
+     private Boolean application = Boolean.TRUE;
      
-     private boolean auto_install = Boolean.FALSE;
+     @Predicate(label = "Auto install",type = Boolean.class,target = "checkbox",search = true)
+     private Boolean auto_install = Boolean.FALSE;
      
-     private boolean hasmenu = true ;
+     private Boolean hasmenu = true ;
      
      @Predicate(label = "INSTALLE" ,updatable = false,unique = false,type = Boolean.class,search = true)
      private Boolean active = false ;
@@ -92,6 +95,11 @@ public class MenuModule extends BaseElement implements Serializable,Comparable<M
 
      @OneToMany(mappedBy = "module",fetch = FetchType.LAZY)
      private List<Template> templates = new ArrayList<Template>();
+     
+     /**
+      * Add 07/01/2019 by BKD for autorisation purpose
+      */
+     private String roles ; 
      
      /**
       * Constructeur par defaut
@@ -153,6 +161,7 @@ public MenuModule(MenuModule module) {
         this.active = module.active;
         this.hasmenu = module.hasmenu;
         this.categorie = module.categorie;
+        this.roles = module.roles;
         
     }
 
@@ -356,6 +365,14 @@ public MenuModule(Manifest manifest) {
 
     public void setTemplates(List<Template> templates) {
         this.templates = templates;
+    }  
+   
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
     
     

@@ -40,6 +40,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.teratech.stock.jaxrs.impl.base.EmplacementRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.EntrepotRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.FamilleArticleRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.base.LienEmplacementRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.PaysRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.RegionRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.base.SocieteRSImpl.class);
@@ -57,6 +58,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.teratech.stock.jaxrs.impl.invetaire.LArticleEmplacementLotRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.invetaire.LigneInventaireRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.invetaire.RegulInventaireRSImpl.class);
+        resources.add(com.teratech.stock.jaxrs.impl.operations.ControleQualiteRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.operations.DocumentStockRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.operations.EntreeRSImpl.class);
         resources.add(com.teratech.stock.jaxrs.impl.operations.EntreeVRSImpl.class);

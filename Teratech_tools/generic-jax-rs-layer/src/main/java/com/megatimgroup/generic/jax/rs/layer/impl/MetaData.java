@@ -91,6 +91,15 @@ public class MetaData implements Serializable,Comparable<MetaData>{
                 states.add(new State(state));
             }
         }//end if(meta.states!=null){
+        for(MetaColumn col:meta.header){
+            this.header.add(new MetaColumn(col));
+        }
+        for(MetaColumn col:meta.columns){
+            this.columns.add(new MetaColumn(col));
+        }
+        for(MetaGroup grp:meta.groups){
+            this.groups.add(new MetaGroup(grp));
+        }
         //if()
     }
     public String getModuleName() {

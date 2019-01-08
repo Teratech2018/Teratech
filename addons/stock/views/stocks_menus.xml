@@ -3,6 +3,7 @@
      <action id="teratech_stock" />
 	 <menu id="teratech_stock_operation" label="Mouvements du stock" parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
 	 <menuitem id="teratech_stock_ope_1" label="Mouvement d'entrée" parent_ref="teratech_stock_operation" entity_ref="Entree" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_ope_1_1" label="Controle qualite" parent_ref="teratech_stock_operation" entity_ref="ControleQualite" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" hide="true"/>
 	 <menuitem id="teratech_stock_ope_2" label="Mouvement de sortie" parent_ref="teratech_stock_operation" entity_ref="Sortie" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_stock_ope_5" label="Virement dépot à dépot" parent_ref="teratech_stock_operation" entity_ref="Transfert" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menu id="teratech_stock_inventaire" label="Inventaire" parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
@@ -11,6 +12,7 @@
 	 <menu id="teratech_stock_structure" label="Structures" parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
 	 <menuitem id="teratech_stock_str_1" label="Articles" parent_ref="teratech_stock_structure" entity_ref="Article" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" view_type="kaban,tree,form"/>
 	 <menuitem id="teratech_stock_str_2" label="Familles Articles" parent_ref="teratech_stock_structure" entity_ref="FamilleArticle" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_stock_str_3" label="Emplacement de stockage" parent_ref="teratech_stock_structure" entity_ref="LienEmplacement" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
 	 <menu id="teratech_stock_comptabilite" label="Comptabilité." parent="teratech_stock" gyphycon="glyphicon glyphicon-pencil"/>
 	 <menuitem id="teratech_stock_com_1" label="Plan comptable." parent_ref="teratech_stock_comptabilite" entity_ref="Compte" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_stock_com_2" label="Plan Tier." parent_ref="teratech_stock_comptabilite" entity_ref="Tier" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
@@ -26,12 +28,136 @@
 	 <menuitem id="teratech_stock_conf_6" label="Régions ." parent_ref="teratech_stock_configuration" entity_ref="Region" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_stock_conf_7" label="Pays." parent_ref="teratech_stock_configuration" entity_ref="Pays" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_stock_conf_8" label="Civilité ." parent_ref="teratech_stock_configuration" entity_ref="Civilite" model_ref="teratechstock" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <reportRecord  id="entree_report01" label="Fiche entree en stock" action_ref="teratech_stock_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>
+                     <ng-template src='base_account/views/header.xml'></ng-template> 				
+					 <div ng-repeat='obj in temporalDatas'>
+					   <label>N Compte</label><p>{{obj.fournisseur.code}}</p>
+					   <label>Libelle</label><p>{{obj.fournisseur.label}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>N°Série/Lot</td><td>Fabriquer le</td><td>Date Limite</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.code}}</td>
+								 <td>{{ligne.fabrication}}</td>
+								 <td>{{ligne.peremption}}</td>
+							  </tr>							  
+						   </tbody>
+					   </table>	
+                   </div>					   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="sortie_report01" label="Fiche entree en stock" action_ref="teratech_stock_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>
+                     <ng-template src='base_account/views/header.xml'></ng-template> 				
+					 <div ng-repeat='obj in temporalDatas'>
+					   <label>N Compte</label><p>{{obj.fournisseur.code}}</p>
+					   <label>Libelle</label><p>{{obj.fournisseur.label}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>N°Série/Lot</td><td>Fabriquer le</td><td>Date Limite</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.code}}</td>
+								 <td>{{ligne.fabrication}}</td>
+								 <td>{{ligne.peremption}}</td>
+							  </tr>							  
+						   </tbody>
+					   </table>	
+                   </div>					   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="transfert_report01" label="Fiche transfert en stock" action_ref="teratech_stock_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>
+                     <ng-template src='base_account/views/header.xml'></ng-template> 				
+					 <div ng-repeat='obj in temporalDatas'>
+					   <label>N° pièce</label><p>{{obj.code}}</p>
+					   <label>Date</label><p>{{obj.date}}</p>
+					   <label>Reference</label><p>{{obj.reference}}</p>
+					   <label>Entrepôt Source</label><p>{{obj.source.designation}}</p>
+					   <label>Entrepôt Cible</label><p>{{obj.cible.designation}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>Empl soruce</td><td>N°Série/Lot</td><td>Emp cible</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.empsource.designation}}</td>
+								 <td>{{ligne.lot.designation}}</td>
+								 <td>{{ligne.empcible.designation}}</td>
+							  </tr>							  
+						   </tbody>
+					   </table>	
+                   </div>					   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="inventory_report01" label="Fiche Inventaire en stock" action_ref="teratech_stock_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>
+                     <ng-template src='base_account/views/header.xml'></ng-template> 				
+					 <div ng-repeat='obj in temporalDatas'>
+					   <label>Reference</label><p>{{obj.code}}</p>
+					   <label>Date inv.</label><p>{{obj.dateinventaire}}</p>
+					   <label>Entrepôt</label><p>{{obj.fentrepot.designation}}</p>
+					   <label>Emplacement</label><p>{{obj.femplacement.designation}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Lot/Série</td><td>Péremption</td><td>Stock dispo</td><td>Stock ajusté</td><td>Prix HT</td><td>Prix ajusté</td><td>Emplacement</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.lot.designation}}</td>
+								 <td>{{ligne.lot.peremption}}</td>
+								 <td>{{ligne.stockdispo}}</td>
+								 <td>{{ligne.stockconstate}}</td>
+								 <td>{{ligne.puht}}</td>
+								 <td>{{ligne.puajuste}}</td>
+								 <td>{{ligne.localisation.designation}}</td>
+							  </tr>							  
+						   </tbody>
+					   </table>	
+                   </div>					   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>
 	 <kabanentry id="article_kaban_01" parent_ref="teratech_stock_str_1">
 	    <template>
 		    <![CDATA[				   
 			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
 				 <div class='col-md-3 col-sm-4'>
-				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='{{protocol}}://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
 				  </div> 
 				 </div>
 				 <div  class='col-md-8 col-sm-7'>

@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,6 +51,9 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
     
     @Column(unique = true)    
     private String reference ;
+    
+    @OneToOne(mappedBy = "lot")
+    private LigneEntree entree ;
     
     /**
      * 
@@ -92,6 +96,9 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
         this.reference = lot.reference;
         if(lot.lien!=null){
             lien = new LienEmplacement(lot.lien);
+        }
+        if(lot.entree!=null){
+            entree = new LigneEntree(lot.entree);
         }
     }
 
@@ -159,6 +166,14 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
 
     public void setEncours(Double encours) {
         this.encours = encours;
+    }
+
+    public LigneEntree getEntree() {
+        return entree;
+    }
+
+    public void setEntree(LigneEntree entree) {
+        this.entree = entree;
     }
 
     

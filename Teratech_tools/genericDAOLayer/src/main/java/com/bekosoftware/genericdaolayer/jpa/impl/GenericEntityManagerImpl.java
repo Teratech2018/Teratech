@@ -271,8 +271,8 @@ public abstract class GenericEntityManagerImpl<T extends Object> implements Gene
      * @param primaryKey : the value of the primary key
      */
     public List<T> findByProperty(String propertyName, Object propertyValue) {
-    	System.out.println("GenericEntityManagerImpl.findByProperty() propertyName"+propertyName);
-    	System.out.println("GenericEntityManagerImpl.findByProperty() propertyValue"+propertyValue.toString());
+//    	System.out.println("GenericEntityManagerImpl.findByProperty() propertyName"+propertyName);
+//    	System.out.println("GenericEntityManagerImpl.findByProperty() propertyValue"+propertyValue.toString());
         //propertyName non null ou non vide
         if (propertyName == null || propertyName.trim().isEmpty()) {
             throw new GenericDAOException("genericentitymanager.findbyproperty.propertyname.null");

@@ -5,19 +5,24 @@
  */
 package com.teratech.achat.model.operations;
 
+import com.core.base.BaseElement;
 import com.core.base.State;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.achat.model.base.ConditionPaiement;
-import com.teratech.achat.model.base.Emplacement;
 import com.teratech.achat.model.base.Tier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.DiscriminatorValue;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,169 +31,116 @@ import javax.persistence.TemporalType;
  * @author BEKO
  */
 @Entity
-@DiscriminatorValue("DP")
-public class DemandePrix extends DocumentAchat implements Serializable{
+@Table(name = "T_DP_ACH")
+public class DemandePrix extends BaseElement implements Serializable{
 
-    @Temporal(TemporalType.DATE)
-    @Predicate(label = "Offre recue le",type = Date.class,target = "date",group = true,groupName = "group2",groupLabel = "Offres")
-    private Date dateoffre ;
+    @Predicate(label = "Reference",optional = false,unique = true,search = true)
+    private String code ;
     
     @Temporal(TemporalType.DATE)
-    @Predicate(label = "Offre valable jusqu'au",type = Date.class,target = "date",group = true,groupName = "group2",groupLabel = "Offres")
-    private Date validiteoffre;
+    @Predicate(label = "Date",type = Date.class,target = "date",search = true)
+    private Date date ;   
     
-    @Predicate(label = "Méthode de facturation",target = "combobox",values = "Basé sur le bon de commande;Basé sur les receptions",group = true,groupName = "group3",groupLabel = "Livraison&Factures")
-    private String method="0";
     
-    @Predicate(label = "Facture recue",type = Boolean.class,editable = false,group = true,groupName = "group3",groupLabel = "Livraison&Factures")
-    private Boolean facturerecue = false;
-    
-    @ManyToOne
-    @JoinColumn(name = "APOF_ID")
-    @Predicate(label = "Appel d'offres",type = AppelOffre.class,target = "many-to-one",group = true,groupName = "group3",groupLabel = "Livraison&Factures")
-    private AppelOffre appeloffre ;
-    
-    @ManyToOne
-    @JoinColumn(name = "CORE_ID")
-    @Predicate(label = "Conditions de règlement",type = ConditionPaiement.class,target = "many-to-one",group = true,groupName = "group3",groupLabel = "Livraison&Factures")
-    private ConditionPaiement condreglement ;
+//    @ManyToOne
+//    @JoinColumn(name = "CORE_ID")
+//    @Predicate(label = "Conditions de règlement",type = ConditionPaiement.class,target = "many-to-one",group = true,groupName = "group3",groupLabel = "Livraison&Factures")
+//    private ConditionPaiement condreglement ;
    
-     
+    @Predicate(label = "STATE",search = true,hide = true)
+    private String state="etabli";
+    
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "DP_ID")
+    @Predicate(label = "ARTICLES " ,type = LigneDemandePrix.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = " ",edittable = true)
+    private List<LigneDemandePrix> articles = new ArrayList<LigneDemandePrix>();
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "T_TIER_DP_ACH",joinColumns = @JoinColumn(name = "DP_ID"),inverseJoinColumns = @JoinColumn(name = "TIER_ID"))
+    @Predicate(label = "FOURNISSEURS",type = Tier.class,target = "many-to-many-list",group = true,groupName = "group1",groupLabel = " ")
+    @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"1\"}]")
+    private List<Tier> fournisseurs = new ArrayList<Tier>();
+    
+    
     public DemandePrix() {
-        this.typedocument = DocumentAchatState.DEMANDE_PRIX;
+        
     }
 
     /**
      * 
-     * @param dateoffre
-     * @param validiteoffre
      * @param code
      * @param date
-     * @param fornisseur
-     * @param datecommande
-     * @param codefourni
-     * @param emplacement 
-     */
-    public DemandePrix(Date dateoffre, Date validiteoffre, String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement) {
-        super(code, date, fornisseur, datecommande, codefourni, emplacement);
-        this.dateoffre = dateoffre;
-        this.validiteoffre = validiteoffre;
-        this.typedocument = DocumentAchatState.DEMANDE_PRIX;
-    }
-
-    /**
-     * 
-     * @param dateoffre
-     * @param validiteoffre
-     * @param code
-     * @param date
-     * @param fornisseur
-     * @param datecommande
-     * @param codefourni
-     * @param emplacement
+     * @param condreglement
      * @param id
      * @param designation
-     * @param moduleName 
+     * @param moduleName
+     * @param comparedid 
      */
-    public DemandePrix(Date dateoffre, Date validiteoffre, String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement, long id, String designation, String moduleName) {
-        super(code, date, fornisseur, datecommande, codefourni, emplacement, id, designation, moduleName);
-        this.dateoffre = dateoffre;
-        this.validiteoffre = validiteoffre;
-        this.typedocument = DocumentAchatState.DEMANDE_PRIX;
+    public DemandePrix(String code, Date date, ConditionPaiement condreglement, long id, String designation, String moduleName, long comparedid) {
+        super(id, designation, moduleName, comparedid);
+        this.code = code;
+        this.date = date;
+//        this.condreglement = condreglement;
     }
 
-    /**
-     * 
-     * @param dateoffre
-     * @param validiteoffre
-     * @param da 
-     */
-    public DemandePrix(Date dateoffre, Date validiteoffre, DocumentAchat da) {
-        super(da);
-        this.dateoffre = dateoffre;
-        this.validiteoffre = validiteoffre;
-        this.typedocument = DocumentAchatState.DEMANDE_PRIX;
+   public DemandePrix(DemandePrix entity) {
+        super(entity.id, entity.designation, entity.moduleName, entity.compareid);
+        this.code = entity.code;
+        this.date = entity.date;    
+        this.state = entity.getState();
     }
 
-   public DemandePrix(DocumentAchat da) {
-        super(da);      
-        this.typedocument = da.typedocument;
-    }
+//    public ConditionPaiement getCondreglement() {
+//        return condreglement;
+//    }
+//
+//    public void setCondreglement(ConditionPaiement condreglement) {
+//        this.condreglement = condreglement;
+//    }
+//    
     
-     public DemandePrix(DemandePrix da) {
-        super(da);
-        this.dateoffre = da.dateoffre;
-        this.validiteoffre = da.validiteoffre;
-        this.method = da.method;
-        this.facturerecue = da.facturerecue;
-        if(da.appeloffre!=null){
-            this.appeloffre = new AppelOffre(da.appeloffre);
-        }
-        this.condreglement = da.getCondreglement();
-        this.state = da.getState();
-        this.typedocument = da.typedocument;
-        this.state = da.state;
-    }
-
-     
-    public Date getDateoffre() {
-        return dateoffre;
-    }
-
-    public void setDateoffre(Date dateoffre) {
-        this.dateoffre = dateoffre;
-    }
-
-    public Date getValiditeoffre() {
-        return validiteoffre;
-    }
-
-    public void setValiditeoffre(Date validiteoffre) {
-        this.validiteoffre = validiteoffre;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public Boolean getFacturerecue() {
-        return facturerecue;
-    }
-
-    public void setFacturerecue(Boolean facturerecue) {
-        this.facturerecue = facturerecue;
-    }
-
-    public AppelOffre getAppeloffre() {
-        return appeloffre;
-    }
-
-    public void setAppeloffre(AppelOffre appeloffre) {
-        this.appeloffre = appeloffre;
-    }
-
-    public ConditionPaiement getCondreglement() {
-        return condreglement;
-    }
-
-    public void setCondreglement(ConditionPaiement condreglement) {
-        this.condreglement = condreglement;
-    }
-    
-    @Override
     public String getState() {
         return state;
     }
 
-    @Override
+    
     public void setState(String state) {
         this.state = state;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<LigneDemandePrix> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<LigneDemandePrix> articles) {
+        this.articles = articles;
+    }
+
+    public List<Tier> getFournisseurs() {
+        return fournisseurs;
+    }
+
+    public void setFournisseurs(List<Tier> fournisseurs) {
+        this.fournisseurs = fournisseurs;
+    }
+
+    
 
     @Override
     public boolean isActivatefollower() {
@@ -198,17 +150,17 @@ public class DemandePrix extends DocumentAchat implements Serializable{
     @Override
     public List<State> getStates() {
         List<State> s = new ArrayList<>();
-        State stat = new State("etabli", "Pro-Forma");
+        State stat = new State("etabli", "Edité");
         stat.setIcone("fa fa-circle");
         stat.setCouleur("#d9534f");
         s.add(stat);
 //        state = new State("envoye", "Envoyée au fornisseur");
 //        states.add(state);
-        stat = new State("confirme", "Confirmé");
+        stat = new State("transmi", "Transmi");
         stat.setIcone("fa fa-circle");
         stat.setCouleur("#008b8b");
         s.add(stat);
-        stat = new State("annule", "Annulée");
+        stat = new State("cloture", "Terminé");
         stat.setIcone("fa fa-circle");
         stat.setCouleur("#d5575e");
         s.add(stat);
@@ -217,6 +169,49 @@ public class DemandePrix extends DocumentAchat implements Serializable{
         return s; //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public String getOwnermodule() {
+        return "teratechachat"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesableupdate() {
+        return !"etabli".equals(state); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesabledelete() {
+        return !"etabli".equals(state); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesablecreate() {
+        return !"etabli".equals(state); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getDesignation() {
+        return code; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public long getCompareid() {
+        return id; //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
+    @Override
+    public String getModuleName() {
+        return "teratechachat"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSearchkeys() {
+        return super.getSearchkeys(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 
     @Override
     public boolean isActivefilelien() {
@@ -235,12 +230,12 @@ public class DemandePrix extends DocumentAchat implements Serializable{
 
     @Override
     public String getListTitle() {
-        return "DEMANDES DE PRIX"; //To change body of generated methods, choose Tools | Templates.
+        return "DEMANDEPRIXL"; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String getEditTitle() {
-        return "DEMANDE DE PRIX"; //To change body of generated methods, choose Tools | Templates.
+        return "DEMANDEPRIXD"; //To change body of generated methods, choose Tools | Templates.
     }
      
      

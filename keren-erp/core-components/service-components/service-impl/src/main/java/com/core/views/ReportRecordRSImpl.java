@@ -1,6 +1,7 @@
 
 package com.core.views;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
@@ -96,6 +97,15 @@ public class ReportRecordRSImpl
             Logger.getLogger(ReportRecordRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public ReportRecord getRecordbyName(HttpHeaders headers, String name) {
+        //To change body of generated methods, choose Tools | Templates.
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("code", name);
+        List<ReportRecord> records = manager.filter(container.getPredicats(), null, null, 0, -1);
+        return records.isEmpty() ? null : records.get(0);
     }
     
     

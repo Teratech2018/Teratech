@@ -18,7 +18,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -71,10 +70,10 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
 //    @Filter(value = "[{\"fieldName\":\"state\",\"value\":\"confirme\"}]")
 //    private DemandePrix offre ;
     
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "appeloffre")
-    @Predicate(label ="AP",type = DemandePrix.class,target = "many-to-many-list",editable = false,group = true,groupName = "group2",groupLabel = "Offres ",hidden = "currentObject.state=='etabli' || currentObject.state=='' || currentObject.state==null")
-    @Filter(value = "[{\"fieldName\":\"state\",\"value\":\"confirme\"}]")
-    private List<DemandePrix> offres = new ArrayList<DemandePrix>();
+//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "appeloffre")
+//    @Predicate(label ="AP",type = DemandePrix.class,target = "many-to-many-list",editable = false,group = true,groupName = "group2",groupLabel = "Offres ",hidden = "currentObject.state=='etabli' || currentObject.state=='' || currentObject.state==null")
+//    @Filter(value = "[{\"fieldName\":\"state\",\"value\":\"confirme\"}]")
+//    private List<DemandePrix> offres = new ArrayList<DemandePrix>();
     
     
     private String state="etabli";
@@ -195,13 +194,13 @@ public class AppelOffre extends BaseElement implements Serializable,Comparable<A
         this.state = state;
     }
 
-    public List<DemandePrix> getOffres() {
-        return offres;
-    }
-
-    public void setOffres(List<DemandePrix> offres) {
-        this.offres = offres;
-    }
+//    public List<DemandePrix> getOffres() {
+//        return offres;
+//    }
+//
+//    public void setOffres(List<DemandePrix> offres) {
+//        this.offres = offres;
+//    }
 
 //    public DemandePrix getOffre() {
 //        return offre;

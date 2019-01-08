@@ -16,7 +16,7 @@ import com.teratech.achat.model.comptabilite.Acompte;
 import com.teratech.achat.model.comptabilite.EcheanceReglement;
 import com.teratech.achat.model.operations.DocumentAchatState;
 import com.teratech.achat.model.operations.Facture;
-import com.teratech.achat.model.operations.LigneDocumentAchat;
+import com.teratech.achat.model.operations.LigneFacture;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,8 +73,8 @@ public class FactureManagerImpl
     public Facture find(String propertyName, Long entityID) {
         Facture data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
         Facture result = new Facture(data);
-        for(LigneDocumentAchat ligne:data.getLignes()){
-            result.getLignes().add(new LigneDocumentAchat(ligne));
+        for(LigneFacture ligne:data.getLignes()){
+            result.getLignes().add(new LigneFacture(ligne));
         }//end for(LigneDocumentAchat ligne:data.getLignes()){
         for(Acompte ac:data.getAcomptes()){
             result.getAcomptes().add(new Acompte(ac));
@@ -100,13 +100,15 @@ public class FactureManagerImpl
         dao.update(entity.getId(), entity);
         return entity;
     }
+    
+    
 
     @Override
     public Facture transfert(Facture entity) {
          //To change body of generated methods, choose Tools | Templates.
         if(entity.getState().equalsIgnoreCase("confirme")){
             entity.setState("transfere");
-            entity.setTypedocument(DocumentAchatState.COMPTABILITE);
+//            entity.setTypedocument(DocumentAchatState.COMPTABILITE);
         }
         dao.update(entity.getId(), entity);
         return entity;
@@ -115,8 +117,10 @@ public class FactureManagerImpl
     @Override
     public Facture annule(Facture entity) {
         //To change body of generated methods, choose Tools | Templates.
-        if(!entity.getState().equalsIgnoreCase("transfere")){
-            entity.setState("annule");
+        if(entity.getState().equalsIgnoreCase("confirme")){
+            entity.setState("etabli");
+        }else if(entity.getState().equalsIgnoreCase("transfere")){
+            entity.setState("confirme");
         }
         dao.update(entity.getId(), entity);
         return entity;

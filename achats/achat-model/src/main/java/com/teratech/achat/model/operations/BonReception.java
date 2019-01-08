@@ -6,16 +6,18 @@
 package com.teratech.achat.model.operations;
 
 import com.core.base.State;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
-import com.teratech.achat.model.base.Emplacement;
 import com.teratech.achat.model.base.Tier;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -24,71 +26,74 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @DiscriminatorValue("BR")
-public class BonReception extends DocumentAchat implements Serializable{
+public class BonReception extends DocumentStock implements Serializable{
 
-    @Predicate(label = "Document d'origine")
+     @ManyToOne
+    @JoinColumn(name = "FOUR_ID")
+    @Predicate(label = "Fournisseur",type = Tier.class,target = "many-to-one",optional = false,search = true)
+    @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"1\"}]")
+    protected Tier fournisseur ;
+     
+     @Predicate(label = "Type de bon",target = "combobox",values = "Normal",editable = false)
+     private String typebon = "0";
+     
+//    @Predicate(label = "Document d'origine")
     private String origine ;    
+    
+//    @Predicate(label = "Type document",target = "combobox",values = "Achats;Production;Retour location;Autres")
+    private String nature = "0";
+    
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "BR_ID")
+    @Predicate(label = " ",type = LigneEntree.class,target = "one-to-many",group =true ,groupName = "group1",groupLabel = "Articles",edittable = true)
+    private List<LigneEntree> lignes = new ArrayList<LigneEntree>();
+    
+    @ManyToOne
+    @JoinColumn(name = "CMDE_ID")
+    @Predicate(label = "Bon commande",type = BonCommande.class,target = "many-to-one",search = true,hide = true)
+    private BonCommande commande ;
     
     @OneToMany(mappedBy = "docachat",fetch = FetchType.LAZY)
 //    @Predicate(label = "Factures",type = Facture.class,target = "one-to-many",editable = false,group = true,groupName = "group4",groupLabel = "Factures")
     private List<Facture> factures = new ArrayList<Facture>();
     
-    /**
-     * 
-     * @param code
-     * @param date
-     * @param fornisseur
-     * @param datecommande
-     * @param codefourni
-     * @param emplacement 
-     */
-    public BonReception(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement) {
-        super(code, date, fornisseur, datecommande, codefourni, emplacement);
-        this.typedocument = DocumentAchatState.BONLIVRAISON;
-    }
+    @Predicate(label = "Total HT",type = Double.class,search = true,hide = true)
+    private Double totalht = 0.0;
+    
 
-    /**
-     * 
-     * @param code
-     * @param date
-     * @param fornisseur
-     * @param datecommande
-     * @param codefourni
-     * @param emplacement
-     * @param id
-     * @param designation
-     * @param moduleName 
-     */
-    public BonReception(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement, long id, String designation, String moduleName) {
-        super(code, date, fornisseur, datecommande, codefourni, emplacement, id, designation, moduleName);
-        this.typedocument = DocumentAchatState.BONLIVRAISON;
-    }
+    
 
     /**
      * 
      * @param da 
      */
     public BonReception(DocumentAchat da) {
-        super(da);
-        this.typedocument = DocumentAchatState.BONLIVRAISON;
+        super();
+//        this.typedocument = DocumentAchatState.BONLIVRAISON;
         
     }
 
-    /**
-     * 
-     */
+    public BonReception(BonReception entity) {
+        super(entity);
+        if(entity.getFournisseur()!=null){
+            this.fournisseur = new Tier(entity.fournisseur);
+        }
+        this.origine = entity.origine;
+        if(entity.commande!=null){
+            this.commande = new BonCommande(entity.commande);
+        }
+        this.typebon = entity.typebon;
+        this.state = entity.getState();
+        this.nature = entity.nature;
+        this.totalht = entity.totalht;
+    }
+
     public BonReception() {
-        this.typedocument = DocumentAchatState.BONLIVRAISON;
     }
+
     
-    /**
-     * 
-     * @param da 
-     */
-    public BonReception(BonReception da) {
-        super(da);
-        this.origine = da.origine;
-    }
+   
+    
 
     /**
      * 
@@ -101,6 +106,56 @@ public class BonReception extends DocumentAchat implements Serializable{
     public void setOrigine(String origine) {
         this.origine = origine;
     }
+
+    public List<LigneEntree> getLignes() {
+        return lignes;
+    }
+
+    public void setLignes(List<LigneEntree> lignes) {
+        this.lignes = lignes;
+    }
+
+    public Tier getFournisseur() {
+        return fournisseur;
+    }
+
+    public void setFournisseur(Tier fournisseur) {
+        this.fournisseur = fournisseur;
+    }
+
+    public BonCommande getCommande() {
+        return commande;
+    }
+
+    public void setCommande(BonCommande commande) {
+        this.commande = commande;
+    }
+
+    public String getTypebon() {
+        return typebon;
+    }
+
+    public void setTypebon(String typebon) {
+        this.typebon = typebon;
+    }
+
+    public String getNature() {
+        return nature;
+    }
+
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+
+    public Double getTotalht() {
+        return totalht;
+    }
+
+    public void setTotalht(Double totalht) {
+        this.totalht = totalht;
+    }
+    
+    
 
     @Override
     public boolean isActivatefollower() {
@@ -123,20 +178,61 @@ public class BonReception extends DocumentAchat implements Serializable{
         return false; //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public String getOwnermodule() {
+        return "teratechachat"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesableupdate() {
+        return !state.equalsIgnoreCase("etabli")
+                &&!state.equalsIgnoreCase("qualite"); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesabledelete() {
+        return !state.equalsIgnoreCase("etabli")
+                &&!state.equalsIgnoreCase("qualite")
+                &&!state.equalsIgnoreCase("transfere"); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesablecreate() {
+        return super.isDesablecreate(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSearchkeys() {
+        return super.getSearchkeys(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 
      @Override
     public List<State> getStates() {
         List<State> states = new ArrayList<State>();
-        State state = new State("etabli", "Brouillon");
-        states.add(state);
-         state = new State("confirme", "Qualité contrôlée");
-        states.add(state);        
-        state = new State("rejete", "Rejeter");
-        states.add(state);
-       state = new State("transfere", "Transferer");
-        states.add(state);
-        state = new State("annule", "Annulée");
-        states.add(state);
+        State state = null;
+        if(this.state.equalsIgnoreCase("etabli")){
+             state = new State("etabli", "Brouillon");
+             states.add(state);
+            state = new State("transfere", "Disponible");
+            states.add(state);        
+        }else if(this.state.equalsIgnoreCase("qualite")){
+            state = new State("qualite", "Brouillon");
+            states.add(state);
+            state = new State("controle", "Qualité controlée");
+            states.add(state);
+        }else if(this.state.equalsIgnoreCase("transfere")){
+             state = new State("transfere", "Attente de transfert");
+            states.add(state);
+            state = new State("disponible", "Disponible en stock");
+            states.add(state);
+//            state = new State("annule", "Annulé");
+//            states.add(state);
+        }else if(this.state.equalsIgnoreCase("disponible")){
+            state = new State("disponible", "Disponible en stock");
+            states.add(state);
+        }      
         return states; //To change body of generated methods, choose Tools | Templates.
     }
 

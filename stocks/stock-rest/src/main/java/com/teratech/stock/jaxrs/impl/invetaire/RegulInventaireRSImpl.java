@@ -15,6 +15,7 @@ import com.teratech.stock.model.invetaire.FicheInventaire;
 import com.teratech.stock.model.invetaire.RegulInventaire;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.HttpHeaders;
@@ -67,7 +68,7 @@ public class RegulInventaireRSImpl
             workbtn.setStates(new String[]{"confirme"});
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work1", "Imprimer la fiche d'inventaire", false, "report", null);
-            workbtn.setValue("{'model':'teratechstock','entity':'regulinventaire','method':'print'}");
+            workbtn.setValue("{'name':'inventory_report01','model':'teratechstock','entity':'regulinventaire','method':'print'}");
             meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
@@ -142,8 +143,11 @@ public class RegulInventaireRSImpl
     }
 
     @Override
-    public Response print(HttpHeaders headers, RegulInventaire dmde) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<RegulInventaire> print(HttpHeaders headers, RegulInventaire dmde) {
+        //To change body of generated methods, choose Tools | Templates.
+        List<RegulInventaire> datas = new ArrayList<RegulInventaire>();
+        datas.add(dmde);
+        return datas;
     }
     
 

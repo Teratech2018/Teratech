@@ -14,13 +14,11 @@ import com.teratech.achat.core.ifaces.operations.CMDEFactureTMPManagerRemote;
 import com.teratech.achat.dao.ifaces.operations.BonCommandeDAOLocal;
 import com.teratech.achat.dao.ifaces.operations.FactureDAOLocal;
 import com.teratech.achat.dao.ifaces.operations.LigneDocumentAchatDAOLocal;
-import com.teratech.achat.dao.ifaces.operations.LigneDocumentStockDAOLocal;
 import com.teratech.achat.model.operations.BonCommande;
 import com.teratech.achat.model.operations.DocumentAchatState;
 import com.teratech.achat.model.operations.Facture;
 import com.teratech.achat.model.operations.LigneDocumentAchat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -105,7 +103,7 @@ public class CMDEFactureTMPManagerImpl
                 fac.setLigneachat(new LigneDocumentAchat(ligne));
                 fac.setId(ligne.getId());fac.setQuantite(fac.qtenonfacturee());
                 fac.setStokdispo(fac.getQuantite());
-                result.getLignes().add(fac);
+//                result.getLignes().add(fac);
             }//end if(ligne.qtenonfacturee()>0)
         }//end if(ligne.qtenonfacturee()>0)
         return result; //To change body of generated methods, choose Tools | Templates.
@@ -124,14 +122,14 @@ public class CMDEFactureTMPManagerImpl
         if(entity.getDocachat()!=null){
             BonCommande bon = cmdedao.findByPrimaryKey("id", entity.getDocachat().getId());
             //Construction
-           for(LigneDocumentAchat ligne:entity.getLignes()){
-                ligne.setId(-1);                        
-                for(LigneDocumentAchat lig:bon.getLignes()){
-                    if(lig.getArticle().compareTo(ligne.getArticle())==0 && lig.getQuantite()>=ligne.getQuantite()){
-                        lig.addQuantitefacturee(ligne.getQuantite());                        
-                    }//endif(ligne.getId()==ligne.getLigneachat().getId())
-                }//end for(LigneDocumentAchat lig:bon.getLignes())
-            }//end for(LigneDocumentAchat ligne:entity.getLignes())
+//           for(LigneDocumentAchat ligne:entity.getLignes()){
+//                ligne.setId(-1);                        
+//                for(LigneDocumentAchat lig:bon.getLignes()){
+//                    if(lig.getArticle().compareTo(ligne.getArticle())==0 && lig.getQuantite()>=ligne.getQuantite()){
+//                        lig.addQuantitefacturee(ligne.getQuantite());                        
+//                    }//endif(ligne.getId()==ligne.getLigneachat().getId())
+//                }//end for(LigneDocumentAchat lig:bon.getLignes())
+//            }//end for(LigneDocumentAchat ligne:entity.getLignes())
             cmdedao.update(bon.getId(), bon);
         }//end if(entity.getDocachat()!=null)
         return super.save(entity); //To change body of generated methods, choose Tools | Templates.

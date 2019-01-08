@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="avi" />
+	 <menu id="avi_acceuil" label="Acceuil" parent="avi" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="avi_acceuil_1" label="Mes Liens" parent_ref="avi_acceuil" entity_ref="MesLienTelechargement" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_acceuil_2" label="Mes Chargements" parent_ref="avi_acceuil" entity_ref="MesFichier" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_acceuil_3" label="Mes Téléchargements" parent_ref="avi_acceuil" entity_ref="Telechargement" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="avi_library" label="Librairie" parent="avi" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="avi_library_1" label="Repertoires" parent_ref="avi_library" entity_ref="Dossier" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false">
+	    <action id="avi_library_1_01" type="action" name="avi_library_1_name01" label="Annoter" value="{'name':'avi_library_5',template:{'dossier':'object'}}"/>
+		<action id="avi_library_1_02" type="action" name="avi_library_1_name02" label="Lien de dépôt" value="{'name':'avi_library_6',template:{'dossier':'object'}}"/>
+	 </menuitem>
+	 <menuitem id="avi_library_5" label="Lien tele" parent_ref="avi_library" entity_ref="DossierAnnot" model_ref="avi" gyphycon="glyphicon glyphicon-list-alt" modal="true"   hide="true" />
+	 <menuitem id="avi_library_6" label="Lien tele" parent_ref="avi_library" entity_ref="LienChargement" model_ref="avi" gyphycon="glyphicon glyphicon-list-alt" modal="true"   hide="true" />
+	 <menuitem id="avi_library_2" label="Fichiers" parent_ref="avi_library" entity_ref="Fichier" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false">
+        <action id="avi_library_2_01" type="download" name="avi_library_2_name01" label="Télécharger" value="{'model':'avi','entity':'fichier','method':'download','template':{'fileid':'object.id','linkfile':'object.srcname'}}"/>
+		<action id="avi_library_2_02" type="action" name="avi_library_2_name02" label="Partager le lien" value="{'name':'avi_library_3',template:{'fichier':'object'}}"/>
+		<action id="avi_library_2_03" type="action" name="avi_library_2_name03" label="Annoter" value="{'name':'avi_library_4',template:{'fichier':'object'}}"/>
+		<action id="avi_library_2_04" type="workflow" name="avi_library_2_name04" label="Vérrouiller" value="{'model':'avi','entity':'fichier','method':'lockunlock','states':['lock']}" states="valide"/>
+		<action id="avi_library_2_06" type="workflow" name="avi_library_2_name06" label="Déverrouiller" value="{'model':'avi','entity':'fichier','method':'lockunlock','states':['valide']}"  states="lock"/>
+		<action id="avi_library_2_05" type="action" name="avi_library_2_name05" label="Archiver" value="{'name':'update_pwd'}"/>	 
+	 </menuitem>
+	 <menuitem id="avi_library_3" label="Lien tele" parent_ref="avi_library" entity_ref="LienTelechargement" model_ref="avi" gyphycon="glyphicon glyphicon-list-alt" modal="true"   hide="true" />
+	 <menuitem id="avi_library_4" label="Lien tele" parent_ref="avi_library" entity_ref="FichierAnnot" model_ref="avi" gyphycon="glyphicon glyphicon-list-alt" modal="true"   hide="true" />	 
+	 <menu id="avi_admin" label="Administration" parent="avi" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="avi_admin_1" label="Fichiers" parent_ref="avi_admin" entity_ref="FichierATraiter" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_admin_2" label="Corbeille" parent_ref="avi_admin" entity_ref="Corbeille" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_admin_3" label="Utilisateurs" parent_ref="avi_admin" entity_ref="User" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_admin_4" label="Groupes" parent_ref="avi_admin" entity_ref="UserGroup" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_admin_5" label="Liens de téléchargements" parent_ref="avi_admin" entity_ref="LienTelechargement" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_admin_6" label="Liens de chargements" parent_ref="avi_admin" entity_ref="LienChargement" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="avi_admin_7" label="Evenements" parent_ref="avi_admin" entity_ref="Historique" model_ref="avi" gyphycon="glyphicon glyphicon-th" modal="false" />   
+</keren>

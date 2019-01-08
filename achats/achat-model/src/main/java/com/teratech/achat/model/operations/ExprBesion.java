@@ -19,6 +19,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,27 +34,31 @@ import javax.persistence.TemporalType;
 @Table(name = "T_EXBE")
 public class ExprBesion extends BaseElement implements Serializable,Comparable<ExprBesion>{
 
-   @Predicate(label = "Référence",optional = false,nullable = false,search = true)
+   @Predicate(label = "REFERENCE",optional = false,nullable = false,search = true)
    private String code ;
     
    @ManyToOne
    @JoinColumn(name = "UTIL_ID")
-   @Predicate(label = "Employé",type = Tier.class,target = "many-to-one",optional = false,nullable = false,search = true)
+   @Predicate(label = "DEMANDEUR",type = Tier.class,target = "many-to-one",optional = false,nullable = false,search = true)
    @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"1\"}]")
    private Tier utilisateur ;
    
    @Temporal(TemporalType.DATE)
-   @Predicate(label = "Date Expression",type = Date.class,target = "date",optional = false,search = true)
+   @Predicate(label = "EXPIREDATE",type = Date.class,target = "date",optional = false,search = true)
    private Date dateExpr;
    
-   @Predicate(label = "Moti",target = "textarea" , group = true,groupName = "group2",groupLabel = "MOTIVATION")
+   @Predicate(label = " ",target = "textarea" , group = true,groupName = "group2",groupLabel = "MOTIVATION")
    private String motivation ;
+   
+   @Lob
+   private String reponse ;
    
    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
    @JoinColumn(name = "EXBE_ID")
-   @Predicate(label = "Moti",target = "one-to-many" ,type = LigneExprBesion.class, group = true,groupName = "group1",groupLabel = "BESIONS",edittable = true)
+   @Predicate(label = " ",target = "one-to-many" ,type = LigneExprBesion.class, group = true,groupName = "group1",groupLabel = "BESIONS",edittable = true)
    private List<LigneExprBesion> besions = new ArrayList<LigneExprBesion>();
    
+   @Predicate(label = "STATE" ,search = true,editable = false,hide = true)
    private String state = "etabli";
 
    /**
@@ -101,6 +106,7 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
         this.dateExpr = expr.dateExpr;
         this.motivation = expr.motivation;
         this.state = expr.state;
+        this.reponse = expr.reponse;
     }
 
     public ExprBesion() {
@@ -148,6 +154,15 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
     public void setBesions(List<LigneExprBesion> besions) {
         this.besions = besions;
     }    
+
+    public String getReponse() {
+        return reponse;
+    }
+
+    public void setReponse(String reponse) {
+        this.reponse = reponse;
+    }
+    
     
 
     @Override
@@ -191,69 +206,23 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
         if("etabli".equals(state)){
             State state = new State("etabli", "Broullion");
             states.add(state);
-             state = new State("accorde", "A Accorder");
+             state = new State("rejete", "Refuse");
             states.add(state);
-            state = new State("valide", "A Valider");
+            state = new State("valide", "Valider");
             states.add(state);
 //            return states ;
-        }else if("accorde".equals(state)){
-            State state = new State("accorde", "A Accorder");
-            states.add(state);
-            state = new State("valide", "A Valider");
-            states.add(state);
-           state = new State("annule", "Annulé");
-           states.add(state);
+        }else if("rejete".equals(state)){
+            State state = new State("rejete", "Rejete");
+            states.add(state);           
         }else if("valide".equals(state)){
-            State state = new State("valide", "A Valider");
+            State state = new State("valide", "Validé");
             states.add(state);
-            state = new State("apprecie", "A Apprécier");
-            states.add(state);
-            state = new State("annule", "Annulé");
-            states.add(state);
-        }else if("apprecie".equals(state)){
-            State state = new State("apprecie", "A Apprécier");
-            states.add(state);
-            state = new State("transmettre", "A Transmettre");
-            states.add(state);
-            state = new State("annule", "Annulé");
-            states.add(state);
-        }else if("transmettre".equals(state)){
-            State state = new State("transmettre", "A Transmettre");
-            states.add(state);
-            state = new State("executer", "A Executer");
-            states.add(state);
-            state = new State("annule", "Annulé");
-            states.add(state);
-        }else if("executer".equals(state)){
-            State state = new State("executer", "A Executer");
-            states.add(state);
-            state = new State("terminer", "Terminé");
-            states.add(state);
-            state = new State("annule", "Annulé");
-            states.add(state);
-        }else if("terminer".equals(state)){
-            State state = new State("terminer", "Terminé");
-            states.add(state);
-        }else if("annule".equals(state)){
-           State state = new State("annule", "Annulé");
-           states.add(state);
+            state = new State("execute", "Exécuter");
+            states.add(state);            
+        }else if("execute".equals(state)){
+            State state = new State("execute", "Exécuté");
+            states.add(state);            
         }//end if(state=="etabli"){
-//        State state = new State("etabli", "Broullion");
-//        states.add(state);
-//        state = new State("annule", "Annulé");
-//        states.add(state);
-//        state = new State("accorde", "A Accorder");
-//        states.add(state);
-//        state = new State("valide", "A Valider");
-//        states.add(state);
-//        state = new State("apprecie", "A Apprécier");
-//        states.add(state);
-//        state = new State("transmettre", "A Transmettre");
-//        states.add(state);
-//        state = new State("executer", "A Executer");
-//        states.add(state);
-//        state = new State("terminer", "Terminé");
-//        states.add(state);
         return states; //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -269,7 +238,17 @@ public class ExprBesion extends BaseElement implements Serializable,Comparable<E
 
     @Override
     public boolean isCreateonfield() {
-        return super.isCreateonfield(); //To change body of generated methods, choose Tools | Templates.
+        return false; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesableupdate() {
+        return !state.equalsIgnoreCase("etabli"); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesabledelete() {
+        return !state.equalsIgnoreCase("etabli"); //To change body of generated methods, choose Tools | Templates.
     }
    
    

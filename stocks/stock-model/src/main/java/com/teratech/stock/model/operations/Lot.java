@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,10 +47,18 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
     
     @ManyToOne
     @JoinColumn(name = "LIEM_ID")
+    @Predicate(label = "Emplacement",type = LienEmplacement.class,target = "many-to-one",editable = false,hide=true,search = true)
     private LienEmplacement lien ;
     
     @Column(unique = true)    
     private String reference ;
+    
+    private Double puht = 0.0;
+    
+    @OneToOne(mappedBy = "lot")
+    private LigneEntree entree ;
+    
+    private boolean vide = false ;
     
     /**
      * 
@@ -141,6 +150,16 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
         this.lien = lien;
     }
 
+    public Double getPuht() {
+        return puht;
+    }
+
+    public void setPuht(Double puht) {
+        this.puht = puht;
+    }
+
+    
+   
     public Double getSorties() {
         return sorties;
     }
@@ -159,6 +178,14 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
 
     public void setEncours(Double encours) {
         this.encours = encours;
+    }
+
+    public LigneEntree getEntree() {
+        return entree;
+    }
+
+    public void setEntree(LigneEntree entree) {
+        this.entree = entree;
     }
 
     
@@ -195,6 +222,15 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
     public void setReference(String reference) {
         this.reference = reference;
     }
+
+    public boolean isVide() {
+        return disponible().compareTo(0.0)<=0;
+    }
+
+    public void setVide(boolean empty) {
+        this.vide = empty;
+    }
+    
     
     
     @Override
@@ -215,6 +251,11 @@ public class Lot extends BaseElement implements Serializable,Comparable<Lot>{
     @Override
     public String getEditTitle() {
         return "LOT"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isCreateonfield() {
+        return false; //To change body of generated methods, choose Tools | Templates.
     }
     
     

@@ -61,19 +61,19 @@ public class ExprBesionRSImpl
         try {
             //To change body of generated methods, choose Tools | Templates.
             MetaData meta = MetaDataUtil.getMetaData(new ExprBesion(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Accorder", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'valider'}");
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Valider la demande", false, "workflow", null);
+            workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'valider','critical':true}");
             workbtn.setStates(new String[]{"etabli"});
-            workbtn.setPattern("btn btn-primary");
+//            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);
             //Buton de validation
-            workbtn = new MetaColumn("button", "work2", "Valider ", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'valider'}");
-            workbtn.setStates(new String[]{"accorde"});
+            workbtn = new MetaColumn("button", "work2", "Rejeter la demande", false, "action", null);
+            workbtn.setValue("{'name':'teratech_achat_bes_1_1','template':{'demande':'object','emetteur':'object.utilisateur'} }");
+            workbtn.setStates(new String[]{"etabli"});
             meta.getHeader().add(workbtn);
-            workbtn = new MetaColumn("button", "work2", "Annuler", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'annule'}");
-            workbtn.setStates(new String[]{"etabli","accorde"});
+            workbtn = new MetaColumn("button", "work2", "Annuler la validation", false, "workflow", null);
+            workbtn.setValue("{'model':'teratechachat','entity':'exprbesion','method':'annule','critical':true}");
+            workbtn.setStates(new String[]{"valide"});
             meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
@@ -136,8 +136,6 @@ public class ExprBesionRSImpl
             throw new KerenExecption("Veuillez selectionner l'employé");
         }else if(entity.getBesions()==null || entity.getBesions().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un besion");
-        }else if(entity.getState().trim().equalsIgnoreCase("annule")){
-            throw new KerenExecption("Expression déjà annulée");
         }
         return manager.confirmer(entity);
     }
@@ -155,9 +153,7 @@ public class ExprBesionRSImpl
             throw new KerenExecption("Veuillez selectionner l'employé");
         }else if(entity.getBesions()==null || entity.getBesions().isEmpty()){
             throw new KerenExecption("Veuillez saisir au moins un besion");
-        }else if(entity.getState().trim().equalsIgnoreCase("annule")){
-            throw new KerenExecption("Expression déjà annulée");
-        }
+        }//end if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
         return manager.annuler(entity);
     }
     

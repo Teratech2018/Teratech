@@ -8,24 +8,18 @@ package com.teratech.achat.model.operations;
 import com.core.base.BaseElement;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
-import com.megatim.common.annotations.TableFooter;
-import com.teratech.achat.model.base.Emplacement;
+import com.teratech.achat.model.base.Entrepot;
 import com.teratech.achat.model.base.Tier;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,43 +29,42 @@ import javax.persistence.TemporalType;
  * @author BEKO
  */
 @Entity
-@Table(name="T_DOAC")
+@Table(name="T_DOAC_ACH")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="DOAC",discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name="TYPE",discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("TMP")
 public class DocumentAchat extends BaseElement implements Serializable,Comparable<DocumentAchat>{
 
     @Predicate(label = "Reference",optional = false,search = true)
     protected String code ;
     
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date date ;
     
     @ManyToOne
     @JoinColumn(name = "FOUR_ID")
     @Predicate(label = "Fournisseur",type = Tier.class,target = "many-to-one",optional = false,search = true)
     @Filter(value = "[{\"fieldName\":\"type\",\"value\":\"1\"}]")
-    protected Tier fornisseur ;
+    protected Tier fournisseur ;
     
     @Temporal(TemporalType.DATE)
-    @Predicate(label = "Date de commande",type = Date.class,target = "date",optional = false,search = true)    
+    @Predicate(label = "Date ",type = Date.class,target = "date",optional = false,search = true)    
     protected Date datecommande ;
     
     @Predicate(label = "Reference du fournisseur")
     protected String codefourni;
     
     @ManyToOne
-    @JoinColumn(name = "EMPL_ID")
-    @Predicate(label = "Livrer à ",type = Emplacement.class,target = "many-to-one",optional = false,search = true)
-    protected Emplacement emplacement;
+    @JoinColumn(name = "ENTR_ID")
+    @Predicate(label = "Entrepôt livraison",type = Entrepot.class,target = "many-to-one",optional = true,search = true)
+    protected Entrepot emplacement;
     
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
-    @JoinColumn(name = "LIDOAC_ID")
-    @Predicate(label = "AC",type = LigneDocumentAchat.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Articles",customfooter = true)
-    @TableFooter(value = "<tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td style='font-weight: bold;'>Total HT</td><td></td> <td class='text-right'>this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Taxes</td><td></td> <td  class='text-right'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};/;100</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Total TTC</td><td></td><td  class='text-right'  style='font-weight: bold;'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;(;100;+;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};);/;100</td> </tr>")
-    protected List<LigneDocumentAchat> lignes = new ArrayList<LigneDocumentAchat>();
-         
-    @Predicate(label = " ",target = "state",hide = true,search = true)
-     protected String state ="etabli" ;
+//    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
+//    @JoinColumn(name = "LIDOAC_ID")
+//    @Predicate(label = "AC",type = LigneDocumentAchat.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Articles",customfooter = true)
+//    @TableFooter(value = "<tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td style='font-weight: bold;'>Total HT</td><td></td> <td class='text-right'>this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Taxes</td><td></td> <td  class='text-right'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};/;100</td> </tr> <tr style='border:none;'> <td></td><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Total TTC</td><td></td><td  class='text-right'  style='font-weight: bold;'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;(;100;+;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};);/;100</td> </tr>")
+//    protected List<LigneDocumentAchat> lignes = new ArrayList<LigneDocumentAchat>();
+   
     
 
     protected DocumentAchatState typedocument ;
@@ -85,10 +78,10 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
      * @param codefourni
      * @param emplacement 
      */
-    public DocumentAchat(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement) {
+    public DocumentAchat(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Entrepot emplacement) {
         this.code = code;
         this.date = date;
-        this.fornisseur = fornisseur;
+        this.fournisseur = fornisseur;
         this.datecommande = datecommande;
         this.codefourni = codefourni;
         this.emplacement = emplacement;
@@ -107,11 +100,11 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
      * @param designation
      * @param moduleName 
      */
-    public DocumentAchat(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Emplacement emplacement, long id, String designation, String moduleName) {
+    public DocumentAchat(String code, Date date, Tier fornisseur, Date datecommande, String codefourni, Entrepot emplacement, long id, String designation, String moduleName) {
         super(id, designation, moduleName,0L);
         this.code = code;
         this.date = date;
-        this.fornisseur = fornisseur;
+        this.fournisseur = fornisseur;
         this.datecommande = datecommande;
         this.codefourni = codefourni;
         this.emplacement = emplacement;
@@ -126,15 +119,14 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
         super(da.id, da.designation, da.moduleName,da.compareid);
         this.code = da.code;
         this.date = da.date;
-        if(da.fornisseur!=null){
-            this.fornisseur = new Tier(da.fornisseur);
+        if(da.fournisseur!=null){
+            this.fournisseur = new Tier(da.fournisseur);
         }
         this.datecommande = da.datecommande;
         this.codefourni = da.codefourni;
         if(da.emplacement!=null){
-            this.emplacement = new Emplacement(da.emplacement);
+            this.emplacement = new Entrepot(da.emplacement);
         }
-        this.state = da.getState();
         this.typedocument = da.typedocument;
     }
 
@@ -159,12 +151,12 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
         this.date = date;
     }
 
-    public Tier getFornisseur() {
-        return fornisseur;
+    public Tier getFournisseur() {
+        return fournisseur;
     }
 
-    public void setFornisseur(Tier fornisseur) {
-        this.fornisseur = fornisseur;
+    public void setFournisseur(Tier fornisseur) {
+        this.fournisseur = fornisseur;
     }
 
     public Date getDatecommande() {
@@ -183,30 +175,22 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
         this.codefourni = codefourni;
     }
 
-    public Emplacement getEmplacement() {
+    public Entrepot getEmplacement() {
         return emplacement;
     }
 
-    public void setEmplacement(Emplacement emplacement) {
+    public void setEmplacement(Entrepot emplacement) {
         this.emplacement = emplacement;
     }
 
-    public List<LigneDocumentAchat> getLignes() {
-        return lignes;
-    }
-
-    public void setLignes(List<LigneDocumentAchat> lignes) {
-        this.lignes = lignes;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
+//    public List<LigneDocumentAchat> getLignes() {
+//        return lignes;
+//    }
+//
+//    public void setLignes(List<LigneDocumentAchat> lignes) {
+//        this.lignes = lignes;
+//    }
+  
     public DocumentAchatState getTypedocument() {
         return typedocument;
     }
@@ -214,18 +198,8 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
     public void setTypedocument(DocumentAchatState typedocument) {
         this.typedocument = typedocument;
     }
+       
     
-    
-    
-    @Override
-    public String getSerial() {
-        return "dp270220181057"; //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getDesignation() {
-        return code; //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public String getModuleName() {

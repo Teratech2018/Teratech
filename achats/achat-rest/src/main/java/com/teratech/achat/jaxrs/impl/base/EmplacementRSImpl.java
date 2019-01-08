@@ -9,7 +9,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.base.EmplacementManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.base.EmplacementRS;
-import com.teratech.achat.model.base.Civilite;
 import com.teratech.achat.model.base.Emplacement;
 import java.util.ArrayList;
 import java.util.HashMap;

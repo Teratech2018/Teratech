@@ -1,0 +1,20 @@
+{
+	'name':'AVI',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Agence Virtuelle de Presse',
+	'sequence':10,
+	'description':'',
+	'category':'Collaborative',
+	'website':'http://www.megatimgroup.com',
+	'images': [],
+	'icon':'',
+	'depends' : [],
+	'views' : ['views\\layout.xml'],
+	'templates':[],
+	'cores' : [],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

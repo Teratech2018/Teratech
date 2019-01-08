@@ -6,12 +6,14 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 import com.teratech.achat.core.ifaces.base.ArticleManagerLocal;
 import com.teratech.achat.core.ifaces.base.ArticleManagerRemote;
 import com.teratech.achat.dao.ifaces.base.ArticleDAOLocal;
 import com.teratech.achat.model.base.Article;
+import com.teratech.achat.model.base.Controle;
 import com.teratech.achat.model.base.LienEmplacement;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,9 @@ public class ArticleManagerImpl
     
     @Override
     public List<Article> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("achete", Boolean.TRUE);
+        predicats.addAll(container.getPredicats());
         List<Article> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<Article> result = new ArrayList<Article>();
         for(Article art:datas){
@@ -51,6 +56,16 @@ public class ArticleManagerImpl
         }
         return result;
     }
+
+    @Override
+    public Long count(List<Predicat> predicats) {
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("achete", Boolean.TRUE);
+        predicats.addAll(container.getPredicats());
+        return super.count(predicats); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
     @Override
     public List<Article> findAll() {
@@ -72,6 +87,11 @@ public class ArticleManagerImpl
                 result.getStockages().add(new LienEmplacement(lien));
             }
         }//end if(data.getStockages()!=null)
+        if(data.getControles()!=null){
+            for(Controle controle:data.getControles()){
+                result.getControles().add(new Controle(controle));
+            }//end for(Controle controle:data.getControles()){
+        }
         return result;
     }
 

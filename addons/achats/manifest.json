@@ -7,6 +7,7 @@
 	'description':'',
 	'category':'Accounting',
 	'website':'http://www.keren.com',
+	'icon':'static\\purchase.png',
 	'images': ['static\\purchase.png'],
 	'depends' : [],
 	'views' : ['views\\achats_menus.xml'],

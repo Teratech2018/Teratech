@@ -11,15 +11,18 @@ import com.megatim.common.annotations.OrderType;
 import com.teratech.stock.core.ifaces.operations.TransfertManagerLocal;
 import com.teratech.stock.core.ifaces.operations.TransfertManagerRemote;
 import com.teratech.stock.dao.ifaces.base.ArticleDAOLocal;
+import com.teratech.stock.dao.ifaces.base.LienEmplacementDAOLocal;
 import com.teratech.stock.dao.ifaces.operations.LotDAOLocal;
 import com.teratech.stock.dao.ifaces.operations.TransfertDAOLocal;
-import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.Emplacement;
 import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.operations.LigneDocumentStock;
+import com.teratech.stock.model.operations.LigneTransfert;
 import com.teratech.stock.model.operations.Lot;
 import com.teratech.stock.model.operations.Transfert;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +43,8 @@ public class TransfertManagerImpl
     @EJB(name = "LotDAO")
     protected LotDAOLocal lotdao;
     
+    @EJB(name = "LienEmplacementDAO")
+    protected LienEmplacementDAOLocal liendao;
 
     public TransfertManagerImpl() {
     }
@@ -78,84 +83,131 @@ public class TransfertManagerImpl
     public Transfert find(String propertyName, Long entityID) {
         Transfert data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
         Transfert result = new Transfert(data);
-        for(LigneDocumentStock lign:data.getLignes()){
-            result.getLignes().add(new LigneDocumentStock(lign));
+        for(LigneTransfert lign:data.getLignes()){
+            result.getLignes().add(new LigneTransfert(lign));
         }
         return result;
     }
 
     @Override
     public Transfert delete(Long id) {
+        Transfert entity = dao.findByPrimaryKey("id", id);
+        for(LigneTransfert ligne:entity.getLignes()){
+            if(ligne.getArticle().getPolitiquestock()==null
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("0")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("2")){
+                
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("1")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("5")){    
+                    Lot cible = ligne.getLotcible();                    
+                    Lot lot = ligne.getLot();
+                    Double qte = ligne.getQuantite();
+                    lot.addSortie(qte*-1);
+                    cible.addEntree(qte*-1);
+                    if(cible.disponible().compareTo(0.0)==0){
+                        lotdao.delete(cible.getId());
+                    }else{
+                        lotdao.update(cible.getId(), cible);
+                    }//end if(cible.disponible().compareTo(0.0)<=0){
+                    lotdao.update(lot.getId(), lot);                    
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("3")){//FIFO
+                  
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("4")){//FIFO
+                  
+            }//end if(ligne.getArticle().getPolitiquestock()==null
+            LienEmplacement source = ligne.getEmpsource();
+            LienEmplacement cible = ligne.getEmpcible();
+            Double qte = ligne.getQuantite();
+            source.addStock(qte);
+            cible.addStock(qte*-1);
+            liendao.update(source.getId(), source);
+            liendao.update(cible.getId(), cible);
+        }//end for(LigneSortie ligne:entity.getLignes()){
         Transfert data = super.delete(id); //To change body of generated methods, choose Tools | Templates.
         return new Transfert(data);
     }
     
-    /**
-     * 
-     * @param ligne
-     * @param empl 
-     */
-    private void computeLigne(LigneDocumentStock ligne , Emplacement source, Emplacement cible){
-        Article article = articledao.findByPrimaryKey("id", ligne.getArticle().getId());
-        for(LienEmplacement lien : article.getStockages()){
-            if(lien.getEmplacement().compareTo(source)==0){
-                if(article.getPolitiquestock()==null||article.getPolitiquestock().equalsIgnoreCase("0")){
-                    //Nothing to do
-                }else if(article.getPolitiquestock().equalsIgnoreCase("1")||article.getPolitiquestock().equalsIgnoreCase("5")){
-                    StringBuilder builder = new StringBuilder(ligne.getCode());
-                    builder.append(source.getCode());
-                    Lot lot = lotdao.findByPrimaryKey("reference", builder.toString());
-                    lot.addSortie(ligne.getQuantite());
-                    if(lot.disponible()>=0){
-                        lotdao.update(lot.getId(),lot);
+   /**
+    * 
+    * @param entity
+    * @param old 
+    */
+    private void compute(Transfert entity , Transfert old){
+        Map<Long,LigneTransfert> map = new HashMap<Long, LigneTransfert>();
+        if(old!=null){
+            for(LigneTransfert ligne:old.getLignes()){
+                map.put(ligne.getId(), ligne);
+            }//end for(LigneSortie ligne:old.getLignes()){
+        }//end if(old!=null){
+        //Traitement des lignes 
+        for(LigneTransfert ligne:entity.getLignes()){
+            LigneTransfert oldligne = map.get(ligne.getId());
+            if(ligne.getArticle().getPolitiquestock()==null
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("0")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("2")){
+                
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("1")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("5")){    
+                    Lot cible = ligne.getLotcible();
+                    if(cible==null){
+                        cible = new Lot(ligne.getLot());
+                        cible.setId(-1);cible.setLien(ligne.getEmpcible());
+                        cible.setEntree(null);
+                        cible.setEncours(0.0);
+                        cible.setQuantite(ligne.getQuantite());
+                        Date today = new Date();
+                        cible.setCompareid(today.getTime());
+                    }//end if(cible==null){
+                    Lot lot = ligne.getLot();
+                    Double qte = ligne.getQuantite()-(oldligne!=null ? oldligne.getQuantite():0.0);
+                    lot.addSortie(qte);
+                    cible.addEntree(qte);
+                    if(cible.getId()<0){
+                        lotdao.save(cible);
+                        //Liaison du cible avec la ligne transfert
+                        cible = lotdao.findByPrimaryKey("compareid", cible.getCompareid());
+                        ligne.setLotcible(cible);
                     }else{
-                        lotdao.delete(lot.getId());
-                    }//end if(lot.disponible()>=0)                   
-                }//end if(article.getPolitiquestock()==null||article.getPolitiquestock().equalsIgnoreCase("0"))
-                lien.addStock(-ligne.getQuantite());
-            }//end if(lien.getEmplacement().compareTo(empl)==0){
-            //Traitement cible
-            if(lien.getEmplacement().compareTo(cible)==0){
-                if(article.getPolitiquestock()==null||article.getPolitiquestock().equalsIgnoreCase("0")){
-                    //Nothing to do
-                }else if(article.getPolitiquestock().equalsIgnoreCase("1")||article.getPolitiquestock().equalsIgnoreCase("5")){
-                    StringBuilder builder = new StringBuilder(ligne.getCode());
-                    builder.append(cible.getCode());
-                    Lot lot = lotdao.findByPrimaryKey("reference", builder.toString());
-                    if(lot==null){
-                        lot = new Lot(ligne.getCode(), ligne.getQuantite(), ligne.getPeremption(), ligne.getFabrication());
-                        lot.setLien(lien);lot.getReference();                    
-                    }else{
-                        lot.addEntree(ligne.getQuantite());
-                    }//end if(lot==null)
-                    if(lot.getId()>0){
-                        lotdao.update(lot.getId(),lot);
-                    }else{
-                        lotdao.save(lot);
-                    }
-                }else if(article.getPolitiquestock().equalsIgnoreCase("2")){
-                    
-                }else if(article.getPolitiquestock().equalsIgnoreCase("3")||article.getPolitiquestock().equalsIgnoreCase("4")){
-//                    Date date = new Date();
-//                    Lot lot = new Lot(Long.toString(date.getTime()), ligne.getQuantite(), ligne.getPeremption(), ligne.getFabrication());
-//                    lot.setLien(lien);
-//                    lotdao.save(lot);
-                }//end if(article.getPolitiquestock()==null||article.getPolitiquestock().equalsIgnoreCase("0"))
-                lien.addStock(ligne.getQuantite());
-            }//end if(lien.getEmplacement().compareTo(empl)==0){
-        }//end for(LienEmplacement lien : article.getStockages()){
-        articledao.update(article.getId(), article);
+                        lotdao.update(cible.getId(), cible);
+                    }//end if(cible.getId()<0){
+                    lotdao.update(lot.getId(), lot);                    
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("3")){//FIFO
+                  
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("4")){//FIFO
+                  
+            }//end if(ligne.getArticle().getPolitiquestock()==null
+            LienEmplacement source = ligne.getEmpsource();
+            LienEmplacement cible = ligne.getEmpcible();
+            Double qte = ligne.getQuantite()-(oldligne!=null ? oldligne.getQuantite():0.0);
+            source.addStock(qte*-1);
+            cible.addStock(qte);
+            liendao.update(source.getId(), source);
+            liendao.update(cible.getId(), cible);
+        }//end for(LigneSortie ligne:entity.getLignes()){
     }//end private void computeLigne(LigneDocumentStock ligne , Emplacement empl){
 
-    public Transfert confirmer(Transfert object) {
+    @Override
+    public void processBeforeUpdate(Transfert entity) {
+        Transfert old = dao.findByPrimaryKey("id", entity.getId());
+        compute(entity, old);
+        super.processAfterUpdate(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void processBeforeSave(Transfert entity) {
+        compute(entity, null);
+        super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    /**
+     * 
+     * @param entity
+     * @return 
+     */
+    public Transfert confirmer(Transfert entity) {
         //To change body of generated methods, choose Tools | Templates.
-        object.setState("valider");
-        for(LigneDocumentStock ligne:object.getLignes()){
-            computeLigne(ligne, object.getEmplacement(),object.getEmplcible());
-        }//end for(LigneDocumentStock ligne:object.getLignes())
-        //Mise a jour
-        dao.update(object.getId(), object);
-        return object;
+        return entity;
     }
     
     

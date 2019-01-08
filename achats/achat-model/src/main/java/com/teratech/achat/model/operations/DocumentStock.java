@@ -8,23 +8,20 @@ package com.teratech.achat.model.operations;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.megatim.common.annotations.Predicate;
-import com.teratech.achat.model.base.Emplacement;
+import com.teratech.achat.model.base.Entrepot;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,9 +31,9 @@ import javax.persistence.TemporalType;
  * @author BEKO
  */
 @Entity
-@Table(name = "T_DOCBA")
+@Table(name = "T_DOCBA_ST")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "OP",discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "TYPE",discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("DC")
 public class DocumentStock extends BaseElement implements Serializable,Comparable<DocumentStock>{
 
@@ -49,17 +46,17 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
     protected Date date ;
     
     @ManyToOne
-    @JoinColumn(name = "EN_ID")
-    @Predicate(label = "Emplacement ",type = Emplacement.class,target = "many-to-one",optional = false,nullable = false,search = true)
-    protected Emplacement emplacement ;
+    @JoinColumn(name = "ENTR_ID")
+    @Predicate(label = "Entrepôt cible ",type = Entrepot.class,target = "many-to-one",optional = false,nullable = false,search = true)
+    protected Entrepot entrepot ;
     
     @Predicate(label = "Référence",search = true)
     protected String reference ;    
     
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "DOST_ID")
-    @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération")
-    protected List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
+//    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+//    @JoinColumn(name = "DOST_ID")
+//    @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération")
+//    protected List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
     
     @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")
     protected String commentaire ;
@@ -74,10 +71,10 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
      * @param reference
      * @param commentaire 
      */
-    public DocumentStock(String code, Date date, Emplacement depot, String reference, String commentaire) {
+    public DocumentStock(String code, Date date, Entrepot depot, String reference, String commentaire) {
         this.code = code;
         this.date = date;
-        this.emplacement = depot;
+        this.entrepot = depot;
         this.reference = reference;
         this.commentaire = commentaire;
     }
@@ -93,11 +90,11 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
      * @param designation
      * @param moduleName 
      */
-    public DocumentStock(String code, Date date, Emplacement depot, String reference, String commentaire, long id, String designation, String moduleName) {
+    public DocumentStock(String code, Date date, Entrepot depot, String reference, String commentaire, long id, String designation, String moduleName) {
         super(id, designation, moduleName,0L);
         this.code = code;
         this.date = date;
-        this.emplacement = depot;
+        this.entrepot = depot;
         this.reference = reference;
         this.commentaire = commentaire;
     }
@@ -110,8 +107,8 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         super(doc.id, doc.designation, doc.moduleName,doc.compareid);
         this.code = doc.code;
         this.date = doc.date;
-        if(doc.getEmplacement()!=null){
-            this.emplacement = new Emplacement(doc.emplacement);
+        if(doc.getEntrepot()!=null){
+            this.entrepot = new Entrepot(doc.entrepot);
         }
         this.reference = doc.reference;
         this.commentaire = doc.commentaire;
@@ -136,12 +133,12 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         this.date = date;
     }
 
-    public Emplacement getEmplacement() {
-        return emplacement;
+    public Entrepot getEntrepot() {
+        return entrepot;
     }
 
-    public void setEmplacement(Emplacement emplacement) {
-        this.emplacement = emplacement;
+    public void setEntrepot(Entrepot emplacement) {
+        this.entrepot = emplacement;
     }
 
     
@@ -154,13 +151,13 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         this.reference = reference;
     }
 
-    public List<LigneDocumentStock> getLignes() {
-        return lignes;
-    }
-
-    public void setLignes(List<LigneDocumentStock> lignes) {
-        this.lignes = lignes;
-    }
+//    public List<LigneDocumentStock> getLignes() {
+//        return lignes;
+//    }
+//
+//    public void setLignes(List<LigneDocumentStock> lignes) {
+//        this.lignes = lignes;
+//    }
 
     public String getCommentaire() {
         return commentaire;
@@ -239,7 +236,7 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
 
     @Override
     public String toString() {
-        return "DocumentStock{" + "code=" + code + ", date=" + date + ", emplacement=" + emplacement + ", reference=" + reference + ", lignes=" + lignes + ", commentaire=" + commentaire + ", state=" + state + '}';
+        return "DocumentStock{" + "code=" + code + ", date=" + date + ", emplacement=" + entrepot + ", reference=" + reference  + ", commentaire=" + commentaire + ", state=" + state + '}';
     }
     
     

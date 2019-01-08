@@ -54,6 +54,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.core.securites.GroupeRSImpl.class);
         resources.add(com.core.securites.PwdUser2RSImpl.class);
         resources.add(com.core.securites.PwdUserRSImpl.class);
+        resources.add(com.core.securites.UserAutorisationRSImpl.class);
         resources.add(com.core.securites.UtilisateurRSImpl.class);
         resources.add(com.core.templates.TemplateRSImpl.class);
         resources.add(com.core.templates.ThemeRecordRSImpl.class);

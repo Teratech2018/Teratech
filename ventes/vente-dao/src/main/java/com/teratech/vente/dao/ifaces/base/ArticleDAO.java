@@ -7,7 +7,7 @@ import com.teratech.vente.model.base.Article;
 
 /**
  * Interface etendue par les interfaces locale et remote de la DAO
- * @since Mon Feb 19 13:22:28 GMT+01:00 2018
+ * @since Fri Jan 04 08:13:34 WAT 2019
  * 
  */
 public interface ArticleDAO

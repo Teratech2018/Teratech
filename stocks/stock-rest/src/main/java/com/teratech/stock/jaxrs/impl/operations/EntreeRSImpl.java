@@ -1,6 +1,7 @@
 
 package com.teratech.stock.jaxrs.impl.operations;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.KerenExecption;
@@ -15,9 +16,8 @@ import com.teratech.stock.core.ifaces.operations.LotManagerRemote;
 import com.teratech.stock.jaxrs.ifaces.operations.EntreeRS;
 import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.Emplacement;
-import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.operations.Entree;
-import com.teratech.stock.model.operations.LigneDocumentStock;
+import com.teratech.stock.model.operations.LigneEntree;
 import com.teratech.stock.model.operations.Lot;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,10 +75,22 @@ public class EntreeRSImpl
         try {
             //To change body of generated methods, choose Tools | Templates.
             MetaData meta = MetaDataUtil.getMetaData(new Entree(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Valider", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechstock','entity':'entree','method':'valider'}");
-            workbtn.setStates(new String[]{"etabli"});
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Imprimer la fiche de stock", false, "report", null);
+            workbtn.setValue("{'name':'entree_report01','model':'teratechstock','entity':'entree','method':'imprime'}");
+            workbtn.setStates(new String[]{"etabli","qualite","transfere","disponible"});
             meta.getHeader().add(workbtn);
+            workbtn = new MetaColumn("button", "work1", "Contrôle qualité", false, "link", null);
+            workbtn.setValue("{'name':'teratech_stock_ope_1_1',template:{'entree':'object','fournisseur':'object.fournisseur'},'header':['entree']}");
+            workbtn.setStates(new String[]{"etabli","qualite"});
+            meta.getHeader().add(workbtn);
+             workbtn = new MetaColumn("button", "work1", "Mise à disposition", false, "workflow", null);
+            workbtn.setValue("{'model':'teratechstock','entity':'entree','method':'valider'}");
+            workbtn.setStates(new String[]{"transfere"});
+            meta.getHeader().add(workbtn);
+//            workbtn = new MetaColumn("button", "work1", "Annuler l'opération", false, "link", null);
+//            workbtn.setValue("{'name':'teratech_stock_ope_2',template:{'entree':'object','fournisseur':'object.fournisseur'},'header':['entree']}");
+//            workbtn.setStates(new String[]{"disponible"});
+//            meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
             return meta;
@@ -107,44 +119,63 @@ public class EntreeRSImpl
             throw new KerenExecption("Veuillez saisir le n° de pièce");
         }else if(entity.getDate()==null){
             throw new KerenExecption("Veuillez saisir la date ");
-        }else if(entity.getEmplacement()==null){
+        }else if(entity.getEntrepot()==null){
             throw new KerenExecption("Veuillez saisir l'emplacement"); 
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir la ligne du document"); 
         }
         //Traitement des ligne
-        for(LigneDocumentStock ligne : entity.getLignes()){
+        for(LigneEntree ligne : entity.getLignes()){
             //Controle sur la ligne
             if(ligne.getId()<0){
                 ligne.setId(-1);
             }//end if(ligne.getId()<0){
-            computeLigne(ligne, entity.getEmplacement());
+//            computeLigne(ligne, entity.getEntrepot());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
     
-    private void computeLigne(LigneDocumentStock ligne,Emplacement empl){
-        if(!stocker(ligne.getArticle(), empl)){
-            throw new KerenExecption("L'emplacement "+empl.getCode()+" ne contient pas l'article "+ligne.getArticle().getCode()); 
-        }//end if(!stocker(ligne.getArticle(), entity.getEmplacement()))
-        if(ligne.getArticle().getPolitiquestock()!=null&&!ligne.getArticle().getPolitiquestock().trim().equalsIgnoreCase("0")){
-            if(ligne.getArticle().getPolitiquestock()=="1"||ligne.getArticle().getPolitiquestock()=="5"){
-                if(ligne.getCode()==null||ligne.getCode().trim().isEmpty()){
-                    throw new KerenExecption("L'article "+ligne.getArticle().getCode()+" est géré par série ou par lot"); 
-                }else {
-                       StringBuilder builder = new StringBuilder(ligne.getCode());
-                        builder.append(empl.getCode());
-                        List<Lot> lots = lotmanager.findByUniqueProperty("reference", builder.toString(), null);
-    //                    throw new KerenExecption("Le N° de lot/série "+ligne.getCode()+" n'existe pas :::: "+lots+" === "+lots.size()); 
-                        if(lots!=null&&!lots.isEmpty()){
-                            throw new KerenExecption("Le N° de lot/série "+ligne.getCode()+" existe déjà"); 
-                        }//end if(lots.isEmpty())
-                        
-                }//end if(ligne.getCode()==null||ligne.getCode().trim().isEmpty())
-            }//end if(ligne.getArticle().getPolitiquestock()=="1"||ligne.getArticle().getPolitiquestock()=="5")
-        }//end if(ligne.getArticle().getPolitiquestock()!=null&&!ligne.getArticle().getPolitiquestock().trim().equalsIgnoreCase("0"))
-    }//end private void computeLigne(LigneDocumentStock ligne,Emplacement empl)
+    /**
+     * 
+     * @param entity 
+     */
+    private void validateInout(Entree entity){
+        for(LigneEntree ligne:entity.getLignes()){
+           if(!stockable(ligne.getArticle())){
+               continue;
+           }//end if(!stockable(ligne.getArticle())){
+           if(ligne.getArticle().getPolitiquestock()!=null){
+               if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("1")||
+                       ligne.getArticle().getPolitiquestock().equalsIgnoreCase("5")){
+                   if(ligne.getCode()==null||ligne.getCode().trim().isEmpty()){
+                        throw new KerenExecption("Veuillez renseigner le numéro de lot/série article :"+ligne.getArticle().getDesignation()); 
+                   }else {
+                       RestrictionsContainer container = RestrictionsContainer.newInstance();
+                       container.addEq("lien.id", ligne.getEmplacement().getId());
+                       container.addEq("code", ligne.getCode());
+                       List<Lot> lots = lotmanager.filter(container.getPredicats(), null, null, 0, -1);
+                       if(!lots.isEmpty()){
+                           throw new KerenExecption("Un lot/serie de nom : "+ligne.getCode()+" existe déjà pour cette emplacement \nVeuillez saisir un nouveau numéro de lot/série"); 
+                       }//end if(!lots.isEmpty()){
+                   }//end if(ligne.getCode()==null||ligne.getCode().trim().isEmpty()){
+               }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("2")){
+                   if(ligne.getPuht()==null){
+                       throw new KerenExecption("Veuillez renseigner le PUHT pour l'article :"+ligne.getArticle().getDesignation()); 
+                   }
+               }//end  if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("1")||
+           }//end  if(ligne.getArticle().getPolitiquestock()!=null){
+        }//end for(LigneEntree ligne:entity.getLignes()){
+    }
+   
+    /**
+     * 
+     * @param article
+     * @return 
+     */
+    private boolean stockable(Article article){
+        return article.getType()!=null && article.getType().equalsIgnoreCase("1");
+    }
     /**
      * 
      * @param article
@@ -153,11 +184,7 @@ public class EntreeRSImpl
      */
     private Boolean stocker(Article article ,Emplacement empl){
         Article art = articlemanager.find("id", article.getId());
-        for(LienEmplacement lien:art.getStockages()){
-            if(lien.getEmplacement().compareTo(empl)==0){
-                return true;
-            }
-        }//end for(LienEmplacement lien:art.getStockages()){
+       
         return false;
     }
 
@@ -167,29 +194,36 @@ public class EntreeRSImpl
             throw new KerenExecption("Veuillez saisir le n° de pièce");
         }else if(entity.getDate()==null){
             throw new KerenExecption("Veuillez saisir la date ");
-        }else if(entity.getEmplacement()==null){
+        }else if(entity.getEntrepot()==null){
             throw new KerenExecption("Veuillez saisir l'emplacement"); 
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir la ligne du document"); 
         }
         //Traitement des ligne
-        for(LigneDocumentStock ligne : entity.getLignes()){
+        for(LigneEntree ligne : entity.getLignes()){
            //Controle sur la ligne
             ligne.setId(-1);
-            computeLigne(ligne, entity.getEmplacement());
+//            computeLigne(ligne, entity.getEntrepot());
             ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Entree confirmer(HttpHeaders headers, Entree object) {
-         //To change body of generated methods, choose Tools | Templates.
-        if(object.getState().equalsIgnoreCase("valider")){
-            throw new KerenExecption("Cette Opération est dejà validé");        
-        }
-        return manager.confirmer(object);
+    public Entree confirmer(HttpHeaders headers, Entree entity) {
+         //To change body of generated methods, choose Tools | Templates.   
+        validateInout(entity);
+        return manager.confirmer(entity);
         //Traitement des ligne des stocks
+    }
+
+    
+    @Override
+    public List<Entree> imprimer(HttpHeaders headers, Entree entity) {
+        //To change body of generated methods, choose Tools | Templates.
+        List<Entree> datas = new ArrayList<Entree>();
+        datas.add(entity);
+        return datas;
     }
     
     
