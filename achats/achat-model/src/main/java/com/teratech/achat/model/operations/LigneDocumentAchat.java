@@ -14,14 +14,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
@@ -29,55 +32,58 @@ import javax.persistence.Transient;
  * @author BEKO
  */
 @Entity
-@Table(name = "T_LIDOAC")
+@Table(name = "T_LIDOAC_ACH")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="TYPE",discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("TMP")
 public class LigneDocumentAchat extends BaseElement implements Serializable,Comparable<LigneDocumentAchat>{
 
     @ManyToOne
     @JoinColumn(name = "ART_ID")
     @Predicate(label = "Article",type = Article.class,target = "many-to-one",optional = false,search = true,observable = true)
-    private Article article ;    
+    protected Article article ;    
     
-    @Temporal(TemporalType.DATE)
-    @Predicate(label = "Date prévue",type = Date.class,target = "date",optional = false,search = true)
-    private Date prevue ;
-    
+//    @Temporal(TemporalType.DATE)
+//    @Predicate(label = "Date prévue",type = Date.class,target = "date",optional = false,search = true)
+//    private Date prevue ;
+//    
     @Predicate(label = "N° Lot/Serie",optional = true,search = true)
     private String code ;
-    
-    @Predicate(label = "Péremption",type = Date.class,target = "date",search = false)
-    @Temporal(TemporalType.DATE)
-    private Date peremption ;
-    
-    @Predicate(label = "Fabrication",type = Date.class,target = "date",search = false)
-    @Temporal(TemporalType.DATE)
-    private Date fabrication ;
+//    
+//    @Predicate(label = "Péremption",type = Date.class,target = "date",search = false)
+//    @Temporal(TemporalType.DATE)
+//    private Date peremption ;
+//    
+//    @Predicate(label = "Fabrication",type = Date.class,target = "date",search = false)
+//    @Temporal(TemporalType.DATE)
+//    private Date fabrication ;
     
     @Predicate(label = "Quantité",type = Double.class,optional = false,search = true)
-    private Double quantite ;
+    protected Double quantite ;
     
     @Predicate(label = "Prix HT",type = Double.class,search = true)
     @Observer(observable = "article",source = "field:puachat")
-    private Double puht ;
+    protected Double puht ;
     
     @ManyToMany
     @JoinTable(name = "T_LIDOAC_TA",joinColumns = @JoinColumn(name = "LIDOAC_ID")
             ,inverseJoinColumns = @JoinColumn(name = "TAXE_ID"))    
-    @Predicate(label = "Taxes",type = Taxe.class,target = "many-to-many",optional = false,search = false)
-    private List<Taxe> taxes =new ArrayList<Taxe>();
+    @Predicate(label = "Taxes",type = Taxe.class,target = "many-to-many",optional = false,search = true)
+    protected List<Taxe> taxes =new ArrayList<Taxe>();
     
     @Predicate(label = "Remise(%)",type = Double.class,search = true)
-    private Double remise = 0.0;
+    protected Double remise = 0.0;
     
     @Predicate(label = "Sous-total",type = Double.class,compute = true,values = "this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100",hide =true ,search = true)
-    private Double totalht ;
+    protected Double totalht ;
     
-    private Double qtefacturee = 0.0;
+    protected Double qtefacturee = 0.0;
     
     
-    private Double stokdispo = 0.0;
+    protected Double stokdispo = 0.0;
     
     @Transient
-    private LigneDocumentAchat ligneachat ;
+    protected LigneDocumentAchat ligneachat ;
 
     /**
      * 
@@ -89,7 +95,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
      */
     public LigneDocumentAchat(Article article, Date prevue, Double quantite, Double puht, Double totalht) {
         this.article = article;
-        this.prevue = prevue;
+//        this.prevue = prevue;
         this.quantite = quantite;
         this.puht = puht;
         this.totalht = totalht;
@@ -109,7 +115,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
     public LigneDocumentAchat(Article article, Date prevue, Double quantite, Double puht, Double totalht, long id, String designation, String moduleName) {
         super(id, designation, moduleName,0L);
         this.article = article;
-        this.prevue = prevue;
+//        this.prevue = prevue;
         this.quantite = quantite;
         this.puht = puht;
         this.totalht = totalht;
@@ -124,7 +130,7 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
         if(ligne.article!=null){
             this.article = new Article(ligne.article);
         }
-        this.prevue = ligne.prevue;
+//        this.prevue = ligne.prevue;
         this.quantite = ligne.quantite;
         this.puht = ligne.puht;
         this.totalht = ligne.totalht;
@@ -136,8 +142,8 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
         }
         this.remise = ligne.remise;
         this.code = ligne.code;
-        this.peremption = ligne.getPeremption();
-        this.fabrication = ligne.getFabrication();
+//        this.peremption = ligne.getPeremption();
+//        this.fabrication = ligne.getFabrication();
         this.qtefacturee = ligne.getQtefacturee();
         this.stokdispo = ligne.getStokdispo();
         
@@ -155,13 +161,13 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
         this.article = article;
     }
 
-    public Date getPrevue() {
-        return prevue;
-    }
-
-    public void setPrevue(Date prevue) {
-        this.prevue = prevue;
-    }
+//    public Date getPrevue() {
+//        return prevue;
+//    }
+//
+//    public void setPrevue(Date prevue) {
+//        this.prevue = prevue;
+//    }
 
     public Double getQuantite() {
         return quantite;
@@ -203,29 +209,29 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
         this.remise = remise;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String lot) {
-        this.code = lot;
-    }
-
-    public Date getPeremption() {
-        return peremption;
-    }
-
-    public void setPeremption(Date peremption) {
-        this.peremption = peremption;
-    }
-
-    public Date getFabrication() {
-        return fabrication;
-    }
-
-    public void setFabrication(Date fabrication) {
-        this.fabrication = fabrication;
-    }
+//    public String getCode() {
+//        return code;
+//    }
+//
+//    public void setCode(String lot) {
+//        this.code = lot;
+//    }
+//
+//    public Date getPeremption() {
+//        return peremption;
+//    }
+//
+//    public void setPeremption(Date peremption) {
+//        this.peremption = peremption;
+//    }
+//
+//    public Date getFabrication() {
+//        return fabrication;
+//    }
+//
+//    public void setFabrication(Date fabrication) {
+//        this.fabrication = fabrication;
+//    }
 
     public Double getQtefacturee() {
         return qtefacturee;
@@ -253,6 +259,14 @@ public class LigneDocumentAchat extends BaseElement implements Serializable,Comp
 
     public void setLigneachat(LigneDocumentAchat ligneachat) {
         this.ligneachat = ligneachat;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
     
     

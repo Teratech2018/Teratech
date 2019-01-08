@@ -6,6 +6,7 @@
 package com.teratech.achat.model.operations;
 
 import com.teratech.achat.model.base.Emplacement;
+import com.teratech.achat.model.base.Entrepot;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.DiscriminatorValue;
@@ -27,7 +28,7 @@ public class Entree extends DocumentStock implements Serializable{
      * @param reference
      * @param commentaire 
      */
-    public Entree(String code, Date date, Emplacement depot, String reference, String commentaire) {
+    public Entree(String code, Date date, Entrepot depot, String reference, String commentaire) {
         super(code, date, depot, reference, commentaire);
         this.state = "etabli";
     }
@@ -43,7 +44,7 @@ public class Entree extends DocumentStock implements Serializable{
      * @param designation
      * @param moduleName 
      */
-    public Entree(String code, Date date, Emplacement depot, String reference, String commentaire, long id, String designation, String moduleName) {
+    public Entree(String code, Date date, Entrepot depot, String reference, String commentaire, long id, String designation, String moduleName) {
         super(code, date, depot, reference, commentaire, id, designation, moduleName);
         this.state = "etabli";
     }
@@ -54,11 +55,11 @@ public class Entree extends DocumentStock implements Serializable{
     }
     
      public Entree(BonReception doc) {
-        super(doc.getCode(), new Date(), doc.getEmplacement(), doc.getOrigine(), null, -1, doc.getDesignation(), doc.getModuleName());
+        super(doc.getCode(), new Date(), doc.getEntrepot(), doc.getOrigine(), null, -1, doc.getDesignation(), doc.getModuleName());
         this.state = "etabli";
-        for(LigneDocumentAchat ligne:doc.lignes){
-            this.lignes.add(new LigneDocumentStock(ligne));
-        }//end for(LigneDocumentAchat ligne:doc.lignes)
+//        for(LigneDocumentAchat ligne:doc.lignes){
+//            this.lignes.add(new LigneDocumentStock(ligne));
+//        }//end for(LigneDocumentAchat ligne:doc.lignes)
     }
 
     @Override

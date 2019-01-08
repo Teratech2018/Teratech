@@ -77,34 +77,34 @@ public class CMDEFactureTMPRSImpl
 
     @Override
     protected void processBeforeSave(Facture entity) {
-        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-            throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
-        }
+//        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+//            throw new KerenExecption("Veuillez saisir la reference");
+//        }else if(entity.getDatecommande()==null){   
+//           throw new KerenExecption("Veuillez saisir la date de la commande");
+//        }else if(entity.getFornisseur()==null){
+//            throw new KerenExecption("Veuillez saisir le fournisseur");
+//        }else if(entity.getEmplacement()==null){
+//            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
+//        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+//            throw new KerenExecption("Veuillez saisir au moins un article");
+//        }
          ligneFactureValidate(entity);
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     protected void processBeforeUpdate(Facture entity) {
-        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-            throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
-        }
+//        if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
+//            throw new KerenExecption("Veuillez saisir la reference");
+//        }else if(entity.getDatecommande()==null){   
+//           throw new KerenExecption("Veuillez saisir la date de la commande");
+//        }else if(entity.getFornisseur()==null){
+//            throw new KerenExecption("Veuillez saisir le fournisseur");
+//        }else if(entity.getEmplacement()==null){
+//            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
+//        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
+//            throw new KerenExecption("Veuillez saisir au moins un article");
+//        }
          ligneFactureValidate(entity);
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
@@ -116,19 +116,19 @@ public class CMDEFactureTMPRSImpl
      * @param entity 
      */
     private void ligneFactureValidate(Facture entity){
-        for(LigneDocumentAchat lign:entity.getLignes()){
-            if(lign.getArticle()==null){
-                throw new KerenExecption("Veuillez fournir l'article pour toute les lignes");
-            }else if(lign.getPuht()==null||lign.getPuht()==0){
-                throw new KerenExecption("Veuillez fournir le puht");
-            }else if(lign.getQuantite()==null||lign.getQuantite()==0){
-                throw new KerenExecption("Veuillez fournir la quantité voulue");
-            }else if(lign.getTaxes()==null&&lign.getTaxes().isEmpty()){
-                throw new KerenExecption("Veuillez saisir la taxe appliquée");
-            }else if(lign.getStokdispo()<lign.getQuantite()){
-                throw new KerenExecption("Quantité insuffisante article:"+lign.getDesignation()+" quantité dispo :"+lign.getStokdispo());
-            }
-        }//end for(LigneDocumentAchat lign:entity.getLignes())
+//        for(LigneDocumentAchat lign:entity.getLignes()){
+//            if(lign.getArticle()==null){
+//                throw new KerenExecption("Veuillez fournir l'article pour toute les lignes");
+//            }else if(lign.getPuht()==null||lign.getPuht()==0){
+//                throw new KerenExecption("Veuillez fournir le puht");
+//            }else if(lign.getQuantite()==null||lign.getQuantite()==0){
+//                throw new KerenExecption("Veuillez fournir la quantité voulue");
+//            }else if(lign.getTaxes()==null&&lign.getTaxes().isEmpty()){
+//                throw new KerenExecption("Veuillez saisir la taxe appliquée");
+//            }else if(lign.getStokdispo()<lign.getQuantite()){
+//                throw new KerenExecption("Quantité insuffisante article:"+lign.getDesignation()+" quantité dispo :"+lign.getStokdispo());
+//            }
+//        }//end for(LigneDocumentAchat lign:entity.getLignes())
     }//end private void ligneFactureValidate(Facture entity)
 
 }

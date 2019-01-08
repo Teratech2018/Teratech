@@ -47,6 +47,21 @@ public class MetaGroup implements Serializable{
 //        this.metaArray = metaArray;
     }
 
+    public MetaGroup(MetaGroup entity) {
+        this.groupName = entity.groupName;
+        this.groupLabel = entity.groupLabel;
+        this.hidden = entity.hidden;
+        this.sequence = entity.sequence;
+        for(MetaColumn col:entity.columns){
+            this.columns.add(new MetaColumn(col));
+        }
+        for(MetaArray meta:metaArray){
+            this.metaArray.add(new MetaArray(meta));
+        }
+    }
+    
+    
+
     public String getGroupName() {
         return groupName;
     }

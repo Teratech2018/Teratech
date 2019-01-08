@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+     <action id="teratech_vente" />
+	 <menu id="teratech_vente_operation" label="Opérations de vente" parent="teratech_vente" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_vente_ope_1" label="Devis" parent_ref="teratech_vente_operation" entity_ref="Devis" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_ope_1_1" label="Envoi mail" parent_ref="teratech_vente_operation" entity_ref="SendDevisForm" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" hide="true"/>
+	 <menuitem id="teratech_vente_ope_2" label="Commandes" parent_ref="teratech_vente_operation" entity_ref="Commande" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_ope_2_1" label="Commandes" parent_ref="teratech_vente_operation" entity_ref="CommandeDevis" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
+	 <menuitem id="teratech_vente_ope_3" label="Livraisons" parent_ref="teratech_vente_operation" entity_ref="BonLivraison" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_ope_4" label="Factures" parent_ref="teratech_vente_operation" entity_ref="Facture" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_vente_structure" label="Structures." parent="teratech_vente" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_vente_str_1" label="Articles." parent_ref="teratech_vente_structure" entity_ref="Article" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="kaban,tree,form"/>
+	 <menuitem id="teratech_vente_str_1_1" label="Liens Emplacements." parent_ref="teratech_vente_structure" entity_ref="LienEmplacement" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true"/>
+	 <menuitem id="teratech_vente_str_2" label="Familles. Articles" parent_ref="teratech_vente_structure" entity_ref="FamilleArticle" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_str_3" label="Arbre Familles" parent_ref="teratech_vente_structure" entity_ref="FamilleArticle" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="list"/>
+	 <menu id="teratech_vente_comptabilite" label="Comptabilité.." parent="teratech_vente" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_vente_com_1" label="Plan comptable." parent_ref="teratech_vente_comptabilite" entity_ref="Compte" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_com_2" label="Fournisseurs" parent_ref="teratech_vente_comptabilite" entity_ref="Tier" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false"   view_type="kaban,tree,form"/>
+	 <menuitem id="teratech_vente_com_3" label="Plan Analytique.." parent_ref="teratech_vente_comptabilite" entity_ref="CompteAnalytique" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_com_4" label="Journal comptable." parent_ref="teratech_vente_comptabilite" entity_ref="JournalComptable" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_com_5" label="Taxes" parent_ref="teratech_vente_comptabilite" entity_ref="Taxe" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menu id="teratech_vente_configuration" label="Configuration" parent="teratech_vente" gyphycon="glyphicon glyphicon-pencil"/>
+	 <menuitem id="teratech_vente_conf_1" label="Entrepôts" parent_ref="teratech_vente_configuration" entity_ref="Entrepot" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_conf_2" label="Emplacements" parent_ref="teratech_vente_configuration" entity_ref="Emplacement" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_conf_3" label="Unité de gestion." parent_ref="teratech_vente_configuration" entity_ref="UniteGestion" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree" />
+	 <menuitem id="teratech_vente_conf_4" label="Unité d'achat" parent_ref="teratech_vente_configuration" entity_ref="UniteAchat" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree" />
+	 <menuitem id="teratech_vente_conf_5" label="Catégorie de produit." parent_ref="teratech_vente_configuration" entity_ref="CategorieProduit" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree"/>
+	 <menuitem id="teratech_vente_conf_6" label="Régions .." parent_ref="teratech_vente_configuration" entity_ref="Region" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree"/>
+	 <menuitem id="teratech_vente_conf_7" label="Pays" parent_ref="teratech_vente_configuration" entity_ref="Pays" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="kaban,tree,form"/>
+	 <menuitem id="teratech_vente_conf_8" label="Civilité .." parent_ref="teratech_vente_configuration" entity_ref="Civilite" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree"/>
+	 <reportRecord  id="devisvte_report01" label="Demande de prix" action_ref="teratech_vente_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>				   
+					<ng-template src='base_account/views/header.xml'></ng-template> 				
+					<div ng-repeat='obj in temporalDatas'>   
+					   <label>N Compte</label><p>{{obj.fournisseur.code}}</p>
+					   <label>Libelle</label><p>{{obj.fournisseur.label}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>PU HT</td><td>Remise</td><td>Sous total(HT)</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.puht}}</td>
+								 <td>{{ligne.remise}}</td>
+								 <td>{{ligne.totalht}}</td>
+							  </tr>
+							  <tr><td></td><td></td><td></td><td>Total HT</td><td>{{obj.totalht}}</td></tr>
+							  <tr><td></td><td></td><td></td><td>Taxes</td><td>{{obj.taxes}}</td></tr>
+							  <tr><td></td><td></td><td></td><td>Total TTC</td><td>{{obj.totalttc}}</td></tr>
+						   </tbody>
+					   </table>					   
+				   </div>							   
+				 </div>	   
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="commandevte_report01" label="Demande de prix" action_ref="teratech_vente_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>				   
+					<ng-template src='base_account/views/header.xml'></ng-template> 				
+					<div ng-repeat='obj in temporalDatas'>   
+					   <label>N Compte</label><p>{{obj.fournisseur.code}}</p>
+					   <label>Libelle</label><p>{{obj.fournisseur.label}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>PU HT</td><td>Remise</td><td>Sous total(HT)</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.puht}}</td>
+								 <td>{{ligne.remise}}</td>
+								 <td>{{ligne.totalht}}</td>
+							  </tr>
+							  <tr><td></td><td></td><td></td><td>Total HT</td><td>{{obj.totalht}}</td></tr>
+							  <tr><td></td><td></td><td></td><td>Taxes</td><td>{{obj.taxes}}</td></tr>
+							  <tr><td></td><td></td><td></td><td>Total TTC</td><td>{{obj.totalttc}}</td></tr>
+						   </tbody>
+					   </table>					   
+				   </div>							   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="livraisonvte_report01" label="Bon de commande" action_ref="teratech_vente_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>
+                     <ng-template src='base_account/views/header.xml'></ng-template> 				
+					 <div ng-repeat='obj in temporalDatas'>
+					   <label>N Compte</label><p>{{obj.fournisseur.code}}</p>
+					   <label>Libelle</label><p>{{obj.fournisseur.label}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>PU HT</td><td>Remise</td><td>Total HT</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.puht}}</td>
+								 <td>{{ligne.remise}}</td>
+								 <td>{{ligne.totalht}}</td>
+							  </tr>
+							  <tr><td></td><td></td><td></td><td>Total HT</td><td>{{obj.totalht}}</td></tr>
+							  <tr><td></td><td></td><td></td><td>Taxes</td><td>{{obj.taxes}}</td></tr>
+							  <tr><td></td><td></td><td></td><td>Total TTC</td><td>{{obj.totalttc}}</td></tr>
+						   </tbody>
+					   </table>	
+                   </div>					   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>
+	 <reportRecord  id="facturevte_report01" label="Bon de reception" action_ref="teratech_vente_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>
+                     <ng-template src='base_account/views/header.xml'></ng-template> 				
+					 <div ng-repeat='obj in temporalDatas'>
+					   <label>N Compte</label><p>{{obj.fournisseur.code}}</p>
+					   <label>Libelle</label><p>{{obj.fournisseur.label}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>N°Série/Lot</td><td>Fabriquer le</td><td>Date Limite</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.code}}</td>
+								 <td>{{ligne.fabrication}}</td>
+								 <td>{{ligne.peremption}}</td>
+							  </tr>							  
+						   </tbody>
+					   </table>	
+                   </div>					   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>	 
+	 <reportRecord  id="bretourvte_report01" label="Bon de reception" action_ref="teratech_vente_ope_1"  extern="false">
+	      <template>
+		     <![CDATA[
+			    <div>
+                     <ng-template src='base_account/views/header.xml'></ng-template> 				
+					 <div ng-repeat='obj in temporalDatas'>
+					   <label>N Compte</label><p>{{obj.fournisseur.code}}</p>
+					   <label>Libelle</label><p>{{obj.fournisseur.label}}</p>
+					   <table class="table  table-striped table-bordered table-hover table-condensed">
+						   <thead> 
+							  <tr style="font-weight: bold;">
+								 <td>Article</td><td>Quantité</td><td>N°Série/Lot</td><td>Fabriquer le</td><td>Date Limite</td>
+							  </tr>
+						   </thead>
+						   <tbody>
+							  <tr ng-repeat='ligne in obj.lignes'>
+								 <td>{{ligne.article.designation}}</td>
+								 <td>{{ligne.quantite}}</td>
+								 <td>{{ligne.code}}</td>
+								 <td>{{ligne.fabrication}}</td>
+								 <td>{{ligne.peremption}}</td>
+							  </tr>							  
+						   </tbody>
+					   </table>	
+                   </div>					   
+				 </div>	  
+			   ]]>
+		  </template>
+	 </reportRecord>	 
+	 <kabanentry id="article_kaban_ach_01" parent_ref="teratech_vente_str_1">
+	    <template>
+		    <![CDATA[				   
+			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
+				 <div class='col-md-3 col-sm-4'>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
+				  </div> 
+				 </div>
+				 <div  class='col-md-8 col-sm-7'>
+				  <div style='font-weight: bold;'>{{item.code | cut:true:20:'...'}}
+				  </div>
+				  <div>{{item.intitule | cut:true:50:'...'}}
+				  </div> 
+				  <div> 
+					<div class='col-sm-6 col-md-6 pull-left' >{{item.reference}}
+					</div>	
+				  </div> 
+				 </div> 
+			  </div>
+		  ]]>		
+		</template>
+	 </kabanentry>
+	 <kabanentry id="four_kaban_ach_01" parent_ref="teratech_vente_com_2">
+	    <template>
+		    <![CDATA[				   
+				<div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
+					 <div class='col-md-3 col-sm-4'>
+					  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
+					  </div> 
+					 </div>
+					 <div  class='col-md-8 col-sm-7'>
+					  <div style='font-weight: bold;'>{{item.code | cut:true:20:'...'}}
+					  </div>
+					  <div>{{item.label | cut:true:50:'...'}}
+					  </div> 
+					  <div> 
+						<div class='col-sm-6 col-md-6 pull-left' >{{item.adresse | cut:true:20:'...'}}
+						</div>	
+					  </div> 
+					 </div> 
+				</div>
+		  ]]>		
+		</template>
+	 </kabanentry>
+	 <kabanentry id="pays_kaban_ach_01" parent_ref="teratech_vente_conf_7">
+	    <template>
+		    <![CDATA[				   
+			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
+				 <div class='col-md-3 col-sm-4'>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
+				  </div> 
+				 </div>
+				 <div  class='col-md-8 col-sm-7'>
+				  <div style='font-weight: bold;'>{{item.code | cut:true:20:'...'}}
+				  </div>
+				  <div>{{item.intitule | cut:true:50:'...'}}
+				  </div> 
+				  <div> 
+					<div class='col-sm-6 col-md-6 pull-left' >{{item.devise.designation | cut:true:20:'...'}}
+					</div>	
+				  </div> 
+				 </div> 
+			  </div>
+		  ]]>		
+		</template>
+	 </kabanentry>
+</keren>

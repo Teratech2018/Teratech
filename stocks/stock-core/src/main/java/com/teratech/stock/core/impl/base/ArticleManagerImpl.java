@@ -66,11 +66,11 @@ public class ArticleManagerImpl
     public Article find(String propertyName, Long entityID) {
         Article data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
         Article result = new Article(data);
-        if(data.getStockages()!=null){
-            for(LienEmplacement lien:data.getStockages()){
-                result.getStockages().add(new LienEmplacement(lien));
-            }
-        }//end if(data.getStockages()!=null)
+//        if(data.getStockages()!=null){
+//            for(LienEmplacement lien:data.getStockages()){
+//                result.getStockages().add(new LienEmplacement(lien));
+//            }
+//        }//end if(data.getStockages()!=null)
         return result;
     }
 

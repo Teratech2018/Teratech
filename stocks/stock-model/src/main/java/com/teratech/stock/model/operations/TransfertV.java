@@ -24,11 +24,7 @@ public class TransfertV extends Transfert implements Serializable{
         this.state = "valider";
     }
 
-    public TransfertV(String code, Date date, Emplacement depot, String reference, String commentaire, long id, String designation, String moduleName) {
-        super(code, date, depot, reference, commentaire, id, designation, moduleName);
-        this.state = "valider";
-    }
-
+    
     public TransfertV(Transfert doc) {
         super(doc);
         this.state = "valider";

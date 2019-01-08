@@ -5,6 +5,7 @@ import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 import com.teratech.achat.model.operations.BonCommande;
 import com.teratech.achat.model.operations.BonReception;
 import com.teratech.achat.model.operations.Facture;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -57,7 +58,7 @@ public interface BonCommandeRS
     
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({"application/pdf"})
+    @Produces({MediaType.APPLICATION_JSON})
     @Path("imprime")
-    public Response imprimer(@Context HttpHeaders headers,BonCommande dmde);
+    public List<BonCommande> imprimer(@Context HttpHeaders headers,BonCommande dmde);
 }

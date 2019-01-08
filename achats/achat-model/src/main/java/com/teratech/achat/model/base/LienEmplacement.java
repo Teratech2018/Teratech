@@ -6,6 +6,7 @@
 package com.teratech.achat.model.base;
 
 import com.core.base.BaseElement;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.achat.model.operations.Lot;
 import java.io.Serializable;
@@ -23,33 +24,44 @@ import javax.persistence.Table;
  * @author BEKO
  */
 @Entity
-@Table(name = "T_LIEM")
+@Table(name = "T_LIEM_ST")
 public class LienEmplacement extends BaseElement implements Serializable,Comparable<LienEmplacement>{
 
+     @ManyToOne
+    @JoinColumn(name = "ENTR_ID")
+    @Predicate(label = "Entrepôt",type = Entrepot.class,target = "many-to-one",optional = false,nullable = false,search = true)
+    private Entrepot entrpot ;
+    
     @ManyToOne
     @JoinColumn(name = "EMP_ID")
     @Predicate(label = "Emplacement",type = Emplacement.class,target = "many-to-one",optional = false,nullable = false,search = true)
+    @Filter(value = "[{\"fieldName\":\"edepot\",\"value\":\"object.entrpot\",\"searchfield\":\"code\",\"optional\":false,\"message\":\"Veuillez selectionner l'entrepôt\"}]")
     private Emplacement emplacement ;
     
-    @Predicate(label = "Stock réel",type = Double.class,optional = false,search = true)
+    @ManyToOne
+    @JoinColumn(name = "ART_ID")
+    @Predicate(label = "Article",type = Article.class,target = "many-to-one",search = false,editable = false)
+    private Article article ;
+    
+    @Predicate(label = "Stock réel",type = Double.class,editable = false,search = true)
     private Double stock ;    
     
     @Predicate(label = "Stock sécurité",type = Double.class,optional = false)
     private Double stocksec =0.0;
      
     @Predicate(label = "Stock d'alerte",type = Double.class,optional = false)
-    private Double stockale =0.0;
+    private Double stockalert =0.0;
     
-    @Predicate(label = "Stock Min",type = Double.class,optional = false,editable = false)
+    @Predicate(label = "Stock Min",type = Double.class)
     private Double stockmin ;
     
-    @Predicate(label = "Stock Maxi",type = Double.class,optional = false)
+    @Predicate(label = "Stock Maxi",type = Double.class)
     private Double stockmax ;
     
-    @Predicate(label = "Prévision",type = Double.class,optional = false,search = true,editable = false)
+    @Predicate(label = "Prévision",type = Double.class,search = true,editable = false,hide = true)
     private Double prevision ;
     
-    @Predicate(label = "A terme",type = Double.class,optional = false,search = true,editable = false)
+    @Predicate(label = "A terme",type = Double.class,search = true,editable = false,hide=true)
     private Double terme ;
     
     @OneToMany(mappedBy = "lien",fetch = FetchType.LAZY)
@@ -95,10 +107,12 @@ public class LienEmplacement extends BaseElement implements Serializable,Compara
     public LienEmplacement(LienEmplacement empl) {
         super(empl.id, empl.designation, empl.moduleName,empl.compareid);
         this.emplacement = new Emplacement(empl.emplacement);
+        this.entrpot = new Entrepot(empl.entrpot);
+        this.article = new Article(empl.article);
         this.stock = empl.stock;
         this.prevision = empl.prevision;
         this.terme = empl.terme;
-        this.stockale = empl.stockale;
+        this.stockalert = empl.stockalert;
         this.stockmax = empl.stockmax;
         this.stockmin = empl.stockmin;
         this.stocksec = empl.stocksec;
@@ -147,12 +161,12 @@ public class LienEmplacement extends BaseElement implements Serializable,Compara
         this.stocksec = stocksec;
     }
 
-    public Double getStockale() {
-        return stockale;
+    public Double getStockalert() {
+        return stockalert;
     }
 
     public void setStockale(Double stockale) {
-        this.stockale = stockale;
+        this.stockalert = stockale;
     }
 
     public Double getStockmin() {
@@ -178,6 +192,39 @@ public class LienEmplacement extends BaseElement implements Serializable,Compara
     public void setLots(List<Lot> lots) {
         this.lots = lots;
     }  
+
+    public Entrepot getEntrpot() {
+        return entrpot;
+    }
+
+    public void setEntrpot(Entrepot entrpot) {
+        this.entrpot = entrpot;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    @Override
+    public String getOwnermodule() {
+        return "teratechachat"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getModuleName() {
+        return "teratechachat";  //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSearchkeys() {
+        return super.getSearchkeys(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
 
     /**

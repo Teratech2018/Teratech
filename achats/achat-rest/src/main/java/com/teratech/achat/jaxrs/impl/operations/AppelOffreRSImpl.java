@@ -106,9 +106,9 @@ public class AppelOffreRSImpl
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
            throw  new KerenExecption("Veuillez saisir au moins un produit");
         } 
-        if(entity.getTypeselection().equalsIgnoreCase("0")&&entity.getOffres().size()>1){
-            throw  new KerenExecption("Cette appel d'offre ne peut être lié qu'a une seule demande de prix");
-        }//end if(entity.getTypeselection().equalsIgnoreCase("0")&&entity.getOffres().size()>1)
+//        if(entity.getTypeselection().equalsIgnoreCase("0")&&entity.getOffres().size()>1){
+//            throw  new KerenExecption("Cette appel d'offre ne peut être lié qu'a une seule demande de prix");
+//        }//end if(entity.getTypeselection().equalsIgnoreCase("0")&&entity.getOffres().size()>1)
          if(entity.getState().equalsIgnoreCase("selection")||entity.getState().equalsIgnoreCase("boncommande")){
             throw  new KerenExecption("Impossible de modifier un appel d'offre déjà selectionné ou commandé");
         } 
@@ -187,9 +187,9 @@ public class AppelOffreRSImpl
         }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
            throw  new KerenExecption("Veuillez saisir au moins un produit");
         } 
-        if((entity.getOffres()==null||entity.getOffres().isEmpty())){
-            throw  new KerenExecption("Veuillez selectionner les demandes de prix liée à l'offre");
-        }//end if(entity.getTypeselection().equalsIgnoreCase("1")&&(entity.getOffres()==null||entity.getOffres().isEmpty())){
+//        if((entity.getOffres()==null||entity.getOffres().isEmpty())){
+//            throw  new KerenExecption("Veuillez selectionner les demandes de prix liée à l'offre");
+//        }//end if(entity.getTypeselection().equalsIgnoreCase("1")&&(entity.getOffres()==null||entity.getOffres().isEmpty())){
 //        if(entity.getTypeselection().equalsIgnoreCase("0")&&entity.getOffre()==null){
 //            throw  new KerenExecption("Veuillez selectionner la demande de prix liée à l'offre");
 //        }//end if(entity.getTypeselection().equalsIgnoreCase("0")&&entity.getOffre()==null

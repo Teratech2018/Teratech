@@ -96,7 +96,7 @@
 		  </div>  
 		  <div class="col-lg-2 col-md-2 col-sm-2  col-xs-3  text-center"  style="padding-bottom: 30px;height: 100px;width: 100px;" ng-repeat="module in modules" >
 			<a href="#" ng-click="getModule(module)"    data-toggle="tooltip" data-placement="auto" title="{{module.shortDescription | translate}}" >
-			  <img class="img-fluid img-thumbnail" id="application{{module.id}}" ng-src="http://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{module.icon}}" alt="" style="width: 100%;height: 80%;" />
+			  <img class="img-fluid img-thumbnail" id="application{{module.id}}" ng-src="{{protocol}}://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{module.icon}}" alt="" style="width: 100%;height: 80%;" />
 			</a>
 			<small style="color: white;">{{module.label | translate}}</small>
 		  </div>

@@ -46,6 +46,17 @@
     <class>com.teratech.achat.model.comptabilite.Acompte</class>
     <class>com.teratech.achat.model.comptabilite.ModeReglement</class>
     <class>com.teratech.achat.model.comptabilite.EcheanceReglement</class>
+    <class>com.teratech.achat.model.operations.LigneDemandePrix</class>
+    <class>com.teratech.achat.model.operations.LigneReponseDP</class>
+    <class>com.teratech.achat.model.operations.ReponseFournisseur</class>
+    <class>com.teratech.achat.model.operations.LigneCommande</class>
+    <class>com.teratech.achat.model.operations.LigneFacture</class>
+    <class>com.teratech.achat.model.base.Controle</class>
+    <class>com.teratech.achat.model.operations.ControleQualite</class>
+    <class>com.teratech.achat.model.operations.LigneControleQualite</class>
+    <class>com.teratech.achat.model.operations.BonRetour</class>
+    <class>com.teratech.achat.model.operations.LigneSortie</class>
+    <class>com.teratech.achat.model.operations.LigneEntree</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

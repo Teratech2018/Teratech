@@ -6,15 +6,15 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 import com.teratech.stock.core.ifaces.invetaire.RegulInventaireManagerLocal;
 import com.teratech.stock.core.ifaces.invetaire.RegulInventaireManagerRemote;
 import com.teratech.stock.dao.ifaces.base.ArticleDAOLocal;
-import com.teratech.stock.dao.ifaces.invetaire.LArticleEmplacementLotDAOLocal;
+import com.teratech.stock.dao.ifaces.base.LienEmplacementDAOLocal;
 import com.teratech.stock.dao.ifaces.invetaire.RegulInventaireDAOLocal;
 import com.teratech.stock.dao.ifaces.operations.LotDAOLocal;
-import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.invetaire.LigneInventaire;
 import com.teratech.stock.model.invetaire.RegulInventaire;
@@ -40,6 +40,8 @@ public class RegulInventaireManagerImpl
     @EJB(name = "LotDAO")
     protected LotDAOLocal lotedao;
     
+    @EJB(name = "LienEmplacementDAO")
+    protected LienEmplacementDAOLocal liendao;
 
     public RegulInventaireManagerImpl() {
     }
@@ -98,31 +100,35 @@ public class RegulInventaireManagerImpl
      */
     public RegulInventaire confirmer(RegulInventaire entity) {
         //To change body of generated methods, choose Tools | Templates.
-        for(LigneInventaire ligne:entity.getLignes()){            
-            Article article = articledao.findByPrimaryKey("id", ligne.getArticle().getId());
-            for(LienEmplacement lien : article.getStockages()){
-                if(lien.getEmplacement().compareTo(entity.getFemplacement())==0){
-                    if(ligne.getLot()!=null){
-                        Double stock = 0.0;
-                        for(Lot lot:lien.getLots()){
-                            if(lot.compareTo(ligne.getLot())==0){
-                                lot.setQuantite(ligne.getStockconstate());  
-                                lotedao.update(lot.getId(), lot);
-                            }//end if(lot.compareTo(ligne.getLot())==0){
-                            stock+=lot.getQuantite();
-                        }//end for(Lot lot:lien.getLots())
-                        lien.setStock(stock);
-                    }else{
-                      lien.setStock(ligne.getStockconstate());
-                    }//end if(ligne.getLot()!=null)
-                    
-                }//end if(lien.getEmplacement().compareTo(entity.getFemplacement())==0)
-            }//end for(LienEmplacement lien : article.getStockages())
-            if(ligne.getPuajuste()!=null&&ligne.getPuajuste()>0){
-                article.setPuachat(ligne.getPuajuste());
-            }//end if(ligne.getPuajuste()>0)
-            articledao.update(article.getId(), article);
-        }//end for(LigneInventaire ligne:entity.getLignes())
+        for(LigneInventaire ligne:entity.getLignes()){   
+               if(ligne.getLot()!=null){
+                    Lot lot = ligne.getLot();
+                    if(ligne.getStockconstate()!=null){
+                        lot.setQuantite(ligne.getStockconstate());
+                        lot.setSorties(0.0);
+                        lot.setEncours(0.0);
+                    } //end if(ligne.getStockconstate()!=null){
+                    lotedao.update(lot.getId(), lot);                     
+                    //Mise a jour 
+                }else{
+                    RestrictionsContainer container = RestrictionsContainer.newInstance();
+                    if(entity.getFentrepot()!=null){
+                        container.addEq("entrpot.id", entity.getFentrepot().getId());
+                    }
+                    if(entity.getFemplacement()!=null){
+                        container.addEq("emplacement.id", entity.getFemplacement().getId());
+                    }
+                    container.addEq("article.id", ligne.getArticle().getId());
+                    List<LienEmplacement> liens = liendao.filter(container.getPredicats(), null, null, 0, -1);
+                    LienEmplacement lien = liens.get(0);               
+                   lien.setStock(ligne.getStockconstate()!=null? ligne.getStockconstate():lien.getStock());
+                   liendao.update(lien.getId(), lien);
+                }//end if(ligne.getLot()!=null)                          
+                if(ligne.getPuajuste()!=null&&ligne.getPuajuste()>0){
+                    ligne.getArticle().setPuachat(ligne.getPuajuste());
+                }//end if(ligne.getPuajuste()>0)
+                articledao.update(ligne.getArticle().getId(), ligne.getArticle());
+        }//end for(LigneInventaire ligne:entity.getLignes())        
         entity.setState("termine");
         dao.update(entity.getId(), entity);
         return entity; 

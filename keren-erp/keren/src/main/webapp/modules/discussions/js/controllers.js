@@ -1316,6 +1316,9 @@ angular.module('keren.core.discussion')
 //                                                           commonsTools.showDialogLoading(error);
                                            });
                               }else{
+                                  if(!angular.isDefined(instance.lastmessageid) ||instance.lastmessageid==null){
+                                      return ;
+                                  }//end if(!angular.isDefined(instance.lastmessageid) ||instance.lastmessageid==null){
                                   var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/kmessage/all/"+$scope.currentUser.id+"/"+instance.lastmessageid;
 //                                  console.log("controller.discussiondispatcher =============================== "+url);
                                   $http.get(url)

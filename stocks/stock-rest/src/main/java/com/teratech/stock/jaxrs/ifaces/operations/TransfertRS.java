@@ -4,6 +4,7 @@ package com.teratech.stock.jaxrs.ifaces.operations;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 import com.teratech.stock.model.operations.Sortie;
 import com.teratech.stock.model.operations.Transfert;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,6 +27,6 @@ public interface TransfertRS
    @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("valider")
-    public Transfert confirmer(@Context HttpHeaders headers,Transfert object);
+    @Path("imprime")
+    public List<Transfert> imprime(@Context HttpHeaders headers,Transfert object);
 }

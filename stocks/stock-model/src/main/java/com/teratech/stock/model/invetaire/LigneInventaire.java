@@ -9,6 +9,7 @@ import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
 import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.base.Emplacement;
+import com.teratech.stock.model.base.LienEmplacement;
 import com.teratech.stock.model.operations.Lot;
 import java.io.Serializable;
 import java.util.Date;
@@ -130,6 +131,7 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
         }
     }
      
+     
      /**
       * 
       * @param art 
@@ -145,6 +147,30 @@ public class LigneInventaire extends BaseElement implements Serializable,Compara
        
     }
 
+    public LigneInventaire(LienEmplacement art) {
+      super(-1, art.getDesignation(), art.getModuleName(),0L);
+      this.article = art.getArticle();
+      this.stockdispo = art.getStock();
+      this.puht = art.getArticle().getPuvente();
+      if(art.getEmplacement()!=null){
+          this.localisation = new Emplacement(art.getEmplacement());
+      }
+       
+    }
+    
+     public LigneInventaire(LienEmplacement art , Lot lot) {
+      super(-1, art.getDesignation(), art.getModuleName(),0L);
+      this.article = art.getArticle();
+      this.stockdispo = art.getStock();
+      if(lot!=null){
+          this.stockdispo = lot.disponible();
+      }//end if(lot!=null){
+      this.puht = art.getArticle().getPuvente();
+      if(art.getEmplacement()!=null){
+          this.localisation = new Emplacement(art.getEmplacement());
+      }//end if(art.getEmplacement()!=null){
+      this.lot = lot;
+    }
     public LigneInventaire() {
     }
 

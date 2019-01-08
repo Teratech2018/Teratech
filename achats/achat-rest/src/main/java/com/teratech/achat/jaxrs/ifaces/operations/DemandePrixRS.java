@@ -3,6 +3,8 @@ package com.teratech.achat.jaxrs.ifaces.operations;
 
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 import com.teratech.achat.model.operations.DemandePrix;
+import com.teratech.achat.model.operations.ReponseFournisseur;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -49,8 +51,9 @@ public interface DemandePrixRS
     
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({"application/pdf"})
+    @Produces({MediaType.APPLICATION_JSON})
     @Path("imprime")
-    public Response imprimer(@Context HttpHeaders headers,DemandePrix dmde);
+    public List<ReponseFournisseur> imprimer(@Context HttpHeaders headers,DemandePrix dmde);
 
+    
 }

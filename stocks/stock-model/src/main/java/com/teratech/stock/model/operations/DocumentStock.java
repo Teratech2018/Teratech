@@ -13,17 +13,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,34 +28,34 @@ import javax.persistence.TemporalType;
  * @author BEKO
  */
 @Entity
-@Table(name = "T_DOCBA")
+@Table(name = "T_DOCBA_ST")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "OP",discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "TYPE",discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("DC")
 public class DocumentStock extends BaseElement implements Serializable,Comparable<DocumentStock>{
 
     @Predicate(label = "N° de pièce",optional = false,unique = true,search = true)
     protected String code ;
     
-    @Predicate(label = "Date document",type = Date.class,target = "date",search = true)
+    @Predicate(label = "Date",type = Date.class,target = "date",search = true)
     @Temporal(TemporalType.DATE)
     protected Date date ;
     
-    @ManyToOne
-    @JoinColumn(name = "EN_ID")
-    @Predicate(label = "Emplacement ",type = Emplacement.class,target = "many-to-one",optional = false,nullable = false,search = true)
-    protected Emplacement emplacement ;
+//    @ManyToOne
+//    @JoinColumn(name = "EN_ID")
+//    @Predicate(label = "Emplacement ",type = Emplacement.class,target = "many-to-one",optional = false,nullable = false,search = true)
+//    protected Emplacement emplacement ;
     
-    @Predicate(label = "Référence",search = true)
-    protected String reference ;    
+//    @Predicate(label = "Référence",search = true)
+//    protected String reference ;    
     
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "DOST_ID")
-    @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération",edittable = true)
-    protected List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
+//    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+//    @JoinColumn(name = "DOST_ID")
+//    @Predicate(label = "Ligne Doc",type = LigneDocumentStock.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "Détails opération",edittable = true)
+//    protected List<LigneDocumentStock> lignes = new ArrayList<LigneDocumentStock>();
     
-    @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")
-    protected String commentaire ;
+//    @Predicate(label = "Commentaire",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")
+//    protected String commentaire ;
     
     protected String state ="etabli";
 
@@ -75,9 +70,9 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
     public DocumentStock(String code, Date date, Emplacement depot, String reference, String commentaire) {
         this.code = code;
         this.date = date;
-        this.emplacement = depot;
-        this.reference = reference;
-        this.commentaire = commentaire;
+//        this.emplacement = depot;
+//        this.reference = reference;
+//        this.commentaire = commentaire;
     }
 
     /**
@@ -95,9 +90,9 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         super(id, designation, moduleName,0L);
         this.code = code;
         this.date = date;
-        this.emplacement = depot;
-        this.reference = reference;
-        this.commentaire = commentaire;
+//        this.emplacement = depot;
+//        this.reference = reference;
+//        this.commentaire = commentaire;
     }
     
     /**
@@ -108,11 +103,11 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         super(doc.id, doc.designation, doc.moduleName,doc.compareid);
         this.code = doc.code;
         this.date = doc.date;
-        if(doc.getEmplacement()!=null){
-            this.emplacement = new Emplacement(doc.emplacement);
-        }
-        this.reference = doc.reference;
-        this.commentaire = doc.commentaire;
+//        if(doc.getEmplacement()!=null){
+//            this.emplacement = new Emplacement(doc.emplacement);
+//        }
+//        this.reference = doc.reference;
+//        this.commentaire = doc.commentaire;
     }
 
     public DocumentStock() {
@@ -134,39 +129,39 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         this.date = date;
     }
 
-    public Emplacement getEmplacement() {
-        return emplacement;
-    }
-
-    public void setEmplacement(Emplacement emplacement) {
-        this.emplacement = emplacement;
-    }
-
-    
-    
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public List<LigneDocumentStock> getLignes() {
-        return lignes;
-    }
-
-    public void setLignes(List<LigneDocumentStock> lignes) {
-        this.lignes = lignes;
-    }
-
-    public String getCommentaire() {
-        return commentaire;
-    }
-
-    public void setCommentaire(String commentaire) {
-        this.commentaire = commentaire;
-    }
+//    public Emplacement getEmplacement() {
+//        return emplacement;
+//    }
+//
+//    public void setEmplacement(Emplacement emplacement) {
+//        this.emplacement = emplacement;
+//    }
+//
+//    
+//    
+//    public String getReference() {
+//        return reference;
+//    }
+//
+//    public void setReference(String reference) {
+//        this.reference = reference;
+//    }
+//
+//    public List<LigneDocumentStock> getLignes() {
+//        return lignes;
+//    }
+//
+//    public void setLignes(List<LigneDocumentStock> lignes) {
+//        this.lignes = lignes;
+//    }
+//
+//    public String getCommentaire() {
+//        return commentaire;
+//    }
+//
+//    public void setCommentaire(String commentaire) {
+//        this.commentaire = commentaire;
+//    }
 
     public String getState() {
         return state;
@@ -219,6 +214,13 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
     }
 
     @Override
+    public String getOwnermodule() {
+        return "teratechstock"; //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
+    @Override
     public String getListTitle() {
         return "Mouvements d'entrées"; //To change body of generated methods, choose Tools | Templates.
     }
@@ -235,11 +237,6 @@ public class DocumentStock extends BaseElement implements Serializable,Comparabl
         return code.compareTo(o.code);
     }
 
-    @Override
-    public String toString() {
-        return "DocumentStock{" +id+" ==== "+ "code=" + code + ", date=" + date + ", emplacement=" + emplacement + ", reference=" + reference + ", lignes=" + lignes + ", commentaire=" + commentaire + ", state=" + state + '}';
-    }
-    
-    
+     
     
 }

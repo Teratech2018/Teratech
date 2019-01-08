@@ -106,10 +106,14 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
    @Predicate(label = "Garantie(jour)",type = Short.class,group = true,groupName = "group2",groupLabel = "Complément")
    private Short garantie = 0;
    
-   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-   @JoinColumn(name = "LIEM_ID")
-   @Predicate(label = "LI",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage",edittable = true)
+   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "article")
+//   @Predicate(label = " ",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage",edittable = true)
    private List<LienEmplacement> stockages = new ArrayList<LienEmplacement>();
+   
+   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+   @JoinColumn(name = "ART_ID")
+   @Predicate(label = " ",type = Controle.class,target = "one-to-many",group = true,groupName = "group4",groupLabel = "Contrôle Qualité",edittable = true)
+   private List<Controle> controles = new ArrayList<Controle>();
     /**
      * 
      */
@@ -297,6 +301,14 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
 
     public void setStockages(List<LienEmplacement> stockages) {
         this.stockages = stockages;
+    }
+
+    public List<Controle> getControles() {
+        return controles;
+    }
+
+    public void setControles(List<Controle> controles) {
+        this.controles = controles;
     }
     
     

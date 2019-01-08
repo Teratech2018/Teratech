@@ -106,10 +106,18 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
    @Predicate(label = "Garantie(jour)",type = Short.class,group = true,groupName = "group2",groupLabel = "Complément")
    private Short garantie = 0;
    
+   private Double cmup = 0.0;
+   
+   
+//   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+//   @JoinColumn(name = "LIEM_ID")
+//   @Predicate(label = "",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage",edittable = true)
+//   private List<LienEmplacement> stockages = new ArrayList<LienEmplacement>();
+   
    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-   @JoinColumn(name = "LIEM_ID")
-   @Predicate(label = "",type = LienEmplacement.class,target = "one-to-many",group = true,groupName = "group3",groupLabel = "Stockage",edittable = true)
-   private List<LienEmplacement> stockages = new ArrayList<LienEmplacement>();
+   @JoinColumn(name = "ART_ID")
+   @Predicate(label = " ",type = Controle.class,target = "one-to-many",group = true,groupName = "group4",groupLabel = "Contrôle Qualité",edittable = true)
+   private List<Controle> controles = new ArrayList<Controle>();
     /**
      * 
      */
@@ -291,12 +299,30 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
         this.reference = reference;
     }
 
-    public List<LienEmplacement> getStockages() {
-        return stockages;
+    public Double getCmup() {
+        return cmup;
     }
 
-    public void setStockages(List<LienEmplacement> stockages) {
-        this.stockages = stockages;
+    public void setCmup(Double cmup) {
+        this.cmup = cmup;
+    }
+    
+    
+
+//    public List<LienEmplacement> getStockages() {
+//        return stockages;
+//    }
+//
+//    public void setStockages(List<LienEmplacement> stockages) {
+//        this.stockages = stockages;
+//    }
+
+    public List<Controle> getControles() {
+        return controles;
+    }
+
+    public void setControles(List<Controle> controles) {
+        this.controles = controles;
     }
     
     
@@ -392,6 +418,8 @@ public class Article extends BaseElement implements Serializable,Comparable<Arti
     public void setGarantie(Short garantie) {
         this.garantie = garantie;
     }
+    
+    
 
     @Override
     public int hashCode() {

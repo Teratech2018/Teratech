@@ -9,7 +9,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.stock.core.ifaces.operations.LotManagerRemote;
 import com.teratech.stock.jaxrs.ifaces.operations.LotRS;
-import com.teratech.stock.model.base.Article;
 import com.teratech.stock.model.operations.Lot;
 import java.util.ArrayList;
 import java.util.HashMap;

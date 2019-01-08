@@ -75,6 +75,11 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
     
     private String frozen = null;
     
+    private boolean askcomfirm = false ;
+    
+    private String label =null;
+    
+    private String roles[] = null;
     
     /**
      * 
@@ -131,6 +136,9 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.method = column.method;
         this.frozen = column.frozen;
         this.importfield = column.importfield;
+        this.askcomfirm = column.askcomfirm;
+        this.label = column.label;
+        this.roles = column.roles;
     }
 
     public short getSequence() {
@@ -373,6 +381,31 @@ public class MetaColumn implements Serializable,Comparable<MetaColumn>{
         this.frozen = frozen;
     }
 
+    public boolean isAskcomfirm() {
+        return askcomfirm;
+    }
+
+    public void setAskcomfirm(boolean askcomfirm) {
+        this.askcomfirm = askcomfirm;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String[] getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String[] roles) {
+        this.roles = roles;
+    }
+
+    
     
    
     @Override

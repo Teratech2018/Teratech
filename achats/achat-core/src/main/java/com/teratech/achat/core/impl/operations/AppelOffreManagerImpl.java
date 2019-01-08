@@ -73,9 +73,7 @@ public class AppelOffreManagerImpl
         for(LigneAppeloffre lign:data.getLignes()){
             result.getLignes().add(new LigneAppeloffre(lign));
         }
-        for(DemandePrix dp:data.getOffres()){
-            result.getOffres().add(new DemandePrix(dp));
-        }
+       
         return result;
     }
 
@@ -99,22 +97,22 @@ public class AppelOffreManagerImpl
     public AppelOffre selectionner(AppelOffre entity) {
         //To change body of generated methods, choose Tools | Templates.
         //Traitement des demandes de prix      
-            if(entity.getState().equalsIgnoreCase("confirme")){
-                if(entity.getTypeselection().equalsIgnoreCase("0")){
-                    DemandePrix dp = entity.getOffres().get(0);
-                    dp = dpdao.findByPrimaryKey("id", dp.getId());
-                    dp.setAppeloffre(entity);
-                    dpdao.update(dp.getId(), dp);
-            }else if(entity.getTypeselection().equalsIgnoreCase("1")){
-                for(DemandePrix dp:entity.getOffres()){
-                      dp = dpdao.findByPrimaryKey("id", dp.getId());
-                      dp.setAppeloffre(entity);
-                      dpdao.update(dp.getId(), dp);
-                }//end for(DemandePrix dp:entity.getOffres())
-            }//end if(entity.getTypeselection().equalsIgnoreCase("0"))
-            entity.setState("selection");
-            dao.update(entity.getId(), entity);
-        }
+//            if(entity.getState().equalsIgnoreCase("confirme")){
+//                if(entity.getTypeselection().equalsIgnoreCase("0")){
+//                    DemandePrix dp = entity.getOffres().get(0);
+//                    dp = dpdao.findByPrimaryKey("id", dp.getId());
+////                    dp.setAppeloffre(entity);
+//                    dpdao.update(dp.getId(), dp);
+//            }else if(entity.getTypeselection().equalsIgnoreCase("1")){
+//                for(DemandePrix dp:entity.getOffres()){
+//                      dp = dpdao.findByPrimaryKey("id", dp.getId());
+////                      dp.setAppeloffre(entity);
+//                      dpdao.update(dp.getId(), dp);
+//                }//end for(DemandePrix dp:entity.getOffres())
+//            }//end if(entity.getTypeselection().equalsIgnoreCase("0"))
+//            entity.setState("selection");
+//            dao.update(entity.getId(), entity);
+//        }
         return entity;
     }
 

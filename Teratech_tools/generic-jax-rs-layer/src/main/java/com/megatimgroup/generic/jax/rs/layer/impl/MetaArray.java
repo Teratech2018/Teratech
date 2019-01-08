@@ -75,6 +75,13 @@ public class MetaArray implements Serializable{
         this.target = target;
     }
 
+    public MetaArray(MetaArray entity) {
+        this.type = entity.type;
+        this.fieldName = entity.fieldName;
+        this.fieldLabel = entity.fieldLabel;
+        this.metaData = entity.metaData;
+        this.target = entity.target;
+    }
     public String getType() {
         return type;
     }

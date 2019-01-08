@@ -12,10 +12,14 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.operations.DemandePrixManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.operations.DemandePrixRS;
+import com.teratech.achat.model.base.Tier;
 import com.teratech.achat.model.operations.DemandePrix;
+import com.teratech.achat.model.operations.LigneDemandePrix;
 import com.teratech.achat.model.operations.LigneDocumentAchat;
+import com.teratech.achat.model.operations.ReponseFournisseur;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -45,6 +49,10 @@ public class DemandePrixRSImpl
     @Manager(application = "teratechachat", name = "DemandePrixManagerImpl", interf = DemandePrixManagerRemote.class)
     protected DemandePrixManagerRemote manager;
     
+    @Manager(application = "teratechachat", name = "DemandePrixManagerImpl", interf = DemandePrixManagerRemote.class)
+    protected DemandePrixManagerRemote dpmanager;
+    
+    
     @Resource(lookup = "java:/kerencore/coreConnectionFactory")
     ConnectionFactory connectionFactory;
     
@@ -73,29 +81,25 @@ public class DemandePrixRSImpl
         try {
             //To change body of generated methods, choose Tools | Templates.
             MetaData meta = MetaDataUtil.getMetaData(new DemandePrix(), new HashMap<String, MetaData>(), new ArrayList<String>());
-             MetaColumn workbtn = new MetaColumn("button", "work1", "Envoyé une demande par e-mail", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechachat','entity':'demandeprix','method':'envoyer'}");
-            workbtn.setStates(new String[]{"etabli"});
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Envoyé une demande par e-mail", false, "action", null);
+            workbtn.setValue("{'name':'teratech_achat_ope_2_1',template:{'demande':'object'}}");
+            workbtn.setStates(new String[]{"etabli","transmi"});
             meta.getHeader().add(workbtn);
-            workbtn = new MetaColumn("button", "work2", "Imprimer la demande", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechachat','entity':'demandeprix','method':'imprimer'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn = new MetaColumn("button", "work2", "Imprimer la demande", false, "report", null);
+            workbtn.setValue("{'name':'demandeprix_report01','model':'teratechachat','entity':'demandeprix','method':'imprime'}");
+            workbtn.setStates(new String[]{"etabli","transmi","cloture"});
 //            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);
-            workbtn = new MetaColumn("button", "work3", "Confirmer", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechachat','entity':'demandeprix','method':'confirme'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn = new MetaColumn("button", "work3", "Reponses fournisseurs", false, "link", null);
+            workbtn.setValue("{'name':'teratech_achat_ope_2_2',template:{'demande':'object','lignes':'object.articles'},'header':['demande']}");
+            workbtn.setStates(new String[]{"transmi","cloture"});
 //            workbtn.setPattern("btn btn-primary");
             meta.getHeader().add(workbtn);
-            workbtn = new MetaColumn("button", "work4", "Engagé la commande", false, "workflow", null);
+            workbtn = new MetaColumn("button", "work4", "Clôturer la demande", false, "workflow", null);
             workbtn.setValue("{'model':'teratechachat','entity':'demandeprix','method':'engage'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"transmi"});
 //            workbtn.setPattern("btn btn-primary");
-            meta.getHeader().add(workbtn);
-            workbtn = new MetaColumn("button", "work5", "Annuler", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechachat','entity':'demandeprix','method':'annule'}");
-            workbtn.setStates(new String[]{"etabli"});
-            meta.getHeader().add(workbtn);
+            meta.getHeader().add(workbtn);            
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
             return meta;
@@ -112,14 +116,12 @@ public class DemandePrixRSImpl
         try {
             if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
                 throw new KerenExecption("Veuillez saisir la reference");
-            }else if(entity.getDatecommande()==null){
+            }else if(entity.getDate()==null){
                 throw new KerenExecption("Veuillez saisir la date de la commande");
-            }else if(entity.getFornisseur()==null){
-                throw new KerenExecption("Veuillez saisir le fournisseur");
-            }else if(entity.getEmplacement()==null){
-                throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-            }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-                throw new KerenExecption("Veuillez saisir au moins un article");
+            }else if(entity.getFournisseurs()==null || entity.getFournisseurs().isEmpty()){
+                throw new KerenExecption("Veuillez saisir les fournisseurs");
+            }else if(entity.getArticles()==null || entity.getArticles().isEmpty()){
+                throw new KerenExecption("Veuillez saisir les Articles concernés");
             }
             KerenCoreMDBHelper.textMessageProducer("Hello I am the new MDB", connectionFactory, destination);
             super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
@@ -131,16 +133,14 @@ public class DemandePrixRSImpl
     @Override
     protected void processBeforeSave(DemandePrix entity) {
         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-            throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
-        }
+                throw new KerenExecption("Veuillez saisir la reference");
+            }else if(entity.getDate()==null){
+                throw new KerenExecption("Veuillez saisir la date de la commande");
+            }else if(entity.getFournisseurs()==null || entity.getFournisseurs().isEmpty()){
+                throw new KerenExecption("Veuillez saisir les fournisseurs");
+            }else if(entity.getArticles()==null || entity.getArticles().isEmpty()){
+                throw new KerenExecption("Veuillez saisir les Articles concernés");
+            }
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -148,16 +148,14 @@ public class DemandePrixRSImpl
     public DemandePrix confirmer(HttpHeaders headers, DemandePrix entity) {
         //To change body of generated methods, choose Tools | Templates.
         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-            throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
-        }
+                throw new KerenExecption("Veuillez saisir la reference");
+            }else if(entity.getDate()==null){
+                throw new KerenExecption("Veuillez saisir la date de la commande");
+            }else if(entity.getFournisseurs()==null || entity.getFournisseurs().isEmpty()){
+                throw new KerenExecption("Veuillez saisir les fournisseurs");
+            }else if(entity.getArticles()==null || entity.getArticles().isEmpty()){
+                throw new KerenExecption("Veuillez saisir les Articles concernés");
+            }
         return manager.confirmer(entity);
     }
 
@@ -165,14 +163,12 @@ public class DemandePrixRSImpl
     public DemandePrix envoyer(HttpHeaders headers, DemandePrix entity) {
         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
             throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
+        }else if(entity.getDate()==null){
+            throw new KerenExecption("Veuillez saisir la date de la commande");
+        }else if(entity.getFournisseurs()==null || entity.getFournisseurs().isEmpty()){
+            throw new KerenExecption("Veuillez saisir les fournisseurs");
+        }else if(entity.getArticles()==null || entity.getArticles().isEmpty()){
+            throw new KerenExecption("Veuillez saisir les Articles concernés");
         }
         return manager.envoyer(entity); //To change body of generated methods, choose Tools | Templates.
     }
@@ -181,20 +177,12 @@ public class DemandePrixRSImpl
     public DemandePrix engage(HttpHeaders headers, DemandePrix entity) {
         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
             throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
-        }else if(entity.getMethod()==null||entity.getMethod().trim().isEmpty()){
-            throw new KerenExecption("Veuillez renseigner la methode de facturation");
-        }else if(entity.getCondreglement()==null){
-            throw new KerenExecption("Veuillez renseigner la condition de règlement");
-        }else if(entity.getDateoffre()==null){
-            throw new KerenExecption("Veuillez renseigner la date de reception de l'offre");
+        }else if(entity.getDate()==null){
+            throw new KerenExecption("Veuillez saisir la date de la commande");
+        }else if(entity.getFournisseurs()==null || entity.getFournisseurs().isEmpty()){
+            throw new KerenExecption("Veuillez saisir les fournisseurs");
+        }else if(entity.getArticles()==null || entity.getArticles().isEmpty()){
+            throw new KerenExecption("Veuillez saisir les Articles concernés");
         }
         validateLigneDP(entity);
         //To change body of generated methods, choose Tools | Templates.
@@ -205,39 +193,36 @@ public class DemandePrixRSImpl
     public DemandePrix annule(HttpHeaders headers, DemandePrix entity) {
          if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
             throw new KerenExecption("Veuillez saisir la reference");
-        }else if(entity.getDatecommande()==null){   
-           throw new KerenExecption("Veuillez saisir la date de la commande");
-        }else if(entity.getFornisseur()==null){
-            throw new KerenExecption("Veuillez saisir le fournisseur");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement de livraison");
-        }else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir au moins un article");
-        }//To change body of generated methods, choose Tools | Templates.
+        }else if(entity.getDate()==null){
+            throw new KerenExecption("Veuillez saisir la date de la commande");
+        }else if(entity.getFournisseurs()==null || entity.getFournisseurs().isEmpty()){
+            throw new KerenExecption("Veuillez saisir les fournisseurs");
+        }else if(entity.getArticles()==null || entity.getArticles().isEmpty()){
+            throw new KerenExecption("Veuillez saisir les Articles concernés");
+        }
          return manager.annule(entity);
     }
 
-    @Override
-    public Response imprimer(HttpHeaders headers, DemandePrix dmde) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     /**
      * Valide les lignes de la demandes de prix
      * @param entity 
      */
     private void validateLigneDP(DemandePrix entity){
-        for(LigneDocumentAchat lign:entity.getLignes()){
-            if(lign.getArticle()==null){
-                throw new KerenExecption("Veuillez fournir l'article pour toute les lignes");
-            }else if(lign.getPuht()==null||lign.getPuht()==0){
-                throw new KerenExecption("Veuillez fournir le puht");
-            }else if(lign.getQuantite()==null||lign.getQuantite()==0){
-                throw new KerenExecption("Veuillez fournir la quantité voulue");
-            }else if(lign.getTaxes()==null&&lign.getTaxes().isEmpty()){
-                throw new KerenExecption("Veuillez saisir la taxe appliquée");
-            }
-        }//end for(LigneDocumentAchat lign:entity.getLignes())
+        
+    }
+
+    @Override
+    public List<ReponseFournisseur> imprimer(HttpHeaders headers, DemandePrix dmde) {
+         //To change body of generated methods, choose Tools | Templates.
+        List<ReponseFournisseur> datas = new ArrayList<ReponseFournisseur>();
+        for(Tier tier : dmde.getFournisseurs()){
+            datas.add(new ReponseFournisseur(dmde, tier));
+        }//end for(Tier tier : dmde.getFournisseurs()){
+        if(dmde.getState().equalsIgnoreCase("etabli")){
+            dmde.setState("transmi");
+        }//end if(dmde.getState().equalsIgnoreCase("etabli")){
+        dpmanager.update(dmde.getId(), dmde);
+        return datas;
     }
     
 

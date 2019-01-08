@@ -18,7 +18,7 @@ import com.teratech.achat.model.operations.BonCommande;
 import com.teratech.achat.model.operations.BonReception;
 import com.teratech.achat.model.operations.DocumentAchatState;
 import com.teratech.achat.model.operations.Facture;
-import com.teratech.achat.model.operations.LigneDocumentAchat;
+import com.teratech.achat.model.operations.LigneCommande;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class BonCommandeManagerImpl
     @Override
     public List<BonCommande> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties, int firstResult, int maxResult) {
          RestrictionsContainer container = RestrictionsContainer.newInstance();
-        container.addEq("typedocument", DocumentAchatState.BONCOMMANDE);
+//        container.addEq("typedocument", DocumentAchatState.BONCOMMANDE);
         predicats.addAll(container.getPredicats());
         List<BonCommande> datas = super.filter(predicats, orders, properties, firstResult, maxResult); //To change body of generated methods, choose Tools | Templates.
         List<BonCommande> result = new ArrayList<BonCommande>();
@@ -82,8 +82,8 @@ public class BonCommandeManagerImpl
     public BonCommande find(String propertyName, Long entityID) {
         BonCommande data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
         BonCommande result = new BonCommande(data);
-        for(LigneDocumentAchat lign:data.getLignes()){
-            result.getLignes().add(new LigneDocumentAchat(lign));
+        for(LigneCommande lign:data.getLignes()){
+            result.getLignes().add(new LigneCommande(lign));
         }
 //        for(Facture fac:data.getFactures()){
 //            result.getFactures().add(new Facture(fac));
@@ -121,11 +121,11 @@ public class BonCommandeManagerImpl
         data.setOrigine(entity.getCode());
         if(entity.getState().equalsIgnoreCase("confirme")){
             data.setState("etabli");
-            data.setTypedocument(DocumentAchatState.BONLIVRAISON);
+//            data.setTypedocument(DocumentAchatState.BONLIVRAISON);
         }
-        for(LigneDocumentAchat lign:entity.getLignes()){
-            data.getLignes().add(new LigneDocumentAchat(lign));
-        }//end for(LigneDocumentAchat lign:entity.getLignes())
+//        for(LigneDocumentAchat lign:entity.getLignes()){
+//            data.getLignes().add(new LigneDocumentAchat(lign));
+//        }//end for(LigneDocumentAchat lign:entity.getLignes())
         receptiondao.update(data.getId(), data);
         return data;
     }
@@ -144,12 +144,12 @@ public class BonCommandeManagerImpl
         //To change body of generated methods, choose Tools | Templates.
         Facture facture = new Facture(entity);
         facture.setId(-1);
-        for(LigneDocumentAchat lign:entity.getLignes()){
-            LigneDocumentAchat lignefacture = new LigneDocumentAchat(lign);
-            lignefacture.setId(-1);
-            lign.setQtefacturee(lign.getQuantite());
-            facture.getLignes().add(lignefacture);
-        }//end for(LigneDocumentAchat lign:entity.getLignes())
+//        for(LigneDocumentAchat lign:entity.getLignes()){
+//            LigneDocumentAchat lignefacture = new LigneDocumentAchat(lign);
+//            lignefacture.setId(-1);
+//            lign.setQtefacturee(lign.getQuantite());
+//            facture.getLignes().add(lignefacture);
+//        }//end for(LigneDocumentAchat lign:entity.getLignes())
         dao.update(entity.getId(), entity);
         //Sauvegarde de la facture
         facturedao.save(facture);

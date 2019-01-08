@@ -318,7 +318,7 @@ public class MetaDataUtil {
                             //exclures.add(keybuilder.toString());
                             //doulons = true;
                         }//end //end                         
-                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),new HashMap<String, MetaData>(),new ArrayList<String>()));
+                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,new HashMap<String, MetaData>(),new ArrayList<String>()));
                         column.setSequence(annot.sequence());column.setHidden(annot.hidden());
                         column.setColsequence(annot.colsequence()); column.setFrozen(annot.frozen());
                         if(annot3!=null){
@@ -361,7 +361,7 @@ public class MetaDataUtil {
                              //exclures.add(keybuilder.toString());
                             //doulons = true;
                         }//end //end                         
-                       column.setMetaData(getMetaDataInner(annot.type().newInstance(),new HashMap<String, MetaData>(),new ArrayList<String>()));
+                       column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,new HashMap<String, MetaData>(),new ArrayList<String>()));
                     }
                     }//end if(!shareCache.containsKey(annot.type().getClass().toString()))
                 }else{
@@ -379,7 +379,7 @@ public class MetaDataUtil {
                         if(KerenSession.containKey(annot.label())){
                             label = KerenSession.getEntry(label);
                         }//end if(KerenSession.containKey(annot.label())){
-                        MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(), "many-to-one", meta);
+                        MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(),annot.target(), meta);
                         column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                         column.setImportfield(annot.importfield());                        
@@ -403,7 +403,7 @@ public class MetaDataUtil {
                                  //exclures.add(keybuilder.toString());
                                 //doulons = true;
                             }//end //end                       
-                            column.setMetaData(getMetaDataInner(annot.type().newInstance(),new HashMap<String, MetaData>(),new ArrayList<String>()));
+                            column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,new HashMap<String, MetaData>(),new ArrayList<String>()));
                         }//end if(!exclures.contains(keybuilder.toString()))                      
                      }//end if(!shareCache.containsKey(annot.type().getClass().toString())){ 
                   }
@@ -535,7 +535,7 @@ public class MetaDataUtil {
                                                 //doulons = true;
                                             }//end //end                                         
 //                                            metaArray.setMetaData(getMetaData(annot.type().newInstance(),shareCache,exclures));
-                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),new HashMap<String, MetaData>(),new ArrayList<String>()));
+                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),field,new HashMap<String, MetaData>(),new ArrayList<String>()));
                                         }//end if(!exclures.contains(annot.type().toString())){ 
                                         if(field.isAnnotationPresent(Filter.class)){
                                             Filter filter = field.getAnnotation(Filter.class);
@@ -567,7 +567,7 @@ public class MetaDataUtil {
                                                  //exclures.add(keybuilder.toString());
                                                //doulons = true;
                                              }//end //end                       
-                                             column.setMetaData(getMetaDataInner(annot.type().newInstance(),new HashMap<String, MetaData>(),new ArrayList<String>()));
+                                             column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,new HashMap<String, MetaData>(),new ArrayList<String>()));
                                           }//end if(!exclures.contains(annot.type().toString())){         
                                          if(field.isAnnotationPresent(Filter.class)){
                                                 Filter filter = field.getAnnotation(Filter.class);
@@ -605,7 +605,7 @@ public class MetaDataUtil {
                                             }//end //end 
 //                                            System.out.println(MetaDataUtil.class.toString()+" ==== "+annot.type().toString()+" ==== "+field.getName());
 //                                            metaArray.setMetaData(getMetaData(annot.type().newInstance(),shareCache,exclures));
-                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),new HashMap<String, MetaData>(),new ArrayList<String>()));
+                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),field,new HashMap<String, MetaData>(),new ArrayList<String>()));
                                     }//end if(!exclures.contains(annot.type().toString())){
                                     //metaGroup.setMetaArray(metaArray); 
                                 }//end if(!shareCache.containsKey(annot.type().getClass().toString()))
@@ -619,7 +619,7 @@ public class MetaDataUtil {
                                     if(KerenSession.containKey(annot.label())){
                                         label = KerenSession.getEntry(label);
                                     }//end if(KerenSession.containKey(annot.label())){
-                                    MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(), "many-to-one", meta);
+                                    MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(),annot.target(), meta);
                                     column.setEditable(annot.editable());column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                     column.setCustomfooter(annot.customfooter());column.setFrozen(annot.frozen());
@@ -641,7 +641,7 @@ public class MetaDataUtil {
                                              //exclures.add(keybuilder.toString());
                                            //doulons = true;
                                         }//end //end                       
-                                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),new HashMap<String, MetaData>(),new ArrayList<String>()));
+                                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,new HashMap<String, MetaData>(),new ArrayList<String>()));
                                     /*}else{
                                     }//end if(shareCache.containsKey(annot.type().toString())){*/
                                 }//end if(!shareCache.containsKey(annot.type().getClass().toString()))
@@ -656,7 +656,7 @@ public class MetaDataUtil {
     }
     
     
-   private  static MetaData getMetaDataInner(Object obj,Map<String , MetaData> shareCache,List<String> exclures) throws InstantiationException, IllegalAccessException{
+   private  static MetaData getMetaDataInner(Object obj,Field source,Map<String , MetaData> shareCache,List<String> exclures) throws InstantiationException, IllegalAccessException{
         List metaDoublons = new ArrayList();
         //Si on a deja traite cete entite
 //        if(shareCache.containsKey(obj.getClass().toString())){
@@ -836,6 +836,7 @@ public class MetaDataUtil {
                             column.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                         }//end if(annot3!=null)
                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
+                        keybuilder.append(source.getName());
                         keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                      
                         if(!exclures.contains(keybuilder.toString())){                           
                             metaData.getColumns().add(column);
@@ -850,7 +851,7 @@ public class MetaDataUtil {
                             Filter filter = field.getAnnotation(Filter.class);
                             column.setFilter(filter.value());
                         }//end if(field.isAnnotationPresent(Filter.class)){
-                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),shareCache,exclures));
+                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,shareCache,exclures));
                         column.setSequence(annot.sequence());
                         column.setColsequence(annot.colsequence()); column.setHidden(annot.hidden());
                     }else if(field.isAnnotationPresent(OneToMany.class)){
@@ -877,7 +878,7 @@ public class MetaDataUtil {
                             column.setFilter(filter.value());
                         }//end if(field.isAnnotationPresent(Filter.class)){
                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
-                        keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                            
+                        keybuilder.append(source.getName()).append(annot.type().toString());keybuilder.append(field.getName());                            
                         if(!exclures.contains(keybuilder.toString())){                           
                             metaData.getColumns().add(column);
                         }else{
@@ -887,7 +888,7 @@ public class MetaDataUtil {
                              exclures.add(keybuilder.toString());
                             //doulons = true;
                         }//end //end                         
-                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),shareCache,exclures));
+                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,shareCache,exclures));
                     }
                     }//end if(!shareCache.containsKey(annot.type().getClass().toString()))
                 }else{
@@ -905,7 +906,7 @@ public class MetaDataUtil {
                         if(KerenSession.containKey(annot.label())){
                              label = KerenSession.getEntry(label);
                         }//end if(KerenSession.containKey(annot.label())){
-                        MetaColumn column = new MetaColumn("object", field.getName(), label,annot.search(), "many-to-one", meta);
+                        MetaColumn column = new MetaColumn("object", field.getName(), label,annot.search(),annot.target(), meta);
                         column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                         column.setHide(annot.hide());column.setEditable(annot.editable());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                         column.setFrozen(annot.frozen());column.setImportfield(annot.importfield());
@@ -914,7 +915,7 @@ public class MetaDataUtil {
                         column.setHidden(annot.hidden());column.setObservable(annot.observable());
 //                        System.out.println(MetaDataUtil.class.toString()+" ==== "+annot.type().toString()+" ==== "+field.getName());
                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
-                        keybuilder.append(annot.type().toString());keybuilder.append(field.getName());
+                        keybuilder.append(source.getName()).append(annot.type().toString());keybuilder.append(field.getName());
                         if(field.isAnnotationPresent(Filter.class)){
                             Filter filter = field.getAnnotation(Filter.class);
                             column.setFilter(filter.value());
@@ -928,7 +929,7 @@ public class MetaDataUtil {
                                  exclures.add(keybuilder.toString());
                                 //doulons = true;
                             }//end //end                       
-                            column.setMetaData(getMetaDataInner(annot.type().newInstance(),shareCache,exclures));
+                            column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,shareCache,exclures));
                         }//end if(!exclures.contains(keybuilder.toString()))                      
                      }//end if(!shareCache.containsKey(annot.type().getClass().toString())){ 
                   }
@@ -1053,14 +1054,14 @@ public class MetaDataUtil {
                                             metaArray.setObserver(new com.megatimgroup.generic.jax.rs.layer.impl.Observer(annot3.observable(), annot3.source(),annot3.parameters()));
                                         }//end if(annot3!=null)
                                         StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
-                                        keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                            
+                                        keybuilder.append(source.getName()).append(annot.type().toString());keybuilder.append(field.getName());                            
                                         if(!exclures.contains(keybuilder.toString())){                           
                                             metaGroup.getMetaArray().add(metaArray);
                                             /*if(shareCache.containsKey(annot.type().toString()))*/{
                                                  exclures.add(keybuilder.toString());
                                                 //doulons = true;
                                             }//end //end                                         
-                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),shareCache,exclures));
+                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),field,shareCache,exclures));
                                         }//end if(!exclures.contains(annot.type().toString())){ 
                                         if(field.isAnnotationPresent(Filter.class)){
                                             Filter filter = field.getAnnotation(Filter.class);
@@ -1082,14 +1083,14 @@ public class MetaDataUtil {
                                             column.setFooterScript(annot2.value());
                                          }//end if(column.isCustomfooter()&&annot2!=null)
                                          StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
-                                         keybuilder.append(annot.type().toString());keybuilder.append(field.getName());   
+                                         keybuilder.append(source.getName()).append(annot.type().toString());keybuilder.append(field.getName());   
                                          if(!exclures.contains(keybuilder.toString())){                           
                                             metaGroup.getColumns().add(column); 
                                             /*if(shareCache.containsKey(annot.type().toString()))*/{                                                                          
                                                  exclures.add(keybuilder.toString());
                                                //doulons = true;
                                              }//end //end                       
-                                             column.setMetaData(getMetaDataInner(annot.type().newInstance(),shareCache,exclures));
+                                             column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,shareCache,exclures));
                                           }//end if(!exclures.contains(annot.type().toString())){ 
                                          if(field.isAnnotationPresent(Filter.class)){
                                             Filter filter = field.getAnnotation(Filter.class);
@@ -1120,7 +1121,7 @@ public class MetaDataUtil {
                                         metaArray.setFilter(filter.value());
                                     }//end if(field.isAnnotationPresent(Filter.class)){
                                     StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());
-                                    keybuilder.append(annot.type().toString());keybuilder.append(field.getName());  
+                                    keybuilder.append(source.getName()).append(annot.type().toString());keybuilder.append(field.getName());  
                                     if(!exclures.contains(keybuilder.toString())){                           
                                             metaGroup.getMetaArray().add(metaArray);
                                             /*if(shareCache.containsKey(annot.type().toString()))*/{                                                                           
@@ -1128,7 +1129,7 @@ public class MetaDataUtil {
                                                 //doulons = true;
                                             }//end //end 
 //                                            System.out.println(MetaDataUtil.class.toString()+" ==== "+annot.type().toString()+" ==== "+field.getName());
-                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),shareCache,exclures));
+                                            metaArray.setMetaData(getMetaDataInner(annot.type().newInstance(),field,shareCache,exclures));
                                     }//end if(!exclures.contains(annot.type().toString())){
                                     //metaGroup.setMetaArray(metaArray); 
                                 }//end if(!shareCache.containsKey(annot.type().getClass().toString()))
@@ -1142,21 +1143,21 @@ public class MetaDataUtil {
                                     if(KerenSession.containKey(annot.label())){
                                          label = KerenSession.getEntry(label);
                                     }//end if(KerenSession.containKey(annot.label())){
-                                    MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(), "many-to-one", meta);
+                                    MetaColumn column = new MetaColumn("object", field.getName(), label ,annot.search(),annot.target(), meta);
                                     column.setEditable(annot.editable());column.setOptional(annot.optional());column.setUpdatable(annot.updatable());//column.setMin(annot.min());column.setMax(annot.max());column.setPattern(annot.pattern());
                                     column.setHide(annot.hide());column.setSequence(annot.sequence());column.setColsequence(annot.colsequence());
                                     column.setCustomfooter(annot.customfooter());column.setFrozen(annot.frozen());column.setImportfield(annot.importfield());
                                     String[] searchfields = annot.searchfields().split(",");
                                     column.setSearchfields(searchfields);column.setHidden(annot.hidden());
                                     StringBuilder keybuilder = new StringBuilder(obj.getClass().toString());    
-                                    keybuilder.append(annot.type().toString());keybuilder.append(field.getName());                                    
+                                    keybuilder.append(source.getName()).append(annot.type().toString());keybuilder.append(field.getName());                                    
                                     if(!exclures.contains(keybuilder.toString())){                           
                                         metaGroup.getColumns().add(column); 
                                         /*if(shareCache.containsKey(annot.type().toString()))*/{
                                              exclures.add(keybuilder.toString());
                                            //doulons = true;
                                         }//end //end                       
-                                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),shareCache,exclures));
+                                        column.setMetaData(getMetaDataInner(annot.type().newInstance(),field,shareCache,exclures));
                                     }else{
                                     }//end if(shareCache.containsKey(annot.type().toString())){
                                     if(field.isAnnotationPresent(Filter.class)){

@@ -87,6 +87,23 @@ public class RegulInventaire extends BaseInventaire implements Serializable{
     public boolean isCreateonfield() {
         return false; //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public boolean isDesableupdate() {
+        return this.state.equalsIgnoreCase("termine"); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesabledelete() {
+        return this.state.equalsIgnoreCase("termine");  //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isDesablecreate() {
+        return true; //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
     @Override
     public List<State> getStates() {

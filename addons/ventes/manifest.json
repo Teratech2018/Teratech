@@ -1,0 +1,20 @@
+{
+	'name':'Ventes',
+	'version':'1.0',
+	'author' : 'BKD',
+	'summary':'Application des Gestion des Ventes(Devis ,Commande ,Suivie des livraison,Facturation)',
+	'sequence':10,
+	'description':'',
+	'category':'Accounting',
+	'website':'http://www.keren.com',
+	'icon':'static\\purchase.png',
+	'images': ['static\\purchase.png'],
+	'depends' : [],
+	'views' : ['views\\ventes_menus.xml'],
+	'cores' : [],
+	'templates':[],
+	'reports':[],
+	'installable':True,
+	'application':True,
+	'auto_install' : True
+}

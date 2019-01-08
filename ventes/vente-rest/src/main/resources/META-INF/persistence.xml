@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="teratechvente" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/teratechvente</jta-data-source>
+    <class>com.teratech.vente.model.banques.Banque</class>
+    <class>com.teratech.vente.model.banques.CompteBancaire</class>
+    <class>com.teratech.vente.model.base.Article</class>
+    <class>com.teratech.vente.model.base.CategorieProduit</class>
+    <class>com.teratech.vente.model.base.Civilite</class>
+    <class>com.teratech.vente.model.base.ConditionPaiement</class>
+    <class>com.teratech.vente.model.base.Contact</class>
+    <class>com.teratech.vente.model.base.Controle</class>
+    <class>com.teratech.vente.model.base.Devise</class>
+    <class>com.teratech.vente.model.base.Emplacement</class>
+    <class>com.teratech.vente.model.base.Entrepot</class>
+    <class>com.teratech.vente.model.base.FamilleArticle</class>
+    <class>com.teratech.vente.model.base.LienEmplacement</class>
+    <class>com.teratech.vente.model.base.Pays</class>
+    <class>com.teratech.vente.model.base.Region</class>
+    <class>com.teratech.vente.model.base.Societe</class>
+    <class>com.teratech.vente.model.base.Tier</class>
+    <class>com.teratech.vente.model.base.UniteAchat</class>
+    <class>com.teratech.vente.model.base.UniteGestion</class>
+    <class>com.teratech.vente.model.base.Utilisateur</class>
+    <class>com.teratech.vente.model.comptabilite.Acompte</class>
+    <class>com.teratech.vente.model.comptabilite.Compte</class>
+    <class>com.teratech.vente.model.comptabilite.CompteAnalytique</class>
+    <class>com.teratech.vente.model.comptabilite.EcheanceReglement</class>
+    <class>com.teratech.vente.model.comptabilite.ExerciceComptable</class>
+    <class>com.teratech.vente.model.comptabilite.JournalComptable</class>
+    <class>com.teratech.vente.model.comptabilite.ModeReglement</class>
+    <class>com.teratech.vente.model.comptabilite.NiveauAnalyse</class>
+    <class>com.teratech.vente.model.comptabilite.SectionAnalytique</class>
+    <class>com.teratech.vente.model.comptabilite.Taxe</class>
+    <class>com.teratech.vente.model.operations.Lot</class>
+    <class>com.teratech.vente.model.operations.Devis</class>
+    <class>com.teratech.vente.model.operations.DocumentVente</class>
+    <class>com.teratech.vente.model.operations.LigneDevis</class>
+    <class>com.teratech.vente.model.operations.LigneDocumentVente</class>
+    <class>com.teratech.vente.model.operations.Commande</class>
+    <class>com.teratech.vente.model.operations.LigneCommande</class>
+    <class>com.teratech.vente.model.operations.BonLivraison</class>
+    <class>com.teratech.vente.model.operations.DocumentStock</class>
+    <class>com.teratech.vente.model.operations.LIgneBonLivraison</class>
+    <class>com.teratech.vente.model.operations.LigneDocumentStock</class>
+    <class>com.teratech.vente.model.operations.LIgneRetourClient</class>
+    <class>com.teratech.vente.model.operations.RetourClient</class>
+    <class>com.teratech.vente.model.operations.Facture</class>
+    <class>com.teratech.vente.model.operations.LigneFacture</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>

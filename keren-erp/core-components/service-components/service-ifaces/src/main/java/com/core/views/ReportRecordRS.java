@@ -25,4 +25,15 @@ public interface ReportRecordRS
      @Produces({MediaType.APPLICATION_JSON})
      @Path("meta/{id}")
      public MetaData getSearchMetaData(@Context HttpHeaders headers ,@PathParam("id") long id);
+     
+     /**
+      * 
+      * @param headers
+     * @param name
+      * @return 
+      */
+     @GET
+     @Produces({MediaType.APPLICATION_JSON})
+     @Path("byname/{name}")
+     public ReportRecord getRecordbyName(@Context HttpHeaders headers ,@PathParam("name") String name);
 }

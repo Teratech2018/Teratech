@@ -13,16 +13,11 @@ import com.teratech.stock.core.ifaces.base.ArticleManagerRemote;
 import com.teratech.stock.core.ifaces.operations.LotManagerRemote;
 import com.teratech.stock.core.ifaces.operations.TransfertManagerRemote;
 import com.teratech.stock.jaxrs.ifaces.operations.TransfertRS;
-import com.teratech.stock.model.base.Article;
-import com.teratech.stock.model.base.Emplacement;
-import com.teratech.stock.model.base.LienEmplacement;
-import com.teratech.stock.model.operations.LigneDocumentStock;
-import com.teratech.stock.model.operations.Lot;
+import com.teratech.stock.model.operations.LigneTransfert;
 import com.teratech.stock.model.operations.Transfert;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -76,12 +71,12 @@ public class TransfertRSImpl
         try {
             //To change body of generated methods, choose Tools | Templates.
             MetaData meta= MetaDataUtil.getMetaData(new Transfert(), new HashMap<String, MetaData>(), new ArrayList<String>());
-            MetaColumn workbtn = new MetaColumn("button", "work1", "Valider", false, "workflow", null);
-            workbtn.setValue("{'model':'teratechstock','entity':'transfert','method':'valider'}");
+            MetaColumn workbtn = new MetaColumn("button", "work1", "Imprimer la fiche de stock", false, "report", null);
+            workbtn.setValue("{'name':'transfert_report01','model':'teratechstock','entity':'transfert','method':'imprime'}");
             workbtn.setStates(new String[]{"etabli"});
             meta.getHeader().add(workbtn);
-            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-            meta.getHeader().add(stautsbar);
+//            MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+//            meta.getHeader().add(stautsbar);
             return meta;
         } catch (Exception ex) {
             throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
@@ -98,34 +93,29 @@ public class TransfertRSImpl
             throw new KerenExecption("Veuillez saisir le n° de pièce");
         }else if(entity.getDate()==null){
             throw new KerenExecption("Veuillez saisir la date ");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement source"); 
-        }else if(entity.getEmplcible()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement cible"); 
+        }else if(entity.getSource()==null){
+            throw new KerenExecption("Veuillez saisir l'entrepôt source"); 
+        }else if(entity.getCible()==null){
+            throw new KerenExecption("Veuillez saisir l'entrepôt cible"); 
         } else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir la ligne du document"); 
-        }else if(entity.getEmplacement().compareTo(entity.getEmplcible())==0){
-            throw new KerenExecption("L'emplacement source et cible doivent être different"); 
         }
         canSatisfied(entity);
         //Traitement des ligne
-        for(LigneDocumentStock ligne : entity.getLignes()){
+        for(LigneTransfert ligne : entity.getLignes()){
             if(ligne.getId()<0){
                ligne.setId(-1);
             }//end if(ligne.getId()<0){
-            lignecompute(ligne,entity.getEmplacement());
-            ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
+//            lignecompute(ligne,entity.getEmplacement());
+//            ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
         super.processBeforeUpdate(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    protected void processBeforeDelete(Object entity) {
-        Long id = (Long) entity;
-        Transfert trans = manager.find("id", id);
-        if(trans.getState().equalsIgnoreCase("valider")){
-            throw new KerenExecption("Impossible de supprimer une pièce validée");
-        }
+    protected void processBeforeDelete(Object id) {
+        Transfert entity = manager.find("id", (Long)id);
+        canDelete(entity);
         super.processBeforeDelete(entity); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -136,134 +126,76 @@ public class TransfertRSImpl
             throw new KerenExecption("Veuillez saisir le n° de pièce");
         }else if(entity.getDate()==null){
             throw new KerenExecption("Veuillez saisir la date ");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement source"); 
-        }else if(entity.getEmplcible()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement cible"); 
+        }else if(entity.getSource()==null){
+            throw new KerenExecption("Veuillez saisir l'entrepôt source"); 
+        }else if(entity.getCible()==null){
+            throw new KerenExecption("Veuillez saisir l'entrepôt cible"); 
         } else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
             throw new KerenExecption("Veuillez saisir la ligne du document"); 
-        }else if(entity.getEmplacement().compareTo(entity.getEmplcible())==0){
-            throw new KerenExecption("L'emplacement source et cible doivent être different"); 
         }
         //Verifier la faisabilit"
         canSatisfied(entity);
         //Traitement des ligne
-        for(LigneDocumentStock ligne : entity.getLignes()){
+        for(LigneTransfert ligne : entity.getLignes()){
             ligne.setId(-1);
-            lignecompute(ligne,entity.getEmplacement());
-            ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
+//            lignecompute(ligne,entity.getEmplacement());
+//            ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
         }//end for(LigneDocumentStock ligne : entity.getLignes()){
         super.processBeforeSave(entity); //To change body of generated methods, choose Tools | Templates.
     }
     
     /**
      * 
-     * @param article
-     * @param empl
-     * @param quantite
-     * @return 
+     * @param entity 
      */
-    private Boolean stocker(Article article ,Emplacement empl,Double quantite){
-        Article art = articlemanager.find("id", article.getId());
-        for(LienEmplacement lien:art.getStockages()){
-            if(lien.getEmplacement().compareTo(empl)==0){
-                if(lien.getStock().compareTo(quantite)<0){
-                    throw new KerenExecption("Stock  de l'"+article.getCode()+" est insuffisant pour satisfaire la demande");
-                }//end if(lien.getStock().compareTo(quantite)<0){
-                return true;
-            }
-        }//end for(LienEmplacement lien:art.getStockages()){
-        return false;
+    private void canDelete(Transfert entity){
+        for(LigneTransfert ligne:entity.getLignes()){
+            if(ligne.getArticle().getPolitiquestock()==null||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("3")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("0")||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("4")){
+                if(ligne.getEmpsource().getStock()==null
+                        || ligne.getEmpcible().getStock().compareTo(ligne.getQuantite())<0){
+                    throw new KerenExecption("Le stock est insuffisant pour satisfaire votre requête\nVous ne disposez que de "+ligne.getEmpcible().getStock()+" pour l'article "+ligne.getArticle().getDesignation());
+                }//end  if(ligne.getEmplacement().getStock()==null
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("1")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("5")){
+                   if(ligne.getLotcible().disponible().compareTo(ligne.getQuantite())<0){
+                       throw new KerenExecption("Le stock est insuffisant pour satisfaire votre requête\nVous ne disposez que de "+ligne.getLotcible().getQuantite()+" pour l'article "+ligne.getArticle().getDesignation());
+                   }//end if(ligne.getLot()==null){
+            }//end if(ligne.getArticle().getPolitiquestock()==null||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("3")
+        }//end  for(LigneSortie ligne:obj.getLignes()){
     }
+    
     /**
      * 
      * @param obj 
      */
-     private void canSatisfied(Transfert obj){
-        Map<Article , Double> map = new HashMap<Article, Double>();
-        for(LigneDocumentStock lign:obj.getLignes()){
-            if(!map.containsKey(lign.getArticle())){
-                map.put(lign.getArticle(), 0.0);
-            }//end if(!map.containsKey(lign.getArticle()))
-            Double value = map.get(lign.getArticle())+lign.getQuantite();
-            map.put(lign.getArticle(), value);
-        }//end for(LigneDocumentStock lign:obj.getLignes()){
-        //Traitement des articles
-        for(Article key:map.keySet()){
-            if(!stocker(key, obj.getEmplacement(), map.get(key))){
-                throw new KerenExecption("L'emplacement "+obj.getEmplacement().getCode()+" ne contient pas l'article "+key.getCode()); 
-            }
-            if(!stocker(key, obj.getEmplcible())){
-                throw new KerenExecption("L'emplacement "+obj.getEmplcible().getCode()+" ne contient pas l'article "+key.getCode()); 
-            }//end if(!stocker(key, obj.getEmplcible()))
-        }
+   private void canSatisfied(Transfert obj){
+        for(LigneTransfert ligne:obj.getLignes()){
+            if(ligne.getArticle().getPolitiquestock()==null||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("3")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("0")||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("4")){
+                if(ligne.getEmpsource().getStock()==null
+                        || ligne.getEmpsource().getStock().compareTo(ligne.getQuantite())<0){
+                    throw new KerenExecption("Le stock est insuffisant pour satisfaire votre requête\nVous ne disposez que de "+ligne.getEmpsource().getStock()+" pour l'article "+ligne.getArticle().getDesignation());
+                }//end  if(ligne.getEmplacement().getStock()==null
+            }else if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("1")
+                    ||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("5")){
+                   if(ligne.getLot()==null){
+                       throw new KerenExecption("Veuillez saisir le lot/Serie concerné");
+                   }else if(ligne.getLot().disponible().compareTo(ligne.getQuantite())<0){
+                       throw new KerenExecption("Le lot sélectionné ne contient que "+ligne.getLot().disponible()+" articles "+ligne.getArticle().getDesignation()+"\nVous pouvez selectionner plusieurs lots pour couvrire la quantité souhaitée");
+                   }//end if(ligne.getLot()==null){
+            }//end if(ligne.getArticle().getPolitiquestock()==null||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("3")
+        }//end  for(LigneSortie ligne:obj.getLignes()){
     }//end private Boolean canSatisfied(Sortie obj)
 
-     /**
-      * 
-      * @param article
-      * @param empl
-      * @return 
-      */
-     private Boolean stocker(Article article ,Emplacement empl){
-        Article art = articlemanager.find("id", article.getId());
-        for(LienEmplacement lien:art.getStockages()){
-            if(lien.getEmplacement().compareTo(empl)==0){
-                return true;
-            }
-        }//end for(LienEmplacement lien:art.getStockages()){
-        return false;
-    }
-     
-     private void lignecompute(LigneDocumentStock ligne ,Emplacement source){
-//        throw new KerenExecption("Le N° de lot/série "+ligne.getCode()+" n'existe pas ;;; "+ligne.getCode()+" === "+ligne.getArticle().getPolitiquestock()); 
-        if(ligne.getArticle().getPolitiquestock()!=null&&!ligne.getArticle().getPolitiquestock().trim().equalsIgnoreCase("0")){
-            if(ligne.getArticle().getPolitiquestock().equalsIgnoreCase("1")||ligne.getArticle().getPolitiquestock().equalsIgnoreCase("5")){
-                if(ligne.getCode()==null||ligne.getCode().trim().isEmpty()){
-                    throw new KerenExecption("L'article "+ligne.getArticle().getCode()+" est géré par série ou par lot"); 
-                }else{
-                    StringBuilder builder = new StringBuilder(ligne.getCode());
-                    builder.append(source.getCode());
-                    List<Lot> lots = lotmanager.findByUniqueProperty("code", ligne.getCode(), null);
-//                    throw new KerenExecption("Le N° de lot/série "+ligne.getCode()+" n'existe pas :::: "+lots+" === "+lots.size()); 
-                    if(lots==null||lots.isEmpty()){
-                        throw new KerenExecption("Le N° de lot/série "+ligne.getCode()+" n'existe pas"); 
-                    }//end if(lots.isEmpty())
-                    if(lots.get(0).disponible().compareTo(ligne.getQuantite())<0){
-                        throw new KerenExecption("Le N° de lot/série "+ligne.getCode()+" dispose seulement de "+lots.get(0).disponible()+" articles <br/> et ne peut par conséquent pas satisfaire votre requête"); 
-                    }//end if(lots.get(0).getQuantite().compareTo(ligne.getQuantite())<0)
-                }//end  if(ligne.getCode()==null||ligne.getCode().trim().isEmpty())
-            }//end if(ligne.getArticle().getPolitiquestock()=="1"||ligne.getArticle().getPolitiquestock()=="5")
-        }//end if(ligne.getArticle().getPolitiquestock()!=null&&!ligne.getArticle().getPolitiquestock().trim().equalsIgnoreCase("0"))
-    }
+    
+    
 
     @Override
-    public Transfert confirmer(HttpHeaders headers, Transfert entity) {
+    public List<Transfert> imprime(HttpHeaders headers, Transfert object) {
         //To change body of generated methods, choose Tools | Templates.
-        if(entity.getState().equalsIgnoreCase("valider")){
-            throw new KerenExecption("Impossible de modifier une piece validée");
-        }
-         if(entity.getCode()==null||entity.getCode().trim().isEmpty()){
-            throw new KerenExecption("Veuillez saisir le n° de pièce");
-        }else if(entity.getDate()==null){
-            throw new KerenExecption("Veuillez saisir la date ");
-        }else if(entity.getEmplacement()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement source"); 
-        }else if(entity.getEmplcible()==null){
-            throw new KerenExecption("Veuillez saisir l'emplacement cible"); 
-        } else if(entity.getLignes()==null||entity.getLignes().isEmpty()){
-            throw new KerenExecption("Veuillez saisir la ligne du document"); 
-        }else if(entity.getEmplacement().compareTo(entity.getEmplcible())==0){
-            throw new KerenExecption("L'emplacement source et cible doivent être different"); 
-        }
-        //Verifier la faisabilit"
-        canSatisfied(entity);
-        //Traitement des ligne
-        for(LigneDocumentStock ligne : entity.getLignes()){
-            lignecompute(ligne,entity.getEmplacement());
-            ligne.setTotalht(ligne.getPuht()*ligne.getQuantite());
-        }//end for(LigneDocumentStock ligne : entity.getLignes()){
-        //Confirmation de la transaction
-        return manager.confirmer(entity);
+        List<Transfert> datas = new ArrayList<Transfert>();
+        datas.add(object);
+        return datas;
     }
 }

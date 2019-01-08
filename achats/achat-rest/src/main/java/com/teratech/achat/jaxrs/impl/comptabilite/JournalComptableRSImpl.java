@@ -10,7 +10,6 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 import com.teratech.achat.core.ifaces.comptabilite.JournalComptableManagerRemote;
 import com.teratech.achat.jaxrs.ifaces.comptabilite.JournalComptableRS;
 import com.teratech.achat.jaxrs.impl.base.CiviliteRSImpl;
-import com.teratech.achat.model.base.Civilite;
 import com.teratech.achat.model.comptabilite.JournalComptable;
 import java.util.ArrayList;
 import java.util.HashMap;

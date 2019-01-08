@@ -42,6 +42,12 @@
     <class>com.teratech.stock.model.operations.SortieV</class>
     <class>com.teratech.stock.model.operations.TransfertV</class>
     <class>com.teratech.stock.model.invetaire.LArticleEmplacementLot</class>
+    <class>com.teratech.stock.model.operations.LigneEntree</class>
+    <class>com.teratech.stock.model.operations.LigneSortie</class>
+    <class>com.teratech.stock.model.operations.LigneTransfert</class>
+    <class>com.teratech.stock.model.base.Controle</class>
+    <class>com.teratech.stock.model.operations.ControleQualite</class>
+    <class>com.teratech.stock.model.operations.LigneControleQualite</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

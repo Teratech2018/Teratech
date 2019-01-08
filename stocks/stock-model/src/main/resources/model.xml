@@ -199,5 +199,15 @@ and open the template in the editor.
                 <role>ADMIN</role>
             </roles>           
         </element>
+         <element type="com.teratech.stock.model.operations.ControleQualite"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
+        <element type="com.teratech.stock.model.base.LienEmplacement"  idclass="Long"  idname="id"   deseable="true">
+            <roles>
+                <role>ADMIN</role>
+            </roles>           
+        </element>
    </elements>    
 </model-config>

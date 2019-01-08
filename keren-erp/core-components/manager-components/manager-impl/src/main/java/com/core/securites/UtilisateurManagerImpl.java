@@ -125,9 +125,9 @@ public class UtilisateurManagerImpl
         result.setSocieteAutorisees(user.getSocieteAutorisees());
 //        result.setPassword(DESEncrypter.getInstance().decryptText(user.getPassword()));
         if(user.getAutorisations()!=null){
-            for(Groupe grp : user.getAutorisations()){
-                Groupe gr = new Groupe(grp);
-                gr.setModule(new MenuModule(grp.getModule()));
+            for(UserAutorisation grp : user.getAutorisations()){
+                UserAutorisation gr = new UserAutorisation(grp);
+                gr.getGroupe().setModule(new MenuModule(grp.getGroupe().getModule()));
                 result.getAutorisations().add(gr);
             }
         }
@@ -142,8 +142,8 @@ public class UtilisateurManagerImpl
         result.setSocieteCourante(user.getSocieteCourante());
         result.setSocieteAutorisees(user.getSocieteAutorisees());
         if(user.getAutorisations()!=null){
-            for(Groupe grp : user.getAutorisations()){
-                result.getAutorisations().add(new Groupe(grp));
+            for(UserAutorisation grp : user.getAutorisations()){
+                result.getAutorisations().add(new UserAutorisation(grp));
             }
         }
         return result;
@@ -188,7 +188,8 @@ public class UtilisateurManagerImpl
        if(!utilisateur.getIntitule().equalsIgnoreCase("Administrateur")){ 
             Utilisateur user = dao.findByPrimaryKey("id", utilisateur.getId());
             if(user==null || user.getAutorisations()==null) return result;
-            for(Groupe grp : user.getAutorisations()){
+            for(UserAutorisation auth : user.getAutorisations()){
+                Groupe grp = auth.getGroupe();
                 Map<Long , String> groupdb = getHabilitation(grp);            
                 MenuModule mod = new MenuModule(grp.getModule());
                 if(KerenSession.containKey(mod.getLabel())){
@@ -201,6 +202,10 @@ public class UtilisateurManagerImpl
                 }
                 //Chargement des templates du modules
                 mod.setTemplates(getTemplates(mod));
+                /**
+                 * Add 07/01/2019 by BKD for autorisation purpose
+                 */
+                mod.setRoles(auth.getRole());
                 result.add(mod);
             }//end for(Groupe grp : user.getAutorisations()){
        }else{
@@ -221,6 +226,7 @@ public class UtilisateurManagerImpl
                        mod.setAction(new MenuAction(data.getAction()));
                     }//end if(mod.isHasmenu()){
                     mod.setTemplates(getTemplates(mod));
+                    mod.setRoles("administrateur");
                     result.add(mod);
                }//end for(MenuModule data : datas){
            }//end if(datas!=null){

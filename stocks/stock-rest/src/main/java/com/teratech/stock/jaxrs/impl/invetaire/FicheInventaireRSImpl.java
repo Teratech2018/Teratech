@@ -65,9 +65,9 @@ public class FicheInventaireRSImpl
             workbtn.setValue("{'model':'teratechstock','entity':'ficheinventaire','method':'confirme'}");
             workbtn.setStates(new String[]{"etabli"});
             meta.getHeader().add(workbtn);
-            workbtn = new MetaColumn("button", "work1", "Imprimer la fiche d'inventaire", false, "report", null);
-            workbtn.setValue("{'model':'teratechstock','entity':'ficheinventaire','method':'print'}");
-            meta.getHeader().add(workbtn);
+//            workbtn = new MetaColumn("button", "work1", "Imprimer la fiche d'inventaire", false, "report", null);
+//            workbtn.setValue("{'model':'teratechstock','entity':'ficheinventaire','method':'print'}");
+//            meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
             return meta ;

@@ -29,9 +29,9 @@ public class UploadFileRSImpl  implements UploadFileRS{
         try {
             Gson gson = new Gson();
             String _module = null;
+             FileHelper.setCurrentModule(null);
             if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
-                _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
-                FileHelper.setCurrentModule(null);
+                _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);               
             }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
             if(_module!=null && !_module.isEmpty()){
                 FileHelper.setCurrentModule(_module);
@@ -54,9 +54,10 @@ public class UploadFileRSImpl  implements UploadFileRS{
        //To change body of generated methods, choose Tools | Templates.
          try{   Gson gson = new Gson();
                 String _module = null;
+                 FileHelper.setCurrentModule(null);
                 if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
                     _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
-                    FileHelper.setCurrentModule(null);
+//                    FileHelper.setCurrentModule(_module);
                 }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
                 if(_module!=null && !_module.isEmpty()){
                     FileHelper.setCurrentModule(_module);
@@ -80,6 +81,7 @@ public class UploadFileRSImpl  implements UploadFileRS{
          try{
                 Gson gson = new Gson();
                 String _module = null;
+                 FileHelper.setCurrentModule(null);
                 if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
                     _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
                     FileHelper.setCurrentModule(null);

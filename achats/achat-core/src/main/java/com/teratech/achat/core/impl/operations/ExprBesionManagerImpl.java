@@ -84,20 +84,8 @@ public class ExprBesionManagerImpl
     public ExprBesion confirmer(ExprBesion entity) {
         //To change body of generated methods, choose Tools | Templates.
         if(entity.getState().trim().equalsIgnoreCase("etabli")){
-             entity.setState("accorde");
-         }else if(entity.getState().trim().equalsIgnoreCase("accorde")){
              entity.setState("valide");
-         }else if(entity.getState().trim().equalsIgnoreCase("valide")){
-             entity.setState("apprecie");
-         }else if(entity.getState().trim().equalsIgnoreCase("apprecie")){
-             entity.setState("transmettre");
-         }else if(entity.getState().trim().equalsIgnoreCase("transmettre")){
-             entity.setState("executer");
-         }else if(entity.getState().trim().equalsIgnoreCase("executer")){
-             entity.setState("terminer");
-         }else{
-             entity.setState("terminer");
-         }
+         }//end if(entity.getState().trim().equalsIgnoreCase("etabli")){
          dao.update(entity.getId(), entity);
          return find("id", entity.getId());         
     }
@@ -105,7 +93,7 @@ public class ExprBesionManagerImpl
     @Override
     public ExprBesion annuler(ExprBesion entity) {
         //To change body of generated methods, choose Tools | Templates.
-        entity.setState("annule");
+        entity.setState("etabli");
         dao.update(entity.getId(), entity);
         return find("id", entity.getId());  
     }
