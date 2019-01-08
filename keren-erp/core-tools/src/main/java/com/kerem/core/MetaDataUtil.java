@@ -9,6 +9,8 @@ import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerem.commons.KerenSession;
 import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.KHeader;
+import com.megatim.common.annotations.KHeaders;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 import com.megatim.common.annotations.TableFooter;
@@ -120,7 +122,23 @@ public class MetaDataUtil {
         return metaData;
     }
     
-    
+    /**
+     * Header builder of the entity
+     * @param obj
+     * @return 
+     */
+    private static MetaData buildHeaders(Object obj,MetaData meta){
+        KHeaders headers = obj.getClass().getAnnotation(KHeaders.class);
+        for(KHeader header:headers.value()){
+            MetaColumn column = new MetaColumn(header.type(), header.name(), header.label(), header.search(), header.target(), null);
+            column.setValue(header.value().value());
+            column.setPattern(header.pattern());
+            column.setRoles(header.roles());
+            column.setStates(header.states());
+            meta.getHeader().add(column);
+        }//end for(KHeader header:headers.value()){
+        return meta;
+    }
     /**
      * 
      * @param obj
@@ -651,7 +669,10 @@ public class MetaDataUtil {
                 }
             }
         }
-        
+        /**
+         * Construction des elements de l'entête
+         */
+        metaData = buildHeaders(obj, metaData);
         return metaData;
     }
     
