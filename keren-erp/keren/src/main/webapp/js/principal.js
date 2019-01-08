@@ -4978,8 +4978,26 @@ $scope.gererChangementFichier3 = function(event,model){
             }//end if(field.observer!=null)
              return divElem;
         };
+        /**
+         * 
+         * @param {type} roles
+         * @param {type} role
+         * @returns {Boolean}
+         */
        $scope.showheaderwidget = function(roles ,role){
-           return role=="administrateur" || commonsTools.containsLiteral(roles,role);
+           if(role && role=="administrateur" ){
+                return true;
+            }//end if(role=="administrateur" ){
+           if(roles && role){               
+                var array = role.split(';');
+                var contains = false ;
+                for(var i=0 ; i<array.length;i++){
+                    contains |= commonsTools.containsLiteral(roles,array[i]);
+                }//end for(var i=0 ; i<array.length;i++){
+                return  contains;
+            }else{
+                return false;
+            }//end if(roles && role){
        }
         /**
          * Build t edit formhe header of th
@@ -6418,20 +6436,22 @@ $scope.gererChangementFichier3 = function(event,model){
                         aElem.setAttribute('href','#');
                         aElem.setAttribute('ng-click',"buttonAction("+act.value+" , '"+act.type+"',null,'"+index+"')");
                         aElem.appendChild(document.createTextNode(act.label)) ;
-                        if(act.type!=='workflow'){
+                        if(act.type!=='workflow'
+                                && $scope.showheaderwidget(act.roles,$scope.currentModule.roles)){
                             liElem.appendChild(aElem);
                         }else{
                             if(act.state  && $scope.currentObject && $scope.currentObject.state){
                                 var states = act.state.split(';');
                                 if(states.length>0 && $scope.currentObject.state 
-                                        && commonsTools.containsLiteral(states,$scope.currentObject.state)){
+                                        && commonsTools.containsLiteral(states,$scope.currentObject.state)
+                                        && $scope.showheaderwidget(act.roles,$scope.currentModule.roles)){
                                     liElem.appendChild(aElem);
                                 }//end if(commonsTools.containsLiteral(states,$scope.currentUser.state)){
-                            }else{
+                            }else if($scope.showheaderwidget(act.roles,$scope.currentModule.roles)){
                                 liElem.appendChild(aElem);
                             }//end if(act.state){
                         }//end if(act.type!='workflow'){
-                        //console.log("$scope.buildPrintActionsMenu ================ "+angular.toJson(act));
+                        console.log("$scope.buildPrintActionsMenu ================ action menu ::: "+$scope.showheaderwidget(act.roles,$scope.currentModule.roles)+" ===== role : "+$scope.currentModule.role);
                 
                    }//end for(var i=0 ; i<$scope.currentAction.actions.length;i++){
                    //console.log("========================  "+viewElem.innerHTML)

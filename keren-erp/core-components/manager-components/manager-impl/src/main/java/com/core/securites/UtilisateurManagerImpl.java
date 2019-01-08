@@ -299,6 +299,9 @@ public class UtilisateurManagerImpl
                     if(KerenSession.containKey(item.getLabel())){
                         data.setLabel(KerenSession.getEntry(item.getLabel()));
                     }//end if(KerenSession.containKey(data.getLabel())){
+                    for(String role : item.getRoles()){
+                        data.getRoles().add(role);
+                    }//end for(String role : item.getRoles()){
                     action.getActions().add(data);
                 }//end for(ActionItem item : act.getActions()){
                 if(groupdb.containsKey(action.getId())){

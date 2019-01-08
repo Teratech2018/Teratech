@@ -7,8 +7,11 @@ package com.core.menus;
 
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 /**
@@ -28,6 +31,9 @@ public class ActionItem extends  MenuAction implements Serializable{
    @Predicate(label = "Value",optional = false,target = "textarea",group = true,groupName = "group1",groupLabel = "Requête")
    private String value ;   
    
+   @ElementCollection
+   private List<String> roles = new ArrayList<String>();
+    
    private String state = null;
   
    
@@ -58,6 +64,8 @@ public class ActionItem extends  MenuAction implements Serializable{
         this.label = item.label;
         this.value = item.value;
         this.state = item.state;
+        this.states = item.states;
+//        this.roles = item.roles;
         this.setActions(null);
     }
     /**
@@ -114,8 +122,18 @@ public class ActionItem extends  MenuAction implements Serializable{
 
     public void setType(String type) {
         this.type = type;
+    }    
+
+   
+    public List<String> getRoles() {
+        return roles;
     }
 
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    
     @Override
     public String getEditTitle() {
         return "ACTION"; //To change body of generated methods, choose Tools | Templates.

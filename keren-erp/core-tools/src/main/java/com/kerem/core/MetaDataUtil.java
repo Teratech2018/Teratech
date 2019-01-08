@@ -129,14 +129,16 @@ public class MetaDataUtil {
      */
     private static MetaData buildHeaders(Object obj,MetaData meta){
         KHeaders headers = obj.getClass().getAnnotation(KHeaders.class);
-        for(KHeader header:headers.value()){
-            MetaColumn column = new MetaColumn(header.type(), header.name(), header.label(), header.search(), header.target(), null);
-            column.setValue(header.value().value());
-            column.setPattern(header.pattern());
-            column.setRoles(header.roles());
-            column.setStates(header.states());
-            meta.getHeader().add(column);
-        }//end for(KHeader header:headers.value()){
+        if(headers!=null){
+            for(KHeader header:headers.value()){
+                MetaColumn column = new MetaColumn(header.type(), header.name(), header.label(), header.search(), header.target(), null);
+                column.setValue(header.value().value());
+                column.setPattern(header.pattern());
+                column.setRoles(header.roles());
+                column.setStates(header.states());
+                meta.getHeader().add(column);
+            }//end for(KHeader header:headers.value()){
+        }//end if(headers!=null){
         return meta;
     }
     /**
