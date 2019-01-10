@@ -111,4 +111,10 @@ public class ViewListingPModalRSImpl extends AbstractGenericService<ViewListingP
 		return Response.noContent().build();
 	}
 
+	@Override
+	public Response buildPdfReportbi(ViewListingPModal entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
 }

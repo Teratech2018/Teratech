@@ -20,6 +20,11 @@ public interface ViewAnniversaireModalRS
 {
 	@PUT
     @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewAnniversaireModal entity);
+	
+	@PUT
+    @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewAnniversaireModal entity);
 

@@ -154,7 +154,8 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		} // end if(contraints!=null&&!contraints.isEmpty())
 			// container.addEq("source", user);
 
-		if (headers.getRequestHeader("eleve") != null) {
+		if (headers!=null&&headers.getRequestHeader("eleve") != null&& !headers.getRequestHeader("eleve").isEmpty()&&
+				headers.getRequestHeader("eleve").size()>0) {
 			long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
 
 			Inscription inscription = null;
@@ -206,8 +207,10 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 					// if(filter.getFieldName()!=null&&!filter.getFieldName().trim().isEmpty()
 			} // end for(Object obj : contraints)
 		} // end if(contraints!=null&&!contraints.isEmpty())
-		if (headers.getRequestHeader("eleve") != null) {
+		if (headers!=null&&headers.getRequestHeader("eleve") != null&& !headers.getRequestHeader("eleve").isEmpty()&&
+				headers.getRequestHeader("eleve").size()>0) {
 			long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
+			
 
 			Inscription inscription = null;
 			inscription = managerIns.find("id", studenid);
@@ -540,6 +543,18 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		String data = headers.getRequestHeader("modePaiement").get(0);
 
 		return versement;
+	}
+
+	@Override
+	public Response facturebi(HttpHeaders headers, Paiement entity) {
+		// TODO Auto-generated method stub
+		return this.facture(headers, entity);
+	}
+
+	@Override
+	public Response buildPdfReportbi(Paiement entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
 	}
 
 }

@@ -191,10 +191,12 @@ public class BulletinRSImpl
                  }
                  return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
         	}else if(bulletin.getClasse().getTypecycle().equals("1")){*/
-        		System.out.println("BulletinRSImpl.buildPdfReport() BULLETIN Secondaire"+bulletin.getClasse().getTypecycle());
+//        		System.out.println("BulletinRSImpl.buildPdfReport() BULLETIN Secondaire"+bulletin.getClasse().getTypecycle());
         		 List<BulletinHelperGenerate> records =managerbullview.getCriteres(bulletin);
-           	  System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
+           	 // System.out.println("BulletinRSImpl.buildPdfReport() record is "+records);
+//        		 FileHelper.setCurrentModule(module);
                   URL =ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
+                 
                  System.out.println("BulletinRSImpl.buildPdfReport() url is "+URL);
                  parameters= this.getReportParameters();
                  List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();

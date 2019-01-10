@@ -43,24 +43,6 @@ import net.sf.jasperreports.engine.JRException;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @Path("/edtbulletintrimmodal")
 public class EdtBulletinTrimModalRSImpl
   extends AbstractGenericService<EdtBulletinTrimModal, Long>
@@ -153,6 +135,7 @@ public class EdtBulletinTrimModalRSImpl
         entity.getExamen().add(exam);
 
         URL = ReportHelper.templateURL + ReportsName.BULLTRIM.getName();
+        System.out.println("EdtBulletinTrimModalRSImpl.buildPdfReportTrim() url "+URL);
         parameters = getReportParameters();
         parameters.put("TITRE", "BULLETIN TRIMESTRIEL N°1");
         parameters.put("TRIMESTRE", entity.getTypebulletin());
@@ -183,6 +166,7 @@ public class EdtBulletinTrimModalRSImpl
         entity.getExamen().add(exam);
         
         URL = ReportHelper.templateURL + ReportsName.BULLTRIM.getName();
+        System.out.println("EdtBulletinTrimModalRSImpl.buildPdfReportTrim() url "+URL);
         parameters = getReportParameters();
         parameters.put("TITRE", "BULLETIN TRIMESTRIEL N°3");
         parameters.put("TRIMESTRE", entity.getTypebulletin());
@@ -228,4 +212,10 @@ public class EdtBulletinTrimModalRSImpl
     }
     return new ArrayList<InscriptionChoice>();
   }
+
+@Override
+public Response buildPdfReportTrimBi(EdtBulletinTrimModal paramEdtBulletinTrimModal, HttpHeaders paramHttpHeaders) {
+	// TODO Auto-generated method stub
+	return this.buildPdfReportTrim(paramEdtBulletinTrimModal, paramHttpHeaders);
+}
 }

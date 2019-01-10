@@ -19,6 +19,7 @@ import com.kerem.core.FileHelper;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.core.ifaces.report.ViewAnniversaireManagerRemote;
 import com.kerenedu.jaxrs.ifaces.report.ViewAnniversaireModalRS;
+import com.kerenedu.model.report.EleveInscritSearch;
 import com.kerenedu.model.report.ViewAnniversaire;
 import com.kerenedu.model.report.ViewAnniversaireModal;
 import com.kerenedu.tools.reports.ReportHelper;
@@ -36,7 +37,7 @@ import net.sf.jasperreports.engine.JRException;
  * 
  */
 @Path("/viewanniversairemodal")
-public class ViewAnniversaireModalRSImpl
+public abstract class ViewAnniversaireModalRSImpl
     extends AbstractGenericService<ViewAnniversaireModal, Long>
     implements ViewAnniversaireModalRS
 {
@@ -105,5 +106,9 @@ public class ViewAnniversaireModalRSImpl
 
       return Response.noContent().build();
   }
-
+	@Override
+	public Response buildPdfReportbi(ViewAnniversaireModal entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
 }

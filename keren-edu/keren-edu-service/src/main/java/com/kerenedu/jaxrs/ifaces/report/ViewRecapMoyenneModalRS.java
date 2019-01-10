@@ -12,6 +12,11 @@ public abstract interface ViewRecapMoyenneModalRS
 {
   @PUT
   @Produces({"application/pdf"})
+  @Path("bi/note")
+  public abstract Response ficheMoyenneReportbi(ViewRecapMoyenneModal paramViewRecapMoyenneModal);
+  
+  @PUT
+  @Produces({"application/pdf"})
   @Path("note")
   public abstract Response ficheMoyenneReport(ViewRecapMoyenneModal paramViewRecapMoyenneModal);
 }

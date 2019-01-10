@@ -28,6 +28,12 @@ public interface EdtBulletinModalRS extends GenericService<EdtBulletinModal, Lon
 	@PUT
 	@Produces({ "application/pdf" })
 	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/pdf")
+	public Response buildPdfReportbi(EdtBulletinModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
 	@Path("pdf")
 	public Response buildPdfReport(EdtBulletinModal entity, @Context HttpHeaders headers);
 	
@@ -40,8 +46,20 @@ public interface EdtBulletinModalRS extends GenericService<EdtBulletinModal, Lon
 	@PUT
 	@Produces({ "application/pdf" })
 	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/trim")
+	public Response buildPdfReportTrimBi(EdtBulletinModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
 	@Path("ann")
 	public Response buildPdfReportAnn(EdtBulletinModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/ann")
+	public Response buildPdfReportAnnBi(EdtBulletinModal entity, @Context HttpHeaders headers);
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })

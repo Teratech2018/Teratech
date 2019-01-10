@@ -14,4 +14,9 @@ public abstract interface ViewNoteClasseModalRS
   @Produces({"application/pdf"})
   @Path("pdf")
   public abstract Response buildPdfReport(ViewNoteClasseModal paramViewNoteClasseModal);
+  
+  @PUT
+  @Produces({"application/pdf"})
+  @Path("bi/pdf")
+  public abstract Response buildPdfReportbi(ViewNoteClasseModal paramViewNoteClasseModal);
 }

@@ -22,26 +22,28 @@ public class ReportHelper {
      * Chemin de base des report
      */
     //public static final String reportFileChemin = "src/main/resources/reports/";
-    public static final String reportFileChemin = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
-    public static final String reportFileCheminPaie = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
+    public static final String reportFileChemin = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator;
+    public static final String reportFileCheminPaie = FileHelper.getStaticDirectory()+File.separator+"solde"+File.separator;
     
-    public static final String reportimages = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"logo.png";
+    public static final String reportimages = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"logo.png";
     
-    public static final String reportimagescg = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"logoc.png";
+    public static final String reportimagescg = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"logoc.png";
     
-    public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
+    //public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
+    public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"scolarite"+File.separator;;
+//    public static final String templatepaieURL = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
     public static final String templatepaieURL = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
     
     public static final String photourl = FileHelper.getStaticDirectory()+File.separator;
-    public static final String reportimagesURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator ;
+    public static final String reportimagesURL = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator ;
     
-    public static final String reportphoto = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"photomin"+File.separator ;
+    public static final String reportphoto = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator ;
     
-    public static final String titre1 = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"c.png";
-    public static final String titre2 = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"b.png";
+    public static final String titre1 = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"c.png";
+    public static final String titre2 = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"b.png";
     
-    public static final String reportimagesbgc = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"bgccc.png";
-    public static final String reportimagesbgs = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator+"images"+File.separator+"bgss.png";
+    public static final String reportimagesbgc = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"bgccc.png";
+    public static final String reportimagesbgs = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"bgss.png";
     /**
      * Chemin de base des report
      */
@@ -128,7 +130,7 @@ public class ReportHelper {
     }
     public static byte[] getBytescol() throws IOException
     {
-    	InputStream stream = new FileInputStream(reportFileChemin+File.separator+"images"+File.separator+"logoc.png");
+    	InputStream stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"logoc.png");
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -140,7 +142,7 @@ public class ReportHelper {
     }
     public static byte[] getBytesC() throws IOException
     {
-    	InputStream stream = new FileInputStream(reportimagescg);
+    	InputStream stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"logoc.png");
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -154,7 +156,7 @@ public class ReportHelper {
     
     public static byte[] getBytesbgc() throws IOException
     {
-    	InputStream stream = new FileInputStream(reportimagesbgc);
+    	InputStream stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"bgccc.png");
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -167,7 +169,7 @@ public class ReportHelper {
     
     public static byte[] getBytestitrcee(String image) throws IOException
     {
-    	InputStream stream = new FileInputStream(titre1);
+    	InputStream stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"c.png");
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -180,7 +182,7 @@ public class ReportHelper {
     
     public static byte[] getBytesbgs() throws IOException
     {
-    	InputStream stream = new FileInputStream(reportimagesbgs);
+    	InputStream stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"bgss.png");
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -206,7 +208,7 @@ public class ReportHelper {
 
     public static byte[] getBytes(String name) throws IOException
     {
-    	InputStream stream = new FileInputStream(photourl);
+    	InputStream stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+File.separator+"scolarite"+File.separator);
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -228,7 +230,7 @@ public class ReportHelper {
     }
     public static byte[] getPhotoBytes(String photoname) throws IOException
     {
-    	InputStream stream = new FileInputStream(photourl+photoname);
+    	InputStream stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
           for (int len = 0; (len = stream.read(buffer)) != -1;) {
@@ -243,12 +245,13 @@ public class ReportHelper {
     {
     	System.out.println("ReportHelper.getPhotoBytesEleve() construire la photo ");
     	InputStream stream ;
-    	File tmpDir = new File(FileHelper.getStaticDirectory()+File.separator+photoname);
+    	//FileHelper.setCurrentModule("scolarite");
+    	File tmpDir = new File(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
     	boolean exists = tmpDir.exists();
     	if(exists){
-    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+photoname);
+    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
     	}else{
-    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"no.png");
+    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"no.png");
     	}
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
           byte[] buffer = new byte[1024];
@@ -264,12 +267,12 @@ public class ReportHelper {
     {
     	System.out.println("ReportHelper.getPhotoBytesEleve() construire la photo ");
     	InputStream stream ;
-    	File tmpDir = new File(reportphoto+photoname);
+    	File tmpDir = new File(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
     	boolean exists = tmpDir.exists();
     	if(exists){
-    		stream = new FileInputStream(reportphoto+photoname);
+    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
     	}else{
-    		stream = new FileInputStream(reportphoto+"no.png");
+    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"no.png");
     	}
        return stream ;
        }

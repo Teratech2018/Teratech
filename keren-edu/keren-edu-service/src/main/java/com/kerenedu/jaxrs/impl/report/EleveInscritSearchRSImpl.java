@@ -127,5 +127,11 @@ public class EleveInscritSearchRSImpl
 	return Response.noContent().build();
   }
 
+	@Override
+	public Response buildPdfReportbi(EleveInscritSearch entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity, headers);
+	}
+
 	
 }

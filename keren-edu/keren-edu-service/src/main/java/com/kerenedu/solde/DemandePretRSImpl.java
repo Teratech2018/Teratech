@@ -63,7 +63,7 @@ public class DemandePretRSImpl
                 MetaData meta = MetaDataUtil.getMetaData(new DemandePret(), new HashMap<String, MetaData>(),new ArrayList<String>());
                 MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
                 workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'echeancier'}");
-                workbtn.setStates(new String[]{"etabli","confirme"});
+                workbtn.setStates(new String[]{"etabli"});
                 workbtn.setPattern("btn btn-info");
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);

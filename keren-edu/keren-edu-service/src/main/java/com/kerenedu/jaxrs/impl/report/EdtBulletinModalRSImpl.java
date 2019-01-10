@@ -425,4 +425,22 @@ public class EdtBulletinModalRSImpl
 		return new ArrayList<InscriptionChoice>();
 	}
 
+	@Override
+	public Response buildPdfReportTrimBi(EdtBulletinModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReportTrim(entity,headers);
+	}
+
+	@Override
+	public Response buildPdfReportAnnBi(EdtBulletinModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReportAnn(entity,headers);
+	}
+
+	@Override
+	public Response buildPdfReportbi(EdtBulletinModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity, headers);
+	}
+
 }

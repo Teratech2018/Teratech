@@ -189,7 +189,7 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 
 	public int compareTo(CoefMatiereDetail o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)o.getId();
 	}
 
 }

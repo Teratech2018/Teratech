@@ -58,7 +58,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	private Inscription eleve;
 
 	@Column(name = "NAT_PAI")
-	@Predicate(label = "Mode Paiement", optional = false, updatable = true, search = false, target = "combobox", values = "Totalité;Partiel", sequence = 5, observable = true, hidden = "currentObject.eleve==null")
+	@Predicate(label = "Mode Paiement", optional = false, updatable = true, search = false, target = "combobox", values = "Totalité;Partiel", sequence = 5, observable = true)
 	protected String modePaiement = "0";
 
 	@Column(name = "TYP_PAI")
@@ -81,13 +81,13 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	protected Date datePaiement = new Date();
 
 	@Column(name = "ZMNT_VERSER")
-	@Predicate(label = "Versement ", optional = true, updatable = false, search = true, type = Long.class, sequence = 8, colsequence = 5, hidden = "currentObject.modePaiement==0")
+	@Predicate(label = "Versement ", optional = true, updatable = false, search = true, type = Long.class, sequence = 8, colsequence = 5)
 	//@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
 	protected Long zMntverser;
 	
 	 @Transient
 	@Column(name = "ZMNT_VERSER")
-	@Predicate(label = "Versement ", optional = true, updatable = false, type = Long.class, sequence = 5, colsequence = 8, editable=false, hidden = "currentObject.modePaiement==1")
+	@Predicate(label = "Versement ", optional = true, updatable = false, type = Long.class, sequence = 5, colsequence = 8, editable=false)
 	//@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
 	protected Long zMntversertotal;
 
@@ -95,7 +95,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	private String username;
 
 	@Column(name = "ZMNT")
-	@Predicate(label = " Montant Scolarité", optional = false, updatable = false, search = false, type = Long.class, sequence = 9, editable = false)
+	//@Predicate(label = " Montant Scolarité", optional = false, updatable = false, search = false, type = Long.class, sequence = 9, editable = false)
 	@Observer(observable = "eleve", source = "field:zMnt")
 	protected Long zMnt;
 
@@ -120,7 +120,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	protected Long zremise;
 	
 	@Column(name = "ZRISTOURNE")
-	@Predicate(label = "Ristourne", optional = true, updatable = true, search = false, sequence = 12, type = Long.class,hidden = "currentObject.modePaiement==null||currentObject.modePaiement==0")
+	@Predicate(label = "Ristourne", optional = true, updatable = true, search = false, sequence = 12, type = Long.class)
 	protected Long zristourne;
 
 	@Transient
@@ -176,7 +176,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 		this.zremise = ins.zremise;
 		this.zristourne=ins.zristourne;
 //		 this.zsolde = ins.getzMnt() -ins.getzMntverser()-ins.getZremise()-ins.getZristourne();
-		this.zsolde = ins.getEleve().getzSolde();
+		this.zsolde =ins.getEleve().getzSolde();
 		this.state = ins.state;
 		this.modePaiement = ins.modePaiement;
 		if (ins.getEleve() != null) {
@@ -438,7 +438,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 
 	public int compareTo(Paiement o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 
 }

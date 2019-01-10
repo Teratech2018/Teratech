@@ -184,5 +184,30 @@ public class EleveManagerImpl
 	}
     
 	
+	@Override
+	public void processAfterUpdate(Eleve entity) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+		// set Matricule 
+		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
+		  if(entity.getImage()!=null){
+	    	  // try {
+	    	   String imageName = entity.getImage();
+	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
+	    	   String newName = entity.getMatricule().substring(0, entity.getMatricule().length()-5)+".png";
+	           File file = new File(FileHelper.getStaticDirectory().getPath()+File.separator+imageName);
+	           file.renameTo(new File(file.getPath()+File.separator+newName));
+//	           File filerename = new File(newName);
+//	           file.renameTo(filerename);
+			  // FileHelper.moveFile(file, destfile);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+	       }
+		dao.update(entity.getId(), entity);
+		super.processAfterUpdate(entity);
+	}
 
 }

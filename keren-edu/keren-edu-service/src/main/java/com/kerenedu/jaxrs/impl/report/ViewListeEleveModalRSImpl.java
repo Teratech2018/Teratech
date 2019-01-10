@@ -114,4 +114,10 @@ public class ViewListeEleveModalRSImpl
 		return null;
 	}
 
+	@Override
+	public Response buildPdfReportbi(ViewListeEleveModal entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
 }

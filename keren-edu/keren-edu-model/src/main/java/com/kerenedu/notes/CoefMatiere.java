@@ -151,7 +151,7 @@ public class CoefMatiere extends BaseElement implements Serializable, Comparable
 
 	public int compareTo(CoefMatiere o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)id;
 	}
 
 }

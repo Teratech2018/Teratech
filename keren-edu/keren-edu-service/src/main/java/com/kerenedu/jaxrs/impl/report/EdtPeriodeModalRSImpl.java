@@ -155,6 +155,36 @@ public class EdtPeriodeModalRSImpl
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Response buildPdfReportbi(EdtPeriodeModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity, headers);
+	}
+
+	@Override
+	public Response virementsalairebi(EdtPeriodeModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.virementsalaire(entity, headers);
+	}
+
+	@Override
+	public Response caissesalairebi(EdtPeriodeModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.caissesalaire(entity, headers);
+	}
+
+	@Override
+	public Response retenuesSalairesbi(EdtPeriodeModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.retenuesSalaires(entity, headers);
+	}
+
+	@Override
+	public Response pieceBancairebi(EdtPeriodeModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.pieceBancaire(entity, headers);
+	}
 	
 	
 	

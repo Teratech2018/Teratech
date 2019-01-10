@@ -18,4 +18,11 @@ public abstract interface EdtBulletinAnnModalRS
   @Consumes({"application/json"})
   @Path("ann")
   public abstract Response buildPdfReportAnn(EdtBulletinAnnModal paramEdtBulletinAnnModal, @Context HttpHeaders paramHttpHeaders);
+  
+  
+  @PUT
+  @Produces({"application/pdf"})
+  @Consumes({"application/json"})
+  @Path("bi/ann")
+  public abstract Response buildPdfReportAnnbi(EdtBulletinAnnModal paramEdtBulletinAnnModal, @Context HttpHeaders paramHttpHeaders);
 }

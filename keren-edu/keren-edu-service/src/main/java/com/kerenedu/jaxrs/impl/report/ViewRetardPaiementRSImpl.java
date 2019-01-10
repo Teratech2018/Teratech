@@ -109,4 +109,10 @@ public Response buildPdfReport(ViewRetardPaiement entity) {
   return Response.noContent().build();
 }
 
+@Override
+public Response buildPdfReportbi(ViewRetardPaiement entity) {
+	// TODO Auto-generated method stub
+	return this.buildPdfReport(entity);
+}
+
 }

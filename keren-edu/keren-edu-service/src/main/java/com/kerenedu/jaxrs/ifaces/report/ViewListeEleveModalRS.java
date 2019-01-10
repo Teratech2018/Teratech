@@ -23,5 +23,10 @@ public interface ViewListeEleveModalRS
     @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewListeEleveModal entity);
+	
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewListeEleveModal entity);
 
 }

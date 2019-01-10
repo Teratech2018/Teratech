@@ -20,6 +20,11 @@ public interface ViewDltPaiementModalRS
 {
 	@PUT
     @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewDltPaiementModal entity);
+	
+	@PUT
+    @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewDltPaiementModal entity);
 

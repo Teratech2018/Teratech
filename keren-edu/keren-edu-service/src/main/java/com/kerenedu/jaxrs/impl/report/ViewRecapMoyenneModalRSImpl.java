@@ -109,4 +109,10 @@ public class ViewRecapMoyenneModalRSImpl
     
     return Response.noContent().build();
   }
+
+@Override
+public Response ficheMoyenneReportbi(ViewRecapMoyenneModal paramViewRecapMoyenneModal) {
+	// TODO Auto-generated method stub
+	return this.ficheMoyenneReport(paramViewRecapMoyenneModal);
+}
 }

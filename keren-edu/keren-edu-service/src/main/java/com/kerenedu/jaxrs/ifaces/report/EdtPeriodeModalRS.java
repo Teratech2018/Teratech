@@ -52,6 +52,36 @@ public interface EdtPeriodeModalRS extends GenericService<EdtPeriodeModal, Long>
 	public Response pieceBancaire(EdtPeriodeModal entity, @Context HttpHeaders headers);
 	
 	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/pdf")
+	public Response buildPdfReportbi(EdtPeriodeModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/vir")
+	public Response virementsalairebi(EdtPeriodeModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/cai")
+	public Response caissesalairebi(EdtPeriodeModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/ret")
+	public Response retenuesSalairesbi(EdtPeriodeModal entity, @Context HttpHeaders headers);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Path("bi/pie")
+	public Response pieceBancairebi(EdtPeriodeModal entity, @Context HttpHeaders headers);
+	
 	
 
 }

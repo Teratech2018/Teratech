@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.personnel.EnseignantSecondaire;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -197,13 +198,16 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 		return rubrique.getDesignation();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	//@Override
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+	
+
 	public int compareTo(LigneBulletinPaie o) {
 		// TODO Auto-generated method stub
-		return rubrique.compareTo(o.rubrique);
+		return (int)o.getId();
 	}
 
     @Override

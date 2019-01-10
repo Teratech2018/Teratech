@@ -44,15 +44,15 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	private Long sur = new Long(0) ;
 		
 	@Column(name = "NOTE_1")
-	@Predicate(label = "Q1/Mois 1",type = Double.class,search = true  , sequence=3 )
+	@Predicate(label = "Q1",type = Double.class,search = true  , sequence=3 )
 	private Double note1 = new Double(0) ;
 	
 	@Column(name = "NOTE_2")
-	@Predicate(label = "Q2/Mois 2",type = Double.class,search = true  , sequence=4 )
+	@Predicate(label = "Q2",type = Double.class,search = true  , sequence=4 )
 	private Double note2 = new Double(0) ;
 	
 	@Column(name = "NOTE_3")
-	@Predicate(label = "SEQ/Mois 3",type = Double.class,search = true  , sequence=5)
+	@Predicate(label = "SEQ",type = Double.class,search = true  , sequence=5)
 	private Double note3 = new Double(0) ;
 
 	@Column(name = "NOTE")
@@ -282,11 +282,18 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 		this.obs = obs;
 	}
 
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return matricule+","+nom;
+	}
+	
 
 	public int compareTo(NoteDetail o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)o.getId();
 	}
+
 
 
 	@Override

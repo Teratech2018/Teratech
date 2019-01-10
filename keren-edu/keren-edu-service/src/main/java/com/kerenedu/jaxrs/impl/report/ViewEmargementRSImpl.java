@@ -136,5 +136,17 @@ public class ViewEmargementRSImpl
         return Response.noContent().build();
     }
 
+	@Override
+	public Response buildPdfReportbi(ViewEmargement entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
+	@Override
+	public Response buildPdfReportplanningbi(ViewEmargement entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReportplanning(entity);
+	}
+
 
 }

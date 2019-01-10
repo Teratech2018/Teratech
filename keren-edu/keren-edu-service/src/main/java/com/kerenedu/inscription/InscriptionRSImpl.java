@@ -164,8 +164,8 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		container.addEq("eleve.id", entity.getId());
 		container.addNotEq("state", "annulé");
 		List<Paiement> listPaiements = managerPaiement.filter(container.getPredicats(), null, null, 0, -1);
-		System.out.println("InscriptionRSImpl.processBeforeUpdate() size list" + listPaiements.size());
-		System.out.println("InscriptionRSImpl.processBeforeUpdate()valuer "+samefiliere(oldinscription, entity));
+	//	System.out.println("InscriptionRSImpl.processBeforeUpdate() size list" + listPaiements.size());
+	//	System.out.println("InscriptionRSImpl.processBeforeUpdate()valuer "+samefiliere(oldinscription, entity));
 		if(samefiliere(oldinscription, entity)==true){
 			entity.setService(oldinscription.getService());
 		}
@@ -396,6 +396,30 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 		CacheMemory.insert(iduser, TypeCacheMemory.INSCRIPTION, result.getId());
 		return result;
+	}
+
+	@Override
+	public Response buildPdfReportbi(Inscription entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
+	@Override
+	public Response ficheInscriptionReportbi(Inscription entity) {
+		// TODO Auto-generated method stub
+		return this.ficheInscriptionReport(entity);
+	}
+
+	@Override
+	public Response listInscritRepoortbi(Inscription entity) {
+		// TODO Auto-generated method stub
+		return this.listInscritRepoort(entity);
+	}
+
+	@Override
+	public Response badgeReportbi(Inscription entity) {
+		// TODO Auto-generated method stub
+		return this.badgeReport(entity);
 	}
 
 	//

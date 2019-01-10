@@ -137,26 +137,26 @@ public class EducationDashboardRSImpl implements EducationDashboardRSLocal, Educ
 	   private List<Raccourci> getUserRaccourcis(Utilisateur user){
 	       // user = acomptemanager.find("id", user.getId());
 	        List<Raccourci> results = new ArrayList<Raccourci>();
-	        if(user.getIntitule().trim().equalsIgnoreCase("administrateur")){
+	       // if(user.getIntitule().trim().equalsIgnoreCase("administrateur")){
 	            results.add(new Raccourci("keren_education_Report_041", "Journal des  paiements ", "glyphicon glyphicon-star"));
 	            results.add(new Raccourci("keren_education_Report_02", " Liste des inscrits ", "glyphicon glyphicon-list-alt"));
 	            results.add(new Raccourci("keren_education_Report_05", " Bilan Finacier ", "glyphicon glyphicon-list-alt"));
-	        }else{
-	            Groupe group =null;
-	            for(Groupe groupe : user.getAutorisations()){
-	                if(groupe.getModule().getName().trim().equalsIgnoreCase("scolarite")){
-	                    group = groupe;
-	                    break;
-	                }//end if(groupe.getModule().getName().trim().equalsIgnoreCase("keren_courrier")){
-	            }//end for(Groupe groupe : user.getAutorisations()){
-	            if(group==null) return results;
-	            //Chargement des details
-	            for(GroupeDetail detail:group.getDroits()){
-	                if(!detail.getHabilitation().trim().equalsIgnoreCase("3")){
-	                    results.add(new Raccourci(detail.getMenuAction().getName(), detail.getMenuAction().getLabel(), detail.getMenuAction().getIcon()));
-	                }//end if(!detail.getHabilitation().trim().equalsIgnoreCase("3")){
-	            }//end for(GroupeDetail detail:group.getDroits()){
-	        }//end if(user.getIntitule().trim().equalsIgnoreCase("administrateur")){
+//	        }else{
+//	            Groupe group =null;
+//	            for(Groupe groupe : user.getAutorisations()){
+//	                if(groupe.getModule().getName().trim().equalsIgnoreCase("scolarite")){
+//	                    group = groupe;
+//	                    break;
+//	                }//end if(groupe.getModule().getName().trim().equalsIgnoreCase("keren_courrier")){
+//	            }//end for(Groupe groupe : user.getAutorisations()){
+//	            if(group==null) return results;
+//	            //Chargement des details
+//	            for(GroupeDetail detail:group.getDroits()){
+//	                if(!detail.getHabilitation().trim().equalsIgnoreCase("3")){
+//	                    results.add(new Raccourci(detail.getMenuAction().getName(), detail.getMenuAction().getLabel(), detail.getMenuAction().getIcon()));
+//	                }//end if(!detail.getHabilitation().trim().equalsIgnoreCase("3")){
+//	            }//end for(GroupeDetail detail:group.getDroits()){
+//	        }//end if(user.getIntitule().trim().equalsIgnoreCase("administrateur")){
 	        return results;
 	    }
 

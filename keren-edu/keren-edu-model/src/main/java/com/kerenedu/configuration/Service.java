@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
+import com.kerenedu.inscription.Inscription;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -94,10 +95,6 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 		return hash;
 	}
 
-	public int compareTo(Service o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -222,6 +219,17 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 		// TODO Auto-generated method stub
 		return false;
 	}
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return libelle+","+type;
+	}
 	
+
+	public int compareTo(Service o) {
+		// TODO Auto-generated method stub
+		return (int)o.getId();
+	}
+
 
 }

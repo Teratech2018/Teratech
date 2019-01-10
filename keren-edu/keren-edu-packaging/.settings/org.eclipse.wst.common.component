@@ -6,43 +6,46 @@
         <dependent-module archiveName="keren-edu-dao-impl-1.0-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/keren-edu-dao-impl/keren-edu-dao-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="mysql-connector-java-5.1.18.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/mysql/mysql-connector-java/5.1.18/mysql-connector-java-5.1.18.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="hibernate-jpa-2.1-api-1.0.0.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="eclipselink-2.5.2.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/eclipse/persistence/eclipselink/2.5.2/eclipselink-2.5.2.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javax.persistence-2.1.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/eclipse/persistence/javax.persistence/2.1.0/javax.persistence-2.1.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commonj.sdo-2.1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/eclipse/persistence/commonj.sdo/2.1.1/commonj.sdo-2.1.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="keren-edu-core-impl-1.0-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/keren-edu-core-impl/keren-edu-core-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="core-tools-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/kerem/core-tools/1.0-SNAPSHOT/core-tools-1.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="gson-2.8.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-codec-1.10.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-codec/commons-codec/1.10/commons-codec-1.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="core-model-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/kerem/core-model/1.0-SNAPSHOT/core-model-1.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="dao-ifaces-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/kerem/dao-ifaces/1.0-SNAPSHOT/dao-ifaces-1.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="dao-impl-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/kerem/dao-impl/1.0-SNAPSHOT/dao-impl-1.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="icu4j-61.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/ibm/icu/icu4j/61.1/icu4j-61.1.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-client-1.0-SNAPSHOT.war" deploy-path="/" handle="module:/classpath/var/M2_REPO/com/megatimgroup/keren-edu-client/1.0-SNAPSHOT/keren-edu-client-1.0-SNAPSHOT.war">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="genericDAOLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/genericDAOLayer/genericDAOLayer">
+        <dependent-module archiveName="genericDAOLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/bekosoftware/genericDAOLayer/1.0-SNAPSHOT/genericDAOLayer-1.0-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="genericManagerLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/genericManagerLayer/genericManagerLayer">
+        <dependent-module archiveName="genericManagerLayer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/bekosoftware/genericManagerLayer/1.0-SNAPSHOT/genericManagerLayer-1.0-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="keren-edu-model-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/keren-edu-model/keren-edu-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="megatim-tools-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/megatim-tools/megatim-tools">
+        <dependent-module archiveName="megatim-tools-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/megatim-tools/0.0.1-SNAPSHOT/megatim-tools-0.0.1-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="generic-jax-rs-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/generic-jax-rs-layer/generic-jax-rs-layer">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="gson-2.8.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar">
+        <dependent-module archiveName="generic-jax-rs-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/generic-jax-rs-layer/1.0-SNAPSHOT/generic-jax-rs-layer-1.0-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="junit-4.12.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/junit/junit/4.12/junit-4.12.jar">
@@ -55,6 +58,15 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="hibernate-jpa-2.0-api-1.0.1.Final.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eclipselink-2.5.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/eclipse/persistence/eclipselink/2.5.0-SNAPSHOT/eclipselink-2.5.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="javax.persistence-2.1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/eclipse/persistence/javax.persistence/2.1.0-SNAPSHOT/javax.persistence-2.1.0-SNAPSHOT.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commonj.sdo-2.1.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/eclipse/persistence/commonj.sdo/2.1.1/commonj.sdo-2.1.1.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="jcalendar-1.4.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/toedter/jcalendar/1.4/jcalendar-1.4.jar">
@@ -72,13 +84,10 @@
         <dependent-module archiveName="swing-layout-1.0.3.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/swinglabs/swing-layout/1.0.3/swing-layout-1.0.3.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="generic-jsf-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/generic-jsf-layer/generic-jsf-layer">
+        <dependent-module archiveName="generic-jsf-layer-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/generic-jsf-layer/1.0-SNAPSHOT/generic-jsf-layer-1.0-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="mgt-commons-tools-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/mgt-commons-tools/mgt-commons-tools">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-codec-1.9.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-codec/commons-codec/1.9/commons-codec-1.9.jar">
+        <dependent-module archiveName="mgt-commons-tools-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/megatimgroup/mgt-commons-tools/1.0-SNAPSHOT/mgt-commons-tools-1.0-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="javaee-api-6.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/javaee-api/6.0/javaee-api-6.0.jar">
@@ -169,9 +178,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="xalan-2.6.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/xalan/xalan/2.6.0/xalan-2.6.0.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="icu4j-2.6.1.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/ibm/icu/icu4j/2.6.1/icu4j-2.6.1.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="ooxml-schemas-1.0.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/poi/ooxml-schemas/1.0/ooxml-schemas-1.0.jar">

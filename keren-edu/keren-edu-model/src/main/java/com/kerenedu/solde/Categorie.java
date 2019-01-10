@@ -25,8 +25,8 @@ import com.megatim.common.annotations.Predicate;
 public class Categorie extends BaseElement implements Serializable, Comparable<Categorie> {
 
 
-	@Predicate(label="Code catégorie" , type=Short.class,optional=false,search=true, sequence=1)
-	private Short code ;
+	@Predicate(label="Code catégorie" , type=String.class,optional=false,search=true, sequence=1)
+	private String code ;
 	
 	@Predicate(label="Type" , type=Short.class,optional=false,search=true,target="combobox",
 			values="CADRE;AGENT DE MAITRISE;EMPLOYE;EMPLOYE DE SERVICE;TEMPORAIRE", sequence=2)
@@ -50,7 +50,7 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 
 
 
-	public Categorie(Short code, String type, List<Echellon> echelons) {
+	public Categorie(String code, String type, List<Echellon> echelons) {
 		super();
 		this.code = code;
 		this.type = type;
@@ -88,7 +88,7 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 
 
 
-	public Short getCode() {
+	public String getCode() {
 		return code;
 	}
 
@@ -98,7 +98,7 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 
 
 
-	public void setCode(Short code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

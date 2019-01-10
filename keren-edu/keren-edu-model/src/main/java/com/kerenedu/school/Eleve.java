@@ -670,5 +670,10 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	
 	}
 	
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return matricule+","+nom;
+	}
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+import com.kerenedu.inscription.Inscription;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -167,11 +168,17 @@ public class GroupeCours extends BaseElement implements Serializable, Comparable
 		return code+"-"+libelle;
 	}
 
-
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return code;
+	}
+	
 
 	public int compareTo(GroupeCours o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)o.getId();
 	}
+
 
 }

@@ -6,7 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.kerenedu.model.report.ViewAnniversaire;
 import com.kerenedu.model.report.ViewListeEleve;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
@@ -20,6 +19,12 @@ public interface ViewListeEleveRS
     extends GenericService<ViewListeEleve, Long>
 {
 
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewListeEleve entity);
+	
+	
 	@PUT
     @Produces({"application/pdf"})
     @Path("pdf")
