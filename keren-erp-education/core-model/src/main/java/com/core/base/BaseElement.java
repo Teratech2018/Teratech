@@ -61,7 +61,6 @@ public class BaseElement implements Serializable{
     protected boolean activatefollower = false ;
     
     protected String searchkeys ;
-    protected boolean desabledatablock = true ;
     
     /**
      * String that contain the state
@@ -159,23 +158,7 @@ public class BaseElement implements Serializable{
         return desablecreate;
     }
 
-    public String getSearchkeys() {
-		return searchkeys;
-	}
-
-	public void setSearchkeys(String searchkeys) {
-		this.searchkeys = searchkeys;
-	}
-
-	public boolean isDesabledatablock() {
-		return desabledatablock;
-	}
-
-	public void setDesabledatablock(boolean desabledatablock) {
-		this.desabledatablock = desabledatablock;
-	}
-
-	public void setDesablecreate(boolean desablecreate) {
+    public void setDesablecreate(boolean desablecreate) {
         this.desablecreate = desablecreate;
     }
 
