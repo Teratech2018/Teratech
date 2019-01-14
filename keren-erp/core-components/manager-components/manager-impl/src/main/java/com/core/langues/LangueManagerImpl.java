@@ -34,7 +34,7 @@ public class LangueManagerImpl
 {
 
     @EJB(name = "LangueDAO")
-    protected LangueDAOLocal dao;
+    protected LangueDAOLocal dao ;
     
     @EJB(name = "TermeDAO")
     protected TermeDAOLocal termedao;
