@@ -8,8 +8,11 @@ package com.core.langues;
 import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -47,6 +50,12 @@ public class Langue extends BaseElement implements Serializable,Comparable<Langu
     
     @Predicate(label = "Format de l'heure",search = true)
     private String formatHeure;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date visited ;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified ;
 
     /**
      * 
@@ -149,6 +158,24 @@ public class Langue extends BaseElement implements Serializable,Comparable<Langu
     public void setFormatHeure(String formatHeure) {
         this.formatHeure = formatHeure;
     }
+
+    public Date getVisited() {
+        return visited;
+    }
+
+    public void setVisited(Date visited) {
+        this.visited = visited;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+    
+    
 
     @Override
     public String getDesignation() {

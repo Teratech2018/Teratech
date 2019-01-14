@@ -133,8 +133,8 @@
 		</div>
 		<div id="navbar2" class="navbar-collapse collapse">					 
 			<ul class="nav navbar-nav navbar-left"  ng-repeat="menu in currentModule.groups"  ng-hide="menu.showmenu==false"> 
-				  <li  class="dropdown">
-					  <a  id="menu{{menu.id}}" data-target="#" data-toggle="dropdown" 
+				  <li  class="dropdown" ng-class="{'active':menu.name==currentMenu.name}">
+					  <a  id="menu{{menu.id}}" data-target="#" data-toggle="dropdown"  ng-click="setSelectGroupMenu(menu)"
 						  aria-haspopup="true" role="button" aria-expanded="true">
 							{{menu.label | translate}}
 						   <span class="caret"></span>

@@ -18,7 +18,7 @@ import javax.persistence.Lob;
  */
 public class SendCommandForm extends BaseElement implements Serializable,Comparable<SendCommandForm>{
 
-    @Predicate(label = "DEMANDEPR",search = true,editable = false,type = DemandePrix.class,target = "many-to-one")
+    @Predicate(label = "DEMANDEPR",search = true,editable = false,type = BonCommande.class,target = "many-to-one")
     private BonCommande commande ;
     
     @Predicate(label = "Concerne",target = "richeditor",group = true,groupName = "group1",groupLabel = "MESSAGE")

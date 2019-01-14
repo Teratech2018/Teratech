@@ -8,6 +8,7 @@ package com.core.application;
 import com.core.calendar.EventManagerLocal;
 import com.core.email.EmailManagerLocal;
 import com.core.importexport.ExportManagerLocal;
+import com.core.langues.LangueManagerLocal;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,7 +33,8 @@ public class StartupBean {
     @EJB(name = "EmailManager")
     protected EmailManagerLocal emailManager;
     
-    
+    @EJB(name = "LangueManager")
+    protected LangueManagerLocal langueManager;
     
     public final long EVENTDURATION=10000;//10 seconds 
     
@@ -58,6 +60,9 @@ public class StartupBean {
         }catch(Exception ex){;}
         
         exportManager.scheduleDBExporterManager(today, EVENTDURATION);
+        
+        //Demarrage du service internationalisation
+        langueManager.scheduleEventManager(today, EVENTDURATION);
     }
     @PreDestroy
     public void terminate() {

@@ -8,6 +8,7 @@ package com.kerem.core;
 import com.core.application.Manifest;
 import com.core.menus.MenuModule;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kerem.genarated.CalendarRecord;
 import com.kerem.genarated.DashboardRecord;
 import com.kerem.genarated.FormRecord;
@@ -23,11 +24,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -710,6 +714,29 @@ public class FileHelper {
         }//end if(node.getNodeType()==Node.ELEMENT_NODE){
 //        return node ;
     }
-    
-    
+    /**
+     * 
+     * @param filename
+     * @return 
+     */
+    public static Map<String , String> getFromJsonFile(String filename) throws FileNotFoundException, IOException{
+        Gson gson = new Gson();
+        Map<String , String> map = new HashMap<String , String>();
+        BufferedReader sysreader = new BufferedReader(new FileReader(filename));
+        StringBuilder builder = new StringBuilder();
+        String ligne = null;
+        do{
+            ligne = sysreader.readLine();
+            if(ligne!=null){
+                builder.append(ligne);
+            }//end if(ligne!=null){
+        }while(ligne!=null);
+        sysreader.close();
+        if(!builder.toString().isEmpty()){
+            Type mapType = new TypeToken<Map<String, String>>(){}.getType();  
+             map = gson.fromJson(builder.toString(),mapType);
+        }
+        System.out.println(FileHelper.class.toString()+" ======================================================== "+builder.toString()+" ==== Map : "+map);
+        return map;
+    }
 }

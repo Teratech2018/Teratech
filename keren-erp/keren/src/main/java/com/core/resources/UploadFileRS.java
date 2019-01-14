@@ -9,8 +9,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -34,4 +36,13 @@ public interface UploadFileRS {
     @Produces("text/plain")
     public String getTextFileContaint(@Context HttpHeaders headers ,@PathParam("filename") String filename);
     
+    @GET
+    @Path("json/{filename}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response downloadJsonFile(@Context HttpHeaders headers ,@PathParam("filename") String filename);
+    
+    @GET
+    @Path("translate")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response translate(@Context HttpHeaders headers ,@QueryParam("lang") String lang);
 }

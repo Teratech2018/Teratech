@@ -20,7 +20,9 @@ import com.core.menus.MenuModule;
 import com.core.menus.MenuModuleDAOLocal;
 import com.core.templates.Template;
 import com.core.templates.TemplateDAOLocal;
+import com.google.gson.Gson;
 import com.kerem.commons.KerenSession;
+import com.kerem.core.FileHelper;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,6 +157,7 @@ public class UtilisateurManagerImpl
      * @return 
      */
     public Map<String,String> buildTranslateMap(Langue langue){
+        Gson gson = new Gson();
         Map<String,String> map = new HashMap<String,String>();
         RestrictionsContainer container = RestrictionsContainer.newInstance();
         container.addEq("langue", langue);
@@ -162,6 +165,10 @@ public class UtilisateurManagerImpl
         for(Terme terme:termes){
             map.put(terme.getOrign(), terme.getTraduc());
         }//end for(Terme terme:termes){
+        String jsdata = gson.toJson(map, Map.class);
+        System.out.println(UtilisateurManagerImpl.class.toString()+".buildTranslateMap(Langue langue) ====== "+jsdata);
+        StringBuilder builder = new StringBuilder();
+//        builder.append(FileHelper.get)
         return map;
     }
     
@@ -180,7 +187,7 @@ public class UtilisateurManagerImpl
         /**
          * Initialisation of Traduction cache
          */
-        KerenSession.setTraductMap(buildTranslateMap(utilisateur.getLangue()));
+//        KerenSession.setTraductMap(buildTranslateMap(utilisateur.getLangue()));
         /**
          * Traitement du module
          */

@@ -6,6 +6,9 @@
 package com.kerem.commons;
 
 import com.core.securites.Utilisateur;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +22,14 @@ public class KerenSession {
     
     private static Map<String,String> traductMap = new HashMap<String,String>();
 
+    /**
+     * 
+     */
+    private KerenSession() {
+    }
+
+    
+    
     /**
      * 
      * @return 
@@ -41,7 +52,7 @@ public class KerenSession {
      */
     public static void setTraductMap(Map<String, String> traductMap) {
         KerenSession.traductMap = traductMap;
-        System.out.println(KerenSession.class.toString()+" ==================================== "+traductMap);
+//        System.out.println(KerenSession.class.toString()+" ==================================== "+traductMap);
     }
     
     /**
@@ -59,7 +70,7 @@ public class KerenSession {
      * @return 
      */
     public static String getEntry(String key){
-        return KerenSession.traductMap.get(key);
+        return key ; //KerenSession.traductMap.get(key);
     }
     
     /**
@@ -69,5 +80,26 @@ public class KerenSession {
      */
     public static Boolean containKey(String key){
         return KerenSession.traductMap.containsKey(key);
+    }
+
+    public static Map<String, String> getTraductMap() {
+//        newInstance();
+        return traductMap;
+    }
+    
+    /**
+     * 
+     */
+    private static  void newInstance(){
+        if(traductMap==null || traductMap.isEmpty()){
+            Client client = Client.create();
+            WebResource webResource = client.resource("http://localhost/kerencore/terme/traduction");
+            ClientResponse response = webResource.accept("application/json")
+                    .get(ClientResponse.class);
+            String output = response.getEntity(String.class);
+
+		System.out.println("Output from Server .... \n");
+		System.out.println(output);
+        }//end if(traductMap==null){
     }
 }

@@ -33,7 +33,7 @@ public class Terme extends BaseElement implements Serializable,Comparable<Terme>
     @ManyToOne
     @JoinColumn(name = "LANG_ID")
     @Predicate(label = "Langue",type = Langue.class,target = "many-to-one",search = true)
-    @Filter(value = "[{\"fieldName\":\"codeISO\",\"value\":\"fr\",\"operator\":\"!=\"}]")
+//    @Filter(value = "[{\"fieldName\":\"codeISO\",\"value\":\"fr\",\"operator\":\"!=\"}]")
     private Langue  langue ;
 
     /**

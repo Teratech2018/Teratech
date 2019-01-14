@@ -292,6 +292,23 @@ angular.module('keren.core.commons')
                     }
                     
                 },
+                /***
+                 * 
+                 * */
+                printer : function(report_id){
+                    var mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=100');
+                    mywindow.document.write('<html><head><style>@media print {footer {page-break-after: always;}}</style>');
+                    mywindow.document.write('</head><body >');
+                    mywindow.document.write(document.getElementById(report_id).innerHTML);
+                    mywindow.document.write('</body></html>');
+
+                    mywindow.document.close(); // necessary for IE >= 10
+                    mywindow.focus(); // necessary for IE >= 10*/
+
+                    mywindow.print();
+                    mywindow.close();
+                    document.getElementById(report_id).innerHTML = "";
+                },
                 backtocore : function(scope){
                      var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/keren";
                      var key = $('#website_cache').attr('value');
@@ -1929,7 +1946,7 @@ angular.module('keren.core.commons')
                     var headElem = document.createElement("div");
                     divElem.appendChild(headElem);
                     headElem.setAttribute("class","panel-heading col-sm-12 col-md-12 dashboard-header");
-                    headElem.appendChild(document.createTextNode(data.label));
+                    headElem.appendChild(document.createTextNode("{{'"+data.label+"' | translate}}"));
                     var actionElem = document.createElement("div");
                     headElem.appendChild(actionElem);
                     actionElem.setAttribute("class","btn-group  dropdown pull-right");
@@ -1963,7 +1980,7 @@ angular.module('keren.core.commons')
                         aElem.setAttribute("tabindex","1");
                         aElem.setAttribute("href","#");
                         aElem.setAttribute("ng-click","showEntrypanel('"+data.code+"','"+entry.code+"')");
-                        aElem.appendChild(document.createTextNode(entry.label));
+                        aElem.appendChild(document.createTextNode("{{'"+entry.label+"' | translate}}"));
                     }//end entries
                     //Body of the dashboard
                     var bodyElem = document.createElement("div");

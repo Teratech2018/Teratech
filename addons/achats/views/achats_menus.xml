@@ -5,7 +5,6 @@
 	 <menuitem id="teratech_achat_bes_1" label="Demandes d'achat" parent_ref="teratech_achat_besion" entity_ref="ExprBesion" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_bes_1_1" label="Demandes d'achat" parent_ref="teratech_achat_besion" entity_ref="DARejet" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
 	 <menu id="teratech_achat_operation" label="Opérations d'achat" parent="teratech_achat" gyphycon="glyphicon glyphicon-pencil"/>
-	 <menuitem id="teratech_achat_ope_1" label="Appels d'offres" parent_ref="teratech_achat_operation" entity_ref="AppelOffre" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_ope_2" label="Demande de prix" parent_ref="teratech_achat_operation" entity_ref="DemandePrix" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_achat_ope_2_1" label="Demande de prix" parent_ref="teratech_achat_operation" entity_ref="SendDPForm" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="true" hide="true"/>
 	 <menuitem id="teratech_achat_ope_2_2" label="Reponses" parent_ref="teratech_achat_operation" entity_ref="ReponseFournisseur" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" hide="true"/>
@@ -35,7 +34,7 @@
 	 <menuitem id="teratech_achat_conf_6" label="Régions .." parent_ref="teratech_achat_configuration" entity_ref="Region" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree"/>
 	 <menuitem id="teratech_achat_conf_7" label="Pays" parent_ref="teratech_achat_configuration" entity_ref="Pays" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="kaban,tree,form"/>
 	 <menuitem id="teratech_achat_conf_8" label="Civilité .." parent_ref="teratech_achat_configuration" entity_ref="Civilite" model_ref="teratechachat" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree"/>
-	 <reportRecord  id="demandeprix_report01" label="Demande de prix" action_ref="teratech_achat_bes_1"  extern="false">
+	 <reportRecord  id="demandeprix_report01" label="Demande de prix" action_ref="teratech_achat_bes_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>
@@ -58,12 +57,13 @@
 							   </tbody>
 						   </table>
 						   <!--ADD_PAGE-->
+						   <footer></footer>
 					   </div>
 				 </div>	  
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="reponse_report01" label="Demande de prix" action_ref="teratech_achat_bes_1"  extern="false">
+	 <reportRecord  id="reponse_report01" label="Demande de prix" action_ref="teratech_achat_bes_1_1"  extern="false">
 	      <search entity="ReponseToCommande" module="teratechachat" method="command">
 		  </search>
 		  <template>
@@ -97,7 +97,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="cmdeach_report01" label="Bon de commande" action_ref="teratech_achat_ope_5"  extern="false">
+	 <reportRecord  id="cmdeach_report01" label="Bon de commande" action_ref="teratech_achat_bes_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>
@@ -129,7 +129,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="bcach_report01" label="Bon de reception" action_ref="teratech_achat_ope_5"  extern="false">
+	 <reportRecord  id="bcach_report01" label="Bon de reception" action_ref="teratech_achat_bes_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>
@@ -158,7 +158,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="breceptionach_report01" label="Bon de reception" action_ref="teratech_achat_ope_5"  extern="false">
+	 <reportRecord  id="breceptionach_report01" label="Bon de reception" action_ref="teratech_achat_bes_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>
@@ -187,7 +187,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="bretourach_report01" label="Bon de reception" action_ref="teratech_achat_ope_5"  extern="false">
+	 <reportRecord  id="bretourach_report01" label="Bon de reception" action_ref="teratech_achat_bes_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>
@@ -216,7 +216,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="factureach_report01" label="Bon de commande" action_ref="teratech_achat_ope_5"  extern="false">
+	 <reportRecord  id="factureach_report01" label="Bon de commande" action_ref="teratech_achat_bes_1_1"  extern="false">
 	      <template>
 		     <![CDATA[			    
 			    <div style="height: 100%;width:100%;">

@@ -4,78 +4,78 @@
  * and open the template in the editor.
  */
 'use strict';
-angular.module('keren.core.website' ,['pascalprecht.translate','keren.core.commons','keren.core.login'])
-        .config(function($translateProvider){
-            //$locationProvider.html5Mode(true);
-        $translateProvider.translations('en',{
-                Creer:'Create',
-                Importer:'Import',
-                Imprimer:'Print',
-                Filtres:'Filter',
-                Quitter:'Exit',
-                PJ:'Attachement(s)',
-                Actions:'Actions',
-                Enregistrer:'Save',
-                Ajouter:'Add',
-                Exporter:'Export',
-                Modifier:'Update',
-                Supprimer:'Delete',
-                Administration:'Administration',
-                Discussions:'Discussions',
-                Calendrier:'Calendar',
-                Applications:'Applications',
-                Configuration:'Configuration',
-                Documentation:'Documentation',
-                Assistance:'Assistance',
-                Préference:'Preference',
-                UPPWD:'Change the Password',
-                Déconnexion:'Log out',
-                MAIL:'Mailbox',
-                Conversation:'Tchat',
-                Administrateur:'Administrator',
-                EVENTTITLE:'Event Title',
-                Participants:'Participants',
-                EVENTDATE:'Event date',
-                Options:'Options',
-                Nom:'Name',
-                EMAIL:'Mail adrdress',
-                Socièté:'Partner',
-                Description:'Description',
-                BEGINDATETIME:'Start date and time',
-                Rappels:'Reminders',
-                Confidentialite:'Privacy',
-                ALLPEOPLE:'Everybody',
-                ONLYME:'Only me',
-                INNERONLY:'Internal user only',
-                SHOWHOURS:'Show time as',
-                Libre:'Free',
-                Occupée:'Occupied',
-                Duree:'Duration',
-                CALENDAROPTIONS:'Calendar options',
-                ADDELEMENT:'Add an element',
-                Lieu:'Place',
-                ALLDAY:'All day'
-
-            });
-            $translateProvider.translations('fr',{
-                PJ:'Pièce(s) Jointe(s)',
-                UPPWD:'Modifier le Mot de passe',
-                MAIL:'Boîte de réception',
-                EVENTTITLE:'Titre evenement',
-                EVENTDATE:'Date evenement',
-                EMAIL:'Adresse mail',
-                BEGINDATETIME:'Date et heure de debut',
-                ALLPEOPLE:'Tout le monde',
-                ONLYME:'Moi seulement',
-                INNERONLY:'Utilisateur interne seulement',
-                SHOWHOURS:'Afficher heure comme',
-                CALENDAROPTIONS:'Options du calendrier',
-                ADDELEMENT:'Ajouter un element',
-                ALLDAY:'Toute la journee'
-            });
-            $translateProvider.preferredLanguage('fr');
-           
-        });
+angular.module('keren.core.website' ,['pascalprecht.translate','keren.core.commons','keren.core.login']);
+//        .config(function($translateProvider){
+//            //$locationProvider.html5Mode(true);
+//        $translateProvider.translations('en',{
+//                Creer:'Create',
+//                Importer:'Import',
+//                Imprimer:'Print',
+//                Filtres:'Filter',
+//                Quitter:'Exit',
+//                PJ:'Attachement(s)',
+//                Actions:'Actions',
+//                Enregistrer:'Save',
+//                Ajouter:'Add',
+//                Exporter:'Export',
+//                Modifier:'Update',
+//                Supprimer:'Delete',
+//                Administration:'Administration',
+//                Discussions:'Discussions',
+//                Calendrier:'Calendar',
+//                Applications:'Applications',
+//                Configuration:'Configuration',
+//                Documentation:'Documentation',
+//                Assistance:'Assistance',
+//                Préference:'Preference',
+//                UPPWD:'Change the Password',
+//                Déconnexion:'Log out',
+//                MAIL:'Mailbox',
+//                Conversation:'Tchat',
+//                Administrateur:'Administrator',
+//                EVENTTITLE:'Event Title',
+//                Participants:'Participants',
+//                EVENTDATE:'Event date',
+//                Options:'Options',
+//                Nom:'Name',
+//                EMAIL:'Mail adrdress',
+//                Socièté:'Partner',
+//                Description:'Description',
+//                BEGINDATETIME:'Start date and time',
+//                Rappels:'Reminders',
+//                Confidentialite:'Privacy',
+//                ALLPEOPLE:'Everybody',
+//                ONLYME:'Only me',
+//                INNERONLY:'Internal user only',
+//                SHOWHOURS:'Show time as',
+//                Libre:'Free',
+//                Occupée:'Occupied',
+//                Duree:'Duration',
+//                CALENDAROPTIONS:'Calendar options',
+//                ADDELEMENT:'Add an element',
+//                Lieu:'Place',
+//                ALLDAY:'All day'
+//
+//            });
+//            $translateProvider.translations('fr',{
+//                PJ:'Pièce(s) Jointe(s)',
+//                UPPWD:'Modifier le Mot de passe',
+//                MAIL:'Boîte de réception',
+//                EVENTTITLE:'Titre evenement',
+//                EVENTDATE:'Date evenement',
+//                EMAIL:'Adresse mail',
+//                BEGINDATETIME:'Date et heure de debut',
+//                ALLPEOPLE:'Tout le monde',
+//                ONLYME:'Moi seulement',
+//                INNERONLY:'Utilisateur interne seulement',
+//                SHOWHOURS:'Afficher heure comme',
+//                CALENDAROPTIONS:'Options du calendrier',
+//                ADDELEMENT:'Ajouter un element',
+//                ALLDAY:'Toute la journee'
+//            });
+//            $translateProvider.preferredLanguage('fr');
+//           
+//        });
 angular.module('keren.core.website')
         .controller('WebSiteCtrl',['$rootScope','$scope','$translate','$timeout','$location','$http','$compile','authenticationService','commonsTools','backendService'
         , function($rootScope,$scope,$translate,$timeout,$location,$http, $compile, authenticationService,commonsTools,backendService){

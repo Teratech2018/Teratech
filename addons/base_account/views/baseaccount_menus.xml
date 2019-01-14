@@ -17,7 +17,7 @@
 	 <menuitem id="base_account_16" label="Interrogation tier" parent_ref="base_account_operations" entity_ref="EcritureTier" model_ref="baseaccount" gyphycon="glyphicon glyphicon-list-alt" />
 	 <menu id="base_account_compta" label="Comptabilité" parent="base_account" gyphycon="glyphicon glyphicon-plus"/>
 	 <menuitem id="base_account_01" label="Plan Comptable" parent_ref="base_account_compta" entity_ref="Compte" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th">
-	      <action id="plc_01" type="action" name="plc_name01" label="Action 1" value="{'name':'update_pwd'}"/>
+	      <action id="plc_01" type="action" name="plc_name01" label="Action 1" value="{'name':'update_pwd'}" roles="comptable"/>
 		  <action id="plc_02" type="object" name="plc_name02" label="Action 2" value="{'model':'email','entity':'mail','method':'sendmail','template':{'object':'Modification de mot de passe','source':'user.courriel','cible':'object.courriel','message':'Votre mot de passe est @object.password'}}"/>
 	 </menuitem>
 	 <menuitem id="base_account_02" label="Plan Analytique" parent_ref="base_account_compta" entity_ref="CompteAnalytique" model_ref="baseaccount" gyphycon="glyphicon glyphicon-th-list" report="base_account_report04"/>
