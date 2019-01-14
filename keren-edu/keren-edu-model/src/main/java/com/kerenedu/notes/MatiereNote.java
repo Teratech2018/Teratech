@@ -59,7 +59,7 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name = "PROF")
-	@Predicate(label="PROF",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=4,colsequence=2	,editable=false, searchfields="prof.nom")
+	@Predicate(label="ENSEIGNANT",updatable=true,type=Professeur.class , target="many-to-one",search=true , sequence=4,colsequence=2	,editable=false, searchfields="prof.nom")
 	@Observer(observable = "matiere", source = "field:proffesseur")
 	protected Professeur prof;
 

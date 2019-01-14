@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+import com.kerenedu.personnel.EnseignantSecondaire;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -107,11 +108,17 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return code;
+	}
+	
+
 	public int compareTo(RubriquePaie o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)o.getId();
 	}
-
 	public String getCode() {
 		return code;
 	}

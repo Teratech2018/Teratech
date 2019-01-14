@@ -169,6 +169,7 @@ public class BulletinPaieRSImpl
 //         	 System.out.println("BulletinPaieRSImpl.buildPdfReport() bulletin select is "+bulletin.getEmploye().getNom());
          	 records.add(bulletin);
                String URL = ReportHelper.templatepaieURL+ReportsName.BULLETIN_PAIE.getName();
+               System.out.println("BulletinPaieRSImpl.buildPdfReport() url "+URL);
                Map parameters = this.getReportParameters();
                return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters,
             		   records);
@@ -181,6 +182,12 @@ public class BulletinPaieRSImpl
   
          return Response.noContent().build();
      }
+
+	@Override
+	public Response printbulletinBi(HttpHeaders headers, BulletinPaie bulletin) {
+		// TODO Auto-generated method stub
+		return this.printbulletin(headers, bulletin);
+	}
      
 // 	public Response buildPdfReportLot(BulletinPaie entity) {
 // 		entity.setPeriode(CacheMemory.getPeriode());

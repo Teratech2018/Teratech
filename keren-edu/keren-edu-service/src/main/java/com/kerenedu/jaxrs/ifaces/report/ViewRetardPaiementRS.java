@@ -6,7 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.kerenedu.model.report.ViewDltPaiementModal;
 import com.kerenedu.model.report.ViewRetardPaiement;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
@@ -19,6 +18,10 @@ import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 public interface ViewRetardPaiementRS
     extends GenericService<ViewRetardPaiement, Long>
 {
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("bi/pdf")
+	public Response buildPdfReportbi(ViewRetardPaiement entity) ;
 	@PUT
     @Produces({"application/pdf"})
     @Path("pdf")

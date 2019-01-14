@@ -127,6 +127,18 @@ public class ViewMatiereClasseModalRSImpl
     
     return Response.noContent().build();
   }
+
+@Override
+public Response buildPdfReportbi(ViewMatiereClasseModal paramViewMatiereClasseModal) {
+	// TODO Auto-generated method stub
+	return this.buildPdfReport(paramViewMatiereClasseModal);
+}
+
+@Override
+public Response fichenotesbi(ViewMatiereClasseModal paramViewMatiereClasseModal) {
+	// TODO Auto-generated method stub
+	return this.fichenotes(paramViewMatiereClasseModal);
+}
 }
  
    

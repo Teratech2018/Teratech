@@ -73,6 +73,7 @@ public class BaseElement implements Serializable{
      
 
     public BaseElement() {
+    	  this.desabledatablock=false;
     }
 
    /**
@@ -87,6 +88,7 @@ public class BaseElement implements Serializable{
         this.designation = designation;
         this.moduleName = moduleName;
         this.compareid = comparedid ;
+        this.desabledatablock=false;
     }
 
     public long getCompareid() {

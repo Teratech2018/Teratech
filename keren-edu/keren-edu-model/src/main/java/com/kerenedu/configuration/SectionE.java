@@ -114,6 +114,11 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 		return libelle;
 	}
 
+	@Override
+	public boolean isCreateonfield() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	
 	public int compareTo(SectionE o) {

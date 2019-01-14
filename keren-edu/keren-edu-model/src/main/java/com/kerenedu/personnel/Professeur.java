@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Etablissement;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.solde.Banque;
 import com.kerenedu.solde.Categorie;
 import com.kerenedu.solde.Echellon;
@@ -706,9 +707,17 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	}
 
 
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return matricule+","+nom;
+	}
+	
+
 	public int compareTo(Professeur o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)o.getId();
 	}
+
 
 }

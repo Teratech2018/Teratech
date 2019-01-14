@@ -66,7 +66,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
-	@Predicate(label = "Type Bulletin", updatable = false, type = Examen.class, target = "many-to-one", sequence = 4, search=true)
+	@Predicate(label = "SEQUENCE CONCERNES", updatable = false, type = Examen.class, target = "many-to-one", sequence = 4, search=true)
 	protected Examen model;
 	
 //	@ManyToOne

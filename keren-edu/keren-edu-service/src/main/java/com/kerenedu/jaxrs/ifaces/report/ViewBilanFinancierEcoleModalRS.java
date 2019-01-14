@@ -22,6 +22,11 @@ public interface ViewBilanFinancierEcoleModalRS
     @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewBilanFinancierEcoleModal entity);
+	
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewBilanFinancierEcoleModal entity);
 
 
 }

@@ -109,4 +109,10 @@ public class ViewAnniversaireRSImpl
       return Response.noContent().build();
   }
 
+	@Override
+	public Response buildPdfReportbi(ViewAnniversaire entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
 }

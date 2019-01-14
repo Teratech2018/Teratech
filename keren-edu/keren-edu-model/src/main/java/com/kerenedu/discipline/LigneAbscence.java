@@ -193,10 +193,7 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 		return hash;
 	}
 
-	public int compareTo(LigneAbscence o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 	@Override
 	public String getEditTitle() {
@@ -365,6 +362,17 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 		return this.id + "";
 	}
 
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return matricule+","+nom;
+	}
+	
+
+	public int compareTo(LigneAbscence o) {
+		// TODO Auto-generated method stub
+		return (int)o.getId();
+	}
 
 
 }

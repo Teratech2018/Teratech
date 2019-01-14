@@ -122,5 +122,11 @@ public class ViewListeEleveRSImpl
       return Response.noContent().build();
   }
 
+	@Override
+	public Response buildPdfReportbi(ViewListeEleve entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
 
 }

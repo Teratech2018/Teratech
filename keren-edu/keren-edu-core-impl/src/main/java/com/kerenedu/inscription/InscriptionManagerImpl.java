@@ -297,8 +297,8 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 	
 	public boolean samefiliere(Inscription old, Inscription nouveau){
 		boolean value = false;
-		System.out.println("InscriptionRSImpl.samefiliere() old classe"+old.getClasse().getLibelle());
-		System.out.println("InscriptionRSImpl.samefiliere() nouveau classe"+nouveau.getClasse().getLibelle());
+		//System.out.println("InscriptionRSImpl.samefiliere() old classe"+old.getClasse().getLibelle());
+		//System.out.println("InscriptionRSImpl.samefiliere() nouveau classe"+nouveau.getClasse().getLibelle());
 		if(old.getClasse().getFiliere().getId()==nouveau.getClasse().getFiliere().getId()){
 			value=true;
 		}else{

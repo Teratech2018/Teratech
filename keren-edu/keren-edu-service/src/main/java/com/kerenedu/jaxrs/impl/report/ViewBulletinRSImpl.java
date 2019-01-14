@@ -111,4 +111,10 @@ public class ViewBulletinRSImpl
         return Response.noContent().build();
     }
 
+	@Override
+	public Response buildPdfReportbi(ViewBulletin eleveSearch) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(eleveSearch);
+	}
+
 }

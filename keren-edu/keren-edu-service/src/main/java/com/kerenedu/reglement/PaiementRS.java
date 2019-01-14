@@ -45,6 +45,17 @@ public interface PaiementRS extends GenericService<Paiement, Long> {
 	@Produces({ "application/pdf" })
 	@Path("pdf")
 	public Response buildPdfReport(Paiement entity);
+	
+	@PUT
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ "application/pdf" })
+	@Path("bi/facture")
+	public Response facturebi(@Context HttpHeaders headers, Paiement entity);
+
+	@PUT
+	@Produces({ "application/pdf" })
+	@Path("bi/pdf")
+	public Response buildPdfReportbi(Paiement entity);
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })

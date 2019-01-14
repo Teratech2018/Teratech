@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.personnel.Professeur;
 import com.kerenedu.personnel.Professeurclone;
 import com.megatim.common.annotations.Predicate;
@@ -146,16 +147,22 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 		this.responsable = responsable;
 	}
 
-
-	public int compareTo(Cycle o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	@Override
 	public boolean isCreateonfield() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return libelle;
+	}
+	
+
+	public int compareTo(Cycle o) {
+		// TODO Auto-generated method stub
+		return (int)o.getId();
 	}
 
 }

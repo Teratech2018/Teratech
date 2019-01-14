@@ -29,5 +29,16 @@ public interface ViewEmargementRS
     @Produces({"application/pdf"})
     @Path("planning")
     public Response buildPdfReportplanning(ViewEmargement entity);
+	
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewEmargement entity);
+	
+
+	@PUT
+    @Produces({"application/pdf"})
+    @Path("bi/planning")
+    public Response buildPdfReportplanningbi(ViewEmargement entity);
 
 }

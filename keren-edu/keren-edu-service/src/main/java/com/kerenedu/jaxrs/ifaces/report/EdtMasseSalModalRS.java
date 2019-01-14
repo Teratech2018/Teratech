@@ -29,19 +29,19 @@ public interface EdtMasseSalModalRS extends GenericService<EdtMasseSalModal, Lon
 	@PUT
 	@Produces({ "application/pdf" })
 	@Consumes({MediaType.APPLICATION_JSON})
-	@Path("pdf")
+	@Path("bi/pdf")
 	public Response buildPdfReport(EdtBulletinModal entity, @Context HttpHeaders headers);
 	
 	@PUT
 	@Produces({ "application/pdf" })
 	@Consumes({MediaType.APPLICATION_JSON})
-	@Path("trim")
+	@Path("bi/trim")
 	public Response buildPdfReportTrim(EdtBulletinModal entity, @Context HttpHeaders headers);
 	
 	@PUT
 	@Produces({ "application/pdf" })
 	@Consumes({MediaType.APPLICATION_JSON})
-	@Path("ann")
+	@Path("bi/ann")
 	public Response buildPdfReportAnn(EdtBulletinModal entity, @Context HttpHeaders headers);
 
 	@GET

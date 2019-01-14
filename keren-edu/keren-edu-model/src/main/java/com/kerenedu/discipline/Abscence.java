@@ -25,6 +25,7 @@ import com.core.base.State;
 import com.core.tools.DateHelper;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.notes.Examen;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
@@ -191,13 +192,6 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 		this.abscences = abscences;
 	}
 
-
-
-
-	public int compareTo(Abscence o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -289,6 +283,12 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 		return true;
 	}
 	
+
+	public int compareTo(Abscence o) {
+		// TODO Auto-generated method stub
+		return (int)o.getId();
+	}
+
 	
 
 }

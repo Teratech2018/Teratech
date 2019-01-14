@@ -35,6 +35,12 @@ public interface BulletinPaieRS
     @Path("print")
     public Response printbulletin(@Context HttpHeaders headers,BulletinPaie bulletin);
 	
+	@PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({"application/pdf"})
+    @Path("bi/print")
+    public Response printbulletinBi(@Context HttpHeaders headers,BulletinPaie bulletin);
+	
 //	@PUT
 //    @Produces({"application/pdf"})
 //    @Path("pdf")

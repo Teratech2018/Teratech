@@ -21,8 +21,13 @@ public interface ViewCouponsInformationRS
 {
 	@PUT
     @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewCouponsInformation entity);
+
+	
+	@PUT
+    @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewCouponsInformation entity);
-
 
 }

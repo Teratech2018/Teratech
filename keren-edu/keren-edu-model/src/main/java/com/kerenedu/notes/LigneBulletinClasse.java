@@ -17,6 +17,7 @@ import com.core.base.BaseElement;
 import com.kerenedu.configuration.GroupeCours;
 import com.kerenedu.configuration.Matiere;
 import com.kerenedu.configuration.MatiereDlt;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.model.report.ViewNoteHelper;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
@@ -508,9 +509,12 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		return true;
 	}
 
+	
+
 	public int compareTo(LigneBulletinClasse o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)o.getId();
 	}
+
 
 }

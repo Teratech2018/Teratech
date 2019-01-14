@@ -38,6 +38,11 @@ public interface ViewBulletinRS extends GenericService<ViewBulletin, Long>
     
     @PUT
     @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewBulletin eleveSearch);
+    
+    @PUT
+    @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewBulletin eleveSearch);
 

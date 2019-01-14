@@ -115,4 +115,10 @@ public class ViewDltPaiementModalRSImpl extends AbstractGenericService<ViewDltPa
 		return Response.noContent().build();
 	}
 
+	@Override
+	public Response buildPdfReportbi(ViewDltPaiementModal entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
 }

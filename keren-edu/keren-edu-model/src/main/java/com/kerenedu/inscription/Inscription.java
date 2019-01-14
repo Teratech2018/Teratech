@@ -25,11 +25,9 @@ import javax.persistence.Transient;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.configuration.ClasseCycle;
 import com.kerenedu.configuration.SectionE;
 import com.kerenedu.model.report.ViewBadgeModal;
 import com.kerenedu.reglement.FichePaiement;
-import com.kerenedu.reglement.FichePaiementOptionel;
 import com.kerenedu.school.Eleve;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
@@ -57,23 +55,23 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "SECTION_ID")
-	@Predicate(label = "Section", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true, updatable=true)
+	@Predicate(label = "SECTION", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true, updatable=true)
 	private SectionE section;
 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 4)
+	@Predicate(label = "CLASSE", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 4)
 	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	//@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"section.id\"}]")
 	protected Classe classe;
 
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
-	@Predicate(label = "Elève", updatable = true, type = Eleve.class, target = "many-to-one", search = false, sequence = 3, searchfields = "matricule", colsequence = 3,optional = false)
+	@Predicate(label = "ELEVE", updatable = true, type = Eleve.class, target = "many-to-one", search = false, sequence = 3, searchfields = "matricule", colsequence = 3,optional = false)
 	protected Eleve eleve;
 
 	@Column(name = "STATUT")
-	@Predicate(label = "Statut Elève", optional = false, updatable = true, search = false, target = "combobox", values = "Redoublant(e);Non Redoublant(e)", sequence = 3)
+	@Predicate(label = "STATUT ELEVE", optional = false, updatable = true, search = false, target = "combobox", values = "Redoublant(e);Non Redoublant(e)", sequence = 3)
 	protected String satut = "0";
 
 	@Column(name = "DATE_INS")
@@ -90,7 +88,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	protected Long zMntPaye;
 
 	@Column(name = "SOLDE")
-	@Predicate(label = "SOLDE ", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 8, colsequence = 8)
+	@Predicate(label = "SOLDE ", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 8, colsequence = 8,editable = false)
 	protected Long zSolde;
 
 	@Column(name = "REMISE")
@@ -98,7 +96,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	protected Long zRemise;
 
 	@Column(name = "RISTOURNE")
-	@Predicate(label = "RISTOURNE", optional = true, updatable = false, search = false, type = BigDecimal.class, sequence = 10)
+	@Predicate(label = "RISTOURNE", optional = true, updatable = false, search = false, type = BigDecimal.class, sequence = 10,editable = false)
 	protected Long zRistourne;
 
 	@Column(name = "TOTAL")
@@ -107,7 +105,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "FICHE_PAIE_ID")
-	@Predicate(label = "Service Obligatoire", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2,
+	@Predicate(label = ".", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2,
 	group = true, groupLabel = "Profil Financier de l' élève", groupName = "tab1")
 	@Observer(observable = "classe", source = "method:findserviceclasse")
 	protected List<FichePaiement> service;
@@ -292,10 +290,6 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		return hash;
 	}
 
-	public int compareTo(Inscription o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public String getEditTitle() {
@@ -438,6 +432,18 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	public boolean isCreateonfield() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return matricule+","+nom+","+classe.getLibelle();
+	}
+	
+
+	public int compareTo(Inscription o) {
+		// TODO Auto-generated method stub
+		return (int)o.getId();
 	}
 
 }

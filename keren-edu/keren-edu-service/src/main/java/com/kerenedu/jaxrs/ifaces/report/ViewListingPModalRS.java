@@ -20,8 +20,14 @@ public interface ViewListingPModalRS
 {
 	@PUT
     @Produces({"application/pdf"})
+    @Path("bi/pdf")
+    public Response buildPdfReportbi(ViewListingPModal entity);
+	
+	@PUT
+    @Produces({"application/pdf"})
     @Path("pdf")
     public Response buildPdfReport(ViewListingPModal entity);
+
 
 
 }

@@ -139,4 +139,10 @@ public class EdtBulletinAnnModalRSImpl
     
     return Response.noContent().build();
   }
+
+@Override
+public Response buildPdfReportAnnbi(EdtBulletinAnnModal paramEdtBulletinAnnModal, HttpHeaders paramHttpHeaders) {
+	// TODO Auto-generated method stub
+	return this.buildPdfReportAnn(paramEdtBulletinAnnModal, paramHttpHeaders);
+}
 }

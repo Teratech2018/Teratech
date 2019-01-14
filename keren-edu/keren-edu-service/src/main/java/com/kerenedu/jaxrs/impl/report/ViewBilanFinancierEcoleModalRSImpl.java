@@ -107,4 +107,10 @@ public class ViewBilanFinancierEcoleModalRSImpl
       return Response.noContent().build();
   }
 
+	@Override
+	public Response buildPdfReportbi(ViewBilanFinancierEcoleModal entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
 }

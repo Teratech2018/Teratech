@@ -119,4 +119,10 @@ public class ViewBilanServiceModalRSImpl
       return Response.noContent().build();
   }
 
+	@Override
+	public Response buildPdfReportbi(ViewBilanServiceModal entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
 }

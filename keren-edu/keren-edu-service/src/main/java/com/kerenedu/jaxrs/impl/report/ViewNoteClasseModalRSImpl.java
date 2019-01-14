@@ -133,4 +133,10 @@ public class ViewNoteClasseModalRSImpl
     
     return Response.noContent().build();
   }
+
+@Override
+public Response buildPdfReportbi(ViewNoteClasseModal paramViewNoteClasseModal) {
+	// TODO Auto-generated method stub
+	return this.buildPdfReport(paramViewNoteClasseModal);
+}
 }

@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.inscription.Inscription;
 import com.kerenedu.school.Eleve;
 
 import com.megatim.common.annotations.Predicate;
@@ -172,11 +173,18 @@ public class Presence extends BaseElement implements Serializable, Comparable<Pr
 		hash = 79 * hash + Objects.hashCode(this.id);
 		return hash;
 	}
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+	
 
 	public int compareTo(Presence o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)o.getId();
 	}
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub

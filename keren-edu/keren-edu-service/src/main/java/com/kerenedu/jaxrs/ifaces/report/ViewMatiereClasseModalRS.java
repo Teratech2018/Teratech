@@ -19,4 +19,15 @@ public abstract interface ViewMatiereClasseModalRS
   @Produces({"application/pdf"})
   @Path("note")
   public abstract Response fichenotes(ViewMatiereClasseModal paramViewMatiereClasseModal);
+  
+  
+  @PUT
+  @Produces({"application/pdf"})
+  @Path("bi/pdf")
+  public abstract Response buildPdfReportbi(ViewMatiereClasseModal paramViewMatiereClasseModal);
+  
+  @PUT
+  @Produces({"application/pdf"})
+  @Path("bi/note")
+  public abstract Response fichenotesbi(ViewMatiereClasseModal paramViewMatiereClasseModal);
 }
