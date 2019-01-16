@@ -5,8 +5,6 @@
  */
 package com.basaccount.jaxrs;
 
-import com.basaccount.jaxrs.impl.dashboard.ComptaDashboardRSImpl;
-import com.basaccount.jaxrs.impl.search.EcritureSearchRSImpl;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -55,6 +53,8 @@ public class ApplicationConfig extends Application {
         resources.add(com.basaccount.jaxrs.impl.tiers.ConditionPaiementRSImpl.class);
         resources.add(com.basaccount.jaxrs.impl.tiers.ContactRSImpl.class);
         resources.add(com.basaccount.jaxrs.impl.tiers.TierRSImpl.class);
+        resources.add(com.basaccount.jaxrs.impl.ventes.FactureVenteRSImpl.class);
+        resources.add(com.basaccount.jaxrs.impl.ventes.NoteFraisVenteRSImpl.class);
     }
     
 }

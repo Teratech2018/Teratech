@@ -98,7 +98,7 @@ public class FactureRSImpl
             meta.getHeader().add(workbtn);           
             workbtn = new MetaColumn("button", "work5", "Annuler", false, "workflow", null);
             workbtn.setValue("{'model':'teratechachat','entity':'facture','method':'annule','critical':true,'alert':'Voulez vous revenir au status précédent ?'}");
-            workbtn.setStates(new String[]{"confirme","transfere"});
+            workbtn.setStates(new String[]{"confirme"});
             meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);

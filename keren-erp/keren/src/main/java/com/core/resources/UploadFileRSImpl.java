@@ -101,5 +101,51 @@ public class UploadFileRSImpl  implements UploadFileRS{
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
+
+    @Override
+    public Response downloadJsonFile(HttpHeaders headers, String filename) {
+        //To change body of generated methods, choose Tools | Templates.
+         try{
+                Gson gson = new Gson();
+//                String _module = null;
+                 FileHelper.setCurrentModule(null);
+//                if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+//                    _module = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
+//                    FileHelper.setCurrentModule(null);
+//                }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+//                if(_module!=null && !_module.isEmpty()){
+//                    FileHelper.setCurrentModule(_module);
+//                }//end if(_module!=null && !_module.isEmpty()){
+//                FileHelper.setCurrentModule(_module);
+                String resourceDir = FileHelper.getStaticDirectory()+File.separator+filename;
+                File file = new File(resourceDir);
+                if(file.exists()){
+                    return CommonTools.getText(file,file.getName());
+                }else{
+                    return null;
+                }//end if(file.exists())
+        }catch(Exception ex){
+            throw new WebApplicationException(ex, Response.serverError().build());
+        }
+    }
+
+    @Override
+    public Response translate(HttpHeaders headers, String lang) {
+        //To change body of generated methods, choose Tools | Templates.
+        try{
+//               System.out.println(UploadFileRSImpl.class.toString()+".translate(HttpHeaders headers, String lang) ========================================= language : "+lang);
+                Gson gson = new Gson();
+                FileHelper.setCurrentModule(null);
+                String resourceDir = FileHelper.getConfigDirectory()+File.separator+lang+".json";
+                File file = new File(resourceDir);
+                if(file.exists()){
+                    return CommonTools.getText(file,file.getName());
+                }else{
+                    return null;
+                }//end if(file.exists())
+        }catch(Exception ex){
+            throw new WebApplicationException(ex, Response.serverError().build());
+        }
+    }
     
 }

@@ -108,7 +108,7 @@ public class FactureManagerImpl
          //To change body of generated methods, choose Tools | Templates.
         if(entity.getState().equalsIgnoreCase("confirme")){
             entity.setState("transfere");
-//            entity.setTypedocument(DocumentAchatState.COMPTABILITE);
+            entity.setTypedocument(DocumentAchatState.COMPTABILITE);
         }
         dao.update(entity.getId(), entity);
         return entity;

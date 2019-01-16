@@ -5,26 +5,26 @@
  */
 'use strict';
 angular.module('keren.core.discussion' ,['pascalprecht.translate']);
-angular.module('keren.core.discussion')
-        .config(function($translateProvider){
-             $translateProvider.translations('en',{
-            CANAUX:'CHANNELS',
-            INBOX:'INBOX',
-            MSGEDIRECT:'DIRECT MESSAGES',
-            INPUTMSGE:'Enter your Message',
-            Administrateur:'Administrator',
-            Discussion:'Discuss',
-            INBOX_MSGE_ACTION :'Mark everything as read',
-            NEW_MSGE_ACTION :'New message'
-        });
-        $translateProvider.translations('fr',{
-            MSGEDIRECT:'MESSAGES DIRECT',
-            INPUTMSGE:'Saisir votre Message'  ,
-            INBOX_MSGE_ACTION :'Tout marquer comme lu',
-            NEW_MSGE_ACTION :'Nouveau message'
-        });
-        $translateProvider.preferredLanguage('fr');
-        });
+//angular.module('keren.core.discussion')
+//        .config(function($translateProvider){
+//             $translateProvider.translations('en',{
+//            CANAUX:'CHANNELS',
+//            INBOX:'INBOX',
+//            MSGEDIRECT:'DIRECT MESSAGES',
+//            INPUTMSGE:'Enter your Message',
+//            Administrateur:'Administrator',
+//            Discussion:'Discuss',
+//            INBOX_MSGE_ACTION :'Mark everything as read',
+//            NEW_MSGE_ACTION :'New message'
+//        });
+//        $translateProvider.translations('fr',{
+//            MSGEDIRECT:'MESSAGES DIRECT',
+//            INPUTMSGE:'Saisir votre Message'  ,
+//            INBOX_MSGE_ACTION :'Tout marquer comme lu',
+//            NEW_MSGE_ACTION :'Nouveau message'
+//        });
+//        $translateProvider.preferredLanguage('fr');
+//        });
 angular.module('keren.core.discussion')
         .controller('discussionCtrl' , 
              /**

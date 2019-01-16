@@ -8,6 +8,7 @@ package com.kerem.core;
 import com.core.application.Manifest;
 import com.core.menus.MenuModule;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kerem.genarated.CalendarRecord;
 import com.kerem.genarated.DashboardRecord;
 import com.kerem.genarated.FormRecord;
@@ -18,16 +19,29 @@ import com.kerem.genarated.TreeRecord;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -115,7 +129,12 @@ public class FileHelper {
      * @return 
      */
     public static File getAddonsDirectory(){
-        File binDirectory = FileHelper.getCurrentDirectory();        
+        File binDirectory = FileHelper.getCurrentDirectory();     
+        Properties config = getConfigurations();
+        if(config.containsKey("ADDONS")
+                && !config.getProperty("ADDONS").isEmpty()){
+           return  new File(config.getProperty("ADDONS"));
+        }//end if(config.containsKey("ADDONS")){
         return new File(binDirectory.getParent()+File.separator+ADDONS_PATH);
     }
     
@@ -129,6 +148,11 @@ public class FileHelper {
          builder.append(binDirectory.getParent())
                      .append(File.separator)
                      .append(TEMP_REPORT_DIR);
+         Properties config = getConfigurations();
+        if(config.containsKey("TEMPLATE")
+                && !config.getProperty("TEMPLATE").isEmpty()){
+           builder = new StringBuilder(config.getProperty("TEMPLATE"));
+        }//end if(config.containsKey("ADDONS")){
          if(CURRENT_MODULE==null){
              return new File(builder.toString());
          }else{        
@@ -152,6 +176,11 @@ public class FileHelper {
              builder.append(binDirectory.getParent())
                      .append(File.separator)
                      .append(TEMP_STATIC_DIR);
+          Properties config = getConfigurations();
+        if(config.containsKey("STATIC")
+                && !config.getProperty("STATIC").isEmpty()){
+           builder = new StringBuilder(config.getProperty("STATIC"));
+        }//end if(config.containsKey("ADDONS")){
          if(CURRENT_MODULE==null){
              return new File(builder.toString());
          }else{             
@@ -173,6 +202,11 @@ public class FileHelper {
     public static File getTemporalDirectory(){
          File binDirectory = FileHelper.getCurrentDirectory();     
          File file = new File(binDirectory.getParent()+File.separator+TEMP_DIR);
+         Properties config = getConfigurations();
+         if(config.containsKey("TEMPLATE") && !config.getProperty("TEMPLATE").isEmpty()){
+            String builder = config.getProperty("TEMPLATE");
+            file = new File(builder);
+         }//end if(config.containsKey("ADDONS")){
          if(!file.exists()){
              file.mkdir();
          }//end if(!file.exists())
@@ -666,7 +700,9 @@ public class FileHelper {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();
             transformer.transform(domSource, result);
-            return writer.toString().substring(38);
+            String xmlString =  writer.toString().substring(38);
+            xmlString = xmlString.replaceAll("&gt;", ">");
+            return xmlString;
         } catch (Exception ex) {
             throw   new JAXBException(ex);
         }
@@ -709,6 +745,74 @@ public class FileHelper {
             }//end if(element.getTagName().equalsIgnoreCase("ng-template")){
         }//end if(node.getNodeType()==Node.ELEMENT_NODE){
 //        return node ;
+    }
+    /**
+     * 
+     * @param filename
+     * @return 
+     */
+    public static Map<String , String> getFromJsonFile(String filename) throws FileNotFoundException, IOException{
+        Gson gson = new Gson();
+        Map<String , String> map = new HashMap<String , String>();
+        BufferedReader sysreader = new BufferedReader(new FileReader(filename));
+        StringBuilder builder = new StringBuilder();
+        String ligne = null;
+        do{
+            ligne = sysreader.readLine();
+            if(ligne!=null){
+                builder.append(ligne);
+            }//end if(ligne!=null){
+        }while(ligne!=null);
+        sysreader.close();
+        if(!builder.toString().isEmpty()){
+            Type mapType = new TypeToken<Map<String, String>>(){}.getType();  
+             map = gson.fromJson(builder.toString(),mapType);
+        }
+//        System.out.println(FileHelper.class.toString()+" ======================================================== "+builder.toString()+" ==== Map : "+map);
+        return map;
+    }
+    
+    /**
+     * Return de config file content in properties
+     * @return 
+     */
+    public static Properties getConfigurations() {
+        try {
+            InputStream input = null;
+            String confg_file = FileHelper.getConfigDirectory()+File.separator+"config.properties";
+            //Load file properties
+            Properties config = new Properties();
+            input = new FileInputStream(confg_file);
+            //load a properties file
+            config.load(input);
+            return config;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Properties();
+    }
+    
+    /**
+     * 
+     * @param config 
+     */
+    public static void updateConfigurations(Properties config){
+        OutputStream output = null;
+        String confg_file = FileHelper.getConfigDirectory()+File.separator+"config.properties";
+        
+        try {
+            output = new FileOutputStream(confg_file);
+            //Save config to 
+            SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy hh:MM:ss");
+            config.store(output, "Mise à jour du file "+formater.format(new Date()));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     

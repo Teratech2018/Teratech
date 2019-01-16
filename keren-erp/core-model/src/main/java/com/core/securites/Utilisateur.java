@@ -78,7 +78,7 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
 //            inverseJoinColumns = @JoinColumn(name = "RIGTH_ID"))
 //    private List<Groupe> autorisations = new ArrayList<Groupe>();
     
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name = "USAU_ID")
     @Predicate(label = "Autorisations" ,type = UserAutorisation.class,group = true,groupName = "group1",groupLabel = "PROFIL UTILISATEUR",target = "many-to-many-list",searchfields = "code",edittable = true)
     private List<UserAutorisation> autorisations = new ArrayList<UserAutorisation>();

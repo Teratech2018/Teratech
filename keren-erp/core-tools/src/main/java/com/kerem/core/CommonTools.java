@@ -83,8 +83,10 @@ public class CommonTools {
                 ActionItem data = new ActionItem(act.getId(),act.getType(), act.getLabel(), act.getValue());
                 data.setState(act.getStates());
                 //Traitement des roles 
-                String[] roles = act.getRoles().split(";");
-                data.setRoles(Arrays.asList(roles));
+                if(act.getRoles()!=null && !act.getRoles().trim().isEmpty()){
+                    String[] roles = act.getRoles().split(";");
+                    data.setRoles(Arrays.asList(roles));
+                }//end if(act.getRoles()!=null && !act.getRoles().trim().isEmpty()){
                 actions.add(data);
             }
         }

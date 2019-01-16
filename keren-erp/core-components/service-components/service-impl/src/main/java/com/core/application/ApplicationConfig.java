@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.core.application.ConfigItemRSImpl.class);
         resources.add(com.core.calendar.EventRSImpl.class);
         resources.add(com.core.calendar.RappelRSImpl.class);
         resources.add(com.core.discussions.CanalRSImpl.class);

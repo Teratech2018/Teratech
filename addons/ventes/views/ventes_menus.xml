@@ -7,6 +7,7 @@
 	 <menuitem id="teratech_vente_ope_2" label="Commandes" parent_ref="teratech_vente_operation" entity_ref="Commande" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menuitem id="teratech_vente_ope_2_1" label="Commandes" parent_ref="teratech_vente_operation" entity_ref="CommandeDevis" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
 	 <menuitem id="teratech_vente_ope_3" label="Livraisons" parent_ref="teratech_vente_operation" entity_ref="BonLivraison" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
+	 <menuitem id="teratech_vente_ope_3_1" label="Retours clients" parent_ref="teratech_vente_operation" entity_ref="RetourClient" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" hide="true"/>
 	 <menuitem id="teratech_vente_ope_4" label="Factures" parent_ref="teratech_vente_operation" entity_ref="Facture" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" />
 	 <menu id="teratech_vente_structure" label="Structures." parent="teratech_vente" gyphycon="glyphicon glyphicon-pencil"/>
 	 <menuitem id="teratech_vente_str_1" label="Articles." parent_ref="teratech_vente_structure" entity_ref="Article" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="kaban,tree,form"/>
@@ -28,7 +29,7 @@
 	 <menuitem id="teratech_vente_conf_6" label="Régions .." parent_ref="teratech_vente_configuration" entity_ref="Region" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree"/>
 	 <menuitem id="teratech_vente_conf_7" label="Pays" parent_ref="teratech_vente_configuration" entity_ref="Pays" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false"  view_type="kaban,tree,form"/>
 	 <menuitem id="teratech_vente_conf_8" label="Civilité .." parent_ref="teratech_vente_configuration" entity_ref="Civilite" model_ref="teratechvente" gyphycon="glyphicon glyphicon-th" modal="false" view_type="tree"/>
-	 <reportRecord  id="devisvte_report01" label="Demande de prix" action_ref="teratech_vente_ope_1"  extern="false">
+	 <reportRecord  id="devisvte_report01" label="Demande de prix" action_ref="teratech_vente_ope_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>				   
@@ -60,7 +61,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="commandevte_report01" label="Demande de prix" action_ref="teratech_vente_ope_1"  extern="false">
+	 <reportRecord  id="commandevte_report01" label="Demande de prix" action_ref="teratech_vente_ope_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>				   
@@ -92,7 +93,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="livraisonvte_report01" label="Bon de commande" action_ref="teratech_vente_ope_1"  extern="false">
+	 <reportRecord  id="livraisonvte_report01" label="Bon de commande" action_ref="teratech_vente_ope_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>
@@ -124,7 +125,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <reportRecord  id="facturevte_report01" label="Bon de reception" action_ref="teratech_vente_ope_1"  extern="false">
+	 <reportRecord  id="facturevte_report01" label="Bon de reception" action_ref="teratech_vente_ope_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>
@@ -153,7 +154,7 @@
 			   ]]>
 		  </template>
 	 </reportRecord>	 
-	 <reportRecord  id="bretourvte_report01" label="Bon de reception" action_ref="teratech_vente_ope_1"  extern="false">
+	 <reportRecord  id="bretourvte_report01" label="Bon de reception" action_ref="teratech_vente_ope_1_1"  extern="false">
 	      <template>
 		     <![CDATA[
 			    <div>

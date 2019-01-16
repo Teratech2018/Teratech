@@ -4,12 +4,16 @@
  * and open the template in the editor.
  */
 
-angular.module("keren.core",['keren.core.login','mainApp','keren.core.website','keren.core.commons']);
-//        .config(function($locationProvider){
-//            $locationProvider.html5Mode(true);
-//        });    
+angular.module("keren.core",["ngResource","ngSanitize","pascalprecht.translate",'keren.core.login','mainApp','keren.core.website','keren.core.commons']);
+//Regle de traduction 
 angular.module("keren.core")
-        .controller("kerenCtrl" ,function($scope,$rootScope,$http,$location,$interval,commonsTools,authenticationService){
+        .config(['$translateProvider',
+    function($translateProvider){
+        $translateProvider.useUrlLoader("auth/resource/translate");
+        $translateProvider.preferredLanguage("fr");        
+    }]);
+angular.module("keren.core")
+        .controller("kerenCtrl" ,function($scope,$rootScope,$http,$location,$interval,$translate,commonsTools,authenticationService){
               $scope.hostname = $location.host();    
               $scope.portvalue = $location.port();
               $scope.protocol = $location.protocol(); 

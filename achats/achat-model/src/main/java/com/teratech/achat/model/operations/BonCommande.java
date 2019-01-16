@@ -273,7 +273,7 @@ public class BonCommande extends DocumentAchat implements Serializable{
 
     @Override
     public boolean isCreateonfield() {
-        return false; //To change body of generated methods, choose Tools | Templates.
+        return true; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
