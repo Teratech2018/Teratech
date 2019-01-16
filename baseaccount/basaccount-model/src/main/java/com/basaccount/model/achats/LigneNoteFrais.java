@@ -6,6 +6,7 @@
 package com.basaccount.model.achats;
 
 import com.basaccount.model.comptabilite.Compte;
+import com.basaccount.model.comptabilite.Taxe;
 import com.core.base.BaseElement;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
  * @author BEKO
  */
 @Entity
-@Table(name = "T_LINOFR")
+@Table(name = "T_LINOFR_ACH")
 public class LigneNoteFrais extends BaseElement implements Serializable,Comparable<LigneNoteFrais>{
 
     @ManyToOne
@@ -32,6 +33,14 @@ public class LigneNoteFrais extends BaseElement implements Serializable,Comparab
     
     @Predicate(label = "Montant",type = Double.class,optional = false,search = true)
     private Double montant =0.0;
+    
+    @ManyToOne
+    @JoinColumn(name = "TAX_ID")
+    @Predicate(label = "Taxes",type = Taxe.class,target = "many-to-one",search = true)
+    private Taxe taxe ;
+    
+    @Predicate(label = "Total HT",type = Double.class,editable = false)
+    private Double total ;
 
     public LigneNoteFrais(Compte compte, String libelle) {
         this.compte = compte;
@@ -54,6 +63,7 @@ public class LigneNoteFrais extends BaseElement implements Serializable,Comparab
             this.compte = new Compte(ligne.compte);
         }
         this.libelle = ligne.libelle;
+        this.total = ligne.total;
     }
 
     /**
@@ -96,6 +106,22 @@ public class LigneNoteFrais extends BaseElement implements Serializable,Comparab
     @Override
     public String getEditTitle() {
         return "Note de frais"; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Taxe getTaxe() {
+        return taxe;
+    }
+
+    public void setTaxe(Taxe taxe) {
+        this.taxe = taxe;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
     
     

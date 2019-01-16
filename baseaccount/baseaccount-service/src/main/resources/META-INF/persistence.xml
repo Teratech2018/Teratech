@@ -43,6 +43,13 @@
     <class>com.basaccount.model.achats.UniteGestion</class>
     <class>com.basaccount.model.achats.LigneNoteFrais</class>
     <class>com.basaccount.model.achats.NoteFrais</class>
+    <class>com.basaccount.model.achats.LigneFacture</class>
+    <class>com.basaccount.model.ventes.DocumentVente</class>
+    <class>com.basaccount.model.ventes.FactureVente</class>
+    <class>com.basaccount.model.ventes.LigneDocumentVente</class>
+    <class>com.basaccount.model.ventes.LigneFactureVente</class>
+    <class>com.basaccount.model.ventes.LigneNoteFraisVente</class>
+    <class>com.basaccount.model.ventes.NoteFraisVente</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

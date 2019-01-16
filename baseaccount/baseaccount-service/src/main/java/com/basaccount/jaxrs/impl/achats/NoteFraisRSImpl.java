@@ -55,14 +55,15 @@ public class NoteFraisRSImpl
 
     @Override
     public MetaData getMetaData(HttpHeaders headers) {
+        MetaData meta = null;
         try {
-            return MetaDataUtil.getMetaData(new NoteFrais(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
+            meta = MetaDataUtil.getMetaData(new NoteFrais(), new HashMap<String, MetaData>(), new ArrayList<String>()); //To change body of generated methods, choose Tools | Templates.
         } catch (InstantiationException ex) {
             Logger.getLogger(NoteFraisRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             Logger.getLogger(NoteFraisRSImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return meta;
     }
     
     

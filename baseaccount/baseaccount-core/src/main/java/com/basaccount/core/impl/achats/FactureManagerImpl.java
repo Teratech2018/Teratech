@@ -12,6 +12,7 @@ import com.basaccount.model.achats.DocumentAchatState;
 import com.basaccount.model.achats.EcheanceReglement;
 import com.basaccount.model.achats.Facture;
 import com.basaccount.model.achats.LigneDocumentAchat;
+import com.basaccount.model.achats.LigneFacture;
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
@@ -74,7 +75,7 @@ public class FactureManagerImpl
         Facture data = super.find(propertyName, entityID); //To change body of generated methods, choose Tools | Templates.
         Facture result = new Facture(data);
         for(LigneDocumentAchat ligne:data.getLignes()){
-            result.getLignes().add(new LigneDocumentAchat(ligne));
+            result.getLignes().add(new LigneFacture(ligne));
         }//end for(LigneDocumentAchat ligne:data.getLignes()){
         for(Acompte ac:data.getAcomptes()){
             result.getAcomptes().add(new Acompte(ac));

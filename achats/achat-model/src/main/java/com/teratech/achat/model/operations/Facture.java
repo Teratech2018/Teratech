@@ -45,7 +45,7 @@ public class Facture extends DocumentAchat implements Serializable{
     @TableFooter(value = "<tr style='border:none;'><td></td><td></td><td></td><td'></td><td style='font-weight: bold;'>Total HT</td> <td class='text-center'>this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100</td><td></td></tr> <tr style='border:none;'><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Taxes</td><td  class='text-center'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};/;100</td><td></td> </tr> <tr style='border:none;'><td></td><td></td><td></td><td></td><td  style='font-weight: bold;'>Total TTC</td><td  class='text-center'  style='font-weight: bold;'>(;this.quantite;*;this.puht;*;(;100;-;this.remise;);/;100;);*;(;100;+;{\"op\":\"sum\",\"source\":\"this\",\"data\":\"taxes\",\"field\":\"montant\"};);/;100</td><td></td></tr>")
     protected List<LigneFacture> lignes = new ArrayList<LigneFacture>();    
     
-    @Predicate(label = "Document d'origine" ,hide = true)
+    @Predicate(label = "Document origine")
     private String source;
     
     @Predicate(label = "Escompte(%)",type = Double.class,group = true,groupName = "group2",groupLabel = "Valorisation/Comptabilité")
@@ -193,6 +193,7 @@ public class Facture extends DocumentAchat implements Serializable{
         this.totalacompte = da.totalacompte;
         this.netapayer = da.netapayer;
         this.totaltaxes = da.totaltaxes;
+        this.state = da.state;
     }
 
     public String getSource() {

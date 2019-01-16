@@ -138,6 +138,10 @@ public class MetaDataUtil {
                 column.setStates(header.states());
                 meta.getHeader().add(column);
             }//end for(KHeader header:headers.value()){
+            if(headers.statubar()==true){
+                MetaColumn column = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
+                meta.getHeader().add(column);
+            }//end if(headers.statubar()==true){
         }//end if(headers!=null){
         return meta;
     }

@@ -31,7 +31,7 @@ import javax.persistence.TemporalType;
  * @author BEKO
  */
 @Entity
-@Table(name = "T_NOFR")
+@Table(name = "T_NOFR_ACH")
 public class NoteFrais extends BaseElement implements Serializable,Comparable<NoteFrais>{
     
     @Predicate(label = "N° de Référence",optional = false,unique = true,search = true)
@@ -43,7 +43,7 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
     private Tier fournisseur ;
     
     @Temporal(TemporalType.DATE)
-    @Predicate(label = "Date Facturation",type = Date.class,optional = false,search = true)
+    @Predicate(label = "Date ",target = "date",type = Date.class,optional = false,search = true)
     private Date date ;
     
     @ManyToOne
@@ -52,7 +52,7 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
     private Compte compte ;
     
     @Temporal(TemporalType.DATE)
-    @Predicate(label = "Date d'échéance",type = Date.class,optional = false,search = true)
+//    @Predicate(label = "Date échéance",type = Date.class,optional = false,search = true)
     private Date decheance;
     
     @Predicate(label = "Mémo",search = true)
@@ -61,19 +61,15 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
     @ManyToOne
     @JoinColumn(name = "JOUR_ID")
     @Predicate(label = "Journal Comptable",type = JournalComptable.class,target = "many-to-one",optional = false,search = true)
-    private JournalComptable journal ;
+    private JournalComptable journal ;    
     
-    @ManyToOne
-    @JoinColumn(name = "TAX_ID")
-    @Predicate(label = "Taxe",type = Taxe.class,target = "many-to-one",search = true)
-    private Taxe taxe ;
     
     @OneToMany(orphanRemoval = false,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "NOFR_ID")
     @Predicate(label = "Lignes",type = LigneNoteFrais.class,target = "one-to-many",group = true,groupName = "group1",groupLabel = "NOTES DE FRAIS",edittable = true)
     private List<LigneNoteFrais> notes = new ArrayList<LigneNoteFrais>();
 
-    @Predicate(label = "Notes",target = "textarea",group = true,groupName = "group2",groupLabel = "Commentaire")
+    @Predicate(label = " ",target = "textarea",group = true,groupName = "group2",groupLabel = "NOTES")
     private String commentaire ;
     
     
@@ -135,9 +131,7 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
         if(note.compte!=null){
             this.compte = new Compte(note.compte);
         }
-        if(note.taxe!=null){
-            this.taxe = new Taxe(note.taxe);
-        }
+        
         this.decheance = note.decheance;
         this.memo = note.memo;
         this.journal = note.journal;
@@ -203,14 +197,7 @@ public class NoteFrais extends BaseElement implements Serializable,Comparable<No
         this.journal = journal;
     }
 
-    public Taxe getTaxe() {
-        return taxe;
-    }
-
-    public void setTaxe(Taxe taxe) {
-        this.taxe = taxe;
-    }    
-
+   
     public String getCommentaire() {
         return commentaire;
     }

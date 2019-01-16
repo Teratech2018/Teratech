@@ -210,7 +210,11 @@ angular.module("mainApp")
                            actions:[
                               {id:-100,name:"progra_save" ,hide:false, label:"Configuration",icon:"glyphicon glyphicon-time",entityName:"Export",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',viewMode:'form'},
                               {id:-2,name:"export_bd" ,hide:false, label:"EXPORTBD",icon:"glyphicon glyphicon-save-file",entityName:"Export",moduleName:"kerencore",modal:true,securitylevel:0,model:'kerencore'}                          
-                       ]}
+                       ]},
+                       {id:-6 , name:"Configurations",label:"Configurations",icon:"glyphicon glyphicon-cog", showmenu:true,
+                          actions:[
+                              {id:-100,name:"config_save" ,hide:false, label:"PARAMETRES",icon:"glyphicon glyphicon-time",entityName:"ConfigItem",moduleName:"kerencore",modal:false,securitylevel:0,model:'kerencore',viewMode:'tree'}
+                        ]}
                  ]
 
       };
@@ -515,10 +519,12 @@ angular.module("mainApp")
      * @returns {String}
      */
     $scope.getMenuClass = function(module){
-//        console.log("$scope.getMenuClass = function(module) ========= "+module+" ===== "+$scope.currentAction.name+" test==");
+//        console.log("$scope.getMenuClass = function(module) ========= "+module+" ===== "+$scope.currentAction.name+" test== view mode : "+module.viewMode);
         if(angular.isDefined(module) 
                  && $scope.currentAction.name==module.name){
             return "activemenu";
+        }else if(module.viewMode==='none'){
+            return "divider";
         }//end if($scope.currentAction.name==module.name){
         return "";
     };

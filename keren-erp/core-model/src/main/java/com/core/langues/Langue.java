@@ -45,10 +45,10 @@ public class Langue extends BaseElement implements Serializable,Comparable<Langu
     @Predicate(label = "Séparateur milliers",search = true)
     private String formatMillier ;
     
-    @Predicate(label = "Format de date",search = true)
+    @Predicate(label = "Format date",search = true)
     private String formatDate ;
     
-    @Predicate(label = "Format de l'heure",search = true)
+    @Predicate(label = "Format heure",search = true)
     private String formatHeure;
     
     @Temporal(TemporalType.TIMESTAMP)

@@ -51,7 +51,7 @@ public class DocumentAchat extends BaseElement implements Serializable,Comparabl
     @Predicate(label = "Date ",type = Date.class,target = "date",optional = false,search = true)    
     protected Date datecommande ;
     
-    @Predicate(label = "Reference du fournisseur")
+    @Predicate(label = "Reference fournisseur")
     protected String codefourni;
     
     @ManyToOne

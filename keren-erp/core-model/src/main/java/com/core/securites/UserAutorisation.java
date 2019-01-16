@@ -23,7 +23,7 @@ public class UserAutorisation extends BaseElement implements Serializable,Compar
 
     @ManyToOne
     @JoinColumn(name = "GROUP_ID")
-    @Predicate(label = "Niveau d'autorisation",type = Groupe.class,target = "many-to-one",search = true,editable = false)
+    @Predicate(label = "Niveau autorisation",type = Groupe.class,target = "many-to-one",search = true,editable = false)
     private Groupe groupe ;
     
     @Predicate(label = "Roles utilisateur(separateur ;)",search = true,optional = false)

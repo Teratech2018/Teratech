@@ -22,7 +22,6 @@ import com.core.templates.Template;
 import com.core.templates.TemplateDAOLocal;
 import com.google.gson.Gson;
 import com.kerem.commons.KerenSession;
-import com.kerem.core.FileHelper;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.HashMap;
