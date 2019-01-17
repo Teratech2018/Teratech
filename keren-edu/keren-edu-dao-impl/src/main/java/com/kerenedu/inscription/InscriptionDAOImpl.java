@@ -4,7 +4,6 @@ package com.kerenedu.inscription;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import com.bekosoftware.genericdaolayer.dao.impl.AbstractGenericDAO;
 import com.kerenedu.configuration.AnneScolaire;

@@ -21,7 +21,9 @@ import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.kerenedu.configuration.Classe;
 import com.kerenedu.inscription.Inscription;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -49,20 +51,26 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	protected String nom;
 	
 	@Column(name = "CLASSE")
-	@Predicate(label = "CLASSE", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 3, sequence = 3)
+	@Predicate(label = "CLASSE", optional = true, updatable = false, search = true, type = String.class, hide=true, colsequence = 3, sequence = 3)
 	protected String classe;
+	@Transient
+//	@ManyToOne
+//	@JoinColumn(name = "ElEVE_ID")
+//	@Predicate(label = "Classe", type = Classe.class, target = "many-to-one", optional = false, search = false, sequence = 5, observable = true, searchfields = "cls.libelle",updatable=false)
+//	private Classe cls;
 
 	@ManyToOne
 	@JoinColumn(name = "ElEVE_ID")
 	@Predicate(label = "Elève", type = Inscription.class, target = "many-to-one", optional = false, search = false, sequence = 4, observable = true, colsequence = 2, searchfields = "eleve.nom",updatable=false)
+//	@Filter(value="[{\"fieldName\":\"classe\",\"value\":\"object.cls\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
 	private Inscription eleve;
 
 	@Column(name = "NAT_PAI")
-	@Predicate(label = "Mode Paiement", optional = false, updatable = true, search = false, target = "combobox", values = "Totalité;Partiel", sequence = 5, observable = true)
+	@Predicate(label = "Mode Paiement", optional = false, updatable = true, search = false, target = "combobox", values = "Totalité;Partiel", sequence = 6, observable = true)
 	protected String modePaiement = "0";
 
 	@Column(name = "TYP_PAI")
-	@Predicate(label = "Type Paiement", optional = false, updatable = true, search = true, target = "combobox", values = "especes;Espress Union", colsequence = 6, sequence = 6)
+	@Predicate(label = "Type Paiement", optional = false, updatable = true, search = true, target = "combobox", values = "especes;Espress Union", colsequence = 7, sequence = 6)
 	protected String typePaiment = "0";
 
 	@Column(name = "CODE", unique = true)
@@ -76,18 +84,18 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	protected FichePaiement service;
 
 	@Column(name = "DATE_PAI")
-	@Predicate(label = "DATE PAIEMENT", optional = false, updatable = true, search = true, type = Date.class, sequence = 7, target = "date", colsequence = 4)
+	@Predicate(label = "DATE PAIEMENT", optional = false, updatable = true, search = true, type = Date.class, sequence =8, target = "date", colsequence = 4)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datePaiement = new Date();
 
 	@Column(name = "ZMNT_VERSER")
-	@Predicate(label = "Versement ", optional = true, updatable = false, search = true, type = Long.class, sequence = 8, colsequence = 5)
+	@Predicate(label = "Versement ", optional = true, updatable = false, search = true, type = Long.class, sequence = 9, colsequence = 5)
 	//@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
 	protected Long zMntverser;
 	
 	 @Transient
 	@Column(name = "ZMNT_VERSER")
-	@Predicate(label = "Versement ", optional = true, updatable = false, type = Long.class, sequence = 5, colsequence = 8, editable=false)
+	//@Predicate(label = "Versement ", optional = true, updatable = false, type = Long.class, sequence = 5, colsequence = 8, editable=false)
 	//@Observer(observable = "modePaiement", source = "method:versement", parameters = "modePaiement,eleve")
 	protected Long zMntversertotal;
 
@@ -175,7 +183,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 		// }
 		this.zremise = ins.zremise;
 		this.zristourne=ins.zristourne;
-//		 this.zsolde = ins.getzMnt() -ins.getzMntverser()-ins.getZremise()-ins.getZristourne();
+		// this.zsolde = ins.getzMnt() -ins.getzMntverser()-ins.getZremise()-ins.getZristourne();
 		this.zsolde =ins.getEleve().getzSolde();
 		this.state = ins.state;
 		this.modePaiement = ins.modePaiement;
@@ -267,6 +275,14 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	public String getClasse() {
 		return classe;
 	}
+
+//	public Classe getCls() {
+//		return cls;
+//	}
+//
+//	public void setCls(Classe cls) {
+//		this.cls = cls;
+//	}
 
 	public void setClasse(String classe) {
 		this.classe = classe;

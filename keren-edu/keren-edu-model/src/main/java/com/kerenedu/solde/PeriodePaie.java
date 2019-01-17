@@ -32,8 +32,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 			
 	@ManyToOne
 	@JoinColumn(name="EXE_ID")
-	@Predicate(label="Année Scolaire concerné",type=AnneScolaire.class,target="many-to-one",optional=false,
-	search=true, sequence=2)
+	@Predicate(label="Année Scolaire concerné",type=AnneScolaire.class,target="many-to-one",optional=false,search=true, sequence=2)
 	private AnneScolaire exercice ;
 	
 	@Temporal(javax.persistence.TemporalType.DATE)

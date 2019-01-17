@@ -3,11 +3,10 @@
  */
 package com.kerenedu.notes;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -48,8 +47,8 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 	protected ViewNoteHelperDAOLocal daoviewnotehelper;
 	
 
-    @EJB(name = "BulletinHelperDAO")
-    protected BulletinHelperDAOLocal daobullhelper;
+    @EJB(name = "BulletinHelper2DAO")
+    protected BulletinHelper2DAOLocal daobullhelper;
     
     @EJB(name = "LigneHelperDAO")
     protected LigneHelperDAOLocal daolignehelper;
@@ -92,7 +91,7 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 	@Override
 	public EdtBulletin preparerNotes(EdtBulletin prepa) {
 		this.generateBulletin(prepa);
-		System.out.println("MoteurBulletinManagerImpl.preparerNotes() ============= FIN PARACOURS==============="+prepa.getClasse().getLibelle());
+		System.err.println("MoteurBulletinManagerImpl.preparerNotes() ============= FIN PARACOURS==============="+prepa.getClasse().getLibelle());
 		return prepa;
 	}
 	/**
@@ -101,15 +100,12 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 	 */
 
 	private void generateBulletin(EdtBulletin critere) {
+	
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		List<Bulletin> datas = new ArrayList<Bulletin>();
 		List<Bulletin> datasdlt = new ArrayList<Bulletin>();
 		List<Inscription> eleves = new ArrayList<Inscription>();
 		List<Inscription> elevesdlt = new ArrayList<Inscription>();
-		
-		Double cumulPoint =0.0;
-		Long cumulCoef =(long) 0;
-		
 		
 		// verifier porte
 		if (critere.getPorte().equals("0")) {
@@ -153,29 +149,23 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 				
 			}	
 		}
-//		
-//		System.out.println("EdtBulletinRSImpl.generateBulletin() Buletin dejà generé trouvée " + datas.size());
-//		System.out.println("EdtBulletinRSImpl.generateBulletin()eleve size" + eleves.size());
-		
+	
 		// 0- supprimer les bulletin trouvé et regenerer
 		for (Bulletin b : datas) {
 			dao.delete(b.getId());
 		} // end for(Bulletin b : datas) to delete
 
-//		// 1- recherche des élève inscrit dans la classe
-//		container = new RestrictionsContainer();
-//		if (critere.getClasse() != null) {
-//			container.addEq("classe.id", critere.getClasse().getId());
-//		}
-//		 eleves = managerinscrit.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-//		System.out.println(
-//				"EdtBulletinRSImpl.generateBulletin() nombre eleve de la classe ============== " + eleves.size());
 		if (eleves == null || eleves.isEmpty()) {
 			throw new KerenExecption("Aucun Eleve inscrit dans la classe choisis !!!");
 		}
+	
+
 		//find examen 
 		Examen examen = daoexamen.findByPrimaryKey("id", critere.getSeq().getId());
 			for (Inscription inscrit : eleves) {
+				Calendar cal = Calendar.getInstance();
+				String hours =cal.get(Calendar.HOUR_OF_DAY)+"h"+cal.get(Calendar.MINUTE)+"m et "+cal.get(Calendar.SECOND)+"s" ;
+				System.err.println("EdtBulletinRSImpl.generateBulletin()  Traitement Bulettin eleve============= "+ inscrit.getEleve().getNom()+" Duration ===="+hours);
 				container = RestrictionsContainer.newInstance();
 				container.addEq("classe.id", critere.getClasse().getId());
 				container.addEq("eleve.id", inscrit.getId());
@@ -189,13 +179,18 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 					bulletin = new Bulletin(h,examen);
 					LigneBulletinClasse ligne = new LigneBulletinClasse(h);
 					ligne.setId(-1);
+					ligne.setNotet1(h.getNotet1());
+					ligne.setNotet2(h.getNotet2());
+					ligne.setNotet3(h.getNotet3());
+					ligne.setNotean(h.getNotean());
 					lignelist.add(ligne);
 				} // fin for (ViewNoteHelper h : noteeleves) {
+
 				bulletin.setId(-1);
 				bulletin.setLignes(lignelist);
 				bulletin=dao.save(bulletin);
 			
-				System.out.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "+ inscrit.getEleve().getNom());
+				//System.err.println("EdtBulletinRSImpl.generateBulletin()  Fin Traitement Bulettin eleve============= "+ inscrit.getEleve().getNom());
 				//this.aggregateNote(inscrit,critere);
 			} // fin for(Inscription inscrit : eleves)
 
@@ -264,7 +259,7 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 			container.addEq("classe.id", param.getClasse().getId());
 			//System.out.println("MoteurBulletinManagerImpl.aggregateNote() test id0000 ...."+param.getId());
 			//System.out.println("MoteurBulletinManagerImpl.aggregateNote() classe id0000 ...."+param.getClasse().getId());
-			List<BulletinHelper>  listhelper = daobullhelper.filter(container.getPredicats(), null,new HashSet<String>(), 0, -1);
+			List<BulletinHelper2>  listhelper = daobullhelper.filter(container.getPredicats(), null,new HashSet<String>(), 0, -1);
 					
 			container = RestrictionsContainer.newInstance();
 			container.addEq("inscription.id", param.getId());
@@ -273,7 +268,7 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 			List<Bulletin> bullist = dao.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 			//System.out.println("MoteurBulletinManagerImpl.aggregateNote() icii !!!");
 			for(Bulletin bulletin : bullist){
-				BulletinHelper helper=listhelper.get(0);
+				BulletinHelper2 helper=listhelper.get(0);
 				Bulletin entity = dao.findByPrimaryKey("id", bulletin.getId());
 				entity.setMoyt1(helper.getMoyt1());
 				entity.setMoyt2(helper.getMoyt2());

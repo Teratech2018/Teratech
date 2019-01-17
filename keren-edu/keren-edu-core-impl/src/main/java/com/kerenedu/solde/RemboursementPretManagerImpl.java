@@ -88,7 +88,7 @@ public class RemboursementPretManagerImpl
 		ElementVariable element = null ;
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("salarie0", entity.getDemande().getEmploye());
-		container.addEq("peiode", periode);
+		container.addEq("periode", periode);
 		List<ElementVariable> datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
 		if(datas!=null && datas.size()>0){
 			element = datas.get(0);

@@ -50,11 +50,11 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dpret ;
 	
-	@Predicate(label="Date début de remboursement",type=Date.class,target="date",search=true)
+	@Predicate(label="Date début de remboursement",type=Date.class,target="date",search=true, optional=false)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date drembour;
 	
-	@Predicate(label="Montant sollicité par l'employé",type=Double.class,search=true)
+	@Predicate(label="Montant sollicité par l'employé",type=Double.class,search=true , optional=false)
 	private Double montantsol=0.0;
 	
 	@Predicate(label="Montant proposé par la hiérarchie",type=Double.class,search=true)

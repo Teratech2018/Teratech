@@ -50,7 +50,7 @@ public class BulletinPaieRSImpl
     @Manager(application = "kereneducation", name = "BulletinPaieManagerImpl", interf = BulletinPaieManagerRemote.class)
     protected BulletinPaieManagerRemote manager;
     
-    @Manager(application = "kerenpaie", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
+    @Manager(application = "kereneducation", name = "MoteurPaieManagerImpl", interf = MoteurPaieManagerRemote.class)
     protected MoteurPaieManagerRemote moteurmanager;
 
     public BulletinPaieRSImpl() {

@@ -67,6 +67,21 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 	
 	@Column(name = "NOTE3")
 	private Double note3 = new Double(0);
+	
+	@Column(name = "NOTET1")
+	private Double notet1 = new Double(0);
+	
+	@Column(name = "NOTET2")
+	private Double notet2 = new Double(0);
+	
+	@Column(name = "NOTET3")
+	private Double notet3 = new Double(0);
+	
+	@Column(name = "NOTEAN")
+	private Double notean = new Double(0);
+	
+	
+
 
 	@Column(name = "APPRECIATION")
 	private String obs;
@@ -190,6 +205,11 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 		this.note2 = view.note2;
 		this.note3 = view.note3;
 		this.nbreEleve=view.nbreEleve;
+		this.notet1 = view.notet1;
+		this.notet2 = view.notet2;
+		this.notet3 = view.notet3;
+		this.notean=view.notean;
+	
 		
 		
 	}
@@ -229,6 +249,62 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+
+	public Double getNotet1() {
+		return notet1;
+	}
+
+
+
+
+	public void setNotet1(Double notet1) {
+		this.notet1 = notet1;
+	}
+
+
+
+
+	public Double getNotet2() {
+		return notet2;
+	}
+
+
+
+
+	public void setNotet2(Double notet2) {
+		this.notet2 = notet2;
+	}
+
+
+
+
+	public Double getNotean() {
+		return notean;
+	}
+
+
+
+
+	public void setNotean(Double notean) {
+		this.notean = notean;
+	}
+
+
+
+
+	public Double getNotet3() {
+		return notet3;
+	}
+
+
+
+
+	public void setNotet3(Double notet3) {
+		this.notet3 = notet3;
+	}
+
+
+
 
 	public MatiereNote getMatiereNote() {
 		return matiereNote;
@@ -309,6 +385,9 @@ public class ViewNoteHelper extends BaseElement implements Serializable, Compara
 	public Double getNote3() {
 		return note3;
 	}
+
+
+
 
 
 

@@ -292,9 +292,14 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 		Long oldPayer = (long) 0;
 		oldPayer = ins.getzMntPaye();
 		Long newPayer = entity.getzMntverser() + oldPayer;
-		Long solde = ins.getzMnt() - entity.getZremise() - entity.getZristourne() - newPayer;
+		System.out.println("PaiementManagerImpl._updateInscription() montant deb"+ins.getzMnt());
+		System.out.println("PaiementManagerImpl._updateInscription() new montant==="+newPayer);
+		//Long totalpayer=inscription.getzMntPaye()+entity.getzMntverser()+inscription.getzRemise()+inscription.getzRistourne()
+		Long solde = ins.getzMnt() - newPayer - inscription.getzRemise() - inscription.getzRistourne()-entity.getZremise()-entity.getZristourne();
 		ins.setzMntPaye(newPayer);
 		ins.setzSolde(solde);
+		
+		System.out.println("PaiementManagerImpl._updateInscription() new solde==="+solde);
 		ins.setzRemise(inscription.getzRemise()+entity.getZremise());
 		ins.setzRistourne(inscription.getzRistourne()+entity.getZristourne());
 		daoIns.update(ins.getId(), ins);
@@ -307,11 +312,13 @@ public class PaiementManagerImpl extends AbstractGenericManager<Paiement, Long>
 		Inscription ins = inscription;
 		Long oldPayer = ins.getzMntPaye();
 		Long newPayer = entity.getzMntverser() + oldPayer;
-		Long solde = ins.getzMnt() - newPayer;
+		;
 		ins.setzMntPaye(newPayer);
-		ins.setzSolde(solde);
+		
 		ins.setzRemise(ins.getzRemise() + entity.getZremise());
 		ins.setzRistourne(ins.getzRistourne() + entity.getZristourne());
+		Long solde = ins.getzMnt() - newPayer-inscription.getzRemise()-inscription.getzRistourne();
+		ins.setzSolde(solde);
 		daoIns.update(ins.getId(), ins);
 	}
 

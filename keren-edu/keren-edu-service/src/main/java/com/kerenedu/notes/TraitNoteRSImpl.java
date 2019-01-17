@@ -122,28 +122,25 @@ public class TraitNoteRSImpl
 		CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, entity.getClasse());
 		CacheMemory.insert(iduser, TypeCacheMemory.EXAMEN, entity.getPeriode());
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
-    	List<MatiereNote> datas = new ArrayList<MatiereNote>();
+		container = RestrictionsContainer.newInstance();
+		//1- rechercher les eleve de la classe
+		
 		if(entity.getPeriode()!=null){
 			container.addEq("examen.id", entity.getPeriode().getId());
 		}//end if(periode!=null)
+		container = RestrictionsContainer.newInstance();
 		if(entity.getClasse()!=null){
 			container.addEq("classe.id", entity.getClasse().getId());
 		}//end if(classe!=null)
 		
-		//1- rechercher les eleve de la classe
-		container = RestrictionsContainer.newInstance();
-		container.addEq("classe.id", entity.getClasse().getId());
 		List<Inscription> eleves = managerEleve.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		System.out.println("TraitNoteRSImpl.save() nombre d'elève trouvés is ====="+eleves.size());
-	//	if(eleves!=null&&!eleves.isEmpty()){
-			// verifier que la période de saisir n'ets pas dépasser
+		//System.out.println("TraitNoteRSImpl.save() nombre d'elève trouvés is ====="+eleves.size());
+			/** verifier que la période est ouverte**/
 			
 			if (!entity.getPeriode().getState().equals("etabli")) {
 				throw new KerenExecption(
 						"impossible de saisir les notes : les saisies pour cette sequence sont  cloturees !!!");
-			}
-			
-    	    	
+			}    	    	
 		//2- les matiere de la classe
 		
 		container = RestrictionsContainer.newInstance();
@@ -152,7 +149,7 @@ public class TraitNoteRSImpl
 		}//end if(classe!=null)
 		List<CoefMatiereDetail> listMatieres = managerMatiere.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 		
-		// recherche des note dèja enregistrer pour chaque éleve 
+		//3- recherche des note dèja enregistrer pour chaque éleve 
 		for(CoefMatiereDetail mt : listMatieres ){
 			if(mt.getMatiere().isState()){
 			container = RestrictionsContainer.newInstance();

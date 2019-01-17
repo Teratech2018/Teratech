@@ -22,8 +22,8 @@ public class ReportHelper {
      * Chemin de base des report
      */
     //public static final String reportFileChemin = "src/main/resources/reports/";
-    public static final String reportFileChemin = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator;
-    public static final String reportFileCheminPaie = FileHelper.getStaticDirectory()+File.separator+"solde"+File.separator;
+    public static final String reportFileChemin = FileHelper.getReportsDirectory()+File.separator+"scolarite"+File.separator;
+    public static final String reportFileCheminPaie = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
     
     public static final String reportimages = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"logo.png";
     
@@ -32,7 +32,7 @@ public class ReportHelper {
     //public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"education"+File.separator;
     public static final String templateURL = FileHelper.getReportsDirectory()+File.separator+"scolarite"+File.separator;;
 //    public static final String templatepaieURL = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
-    public static final String templatepaieURL = FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
+    public static final String templatepaieURL =FileHelper.getReportsDirectory()+File.separator+"solde"+File.separator;
     
     public static final String photourl = FileHelper.getStaticDirectory()+File.separator;
     public static final String reportimagesURL = FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator ;

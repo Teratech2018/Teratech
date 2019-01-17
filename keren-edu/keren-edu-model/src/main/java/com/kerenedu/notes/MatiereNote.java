@@ -34,7 +34,6 @@ import com.megatim.common.annotations.Predicate;
 public class MatiereNote extends BaseElement implements Serializable, Comparable<MatiereNote> {
 	
 	
-	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1	,colsequence=3,editable=false, optional=false)
@@ -142,7 +141,7 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 		
 		this.notelisttr= new ArrayList<NoteDetail>();
 		for(Inscription el : listEleve){
-			this.notelisttr.add(new NoteDetail(el));
+			this.notelisttr.add(new NoteDetail(el, coefmat, examen));
 		}
 	
 	}

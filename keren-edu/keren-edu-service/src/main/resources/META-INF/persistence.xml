@@ -162,10 +162,11 @@
 		<class>com.kerenedu.notes.BulletinHelperGeneratePrimaire</class>
 		<class>com.kerenedu.personnel.EmargementPeriode</class>
 		<class>com.kerenedu.personnel.EmargementDtlPeriode</class>
-		<class>com.kerenedu.notes.BulletinHelper</class>
+<!-- 		<class>com.kerenedu.notes.BulletinHelper</class> -->
 		<class>com.kerenedu.notes.LigneHelper</class>
 		<class>com.kerenedu.notes.BuilderNote</class>
 		<class>com.kerenedu.notes.BuilderLigneNote</class>
+		<class>com.kerenedu.notes.BulletinHelper2</class>
 <!-- 		<class>com.kerenedu.notes.LigneBulletinClassePrimaire</class> -->
 <!-- 		<class>com.kerenedu.notes.NoteDetailPr</class> -->
 <!-- 		<class>com.kerenedu.notes.ExamenP</class> -->

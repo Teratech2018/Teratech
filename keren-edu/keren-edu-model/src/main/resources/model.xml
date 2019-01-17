@@ -942,6 +942,16 @@ and open the template in the editor.
 					<role>ADMIN</role>
 				</roles>
 			</element>
+			<element type="com.kerenedu.notes.BulletinHelper2" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+				<element type="com.kerenedu.notes.StatistiqueNotes" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
 	             
     </elements>
     

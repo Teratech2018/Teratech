@@ -63,6 +63,9 @@ public class BaseElement implements Serializable{
     protected String searchkeys ;
     
     protected boolean desabledatablock = true ;
+    
+    protected String ownermodule;
+    
     /**
      * String that contain the state
      * "[{'draft','Draft'},{'confirmed','Confirmed'}]"
@@ -74,6 +77,7 @@ public class BaseElement implements Serializable{
 
     public BaseElement() {
     	  this.desabledatablock=false;
+    	  this.ownermodule="";
     }
 
    /**
@@ -89,6 +93,7 @@ public class BaseElement implements Serializable{
         this.moduleName = moduleName;
         this.compareid = comparedid ;
         this.desabledatablock=false;
+        this.ownermodule="";
     }
 
     public long getCompareid() {
@@ -191,6 +196,7 @@ public class BaseElement implements Serializable{
 		this.desabledatablock = desabledatablock;
 	}
 
+
 	public void setSerial(String serial) {
         this.serial = serial;
     }   
@@ -223,7 +229,8 @@ public class BaseElement implements Serializable{
         this.activatefollower = activatefollower;
     }
 
-    public boolean isDesableupdate() {
+
+	public boolean isDesableupdate() {
         return desableupdate;
     }
 

@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Appreciation;
+import com.kerenedu.configuration.Classe;
 import com.kerenedu.inscription.Inscription;
 import com.megatim.common.annotations.Predicate;
 
@@ -38,6 +39,20 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
     @JoinColumn(name = "ETUDIANT_ID")
 	@Predicate(label="Elève" ,target = "many-to-one",type = Inscription.class, sequence=1,editable=true, hide=true)
 	private Inscription eleve ;
+	
+	@ManyToOne
+	@JoinColumn(name = "CLASSE_ID")
+	//@Predicate(label="CLASSE",updatable=true,type=Classe.class , target="many-to-one",search=true , sequence=1	,colsequence=3,editable=false, optional=false)
+	protected Classe classe;
+	
+	@Column(name = "TYPE_EXAMEN")
+	//@Predicate(label="EXAMEN",updatable=true,type=Examen.class , target="many-to-one",search=true , sequence=2	,editable=false,colsequence=4, optional=false)
+	protected String typeexamen;
+	
+	@ManyToOne
+    @JoinColumn(name = "MATIERE_ID")
+	//@Predicate(label="MATIERE",optional=true,updatable=true,search=true , sequence=3, colsequence=1,type=CoefMatiereDetail.class ,editable=false , observable=true)
+	protected CoefMatiereDetail matiere;
 	
 	@Column(name = "SUR")
 	//@Predicate(label = "Note/",type = Long.class,search = true  , sequence=2)
@@ -70,6 +85,35 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	@Column(name = "S_NOTE_3")
 	//@Predicate(label = "SEQ/Mois3",type = Double.class,search = true  , sequence=5,editable=false )
 	private Double snote3 = new Double(0) ;
+	
+	@Column(name = "NOTET1")
+	//@Predicate(label = "Q1/Mois1",type = Double.class,search = true  , sequence=3 ,editable=false)
+	private Double notet1 = new Double(0) ;
+	
+	@Column(name = "NOTET2")
+	//@Predicate(label = "Q2/Mois2",type = Double.class,search = true  , sequence=4 ,editable=false)
+	private Double notet2 = new Double(0) ;
+	
+	@Column(name = "NOTET3")
+	//@Predicate(label = "SEQ/Mois3",type = Double.class,search = true  , sequence=5,editable=false )
+	private Double notet3 = new Double(0) ;
+	
+	@Column(name = "NOTEANN")
+	//@Predicate(label = "SEQ/Mois3",type = Double.class,search = true  , sequence=5,editable=false )
+	private Double noteann = new Double(0) ;
+	
+	@Column(name = "MOYMATCLS")
+	private Double moymatcls = new Double(0) ;
+	
+	@Column(name = "EXTREMAX")
+	private Double extrememax = new Double(0) ;
+	
+	@Column(name = "EXTREMIN")
+	private Double extrememin = new Double(0) ;
+	
+	@Column(name = "MOYSEQ")
+	private Double moyseq = new Double(0) ;
+	
 	
 	
 	@Column(name = "APPRECIATION")
@@ -106,7 +150,25 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 		this.snote1 = notedetail.snote1;
 		this.snote2 = notedetail.snote2;
 		this.snote3 = notedetail.snote3;
-
+		this.noteann= notedetail.noteann;
+		
+		this.notet1= notedetail.notet1;
+		this.notet2= notedetail.notet2;
+		this.notet3= notedetail.notet3;
+		
+		this.moymatcls= notedetail.moymatcls;
+		this.extrememax= notedetail.extrememax;
+		this.extrememin= notedetail.extrememin;
+		
+		if(notedetail.classe!=null){
+			this.classe = new Classe(notedetail.classe);
+		}
+		
+		if(notedetail.matiere!=null){
+			this.matiere = new CoefMatiereDetail(notedetail.matiere);
+		}
+		this.typeexamen=notedetail.typeexamen;
+		this.moyseq=notedetail.moyseq;
 	}
 	
 	public NoteDetail(Inscription eleve) {
@@ -120,6 +182,31 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 		this.snote1 = new Double(0);
 		this.snote2 = new Double(0);
 		this.snote3 = new Double(0);
+		this.notet1 = new Double(0);
+		this.notet2 = new Double(0);
+		this.notet3 = new Double(0);
+		this.noteann = new Double(0);
+
+	}
+	
+	public NoteDetail(Inscription eleve ,CoefMatiereDetail coefmat,Examen examen) {
+		this.eleve = new Inscription(eleve);
+		this.matiere=new CoefMatiereDetail(coefmat);
+		this.typeexamen= examen.getTypesequence();
+		this.classe= new Classe(coefmat.getClasse());
+		this.matricule=eleve.getEleve().getMatricule();
+		this.nom=eleve.getEleve().getNom();
+		this.obs= "";
+		this.note= new Double(0);
+		this.sur= new Long(20);
+		this.anneScolaire=eleve.getAnneScolaire();
+		this.snote1 = new Double(0);
+		this.snote2 = new Double(0);
+		this.snote3 = new Double(0);
+		this.notet1 = new Double(0);
+		this.notet2 = new Double(0);
+		this.notet3 = new Double(0);
+		this.noteann = new Double(0);
 
 	}
 
@@ -178,6 +265,28 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	}
 
 
+	public Classe getClasse() {
+		return classe;
+	}
+
+
+	public void setClasse(Classe classe) {
+		this.classe = classe;
+	}
+
+
+
+
+	public CoefMatiereDetail getMatiere() {
+		return matiere;
+	}
+
+
+	public void setMatiere(CoefMatiereDetail matiere) {
+		this.matiere = matiere;
+	}
+
+
 	public void setMatricule(String matricule) {
 		this.matricule = matricule;
 	}
@@ -213,8 +322,48 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	}
 
 
+	public Double getMoyseq() {
+		return moyseq;
+	}
+
+
+	public void setMoyseq(Double moyseq) {
+		this.moyseq = moyseq;
+	}
+
+
 	public String getObs() {
 		return obs;
+	}
+
+
+	public Double getMoymatcls() {
+		return moymatcls;
+	}
+
+
+	public void setMoymatcls(Double moymatcls) {
+		this.moymatcls = moymatcls;
+	}
+
+
+	public Double getExtrememax() {
+		return extrememax;
+	}
+
+
+	public void setExtrememax(Double extrememax) {
+		this.extrememax = extrememax;
+	}
+
+
+	public Double getExtrememin() {
+		return extrememin;
+	}
+
+
+	public void setExtrememin(Double extrememin) {
+		this.extrememin = extrememin;
 	}
 
 
@@ -275,6 +424,56 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 
 	public void setNote3(Double note3) {
 		this.note3 = note3;
+	}
+
+
+	public Double getNotet1() {
+		return notet1;
+	}
+
+
+	public void setNotet1(Double notet1) {
+		this.notet1 = notet1;
+	}
+
+
+	public Double getNotet2() {
+		return notet2;
+	}
+
+
+	public void setNotet2(Double notet2) {
+		this.notet2 = notet2;
+	}
+
+
+	public String getTypeexamen() {
+		return typeexamen;
+	}
+
+
+	public void setTypeexamen(String typeexamen) {
+		this.typeexamen = typeexamen;
+	}
+
+
+	public Double getNotet3() {
+		return notet3;
+	}
+
+
+	public void setNotet3(Double notet3) {
+		this.notet3 = notet3;
+	}
+
+
+	public Double getNoteann() {
+		return noteann;
+	}
+
+
+	public void setNoteann(Double noteann) {
+		this.noteann = noteann;
 	}
 
 

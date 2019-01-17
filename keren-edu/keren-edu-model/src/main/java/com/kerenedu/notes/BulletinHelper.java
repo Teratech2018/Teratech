@@ -19,14 +19,10 @@ import com.kerenedu.inscription.Inscription;
  * @author ntchuente
  *
  */
-@Table
-@Entity(name = "e_zview_helper_bull")
+//@Table
+//@Entity(name = "e_zview_helper_bull")
 public class BulletinHelper extends BaseElement implements Serializable, Comparable<BulletinHelper> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -125011589521185156L;
 
 
 	@ManyToOne
