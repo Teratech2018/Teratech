@@ -28,11 +28,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,10 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -95,6 +98,9 @@ public class FileHelper {
      * @throws java.io.IOException 
      */
     public static void moveFile(File from , File to) throws IOException{
+        if(!from.exists()){
+            return ;
+        }//end  if(!from.exists()){
         Files.move(Paths.get(from.toURI()), Paths.get(to.toURI()),StandardCopyOption.REPLACE_EXISTING);
     }
     
@@ -678,14 +684,14 @@ public class FileHelper {
      * @return 
      */
     public static String ngTemplateParse(String script) throws JAXBException {
-        if(script==null || script.trim().isEmpty()){
-            return script;
-        }//end if(script==null || script.trim().isEmpty()){
-//       System.out.println(FileHelper.class.toString()+".ngTemplateParse ========================= "+script);
-       try {            
+        try {
+            if(script==null || script.trim().isEmpty()){
+                return script;
+            }//end if(script==null || script.trim().isEmpty()){
+//            System.out.println(FileHelper.class.toString()+".ngTemplateParse ========================= "+script);
             DocumentBuilderFactory factory =
-                    DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();  
+                    DocumentBuilderFactory.newInstance();  
+            DocumentBuilder builder = factory.newDocumentBuilder();
             StringBuilder xmlbuilder = new StringBuilder();
             xmlbuilder.append(script);
             ByteArrayInputStream input = new ByteArrayInputStream(xmlbuilder.toString().getBytes("UTF-8"));
@@ -703,9 +709,22 @@ public class FileHelper {
             String xmlString =  writer.toString().substring(38);
             xmlString = xmlString.replaceAll("&gt;", ">");
             return xmlString;
-        } catch (Exception ex) {
-            throw   new JAXBException(ex);
-        }
+        } catch (ParserConfigurationException | SAXException ex) {
+           Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+            throw new JAXBException(ex.getMessage());
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+            throw new JAXBException(ex.getMessage());
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+            throw new JAXBException(ex.getMessage());
+        } catch (TransformerException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+            throw new JAXBException(ex.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(FileHelper.class.getName()).log(Level.SEVERE, null, ex);
+            throw new JAXBException(ex.getMessage());
+        }        
     }
    /**
     * 
@@ -727,25 +746,28 @@ public class FileHelper {
                 File tmpfile = new File(pathbuilder.toString());
                 if(tmpfile.exists()){
                     Document doc = builder.parse(tmpfile);
-//                    System.out.println(FileHelper.class.toString()+".ngTemplateNodeParser ========================= "+tmpfile.getAbsolutePath()+" == nodes count : "+((Element)doc.getChildNodes().item(0)).getTagName());
                     NodeList node_list = doc.getChildNodes();
                     for(int i=0 ;i<node_list.getLength();i++){
                         ngTemplateNodeParser(node_list.item(i) ,builder,doc);
                     }//end for(int i=0 ;i<node_list.getLength();i++){
+//                    Element parent = getElementParent(document.getDocumentElement(), element);
+//                    System.out.println(FileHelper.class.toString()+".ngTemplateNodeParser ========================= "+tmpfile.getAbsolutePath()+" == nodes count :  ====== document parent "+document.getDocumentElement().getTagName()+" ====== element : "+element.getTagName());
                     if(doc.getChildNodes().getLength()>0){
-                        document.getDocumentElement().replaceChild(document.importNode(doc.getDocumentElement(),true),element);
+//                        document.getDocumentElement().replaceChild(document.importNode(doc.getDocumentElement(),true),element);
+                         element.getParentNode().replaceChild(document.importNode(doc.getDocumentElement(),true),element);
                     }//end if(doc.getChildNodes().getLength()>0){
                 }//end if(tmpfile.exists()){                
             }else{
                 //Traitement des noeuds du node
                 NodeList node_list = element.getChildNodes();
                 for(int i=0 ;i<node_list.getLength();i++){
-                    ngTemplateNodeParser(node_list.item(i) ,builder,document);
+                    ngTemplateNodeParser(node_list.item(i) ,builder, document);
                 }//end for(int i=0 ;i<node_list.getLength();i++){
             }//end if(element.getTagName().equalsIgnoreCase("ng-template")){
         }//end if(node.getNodeType()==Node.ELEMENT_NODE){
 //        return node ;
     }
+   
     /**
      * 
      * @param filename

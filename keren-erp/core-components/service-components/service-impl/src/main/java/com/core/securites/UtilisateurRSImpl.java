@@ -1,6 +1,7 @@
 
 package com.core.securites;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import javax.ws.rs.Path;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.core.menus.MenuModule;
@@ -120,6 +121,15 @@ public class UtilisateurRSImpl
         }
         manager.update(user.getId(), user);
         return user;
+    }
+
+    @Override
+    public Utilisateur getUserbyEmail(HttpHeaders headers, String mail) {
+        //To change body of generated methods, choose Tools | Templates.
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("courriel", mail);
+        List<Utilisateur> datas = manager.filter(container.getPredicats(), null, null, 0, -1);
+        return datas.isEmpty() ? null:datas.get(0);
     }
 
    

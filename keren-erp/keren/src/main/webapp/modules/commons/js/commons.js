@@ -154,7 +154,7 @@ angular.module('keren.core.commons')
                     }else{
                         this.mementos = mementos;
                     }
-                }
+                };
             };
             var NotifyStatutPanel=(function(){
                var instance;
@@ -171,7 +171,23 @@ angular.module('keren.core.commons')
                         return instance;
                     }
                 };
-            })();         
+            })();    
+            var NotifyInstance =(function(){
+                var instance ;
+                function createInstance(){
+                    var object = new Object();
+                    object.instances=new Array();
+                    return object;
+                }
+                return{
+                    getInstance: function(){
+                        if(!instance){
+                            instance = createInstance();
+                        }
+                        return instance;
+                    }
+                };
+            })();
             var WebSiteContext = (function(){
                 var instance;
                 function createInstance(){
@@ -204,7 +220,7 @@ angular.module('keren.core.commons')
                             instance = createInstance();
                         }
                         return instance;
-                    }
+                    }                    
                 };
             })();
             /**
@@ -271,6 +287,7 @@ angular.module('keren.core.commons')
                                 var webcontext = angular.fromJson(sessionStorage.getItem(key));
                                 scope.currentuser = webcontext.currentuser;
                                 scope.website = webcontext.website;
+//                                scope.company = scope.currentuser.company;
                                 $http.defaults.headers.common['Authorization']='Basic '+scope.currentuser.authdata;
                                 scope.ready(webcontext);
 //                                console.log("Hello ce fichier est execute : "+key+" ====== "+angular.toJson(webcontext));
@@ -841,7 +858,13 @@ angular.module('keren.core.commons')
                 * @returns {undefined}
                 */
                notifyWindow : function(title , message ,type){
-                   $.notify(
+                   var instance = NotifyInstance.getInstance();
+                   //Desactivation des fenetre ouvert
+                   for(var i=0;i<instance.instances.length;i++){
+                       var notify = instance.instances[i];
+                       notify.close();
+                   }//end for(var i=0;i<instance.instances.length;i++){
+                   var notify = $.notify(
                      {
                        title: "<strong>"+title+":</strong> ",
                        message: message
@@ -856,6 +879,7 @@ angular.module('keren.core.commons')
 
                      }
                    );
+                   instance.instances.push(notify);
                },
                /**
                 * Affiche fenetre alerte

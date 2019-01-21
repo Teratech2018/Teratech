@@ -5008,7 +5008,7 @@ $scope.gererChangementFichier3 = function(event,model){
          * @returns {Boolean}
          */
        $scope.showheaderwidget = function(roles ,role){
-           if(role && role=="administrateur" ){
+           if((role && role=="administrateur")||$scope.currentUser.intitule=='Administrateur'){
                 return true;
             }//end if(role=="administrateur" ){
            if(roles && role){               
@@ -5018,7 +5018,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     contains |= commonsTools.containsLiteral(roles,array[i]);
                 }//end for(var i=0 ; i<array.length;i++){
                 return  contains;
-            }else{
+            }else {
                 return false;
             }//end if(roles && role){
        }
@@ -8762,54 +8762,44 @@ $scope.gererChangementFichier3 = function(event,model){
                Rafresh the data from the data store
        **/
        $scope.loadData = function(item){
+           var model = angular.lowercase($scope.currentAction.model);
+            var entity = angular.lowercase($scope.currentAction.entityName);
+            var method = angular.lowercase($scope.currentAction.method);
            //Chargement des donnees
                 //restService.url('societe');
-//               console.log('$scope.loadData = function() ::::::::::::::::'+$scope.pagination.currentPage+"==== "+$scope.pagination.totalPages+" ==== "+angular.isNumber($scope.pagination.totalPages));
+//               console.log('$scope.loadData = function() ::::::::::::::::'+$scope.currentAction.method);
                try{   /**var pageBeginIndex = $scope.pagination.currentPage - $scope.pagination.pageSize;
                       if(pageBeginIndex<0){
                           pageBeginIndex = 0;
                       }   **/       
                       $http.defaults.headers.common['userid']= $rootScope.globals.user.id;   
-                      $http.defaults.headers.common['search_text']= $scope.searchCriteria;  
-                      restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
-                               .$promise.then(function(datas){                                    
-                                    if(datas){
-                                        $scope.datas = datas;
-                                //Traitement des donnÃ©es
-                                       if($scope.calendarrecord){
-                                            for(var i=0;i<datas.length;i++){
-                                               var data = datas[i];
-                                               if($scope.calendarrecord.titlefield){
-                                                   data['title'] = data[$scope.calendarrecord.titlefield];
-                                               }
-                                               if($scope.calendarrecord.startfield){
-                                                   data['start'] = data[$scope.calendarrecord.startfield];
-                                               }
-                                               if($scope.calendarrecord.endfield){
-                                                   data['end'] = data[$scope.calendarrecord.endfield];
-                                               }
-                                               data['allDay'] = $scope.calendarrecord.allday;
-                                            }//end for(var i=0;i<datas.length;i++){
-                                            $scope.eventSources = [datas];
-                                        }//end if($scope.calendarrecord)
-                                        if($scope.pagination.beginIndex<=0){
-                                            $scope.pagination.endIndex = $scope.pagination.pageSize;
-                                            if($scope.pagination.totalPages<=$scope.pagination.pageSize){
-                                                $scope.pagination.endIndex=$scope.pagination.totalPages;
-                                            }//end if($scope.pagination.totalPages<=$scope.pagination.pageSize){
-                                        }//end if($scope.pagination.beginIndex<=0){
-                                        $scope.pagination.hasnext();
-                                        $scope.pagination.hasprevious();
-                                        $rootScope.$broadcast("dataLoad" , {
-                                            message:"dataLoad",item:item
-                                        });
+                      $http.defaults.headers.common['search_text']= $scope.searchCriteria; 
+                      if(!angular.isDefined($scope.currentAction.method)
+                              ||$scope.currentAction.method==null){
+                            restService.filter($scope.predicats ,$scope.pagination.beginIndex , $scope.pagination.pageSize)
+                                     .$promise.then(function(datas){                                    
+                                          if(datas){  
+                                              $scope.afterLoadData(datas,item);                                        
+                                          }//end if(datas){  
+                                          commonsTools.hideDialogLoading();
+                                     } ,function(error){
+                                         commonsTools.hideDialogLoading();
+                                         commonsTools.showMessageDialog(error);
+                                     });  
+                        }else{
+                            $http.defaults.headers.common['predicats']= angular.toJson($scope.predicats);       
+                            var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/"+model+"/"+entity+"/"+method;
+                            $http.get(url)
+                                    .then(
+                                    function(response){
+                                        $scope.datas = response.data;
+                                        $scope.afterLoadData(datas,item);   
                                         commonsTools.hideDialogLoading();
-                                    }
-                               } ,function(error){
-                                   commonsTools.hideDialogLoading();
-                                   commonsTools.showMessageDialog(error);
-                               });  
-                      
+                                    },function(error){
+                                        commonsTools.hideDialogLoading();
+                                        commonsTools.showMessageDialog(error);
+                                    });
+                        }//end if(!angular.isDefined($scope.currentAction.method)
 //                      for(var i=0 ; i<$scope.predicats.length;i++){
 //                         console.log($scope.predicats[i].fieldName+" ==== "+$scope.predicats[i].fieldValue);
 //                      }
@@ -8817,6 +8807,43 @@ $scope.gererChangementFichier3 = function(event,model){
                     commonsTools.hideDialogLoading();
                     commonsTools.notifyWindow("Une erreur est servenu pendant le traitement" ,"<br/>"+ex.message,"danger");
                 }              
+       };
+       
+       /**
+        * Action apres chargement des données
+        * @param {type} datas
+        * @returns {undefined}
+        */
+       $scope.afterLoadData = function(datas,item){
+            $scope.datas = datas;
+            //Traitement des donnÃ©es
+             if($scope.calendarrecord){
+                  for(var i=0;i<datas.length;i++){
+                     var data = datas[i];
+                     if($scope.calendarrecord.titlefield){
+                         data['title'] = data[$scope.calendarrecord.titlefield];
+                     }
+                     if($scope.calendarrecord.startfield){
+                         data['start'] = data[$scope.calendarrecord.startfield];
+                     }
+                     if($scope.calendarrecord.endfield){
+                         data['end'] = data[$scope.calendarrecord.endfield];
+                     }
+                     data['allDay'] = $scope.calendarrecord.allday;
+                  }//end for(var i=0;i<datas.length;i++){
+                  $scope.eventSources = [datas];
+              }//end if($scope.calendarrecord)
+              if($scope.pagination.beginIndex<=0){
+                  $scope.pagination.endIndex = $scope.pagination.pageSize;
+                  if($scope.pagination.totalPages<=$scope.pagination.pageSize){
+                      $scope.pagination.endIndex=$scope.pagination.totalPages;
+                  }//end if($scope.pagination.totalPages<=$scope.pagination.pageSize){
+              }//end if($scope.pagination.beginIndex<=0){
+              $scope.pagination.hasnext();
+              $scope.pagination.hasprevious();
+              $rootScope.$broadcast("dataLoad" , {
+                  message:"dataLoad",item:item
+              });
        };
        /**
         * 
@@ -12944,6 +12971,8 @@ $scope.gererChangementFichier3 = function(event,model){
           **/
           $scope.$on("currentModule" , function(event , args){
                   $scope.currentModule = args.module;
+                  $http.defaults.headers.common['moduleid']= $scope.currentModule.id;
+                  $http.defaults.headers.common['modulename']= $scope.currentModule.name;  
                   $scope.company = $rootScope.globals.company;
                   if($scope.currentModule.hasmenu==true){
                         $scope.enabledVerticalMenu = args.verticalMenu;
@@ -13389,7 +13418,7 @@ $scope.gererChangementFichier3 = function(event,model){
           $scope.$on("currentActionUpdate" , function(event , args){
                var session = commonsTools.readCookie("session_"+$rootScope.globals.user.id);
                if(session==null){
-                   alert('Votre session est expirÃ©e \n Cliquez sur OK et reconnectez vous');
+                   alert('Votre session est expirée \n Cliquez sur OK et reconnectez vous');
                    $scope.deconnexion();
                    return;
                }//end if(session==null){

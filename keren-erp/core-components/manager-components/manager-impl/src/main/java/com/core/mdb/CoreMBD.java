@@ -13,7 +13,6 @@ import com.core.discussions.SMessage;
 import com.core.discussions.SMessageDAOLocal;
 import com.core.email.Email;
 import com.core.email.EmailDAOLocal;
-import com.core.securites.Utilisateur;
 import java.util.Date;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
@@ -32,7 +31,8 @@ import javax.jms.TextMessage;
     @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/kerencore/coremdb"),
     @ActivationConfigProperty(propertyName = "destinationType",propertyValue = "javax.jms.Topic"),
      @ActivationConfigProperty(propertyName = "acknowledgeMode",propertyValue = "Auto-acknowledge")
-})
+},
+ mappedName = "java:/kerencore/coremdb")
 public class CoreMBD implements  MessageListener{
 
     @EJB(name = "SMessageDAO")

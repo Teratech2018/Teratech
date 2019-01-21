@@ -609,9 +609,9 @@ public  abstract class AbstractGenericService< T , PK extends Serializable> impl
         }//end if(contraints!=null&&!contraints.isEmpty())
 
         if(liveSearch!=null&&!liveSearch.trim().isEmpty()){
-            container.addLike("searchkeys", liveSearch);
+            container.addLike("searchkeys", "%"+liveSearch);
         }else if(searchText!=null&&!searchText.trim().isEmpty()){
-            container.addLike("searchkeys", searchText);
+            container.addLike("searchkeys", "%"+searchText);
         }//end if(searchText!=null&&!searchText.trim().isEmpty()){        
 
         //List result = new ArrayList();

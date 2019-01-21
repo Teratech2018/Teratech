@@ -19,5 +19,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface KHeaders {
+    /**
+     * Activer la bare de statut
+     * @return 
+     */
+    boolean statubar() default false;
+    /**
+     * Ent^te
+     * @return 
+     */
     KHeader[] value();
 }

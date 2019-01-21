@@ -23,6 +23,27 @@ import javax.ws.rs.core.Response;
 @Path("/resource")
 public class UploadFileRSImpl  implements UploadFileRS{
 
+    
+    @Override
+    public Response downloadImageFileFreeForModule(HttpHeaders headers, String module, String filename) {
+         try {
+            Gson gson = new Gson();
+            String _module = module;
+             FileHelper.setCurrentModule(module);
+            //To change body of generated methods, choose Tools | Templates.
+            File fichier = new File(FileHelper.getStaticDirectory()+File.separator+filename);
+//            System.out.println(UploadFileRSImpl.class.toString()+" ==== "+fichier.getAbsolutePath()+"   module ==== "+_module);
+            if(!fichier.exists()||!fichier.isFile() || filename.trim().equalsIgnoreCase("avatar.png")){
+                FileHelper.setCurrentModule(null);
+                fichier = new File(FileHelper.getStaticDirectory()+File.separator+"avatar.png");
+            }
+            return CommonTools.getImage(fichier);
+        } catch (IOException ex) {
+             Response.serverError().build();
+        }
+        return Response.noContent().build();
+    }
+    
      @Override
     public Response downloadImageFileFree(@Context HttpHeaders headers ,String filename) {
         //To change body of generated methods, choose Tools | Templates.
@@ -38,7 +59,7 @@ public class UploadFileRSImpl  implements UploadFileRS{
             }//end if(_module!=null && !_module.isEmpty()){
             //To change body of generated methods, choose Tools | Templates.
             File fichier = new File(FileHelper.getStaticDirectory()+File.separator+filename);
-//            System.out.println(UploadFileRSImpl.class.toString()+" ==== "+fichier.getAbsolutePath());
+//            System.out.println(UploadFileRSImpl.class.toString()+" ==== "+fichier.getAbsolutePath()+"   module ==== "+_module);
             if(!fichier.exists()||!fichier.isFile()){
                 fichier = new File(FileHelper.getStaticDirectory()+File.separator+"avatar.png");
             }
@@ -147,5 +168,5 @@ public class UploadFileRSImpl  implements UploadFileRS{
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
-    
+
 }

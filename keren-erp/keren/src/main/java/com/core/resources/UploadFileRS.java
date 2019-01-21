@@ -26,6 +26,18 @@ public interface UploadFileRS {
     @Produces("image/png")
     public Response downloadImageFileFree(@Context HttpHeaders headers ,@PathParam("filename") String filename);
     
+    /**
+     *
+     * @param headers
+     * @param module
+     * @param filename
+     * @return
+     */
+    @GET
+    @Path("module/{modulename}/{filename}")
+    @Produces("image/png")
+    public Response downloadImageFileFreeForModule(@Context HttpHeaders headers,@PathParam("modulename") String module ,@PathParam("filename") String filename);
+    
     @GET
     @Path("text/{filename}")
     @Produces("text/plain")
