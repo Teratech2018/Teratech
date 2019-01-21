@@ -126,7 +126,7 @@ public class EdtBulletinTrimModalRSImpl
         System.out.println("EdtBulletinTrimModalRSImpl.buildPdfReportTrim() ==EDITION BULLETIN TRIMESTRE I========");
         
         container = RestrictionsContainer.newInstance();
-        container.addEq("typesequence", "0");
+        container.addEq("typesequence", "1");
         List<Examen> datas = managerExamen.filter(container.getPredicats(), null, new HashSet(), -1, 0);
         if ((datas == null) || (datas.isEmpty())) {
           throw new KerenExecption("ERREUR::: Bienvouloir se Rassurer que toutes les notes du premier Trimestre sont Saisies");
@@ -142,7 +142,7 @@ public class EdtBulletinTrimModalRSImpl
       } else if (entity.getTypebulletin().equals("1"))
       {
         System.out.println("EdtBulletinTrimModalRSImpl.buildPdfReportTrim() ==EDITION BULLETIN TRIMESTRE II========");
-        container.addEq("typesequence", "2");
+        container.addEq("typesequence", "3");
         List<Examen> datas = managerExamen.filter(container.getPredicats(), null, new HashSet(), -1, 0);
         if ((datas == null) || (datas.isEmpty())) {
           throw new KerenExecption("ERREUR::: Bienvouloir se Rassurer que toutes les notes du dexieme Trimestre sont Saisies");
@@ -157,7 +157,7 @@ public class EdtBulletinTrimModalRSImpl
       }
       else {
         System.out.println("EdtBulletinTrimModalRSImpl.buildPdfReportTrim() ==EDITION BULLETIN TRIMESTRE III========");
-        container.addEq("typesequence", "4");
+        container.addEq("typesequence", "5");
         List<Examen> datas = managerExamen.filter(container.getPredicats(), null, new HashSet(), -1, 0);
         if ((datas == null) || (datas.isEmpty())) {
           throw new KerenExecption("ERREUR::: Bienvouloir se Rassurer que toutes les notes du Troisieme Trimestre sont Saisies");

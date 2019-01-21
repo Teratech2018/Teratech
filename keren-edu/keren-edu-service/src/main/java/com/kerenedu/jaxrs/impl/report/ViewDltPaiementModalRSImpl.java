@@ -93,14 +93,14 @@ public class ViewDltPaiementModalRSImpl extends AbstractGenericService<ViewDltPa
 	public Response buildPdfReport(ViewDltPaiementModal entity) {
 		try {
 			List<ViewDltPaiement> records = manager.getCriteres(entity);
-			System.out.println("ViewDltPaiementModalRSImpl.buildPdfReport() size record is " + records.size());
+			//System.out.println("ViewDltPaiementModalRSImpl.buildPdfReport() size record is " + records.size());
 			if (records==null&&records.size() == 0) {
 				throw new KerenExecption("Aucune Données Trouvés !!!");
 			}
 			String URL = ReportHelper.templateURL + ReportsName.LINSTINGPAIEMENT.getName();
 			Map parameters = new HashMap();
 			parameters = this.getReportParameters();
-			System.out.println("ViewDltPaiementModalRSImpl.buildPdfReport() date " + entity.getDatepaideb());
+			//System.out.println("ViewDltPaiementModalRSImpl.buildPdfReport() date " + entity.getDatepaideb());
 
 			parameters.put(ReportsParameter.DEBUT, entity.getDatepaideb());
 			parameters.put(ReportsParameter.FIN, entity.getDatepaifin());

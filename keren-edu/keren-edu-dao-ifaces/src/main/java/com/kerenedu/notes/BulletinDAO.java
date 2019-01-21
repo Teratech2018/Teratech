@@ -18,5 +18,7 @@ public interface BulletinDAO
      * 
      */
     public final static String SERVICE_NAME = "BulletinDAO";
+    
+    public long deleteRadBulletin(Bulletin entity);
 
 }

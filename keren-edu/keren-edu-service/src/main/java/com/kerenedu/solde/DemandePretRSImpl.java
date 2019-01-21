@@ -2,6 +2,7 @@
 package com.kerenedu.solde;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -108,15 +109,15 @@ public class DemandePretRSImpl
                 throw new KerenExecption("Le Type de Prêt est obligatoire");
         }else if(entity.getEmploye()==null){
                 throw new KerenExecption("Le Salarié  est obligatoire");
-        }else if(entity.getDpret()==null){
-                throw new KerenExecption("La date de Prêt  est obligatoire");
         }else if(entity.getDrembour()==null){
                 throw new KerenExecption("La date de début remboursement  est obligatoire");
         }else if(entity.getMontantsol()==null){
                 throw new KerenExecption("Le montant sollicité  est obligatoire");
-        }else if(entity.getMontantpro()==null){
-                throw new KerenExecption("Le montant proposé  est obligatoire");
-        }else if(entity.getDuree()==null){
+        }
+//        }else if(entity.getMontantpro()==null){
+//                throw new KerenExecption("Le montant proposé  est obligatoire");
+//        }
+        else if(entity.getDuree()==null){
                 throw new KerenExecption("La durée du remboursement est obligatoire");
         }else if(entity.getQuotite()==null){
                 throw new KerenExecption("La Quotité cessible est obligatoire");
@@ -128,13 +129,20 @@ public class DemandePretRSImpl
                 throw new KerenExecption("Demande de Prêt déjà terminée");
         }else if(entity.getState().equalsIgnoreCase("annule")){
                 throw new KerenExecption("Demande de Prêt déjà annulée");
-        }else if(entity.getDpret().after(entity.getDrembour())){
-                throw new KerenExecption("La date de pret ne peut etre superieure à la date de remboursement");
+//        }else if(entity.getDpret().after(entity.getDrembour())){
+//                throw new KerenExecption("La date de pret ne peut etre superieure à la date de remboursement");
+//        }
         }
 
         //On set l'etat initial
         entity.setState("etabli");
 
+        if(entity.getDpret()==null){
+        	entity.setDpret(new Date());
+        }
+        if(entity.getMontantpro()==null){
+        	entity.setMontantpro(entity.getMontantsol());
+        }
         super.processBeforeSave(entity);
     }
 

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Badge" columnCount="2" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="278" columnSpacing="10" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
+	<property name="ireport.zoom" value="1.100000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<subDataset name="Table Dataset 1" uuid="9ecd45e8-9d8b-4318-8936-0bdc97e78604"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="REPORT_IMAGE_REPOSITORY" class="byte[]"/>
+	<parameter name="anneeScolaire" class="java.lang.String"/>
+	<parameter name="cyclescolaire" class="java.lang.String"/>
+	<parameter name="PHOTO_IMAGE_REPOSITORY" class="byte[]"/>
+	<parameter name="BG_IMAGE_REPOSITORY" class="byte[]"/>
+	<parameter name="FOND_IMAGE_REPOSITORY" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM VIEW_IMPUTATION]]>
+	</queryString>
+	<field name="eleve.classe.libelle" class="java.lang.String"/>
+	<field name="eleve.section.libelle" class="java.lang.String"/>
+	<field name="eleve.eleve.nom" class="java.lang.String"/>
+	<field name="eleve.eleve.prenon" class="java.lang.String"/>
+	<field name="eleve.anneScolaire" class="java.lang.String"/>
+	<field name="eleve.classe.filiere.cycle.libelle" class="java.lang.String"/>
+	<field name="eleve.eleve.matricule" class="java.lang.String"/>
+	<field name="eleve.id" class="java.lang.Long"/>
+	<field name="eleve.section.typesection" class="java.lang.String"/>
+	<field name="eleve.classe.filiere.cycle.libelleEn" class="java.lang.String"/>
+	<field name="eleve.classe.filiere.cycle.id" class="java.lang.Long"/>
+	<field name="eleve.classe.id" class="java.lang.Long"/>
+	<field name="eleve.section.id" class="java.lang.Long"/>
+	<field name="eleve.classe.section.typesection" class="java.lang.String"/>
+	<field name="fiche.service.libelle" class="java.lang.String"/>
+	<field name="eleve.classe.filiere.cycle.typecycle" class="java.lang.String"/>
+	<field name="fiche.service.type" class="java.lang.String"/>
+	<sortField name="eleve.classe.filiere.cycle.id"/>
+	<sortField name="eleve.section.id"/>
+	<sortField name="eleve.classe.id"/>
+	<sortField name="eleve.eleve.nom"/>
+	<variable name="anglais" class="java.lang.String">
+		<variableExpression><![CDATA[" You are invited in  " +$V{school} +"  to regularise  " +$V{service_eng} +" of  "+ $F{eleve.eleve.nom} +" " +$F{eleve.eleve.prenon} +" student in class  " +$F{eleve.classe.libelle}+"."]]></variableExpression>
+	</variable>
+	<variable name="school" class="java.lang.String">
+		<variableExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ? $F{eleve.classe.filiere.cycle.libelleEn} :$F{eleve.classe.filiere.cycle.libelle}  )]]></variableExpression>
+	</variable>
+	<variable name="french" class="java.lang.String">
+		<variableExpression><![CDATA[" Vous êtes attendus à l'établissement pour la régularisation de la  " +$F{fiche.service.libelle} +" de M (Mlle)  "+ $F{eleve.eleve.nom} +" " +$F{eleve.eleve.prenon} +"  élève en classe de  " +$F{eleve.classe.libelle}+"."]]></variableExpression>
+	</variable>
+	<variable name="service_eng" class="java.lang.String">
+		<variableExpression><![CDATA[($F{fiche.service.type}.equals("0")? "the Registration" : ( $F{fiche.service.type}.equals("1") ? "the 1st instalement;" :($F{fiche.service.type}.equals("2") ? "the 2nd instalment" : " the 3rd instalement " ) ) )]]></variableExpression>
+	</variable>
+	<group name="cycle" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{eleve.classe.filiere.cycle.id}]]></groupExpression>
+	</group>
+	<group name="section" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{eleve.section.id}]]></groupExpression>
+	</group>
+	<group name="classe" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{eleve.classe.id}]]></groupExpression>
+	</group>
+	<group name="eleve">
+		<groupExpression><![CDATA[$F{eleve.id}]]></groupExpression>
+		<groupHeader>
+			<band height="196">
+				<frame>
+					<reportElement mode="Transparent" x="-1" y="-1" width="279" height="197" backcolor="#CCFFFF" uuid="047007b2-cebc-4e0c-93fd-3915b28a36a0"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textField evaluationTime="Auto" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToBandHeight" x="3" y="169" width="272" height="22" uuid="e4d62c7f-b296-4078-abe0-cecf32efaaf8"/>
+						<box leftPadding="2">
+							<leftPen lineWidth="0.0" lineColor="#999999"/>
+							<bottomPen lineWidth="0.0" lineColor="#999999"/>
+							<rightPen lineWidth="0.0" lineColor="#999999"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Top">
+							<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Times-Bold"/>
+						</textElement>
+						<textFieldExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ?" Thanks for your understanding":" Merci pour votre bonne compréhension " )]]></textFieldExpression>
+					</textField>
+					<textField evaluationTime="Auto" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToBandHeight" x="1" y="84" width="272" height="57" uuid="215f9ffe-db99-44b3-975a-85283797c0e7"/>
+						<box leftPadding="2">
+							<leftPen lineWidth="0.0" lineColor="#999999"/>
+							<bottomPen lineWidth="0.0" lineColor="#999999"/>
+							<rightPen lineWidth="0.0" lineColor="#999999"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Top">
+							<font fontName="Times New Roman" size="12" isBold="false" pdfFontName="Times-Roman"/>
+						</textElement>
+						<textFieldExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ? " You are invited in  " +$V{school} +"  to regularise  " +$V{service_eng} +" of  "+ $F{eleve.eleve.nom} +" " +$F{eleve.eleve.prenon} +" student in class  " +$F{eleve.classe.libelle}+".":" Vous êtes attendus à l'établissement pour la régularisation de la  " +$F{fiche.service.libelle} +" de M (Mlle)  "+ $F{eleve.eleve.nom} +" " +$F{eleve.eleve.prenon} +"  élève en classe de  " +$F{eleve.classe.libelle}+"." )]]></textFieldExpression>
+					</textField>
+					<textField evaluationTime="Auto" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToBandHeight" x="4" y="145" width="272" height="22" uuid="d73baed3-4e7e-4eb3-baad-fda85eb929fa"/>
+						<box leftPadding="2" rightPadding="2">
+							<leftPen lineWidth="0.0" lineColor="#999999"/>
+							<bottomPen lineWidth="0.0" lineColor="#999999"/>
+							<rightPen lineWidth="0.0" lineColor="#999999"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Top">
+							<font fontName="Times New Roman" size="9" isBold="true" pdfFontName="Times-Bold"/>
+						</textElement>
+						<textFieldExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ?"In the absence of any reaction from you, the child Will not be admitted in class":"NB:  Faute de réaction de votre part l'enfant ne sera plus admis en classe " )]]></textFieldExpression>
+					</textField>
+				</frame>
+				<image scaleImage="FillFrame">
+					<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="3" y="0" width="91" height="51" uuid="5beea4bf-ac03-4bd3-9d52-19a7e4fb247f"/>
+					<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage((byte[])$P{REPORT_IMAGE_REPOSITORY})]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement x="95" y="22" width="183" height="12" uuid="bc8f7bac-c935-49b7-b3ec-db2404ea3f87"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="10" isBold="true" isUnderline="false" pdfFontName="Times-Roman"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ? $F{eleve.classe.filiere.cycle.libelleEn} :$F{eleve.classe.filiere.cycle.libelle}  )]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="3" y="57" width="101" height="19" uuid="e8c5676e-d52d-4201-871a-1e56dc28b0c5"/>
+					<box leftPadding="2">
+						<leftPen lineWidth="0.0" lineColor="#999999"/>
+						<bottomPen lineWidth="0.0" lineColor="#999999"/>
+						<rightPen lineWidth="0.0" lineColor="#999999"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Times New Roman" size="10" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ? "Dear Parents" :"Chers Parents "  )]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="205" y="37" width="73" height="14" uuid="40d4070c-38a9-404b-bc0d-c1f3dfef8b16"/>
+					<box>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11" isBold="true" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{eleve.anneScolaire}+"/"+ (new Long($F{eleve.anneScolaire})+1))]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="121" y="37" width="84" height="14" uuid="3aa0b23f-37aa-4af7-ad64-2c36f2d13eba"/>
+					<box leftPadding="5">
+						<leftPen lineWidth="0.0" lineColor="#999999"/>
+						<bottomPen lineWidth="0.0" lineColor="#999999"/>
+						<rightPen lineWidth="0.0" lineColor="#999999"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ? "School Year" :"Année Scolaire"  )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement x="95" y="11" width="183" height="10" uuid="b458178b-d6d9-4da6-b579-a7b9cf830393"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="8" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{eleve.section.typesection}.equals("0") ? "PEACE-WORK-FATHERLAND ".toUpperCase() :"PAIX-TRAVAIL-PATRIE ".toUpperCase()  )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement x="95" y="0" width="183" height="10" uuid="be20e282-5fd4-478a-84b3-858fbdc0a775"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Times New Roman" size="8" isBold="true" isUnderline="false" pdfFontName="Times-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{eleve.classe.section.typesection}.equals("0")? "REPUBLIC OF CAMEROON ".toUpperCase() :"REPUBLIQUE DU CAMEROUN".toUpperCase()  )]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="11"/>
+		</groupFooter>
+	</group>
+</jasperReport>

@@ -65,11 +65,11 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-dao-ifaces\src\main\java</outputDirectory>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-dao-ifaces\src\main\java</outputDirectory>
 							<layer>dao</layer>
 							<sublayer>interface</sublayer>
-							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\java</sourcesDirectory>
-							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
 							<specification>ejb</specification>
 						</configuration>
 						<id>dao-ifaces-generate</id>
@@ -79,11 +79,11 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-dao-impl\src\main\java</outputDirectory>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-dao-impl\src\main\java</outputDirectory>
 							<layer>dao</layer>
 							<sublayer>implementation</sublayer>
-							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\java</sourcesDirectory>
-							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
 							<persistanceunitname>keren</persistanceunitname>
 							<specification>ejb</specification>
 							<session>stateless</session>
@@ -97,11 +97,11 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-core-ifaces\src\main\java</outputDirectory>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-core-ifaces\src\main\java</outputDirectory>
 							<layer>manager</layer>
 							<sublayer>interface</sublayer>
-							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\java</sourcesDirectory>
-							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
 							<specification>ejb</specification>
 						</configuration>
 						<id>manager-ifaces-generate</id>
@@ -111,11 +111,11 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-core-impl\src\main\java</outputDirectory>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-core-impl\src\main\java</outputDirectory>
 							<layer>manager</layer>
 							<sublayer>implementation</sublayer>
-							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\java</sourcesDirectory>
-							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
 							<persistanceunitname>orion</persistanceunitname>
 							<specification>ejb</specification>
 							<session>stateless</session>
@@ -129,11 +129,11 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-service\src\main\java</outputDirectory>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-service\src\main\java</outputDirectory>
 							<layer>jax-rs</layer>
 							<sublayer>interface</sublayer>
-							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\java</sourcesDirectory>
-							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
 							<specification>jax-rs</specification>
 						</configuration>
 						<id>services-ifaces-generate</id>
@@ -143,11 +143,11 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-service\src\main\java</outputDirectory>
+							<outputDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-service\src\main\java</outputDirectory>
 							<layer>jax-rs</layer>
 							<sublayer>implementation</sublayer>
-							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\java</sourcesDirectory>
-							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\olpa_school\keren-edu-model\src\main\resources\model.xml</xmlfile>
+							<sourcesDirectory>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\java</sourcesDirectory>
+							<xmlfile>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-model\src\main\resources\model.xml</xmlfile>
 							<specification>jax-rs</specification>
 							<application>kereneducation</application>
 							<module></module>

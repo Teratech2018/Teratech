@@ -309,15 +309,18 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 				entity.setzMntverser(versement);
 		}else{
 			System.out.println("PaiementRSImpl.processBeforeSave() REMISE is :" + remise);
-			long totalpayer = inscription.getzMntPaye()+entity.getzMntverser();
+			long totalpayer = inscription.getzMntPaye()+entity.getzMntverser()+inscription.getzRemise()+inscription.getzRistourne();
 			System.out.println("PaiementRSImpl.processBeforeSave() total PAYER is :" + totalpayer);
 			
-			if(totalpayer==inscription.getzMnt()){
+		//	if(totalpayer==inscription.getzMnt()){
+				System.out.println("PaiementRSImpl.processBeforeSave() versement je suis icciis :" );
 				entity.setZremise(remise);
 				long versement = entity.getzMntverser();//- remise - entity.getZristourne() ;//- remise - entity.getZristourne()
 				System.out.println("PaiementRSImpl.processBeforeSave() versement is :" + versement);
 				entity.setzMntverser(versement);
-			}
+			//}
+			
+			
 		}
 
 		super.processBeforeSave(entity);

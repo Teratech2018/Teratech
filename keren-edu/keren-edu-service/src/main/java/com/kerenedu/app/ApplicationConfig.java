@@ -96,6 +96,7 @@ import com.kerenedu.notes.ImportNoteClasseFileRSImpl;
 import com.kerenedu.notes.ImportNoteClasseRSImpl;
 import com.kerenedu.notes.NoteDetailRSImpl;
 import com.kerenedu.notes.NoteRSImpl;
+import com.kerenedu.notes.StatistiqueNotesRSImpl;
 import com.kerenedu.personnel.DiplomeRSImpl;
 import com.kerenedu.personnel.EmargementDtlPeriodeRSImpl;
 import com.kerenedu.personnel.EmargementPeriodeRSImpl;
@@ -406,6 +407,7 @@ public class ApplicationConfig extends Application {
 		resources.add(ImportHeureProfRSImpl.class);
 		resources.add(BuilderNoteRSImpl.class);
 		resources.add(BuilderLigneNoteRSImpl.class);
+		resources.add(StatistiqueNotesRSImpl.class);
 		
 		
 		

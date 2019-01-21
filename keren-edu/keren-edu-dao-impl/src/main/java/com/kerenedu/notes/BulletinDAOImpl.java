@@ -28,4 +28,10 @@ public class BulletinDAOImpl
         return (Bulletin.class);
     }
 
+	@Override
+	public long deleteRadBulletin(Bulletin entity) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

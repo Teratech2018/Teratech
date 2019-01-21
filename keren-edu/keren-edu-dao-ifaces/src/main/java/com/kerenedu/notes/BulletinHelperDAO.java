@@ -2,6 +2,7 @@
 package com.kerenedu.notes;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
+import com.kerenedu.inscription.Inscription;
 
 
 /**
@@ -18,5 +19,9 @@ public interface BulletinHelperDAO
      * 
      */
     public final static String SERVICE_NAME = "BulletinHelperDAO";
+    
+    public BulletinHelper gethelper(Inscription critere);
+    
+    public LigneHelper getLigneHelper(LigneBulletinClasse ligne,Inscription critere );
 
 }
