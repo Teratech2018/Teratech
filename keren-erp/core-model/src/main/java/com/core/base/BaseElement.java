@@ -65,7 +65,6 @@ public class BaseElement implements Serializable{
     protected String footerScript = null;
     
     protected boolean activatefollower = false ;
-	protected boolean desabledatablock = true ;
     
     protected String searchkeys ;
     
@@ -79,7 +78,6 @@ public class BaseElement implements Serializable{
      
 
     public BaseElement() {
-		 this.desabledatablock=false;
     }
 
    /**
@@ -94,7 +92,6 @@ public class BaseElement implements Serializable{
         this.designation = designation;
         this.moduleName = moduleName;
         this.compareid = comparedid ;
-		 this.desabledatablock=false;
     }
 
     public long getCompareid() {
@@ -200,14 +197,6 @@ public class BaseElement implements Serializable{
     public void setActivefilelien(boolean activefilelien) {
         this.activefilelien = activefilelien;
     }
-	
-	 public boolean isDesabledatablock() {
-		return desabledatablock;
-	}
-
-	public void setDesabledatablock(boolean desabledatablock) {
-		this.desabledatablock = desabledatablock;
-	}
 
     public List<State> getStates() {
         return states;
