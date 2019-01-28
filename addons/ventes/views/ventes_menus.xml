@@ -183,12 +183,12 @@
 			   ]]>
 		  </template>
 	 </reportRecord>	 
-	 <kabanentry id="article_kaban_ach_01" parent_ref="teratech_vente_str_1">
+	 <kabanentry id="article_kaban_vte_01" parent_ref="teratech_vente_str_1">
 	    <template>
 		    <![CDATA[				   
 			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
 				 <div class='col-md-3 col-sm-4'>
-				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' ng-src="{{srcFn(item.image,'article','baseaccount')}}" alt='Image ' ng-click='imageClick()' height='70' width='75'/>
 				  </div> 
 				 </div>
 				 <div  class='col-md-8 col-sm-7'>
@@ -205,12 +205,12 @@
 		  ]]>		
 		</template>
 	 </kabanentry>
-	 <kabanentry id="four_kaban_ach_01" parent_ref="teratech_vente_com_2">
+	 <kabanentry id="four_kaban_vte_01" parent_ref="teratech_vente_com_2">
 	    <template>
 		    <![CDATA[				   
 				<div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
 					 <div class='col-md-3 col-sm-4'>
-					  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
+					  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' ng-src="{{srcFn(item.image,'article','baseaccount')}}" alt='Image ' ng-click='imageClick()' height='70' width='75'/>
 					  </div> 
 					 </div>
 					 <div  class='col-md-8 col-sm-7'>
@@ -227,12 +227,12 @@
 		  ]]>		
 		</template>
 	 </kabanentry>
-	 <kabanentry id="pays_kaban_ach_01" parent_ref="teratech_vente_conf_7">
+	 <kabanentry id="pays_kaban_vte_01" parent_ref="teratech_vente_conf_7">
 	    <template>
 		    <![CDATA[				   
 			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
 				 <div class='col-md-3 col-sm-4'>
-				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='http://localhost:8080/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' ng-src="{{srcFn(item.image,null,null)}}" alt='Image ' ng-click='imageClick()' height='70' width='75'/>
 				  </div> 
 				 </div>
 				 <div  class='col-md-8 col-sm-7'>

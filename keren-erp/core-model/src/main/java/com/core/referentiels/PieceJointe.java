@@ -46,6 +46,7 @@ public class PieceJointe extends BaseElement implements Serializable,Comparable<
      * @param entityid 
      */
     public PieceJointe(String filename, String attachename, String serial, long entityid) {
+        super(-1, null, null, -1);
         this.filename = filename;
         this.attachename = attachename;
         this.entityserial = serial;

@@ -155,7 +155,8 @@ public class CommonTools {
         DashboardRecord record = new DashboardRecord();
         record.setCode(view.getId());
         record.setScript(FileHelper.transformJaxBToScript(view));
-        record.setTitre(view.getLabel());
+        record.setTitre(view.getLabel());       
+        record.setTemplate(view.getTemplate());
         return record;
     }
     
@@ -631,7 +632,7 @@ public class CommonTools {
         String[] names = file.getName().split(".");
         BufferedImage image = ImageIO.read(file);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", baos);
+        ImageIO.write(image,"png", baos);
         byte[] imageData = baos.toByteArray();
         Response.ResponseBuilder responseBuilder = Response.ok(imageData);
         CacheControl cc = new CacheControl();
@@ -654,7 +655,7 @@ public class CommonTools {
         String[] names = file.getName().split(".");
         BufferedImage image = ImageIO.read(file);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", baos);
+        ImageIO.write(image,"png", baos);
         byte[] imageData = baos.toByteArray();
         Response.ResponseBuilder responseBuilder = Response.ok(imageData);
         CacheControl cc = new CacheControl();
@@ -663,6 +664,7 @@ public class CommonTools {
         responseBuilder.cacheControl(cc);        
         return responseBuilder.build();
     }
+    
     
     /**
      * 

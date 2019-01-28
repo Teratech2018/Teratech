@@ -1,27 +1,29 @@
 <div class="col-sm-12  col-md-12  panel-container"  id="innerpanel"  style="margin-bottom: -20px;height:100%;">
 	 <div class="panel panel-defaul container-panel"  style="margin-bottom: 0px;">
 		 <div class="btn-toolbar" role="toolbar"   aria-label="Toolbar1"  style="margin-bottom: -20px; ">
-			  <nav aria-label="breadcrumb">
-				  <ol class="breadcrumb">
-					<li class="breadcrumb-item"  ng-repeat="item in navigatorcontainer.mementos">
-					   <a href="#"  ng-click="getActionByName(item.action,null,null,item.item)">{{item.label | translate}}</a>
-					</li> 
-					<li>                   
-					  <div class="input-group col-md-4 pull-right" >
-						<input class="search__field" type="text"  ng-model="searchCriteria" name="x" placeholder="Search term..." ng-keyup="loadDataSearch()" />
-						<span class="input-group-btn">
-						  <button class="btn btn-default btn-sm" type="button" ng-click="searchAction()" style="margin-top: -7px;border:solid 1px #f5f5f5;">
-							  <span class="glyphicon glyphicon-search">
-								<span class="sr-only">Search...</span>
-							  </span>
-						  </button>
-						</span>
-					  </div>   
-					</li>                   
-				  </ol>
-				</nav>                       
+			   <nav style="padding-top:16px;">
+					 <span style="display:inline-block;vertical-align:top;width:62%;">
+						  <ol class="breadcrumb trt-panelheader" role="navigation">
+							<li class="breadcrumb-item"  ng-repeat="item in navigatorcontainer.mementos">
+							   <a href="#"  ng-click="getActionByName(item.action,null,null,item.item)">{{item.label | translate}}</a>
+							</li>					                
+						  </ol>
+					  </span>
+					  <span style="display:inline-block;vertical-align:top;width:37%;">
+						  <div class="input-group" style="border-bottom:solid 1px #808080">
+								<input class="search__field" type="text"  ng-model="searchCriteria" name="x" placeholder="Search term..." ng-keyup="loadDataSearch()" />
+								<span class="input-group-btn">
+								  <button class="btn" type="button" ng-click="searchAction()" style="margin-top: -6px;border:solid 1px #f5f5f5;background:transparent;border:transparent;">
+									  <span class="glyphicon glyphicon-search" style="height:19px;">
+										<span class="sr-only">Search...</span>
+									  </span>
+								  </button>
+								</span>
+						  </div> 
+					 </span>				  
+				</nav>               		
 		   </div> 
-		 <div class="btn-toolbar" role="toolbar"  aria-label="Toolbar2" style="background-color: #f5f5f5;padding: 10px;">
+		 <div class="btn-toolbar trt-panelheader" role="toolbar"  aria-label="Toolbar2" style="padding: 10px;">
 			  <div class="btn-group"  role="group"  aria-label="group 1" ng-hide="showback==false">
 				  <button type="button"  class="btn btn-default btn-sm" ng-click="backAction()">{{'Quitter' | translate}}</button>                       
 			   </div>
@@ -66,7 +68,7 @@
 					   </li>       
 				  </ul>                  
 			   </div>
-			  <span class="pull-right">
+			  <span class="pull-right" ng-hide="windowType=='dashboard'">
 					<span style="margin-left: 10px;display: inline-block;">
 						  <div class="btn-group"  role="group"  aria-label="group 6">
 							<span class="btn btn-default  btn-sm">
@@ -88,7 +90,7 @@
 			  </span>         
 		 </div>
 	  </div>
-	  <div class="panel-body"  style="padding: 0px;height:85.3%;overflow:auto;" id="datatable">
+	  <div class="panel-body"  style="padding: 0px;height:78.3%;overflow:auto;" id="datatable">
 		<div id="datawidget" class="">
 		  <table  class="table table-striped table-hover  table-responsive">
 			  <thead>

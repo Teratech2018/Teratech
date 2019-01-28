@@ -76,6 +76,8 @@ public class Event extends BaseElement implements Serializable,Comparable<Event>
      * 
      */
     public Event() {
+        notify = true ;disponibilite =0;recurrent = false ;
+        allDay = false;confidentialite =0;
     }
 
     /**
@@ -85,18 +87,19 @@ public class Event extends BaseElement implements Serializable,Comparable<Event>
      * @param start
      * @param end
      * @param duree
-     * @param lieu
-     * @param allDay 
+     * @param lieu 
      */
-    public Event(String title, String description, Date start, Date end, String duree, String lieu, boolean allDay) {
+    public Event(String title, String description, Date start, Date end, String duree, String lieu) {
+        super(-1, null, null, -1);
         this.title = title;
         this.description = description;
         this.start = start;
         this.end = end;
         this.duree = duree;
-        this.lieu = lieu;
-        this.allDay = allDay;
+        this.lieu = lieu;        
     }
+
+   
     
      public Event(Event event) {
         this.id = event.id;

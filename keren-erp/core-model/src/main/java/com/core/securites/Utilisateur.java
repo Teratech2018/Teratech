@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Utilisateur extends BaseElement implements Serializable,Comparable<Utilisateur>{
 
     @Predicate(label = "image",target = "image",sequence = 1)
-    private String image ="img\\photo.png";  
+    private String image ="avatar.png";  
     
     @Predicate(label = "ACTIF",colsequence = 100,sequence = 2)
     private Boolean actif = Boolean.FALSE; 

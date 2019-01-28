@@ -28,10 +28,10 @@
         <div id="loginPanel">
             <span id="loginPanelPart01"> 
                 <div id="loginPanelPart01Division01">
-                        <span id="titrePart01">ZO'O</span>
-                        <span id="titrePart02">ERP</span>
+                        <span id="titrePart01"></span>
+                        <span id="titrePart02"></span>
                 </div>
-                <div id="loginPanelPart01Division02">Version 1.0.0</div>
+                <div id="loginPanelPart01Division02"></div>
             </span>
                 <span id="loginPanelPart02"></span>
                 <span id="loginPanelPart03"> 
@@ -39,22 +39,22 @@
                     <div id="loginPanelPart03Division02">
                         <div id="emailInputEtLogoContent">
                             <span class="logoputContent"><i class='fa fa-user'></i></span>
-                            <span id="emailInputContent"><input id="emailInput" type='text' placeholder="Adresse Mail" ng-model="username" ng-keyup="login($event)" autofocus></span>
+                            <span id="emailInputContent"><input id="emailInput" type='text' placeholder="Adresse Mail" ng-model="username"  ng-keyup="login($event)"></span>
                         </div>
                     </div>
                     <div id="loginPanelPart03Division03">
                         <div id="passwordInputEtLogoContent">
                             <span class="logoputContent"><i class='fa fa-lock'></i></span>
-                            <span id="passwordInputContent"><input id="passwordInput" type='password' placeholder="Mot de Passe" ng-model="password"  ng-keyup="login($event)"></span>
+                            <span id="passwordInputContent"><input id="passwordInput" type='password' placeholder="Mot de Passe" ng-model="password" ng-keyup="login($event)"></span>
                         </div>
                     </div>
                     <div id="loginPanelPart03Division04">
-                        <span id="connexionbouttonContent" ng-click="login()">Connexion</span>
+                        <span id="connexionbouttonContent" ng-click="login()">{{'Connexion' | translate}}</span>
                     </div>
                 </span>
         </div>
     </div>
-    <div id="footerContent">By ZO'O</div>
+    <div id="footerContent"><a href="#" style="color: #fff;text-decoration: none;background-color: transparent;">power by Zock</a></div>
     
     
     

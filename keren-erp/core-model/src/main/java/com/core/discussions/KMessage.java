@@ -43,7 +43,7 @@ public class KMessage extends BaseElement implements Serializable,Comparable<KMe
     
     protected String body ;
     
-    protected boolean status = false;
+    protected boolean status ;
     
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "KMSGE_ID")
@@ -67,7 +67,7 @@ public class KMessage extends BaseElement implements Serializable,Comparable<KMe
     //Identifiant de l'entite
     protected long entityid ;
     
-    protected MessageOrientation typeMessage = MessageOrientation.INTERNE;
+    protected MessageOrientation typeMessage ;
 
     /**
      * 
@@ -131,7 +131,29 @@ public class KMessage extends BaseElement implements Serializable,Comparable<KMe
         this.reciever = reciever;
     }
 
+    /**
+     * 
+     * @param date
+     * @param body
+     * @param status
+     * @param entityserial
+     * @param entityid
+     * @param typeMessage 
+     */
+    public KMessage(Date date, String body, boolean status, String entityserial, long entityid, MessageOrientation typeMessage) {
+        this.date = date;
+        this.body = body;
+        this.status = status;
+        this.entityserial = entityserial;
+        this.entityid = entityid;
+        this.typeMessage = typeMessage;
+    }
+    
+    
+
     public KMessage() {
+        typeMessage = MessageOrientation.INTERNE;
+        status = false;
     }
 
     public Date getDate() {

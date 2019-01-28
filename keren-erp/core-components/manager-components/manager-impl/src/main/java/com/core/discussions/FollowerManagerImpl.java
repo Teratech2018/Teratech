@@ -10,14 +10,13 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.securites.Utilisateur;
 import com.core.securites.UtilisateurDAOLocal;
+import com.kerem.core.KerenExecption;
 import com.megatim.common.annotations.OrderType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 @TransactionAttribute
 @Stateless(mappedName = "FollowerManager")
@@ -81,8 +80,8 @@ public class FollowerManagerImpl
         //To change body of generated methods, choose Tools | Templates.
         Utilisateur user = userdao.findByPrimaryKey("id", userid);
         if(user==null){
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).header("error_key", "Impossible de trouvé l'utilisateur avec le ID:"+userid).build());
-        }
+            throw new KerenExecption("Impossible de trouvé l'utilisateur avec le ID:"+userid);
+        }//end if(user==null){
         if(follower.getEntityid()>0 && follower.getEntityserial()!=null&&!follower.getEntityserial().trim().isEmpty()){
             for(SMessage msge:follower.getMessages()){
                 msge.setSender(new Utilisateur(user));
@@ -112,7 +111,7 @@ public class FollowerManagerImpl
 //           System.out.println("Hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh ===== "+datas.size()+" === "+datas);
            return new Follower(datas.get(0));
         }else{
-            throw new WebApplicationException(Response.status(Response.Status.PRECONDITION_FAILED).header("error_key", "Numéro de serie ou id de l'entité introuvable").build());
+            throw new KerenExecption("Numéro de serie ou id de l'entité introuvable");
         }//end if(follower.getEntityid()>0 && follower.getEntityserial()!=null&&!follower.getEntityserial().trim().isEmpty())
     }
 

@@ -31,7 +31,11 @@ public class BaseElement implements Serializable{
      * Owner of the entity module where the link file and images are store
      * override this if the current module is not the owner of the entity
      */
-    private String ownermodule ;
+    @Transient
+    protected String ownermodule ;
+    
+    @Transient
+    protected String ownerentity ;
     
     protected long compareid  ;
     
@@ -233,6 +237,15 @@ public class BaseElement implements Serializable{
     public void setOwnermodule(String ownermodule) {
         this.ownermodule = ownermodule;
     } 
+
+    public String getOwnerentity() {
+        return ownerentity;
+    }
+
+    public void setOwnerentity(String ownerentity) {
+        this.ownerentity = ownerentity;
+    }
+    
     
    
     /**

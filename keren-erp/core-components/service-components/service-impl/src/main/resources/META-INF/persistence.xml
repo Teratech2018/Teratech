@@ -38,6 +38,7 @@
     <class>com.core.website.WebSiteModule</class>
     <class>com.core.templates.Template</class>
     <class>com.core.securites.UserAutorisation</class>
+    <class>com.core.application.ResourceRegistry</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

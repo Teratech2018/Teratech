@@ -34,7 +34,7 @@ public class EventDAOImpl
     public Event createEvent(String title, String description, Date start, Date end, String duree, boolean recurrent, short confidentialite, short disponibilite, String lieu
             , boolean allDay, Long rappelID, boolean notify, Long ownerid, Long[] participantsID) {
         //To change body of generated methods, choose Tools | Templates.
-        Event event = new Event(title, description, start, end, duree, lieu, allDay);
+        Event event = new Event(title, description, start, end, duree, lieu);
         event.setRecurrent(recurrent);event.setConfidentialite(confidentialite);
         event.setDisponibilite(disponibilite);event.setAllDay(allDay);
         event.setAllDay(allDay);event.setNotify(notify);        

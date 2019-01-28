@@ -69,7 +69,8 @@
     <xs:element name="dashboardRecord">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:dashboard"   minOccurs="0" maxOccurs="unbounded"/>        
+                <xs:element ref="tns:dashboard"   minOccurs="0" maxOccurs="unbounded"/>      
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>       
             </xs:sequence>
 	    <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="label"  type="xs:string" />
@@ -109,7 +110,8 @@
     <xs:element name="dashboard">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="tns:dashboardentry"   minOccurs="0" maxOccurs="unbounded"/>          
+                <xs:element ref="tns:dashboardentry"   minOccurs="0" maxOccurs="unbounded"/>   
+                <xs:element name="template"   minOccurs="0" maxOccurs="1" type="xs:string"/>       
             </xs:sequence>
             <xs:attribute name="id"  type="xs:string" />
             <xs:attribute name="label"  type="xs:string" />

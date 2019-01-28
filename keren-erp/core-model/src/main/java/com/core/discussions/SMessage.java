@@ -62,6 +62,22 @@ public class SMessage extends KMessage implements Serializable{
         super(date, body, sender, canal, reciever, id, designation, moduleName);
         this.typeMessage = MessageOrientation.ENVOI;
     }
+
+    /**
+     * 
+     * @param date
+     * @param body
+     * @param status
+     * @param entityserial
+     * @param entityid
+     * @param typeMessage 
+     */
+    public SMessage(Date date, String body, boolean status, String entityserial, long entityid, MessageOrientation typeMessage) {
+        super(date, body, status, entityserial, entityid, typeMessage);
+    }
+    
+    
+    
     
      public SMessage(SMessage message) {
         super(message.date, message.body,null,null, null, message.id, message.designation, message.moduleName);
@@ -98,6 +114,7 @@ public class SMessage extends KMessage implements Serializable{
      * 
      */
     public SMessage() {
+        super();
          this.typeMessage = MessageOrientation.ENVOI;
     }
 
