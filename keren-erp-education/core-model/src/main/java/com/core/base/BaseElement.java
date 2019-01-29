@@ -37,6 +37,8 @@ public class BaseElement implements Serializable{
     
     protected String moduleName ;
     
+    protected String ownermodule;
+    
     protected Boolean selected = Boolean.FALSE;
     
     //Si true permet de creer l'entite depuis le champs de selection
@@ -62,6 +64,10 @@ public class BaseElement implements Serializable{
     
     protected String searchkeys ;
     
+    protected boolean desabledatablock = true ;
+    
+  
+    
     /**
      * String that contain the state
      * "[{'draft','Draft'},{'confirmed','Confirmed'}]"
@@ -72,6 +78,8 @@ public class BaseElement implements Serializable{
      
 
     public BaseElement() {
+    	this.desabledatablock=false;
+    	  this.ownermodule="";
     }
 
    /**
@@ -86,6 +94,8 @@ public class BaseElement implements Serializable{
         this.designation = designation;
         this.moduleName = moduleName;
         this.compareid = comparedid ;
+        this.desabledatablock=false;
+        this.ownermodule="";
     }
 
     public long getCompareid() {
@@ -174,7 +184,15 @@ public class BaseElement implements Serializable{
         return serial;
     }
 
-    public void setSerial(String serial) {
+    public boolean isDesabledatablock() {
+		return desabledatablock;
+	}
+
+	public void setDesabledatablock(boolean desabledatablock) {
+		this.desabledatablock = desabledatablock;
+	}
+
+	public void setSerial(String serial) {
         this.serial = serial;
     }   
 
@@ -182,8 +200,18 @@ public class BaseElement implements Serializable{
         return activefilelien;
     }
 
-    public void setStates(List<State> states) {
+    
+
+	public void setStates(List<State> states) {
 		this.states = states;
+	}
+
+	public String getOwnermodule() {
+		return ownermodule;
+	}
+
+	public void setOwnermodule(String ownermodule) {
+		this.ownermodule = ownermodule;
 	}
 
 	public void setActivefilelien(boolean activefilelien) {
@@ -225,5 +253,6 @@ public class BaseElement implements Serializable{
      * @return 
      */
     public String[] searchFields(){return null;}
-    
+
+
 }

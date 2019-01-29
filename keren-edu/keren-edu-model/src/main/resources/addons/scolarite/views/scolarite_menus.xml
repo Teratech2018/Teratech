@@ -44,6 +44,7 @@
 	<menuitem id="keren_education_section" label="Section" parent_ref="keren_education_para" entity_ref="SectionE" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
 	<menuitem id="keren_education_proff" label="Fichier du Personnels" parent_ref="keren_education_para" entity_ref="Professeur" model_ref="kereneducation" gyphycon="icon icon-group"/>
 	<menuitem id="keren_education_resp" label="Responsable" parent_ref="keren_education_para" entity_ref="Responsable" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_nationale" label="Nationalité" parent_ref="keren_education_para" entity_ref="Nationalite" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
 	<menuitem id="keren_education_utilisateur" label="Utilisateur" parent_ref="keren_education_para" entity_ref="UtilisateurConnect" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
 	<menuitem id="keren_education_ser" label="Services Financiers" parent_ref="keren_education_para" entity_ref="Service" model_ref="kereneducation" gyphycon="icon icon-wrench"  modal="false" />
 	<menuitem id="keren_education_remise" label="Gestion des Remise" parent_ref="keren_education_para" entity_ref="Remise" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
@@ -111,6 +112,13 @@
 	 
 	  <reportRecord  id="keren_education_paiement_report" label="Journal des Paiements" action_ref="keren_education_paie"  extern="true">
 	      <search entity="ViewDltPaiementModal" module="kereneducation" method="pdf"  ignore="true">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	  <reportRecord  id="keren_education_paiement_report_01" label="Listing des Versement" action_ref="keren_education_paie"  extern="true">
+	      <search entity="ViewListingPModal" module="kereneducation" method="pdf" >
 		     <field name="Nationalité"/>
              <field name="Matricule"/>			 
 		  </search>	     
