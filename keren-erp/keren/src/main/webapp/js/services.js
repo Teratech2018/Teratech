@@ -234,13 +234,29 @@ angular.module("mainApp")
                     ,{withCredentials:true,headers:{'Content-Type':undefined},
                        transformRequest: angular.identity});               
            },
+            nothing:function(){
+//               console.log("restService.uploadFile:function(files) ========= "+angular.toJson(files));
+               //URL de la resource responsable de transfert du fichier
+               var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/resource/empty";
+               return $http.get(url);               
+           },
            /**
             * 
             * @param {type} filename
             * @returns {undefined}
             */
-           downloadPNG:function(filename,imgID){
+           downloadPNG:function(filename,imgID,entity,modele,id){
+//               console.log("services.downloadPNG:function(filename,imgID,entity,modele) ===================== entity : "+entity+" ========= modele : "+modele);
                var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/kerencore/resource/png/"+filename;
+               $http.defaults.headers.common['entity']=null;
+               $http.defaults.headers.common['modulename']=null;
+               $http.defaults.headers.common['entityid']=id;
+               if(entity){
+                   $http.defaults.headers.common['entity']= angular.lowercase(entity);
+               }//end if(entity){
+               if(modele){
+                   $http.defaults.headers.common['modulename']= angular.lowercase(modele);
+               } //end if(modele){
                $http.get(url, {responseType: "arraybuffer"})
                        .then(function(response){
                                 var arrayBufferView = new Uint8Array(response.data );
@@ -251,6 +267,7 @@ angular.module("mainApp")
                                 if(img){
                                     img.src = imageUrl;
                                 }
+                                return imageUrl;
                        },function(error){
                            
                        });

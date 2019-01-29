@@ -31,7 +31,11 @@ public class BaseElement implements Serializable{
      * Owner of the entity module where the link file and images are store
      * override this if the current module is not the owner of the entity
      */
-    private String ownermodule ;
+    @Transient
+    protected String ownermodule ;
+    
+    @Transient
+    protected String ownerentity ;
     
     protected long compareid  ;
     
@@ -67,7 +71,7 @@ public class BaseElement implements Serializable{
     protected boolean activatefollower = false ;
     
     protected String searchkeys ;
-	 protected boolean desabledatablock = true ;
+	 protected boolean  desabledatablock = false
     
     /**
      * String that contain the state
@@ -95,8 +99,8 @@ public class BaseElement implements Serializable{
         this.designation = designation;
         this.moduleName = moduleName;
         this.compareid = comparedid ;
-		this.desabledatablock=false;
-    	 this.ownermodule="";
+		  this.desabledatablock=false;
+        this.ownermodule="";
     }
 
     public long getCompareid() {
@@ -238,13 +242,26 @@ public class BaseElement implements Serializable{
     public void setOwnermodule(String ownermodule) {
         this.ownermodule = ownermodule;
     } 
-       public boolean isDesabledatablock() {
+
+    public String getOwnerentity() {
+        return ownerentity;
+    }
+
+    public void setOwnerentity(String ownerentity) {
+        this.ownerentity = ownerentity;
+    }
+	
+	 public boolean isDesabledatablock() {
 		return desabledatablock;
 	}
 
 	public void setDesabledatablock(boolean desabledatablock) {
 		this.desabledatablock = desabledatablock;
 	}
+
+
+    
+    
    
     /**
      * 

@@ -61,10 +61,10 @@ public class Follower extends BaseElement implements Serializable,Comparable<Fol
     protected List<Canal> canaux = new ArrayList<Canal>();
     
     @Predicate(label = "Note" , type = Boolean.class)
-    protected Boolean noteinterne =  false ;
+    protected Boolean noteinterne ;
     
     @Predicate(label = "Actif" , type = Boolean.class)
-    protected Boolean actif =  true ;
+    protected Boolean actif  ;
     
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name = "SMES_ID")
@@ -84,6 +84,27 @@ public class Follower extends BaseElement implements Serializable,Comparable<Fol
         this.body = body;
         this.sender = sender;
     }
+
+    /**
+     * 
+     * @param date
+     * @param entityserial
+     * @param entityid
+     * @param body
+     * @param noteinterne
+     * @param actif 
+     */
+    public Follower(Date date, String entityserial, long entityid, String body, Boolean noteinterne, Boolean actif) {
+        super(-1, null, null, -1);
+        this.date = date;
+        this.entityserial = entityserial;
+        this.entityid = entityid;
+        this.body = body;
+        this.noteinterne = noteinterne;
+        this.actif = actif;
+    }
+    
+    
 
    /**
     * 
@@ -117,6 +138,8 @@ public class Follower extends BaseElement implements Serializable,Comparable<Fol
         }//end if(data.getMessages()!=null)
     }
     public Follower() {
+        noteinterne =  false ;
+        actif =  true ;
     }
 
     public Date getDate() {

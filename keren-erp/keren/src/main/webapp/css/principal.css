@@ -1,4 +1,13 @@
-body{margin-top:50px;}
+body{
+    margin-top:50px;
+    font-family: "Roboto";
+    font-size: 1.48333333rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #666666;
+    text-align: left;
+    background-color: #8f8f8f;
+}
 .glyphicon { margin-right:10px; }
 .panel-body { padding:0px; }
 .panel-body table tr td { padding-left: 15px }
@@ -18,7 +27,8 @@ input.ng-dirty.ng-invalid{
 .table-header{
 	background-color: #EFEFEF;
 }
-
+.list-table-header{height: 70px;}
+.list-table-col-style{ }
 .panel-container{
 	background: url(../img/fond.png) ;
 	background-repeat: initial;
@@ -57,7 +67,7 @@ div.action-group-body{
 }
 /** corps du panel accordeon**/
 div.container-heading-panel{
-    background-color: #f0eeee;
+    background-color: #ffffff;
 }
 nav.detail-heading{
 	background-color: #f0eeee;
@@ -101,7 +111,7 @@ th {font-size: small;}
     font-size: 100%;
     font-weight: normal;
 }
-
+.trt-workflow-content{}
 .arrow{
      width: 17px;
     height: 30px;
@@ -110,7 +120,8 @@ th {font-size: small;}
     overflow: hidden;
     margin-left: -5px;
 }
-
+.trt-worflow-item-select{display: inline-block;background-color:#337ab7;height: 30px;font-size: 85%;border-top-right-radius:  50%;border-bottom-right-radius: 50%;padding-left: 5px;padding-right: 5px;color:white;}
+.trt-worflow-item{display: inline-block;background-color:#d9d9d9;height: 30px;font-size: 85%;border-top-right-radius:  50%;border-bottom-right-radius: 50%;padding-left: 5px;padding-right: 5px;color:black;}
 .recievemsge{
     background-color:#e5e8ef;
 }
@@ -232,6 +243,27 @@ input.trt-input{
 
 .trt-itemImage,.itemDescriptionOne{
 	color:#387cb0;
+}
+
+.trt-followertable{
+    width: 92% !important;
+    margin-left: 4%;
+    margin-bottom: 10px !important;
+    background-color: #f5f5f5;
+}
+.trt-listview-footer{background-color: white;}
+.primary-btn{}
+.trt-linkfile-container{display:inline-table;}
+.trt-linkfile{display:inherit;}
+
+@font-face{
+	font-family : 'Roboto';
+	src : url('fonts/RobotoLight.ttf');
+}
+
+@font-face{
+	font-family : 'aristalight';
+	src : url('fonts/xxx.ttf');
 }
 
 @media print {

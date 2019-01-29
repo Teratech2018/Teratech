@@ -1,0 +1,22 @@
+<div class="body">
+	<table>
+		<thead>
+			<tr style="border-bottom:solid 2px black;margin-bottom:15px;font-weight:bold;">
+				<td>{{'ARTICLE' | translate}}</td>
+				<td>{{'QUANTITE' | translate}}</td>
+				<td>{{'PUHT' | translate}}</td>
+				<td>{{'REMISE' | translate}}</td>
+				<td>{{'TOTALHT' | translate}}</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="ligne in currentObject.lignes">
+				 <td>{{ligne.article.designation}}</td>
+				 <td>{{ligne.quantite}}</td>
+				 <td>{{ligne.puht}}</td>
+				 <td>{{ligne.remise}}</td>
+				 <td>{{ligne.totalht}}</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

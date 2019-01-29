@@ -1,0 +1,72 @@
+<div id="pos_facture" ng-class="display-none">
+  <style>#conteneurGlobal{ /*border:solid 1px red;*/ width:100%; height:100%; position:absolute; z-index:500; color:white; } #entete{ /*border:solid 1px red;*/ }  #entete .entete-item{ /*border:solid 1px red;*/ }  .entete-item{  } #corps{ /*border:solid 1px yellow;*/ }  #corps .corps-item{ /*border:solid 1px red;*/ }  #corps .corps-item-parent-child{ max-height:82%; }  #corps .close-item-content{ padding-top:5px; }  .corps-item{ /*border:solid 1px green;*/ }  .corps-item-child-submit{  }  .corps-item-child{ /*border:solid 1px orange;*/ }  .corps-item-parent-child{  }  .corps-item-child-1{ /*border:solid 1px orange;*/ }  .close-item {  }  .corps-item-child-1:hover{ background-color:#d9dfdf; }  .corps-item-child-1:hover .close-item{ display:block; }  .produit-item{  } #pied{ /*border:solid 1px red;*/ } .popup-custom-1{  }  .popup-custom-input-1{  }  .popup-custom-2{  }  .popup-custom-input-2{  }   .background-color-1{ background-color:#2c2c2a; }  .background-color-2{ background-color:white; }  .background-color-3{ background-color:#bbbbb9; }  .background-color-4{ background-color:#47a777; }  .background-color-5{ background-color:#46433e; }  .background-color-6{ background-color:#d9dfdf; }  .background-color-7{ background-color:#bcbcba; }  .background-color-8{ background-color:#e3e4de; }  .background-color-9{ background-color:transparent; }  .background-color-10{ background-color:#4169e1; }  .color-1{ color:#7b7b79; }  .color-2{ color:#3f3f3d; }  .color-3{ color:#a1a1a1; }  .color-4{ color:#373735; }  .color-6{ color:white; }  .color-7{ color:orange; }  .color-8{ color:#818181; }  .margin-1{ margin-top:2px; margin-left:2px; margin-right:2px; }  .margin-2{ margin:2px; }  .margin-3{ margin-top:20px; }  .margin-4{ margin-right:3px; }  .margin-5{ margin:5px 2px; }  .margin-6{ margin-top:3px; }  .margin-7{ margin-top:15%; }  .margin-8{ margin:auto; }  .margin-9{ margin:0px 6px; }  .margin-10{ margin:40px 0px; }  .cursor-pointer{ cursor:pointer; }  .position-absolute{ position:absolute; }  .border-1{ border-top:solid 2px #47a777; }  .border-2{ border-top:solid 2px #373735; }  .border-3{ border:solid 1px #afafad; }  .border-4{ border-bottom:solid 1px #afafad; }  .border-5{ border:solid 1px red; }  .border-6{ border:solid 1px #bcbcba; }  .border-7{ border-bottom:solid 2px black; }  .border-8{ border:solid 1px #ececec; }  .border-radius-1{ border-radius:3px 3px 0px 0px; }  .border-radius-2{ border-radius:0px 0px 3px 3px; }  .border-radius-3{ border-radius:3px; }  .border-radius-4{ border-radius:6px; }  .border-radius-5{ border-radius:3px; }  .border-radius-6{ border-radius:11px; }  .border-radius-7{ border-radius:15px; }  .box-shadow-1{ box-shadow:1px 1px 1px #40403e; }  .box-shadow-2{ box-shadow:1px 1px 1px #555555; }  .padding-1{ padding:8px 8px; }  .padding-2{ padding:2px; }  .padding-3{ padding:20px; }  .padding-4{ padding:5px 8px; }  .padding-5{ padding-top:8px; }  .padding-6{ padding-left:9px; padding-right:5px; }  .padding-7{ padding:10px; }  .padding-8{ padding-right:8px; }  .padding-9{ padding-top:5px; padding-bottom:5px; padding-right:8px; }  .padding-10{ padding-top:9px; padding-right:8px; }  .padding-11{ padding:5px; }  .padding-12{ padding:5px 12px; }  .padding-13{ padding:3px 12px; }  .padding-14{ padding-bottom:10px; padding-left:10px; padding-right:10px; }  .padding-15{ padding:5px 10px; }  .overflow-auto{ overflow:auto; }  .font-family-1{ font-family:arial; }  .font-family-2{ font-family:Roboto; }  .font-size-1{ font-size:25px; }  .font-size-2{ font-size:22px; }  .font-size-3{ font-size:110%; }  .font-size-4{ font-size:85%; }  .font-size-5{ font-size:185%; }  .font-size-6{ font-size:65%; }  .font-style-italic{ font-style:italic; }  .font-weight-1{ font-weight:bold; }  .font-weight-2{ font-weight:600; }  .height-1{ height:100%; }  .height-2{ height:6%; }  .height-3{ height:94%; }  .height-4{ height:85%; }  .height-5{ height:15%; }  .height-6{ height:9%; }  .height-7{ height:91%; }  .height-8{ height:82%; }  .width-1{ width:50%; }  .width-2{ width:30%; }  .width-3{ width:70%; }  .width-4{ width:15%; }  .width-5{ width:100%; }  .width-6{ width:100px; }  .z-index-1{ z-index:500; }  .opacity-background-color-1{ background-color:rgba(0, 0, 0, 0.60) }  .opacity-background-color-2{ background-color:rgba(0, 0, 0, 0.30) }  .display-inline-block{ display:inline-block; }  .display-block{ display:block; }  .display-none{ display:none; }  .vertical-align-top{ vertical-align:top; }  .text-align-center{ text-align:center; }  .text-align-left{ text-align:left; }  .text-align-right{ text-align:right; }.width-7{width:350px;}  @font-face{ font-family : 'Roboto'; src : url('font/RobotoLight.ttf'); }  @font-face{ font-family : 'aristalight'; src : url('font/xxx.ttf'); }</style>
+  <div  class="margin-8 width-7 border-8">
+		<div>
+			<div class="text-align-center font-weight-1 font-size-5">{{'bienvenue' | translate}} !</div>
+			<div class="text-align-center font-size-3">{{pos.designation}}</div>
+			<div class="text-align-center font-size-4  margin-10">
+				<span class="display-inline-block vertical-align-top margin-9">
+					{{'caissier' | translate}} : 
+				</span><span class="display-inline-block vertical-align-top">
+					{{currentuser.intitule}}
+				</span>
+			</div>
+		</div>
+		<div class="padding-7">
+			<table class="width-5">
+				<thead class="border-7">
+					<tr class="font-weight-1">
+						<td width="30%">{{'article' | translate}}</td>
+						<td width="20%">{{'qte' | translate}}</td>
+						<td width="20%">{{'total' | translate}}</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in commande.lignes">
+						<td>{{item.article.intitule}}</td>
+						<td>{{item.quantite}}</td>
+						<td>{{item.total}}</td>
+					</tr>							
+				</tbody>
+			</table>
+		</div>
+		<div class="padding-7">
+			<div class="text-align-right  font-weight-1">
+				<span class="display-inline-block vertical-align-top margin-9">
+					{{'total.ht' | translate}} : 
+				</span><span class="display-inline-block vertical-align-top  width-6">
+					{{subtotal}}
+				</span>
+			</div>
+			<div class="text-align-right  font-weight-1">
+				<span class="display-inline-block vertical-align-top margin-9">
+					{{'taxes' | translate}}
+				</span><span class="display-inline-block vertical-align-top  width-6">
+					{{totaltaxes}}
+				</span>
+			</div>
+			<div class="text-align-right  font-weight-1">
+				<span class="display-inline-block vertical-align-top margin-9">
+					{{'net.a.payer' | translate}} : 
+				</span><span class="display-inline-block vertical-align-top  width-6">
+					{{total}}
+				</span>
+			</div>
+			<div class="text-align-right  font-weight-1">
+				<span class="display-inline-block vertical-align-top margin-9">
+					{{'montant.percu' | translate}} : 
+				</span><span class="display-inline-block vertical-align-top  width-6">
+					{{recu}}
+				</span>
+			</div>
+			<div class="text-align-right  font-weight-1">
+				<span class="display-inline-block vertical-align-top margin-9">
+					{{'montant.remboursement' | translate}} : 
+				</span><span class="display-inline-block vertical-align-top  width-6">
+					{{solde}}
+				</span>
+			</div>
+		</div>
+		
+	</div>
+</div>	

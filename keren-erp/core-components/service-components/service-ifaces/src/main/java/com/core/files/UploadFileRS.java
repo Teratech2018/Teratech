@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,6 +25,10 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
  */
 public interface UploadFileRS {
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("empty")
+    public String nothing(@Context HttpHeaders headers);
     
     @POST
     @Path("upload")
@@ -75,6 +80,11 @@ public interface UploadFileRS {
     @Path("exportbd")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response exportdatabase(@Context HttpHeaders headers);
+    
+    @GET
+    @Path("cleanfiles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Boolean cleanFiles(@Context HttpHeaders headers);
     
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})

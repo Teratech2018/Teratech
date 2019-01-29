@@ -309,6 +309,47 @@ angular.module('keren.core.commons')
                     }
                     
                 },
+                /**
+                 * 
+                 * @param {type} meta
+                 * @returns {undefined}
+                 */
+                getResources : function(meta,data){
+                    var names = new Array();
+                    if(meta){
+                        for(var i=0 ; i<meta.columns.length;i++){
+                            var column = meta.columns[i];
+                            if(column.type==='image'||column.type==='file'){
+                                names.push(data[column.fieldName]);
+                            }//end if(column.type==='image'||column.type==='file'){
+                        }//end for(var i=0 ; i<meta.columns.length;i++){
+                    }//end if(meta){
+                    return names;
+                },
+                /**
+                 * 
+                 * @param {type} scope
+                 * @param {type} model
+                 * @returns {Boolean}
+                 */
+                iseditable : function(scope , model,field){
+                    var parts = model.split('.');
+                    var metaData = scope.getCurrentMetaData(model);                   
+                    if(parts[0]=='currentObject'){
+                        if(scope.windowType=="view"){
+                            return false ;
+                        }else if((metaData.desableupdate==true || field.updatable==false)&& scope.windowType=="update"){
+                            return false;
+                        }else if((metaData.desablecreate==true||field.editable==false)&& scope.windowType=="new"){
+                            return false;
+                        }//end if(scope.windowType=="view")
+                    }else{//Fenetre modal
+                        if(scope.innerWindowType=="new" && (metaData.desablecreate ||field.editable==false)){
+                            return false;
+                        }//end if(scope.innerWindowType=="new" && metaData.desablecreate){
+                    }
+                    return true;
+                },
                 /***
                  * 
                  * */
@@ -1965,7 +2006,7 @@ angular.module('keren.core.commons')
         dashboardBuilder:function(data){
                 if(data){                                                            
                     var divElem = document.createElement('div');
-                    divElem.setAttribute("class","panel panel-primary kanban-col");
+                    divElem.setAttribute("class","panel kanban-col");
                     divElem.setAttribute("style","margin-bottom:7px;padding-left: 0px;margin-right: 10px;width: 47%;");
                     var headElem = document.createElement("div");
                     divElem.appendChild(headElem);
@@ -1978,7 +2019,7 @@ angular.module('keren.core.commons')
                     actionElem.setAttribute("aria-label","group 2");
                     var buttonElem = document.createElement("button");
                     actionElem.appendChild(buttonElem);
-                    buttonElem.setAttribute("class","btn btn-primary dropdown dropdown-toggle btn-sm  dashboard-header");
+                    buttonElem.setAttribute("class","btn  dropdown dropdown-toggle btn-sm  dashboard-header");
                     buttonElem.setAttribute("type","button");
                     buttonElem.setAttribute("data-toggle","dropdown");
                     buttonElem.setAttribute("aria-haspopup","false");
@@ -2128,7 +2169,7 @@ angular.module('keren.core.commons')
              */
         kabanBuilder:function(scope){
                     var divElem = document.createElement('div');
-                    divElem.setAttribute("class","panel panel-primary kanban-col");
+                    divElem.setAttribute("class","panel kanban-col");
                     divElem.setAttribute("style","margin-bottom:7px;padding-left: 0px;margin-right: 10px;width: 24%;");
                     var headElem = document.createElement("div");
                     divElem.appendChild(headElem);

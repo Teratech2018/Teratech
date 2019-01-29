@@ -1,4 +1,4 @@
-<div id="entete">
+<header class="entete">
 	<div class="entete-part-1">
 		<span class="entete-item">
 			<div class="image-content">
@@ -45,4 +45,4 @@
 			<span class="entete-item font-weight-bold margin-top-40px font-size-35px">Your Company: Réceptions: WH/IN/00002</span>
 		</div>
 	</div>
-</div>
+</header>

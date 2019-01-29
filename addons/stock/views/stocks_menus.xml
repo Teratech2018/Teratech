@@ -152,12 +152,12 @@
 			   ]]>
 		  </template>
 	 </reportRecord>
-	 <kabanentry id="article_kaban_01" parent_ref="teratech_stock_str_1">
+	 <kabanentry id="article_kaban_stk_01" parent_ref="teratech_stock_str_1">
 	    <template>
-		    <![CDATA[				   
+		     <![CDATA[				   
 			 <div class='col-md-12 col-sm-12' id='detail-panel-body-header'> 
 				 <div class='col-md-3 col-sm-4'>
-				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' src='{{protocol}}://{{hostname}}:{{portvalue}}/keren/auth/resource/static/{{item.image}}' alt='Image ' ng-click='imageClick()' height='70' width='75'/>
+				  <div id='imageContent'  style='float: left;margin-left: -20px;'> <img id='apercuImageContent' ng-src="{{srcFn(item.image,'article','baseaccount')}}" alt='Image ' ng-click='imageClick()' height='70' width='75'/>
 				  </div> 
 				 </div>
 				 <div  class='col-md-8 col-sm-7'>

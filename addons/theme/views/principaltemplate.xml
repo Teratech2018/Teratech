@@ -1,6 +1,6 @@
 <div>
 	<div ng-show="principalscreen==true">						 
-	 <nav class="navbar navbar-inverse navbar-fixed-top navbar-sm">
+	 <nav class="navbar trt-navbar navbar-fixed-top navbar-sm">
 	  <div class="container-fluid">
 		<div class="navbar-header">
 		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -13,10 +13,10 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse ">         
 			<ul class="nav navbar-nav navbar-right left-menu-bar">   
-			   <li style="margin: 0px;">                  
-					<a href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="auto" title="{{'MAIL' | translate}}">
+			   <li style="margin: 2px;">                  
+					<a class="trt-navbar-menu" href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="auto" title="{{'MAIL' | translate}}">
 						<span > 
-							<span class="glyphicon glyphicon-bell"  aria-hidden="true" style="display: inline-block;margin: 0px;">                                    
+							<span class="glyphicon glyphicon-bell"  aria-hidden="true" style="display: inline-block;margin: 9px;">                                    
 							</span>
 							<span class="label label-danger" ng-hide="numberofnewmessages==0" style="display: inline-block;font-size: 70%;margin: 0px;">
 							  {{numberofnewmessages}}
@@ -25,19 +25,19 @@
 					</a> 
 									
 			  </li>    
-			  <li style="margin: 0px;">
-				  <a  data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin: 0px;"  data-placement="bottom"  title="{{'Conversation' | translate}}">
-					<span class="glyphicon glyphicon-comment"  aria-hidden="true" style="margin: 0px;"></span>
+			  <li style="margin: 2px;">
+				  <a class="trt-navbar-menu" data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin-top:9px;"  data-placement="bottom"  title="{{'Conversation' | translate}}">
+					<span class="glyphicon glyphicon-comment"  aria-hidden="true"></span>
 				  </a> 
 				  <ul class="dropdown-menu media-list"  role="menu">
 					   <li role="presentation" class="media" style="padding-left: 5px;"   ng-repeat="item in tchatinput">                           
 							<div class="media-body">
 								<div class="media">
-									<a class="pull-left" href="#"   ng-click="tchatwindow(item)">
+									<a class="pull-left trt-navbar-menu" href="#"   ng-click="tchatwindow(item)">
 										<img class="media-object img-circle" style="max-height:40px;" src="img/photo.png" />
 									</a>                                        
 									<div class="media-body" >
-										<a href="#" ng-click="tchatwindow(item)">
+										<a href="#" ng-click="tchatwindow(item)" class="trt-navbar-menu">
 											<h5 class="text-muted">{{item.designation | translate}}</h5>   
 										</a>
 																		
@@ -48,9 +48,9 @@
 				  </ul>                     
 			  </li>         
 			  <li  class="dropdown">
-				  <a  id="Administration" data-target="#" data-toggle="dropdown" 
-					  aria-haspopup="true" role="button" aria-expanded="true">
-						{{'Administration' | translate}}
+				  <a  class="trt-navbar-menu" id="Administration" data-target="#" data-toggle="dropdown" 
+					  aria-haspopup="true" role="button" aria-expanded="true" style="margin-top:9px;">
+						{{currentUser.courriel | translate}}
 					   <span class="caret"></span>
 				  </a> 
 				  <ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">
@@ -117,7 +117,7 @@
 	</div>
 	<!-- Navigation -->
 	<div id="modulecontainer" ng-show="principalscreen==false" style="position: absolute;width: 100%;height: 100%;">
-	 <nav class="navbar navbar-inverse navbar-fixed-top navbar-sm">
+	 <nav class="navbar trt-navbar navbar-fixed-top navbar-sm">
 	  <div class="container-fluid">
 		<div class="navbar-header">
 		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar2" aria-expanded="false" aria-controls="navbar2">
@@ -126,31 +126,31 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		  </button>
-		  <a class="navbar-brand" href="#" ng-click="gotoModulesMenu()">
+		  <a class="navbar-brand trt-navbar-menu trt-menu-brand"  href="#" ng-click="gotoModulesMenu()">
 			 <span class="glyphicon glyphicon-th"  aria-hidden="true" ></span>  
 			 {{currentModule.label | translate}}
 		  </a>
 		</div>
 		<div id="navbar2" class="navbar-collapse collapse">					 
 			<ul class="nav navbar-nav navbar-left"  ng-repeat="menu in currentModule.groups"  ng-hide="menu.showmenu==false"> 
-				  <li  class="dropdown" ng-class="{'active':menu.name==currentMenu.name}">
-					  <a  id="menu{{menu.id}}" data-target="#" data-toggle="dropdown"  ng-click="setSelectGroupMenu(menu)"
+				  <li  class="dropdown">
+					  <a class="trt-navbar-menu" ng-class="{'trt-navbar-active':menu.name==currentMenu.name}" id="menu{{menu.id}}" style="margin-top:9px;" data-target="#" data-toggle="dropdown"  ng-click="setSelectGroupMenu(menu)"
 						  aria-haspopup="true" role="button" aria-expanded="true">
 							{{menu.label | translate}}
 						   <span class="caret"></span>
 					  </a> 
 					  <ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">
 						 <li role="presentation" ng-repeat="item in menu.actions"   ng-hide="item.securitylevel==3" ng-if="item.hide==false" ng-class="getMenuClass(item)">
-						   <a role="menuitem"   tabindex="-1" href="#" ng-click="getSelectAction(item)"  ng-class="{'activemenu-color':item.name==currentAction.name}">{{item.label | translate}}</a>
-						 </li>                     
+						   <a ng-if="item.viewMode!='none'" role="menuitem"   tabindex="-1" href="#" ng-click="getSelectAction(item)"  ng-class="{'activemenu-color':item.name==currentAction.name}">{{item.label | translate}}</a>
+						 </li>						 					 
 					  </ul>                                     
 				  </li>
 			</ul>								
 			<ul class="nav navbar-nav navbar-right left-menu-bar">   
-			   <li style="margin: 0px;">                  
-					<a href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="auto" title="{{'MAIL' | translate}}">
+			   <li style="margin: 2px;">                  
+					<a class="trt-navbar-menu" href="#" ng-click="discussionModule()" style="border-width: 0px;padding: 4px;" data-toggle="tooltip" data-placement="auto" title="{{'MAIL' | translate}}">
 						<span > 
-							<span class="glyphicon glyphicon-bell"  aria-hidden="true" style="display: inline-block;margin: 0px;">                                    
+							<span class="glyphicon glyphicon-bell"  aria-hidden="true" style="display: inline-block;margin: 9px;">                                    
 							</span>
 							<span class="label label-danger" ng-hide="numberofnewmessages==0" style="display: inline-block;font-size: 70%;margin: 0px;">
 							  {{numberofnewmessages}}
@@ -159,15 +159,15 @@
 					</a> 
 									
 			  </li>    
-			  <li style="margin: 0px;">
-				  <a  data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin: 0px;"  data-placement="bottom"  title="{{'Conversation' | translate}}">
-					<span class="glyphicon glyphicon-comment"  aria-hidden="true" style="margin: 0px;"></span>
+			  <li style="margin: 2px;">
+				  <a class="trt-navbar-menu" data-target="#" data-toggle="dropdown" ng-click="tchat()" aria-haspopup="true" role="button" aria-expanded="true" style="width: 1px;border-width: 0px;margin-top:9px;"  data-placement="bottom"  title="{{'Conversation' | translate}}">
+					<span class="glyphicon glyphicon-comment"  aria-hidden="true"></span>
 				  </a> 
 				  <ul class="dropdown-menu media-list"  role="menu">
 					   <li role="presentation" class="media" style="padding-left: 5px;"   ng-repeat="item in tchatinput">                           
 							<div class="media-body">
 								<div class="media">
-									<a class="pull-left" href="#"   ng-click="tchatwindow(item)">
+									<a class="pull-left trt-navbar-menu" href="#"   ng-click="tchatwindow(item)">
 										<img class="media-object img-circle" style="max-height:40px;" src="img/photo.png" />
 									</a>                                        
 									<div class="media-body" >
@@ -182,9 +182,9 @@
 				  </ul>                     
 			  </li>         
 			  <li  class="dropdown">
-				  <a  id="Administration" data-target="#" data-toggle="dropdown" 
-					  aria-haspopup="true" role="button" aria-expanded="true">
-						{{'Administration' | translate}}
+				  <a class="trt-navbar-menu" id="Administration" data-target="#" data-toggle="dropdown" 
+					  aria-haspopup="true" role="button" aria-expanded="true" style="margin-top:9px;">
+						{{currentUser.courriel | translate}}
 					   <span class="caret"></span>
 				  </a> 
 				  <ul class="dropdown-menu"  role="menu"  aria-labelledby="Administration">

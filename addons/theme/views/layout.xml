@@ -7,8 +7,25 @@
 						<div  style="height: 100%;width:100%;">					  
 							  <!-- Navigation -->					    
 							 <style>
+							     .label-danger{background-color:#00A09D;}
+							     .btn-default{color:#00A09D;background-color:white;border-color:white;background-repeat:repeat-x;background-image: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, .15) 100%);text-transform: uppercase;}
+								 .btn-primary{color:white;background-color:#00A09D;border-color:#00A09D;background-repeat:repeat-x;background-image: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, .15) 100%);text-transform: uppercase;}
+								 .btn-danger{color:#FF0000;background-color:white;border-color:white;background-repeat:repeat-x;background-image: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, .15) 100%);text-transform: uppercase;border:none;}
+								 .btn-default.disabled, .btn-default[disabled], fieldset[disabled] .btn-default, .btn-default.disabled:hover, .btn-default[disabled]:hover, fieldset[disabled] .btn-default:hover, .btn-default.disabled:focus, .btn-default[disabled]:focus, fieldset[disabled] .btn-default:focus, .btn-default.disabled.focus, .btn-default[disabled].focus, fieldset[disabled] .btn-default.focus, .btn-default.disabled:active, .btn-default[disabled]:active, fieldset[disabled] .btn-default:active, .btn-default.disabled.active, .btn-default[disabled].active, fieldset[disabled] .btn-default.active { background-color: #e0e0e0; background-image: none; }
+								 .trt-navbar-active{background-color:#f5f5f5;}
+							     .trt-navbar{background-color:#875A7B;}
+								 .trt-navbar-menu{color:white;background-color:#875A7B;}
+								 .trt-panelheader {background-color:white;}
+								 .trt-menu-brand { display: block; float: left; margin-right: 35px; user-select: none; color: white; font-size: 22px; font-weight: 500; line-height: 46px; cursor: pointer;margin-bottom: 5px; }
+								 .trt-worflow-item-select { display: inline-block; background-color: #e6e6fa; height: 30px; font-size: 85%; padding-right: 5px; color: white;border-top-right-radius: 0; border-bottom-right-radius: 0; }
+								 .trt-worflow-item { display: inline-block; background-color: #ffffff; height: 30px; font-size: 85%; border-top-right-radius: 0; border-bottom-right-radius: 0; padding-left: 5px; padding-right: 5px; color: black; }
+								 .workflow { color: #4c4c4c; padding: 7px; display: inline-block; padding-left: 5px; margin: 0px; position: relative; font-size: 100%; font-weight: normal; text-transform: uppercase; }
+								 .list-table-header{height:70px;}
+								 .table-header{background-color:white;}
+								 .workflowbar{background-color:white;border-top:solid 1px #d3d3d3;border-bottom:solid 1px #d3d3d3;}
+								 .trt-workflow-content{background-color:white;border-top:solid 1px #d3d3d3;border-bottom:solid 1px #d3d3d3;}
 								 .principal-background {
-									  background: url(http://localhost:8080/keren/auth/resource/static/material.jpg) ;
+									  background: url(/keren/auth/resource/static/screen.png) ;
 									  background-repeat: initial;
 								 }
 								 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
@@ -27,10 +44,11 @@
 									 border-top:1px solid #e5e5e5;
 									 background-color:#f5f5f5;
 									 text-align:right;
-								  }
-								 .navbar-inverse{
-									background-color
-								 }
+								  }		
+								 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control { background-color: white; border: none; }		
+                                 .btn-default.disabled, .btn-default[disabled], fieldset[disabled] .btn-default, .btn-default.disabled:hover, .btn-default[disabled]:hover, fieldset[disabled] .btn-default:hover, .btn-default.disabled:focus, .btn-default[disabled]:focus, fieldset[disabled] .btn-default:focus, .btn-default.disabled.focus, .btn-default[disabled].focus, fieldset[disabled] .btn-default.focus, .btn-default.disabled:active, .btn-default[disabled]:active, fieldset[disabled] .btn-default:active, .btn-default.disabled.active, .btn-default[disabled].active, fieldset[disabled] .btn-default.active { background-color: transparent; background-image: none; border: none; }
+								 input.trt-input { display: inline !important; width: 70% !important; border: none; border-bottom: solid 1px #d3d3d3;		
+								 .bootstrap-select.form-control { margin-bottom: 0; padding: 0; border: none; border-bottom: solid 2px #d3d3d3; }								 
 							 </style>
 							 <ng-template src="theme/views/principaltemplate.xml"></ng-template>
 					   </div>
@@ -60,6 +78,7 @@
 							background-color: transparent;
 							border: solid 1px #f5f5f5;
 							width: 100%;
+							height:29px;
 							border-bottom: solid 1px #dddddd;
 							border-radius: 0;
 							cursor: pointer; 
@@ -79,7 +98,7 @@
 						  display: inline-block; 
 						}
 						.panel-container{
-							background: #9d9d9d ;
+							background: #f8f8ff ;
 						}
 						.calendar-panel{
 							 background-color: white;
@@ -94,7 +113,7 @@
 						.dashboard-body{
 						   
 						}
-
+                        
 						</style>
 						<ng-template src="theme/views/treetemplate.xml"></ng-template>
 				 </div>
@@ -107,7 +126,7 @@
 				   <div style="height: 100%;width:100%;">
 						 <style type="text/css">
 							.panel-container{
-								background: #9d9d9d ;
+								background: #f8f8ff ;
 							}
 							.workflowbar{
 								margin-top: -10px;

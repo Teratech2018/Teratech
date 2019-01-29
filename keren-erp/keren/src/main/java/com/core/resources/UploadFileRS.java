@@ -38,6 +38,11 @@ public interface UploadFileRS {
     @Produces("image/png")
     public Response downloadImageFileFreeForModule(@Context HttpHeaders headers,@PathParam("modulename") String module ,@PathParam("filename") String filename);
     
+     @GET
+    @Path("entity/{entityname}/{modulename}/{filename}")
+    @Produces("image/png")
+    public Response downloadImageFileFreeForModule(@Context HttpHeaders headers,@PathParam("entityname") String entity ,@PathParam("modulename") String module ,@PathParam("filename") String filename);
+    
     @GET
     @Path("text/{filename}")
     @Produces("text/plain")
@@ -47,6 +52,11 @@ public interface UploadFileRS {
     @Path("textstream/{filename}")
     @Produces("text/plain")
     public String getTextFileContaint(@Context HttpHeaders headers ,@PathParam("filename") String filename);
+    
+    @GET
+    @Path("stream/{filename}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getFile(@Context HttpHeaders headers ,@PathParam("filename") String filename);
     
     @GET
     @Path("json/{filename}")
