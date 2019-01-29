@@ -176,7 +176,7 @@ public class UploadFileRSImpl  implements UploadFileRS{
 
     @Override
     public Response translate(HttpHeaders headers, String lang) {
-        //To change body of generated methods, choose Tools | Templates.
+        //To change body of generated methods, choose Tools | Template
         try{
 //               System.out.println(UploadFileRSImpl.class.toString()+".translate(HttpHeaders headers, String lang) ========================================= language : "+lang);
                 Gson gson = new Gson();
