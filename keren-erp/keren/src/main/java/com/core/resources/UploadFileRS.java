@@ -66,5 +66,5 @@ public interface UploadFileRS {
     @GET
     @Path("translate")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response translate(@Context HttpHeaders headers ,@QueryParam("lang") String lang);
-}
+    public Response translate(@Context HttpHeaders headers ,@QueryParam("lang") String lang); 
+} 
