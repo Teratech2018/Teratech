@@ -326,6 +326,30 @@ angular.module('keren.core.commons')
                     }//end if(meta){
                     return names;
                 },
+                /**
+                 * 
+                 * @param {type} scope
+                 * @param {type} model
+                 * @returns {Boolean}
+                 */
+                iseditable : function(scope , model,field){
+                    var parts = model.split('.');
+                    var metaData = scope.getCurrentMetaData(model);                   
+                    if(parts[0]=='currentObject'){
+                        if(scope.windowType=="view"){
+                            return false ;
+                        }else if((metaData.desableupdate==true || field.updatable==false)&& scope.windowType=="update"){
+                            return false;
+                        }else if((metaData.desablecreate==true||field.editable==false)&& scope.windowType=="new"){
+                            return false;
+                        }//end if(scope.windowType=="view")
+                    }else{//Fenetre modal
+                        if(scope.innerWindowType=="new" && (metaData.desablecreate ||field.editable==false)){
+                            return false;
+                        }//end if(scope.innerWindowType=="new" && metaData.desablecreate){
+                    }
+                    return true;
+                },
                 /***
                  * 
                  * */

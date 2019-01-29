@@ -3202,17 +3202,9 @@ $scope.gererChangementFichier3 = function(event,model){
               optionElem.appendChild(document.createTextNode('Please select option'));
               selectElem.appendChild(optionElem);
               //if((($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType!='new'))||(field.editable==false))){
-             if((($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType!='new'))||(field.editable==false))){
-                if(($scope.metaData.desableupdate==false && $scope.innerWindowType!='new')){
-                    selectElem.setAttribute('disabled' , 'true');
-////                    buttonElem.setAttribute('disabled' , 'disabled');
-                }else{
-                    if((field.updatable==false)||(field.editable==false)){
-                       selectElem.setAttribute('disabled' , 'true');
-////                    buttonElem.setAttribute('disabled' , 'disabled');
-                    }//end if((field.updatable==false)||(field.editable==false)){
-                }
-            }//end if(($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')
+//             if(commonsTools.iseditable($scope,model,field)==true){
+//                selectElem.setAttribute('disabled' , 'true');
+//            }//end if(($scope.windowType=="view")||((field.updatable==false)&&($scope.windowType!='new')
               //Desactiver la creation
             var spanElem = document.createElement('span');
             spanElem.setAttribute('class' , 'input-group-btn');
@@ -3238,13 +3230,14 @@ $scope.gererChangementFichier3 = function(event,model){
             spanElem_1.setAttribute('aria-hidden' , 'true');
             spanElem_1.setAttribute('style' , 'color:blue');
             buttonElem.appendChild(spanElem_1);
-            if(($scope.windowType=="view")||(metaData.createonfield==false)||((field.updatable==false)&&($scope.windowType!='new')&&($scope.innerWindowType==false))){
-                buttonElem.setAttribute('disabled' , 'disabled');
-            }//end if(($scope.windowType=="view")||(metaData.createonfield==false)  
-            if(field.editable==false){
+            if(commonsTools.iseditable($scope,model,field)==false){
                 buttonElem.setAttribute('disabled' , 'disabled');
                 selectElem.setAttribute('disabled' , 'true');
-            }//end if(field.editable==false)
+            }//end if(($scope.windowType=="view")||(metaData.createonfield==false)  
+//            if(field.editable==false){
+//                buttonElem.setAttribute('disabled' , 'disabled');
+//                selectElem.setAttribute('disabled' , 'true');
+//            }//end if(field.editable==false)
             if(field.hide){
                 divElem.setAttribute('ng-hide',true);
             }//end if(field.hide)
@@ -3556,6 +3549,8 @@ $scope.gererChangementFichier3 = function(event,model){
             
 //             $scope.currentMetaDataPath = $scope.getMetaDataPath(metaData);
 //              console.log("$scope.oneToManyComponent = === "+model+"==="+labelText+" == "+"=== "+entityName+" == "+index+" === field : "+); 
+             //Recuperer la meta data du parent du champs
+             var metaData = $scope.getParentMetaData(model);
              var divElem = document.createElement('div');
              divElem.setAttribute('class' , 'table-responsive');
              //Ajout d'un champs input de type hidden pour stocker le model
@@ -3621,8 +3616,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     var tdElem = document.createElement('td');
                     trElem.appendChild(tdElem);
                     tdElem.setAttribute("colspan" , columnNumber+1);                   
-                    if(($scope.windowType!="view")
-                            ||($scope.metaData.desableupdate==true&&($scope.innerWindowType=="new"||$scope.innerWindowType=="update"))){
+                    if(commonsTools.iseditable($scope,model,field)==true){
                         var aElem = document.createElement('a');
                         tdElem.appendChild(aElem);
                         aElem.setAttribute('href' , '#');
@@ -3642,7 +3636,7 @@ $scope.gererChangementFichier3 = function(event,model){
                        aElem.setAttribute('ng-click' , "editDialogBuilder('"+model+"',null,'new',null,null,+"+(nextIndex)+",'"+modelpath+"')");                      
                        aElem.appendChild(document.createTextNode("{{'ADDELEMENT' | translate}}"));
                        aElem.setAttribute('disabled' , 'disabled');                  
-                    }//end if($scope.windowType=="view"){           
+                    }//end if(commonsTools.iseditable($scope,model)==true)           
                }//end if(metaData.createonfield==true)
              
              //Construction du corps du tableau
@@ -3938,8 +3932,7 @@ $scope.gererChangementFichier3 = function(event,model){
                     var aElem = document.createElement('a');
                     tdElem.appendChild(aElem);
                     aElem.setAttribute('href' , '#');
-                    if(($scope.windowType!="view")
-                            ||($scope.metaData.desableupdate==true&&($scope.innerWindowType=="new"||$scope.innerWindowType=="update"))){
+                    if(commonsTools.iseditable($scope,model,field)==true){
                        //Diseable si ajout impossible               
                         aElem.setAttribute('disabled' , 'disabled');
                         aElem.setAttribute('ng-click' , "addnewLine('"+model+"')");                      
@@ -4714,19 +4707,10 @@ $scope.gererChangementFichier3 = function(event,model){
                    aElem.setAttribute('data-toggle' , "modal");
                    aElem.setAttribute('data-target' , '#'+modalID); 
                    aElem.setAttribute('class' , 'trt-form-table-new');
-                   if(($scope.windowType!="view")
-                            ||($scope.metaData.desableupdate==true&&($scope.innerWindowType=="new"||$scope.innerWindowType=="update"))){
-                        if(($scope.metaData.desableupdate==false && $scope.innerWindowType!='new')){
-                            aElem.setAttribute('disabled' , 'disabled');
-                            aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
-                            aElem.appendChild(document.createTextNode("{{'ADDELEMENT' | translate}}"));      
-                        }else{
-                            if((field.updatable==false)||(field.editable==false)){
-                                aElem.setAttribute('disabled' , 'disabled');
-                                aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
-                                aElem.appendChild(document.createTextNode("{{'ADDELEMENT' | translate}}"));    
-                            }//end if((field.updatable==false)||(field.editable==false)){
-                        }                                    
+                   if(commonsTools.iseditable($scope,model,field)==true){
+                        aElem.setAttribute('disabled' , 'disabled');
+                        aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
+                        aElem.appendChild(document.createTextNode("{{'ADDELEMENT' | translate}}"));                     
                    }//end if($scope.windowType=="view"){            
                }//end if(metaData.createonfield==true)             
              //Construction du corps du tableau
@@ -4921,19 +4905,10 @@ $scope.gererChangementFichier3 = function(event,model){
                    aElem.setAttribute('data-toggle' , "modal");
                    aElem.setAttribute('data-target' , '#'+modalID); 
                    aElem.setAttribute('class' , 'trt-form-table-new'); 
-                   if(($scope.windowType!="view")
-                            ||($scope.metaData.desableupdate==true&&($scope.innerWindowType=="new"||$scope.innerWindowType=="update"))){
-                        if(($scope.metaData.desableupdate==false && $scope.innerWindowType!='new')){
-                            aElem.setAttribute('disabled' , 'disabled');
-                            aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
-                            aElem.appendChild(document.createTextNode("{{'ADDELEMENT' | translate}}"));      
-                        }else{
-                            if((field.updatable==false)||(field.editable==false)){
-                                aElem.setAttribute('disabled' , 'disabled');
-                                aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
-                                aElem.appendChild(document.createTextNode("{{'ADDELEMENT' | translate}}"));    
-                            }//end if((field.updatable==false)||(field.editable==false)){
-                        }                                    
+                   if(commonsTools.iseditable($scope,model,field)==true){
+                        aElem.setAttribute('disabled' , 'disabled');
+                        aElem.setAttribute('ng-click' , "listDialogBuilder('"+model+"',"+(index+1)+",'"+modelpath+"')");                      
+                        aElem.appendChild(document.createTextNode("{{'ADDELEMENT' | translate}}"));                               
                    }//end if($scope.windowType=="view"){            
                }//end if(metaData.createonfield==true)             
              //Construction du corps du tableau
