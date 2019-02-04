@@ -16,12 +16,12 @@ import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Etablissement;
-import com.kerenedu.inscription.Inscription;
 import com.kerenedu.solde.Banque;
 import com.kerenedu.solde.Categorie;
 import com.kerenedu.solde.Echellon;
 import com.kerenedu.solde.Fonction;
 import com.kerenedu.solde.ProfilPaie;
+import com.kerenedu.solde.ProfilPaielight;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -37,7 +37,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 //	//@Predicate(label = "PHOTO", target = "image", sequence = 1)
 //	private String discriminant="P";
 
-	@Column(name = "MAT", unique = true)
+	@Column(name = "MAT")
 	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 3,editable=false)
 	protected String matricule;
 
@@ -46,7 +46,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label = "PHOTO", target = "image", sequence = 1)
 	private String image;
 
-	@Column(name = "NOM", unique = true)
+	@Column(name = "NOM")
 	@Predicate(label = "NOM", optional = false, updatable = true, search = true, sequence = 2)
 	protected String nom;
 
@@ -66,7 +66,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name = "FON_ID")
-	@Predicate(label = "Fonction", updatable = true, type = Fonction.class, target = "many-to-one", search = true,  optional = true, sequence = 7
+	@Predicate(label = "Fonction", updatable = true, type = Fonction.class, target = "many-to-one", search = true, hide=true, optional = true, sequence = 7
 			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	protected Fonction role;
 	
@@ -115,27 +115,31 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	private String etatcivile = "0";
 	
-	@ManyToOne
-	@JoinColumn(name = "CAT_ID")
-	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = true
-			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
-	protected Categorie categorie;
+	@Column(name = "LIEU")
+	@Predicate(label = "Lieu de Recrutement", optional = true, updatable = true, search = false,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
+	protected String lieu;
+
+	@Predicate(label = "Curriculum Vitae", target = "file", group = true, groupName = "tab1", groupLabel = "Informations Personelles")
+	private String cv;
+	
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "ECH_ID")
-	@Predicate(label = "Echélon", updatable = true, type = Echellon.class, target = "many-to-one", search = false, optional = true
-			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
+//	@Predicate(label = "Echélon", updatable = true, type = Echellon.class, target = "many-to-one", search = false, optional = true
+//			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
 	protected Echellon echelon;
 	
-	@Column(name = "LIEU")
-	@Predicate(label = "Lieu de Recrutement", optional = true, updatable = true, search = false,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
-	protected String lieu;
 
-	@Predicate(label = "Curriculum Vitae", target = "file", group = true, groupName = "tab2", groupLabel = "Informations professionnelles")
-	private String cv;
+	@ManyToOne
+	@JoinColumn(name = "CAT_ID")
+	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = true
+			,group = true, groupLabel = "Comptabilité", groupName = "tab3")
+	protected Categorie categorie;
+	
 	
 	@Column(name = "NAT_PAI")
-	@Predicate(label = "Mode Paiement", optional = true, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", sequence =8, observable = true,
+	@Predicate(label = "Mode Paiement", optional = true, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", observable = true,
 			group = true, groupLabel = "Comptabilité", groupName = "tab3")
 	protected String modePaiement = "0";
 	
@@ -146,27 +150,32 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	protected Banque banque;
 	
 	@Column(name = "NUM_BAN")
-	@Predicate(label = "Numéro Bancaire", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3"
+	@Predicate(label = "Numéro Bancaire", type = Long.class, search = false, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3"
 			,hidden="currentObject.modePaiement!==1")
 	private Long numBanque = new Long(0);
 	
-	@ManyToOne
-	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
-			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
-	protected ProfilPaie profil;
-
-	@Column(name = "NB_JOURS")
-	@Predicate(label = "Nombre de Jours", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
-	private Long njours = new Long(0);
-	
 	
 	@Column(name = "SAL")
-	@Predicate(label = "SALAIRE DE BASE", type = Double.class, search = false, sequence = 12, editable=false,pattern = "[0-9]", group = true, groupLabel = "Comptabilité ", groupName = "tab3")
+	@Predicate(label = "SALAIRE DE BASE", type = Double.class, search = false, editable=false,pattern = "[0-9]", group = true, groupLabel = "Comptabilité ", groupName = "tab3")
 	private Double salaire =0.0; 
 
+	@Predicate(label = "Allocation Familliale", type = Boolean.class, search = false, group = true, groupLabel = "Comptabilité ", groupName = "tab3")
+	private Boolean allocationfamilliale = Boolean.valueOf(false); 
+	
+//	@ManyToOne
+//	@JoinColumn(name = "PROF_ID")
+//	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaielight.class, target = "many-to-one", search = false, optional = true
+//			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
+//	protected ProfilPaielight profil;
+
+	@Column(name = "NB_JOURS")
+//	@Predicate(label = "Nombre de Jours", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
+	private Long njours = new Long(0);
+	
+
+
 	@Column(name = "Tx_H")
-	@Predicate(label = "TAUX HORAIRE", type = Long.class, search = false, sequence = 13, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
+	//@Predicate(label = "TAUX HORAIRE", type = Long.class, search = false, sequence = 13, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
 	private Long thoraire = new Long(0);
 
 
@@ -234,7 +243,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.cv = cv;
 		this.banque = banque;
 		this.numBanque = numBanque;
-		this.profil = profil;
+	//	this.profil = profil;
 		this.njours = njours;
 		this.salaire = salaire;
 		this.thoraire = thoraire;
@@ -290,9 +299,9 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		
 		this.numBanque = entity.numBanque;
 		
-		if(entity.profil!=null){
-			this.profil = new ProfilPaie(entity.profil);
-		}
+//		if(entity.profil!=null){
+//			this.profil = new ProfilPaielight(entity.profil);
+//		}
 		
 		this.njours = entity.njours;
 		this.salmax = entity.salmax;
@@ -306,6 +315,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 			this.structure = new Etablissement(entity.structure);
 		}
 		this.modePaiement=entity.modePaiement;
+		this.allocationfamilliale=entity.allocationfamilliale;
 
 	}
 	
@@ -317,16 +327,18 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.prenon = entity.prenon;
 		this.sexe = entity.sexe;
 		this.matricule=entity.matricule;
-		if(entity.profil!=null){
-		this.profil= new ProfilPaie(entity.getProfil());
-		}
+//		if(entity.profil!=null){
+//	//	this.profil= new ProfilPaielight(entity.getProfil());
+//		}
 		this.dateembauche=entity.dateembauche;
 		
 		if(entity.categorie!=null){
 			this.categorie= new Categorie(entity.getCategorie());
 			}
 		this.modePaiement=entity.getModePaiement();
-		this.role=new Fonction(entity.role); 
+		if(entity.role!=null){
+		this.role=new Fonction(entity.role);
+		}
 
 	}
 
@@ -442,14 +454,14 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	}
 
 
-	public ProfilPaie getProfil() {
-		return profil;
-	}
-
-
-	public void setProfil(ProfilPaie profil) {
-		this.profil = profil;
-	}
+//	public ProfilPaielight getProfil() {
+//		return profil;
+//	}
+//
+//
+//	public void setProfil(ProfilPaielight profil) {
+//		this.profil = profil;
+//	}
 
 
 	public Date getDateNais() {
@@ -535,6 +547,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	public void setSalmax(Long salmax) {
 		this.salmax = salmax;
 	}
+
+	public Boolean getAllocationfamilliale() {
+		return allocationfamilliale;
+	}
+
+
+	public void setAllocationfamilliale(Boolean allocationfamilliale) {
+		this.allocationfamilliale = allocationfamilliale;
+	}
+
 
 	public Long getPayer() {
 		return payer;

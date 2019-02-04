@@ -138,15 +138,15 @@ public class ConvensionManagerImpl
         List<Categorie> categories = categoriedao.filter(container.getPredicats(), null, null, 0,-1);
         
         for(Categorie categorie:categories){
-            
-            for(Echellon echelon:categorie.getEchelons()){
+//            
+//            for(Echellon echelon:categorie.getEchelons()){
+//                
+//                if(!contains(entity, categorie, echelon)){
+//                    LigneConvension ligne = new LigneConvension(categorie, echelon, 0.0);
+//                    entity.getLignes().add(ligne);
+//                }
                 
-                if(!contains(entity, categorie, echelon)){
-                    LigneConvension ligne = new LigneConvension(categorie, echelon, 0.0);
-                    entity.getLignes().add(ligne);
-                }
-                
-            }//end for(Echelon echelon:categorie.getEchelons())
+           // }//end for(Echelon echelon:categorie.getEchelons())
             
         }//end for(Categorie categorie:categories)
         

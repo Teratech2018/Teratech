@@ -2,6 +2,7 @@
 package com.kerenedu.school;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.ibm.icu.impl.locale.XCldrStub.FileUtilities;
 import com.kerem.core.FileHelper;
 import com.kerenedu.allerte.ViewHelperTrtglobal;
 import com.kerenedu.configuration.AnneScolaire;
@@ -164,16 +166,19 @@ public class EleveManagerImpl
 		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
 		// set Matricule 
 		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
-		  if(entity.getImage()!=null){
+		 if(entity.getImage()!=null){
 	    	  // try {
 	    	   String imageName = entity.getImage();
 	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
 	    	   String newName = entity.getMatricule().substring(0, entity.getMatricule().length()-5)+".png";
-	           File file = new File(FileHelper.getStaticDirectory().getPath()+File.separator+imageName);
-	           file.renameTo(new File(file.getPath()+File.separator+newName));
-//	           File filerename = new File(newName);
-//	           file.renameTo(filerename);
-			  // FileHelper.moveFile(file, destfile);
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
+	    	//   File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
+	    	  // filedest.renameTo(new File(filedest.getPath()+File.separator+newName));
+	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
+////	           File filerename = new File(newName);
+//	           try {
+//				FileHelper.copyFile(new File(file.getPath()), new File(filedest.getPath()));
 //			} catch (IOException e) {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
@@ -196,9 +201,18 @@ public class EleveManagerImpl
 	    	   String imageName = entity.getImage();
 	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
 	    	   String newName = entity.getMatricule().substring(0, entity.getMatricule().length()-5)+".png";
-	           File file = new File(FileHelper.getStaticDirectory().getPath()+File.separator+imageName);
-	           file.renameTo(new File(file.getPath()+File.separator+newName));
-//	           File filerename = new File(newName);
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
+	    	   //File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
+	    	 //  filedest.renameTo(new File(filedest.getPath()+File.separator+newName));
+	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
+////	           File filerename = new File(newName);
+//	           try {
+//				FileHelper.copyFile(new File(file.getPath()), new File(filedest.getPath()));
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 //	           file.renameTo(filerename);
 			  // FileHelper.moveFile(file, destfile);
 //			} catch (IOException e) {

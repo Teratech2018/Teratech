@@ -6,6 +6,7 @@ import java.util.List;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerenedu.model.report.EdtPeriodeModal;
 import com.kerenedu.model.report.ViewBulletinPaieHelper;
+import com.kerenedu.model.report.ViewPeriodeModal;
 
 
 /**
@@ -20,5 +21,7 @@ public interface ViewBulletinPaieHelperManager
     public final static String SERVICE_NAME = "ViewBulletinPaieHelperManager";
     
     public List<ViewBulletinPaieHelper> getCriteres(EdtPeriodeModal critere);
+    
+    public List<ViewBulletinPaieHelper> getCriteres(ViewPeriodeModal critere);
 
 }

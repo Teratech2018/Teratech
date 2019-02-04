@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keren>
+ <action id="keren_education" />
+ 
+	<menu id="keren_education_solde" label="Fichiers" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_ens" label="Fichier du Personnels" parent_ref="keren_education_solde" entity_ref="Professeur" model_ref="kereneducation" gyphycon="icon icon-group"/>
+	
+	<menu id="keren_education_admin" label="Administration de la Solde" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_openp" label="Ouvrir une période" parent_ref="keren_education_admin" entity_ref="PeriodePaieOpen" model_ref="kereneducation" gyphycon="icon icon-group"  modal="true"/>
+	<menuitem id="keren_education_prepasal" label="Préparation des salaires" parent_ref="keren_education_admin" entity_ref="PrepaSalaire" model_ref="kereneducation" gyphycon="icon icon-group" modal="true"  link="keren_education_bulletin"/>
+	<menuitem id="keren_education_val" label="Validation des Salaires" parent_ref="keren_education_admin" entity_ref="TraitSalaire" model_ref="kereneducation" gyphycon="icon icon-group" modal="true" link="keren_education_bulletin_clt"/>
+	<menuitem id="keren_education_bulletin" label="Salaires" parent_ref="keren_education_admin"  entity_ref="BulletinPaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="false" hide="true" />
+	<menuitem id="keren_education_consult" label="Consulter les Bulletins" parent_ref="keren_education_admin" entity_ref="consulterSalaire" model_ref="kereneducation" gyphycon="icon icon-group" modal="true" link="keren_education_bulletin_clt"/>
+	<menuitem id="keren_education_bulletin_clt" label="Consulter les Bulletins" parent_ref="keren_education_admin"  entity_ref="BulletinPaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" modal="false"  hide="true" />
+	<menuitem id="keren_education_closep" label="Fermé une Période" parent_ref="keren_education_admin" entity_ref="PeriodePaieClose" model_ref="kereneducation" gyphycon="icon icon-group" modal="true"/>
+
+	
+	<menu id="keren_education_elt" label="Elements Variables" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_pointage" label="Acompte sur Salaire" parent_ref="keren_education_elt" entity_ref="Acompte" model_ref="kereneducation" gyphycon="icon icon-group"/>
+	<menuitem id="keren_education_pret" label="Prêt" parent_ref="keren_education_elt" entity_ref="DemandePret" model_ref="kereneducation" gyphycon="icon icon-group"/>
+	<menuitem id="keren_education_remconsult" label="Remboursement Prêt" parent_ref="keren_education_elt" entity_ref="consulterSalaire" model_ref="kereneducation" gyphycon="icon icon-group" modal="true" link="keren_education_rem"/>
+	<menuitem id="keren_education_rem" label="Remboursement Prêt" parent_ref="keren_education_elt" entity_ref="RemboursementPret" model_ref="kereneducation" gyphycon="icon icon-group" hide="true"/>
+	<menuitem id="keren_education_rappel" label="Rappel de Salaire" parent_ref="keren_education_elt" entity_ref="RappelSalaire" model_ref="kereneducation" gyphycon="icon icon-group" hide="true"/>
+	<menuitem id="keren_education_eltvar" label="Eléments Variables" parent_ref="keren_education_elt" entity_ref="ElementVariable" model_ref="kereneducation" gyphycon="icon icon-group" hide="true"/>
+	<menuitem id="keren_education_heure_import" label="Emargement des Heures" parent_ref="keren_education_elt" entity_ref="ImportHeureProf" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"  modal="true" link="keren_education_heure_import_01"/>
+	<menuitem id="keren_education_heure_import_consul" label="Consulter les heures de Travail" parent_ref="keren_education_elt" entity_ref="consulterEmarge" model_ref="kereneducation" gyphycon="icon icon-group" modal="true" link="keren_education_heure_import_01"/>
+	<menuitem id="keren_education_heure_import_01" label=" Notes" parent_ref="keren_education_elt" entity_ref="EmargementDtlPeriode" model_ref="kereneducation" gyphycon="	glyphicon glyphicon-list-alt" modal="false" hide="true"/>
+
+
+	
+	<menu id="keren_education_ps" label="Paramètrage de la solde" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_sdos" label="Dossiers de Paie" parent_ref="keren_education_ps" entity_ref="Etablissement" model_ref="kereneducation" gyphycon="icon icon-group" hide="true"/>
+	<menuitem id="keren_education_sper" label="Période de paie" parent_ref="keren_education_ps" entity_ref="PeriodePaie" model_ref="kereneducation" gyphycon="icon icon-group" />
+	<menuitem id="keren_education_sgril" label="Grille de Salaire" parent_ref="keren_education_ps" entity_ref="Convension" model_ref="kereneducation" gyphycon="icon icon-group" hide="true"/>
+	<menuitem id="keren_education_srub" label="Rubrique de Paie" parent_ref="keren_education_ps" entity_ref="RubriquePaie" model_ref="kereneducation" gyphycon="icon icon-group"/>
+	<menuitem id="keren_education_svar" label="Variable de paie" parent_ref="keren_education_ps" entity_ref="Variable" model_ref="kereneducation" gyphycon="icon icon-group" hide="true"/>
+	<menuitem id="keren_education_Profil" label="Profil de Paie" parent_ref="keren_education_ps" entity_ref="ProfilPaie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_cat" label="Catègorie" parent_ref="keren_education_ps" entity_ref="Categorie" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>
+	<menuitem id="keren_education_Echellon" label="Echelon" parent_ref="keren_education_ps" entity_ref="Echellon" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th" hide="true"/>
+	<menuitem id="keren_education_Banque" label="Banque" parent_ref="keren_education_ps" entity_ref="Banque" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>	
+	<menuitem id="keren_education_spon" label="Pondération de salaire" parent_ref="keren_education_ps" entity_ref="ParametreAvance" model_ref="kereneducation" gyphycon="icon icon-group" hide="true"/>
+	<menuitem id="keren_education_fonction" label="Fonction" parent_ref="keren_education_ps" entity_ref="Fonction" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>	
+	<menuitem id="keren_education_cout" label="Cout Horaire" parent_ref="keren_education_ps" entity_ref="ParaCoutMatiere" model_ref="kereneducation" gyphycon="glyphicon glyphicon-th"/>	
+
+	<menu id="keren_education_report_solde" label="Rapport" parent="keren_education" gyphycon="icon icon-tasks"/>	
+	<menuitem id="keren_education_bull" label="Bulletin de paie" parent_ref="keren_education_report_solde" entity_ref="EdtPeriodeModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_solde_01"/>	
+	<menuitem id="keren_education_etat_vir" label="Etat des Virements Bancaire" parent_ref="keren_education_report_solde" entity_ref="ViewPeriodeModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_solde_02"/>
+	<menuitem id="keren_education_etat_caisse" label="Etat des Paiements Caisse" parent_ref="keren_education_report_solde" entity_ref="ViewPeriodeModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_solde_03"/>
+	<menuitem id="keren_education_etat_retenue" label="Situation des Prets " parent_ref="keren_education_report_solde" entity_ref="ViewPeriodeModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_solde_04"/>
+	<menuitem id="keren_education_etat_livre" label="Masse Salariales Global" parent_ref="keren_education_report_solde" entity_ref="EdtMasseSalModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_solde_05"/>
+	<menuitem id="keren_education_etat_masse" label="Masse Salariales Periodique" parent_ref="keren_education_report_solde" entity_ref="EdtMasseSalModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_solde_07"/>
+	<menuitem id="keren_education_etat_banque" label="Piece Bancaire" parent_ref="keren_education_report_solde" entity_ref="ViewPeriodeModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_solde_06"/>
+
+	
+	
+	<reportRecord  id="base_report_solde_01" label="Bulletin de Paie" action_ref="keren_education_bull"  extern="true">
+	      <search entity="EdtPeriodeModal" module="kereneducation" method="pdf">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	 <reportRecord  id="base_report_solde_02" label="Etat des Virements des Salaires" action_ref="keren_education_etat_vir"  extern="true">
+	      <search entity="ViewPeriodeModal" module="kereneducation" method="vir">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 
+	  <reportRecord  id="base_report_solde_03" label="Etat des Virements des Salaires" action_ref="keren_education_etat_caisse"  extern="true">
+	      <search entity="ViewPeriodeModal" module="kereneducation" method="cai">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	 <reportRecord  id="base_report_solde_04" label="Etat des Prets" action_ref="keren_education_etat_retenue"  extern="true">
+	      <search entity="ViewPeriodeModal" module="kereneducation" method="ret"  ignore="true" >
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	  <reportRecord  id="base_report_solde_05" label="Masse Salariales " action_ref="keren_education_etat_livre"  extern="true">
+	      <search entity="EdtMasseSalModal" module="kereneducation" method="pdf" ignore="true">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	   <reportRecord  id="base_report_solde_06" label="Piece Bancaire " action_ref="keren_education_etat_banque"  extern="true">
+	      <search entity="ViewPeriodeModal" module="kereneducation" method="pie">
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+	   <reportRecord  id="base_report_solde_07" label="Masse Salariales Périodique " action_ref="keren_education_etat_masse"  extern="true">
+	      <search entity="EdtMasseSalModal" module="kereneducation" method="dlt" >
+		     <field name="Nationalité"/>
+             <field name="Matricule"/>			 
+		  </search>	     
+	 </reportRecord>
+
+</keren>

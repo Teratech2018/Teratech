@@ -1,14 +1,21 @@
 package com.kerenedu.model.report;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
-import com.kerenedu.inscription.Inscription;
+import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Examen;
+import com.megatim.common.annotations.Filter;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 
 
@@ -16,16 +23,19 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
 {
   @ManyToOne
   @JoinColumn(name="EXAMEN_ID")
-  @Predicate(label="Examen", type=Examen.class, target="many-to-one", optional=true, sequence=1)
+  @Predicate(label="Examen", type=Examen.class, target="many-to-one", optional=false, sequence=1)
   private Examen examen;
   @ManyToOne
   @JoinColumn(name="CLASSE_ID")
-  @Predicate(label="Classe", type=Classe.class, target="many-to-one", search=true, sequence=2, observable=true)
+  @Predicate(label="Classe", type=Classe.class, target="many-to-one", search=true, sequence=2, observable=true, optional=false)
+  @Filter(value = "[{\"fieldName\":\"cycle\",\"value\":\"3\"}]")
   protected Classe classe;
-  @ManyToOne
-  @JoinColumn(name="Eleve_ID")
-  @Predicate(label="Eleve", type=Inscription.class, target="many-to-one", search=true, sequence=3)
-  protected Inscription eleve;
+  
+  
+  @ManyToMany
+  @Predicate(label="EM", type=InscriptionChoice.class, target="many-to-many-list", group=true, groupName="group1", groupLabel="Liste des Elèves", hidden="temporalData.classe==null")
+  @Observer(observable="classe", source="method:getidclasse", parameters="classe")
+  private List<InscriptionChoice> eleve = new ArrayList<InscriptionChoice>();
   
   public ViewNoteClasseModal() {}
   
@@ -47,9 +57,7 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
     if (ins.getExamen() != null) {
       this.examen = new Examen(ins.getExamen());
     }
-    if (ins.getEleve() != null) {
-      this.eleve = new Inscription(ins.getEleve());
-    }
+  
   }
   
 
@@ -100,7 +108,15 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
   }
   
 
-  public String getDesignation()
+  public List<InscriptionChoice> getEleve() {
+	return eleve;
+}
+
+public void setEleve(List<InscriptionChoice> eleve) {
+	this.eleve = eleve;
+}
+
+public String getDesignation()
   {
     return "";
   }
@@ -118,14 +134,4 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
   }
   
 
-  public Inscription getEleve()
-  {
-    return eleve;
-  }
-  
-
-  public void setEleve(Inscription eleve)
-  {
-    this.eleve = eleve;
-  }
 }

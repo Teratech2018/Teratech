@@ -247,10 +247,15 @@ public class ReportHelper {
     	InputStream stream ;
     	//FileHelper.setCurrentModule("scolarite");
     	File tmpDir = new File(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
+    	File tmpDirold = new File(FileHelper.getStaticDirectory()+File.separator+photoname);
     	boolean exists = tmpDir.exists();
+    	boolean existsold = tmpDirold.exists();
     	if(exists){
     		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
-    	}else{
+    	}else if(existsold){
+    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+photoname);
+    	}
+    	else{
     		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"no.png");
     	}
        try (ByteArrayOutputStream os = new ByteArrayOutputStream();) {
@@ -268,9 +273,13 @@ public class ReportHelper {
     	System.out.println("ReportHelper.getPhotoBytesEleve() construire la photo ");
     	InputStream stream ;
     	File tmpDir = new File(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
+    	File tmpDirold = new File(FileHelper.getStaticDirectory()+File.separator+photoname);
     	boolean exists = tmpDir.exists();
+    	boolean existsold = tmpDirold.exists();
     	if(exists){
     		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
+    	}else if(existsold){
+    		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+photoname);
     	}else{
     		stream = new FileInputStream(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+"no.png");
     	}

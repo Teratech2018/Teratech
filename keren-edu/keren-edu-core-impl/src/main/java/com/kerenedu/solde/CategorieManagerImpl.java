@@ -62,9 +62,9 @@ public class CategorieManagerImpl
    		// TODO Auto-generated method stub
    		Categorie elev = super.find(propertyName, entityID);
    		Categorie inscrip = new Categorie(elev);
-   		for(Echellon serv: elev.getEchelons()){
-   			inscrip.getEchelons().add(new Echellon(serv));
-   		}
+//   		for(Echellon serv: elev.getEchelons()){
+//   			inscrip.getEchelons().add(new Echellon(serv));
+//   		}
    		return inscrip;
    	}
 

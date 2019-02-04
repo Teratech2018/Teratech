@@ -95,11 +95,12 @@ public class ImportHeureProfRSImpl
     RestrictionsContainer container = RestrictionsContainer.newInstance();
     String filename = getTemporalDirectory() + File.separator + entity.getFichier();
     File file = new File(filename);
-    NoteDetail value = new NoteDetail();
+    EmargementDtlPeriode value = new EmargementDtlPeriode();
     boolean exists = file.exists();
+    entity.setClassName("");
     try {
       if (exists) {
-        Class<?> data = Class.forName(entity.getClassName());
+       // Class<?> data = Class.forName(entity.getClassName());
         Map<Long, List<String>> datas = new HashMap();
         if (entity.getFormat().equalsIgnoreCase("cvs")) {
           datas = FileHelper.cvsToJavaConverter(filename, entity.getSeparator());
@@ -111,16 +112,18 @@ public class ImportHeureProfRSImpl
           List entities = mapToJavaObjectNote(EmargementDtlPeriode.class.getName(), datas);
           List<EmargementDtlPeriode> dats = new ArrayList();
           if ((entities != null) && (!entities.isEmpty())) {
-            container.addEq("periode.id", Long.valueOf(critere.getPeriode().getId()));
-            List<EmargementPeriode> results = manageremarge.filter(container.getPredicats(), null, new HashSet(), 0, -1);
-            System.out.println("ImportNoteClasseRSImpl.getNoteStudent() import data " + results.size());
-            if ((results != null) || (!results.isEmpty())) {
-            	EmargementPeriode mat = (EmargementPeriode)results.get(0);
-              mat.setEmagementdlt(entities);
-              manageremarge.importNote(mat);
-            } else {
-              throw new KerenExecption("Matiere inexistante !!!");
-            }
+           // container.addEq("periode.id", Long.valueOf(critere.getPeriode().getId()));
+           // List<EmargementPeriode> results = manageremarge.filter(container.getPredicats(), null, new HashSet(), 0, -1);
+         //   System.out.println("ImportNoteClasseRSImpl.getNoteStudent() import data " + results.size());
+           // if ((results == null) || (results.isEmpty())) {
+            	EmargementPeriode mat = new EmargementPeriode();
+            	mat.setPeriode(critere.getPeriode());
+            	mat.setEmagementdlt(entities);
+            	System.out.println("ImportHeureProfRSImpl.getHeureProf() taille is "+entities.size());
+            	manageremarge.importNote(mat);
+//            } else {
+//              throw new KerenExecption("Matiere inexistante !!!");
+//            }
           }
         }
       }
@@ -153,13 +156,13 @@ public class ImportHeureProfRSImpl
     return notes;
   }
   
-  protected List<NoteDetail> mapToJavaObjectNote(String classname, Map<Long, List<String>> data) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+  protected List<EmargementDtlPeriode> mapToJavaObjectNote(String classname, Map<Long, List<String>> data) throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, InstantiationException {
     List result = new ArrayList();
     List<String> fieldNames = (List)data.get(Long.valueOf(0L));
     for (Iterator i$ = data.keySet().iterator(); i$.hasNext();) { long key = ((Long)i$.next()).longValue();
       if (key > 0L)
       {
-        NoteDetail entityClass = (NoteDetail)NoteDetail.class.newInstance();
+    	  EmargementDtlPeriode entityClass = (EmargementDtlPeriode)EmargementDtlPeriode.class.newInstance();
         
         Field[] fields = entityClass.getClass().getDeclaredFields();
         Map<String, Field> map = new HashMap();
@@ -197,7 +200,7 @@ public class ImportHeureProfRSImpl
     return result;
   }
   
-  protected void affectValue(NoteDetail object, Field field, String value) throws IllegalArgumentException, IllegalAccessException { field.setAccessible(true);
+  protected void affectValue(EmargementDtlPeriode object, Field field, String value) throws IllegalArgumentException, IllegalAccessException { field.setAccessible(true);
     
     if (field.getType().equals(Boolean.class)) {
       field.setBoolean(object, true);

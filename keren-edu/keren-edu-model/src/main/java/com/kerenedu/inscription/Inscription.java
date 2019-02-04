@@ -52,7 +52,6 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Predicate(label = "NOM", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 2, searchfields = "eleve.nom")
 	protected String nom;
 	
-	@Transient
 	@ManyToOne
 	@JoinColumn(name = "SECTION_ID")
 	@Predicate(label = "SECTION", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true, updatable=true)
@@ -105,8 +104,8 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "FICHE_PAIE_ID")
-	@Predicate(label = ".", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2,
-	group = true, groupLabel = "Profil Financier de l' élève", groupName = "tab1")
+	@Predicate(label = " ", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2,
+	group = true, groupLabel = "Profil Financier élève", groupName = "tab1")
 	@Observer(observable = "classe", source = "method:findserviceclasse")
 	protected List<FichePaiement> service;
 //
@@ -129,6 +128,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 	@Column(name = "CYCLE_ID")
 	protected long cycle;
+	
 
 	private String state = "crée";
 	
@@ -308,6 +308,8 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+
+
 
 	@Override
 	public String getDesignation() {

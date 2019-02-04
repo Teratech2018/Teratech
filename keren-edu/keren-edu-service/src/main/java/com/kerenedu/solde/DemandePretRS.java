@@ -8,7 +8,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import com.kerenedu.inscription.Inscription;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
 
@@ -39,5 +41,10 @@ public interface DemandePretRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("annule")
     public DemandePret annule(@Context HttpHeaders headers,DemandePret entity);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Path("pdf")
+	public Response buildPdfReport(DemandePret entity);
 
 }

@@ -45,9 +45,7 @@ public class InscriptionChoice extends BaseElement implements Serializable, Comp
 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	//@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1)
-//	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"id\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
-	//@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"section.id\"}]")
+	@Predicate(label = "Classe", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1, hide=true)
 	protected Classe classe;
 	
 	@Column(name = "MATRICULE")
@@ -122,6 +120,7 @@ public class InscriptionChoice extends BaseElement implements Serializable, Comp
 	protected String anneScolaire;
 
 	@Column(name = "CYCLE_ID")
+	@Predicate(label = "cycle", search = true, hide = true, type=Long.class)
 	protected long cycle;
 
 	private String state = "crée";

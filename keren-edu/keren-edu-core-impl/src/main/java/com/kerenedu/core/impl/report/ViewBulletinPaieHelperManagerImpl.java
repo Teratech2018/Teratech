@@ -16,6 +16,7 @@ import com.kerenedu.core.ifaces.report.ViewBulletinPaieHelperManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewBulletinPaieHelperDAOLocal;
 import com.kerenedu.model.report.EdtPeriodeModal;
 import com.kerenedu.model.report.ViewBulletinPaieHelper;
+import com.kerenedu.model.report.ViewPeriodeModal;
 import com.kerenedu.personnel.ProfesseurChoice;
 import com.kerenedu.solde.BulletinPaie;
 import com.kerenedu.solde.LigneBulletinPaie;
@@ -85,4 +86,29 @@ public class ViewBulletinPaieHelperManagerImpl
 		return datas;
 	}
 
+	
+
+	@Override
+	public List<ViewBulletinPaieHelper> getCriteres(ViewPeriodeModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<ViewBulletinPaieHelper> datas = new ArrayList<ViewBulletinPaieHelper>();
+		List<ViewBulletinPaieHelper> records = new ArrayList<ViewBulletinPaieHelper>();
+		
+		
+			if (critere != null) {
+				container = RestrictionsContainer.newInstance();
+				if (critere.getPeriode() != null) {
+					container.addEq("bulletin.periode.id", critere.getPeriode().getId());
+				}
+				
+				if (critere.getType() != null) {
+					container.addEq("lignes.rubrique.type", critere.getType());
+				}
+			}
+			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			
+
+		return datas;
+	}
 }

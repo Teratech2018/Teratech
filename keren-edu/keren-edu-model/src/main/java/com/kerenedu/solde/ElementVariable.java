@@ -53,6 +53,8 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dfin;
 	
+	@Column(name="ELVAP_ID")
+	private long elvapid ;
 	
 
 	
@@ -158,8 +160,11 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		}
 		this.ddeb=elem.ddeb;
 		this.dfin=elem.dfin;
+		this.elvapid=elem.elvapid;
 		
 	}	
+	
+
 	
 
 	public Professeur getSalarie() {
@@ -213,6 +218,8 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		return prets;
 	}
 
+	
+
 	public void setPrets(List<RemboursementPret> prets) {
 		this.prets = prets;
 	}
@@ -228,6 +235,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	public List<RappelSalaire> getRappels() {
 		return rappels;
 	}
+
 
 	public void setRappels(List<RappelSalaire> rappels) {
 		this.rappels = rappels;
@@ -256,6 +264,8 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	public Short getCongeAcquisPeriode() {
 		return congeAcquisPeriode;
 	}
+
+	
 
 	public void setCongeAcquisPeriode(Short congeAcquisPeriode) {
 		this.congeAcquisPeriode = congeAcquisPeriode;
@@ -300,6 +310,14 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 
 	public void setCumulSEX(Double cumulSEX) {
 		this.cumulSEX = cumulSEX;
+	}
+
+	public long getElvapid() {
+		return elvapid;
+	}
+
+	public void setElvapid(long elvapid) {
+		this.elvapid = elvapid;
 	}
 
 	public Double getCumlChargeSal() {

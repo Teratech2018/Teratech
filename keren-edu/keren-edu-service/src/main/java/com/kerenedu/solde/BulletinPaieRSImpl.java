@@ -4,6 +4,7 @@ package com.kerenedu.solde;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -13,14 +14,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
+import com.kerenedu.notes.Bulletin;
+import com.kerenedu.notes.Examen;
 import com.kerenedu.tools.KerenEduManagerException;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
@@ -162,14 +169,14 @@ public class BulletinPaieRSImpl
 
 
      public Response buildPdfReport(HttpHeaders headers ,BulletinPaie bulletin) {
-    	 System.out.println("BulletinPaieRSImpl.buildPdfReport() print bulletin ");
+    	
          try {
          	 bulletin.setPeriode((PeriodePaie)CacheMemory.getValue( BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.PERIODE));
          	 List<BulletinPaie> records =new ArrayList<BulletinPaie>();
 //         	 System.out.println("BulletinPaieRSImpl.buildPdfReport() bulletin select is "+bulletin.getEmploye().getNom());
          	 records.add(bulletin);
                String URL = ReportHelper.templatepaieURL+ReportsName.BULLETIN_PAIE.getName();
-               System.out.println("BulletinPaieRSImpl.buildPdfReport() url "+URL);
+            //   System.out.println("BulletinPaieRSImpl.buildPdfReport() url "+URL);
                Map parameters = this.getReportParameters();
                return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters,
             		   records);
@@ -188,6 +195,23 @@ public class BulletinPaieRSImpl
 		// TODO Auto-generated method stub
 		return this.printbulletin(headers, bulletin);
 	}
+	
+	@Override
+	public List<BulletinPaie> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		PeriodePaie periode = (PeriodePaie) CacheMemory.getValue(id, TypeCacheMemory.PERIODE);
+
+		if (periode != null) {
+			container.addEq("periode",periode);
+		} // end if(classe!=null)
+
+		
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
+	
      
 // 	public Response buildPdfReportLot(BulletinPaie entity) {
 // 		entity.setPeriode(CacheMemory.getPeriode());

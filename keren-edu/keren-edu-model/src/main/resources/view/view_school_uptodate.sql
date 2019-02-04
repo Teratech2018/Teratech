@@ -257,7 +257,26 @@ SELECT e.id+n.id, e.id, e.classe_id,e.examen_id,e.module_id,
  where e.id=n.el_note_id;
  
  --- --- --- --- --- --- --- --- SOLDE --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
- 
+ -- view Solde ecole
+CREATE VIEW e_zview_bullpaie(ID,BULL_ID,LGN_BULL_ID,
+DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
+DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+AS
+select concat(b.id,"L",l.id), b.id ,l.id, 
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"","",""
+FROM e_bulletin b , e_bulligne l
+where b.id=l.libupa_id ;
+
+--prey
+CREATE VIEW e_zview_pret(ID,EMPL_ID,datepret,montant,montantpro,
+DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
+DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+AS
+select concat(e.id,p.id), p.empl_id ,e.date,e.montant,p.montantPro
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"","",""
+FROM e_remprt e , e_ddepret p
+where p.id=e.depr_id
+group by e.date ;
  --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 --- --- --- --- --- --- --- --- PROCEDURES --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 ------- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -1196,8 +1215,274 @@ FOR EACH ROW
       SET NEW.extremax=(SELECT max(note) from  e_notedlt n where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
       SET NEW.extremin=(SELECT min(note) from  e_notedlt n where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
     END|
+delimiter |
+DROP TRIGGER IF EXISTS finance |
+DROP TRIGGER IF EXISTS finance_after_update |
+DROP TRIGGER IF EXISTS finance_after_insert |
 
+CREATE TRIGGER finance
+AFTER UPDATE ON e_inscription
+FOR EACH ROW
+  BEGIN
 
+    IF (select count(*) from e_zview_bf where id=new.id )=1
+    THEN
+      UPDATE e_zview_bf set classe_id=new.classe_id, annee_id=new.annee_id,
+            total_a=new.total,total_r=new.mnt_paye,solde=new.solde,remise=new.remise,    ristourne=new.ristourne,
+			eff_sol_cycle=(select count(i.id) FROM e_inscription i  where i.annee_id=new.annee_id and cycle_id=new.cycle_id and i.solde=0),
+            eff_sol=(select count(i.id) FROM e_inscription i  where i.SOLDE =0 and i.annee_id=new.annee_id and classe_id=new.classe_id),
+            eff_sol_total=(select count(i.id) FROM e_inscription i  where i.annee_id=new.annee_id and i.solde=0),
+			eff_total=(select count(i.id) FROM e_inscription i  where i.annee_id=new.annee_id ),
+            inscription_enc=(select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="0" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+             I_TRAN_ENC=(select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="1" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+            II_TRAN_ENC=(select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="2" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+            III_TRAN_ENC=(select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="3" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+            inscription=(select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="0" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+             I_TRAN=(select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="1" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+            II_TRAN=(select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="2" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+            III_TRAN=(select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id
+            and e.fiche_paie_id=i.id and  type_service="3" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id)
+            where eleve_id=new.eleve_id ;
+    ELSE
+      INSERT INTO e_zview_bf(id,eleve_id,classe_id,annee_id,total_a,total_r,solde,remise,ristourne,
+        eff_sol_cycle,eff_sol,eff_sol_total,eff_total,inscription_enc,I_TRAN_ENC,II_TRAN_ENC,III_TRAN_ENC,inscription,I_TRAN,II_TRAN,III_TRAN,
+         DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,
+         ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+        values(new.id,new.eleve_id,new.classe_id,new.annee_id,
+        new.total,new.mnt_paye,new.solde,new.remise,new.ristourne,
+        (select count(i.id) FROM e_inscription i  where i.annee_id=new.annee_id and cycle_id=new.cycle_id and i.solde=0),
+        (select count(i.id) FROM e_inscription i  where i.SOLDE =0 and i.annee_id=new.annee_id and classe_id=new.classe_id),
+        (select count(i.id) FROM e_inscription i  where i.annee_id=new.annee_id and i.solde=0),
+		(select count(i.id) FROM e_inscription i  where i.annee_id=new.annee_id ),
+        (select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="0" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+        (select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="1" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+        (select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="2" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+        (select sum(e.MNT_PAYER) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="3" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+        (select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="0" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+        (select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="1" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+        (select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="2" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+        (select sum(e.total_ttc) FROM e_p_fiche e, e_service s,e_inscription i where e.ser_id=s.id and e.fiche_paie_id=i.id and
+         type_service="3" and i.eleve_id=new.eleve_id and i.annee_id=new.annee_id),
+         "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
+    END IF ;
+
+    END|
+delimiter |
+DROP TRIGGER IF EXISTS pret |
+
+CREATE TRIGGER pret
+BEFORE UPDATE ON e_remprt
+FOR EACH ROW
+  BEGIN
+
+    IF (select count(*) from e_zview_pret where empl_id=new.empl_id )=1
+    THEN
+      UPDATE e_zview_pret set annee_id=new.annee_id,
+          totalpret =IFNULL((select sum(montantsol) from e_ddepret p where p.empl_id=new.empl_id and p.annee_id=new.annee_id),0),
+		  totalliquide =IFNULL((select sum(montantRem) from e_ddepret p where p.empl_id=new.empl_id and p.annee_id=new.annee_id),0),
+          janvier=IFNULL((select sum(montant) from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1),0),
+          fev=IFNULL((select sum(montant) from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2),0),
+          mars=IFNULL((select sum(montant) from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3),0),
+          avril=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4),0),
+          mai=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5),0),
+          juin=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6),0),
+          juill=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7),0),
+          aout=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.id and EXTRACT(MONTH FROM date)=8),0),
+          sept=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9),0),
+          octobre=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10),0),
+          nov=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),0),
+		  decembre=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),0),
+         
+		  statejanvier=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1),
+          statefev=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2),
+          statemars=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3),
+          stateavril=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4),
+          statemai=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5),
+          statejuin=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6),
+          statejuill=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7),
+          stateaout=(select state from e_remprt r where r.empl_id=new.id and EXTRACT(MONTH FROM date)=8),
+          statesept=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9),
+          stateoct=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10),
+          statenov=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),
+          statedecembre=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),
+          moisrem=1
+      where empl_id=new.empl_id ;
+    ELSE
+      INSERT INTO e_zview_pret(id,empl_id,datepret,annee_id,totalpret,totalliquide,janvier,fev,mars,avril,
+                mai,juin,juill,aout,sept,octobre,nov,decembre, statejanvier,statefev,statemars,stateavril,
+                statemai,statejuin,statejuill,stateaout,statesept,stateoct,statenov,statedecembre, moisrem,
+         DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,
+         ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+        values(new.id,new.empl_id,new.date,annee_id=new.annee_id,
+          (select sum(montantsol) from e_ddepret p where p.empl_id=new.empl_id and p.annee_id=new.annee_id),
+		  (select sum(montantRem) from e_ddepret p where p.empl_id=new.empl_id and p.annee_id=new.annee_id),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=8),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),
+          (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),
+
+		      (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1),
+          (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2),
+          (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7),
+          (select state from e_remprt r where r.empl_id=new.id and EXTRACT(MONTH FROM date)=8),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),
+		  
+          moisrem=1,
+         "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
+    END IF ;
+
+    END|
+	delimiter |
+DROP TRIGGER IF EXISTS massesalariale |
+
+CREATE TRIGGER massesalariale
+BEFORE UPDATE ON e_bulletin
+FOR EACH ROW
+  BEGIN
+
+    IF (select count(*) from e_zview_masse where empl_id=new.emp_id )=1
+    THEN
+      UPDATE e_zview_masse set annee_id=new.annee_id,
+          janvier=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=1
+            and b.annee_id=new.annee_id),0),
+          fev=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=2
+            and b.annee_id=new.annee_id),0),
+          mars=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=3
+            and b.annee_id=new.annee_id),0),
+          avril=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=4
+            and b.annee_id=new.annee_id),0),
+          mai=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=5
+            and b.annee_id=new.annee_id),0),
+          juin=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=6
+            and b.annee_id=new.annee_id),0),
+          juill=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=7
+            and b.annee_id=new.annee_id),0),
+          aout=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=8
+            and b.annee_id=new.annee_id),0),
+          sept=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=9
+            and b.annee_id=new.annee_id),0),
+          octobre=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=10
+            and b.annee_id=new.annee_id),0),
+          nov=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=11
+            and b.annee_id=new.annee_id),0),
+          decembre=IFNULL((select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=12
+            and b.annee_id=new.annee_id),0)
+      where empl_id=new.emp_id ;
+    ELSE
+      INSERT INTO e_zview_masse(id,empl_id,pepa_id,annee_id,janvier,fev,mars,avril,
+                mai,juin,juill,aout,sept,octobre,nov,decembre,
+         DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,
+         ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+        values(new.id,new.emp_id,new.pepa_id,annee_id=new.annee_id,
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=1 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=2 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=3 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=4 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=5 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=6 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=7 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=8 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=9 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=10 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=11 and b.annee_id=new.annee_id),
+      (select snet from e_bulletin b where b.emp_id=new.emp_id and EXTRACT(MONTH FROM dpayement)=12 and b.annee_id=new.annee_id),
+         "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
+    END IF ;
+
+    END|
+	
+Delimiter |
+DROP TRIGGER IF EXISTS eltvariable |
+CREATE TRIGGER eltvariable
+AFTER INSERT ON e_remprt
+FOR EACH ROW
+  BEGIN
+      INSERT INTO e_eltvar(empl_id,PEPA_id,ddeb,dfin,elvap_id,
+         DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,
+         ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+        values(new.empl_id,(select id from e_ppaie where ddebut<=new.date and dfin>=new.date),new.date, new.date,new.id,
+         "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
+
+ END|
+
+Delimiter |
+DROP TRIGGER IF EXISTS eltvaracompte |
+
+CREATE TRIGGER eltvaracompte
+AFTER INSERT ON e_acompte
+FOR EACH ROW
+  BEGIN
+      INSERT INTO e_eltvar(empl_id,PEPA_id,ddeb,dfin,elvap_id,
+         DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,
+         ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+        values(new.empl_id,(select id from e_ppaie where ddebut<=new.effet and dfin>=new.effet),new.effet, new.effet,new.id,
+         "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
+
+ END|
+ 
+ Delimiter |
+DROP TRIGGER IF EXISTS updaterem |
+CREATE TRIGGER updaterem
+AFTER INSERT ON e_eltvar
+FOR EACH ROW
+  BEGIN
+      update e_remprt set elvap_id=new.elvap_id where new.elvap_id=id;
+	  update e_acompte set elvap_id=new.elvap_id where new.elvap_id=id;
+
+ END|
+ 
+ Delimiter |
+DROP TRIGGER IF EXISTS eltvaracompteupdate |
+CREATE TRIGGER eltvaracompteupdate
+AFTER UPDATE ON e_acompte
+FOR EACH ROW
+  BEGIN
+      update e_eltvar set
+            PEPA_id=(select id from e_ppaie where ddebut<=new.effet and dfin>=new.effet)
+      where elvap_id=new.id;
+
+ END|
+ 
+ Delimiter |
+DROP TRIGGER IF EXISTS eltvarremupdate |
+CREATE TRIGGER eltvarremupdate
+AFTER UPDATE ON e_remprt
+FOR EACH ROW
+  BEGIN
+      update e_eltvar set
+            PEPA_id=(select id from e_ppaie where ddebut<=new.date and dfin>=new.date)
+      where elvap_id=new.id;
+
+ END|
 
  --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 --- --- --- --- --- --- --- --- HELPER CMD --- --- --- --- --- --- --- --- --- --- --- --- --- --- 

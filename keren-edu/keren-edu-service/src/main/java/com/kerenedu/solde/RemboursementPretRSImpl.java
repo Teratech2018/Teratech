@@ -74,7 +74,7 @@ public class RemboursementPretRSImpl
             meta.getHeader().add(workbtn);   
             workbtn = new MetaColumn("button", "work1", "Refuser", false, "workflow", null);
             workbtn.setValue("{'model':'kereneducation','entity':'remboursementpret','method':'refuse'}");
-            workbtn.setStates(new String[]{"etabli"});
+            workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);   
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
@@ -120,6 +120,7 @@ public class RemboursementPretRSImpl
 		}else if(entity.getActif().equals(Boolean.FALSE)){
 			throw new KerenExecption("Le remboursement n'est pas actif");
 		}
+		entity.setState("confirme");
 		super.processBeforeSave(entity);
 	}
 
@@ -134,10 +135,19 @@ public class RemboursementPretRSImpl
 			throw new KerenExecption("La montant du remboursement est obligatoire");
 		}else if(entity.getActif().equals(Boolean.FALSE)){
 			throw new KerenExecption("Le remboursement n'est pas actif");
-		}else if(entity.getState().equalsIgnoreCase("confirme")){
-			throw new KerenExecption("Le remboursement est déjà confirmé");
 		}
+//		else if(entity.getState().equalsIgnoreCase("confirme")){
+//			throw new KerenExecption("Le remboursement est déjà confirmé");
+//		}
 		super.processBeforeUpdate(entity);
+	}
+	
+	@Override
+	protected void processAfterSave(RemboursementPret entity) {
+		// TODO Auto-generated method stub
+		PeriodePaie periode = periodeChecker(entity);
+	//	 manager.confirme(entity, periode);
+		super.processAfterSave(entity);
 	}
 
 	@Override
@@ -196,10 +206,19 @@ public class RemboursementPretRSImpl
 	@Override
 	public List<RemboursementPret> filter(HttpHeaders arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
+		
+		Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		PeriodePaie periode = (PeriodePaie) CacheMemory.getValue(id, TypeCacheMemory.PERIODE);
+		
+		if (periode != null) {
+			container.addGe("date",periode.getDdebut());
+			container.addLe("date",periode.getDfin());
+		} // end if(classe!=null)
 		container.addNotEq("state", "annule");	
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
 	}
 	
-
+	
 }

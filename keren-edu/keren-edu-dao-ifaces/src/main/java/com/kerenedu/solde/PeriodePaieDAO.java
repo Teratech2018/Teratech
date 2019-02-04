@@ -1,6 +1,8 @@
 
 package com.kerenedu.solde;
 
+import java.util.Date;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 
 
@@ -18,5 +20,7 @@ public interface PeriodePaieDAO
      * 
      */
     public final static String SERVICE_NAME = "PeriodePaieDAO";
+    
+    public PeriodePaie getPeriodeFromDate(Date date);
 
 }

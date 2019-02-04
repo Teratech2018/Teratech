@@ -28,7 +28,7 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "e_rub")
 public class RubriquePaie extends BaseElement implements Serializable, Comparable<RubriquePaie> {
 
-	@Column(name = "CODE")
+	@Column(name = "CODE", unique=true)
 	@Predicate(label="Code",optional=false,updatable=false,search=true, sequence=1)
 	protected String code;
 	
@@ -39,8 +39,18 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true, sequence=3,optional=false)
 	private String type ="0";
 	
-	@Predicate(label="Impression sur le bulletin",target="combobox",values="Jamais;Toujours;si non nul", sequence=4)
+	@Predicate(label="Nature de rubrique",target="combobox",values="Salaire;Prime;Indemnité;Allocations Familiales;Amicale;Loyer;Autres Retenues",search=true,observable=true,
+			 sequence=4)
+	private String nature ="0";	
+	
+	@Predicate(label="Impression sur le bulletin",target="combobox",values="Jamais;Toujours;si non nul", sequence=5)
 	private String porte="0";
+	
+	@Predicate(label="Acompte?",type=Boolean.class, sequence=6)
+	private Boolean acompte = Boolean.FALSE;
+	
+	@Predicate(label="Prêt?",type=Boolean.class, sequence=7)
+	private Boolean pret = Boolean.FALSE;
 	
 	@Predicate(label="Mode d'evaluation",target="combobox",values="Forfait par Catégorie;Forfaitaire par Cycle;Forfaitaire Par Personnels;Fixe;Formule;Elements Variables", 
 			optional=false ,group=true,groupName="group1",groupLabel="Elements de calcul", observable=true)
@@ -52,8 +62,17 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="Taux salarial(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=7,optional=true)
 	private Double tauxsal =0.0;
 	
-	@Predicate(label="Taux patronal(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8,optional=true)
+	@Predicate(label="Formile",type=String.class,group=true,groupName="group1",groupLabel="Elements de calcul",optional=true,hidden = "currentObject.mode!=4")
+	private String formule ;
+	
+	@Predicate(label="Taux patronal(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=9,optional=true)
 	private Double tauxpat=0.0;
+	
+	@Predicate(label="Participe au salaire brut?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
+	private Boolean brutsal = Boolean.FALSE;
+	
+	@Predicate(label="Participe à la base cotisable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=10,search=true)
+	private Boolean cotisablesal = Boolean.FALSE;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	@JoinColumn(name="RUBR_ID")
@@ -102,6 +121,12 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 		this.forfaitscycle= new ArrayList<ForfaitCycle>();
 		this.forfaitsperso= new ArrayList<ForfaitPersonnel>();
 		this.valFixe=entity.valFixe;
+		this.nature=entity.nature;
+		this.brutsal = entity.brutsal;
+		this.cotisablesal = entity.cotisablesal;
+		this.formule=entity.getFormule();
+		this.acompte=entity.acompte;
+		this.pret=entity.pret;
 	}
 
 	public RubriquePaie() {
@@ -180,8 +205,24 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 		return "Rubrique de  Paie";
 	}
 
+	public String getFormule() {
+		return formule;
+	}
+
+	public void setFormule(String formule) {
+		this.formule = formule;
+	}
+
 	public String getMode() {
 		return mode;
+	}
+
+	public String getNature() {
+		return nature;
+	}
+
+	public void setNature(String nature) {
+		this.nature = nature;
 	}
 
 	public void setMode(String mode) {
@@ -190,6 +231,22 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 
 	public Double getValFixe() {
 		return valFixe;
+	}
+
+	public Boolean getAcompte() {
+		return acompte;
+	}
+
+	public void setAcompte(Boolean acompte) {
+		this.acompte = acompte;
+	}
+
+	public Boolean getPret() {
+		return pret;
+	}
+
+	public void setPret(Boolean pret) {
+		this.pret = pret;
 	}
 
 	public void setValFixe(Double valFixe) {
@@ -230,6 +287,22 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 	public String getDesignation() {
 		// TODO Auto-generated method stub
 		return code +"-"+desc;
+	}
+
+	public Boolean getBrutsal() {
+		return brutsal;
+	}
+
+	public void setBrutsal(Boolean brutsal) {
+		this.brutsal = brutsal;
+	}
+
+	public Boolean getCotisablesal() {
+		return cotisablesal;
+	}
+
+	public void setCotisablesal(Boolean cotisablesal) {
+		this.cotisablesal = cotisablesal;
 	}
 
 }

@@ -120,13 +120,13 @@ public class ViewCouponsInformation extends BaseElement implements Serializable,
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Editer des notes d'informations";
+		return "Notification retard de paiement";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Editer des notes d'informations";
+		return "Notification retard de paiement";
 	}
 
 	

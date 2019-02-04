@@ -26,6 +26,24 @@ public class RemboursementPretDAOImpl
     @Override
     public Class<RemboursementPret> getManagedEntityClass() {
         return (RemboursementPret.class);
+        
+        
     }
+    
+
+	@Override
+	public long updateforce(String value) {
+		 long va = 0  ;
+		  try{
+			
+				 String query ="update e_remprt set ownermodule ='"+value+"' ";
+				 System.out.println("InscriptionDAOImpl.updateforce() query "+query);
+				  va = em.createNativeQuery(query).executeUpdate();
+	
+	        }catch(Exception ex){
+
+	        }
+		return va;
+	}
 
 }

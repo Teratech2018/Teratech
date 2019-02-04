@@ -1,11 +1,19 @@
 
 package com.kerenedu.personnel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
+import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
 @Stateless(mappedName = "EmargementDtlPeriodeManager")
@@ -29,5 +37,59 @@ public class EmargementDtlPeriodeManagerImpl
     public String getEntityIdName() {
         return "id";
     }
+    
+    @Override
+   	public List<EmargementDtlPeriode> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
+   			int firstResult, int maxResult) {
+   		// TODO Auto-generated method stub
+    	//predicats.addAll(CacheMemory.defaultPredicatsCycle());
+   		List<EmargementDtlPeriode> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
+   		List<EmargementDtlPeriode> result = new ArrayList<EmargementDtlPeriode>();
+   		for(EmargementDtlPeriode elev:datas){
+   			result.add(new EmargementDtlPeriode(elev));
+   		}
+   		return result;
+   	}
+
+   	@Override
+	public void processBeforeSave(EmargementDtlPeriode entity) {
+		//entity.setSection(entity.getFiliere().getSection());
+		super.processBeforeSave(entity);
+	}
+
+	@Override
+   	public EmargementDtlPeriode find(String propertyName, Long entityID) {
+   		// TODO Auto-generated method stub
+   		EmargementDtlPeriode elev = super.find(propertyName, entityID);
+   		EmargementDtlPeriode inscrip = new EmargementDtlPeriode(elev);
+//   		for(Eleve serv: elev.getElevelist()){
+//   			inscrip.getElevelist().add(new Eleve(serv));
+//   		}
+   		return inscrip;
+   	}
+
+   	@Override
+   	public List<EmargementDtlPeriode> findAll() {
+   		// TODO Auto-generated method stub
+//   		RestrictionsContainer container = RestrictionsContainer.newInstance();
+//   		container.getPredicats().addAll(CacheMemory.defaultPredicatsCycle());
+   		List<EmargementDtlPeriode> datas = super.findAll();
+   		List<EmargementDtlPeriode> result = new ArrayList<EmargementDtlPeriode>();
+   		for(EmargementDtlPeriode elev:datas){
+   			result.add(new EmargementDtlPeriode(elev));
+   		}
+   		return result;
+   	}
+   	
+   	
+
+   	@Override
+   	public EmargementDtlPeriode delete(Long id) {
+   		// TODO Auto-generated method stub
+   		EmargementDtlPeriode elev = super.delete(id);
+   		return new EmargementDtlPeriode(elev);
+   	}
+
+
 
 }

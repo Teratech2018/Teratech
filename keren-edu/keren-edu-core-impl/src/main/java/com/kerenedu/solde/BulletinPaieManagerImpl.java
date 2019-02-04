@@ -2,6 +2,7 @@
 package com.kerenedu.solde;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,9 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.model.report.EdtMasseSalModal;
 import com.kerenedu.model.report.EdtPeriodeModal;
+import com.kerenedu.model.report.ViewPeriodeModal;
 import com.kerenedu.personnel.ProfesseurChoice;
 import com.megatim.common.annotations.OrderType;
 
@@ -53,12 +56,12 @@ public class BulletinPaieManagerImpl
 	public List<BulletinPaie> filter(List<Predicat> predicats, Map<String, OrderType> orders, Set<String> properties,
 			int firstResult, int maxResult) {
 		// TODO Auto-generated method stub
-		PeriodePaie periode = CacheMemory.getPeriodepaie();
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-		if (periode != null) {
-			container.addEq("periode", periode);
-		} // end if(periode!=null)
-		predicats.addAll(container.getPredicats());
+//		PeriodePaie periode = CacheMemory.getPeriodepaie();
+//		RestrictionsContainer container = RestrictionsContainer.newInstance();
+//		if (periode != null) {
+//			container.addEq("periode", periode);
+//		} // end if(periode!=null)
+//		predicats.addAll(container.getPredicats());
 		List<BulletinPaie> datas = super.filter(predicats, orders, properties, firstResult, maxResult);
 		List<BulletinPaie> result = new ArrayList<BulletinPaie>();
 		for (BulletinPaie data : datas) {
@@ -192,5 +195,77 @@ public class BulletinPaieManagerImpl
 			}
 
 		return records;
+	}
+
+	@Override
+	public void validerSalaire(TraitSalaire entity) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+		container = RestrictionsContainer.newInstance();
+		container.addEq("periode.id", entity.getPeriode().getId());
+		datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		
+		if(datas!=null&&!datas.isEmpty()&&datas.size()!=0){
+			for(BulletinPaie bp : datas){
+				BulletinPaie pbnew = dao.findByPrimaryKey("id", bp.getId());
+				pbnew.setState("valide");
+				pbnew.setDpayement(new Date());;
+				dao.update(pbnew.getId(), pbnew);
+			}
+		}
+		
+	}
+
+	@Override
+	public List<BulletinPaie> getCriteres(ViewPeriodeModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+				RestrictionsContainer container = RestrictionsContainer.newInstance();
+				List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+				List<BulletinPaie> records = new ArrayList<BulletinPaie>();
+				container = RestrictionsContainer.newInstance();
+				  if (critere.getPeriode() != null) {
+					container.addEq("periode.id", critere.getPeriode().getId());
+					}
+				  if(critere.getTypereport()!=null){
+					  container.addEq("employe.modePaiement", critere.getTypereport());
+				  }
+				  datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+					
+				for (BulletinPaie b : datas) {
+						BulletinPaie result =  super.find("id", b.getId());
+						BulletinPaie data = new BulletinPaie(result);
+						for (LigneBulletinPaie ligne : result.getLignes()) {
+							data.getLignes().add(new LigneBulletinPaie(ligne));
+						} // end for(LigneBulletinPaie ligne:data.getLignes())
+
+						records.add(data);
+					}
+
+				return records;
+	}
+	
+	@Override
+	public List<BulletinPaie> getCriteres(EdtMasseSalModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+				RestrictionsContainer container = RestrictionsContainer.newInstance();
+				List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+				List<BulletinPaie> records = new ArrayList<BulletinPaie>();
+				container = RestrictionsContainer.newInstance();
+				  if (critere.getPeriode() != null) {
+					container.addEq("periode.id", critere.getPeriode().getId());
+					}
+				  datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+					
+//				for (BulletinPaie b : datas) {
+//						BulletinPaie result =  super.find("id", b.getId());
+//						BulletinPaie data = new BulletinPaie(result);
+//						for (LigneBulletinPaie ligne : result.getLignes()) {
+//							data.getLignes().add(new LigneBulletinPaie(ligne));
+//						} // end for(LigneBulletinPaie ligne:data.getLignes())
+//
+//						records.add(data);
+//					}
+
+				return datas;
 	}
 }

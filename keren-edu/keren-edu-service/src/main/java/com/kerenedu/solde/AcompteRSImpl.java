@@ -1,20 +1,38 @@
 
 package com.kerenedu.solde;
 
+import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
+import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
+import com.kerenedu.tools.reports.ReportHelper;
+import com.kerenedu.tools.reports.ReportsName;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+
+import net.sf.jasperreports.engine.JRException;
 
 
 /**
@@ -37,6 +55,9 @@ public class AcompteRSImpl
     
     @Manager(application = "kereneducation", name = "PeriodePaieManagerImpl", interf = PeriodePaieManagerRemote.class)
     protected PeriodePaieManagerRemote periodemanager;
+    
+    @Manager(application = "kereneducation", name = "RubriquePaieManagerImpl", interf = RubriquePaieManagerRemote.class)
+    protected RubriquePaieManagerRemote managerrubrique;
     
 
     public AcompteRSImpl() {
@@ -71,12 +92,16 @@ public class AcompteRSImpl
             workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'paye'}");
             workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-primary");
-            meta.getHeader().add(workbtn);
+            //meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
             workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'annule'}");
             workbtn.setStates(new String[]{"confirme"});
             workbtn.setPattern("btn btn-danger");
-            meta.getHeader().add(workbtn);	           
+            meta.getHeader().add(workbtn);	        
+            workbtn = new MetaColumn("button", "work2", "Fiche Acompte", false, "report", null);
+			workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'pdf'}");
+			workbtn.setStates(new String[] { "paye","confirme" });
+			meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
             return meta;
@@ -100,7 +125,22 @@ public class AcompteRSImpl
 
     @Override
     protected void processBeforeSave(Acompte entity) {
-    	entity.setState("etabli");
+    	
+    	// set rubrique acompte
+    	RestrictionsContainer container = RestrictionsContainer.newInstance();
+    	 PeriodePaie periode = periodeChecker(entity);
+		container.addEq("acompte",true);
+		List<RubriquePaie> rubrique = managerrubrique.filter(container.getPredicats(), null, null, 0, -1);
+		if(rubrique!=null&&!rubrique.isEmpty()){
+			entity.setRubrique(rubrique.get(0));
+		}
+		
+		// controle montant acompte 
+		if(manager.disponible(entity,periode)==false){
+			 throw new KerenExecption("OPERATION IMPOSSIBLE : ce salarié à dépassé sont quota d'acompte du mois ");
+		}
+		
+    	entity.setState("confirme");
         // TODO Auto-generated method stub
         if(entity.getEmploye()==null){
                 throw new KerenExecption("Le Salarié concerné est obligatoire");
@@ -109,9 +149,13 @@ public class AcompteRSImpl
         }else if(entity.getMontant()==null){
                 throw new KerenExecption("Le montant de l'acompte est obligatoire");
         }
+       
+        entity.setAnneScolaire(periode.getExercice().getCode());
 
         super.processBeforeSave(entity);
     }
+    
+    
 
     @Override
     protected void processBeforeUpdate(Acompte entity) {
@@ -123,7 +167,12 @@ public class AcompteRSImpl
                 throw new KerenExecption("La date de prise d'effet est obligatoire");
         }else if(entity.getMontant()==null){
                 throw new KerenExecption("Le montant de l'acompte est obligatoire");
-        }
+        }else if(entity.getEffet().before(new Date())){
+            throw new KerenExecption("Impossible de modifier");
+    }
+//        else if(!entity.getState().equalsIgnoreCase("paye")){
+//            throw new KerenExecption("Cette Acompte est déjà confirmée , Payée ou Annulée");
+//        }
 
         super.processBeforeUpdate(entity);
     }
@@ -141,7 +190,7 @@ public class AcompteRSImpl
         }else if(!entity.getState().equalsIgnoreCase("etabli")){
                 throw new KerenExecption("Cette Acompte est déjà confirmée , Payée ou Annulée");
         }
-
+        PeriodePaie periode = periodeChecker(entity);
         return manager.confirme(entity);
     }
 
@@ -223,5 +272,46 @@ public class AcompteRSImpl
 
         return entity;
     }
+    
+    @Override
+   	public Response buildPdfReport(Acompte entity) {
+   		try {
+   			// convertir en lettre
+   			RuleBasedNumberFormat rbnf = new RuleBasedNumberFormat(Locale.FRANCE, RuleBasedNumberFormat.SPELLOUT);
+
+   			BigDecimal bd = new BigDecimal(entity.getMontant());
+   			bd = bd.setScale(0, BigDecimal.ROUND_UP);
+   			Double netarond = bd.doubleValue();
+   			String mntEnlettre = rbnf.format(netarond);
+   			entity.setMntLettre(mntEnlettre);
+ 
+   			String URL = ReportHelper.templatepaieURL + ReportsName.FICHE_ACOMPTE.getName();
+   			List<Acompte> records = new ArrayList<Acompte>();
+   			records.add(entity);
+   			if (records.isEmpty() || records.size() == 0) {
+   				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionné un eleve !!!");
+   			}
+   			Map parameters = this.getReportParameters();
+   			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+   		} catch (FileNotFoundException ex) {
+   			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+   			Response.serverError().build();
+   		} catch (JRException ex) {
+   			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+   		}
+
+   		return Response.noContent().build();
+   	}
+    
+	/**
+	 * Methode permettant de retourner les parametres pour le reporting
+	 *
+	 * @return java.util.Map
+	 */
+	public Map getReportParameters() {
+		Map param = ReportHelperTrt.getReportParametersSolde();
+
+		return param;
+	}
 
 }

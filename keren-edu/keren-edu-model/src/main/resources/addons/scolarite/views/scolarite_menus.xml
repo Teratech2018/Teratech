@@ -152,7 +152,7 @@
 		  </search>	     
 	 </reportRecord>
 	 
-	  <reportRecord  id="keren_education_coupons_report" label="Note d'information" action_ref="keren_education_retard"  extern="true">
+	  <reportRecord  id="keren_education_coupons_report" label="Notification retard de paiement" action_ref="keren_education_retard"  extern="true">
 	      <search entity="ViewCouponsInformation" module="kereneducation" method="pdf">
 		     <field name="Nationalité"/>
              <field name="Matricule"/>			 

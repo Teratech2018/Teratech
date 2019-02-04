@@ -19,6 +19,7 @@ import com.core.base.BaseElement;
 import com.core.tools.DateHelper;
 import com.kerenedu.configuration.MatiereDlt;
 import com.kerenedu.notes.CoefMatiereDetail;
+import com.kerenedu.solde.ParaCoutMatiere;
 import com.kerenedu.solde.PeriodePaie;
 import com.megatim.common.annotations.Predicate;
 
@@ -32,31 +33,47 @@ import com.megatim.common.annotations.Predicate;
 public class EmargementDtlPeriode extends BaseElement implements Serializable, Comparable<EmargementDtlPeriode> {
 	
 
+	@Column(name = "MATIERE")
+	//@Predicate(label = "Matiere", optional = false, updatable = true, search = true, sequence = 1)
+	protected String matiere;
 	
-	@Column(name = "MAT", unique = true)
-	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 1,editable=false)
+	@Column(name = "MAT")
+	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 2,editable=false)
 	protected String matricule;
 
-	@Column(name = "NOM", unique = true)
-	@Predicate(label = "NOM", optional = false, updatable = true, search = true, sequence = 2)
+	@Column(name = "NOM")
+	@Predicate(label = "NOM", optional = false, updatable = true, search = true, sequence = 3)
 	protected String nom;
+	
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "P_ID")
-	//@Predicate(label="Professeur",updatable=false,type=ProfesseurChoice.class , target="many-to-one",search=true , sequence=1	,colsequence=1)
-	protected EnseignantSecondaire prof;
+	//@Predicate(label="Professeur",updatable=false,type=ProfesseurChoice.class , target="many-to-one",search=true , sequence=1	,colsequence=1,hide=true)
+	protected Professeur prof;
+	
+
+	@ManyToOne
+	@JoinColumn(name = "MAT_COUT_ID")
+	//@Predicate(label="Professeur",updatable=false,type=ProfesseurChoice.class , target="many-to-one",search=true , sequence=1	,colsequence=1,hide=true)
+	protected ParaCoutMatiere cout;
 
 	
 	@Column(name = "HTEMARG")
-	@Predicate(label="Total Heure",updatable=false,search=true,  sequence=5, type=Double.class, editable=false,colsequence=5)
-	protected Double heuretotal;
+	@Predicate(label="Presence",updatable=false,search=true,  sequence=5, type=Double.class,colsequence=5)
+	protected Double presence;
+	
+	@Column(name = "HTERETARD")
+	@Predicate(label="Retard",updatable=false,search=true,  sequence=5, type=Double.class,colsequence=6)
+	protected Double retard;
 	
 	@Column(name = "STATUT")
-	@Predicate(label="Statut",type=Boolean.class,search=true,colsequence=6)
+	@Predicate(label="Statut",type=Boolean.class,search=true,colsequence=7)
 	private Boolean statut = Boolean.FALSE;
 	
 	@ManyToOne
 	@JoinColumn(name="PERIODE_ID")
+	@Predicate(label="Periode",type=PeriodePaie.class,target="many-to-one",optional=true, sequence=3, observable=true, search=true,colsequence=3)
 	private PeriodePaie periode ;
 
 	public EmargementDtlPeriode() {
@@ -70,10 +87,10 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 
 	
 
-	public EmargementDtlPeriode(EnseignantSecondaire prof, Double heuretotal, Boolean statut) {
+	public EmargementDtlPeriode(Professeur prof, Double heuretotal, Boolean statut) {
 		super();
 		this.prof = prof;
-		this.heuretotal = heuretotal;
+	//	this.heuretotal = heuretotal;
 		this.statut = statut;
 		
 	}
@@ -84,21 +101,23 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 	public EmargementDtlPeriode(EmargementDtlPeriode entity) {
 		super(entity.id, entity.designation, entity.moduleName,0L);
 		if(entity.prof!=null){
-		this.prof = new EnseignantSecondaire(entity.prof) ;
+		//this.prof = new EnseignantSecondaire(entity.prof) ;
+		
+		}
 		this.matricule=entity.matricule;
 		this.nom=entity.nom;
-		}
-		if(this.periode!=null){
-			this.periode= new PeriodePaie(entity.getPeriode());
+		if(entity.periode!=null){
+			this.periode= new PeriodePaie(entity.periode);
 			}
-		this.heuretotal = entity.heuretotal;
+		if(entity.cout!=null){
+			this.cout= new ParaCoutMatiere(entity.cout);
+			}
+		this.presence = entity.presence;
+		this.retard = entity.retard;
 		this.statut = entity.statut;
+		this.matiere=entity.matiere;
 		
 	}
-
-
-
-
 
 	@Override
 	public int hashCode() {
@@ -114,13 +133,13 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Emargements des cours";
+		return "Gestion des Emargements des Heures";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Gestion des Emargements des cours";
+		return "Gestion des Emargements des Heures";
 	}
 
 	@Override
@@ -150,7 +169,7 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 
 
 
-	public EnseignantSecondaire getProf() {
+	public Professeur getProf() {
 		return prof;
 	}
 
@@ -160,25 +179,8 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 
 
 
-	public void setProf(EnseignantSecondaire prof) {
+	public void setProf(Professeur prof) {
 		this.prof = prof;
-	}
-
-
-
-
-
-
-
-	public Double getHeuretotal() {
-		return heuretotal;
-	}
-
-
-
-
-	public void setHeuretotal(Double heuretotal) {
-		this.heuretotal = heuretotal;
 	}
 
 
@@ -239,6 +241,86 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 
 	public void setPeriode(PeriodePaie periode) {
 		this.periode = periode;
+	}
+
+
+
+
+
+
+
+	public Double getPresence() {
+		return presence;
+	}
+
+
+
+
+
+
+
+	public String getMatiere() {
+		return matiere;
+	}
+
+
+
+
+
+
+
+	public void setMatiere(String matiere) {
+		this.matiere = matiere;
+	}
+
+
+
+
+
+
+
+	public ParaCoutMatiere getCout() {
+		return cout;
+	}
+
+
+
+
+
+
+
+	public void setCout(ParaCoutMatiere cout) {
+		this.cout = cout;
+	}
+
+
+
+
+
+
+
+	public void setPresence(Double presence) {
+		this.presence = presence;
+	}
+
+
+
+
+
+
+
+	public Double getRetard() {
+		return retard;
+	}
+
+
+
+
+
+
+
+	public void setRetard(Double retard) {
+		this.retard = retard;
 	}
 
 

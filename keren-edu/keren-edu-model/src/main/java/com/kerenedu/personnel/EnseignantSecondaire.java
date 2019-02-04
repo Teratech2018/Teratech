@@ -1,24 +1,25 @@
 package com.kerenedu.personnel;
 
-import com.core.base.BaseElement;
-import com.kerenedu.configuration.Etablissement;
-import com.kerenedu.inscription.Inscription;
-import com.kerenedu.solde.Banque;
-import com.kerenedu.solde.Categorie;
-import com.kerenedu.solde.Echellon;
-import com.kerenedu.solde.Fonction;
-import com.kerenedu.solde.ProfilPaie;
-import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.core.base.BaseElement;
+import com.kerenedu.configuration.Etablissement;
+import com.kerenedu.solde.Banque;
+import com.kerenedu.solde.Categorie;
+import com.kerenedu.solde.Echellon;
+import com.kerenedu.solde.Fonction;
+import com.kerenedu.solde.ProfilPaie;
+import com.kerenedu.solde.ProfilPaielight;
+import com.megatim.common.annotations.Predicate;
 
 
 
@@ -113,25 +114,26 @@ public class EnseignantSecondaire
 			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	private String etatcivile = "0";
 	
-	@ManyToOne
-	@JoinColumn(name = "CAT_ID")
-	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = true
-			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
-	protected Categorie categorie;
+
 	
 	@ManyToOne
 	@JoinColumn(name = "ECH_ID")
-	@Predicate(label = "Echélon", updatable = true, type = Echellon.class, target = "many-to-one", search = false, optional = true
-			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
+//	@Predicate(label = "Echélon", updatable = true, type = Echellon.class, target = "many-to-one", search = false, optional = true
+//			,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
 	protected Echellon echelon;
 	
 	@Column(name = "LIEU")
-	@Predicate(label = "Lieu de Recrutement", optional = true, updatable = true, search = false,group = true, groupLabel = "Informations Professionnelles", groupName = "tab2")
+	@Predicate(label = "Lieu de Recrutement", optional = true, updatable = true, search = false,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	protected String lieu;
 
-	@Predicate(label = "Curriculum Vitae", target = "file", group = true, groupName = "tab2", groupLabel = "Informations professionnelles")
+	@Predicate(label = "Curriculum Vitae", target = "file", group = true, groupName = "tab1", groupLabel = "Informations Personelles")
 	private String cv;
 	
+	@ManyToOne
+	@JoinColumn(name = "CAT_ID")
+	@Predicate(label = "Catégorie", updatable = true, type = Categorie.class, target = "many-to-one", search = true, optional = true
+			,group = true, groupLabel = "Comptabilité", groupName = "tab3")
+	protected Categorie categorie;
 	@Column(name = "NAT_PAI")
 	@Predicate(label = "Mode Paiement", optional = true, updatable = true, search = true, target = "combobox", values = "Espèces;Virements", sequence =8, observable = true,
 			group = true, groupLabel = "Comptabilité", groupName = "tab3")
@@ -148,11 +150,11 @@ public class EnseignantSecondaire
 			,hidden="currentObject.modePaiement!==1")
 	private Long numBanque = new Long(0);
 	
-	@ManyToOne
-	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
-			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
-	protected ProfilPaie profil;
+//	@ManyToOne
+//	@JoinColumn(name = "PROF_ID")
+//	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
+//			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
+//	protected ProfilPaielight profil;
 
 	@Column(name = "NB_JOURS")
 	@Predicate(label = "Nombre de Jours", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
@@ -232,7 +234,7 @@ public class EnseignantSecondaire
 		this.cv = cv;
 		this.banque = banque;
 		this.numBanque = numBanque;
-		this.profil = profil;
+		//this.profil = profil;
 		this.njours = njours;
 		this.salaire = salaire;
 		this.thoraire = thoraire;
@@ -277,9 +279,9 @@ public class EnseignantSecondaire
 		if(entity.categorie!=null){
 			this.categorie = new Categorie(entity.categorie);
 		}		
-		if(entity.echelon!=null){
-			this.echelon = new Echellon(entity.echelon);
-		}		
+//		if(entity.echelon!=null){
+//			this.echelon = new Echellon(entity.echelon);
+//		}		
 		this.lieu = entity.lieu;
 		this.cv = entity.cv;
 		if(entity.banque!=null){
@@ -288,9 +290,9 @@ public class EnseignantSecondaire
 		
 		this.numBanque = entity.numBanque;
 		
-		if(entity.profil!=null){
-			this.profil = new ProfilPaie(entity.profil);
-		}
+//		if(entity.profil!=null){
+//			this.profil = new ProfilPaielight(entity.profil);
+//		}
 		
 		this.njours = entity.njours;
 		this.salmax = entity.salmax;
@@ -315,9 +317,9 @@ public class EnseignantSecondaire
 		this.prenon = entity.prenon;
 		this.sexe = entity.sexe;
 		this.matricule=entity.matricule;
-		if(entity.profil!=null){
-		this.profil= new ProfilPaie(entity.getProfil());
-		}
+//		if(entity.profil!=null){
+//		this.profil= new ProfilPaielight(entity.getProfil());
+//		}
 		this.dateembauche=entity.dateembauche;
 		
 		if(entity.categorie!=null){
@@ -438,15 +440,15 @@ public class EnseignantSecondaire
 		this.echelon = echelon;
 	}
 
-
-	public ProfilPaie getProfil() {
-		return profil;
-	}
-
-
-	public void setProfil(ProfilPaie profil) {
-		this.profil = profil;
-	}
+//
+//	public ProfilPaielight getProfil() {
+//		return profil;
+//	}
+//
+//
+//	public void setProfil(ProfilPaielight profil) {
+//		this.profil = profil;
+//	}
 
 
 	public Date getDateNais() {

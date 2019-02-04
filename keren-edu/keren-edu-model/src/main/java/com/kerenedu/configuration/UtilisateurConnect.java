@@ -31,14 +31,13 @@ public class UtilisateurConnect
   @Column(name="PRENOM")
   @Predicate(label="Prénom ", optional=true, updatable=true, search=true, sequence=3)
   private String prenom;
-  @Predicate(label="ALL ", updatable=true, search=true, type=Boolean.class, sequence=9, target="checkbox")
+  
+  @Predicate(label="ALL ", updatable=true, search=true, type=Boolean.class, sequence=4, target="checkbox")
   protected Boolean allResponsabilite = Boolean.valueOf(false);
   
-
-
-
-
-
+  @Predicate(label="Anti-Date ", updatable=true, search=true, type=Boolean.class, sequence=5, target="checkbox")
+  protected Boolean antidate = Boolean.valueOf(false);
+  
   @OneToMany(fetch=FetchType.LAZY, cascade={javax.persistence.CascadeType.ALL}, orphanRemoval=true)
   @JoinColumn(name="RESP_ID")
   @Predicate(label="Responsabilité", updatable=true, type=Responsabilite.class, target="one-to-many", group=true, groupLabel="Responsablilités", groupName="tab1", edittable=true)
@@ -67,6 +66,7 @@ public class UtilisateurConnect
     this.prenom = entity.prenom;
     this.allResponsabilite =entity. allResponsabilite;
     this.responsable = new ArrayList<Responsabilite>();
+    this.antidate=entity.antidate;
   }
   
 
@@ -178,7 +178,25 @@ public class UtilisateurConnect
     return datas;
   }
   
-  public List<Cycle> getlistCycle()
+  public Boolean getAntidate() {
+	return antidate;
+}
+
+
+
+
+
+
+public void setAntidate(Boolean antidate) {
+	this.antidate = antidate;
+}
+
+
+
+
+
+
+public List<Cycle> getlistCycle()
   {
     List<Cycle> datas = new ArrayList();
     

@@ -2,6 +2,7 @@
 package com.kerenedu.solde;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
+import com.kerenedu.personnel.Professeur;
 
 
 /**
@@ -18,5 +19,7 @@ public interface AcompteDAO
      * 
      */
     public final static String SERVICE_NAME = "AcompteDAO";
+    
+    public double getMontantAcompte(Professeur employe, PeriodePaie periode);
 
 }

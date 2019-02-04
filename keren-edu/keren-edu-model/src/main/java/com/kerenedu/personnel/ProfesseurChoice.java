@@ -21,6 +21,7 @@ import com.kerenedu.solde.Categorie;
 import com.kerenedu.solde.Echellon;
 import com.kerenedu.solde.Fonction;
 import com.kerenedu.solde.ProfilPaie;
+import com.kerenedu.solde.ProfilPaielight;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -148,11 +149,11 @@ public class ProfesseurChoice extends BaseElement implements Serializable, Compa
 	//@Predicate(label = "Numéro Bancaire", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
 	private Long numBanque = new Long(0);
 	
-	@ManyToOne
-	@JoinColumn(name = "PROF_ID")
-	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaie.class, target = "many-to-one", search = false, optional = true
-			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
-	protected ProfilPaie profil;
+//	@ManyToOne
+//	@JoinColumn(name = "PROF_ID")
+//	@Predicate(label = "Profil Paie", updatable = true, type = ProfilPaielight.class, target = "many-to-one", search = false, optional = true
+//			,group = true, groupLabel = "Comptabilité", groupName = "tab2")
+//	protected ProfilPaielight profil;
 
 	@Column(name = "NB_JOURS")
 	//@Predicate(label = "Nombre de Jours", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Comptabilité", groupName = "tab3")
@@ -232,7 +233,7 @@ public class ProfesseurChoice extends BaseElement implements Serializable, Compa
 		this.cv = cv;
 		this.banque = banque;
 		this.numBanque = numBanque;
-		this.profil = profil;
+		//this.profil = profil;
 		this.njours = njours;
 		this.salaire = salaire;
 		this.thoraire = thoraire;
@@ -255,9 +256,9 @@ public class ProfesseurChoice extends BaseElement implements Serializable, Compa
 		this.sexe = entity.sexe;
 		this.matricule=entity.matricule;
 		
-		if(entity.profil!=null){
-		this.profil= new ProfilPaie(entity.getProfil());
-		}
+//		if(entity.profil!=null){
+//		this.profil= new ProfilPaielight(entity.getProfil());
+//		}
 		
 		if(entity.categorie!=null){
 			this.categorie= new Categorie(entity.getCategorie());
@@ -382,14 +383,14 @@ public class ProfesseurChoice extends BaseElement implements Serializable, Compa
 	}
 
 
-	public ProfilPaie getProfil() {
-		return profil;
-	}
-
-
-	public void setProfil(ProfilPaie profil) {
-		this.profil = profil;
-	}
+//	public ProfilPaielight getProfil() {
+//		return profil;
+//	}
+//
+//
+//	public void setProfil(ProfilPaielight profil) {
+//		this.profil = profil;
+//	}
 
 
 	public Date getDateNais() {

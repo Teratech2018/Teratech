@@ -10,9 +10,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -35,6 +39,9 @@ public class PeriodePaieOpenRSImpl
      */
     @Manager(application = "kereneducation", name = "PeriodePaieOpenManagerImpl", interf = PeriodePaieOpenManagerRemote.class)
     protected PeriodePaieOpenManagerRemote manager;
+    
+    @Manager(application = "kereneducation", name = "PeriodePaieManagerImpl", interf = PeriodePaieManagerRemote.class)
+    protected PeriodePaieManagerRemote managerperiode;
 
     public PeriodePaieOpenRSImpl() {
         super();
@@ -63,6 +70,20 @@ public class PeriodePaieOpenRSImpl
    		} 
    	}
     
+
+	@Override
+	public PeriodePaieOpen save(@Context HttpHeaders headers ,PeriodePaieOpen entity) {
+		// TODO Auto-generated method stub
+		entity.getPeriode().setState("ouvert");
+		managerperiode.update(entity.getPeriode().getId(), entity.getPeriode());
+		Gson gson = new Gson();
+		long id = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+		CacheMemory.insert(id, TypeCacheMemory.PERIODE, entity.getPeriode());
+		return entity;
+	}
+
+	
+	
     @Override
     public PeriodePaieOpen delete(@Context HttpHeaders headers , Long id) {
 

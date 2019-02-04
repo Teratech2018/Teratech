@@ -1,24 +1,44 @@
 
 package com.kerenedu.solde;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireManagerRemote;
+import com.kerenedu.inscription.Inscription;
+import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
+import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
+import com.kerenedu.tools.reports.ReportHelper;
+import com.kerenedu.tools.reports.ReportsName;
+import com.kerenedu.tools.reports.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
+
+import net.sf.jasperreports.engine.JRException;
 
 
 /**
@@ -38,6 +58,8 @@ public class DemandePretRSImpl
      */
     @Manager(application = "kereneducation", name = "DemandePretManagerImpl", interf = DemandePretManagerRemote.class)
     protected DemandePretManagerRemote manager;
+	@Manager(application = "kereneducation", name = "AnneScolaireManagerImpl", interf = AnneScolaireManagerRemote.class)
+	protected AnneScolaireManagerRemote managerAnnee;
 
     public DemandePretRSImpl() {
         super();
@@ -64,7 +86,7 @@ public class DemandePretRSImpl
                 MetaData meta = MetaDataUtil.getMetaData(new DemandePret(), new HashMap<String, MetaData>(),new ArrayList<String>());
                 MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
                 workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'echeancier'}");
-                workbtn.setStates(new String[]{"etabli"});
+                workbtn.setStates(new String[]{"confirme"});
                 workbtn.setPattern("btn btn-info");
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
@@ -76,7 +98,12 @@ public class DemandePretRSImpl
                 workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'annule'}");
                 workbtn.setStates(new String[]{"confirme"});
                 workbtn.setPattern("btn btn-danger");
-                meta.getHeader().add(workbtn);	           
+                meta.getHeader().add(workbtn);	     
+                 workbtn = new MetaColumn("button", "work2", "Fiche de Prêt", false, "report", null);
+    			workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'pdf'}");
+    			workbtn.setStates(new String[] { "confirme" });
+    			meta.getHeader().add(workbtn);
+    			
                 MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
                 meta.getHeader().add(stautsbar);
                 return meta;
@@ -135,14 +162,25 @@ public class DemandePretRSImpl
         }
 
         //On set l'etat initial
-        entity.setState("etabli");
+        entity.setState("confirme");
 
         if(entity.getDpret()==null){
         	entity.setDpret(new Date());
         }
         if(entity.getMontantpro()==null){
         	entity.setMontantpro(entity.getMontantsol());
+        	entity.setSolde(entity.getMontantpro());
+        	entity.setMontantRem(entity.getMontantpro()-entity.getSolde());
         }
+        
+        
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = managerAnnee.filter(container.getPredicats(), null, null, 0, -1);
+		if (annee == null || annee.size() == 0) {
+			throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
+		}
+		entity.setAnneScolaire(annee.get(0).getCode());
         super.processBeforeSave(entity);
     }
 
@@ -317,6 +355,45 @@ public class DemandePretRSImpl
 		container.addNotEq("state", "annule");	
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
 	}
-	
+    
+	/**
+	 * Methode permettant de retourner les parametres pour le reporting
+	 *
+	 * @return java.util.Map
+	 */
+	public Map getReportParameters() {
+		Map param = ReportHelperTrt.getReportParametersSolde();
 
+		return param;
+	}
+	
+    @Override
+	public Response buildPdfReport(DemandePret entity) {
+		try {
+			// convertir en lettre
+			RuleBasedNumberFormat rbnf = new RuleBasedNumberFormat(Locale.FRANCE, RuleBasedNumberFormat.SPELLOUT);
+
+			BigDecimal bd = new BigDecimal(entity.getMontantsol());
+			bd = bd.setScale(0, BigDecimal.ROUND_UP);
+			Double netarond = bd.doubleValue();
+			String mntEnlettre = rbnf.format(netarond);
+			entity.setMntLettre(mntEnlettre);
+			System.out.println("DemandePretRSImpl.buildPdfReport() remboursement "+entity.getRemboursements().size());
+			String URL = ReportHelper.templatepaieURL + ReportsName.FICHE_PRET.getName();
+			List<DemandePret> records = new ArrayList<DemandePret>();
+			records.add(entity);
+			if (records.isEmpty() || records.size() == 0) {
+				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionné un eleve !!!");
+			}
+			Map parameters = this.getReportParameters();
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return Response.noContent().build();
+	}
 }

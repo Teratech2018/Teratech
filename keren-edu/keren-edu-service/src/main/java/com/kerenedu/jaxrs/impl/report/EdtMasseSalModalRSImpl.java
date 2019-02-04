@@ -26,14 +26,18 @@ import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseManagerRemote;
 import com.kerenedu.configuration.TypeCacheMemory;
+import com.kerenedu.core.ifaces.report.ViewMasseSalarialeManagerRemote;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.jaxrs.ifaces.report.EdtMasseSalModalRS;
 import com.kerenedu.model.report.EdtBulletinModal;
 import com.kerenedu.model.report.EdtMasseSalModal;
+import com.kerenedu.model.report.ViewMasseSalariale;
 import com.kerenedu.notes.BulletinHelperGenerate;
 import com.kerenedu.notes.BulletinHelperGenerateManagerRemote;
 import com.kerenedu.notes.Examen;
 import com.kerenedu.notes.ExamenManagerRemote;
+import com.kerenedu.solde.BulletinPaie;
+import com.kerenedu.solde.BulletinPaieManagerRemote;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
 import com.kerenedu.tools.reports.ReportsParameter;
@@ -56,24 +60,11 @@ public class EdtMasseSalModalRSImpl
     implements EdtMasseSalModalRS
 {
 
-    /**
-     * On injecte un Gestionnaire d'entites
-     * 
-     */
-    @Manager(application = "kereneducation", name = "BulletinHelperGenerateManagerImpl", interf = BulletinHelperGenerateManagerRemote.class)
-    protected BulletinHelperGenerateManagerRemote manager;
-    
-    @Manager(application = "kereneducation", name = "ClasseManagerImpl", interf = ClasseManagerRemote.class)
-    protected ClasseManagerRemote managerClasse;
-    
-    @Manager(application = "kereneducation", name = "ExamenManagerImpl", interf = ExamenManagerRemote.class)
-    protected ExamenManagerRemote managerExamen;
-    
-//    @Manager(application = "kereneducation", name = "ExamenPManagerImpl", interf = ExamenPManagerRemote.class)
-//    protected ExamenPManagerRemote managerExamenp;
-//    
-//    @Manager(application = "kereneducation", name = "ExamenSManagerImpl", interf = ExamenSManagerRemote.class)
-//    protected ExamenSManagerRemote managerExamenS;
+	  @Manager(application = "kereneducation", name = "ViewMasseSalarialeManagerImpl", interf = ViewMasseSalarialeManagerRemote.class)
+	    protected ViewMasseSalarialeManagerRemote manager;
+	  
+	    @Manager(application = "kereneducation", name = "BulletinPaieManagerImpl", interf = BulletinPaieManagerRemote.class)
+	    protected BulletinPaieManagerRemote managerbull;
 
     public EdtMasseSalModalRSImpl() {
         super();
@@ -88,16 +79,7 @@ public class EdtMasseSalModalRSImpl
 			MetaColumn workbtn = new MetaColumn("button", "work2", "Imprimer", false, "report", null);
 			workbtn.setValue("{'model':'kereneducation','entity':'edtbulletinmodal','method':'pdf'}");
 			workbtn.setStates(new String[] { "etabli" });
-			//// workbtn.setPattern("btn btn-primary");
-			// meta.getHeader().add(workbtn);
-			//// workbtn = new MetaColumn("button", "work3", "Annuler", false,
-			//// "workflow", null);
-			//// workbtn.setValue("{'model':'kerenpaie','entity':'acompte','method':'annule'}");
-			//// workbtn.setStates(new String[]{"etabli"});
-			//// workbtn.setPattern("btn btn-danger");
-			//meta.getHeader().add(workbtn);
-			//MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
-			//meta.getHeader().add(stautsbar);
+			
 			return meta;
 		} catch (InstantiationException ex) {
 			Logger.getLogger(EdtMasseSalModalRSImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,298 +112,57 @@ public class EdtMasseSalModalRSImpl
 	        return ReportHelperTrt.getReportParameters();
 	    }
 
-
 	@Override
-	public Response buildPdfReport(EdtBulletinModal entity , @Context HttpHeaders headers) {
+	public Response buildPdfReport(EdtMasseSalModal entity, HttpHeaders headers) {
 		try {
-			System.out.println("EdtBulletinModalRSImpl.buildPdfReport() je suis ici ");
-			RestrictionsContainer container = RestrictionsContainer.newInstance();
-			String URL = "";
-			Map parameters = null ;
-			if(entity.getPeriode().getTypesequence().equals("6")){
-				
-				container.addEq("typesequence", "0");	
-				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-				entity.getExamen().add(exam);
-				container = RestrictionsContainer.newInstance();
-				container.addEq("typesequence", "1");	
-				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-				entity.getExamen().add(exam1);
-				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-				parameters =this.getReportParameters() ;
-				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°1");
-				parameters.put(ReportsParameter.TRIMESTRE,"1");
-//				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else if(entity.getPeriode().getTypesequence().equals("7")){
-//				container.addEq("typesequence", "2");	
-//				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam);
-//				container = RestrictionsContainer.newInstance();
-//				container.addEq("typesequence", "3");	
-//				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam1);
-//				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-//				parameters =this.getReportParameters() ;
-//				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°2");
-//				parameters.put(ReportsParameter.TRIMESTRE,"2");
-				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else if(entity.getPeriode().getTypesequence().equals("8")){
-//				container.addEq("typesequence", "4");	
-//				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam);
-//				container = RestrictionsContainer.newInstance();
-//				container.addEq("typesequence", "5");	
-//				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam1);
-//				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-//				parameters =this.getReportParameters() ;
-//				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°3");
-//				parameters.put(ReportsParameter.TRIMESTRE,"3");
-				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else{
-				System.out.println("EdtBulletinModalRSImpl.buildPdfReport()type de bulletin  "+entity.getPeriode().getTypesequence());
-				container.addEq("typesequence", entity.getPeriode().getTypesequence());	
-				List<Examen> examlist= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0);
-				if(examlist==null){
-					 throw new KerenExecption("Examen inexistant");
-				}
-				if(examlist!=null){
-					entity.getExamen().add(examlist.get(0));
-				}
+
+			List<ViewMasseSalariale> records = new ArrayList<ViewMasseSalariale>();
 			
-				URL = ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
-				parameters =this.getReportParameters() ;
-				System.out.println("EdtBulletinModalRSImpl.buildPdfReport() je suis ici examen trouve etat a imprimé"+URL);
-			}
-      	  List<BulletinHelperGenerate> records =manager.getCriteres(entity);
-      	  System.out.println("EdtBulletinModalRSImpl.buildPdfReport() size records is "+records.size());
-      	 List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();
-            if(records.isEmpty()||records.size()==0){
-            	throw new KerenExecption("Note pas encore saisir pour cette séquence !");
-            }
-          for(BulletinHelperGenerate bull:records){
-        	  if (bull.getEleve().getImage() != null) {
-  				try {
-
-  					bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
-  				} catch (IOException e) {
-  					// TODO Auto-generated catch block
-  					e.printStackTrace();
-  				
-
-  			}
-          }
-  			datas.add(bull);
-          }
-            return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
-      } catch (FileNotFoundException ex) {
-          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-          Response.serverError().build();
-      }catch (JRException ex) {
-          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-      }
-
-      return Response.noContent().build();
-  }
-	
-	
-	@Override
-	public Response buildPdfReportTrim(EdtBulletinModal entity , @Context HttpHeaders headers) {
-		try {
-			System.out.println("EdtBulletinModalRSImpl.buildPdfReport() je suis ici ");
-			RestrictionsContainer container = RestrictionsContainer.newInstance();
-			String URL = "";
-			Map parameters = null ;
-			if(entity.getPeriode().getTypesequence().equals("6")){
-				
-				container.addEq("typesequence", "0");	
-				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-				entity.getExamen().add(exam);
-				container = RestrictionsContainer.newInstance();
-				container.addEq("typesequence", "1");	
-				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-				entity.getExamen().add(exam1);
-				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-				parameters =this.getReportParameters() ;
-				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°1");
-				parameters.put(ReportsParameter.TRIMESTRE,"1");
-//				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else if(entity.getPeriode().getTypesequence().equals("7")){
-//				container.addEq("typesequence", "2");	
-//				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam);
-//				container = RestrictionsContainer.newInstance();
-//				container.addEq("typesequence", "3");	
-//				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam1);
-//				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-//				parameters =this.getReportParameters() ;
-//				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°2");
-//				parameters.put(ReportsParameter.TRIMESTRE,"2");
-				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else if(entity.getPeriode().getTypesequence().equals("8")){
-//				container.addEq("typesequence", "4");	
-//				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam);
-//				container = RestrictionsContainer.newInstance();
-//				container.addEq("typesequence", "5");	
-//				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam1);
-//				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-//				parameters =this.getReportParameters() ;
-//				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°3");
-//				parameters.put(ReportsParameter.TRIMESTRE,"3");
-				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else{
-				System.out.println("EdtBulletinModalRSImpl.buildPdfReport()type de bulletin  "+entity.getPeriode().getTypesequence());
-				container.addEq("typesequence", entity.getPeriode().getTypesequence());	
-				List<Examen> examlist= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0);
-				if(examlist==null){
-					 throw new KerenExecption("Examen inexistant");
-				}
-				if(examlist!=null){
-					entity.getExamen().add(examlist.get(0));
-				}
-			
-				URL = ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
-				parameters =this.getReportParameters() ;
-				System.out.println("EdtBulletinModalRSImpl.buildPdfReport() je suis ici examen trouve etat a imprimé"+URL);
-			}
-      	  List<BulletinHelperGenerate> records =manager.getCriteres(entity);
-      	  System.out.println("EdtBulletinModalRSImpl.buildPdfReport() size records is "+records.size());
-      	 List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();
-            if(records.isEmpty()||records.size()==0){
-            	throw new KerenExecption("Note pas encore saisir pour cette séquence !");
-            }
-          for(BulletinHelperGenerate bull:records){
-        	  if (bull.getEleve().getImage() != null) {
-  				try {
-
-  					bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
-  				} catch (IOException e) {
-  					// TODO Auto-generated catch block
-  					e.printStackTrace();
-  				
-
-  			}
-          }
-  			datas.add(bull);
-          }
-            return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
-      } catch (FileNotFoundException ex) {
-          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-          Response.serverError().build();
-      }catch (JRException ex) {
-          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-      }
-
-      return Response.noContent().build();
-  }
-	
-	
-	@Override
-	public Response buildPdfReportAnn(EdtBulletinModal entity , @Context HttpHeaders headers) {
-		try {
-			System.out.println("EdtBulletinModalRSImpl.buildPdfReport() je suis ici ");
-			RestrictionsContainer container = RestrictionsContainer.newInstance();
-			String URL = "";
-			Map parameters = null ;
-			if(entity.getPeriode().getTypesequence().equals("6")){
-				
-				container.addEq("typesequence", "0");	
-				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-				entity.getExamen().add(exam);
-				container = RestrictionsContainer.newInstance();
-				container.addEq("typesequence", "1");	
-				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-				entity.getExamen().add(exam1);
-				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-				parameters =this.getReportParameters() ;
-				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°1");
-				parameters.put(ReportsParameter.TRIMESTRE,"1");
-//				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else if(entity.getPeriode().getTypesequence().equals("7")){
-//				container.addEq("typesequence", "2");	
-//				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam);
-//				container = RestrictionsContainer.newInstance();
-//				container.addEq("typesequence", "3");	
-//				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam1);
-//				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-//				parameters =this.getReportParameters() ;
-//				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°2");
-//				parameters.put(ReportsParameter.TRIMESTRE,"2");
-				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else if(entity.getPeriode().getTypesequence().equals("8")){
-//				container.addEq("typesequence", "4");	
-//				Examen exam= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam);
-//				container = RestrictionsContainer.newInstance();
-//				container.addEq("typesequence", "5");	
-//				Examen exam1= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0).get(0);
-//				entity.getExamens().add(exam1);
-//				URL = ReportHelper.templateURL+ReportsName.BULLTRIM.getName();
-//				parameters =this.getReportParameters() ;
-//				parameters.put(ReportsParameter.TITRE_BULL,"BULLETIN TRIMESTRIEL N°3");
-//				parameters.put(ReportsParameter.TRIMESTRE,"3");
-				throw new KerenExecption("Edition du Bulletin Trimestriel encours .....!");
-			}else{
-				System.out.println("EdtBulletinModalRSImpl.buildPdfReport()type de bulletin  "+entity.getPeriode().getTypesequence());
-				container.addEq("typesequence", entity.getPeriode().getTypesequence());	
-				List<Examen> examlist= managerExamen.filter(container.getPredicats(), null,new HashSet<String>(), -1, 0);
-				if(examlist==null){
-					 throw new KerenExecption("Examen inexistant");
-				}
-				if(examlist!=null){
-					entity.getExamen().add(examlist.get(0));
-				}
-			
-				URL = ReportHelper.templateURL+ReportsName.BULLSEQUENTIEL.getName();
-				parameters =this.getReportParameters() ;
-				System.out.println("EdtBulletinModalRSImpl.buildPdfReport() je suis ici examen trouve etat a imprimé"+URL);
-			}
-      	  List<BulletinHelperGenerate> records =manager.getCriteres(entity);
-      	  System.out.println("EdtBulletinModalRSImpl.buildPdfReport() size records is "+records.size());
-      	 List<BulletinHelperGenerate> datas = new ArrayList<BulletinHelperGenerate>();
-            if(records.isEmpty()||records.size()==0){
-            	throw new KerenExecption("Note pas encore saisir pour cette séquence !");
-            }
-          for(BulletinHelperGenerate bull:records){
-        	  if (bull.getEleve().getImage() != null) {
-  				try {
-
-  					bull.setPhoto(ReportHelper.getPhotoBytesEleve(bull.getEleve().getImage()));
-  				} catch (IOException e) {
-  					// TODO Auto-generated catch block
-  					e.printStackTrace();
-  				
-
-  			}
-          }
-  			datas.add(bull);
-          }
-            return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, datas);
-      } catch (FileNotFoundException ex) {
-          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-          Response.serverError().build();
-      }catch (JRException ex) {
-          Logger.getLogger(ViewBulletinRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-      }
-
-      return Response.noContent().build();
-  }
-
-	@Override
-	public List<InscriptionChoice> getidclasse(HttpHeaders headers) {
-		Gson gson = new Gson();
-		long id =gson.fromJson(headers.getRequestHeader("id").get(0), Long.class);
-		long iduser = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
-		if(id>0){
-			Classe cls = managerClasse.find("id", id);
-			CacheMemory.insert(iduser, TypeCacheMemory.CLASSE, cls);
+			records = manager.getCriteres(entity);
+			String URL = ReportHelper.templatepaieURL + ReportsName.MASSE_SAL_GLOBAL.getName();
+			Map parameters = this.getReportParameters();
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return new ArrayList<InscriptionChoice>();
+
+		return Response.noContent().build();
 	}
+
+	@Override
+	public Response buildPdfReportbi(EdtMasseSalModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity, headers);
+	}
+
+	@Override
+	public Response buildPdfReportDlt(EdtMasseSalModal entity, HttpHeaders headers) {
+		try {
+
+			List<BulletinPaie> records = new ArrayList<BulletinPaie>();
+			records = managerbull.getCriteres(entity);
+			String URL = ReportHelper.templatepaieURL + ReportsName.MASSE_SAL.getName();
+			Map parameters = this.getReportParameters();
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return Response.noContent().build();
+	}
+
+	@Override
+	public Response buildPdfReportDltbi(EdtMasseSalModal entity, HttpHeaders headers) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReportDlt(entity, headers);
+	}
+
+
 
 }

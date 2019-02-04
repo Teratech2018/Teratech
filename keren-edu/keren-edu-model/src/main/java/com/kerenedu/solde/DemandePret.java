@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
@@ -38,7 +40,7 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name="CATPR_ID")
-	@Predicate(label="Type de prêt",target="many-to-one",type=CategoriePret.class,optional=false,search=true)
+	@Predicate(label="Type de prêt",target="many-to-one",type=CategoriePret.class,optional=false,search=false)
 	private CategoriePret typepret;
 	
 	@ManyToOne
@@ -50,14 +52,20 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dpret ;
 	
-	@Predicate(label="Date début de remboursement",type=Date.class,target="date",search=true, optional=false)
+	@Predicate(label="Date début de remboursement",type=Date.class,target="date",search=false, optional=false)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date drembour;
 	
-	@Predicate(label="Montant sollicité par l'employé",type=Double.class,search=true , optional=false)
+	@Predicate(label="Montant Prèt",type=Double.class,search=true , optional=false)
 	private Double montantsol=0.0;
 	
-	@Predicate(label="Montant proposé par la hiérarchie",type=Double.class,search=true)
+	@Predicate(label="MontantLiquidé",type=Double.class,search=true , optional=true)
+	private Double montantRem=0.0;
+	
+	@Predicate(label="Solde",type=Double.class,search=true , optional=true)
+	private Double solde=0.0;
+	
+	//@Predicate(label="Montant proposé par la hiérarchie",type=Double.class,search=true)
 	private Double montantpro=0.0;
 	
 	@Predicate(label="Durée du remboursement",type=Short.class,search=true)
@@ -76,6 +84,12 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
     
 	@Predicate(label="Status",hide=true ,search=true)
 	private String state="etabli";
+	
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire;
+	
+	@Transient
+	protected String mntLettre ; 
 	/**
 	 * 
 	 */
@@ -146,6 +160,10 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 		this.quotite = pret.quotite;
 		this.commentaire = pret.commentaire;
 		this.state = pret.state;
+		this.anneScolaire=pret.anneScolaire;
+		this.mntLettre=pret.mntLettre;
+		this.solde=pret.solde;
+		this.montantRem=pret.montantRem;
 //		this.remboursements = remboursements;
 	}
 	
@@ -300,6 +318,14 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 		return true;
 	}
 
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
@@ -307,6 +333,36 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	public int compareTo(DemandePret o) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public String getMntLettre() {
+		return mntLettre;
+	}
+
+	public void setMntLettre(String mntLettre) {
+		this.mntLettre = mntLettre;
+	}
+	
+	public Double getMontantRem() {
+		return montantRem;
+	}
+
+	public void setMontantRem(Double montantRem) {
+		this.montantRem = montantRem;
+	}
+
+	public Double getSolde() {
+		return solde;
+	}
+
+	public void setSolde(Double solde) {
+		this.solde = solde;
+	}
+
+	@Override
+	public boolean isDesabledelete() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

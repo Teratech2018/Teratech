@@ -157,7 +157,6 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		if (headers!=null&&headers.getRequestHeader("eleve") != null&& !headers.getRequestHeader("eleve").isEmpty()&&
 				headers.getRequestHeader("eleve").size()>0) {
 			long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
-
 			Inscription inscription = null;
 			inscription = managerIns.find("id", studenid);
 			container.addEq("eleve.id", inscription.getId());
@@ -210,8 +209,6 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		if (headers!=null&&headers.getRequestHeader("eleve") != null&& !headers.getRequestHeader("eleve").isEmpty()&&
 				headers.getRequestHeader("eleve").size()>0) {
 			long studenid = gson.fromJson(headers.getRequestHeader("eleve").get(0), Long.class);
-			
-
 			Inscription inscription = null;
 			inscription = managerIns.find("id", studenid);
 			container.addEq("eleve.id", inscription.getId());
@@ -335,8 +332,10 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			if (entity.getState().equalsIgnoreCase("annulé")) {
 				throw new KerenExecption("Modification impossible, car l'element a deja ete annulé");
 			}
+			//Inscription i = entity.getEleve();
 			entity = manager.annuler(entity);
-
+			
+		
 			return entity;
 		} catch (KerenEduManagerException ex) {
 			throw new KerenExecption(ex.getMessage());
@@ -359,7 +358,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			 container = RestrictionsContainer.newInstance();
 			 container.addEq("compte.id",id);
 			 UtilisateurConnect user = managerUserc.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1).get(0);		
-			System.out.println("PaiementRSImpl.facture() user found is ====" + user.getNom());
+		//	System.out.println("PaiementRSImpl.facture() user found is ====" + user.getNom());
 			entity.setUsername(user.getNom());
 			return this.buildPdfReport(entity);
 		} catch (KerenEduManagerException ex) {
@@ -447,6 +446,22 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		}
 
 		return ficheeleve;
+	}
+
+	@Override
+	public Paiement save(HttpHeaders headers, Paiement entity) {
+		System.out.println("PaiementRSImpl.save() je suis ici ");
+		Gson gson = new Gson();
+		Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		 container = RestrictionsContainer.newInstance();
+		 container.addEq("compte.id",userid);
+		 UtilisateurConnect user = managerUserc.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1).get(0);
+
+		 if(entity.getDatePaiement().before(new Date())&&user.getAntidate()!=null&&user.getAntidate()==false){
+			 throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Date error   !!!!"); 
+		 }
+		return super.save(headers, entity);
 	}
 
 	@Override

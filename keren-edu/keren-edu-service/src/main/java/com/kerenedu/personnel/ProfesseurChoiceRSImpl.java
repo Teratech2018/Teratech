@@ -75,7 +75,7 @@ public class ProfesseurChoiceRSImpl
     @Override
 	public List<ProfesseurChoice> filter(HttpHeaders arg0, int arg1, int arg2) {
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
-		 container.addNotNull("profil", null);
+		// container.addNotNull("profil", null);
          container.addNotNull("categorie", null);
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
 	}

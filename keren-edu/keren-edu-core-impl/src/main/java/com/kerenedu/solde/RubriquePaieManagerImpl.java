@@ -52,7 +52,12 @@ public class RubriquePaieManagerImpl
 
    	@Override
 	public void processBeforeSave(RubriquePaie entity) {
-	
+   		if(entity.getBrutsal()==null){
+   			entity.setBrutsal(false);
+   		}
+   		if(entity.getCotisablesal()==null){
+   			entity.setCotisablesal(false);
+   		}
 		super.processBeforeSave(entity);
 	}
 

@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
@@ -38,5 +39,10 @@ public interface AcompteRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("annule")
     public Acompte annule(@Context HttpHeaders headers,Acompte entity);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Path("pdf")
+	public Response buildPdfReport(Acompte entity);
 
 }

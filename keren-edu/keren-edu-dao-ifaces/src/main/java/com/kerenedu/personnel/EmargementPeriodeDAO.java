@@ -18,5 +18,7 @@ public interface EmargementPeriodeDAO
      * 
      */
     public final static String SERVICE_NAME = "EmargementPeriodeDAO";
+    
+    public long deleteemarge(EmargementPeriode fp) ;
 
 }

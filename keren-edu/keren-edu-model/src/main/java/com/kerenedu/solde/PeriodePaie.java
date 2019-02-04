@@ -4,16 +4,19 @@
 package com.kerenedu.solde;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.core.base.BaseElement;
+import com.core.base.State;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Etablissement;
 import com.megatim.common.annotations.Predicate;
@@ -205,8 +208,38 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return ddebut +"-"+dfin;
+		return formatdate(ddebut) +"/"+formatdate(dfin);
+	}
+	
+	private String formatdate(Date date){
+		SimpleDateFormat   sdf = new SimpleDateFormat("d-MMMM-YYYY");
+		String newdate=sdf.format(date);
+	//	System.out.println("PeriodePaie.formatdate() new date "+newdate);
+		return newdate;
+		
 	}
 
+	@Override
+	public List<State> getStates() {
+		// TODO Auto-generated method stub
+		List<State> states = new ArrayList<State>();
+		State state = new State("etabli", "etablie");
+		states.add(state);
+		state = new State("ouvert", "Ouverte");
+		states.add(state);
+		state = new State("ferme", "Fermée");
+		states.add(state);
+	
+		return states;
+	}
+
+	@Override
+	public String toString() {
+		return "PeriodePaie [code=" + code + ", exercice=" + exercice + ", ddebut=" + ddebut + ", dfin=" + dfin
+				+ ", societe=" + societe + ", actif=" + actif + ", state=" + state + "]";
+	}
+
+	
+	
 
 }

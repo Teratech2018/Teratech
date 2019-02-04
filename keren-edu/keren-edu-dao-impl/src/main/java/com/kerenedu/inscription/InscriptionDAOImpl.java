@@ -86,6 +86,20 @@ public class InscriptionDAOImpl
 		return value;
 	}
 
+	@Override
+	public long updateforce(String value) {
+		 long va = 0  ;
+		  try{
+			
+				 String query ="update e_inscription set ownermodule ='"+value+"' ";
+				  va = em.createNativeQuery(query).executeUpdate();
+	
+	        }catch(Exception ex){
+
+	        }
+		return va;
+	}
+
 
 
 

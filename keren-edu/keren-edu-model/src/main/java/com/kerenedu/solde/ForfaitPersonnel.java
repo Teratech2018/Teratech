@@ -2,6 +2,7 @@ package com.kerenedu.solde;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,6 +12,7 @@ import com.core.base.BaseElement;
 import com.core.referentiels.Societe;
 import com.kerenedu.configuration.Cycle;
 import com.kerenedu.personnel.Professeur;
+import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
 @Entity
@@ -21,6 +23,17 @@ public class ForfaitPersonnel extends BaseElement implements Serializable, Compa
 	 * 
 	 */
 	private static final long serialVersionUID = -2290955710589999766L;
+	
+	@Column(name = "MAT", unique = true)
+	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 1,editable=false)
+	@Observer(observable = "personnel", source = "field:matricule")
+	protected String matricule;
+
+
+	@Column(name = "NOM", unique = true)
+	@Predicate(label = "NOM", optional = false, updatable = true, search = true, sequence = 2, hide=true)
+	@Observer(observable = "personnel", source = "field:nom")
+	protected String nom;
 	
 	@ManyToOne
 	@JoinColumn(name="PERS_ID")
@@ -80,15 +93,26 @@ public class ForfaitPersonnel extends BaseElement implements Serializable, Compa
 
 	public ForfaitPersonnel(ForfaitPersonnel forfait) {
 		super(forfait.id, forfait.designation, forfait.moduleName,forfait.compareid);
-		this.personnel = new Professeur(forfait.personnel) ;
+		if(forfait.personnel!=null){
+			this.nom=forfait.getPersonnel().getNom();
+			this.matricule=forfait.getPersonnel().getMatricule();
+			this.personnel = new Professeur(forfait.personnel) ;
+		}
+		
 //		this.societe = forfait.societe;
 		this.valeur = forfait.valeur;
 		this.mesure = forfait.mesure;
+		this.nom=forfait.nom;
+		this.matricule=forfait.matricule;
 	}
 	
 	public ForfaitPersonnel(Professeur forfait) {
 		this.id=-forfait.getId();
-		this.personnel = new Professeur(forfait) ;
+		if(forfait!=null){
+			this.nom=forfait.getNom();
+			this.matricule=forfait.getMatricule();
+			this.personnel = new Professeur(forfait) ;
+		}
 		this.valeur = new Double(0);
 		this.mesure = "0";
 	}
@@ -143,7 +167,23 @@ public class ForfaitPersonnel extends BaseElement implements Serializable, Compa
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return personnel.getDesignation();
+		return nom;
+	}
+
+	public String getMatricule() {
+		return matricule;
+	}
+
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
 	/* (non-Javadoc)
