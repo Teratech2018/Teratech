@@ -71,7 +71,7 @@ public class BaseElement implements Serializable{
     protected boolean activatefollower = false ;
     
     protected String searchkeys ;
-	 protected boolean  desabledatablock = false
+	 protected boolean  desabledatablock = false;
     
     /**
      * String that contain the state

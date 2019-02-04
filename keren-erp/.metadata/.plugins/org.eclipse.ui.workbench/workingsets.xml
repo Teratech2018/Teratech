@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1547729866859_0" label="keren-erp" name="keren-erp">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/keren" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/dao-components" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/core-components" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/manager-ifaces" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/core-tools" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/service-components" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/service-impl" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/manager-components" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/dao-impl" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/core-model" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/dao-ifaces" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/service-ifaces" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/manager-impl" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1548768001668_1" label="Window Working Set" name="Aggregate for window 1548768001668"/>
+</workingSetManager>

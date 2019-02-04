@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Devise extends BaseElement implements Serializable,Comparable<Devise>{
 
-    @Predicate(label = "Devise" ,optional = false,unique = true,search = true)
+    @Predicate(label = "devise.code" ,optional = false,unique = true,search = true)
      private String code ;
      
-    @Predicate(label = "Taux actuel" ,optional = false,unique = true,type = Double.class,search = true)
+    @Predicate(label = "devise.taux" ,optional = false,unique = true,type = Double.class,search = true)
      private Double taux ;
 
     /**

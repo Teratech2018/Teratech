@@ -11,7 +11,7 @@
        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <serveur.jboss.repertoire.deploiement.war>D:\DEV_TOOLS\serveur\education\jboss\standalone\deployments\kerenerp.war</serveur.jboss.repertoire.deploiement.war>
-        <repertoire.target.generation.war>D:\WORKSPACE\KEREN\RH-PAIE\src\kerenerpeducation\kerenerp\keren-erp\keren\target\kerenerp.war</repertoire.target.generation.war>
+        <repertoire.target.generation.war>D:\WORKSPACE\education\SOURCES_CAURIS_ERP_VERSION_ECOLE\SOURCES_CAURIS_ERP_VERSION_ECOLE\keren-erp\keren.\target\kerenerp.war</repertoire.target.generation.war>
     </properties>
     <name>Keren-ERP</name>
     <url>http://maven.apache.org</url>

@@ -28,17 +28,17 @@ import javax.persistence.Table;
 @Table(name = "T_GROUPE")
 public class Groupe extends BaseElement implements Serializable,Comparable<Groupe>{
 
-    @Predicate(label = "NOM DU GROUPE" ,optional = false,unique = true,updatable = false,search = true)
+    @Predicate(label = "nom.groupe" ,optional = false,unique = true,updatable = false,search = true)
     private String code ;
     
     @ManyToOne
     @JoinColumn(name = "M_ID")
-    @Predicate(label = "MODULE CONCERNE",target = "many-to-one",optional = false,updatable = false,type = MenuModule.class,search = true,observable = true)
+    @Predicate(label = "groupe.module.concerne",target = "many-to-one",optional = false,updatable = false,type = MenuModule.class,search = true,observable = true)
     private MenuModule module ;
     
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID")
-    @Predicate(label = "HABILITATIONS",group = true,groupName = "group_1",groupLabel = "HABILITATIONS",updatable = false,target = "one-to-many",type = GroupeDetail.class,edittable = true)
+    @Predicate(label = "groupe.habilitations",group = true,groupName = "group_1",groupLabel = "groupe.habilitations",updatable = false,target = "one-to-many",type = GroupeDetail.class,edittable = true)
     @Observer(observable = "module",source = "method:detail",parameters = "code,module")
     private List<GroupeDetail> droits = new ArrayList<GroupeDetail>();
 
