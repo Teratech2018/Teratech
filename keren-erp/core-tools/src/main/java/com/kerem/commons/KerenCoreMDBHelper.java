@@ -89,6 +89,32 @@ public class KerenCoreMDBHelper {
     
     /**
      * 
+     * @param service
+     * @throws JMSException
+     * @throws NamingException 
+     */
+    public static void serviceMessageProducer(ServicesHelper.ServiceRegistry service) throws JMSException, NamingException{
+        InitialContext initialContext = new InitialContext();
+        ConnectionFactory connectionFactory = (ConnectionFactory) initialContext.lookup("java:/ConnectionFactory");
+        Destination destination = (Destination) initialContext.lookup("java:/kerencore/coremdb");
+         TopicConnection connection =null;
+        TopicSession session = null;
+        MessageProducer producer = null;
+        try{ 
+          connection = (TopicConnection) connectionFactory.createConnection();
+          session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+          producer = session.createProducer(destination);
+          ObjectMessage message = session.createObjectMessage(service);
+          producer.send(message);         
+        }finally{
+           if(producer!=null){producer.close();}
+           if(session!=null){session.close();}
+           if(connection!=null){connection.close();}
+        }
+    }
+    
+    /**
+     * 
      * @param follower
      * @param connectionFactory
      * @param destination 

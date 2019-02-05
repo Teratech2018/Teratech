@@ -677,6 +677,23 @@ public class FileHelper {
         Search record = (Search) unmarshaller.unmarshal(reader);
         return record;
     }
+    
+    /**
+     * 
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public static Properties getConfiguration() throws FileNotFoundException, IOException{
+            InputStream input = null;
+            String confg_file = FileHelper.getConfigDirectory()+File.separator+"config.properties";
+            //Load file properties
+            Properties config = new Properties();
+            input = new FileInputStream(confg_file);
+            //load a properties file
+            config.load(input);
+            return config;
+    }
   
     /**
      * Treatment of ng-template directive

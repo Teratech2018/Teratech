@@ -260,16 +260,16 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
         return "kerencore"; //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<State> getStates() {
-        //To change body of generated methods, choose Tools | Templates.
-        List<State> etats = new ArrayList<State>();
-        State etat = new State("etabli", "Non Confirmé");
-        etats.add(etat);
-        etat = new State("confirme", "Confirmé");
-        etats.add(etat);
-        return etats; 
-    }
+//    @Override
+//    public List<State> getStates() {
+//        //To change body of generated methods, choose Tools | Templates.
+//        List<State> etats = new ArrayList<State>();
+//        State etat = new State("etabli", "Non Confirmé");
+//        etats.add(etat);
+//        etat = new State("confirme", "Confirmé");
+//        etats.add(etat);
+//        return etats; 
+//    }
 
     
     

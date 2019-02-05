@@ -2,7 +2,7 @@ body{
     margin-top:50px;
     font-family: "Roboto";
     font-size: 1.48333333rem;
-    font-weight: 400;
+    font-weight: 800;
     line-height: 1.5;
     color: #666666;
     text-align: left;
@@ -255,7 +255,7 @@ input.trt-input{
 .primary-btn{}
 .trt-linkfile-container{display:inline-table;}
 .trt-linkfile{display:inherit;}
-
+.trt-datawidget-container{width: 100%;height: 95%;overflow-y: auto;}
 @font-face{
 	font-family : 'Roboto';
 	src : url('fonts/RobotoLight.ttf');

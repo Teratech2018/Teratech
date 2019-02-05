@@ -76,6 +76,7 @@ public class CommonTools {
         action.setIcon(item.getGyphycon());
         action.setViewMode(item.getViewType());
         action.setMethod(item.getMethodRef());
+        action.setValue(item.getValue());
         List<ActionItem> actions = new ArrayList<ActionItem>();      
         //Creation des actions
         if(item.getAction()!=null){

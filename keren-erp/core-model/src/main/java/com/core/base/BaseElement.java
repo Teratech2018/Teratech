@@ -71,7 +71,6 @@ public class BaseElement implements Serializable{
     protected boolean activatefollower = false ;
     
     protected String searchkeys ;
-	 protected boolean  desabledatablock = false
     
     /**
      * String that contain the state
@@ -83,8 +82,6 @@ public class BaseElement implements Serializable{
      
 
     public BaseElement() {
-		 this.desabledatablock=false;
-    	  this.ownermodule="";
     }
 
    /**
@@ -99,8 +96,6 @@ public class BaseElement implements Serializable{
         this.designation = designation;
         this.moduleName = moduleName;
         this.compareid = comparedid ;
-		  this.desabledatablock=false;
-        this.ownermodule="";
     }
 
     public long getCompareid() {
@@ -250,16 +245,6 @@ public class BaseElement implements Serializable{
     public void setOwnerentity(String ownerentity) {
         this.ownerentity = ownerentity;
     }
-	
-	 public boolean isDesabledatablock() {
-		return desabledatablock;
-	}
-
-	public void setDesabledatablock(boolean desabledatablock) {
-		this.desabledatablock = desabledatablock;
-	}
-
-
     
     
    

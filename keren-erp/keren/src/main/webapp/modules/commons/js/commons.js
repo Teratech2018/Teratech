@@ -333,6 +333,7 @@ angular.module('keren.core.commons')
                  * @returns {Boolean}
                  */
                 iseditable : function(scope , model,field){
+//                    console.log("commons.iseditable : function(scope , model,field) ===== model : "+model+"  ==== field : "+angular.toJson(field));
                     var parts = model.split('.');
                     var metaData = scope.getCurrentMetaData(model);                   
                     if(parts[0]=='currentObject'){
@@ -348,6 +349,16 @@ angular.module('keren.core.commons')
                             return false;
                         }//end if(scope.innerWindowType=="new" && metaData.desablecreate){
                     }
+                    return true;
+                },
+                enableSelect : function(scope ,field){
+                    if(scope.windowType=="view"){
+                        return false ;
+                    }else if(field.updatable==false&& scope.windowType=="update"){
+                        return false;
+                    }else if(field.editable==false&& scope.windowType=="new"){
+                        return false;
+                    }//end if(scope.windowType=="view")
                     return true;
                 },
                 /***
@@ -1382,9 +1393,9 @@ angular.module('keren.core.commons')
                         content.setAttribute('style','height:300px;overflow:auto;');
                         //console.log(angular.toJson(error.data));
                         if(error.data){
-                            content.innerHTML = error.data;
+                            content.innerHTML = angular.toJson(error.data);
                         }else{
-                            content.innerHTML = error;
+                            content.innerHTML = angular.toJson(error);
                         }
                         viewElem.appendChild(content);
                         //Construction du footer
@@ -2161,13 +2172,8 @@ angular.module('keren.core.commons')
                         aElem.appendChild(document.createTextNode('{{deletebtnlabel | translate}}')) ;
                         liElem.appendChild(aElem);
                     }//end if(scope.currentModule.name=="application"){     
-            },
-               /**
-             * 
-             * @param {type} data:dash bord datat
-             * @returns {undefined}
-             */
-        kabanBuilder:function(scope){
+            },        
+            kabanBuilder:function(scope){
                     var divElem = document.createElement('div');
                     divElem.setAttribute("class","panel kanban-col");
                     divElem.setAttribute("style","margin-bottom:7px;padding-left: 0px;margin-right: 10px;width: 24%;");
@@ -2208,18 +2214,215 @@ angular.module('keren.core.commons')
             },
             /**
              * 
-             * @returns {unresolved}
+             * @param {type} scope
+             * @param {type} meta
+             * @returns {undefined}
              */
-            kabanContainerBuilder:function(scope){
-                var divElem = document.createElement("div");
-                divElem.setAttribute("id","datawidget");
-                divElem.setAttribute("style","padding-left:  10px;margin:10px;");
-                divElem.setAttribute("ng-repeat","item in datas");
-                divElem.appendChild(this.kabanBuilder(scope));  
-                return divElem;
+            dispatchDatas:function(scope){
+                var meta = scope.metaData;
+                var blocks=new Object();                
+                for(var i=0;i<meta.states.length;i++){
+                    blocks[meta.states[i].code] = new Array();
+                }//end for(var i=0;i<meta.states.length;i++){
+//                console.log("commons.dispatchDatas:function(scope) =============== "+angular.toJson(blocks));
+                //Aiguillage des données
+                for(var i=0 ; i<scope.datas.length;i++){
+                    var data = scope.datas[i];
+//                    console.log("commons.dispatchDatas:function(scope) =============== "+angular.toJson(blocks)+" ====== state : "+data.state);
+                   if(blocks[data.state]){
+                       blocks[data.state].push(data);
+                   }//end if(blocks[data.state]){
+                }//end for(var i=0 ; i<scope.datas.length;i++){
+                scope.dataCache["blocks"] = blocks;
             }
             ,
-            /**
+            urlRootBuilder : function(model,entity){
+                var url = $location.protocol()+"://"+$location.host()+":"+$location.port()+"/"+model+"/"+entity;
+                return url;
+            }
+            ,
+           /**
+            * 
+            * @param {type} scope
+            * @param {type} metaData
+            * @returns {unresolved}
+            */
+            kabanContainerBuilder:function(scope,metaData){
+                if(metaData.states.length<=0){
+                        var worflowcontent = document.createElement("div");
+//                        worflowcontent.setAttribute("id","datawidget");
+                        worflowcontent.setAttribute("class","workflow-content");
+                        var worklowitemcontent = document.createElement("div");
+                        worflowcontent.appendChild(worklowitemcontent);
+                        worklowitemcontent.setAttribute("class","workflow-item-content");
+                        worklowitemcontent.setAttribute("style","width:100%;display: block;");
+                        var itemcontent = document.createElement("div");
+                        itemcontent.setAttribute("class","item-content");
+                        worklowitemcontent.appendChild(itemcontent);
+                        var kabanitemcontent = document.createElement("div");
+                        itemcontent.appendChild(kabanitemcontent);
+                        kabanitemcontent.setAttribute("class","kaban-item-content-2");
+                        kabanitemcontent.setAttribute("ng-repeat","item in datas");
+                        kabanitemcontent.setAttribute("id","kaban_{{item.id}}");
+                        var kabanitemcontentpart1 = document.createElement("span");
+                        kabanitemcontent.appendChild(kabanitemcontentpart1);
+                        kabanitemcontentpart1.setAttribute("class","kaban-item-content-part-1 background-color-11");
+                        var kabanitemcontentpart2 = document.createElement("span");
+                        kabanitemcontent.appendChild(kabanitemcontentpart2);  
+//                        var kabanitemtitre = document.createElement("div");
+//                        kabanitemtitre.setAttribute("class","kaban-item-titre");
+//                        kabanitemcontentpart2.appendChild(kabanitemtitre);
+//                        var kabanitemtitre1 = document.createElement("span");
+//                        kabanitemtitre.appendChild(kabanitemtitre1);
+//                        kabanitemtitre1.setAttribute("class","kaban-item-titre-1");
+//                        kabanitemtitre1.appendChild(document.createTextNode("  "));
+//                        var kabanitemtitre2 = document.createElement("span");
+//                        kabanitemtitre.appendChild(kabanitemtitre2);
+//                        kabanitemtitre2.setAttribute("class","kaban-item-titre-2");
+//                        i = document.createElement("i");
+//                        kabanitemtitre2.appendChild(i);
+//                        i.setAttribute("class","fa fa-ellipsis-v");
+                        var bodycontainer = document.createElement("div");
+                        bodycontainer.setAttribute("ng-click","viewAction(item)");
+                        kabanitemcontentpart2.appendChild(bodycontainer);
+                        kabanitemcontentpart2.setAttribute("class","kaban-item-content-part-2");
+                        bodycontainer.innerHTML = scope.currentAction.kaban.script;  
+                        var kabanitemimage = document.createElement("div");
+                        kabanitemcontentpart2.appendChild(kabanitemimage);
+                        kabanitemimage.setAttribute("class","kaban-item-image");
+                        i = document.createElement("i");
+                        kabanitemimage.appendChild(i);
+                        i.setAttribute("ng-show","currentModule.name==='application' && item.active==true");
+                        i.setAttribute("class","fa fa-check-circle");
+                        i.setAttribute("style","color: #00A09D;font-size: 17px;");
+                        i.setAttribute("ng-click","installAction(item)");
+                        i = document.createElement("i");
+                        kabanitemimage.appendChild(i);
+                        i.setAttribute("ng-show","currentModule.name==='application' && item.active==false");
+                        i.setAttribute("class","fa fa-circle-thin");
+                        i.setAttribute("style","font-size: 17px;");
+                        i.setAttribute("ng-click","installAction(item)");
+                        i = document.createElement("i");
+                        kabanitemimage.appendChild(i);
+                        i.setAttribute("ng-hide","currentModule.name==='application'||!canUpdate(item)");
+                        i.setAttribute("class","fa fa-edit");
+                        i.setAttribute("ng-click","updateAction(item)");
+                        i = document.createElement("i");
+                        kabanitemimage.appendChild(i);
+                        i.setAttribute("class","fa fa-trash");
+                        i.setAttribute("ng-hide","currentModule.name==='application'||!canDelete(item)");
+                        i.setAttribute("ng-click","deleteAction(item)");
+                        return worflowcontent;
+//                    var divElem = document.createElement("div");
+//                    divElem.setAttribute("id","datawidget");
+//                    divElem.setAttribute("style","padding-left:  10px;margin:10px;");
+//                    divElem.setAttribute("ng-repeat","item in datas");
+//                    divElem.appendChild(this.kabanBuilder(scope,metaData));  
+//                    return divElem;
+               }else{
+                   this.dispatchDatas(scope);
+                   var heigth = 275*scope.metaData.states.length;
+                  var worflowcontent = document.createElement("div");
+//                  worflowcontent.setAttribute("id","datawidget");
+                  worflowcontent.setAttribute("class","workflow-content");
+                  worflowcontent.setAttribute("style","width:"+heigth+"px;");
+                  var worklowitemcontent = document.createElement("span");
+                  worklowitemcontent.setAttribute("class","workflow-item-content");
+                  worklowitemcontent.setAttribute("ng-repeat","state in metaData.states");  
+                  worflowcontent.appendChild(worklowitemcontent);
+                  var itemtitre = document.createElement("div");
+                  worklowitemcontent.appendChild(itemtitre);
+                  itemtitre.setAttribute("class","item-titre");
+                  var titre = document.createElement("span");
+                  itemtitre.appendChild(titre);
+                  titre.setAttribute("class","titre");
+                  titre.appendChild(document.createTextNode("{{state.intitule | translate}}"));
+                 worklowitemcontent.appendChild(itemtitre);
+                 var titreoptions = document.createElement("span");
+                 itemtitre.appendChild(titreoptions);
+                 titreoptions.setAttribute("class","titre-options");
+                 var titreoption1 = document.createElement("span");
+                 titreoptions.appendChild(titreoption1);
+                 titreoption1.setAttribute("class","workflow-hover titre-option");
+                 var i = document.createElement("i");
+                 titreoption1.appendChild(i);
+                 i.setAttribute("class","fa fa-cog");
+                 //option 2
+                 titreoption1 = document.createElement("span");
+                 titreoptions.appendChild(titreoption1);
+                 titreoption1.setAttribute("class","workflow-hover titre-option");
+                 var i = document.createElement("i");
+                 titreoption1.appendChild(i);
+                 i.setAttribute("class","fa fa-plus");
+                 //Option items
+                 var itemoptions = document.createElement("div");
+                 itemoptions.setAttribute("class","item-options");
+                 worklowitemcontent.appendChild(itemoptions);
+                 var optionsbarre = document.createElement("span");
+                 itemoptions.appendChild(optionsbarre);
+                 optionsbarre.setAttribute("class","options-barre");
+                 var optionbarreinput = document.createElement("div");
+                 optionsbarre.appendChild(optionbarreinput);
+                 optionbarreinput.setAttribute("class","options-barre-input");
+                 optionbarreinput.setAttribute("style","background-color:{{state.couleur}}");
+                 var optionsnumber = document.createElement("span");
+                 itemoptions.appendChild(optionsnumber);
+                 optionsnumber.setAttribute("class","options-number");
+                 optionsnumber.appendChild(document.createTextNode("0"));
+                 //Creation des zones
+                 var itemcontent = document.createElement("div");
+                 itemcontent.setAttribute("id","{{state.code}}");
+                 itemcontent.setAttribute("class","item-content");
+                 itemcontent.setAttribute("ondrop","drop(event)");
+                 itemcontent.setAttribute("ondragover","allowDrop(event)");
+                 worklowitemcontent.appendChild(itemcontent);
+                 var kabanitemcontent = document.createElement("div");
+                 itemcontent.appendChild(kabanitemcontent);
+                 kabanitemcontent.setAttribute("class","kaban-item-content");
+                 kabanitemcontent.setAttribute("ng-repeat","item in dataCache.blocks[state.code]");
+                 kabanitemcontent.setAttribute("id","draggable{{item.id}}");
+                 kabanitemcontent.setAttribute("draggable","true");
+                 kabanitemcontent.setAttribute("ondragstart","drag(event)");
+                 var kabanitemcontentpart1 = document.createElement("span");
+                 kabanitemcontent.appendChild(kabanitemcontentpart1);
+                 kabanitemcontentpart1.setAttribute("class","kaban-item-content-part-1 background-color-11");
+                 var kabanitemcontentpart2 = document.createElement("span");
+                 kabanitemcontent.appendChild(kabanitemcontentpart2);  
+//                 var kabanitemtitre = document.createElement("div");
+//                 kabanitemtitre.setAttribute("class","kaban-item-titre");
+//                 kabanitemcontentpart2.appendChild(kabanitemtitre);
+//                 var kabanitemtitre1 = document.createElement("span");
+//                 kabanitemtitre.appendChild(kabanitemtitre1);
+//                 kabanitemtitre1.setAttribute("class","kaban-item-titre-1");
+//                 kabanitemtitre1.appendChild(document.createTextNode("  "));
+//                 var kabanitemtitre2 = document.createElement("span");
+//                 kabanitemtitre.appendChild(kabanitemtitre2);
+//                 kabanitemtitre2.setAttribute("class","kaban-item-titre-2");
+//                 i = document.createElement("i");
+//                 kabanitemtitre2.appendChild(i);
+//                 i.setAttribute("class","fa fa-ellipsis-v");
+                 var bodycontainer = document.createElement("div");
+                 kabanitemcontentpart2.appendChild(bodycontainer);
+                 bodycontainer.setAttribute("ng-dblclick","viewAction(item)");
+                 bodycontainer.setAttribute("ng-mouseenter","selectedItem(item)");
+                 kabanitemcontentpart2.setAttribute("class","kaban-item-content-part-2");
+                 bodycontainer.innerHTML = scope.currentAction.kaban.script;  
+                 var kabanitemimage = document.createElement("div");
+                 kabanitemcontentpart2.appendChild(kabanitemimage);
+                 kabanitemimage.setAttribute("class","kaban-item-image");
+                 i = document.createElement("i");
+                 kabanitemimage.appendChild(i);
+                 i.setAttribute("class","fa fa-edit");
+                 i.setAttribute("ng-click","updateAction(item)");
+                 i = document.createElement("i");
+                 kabanitemimage.appendChild(i);
+                 i.setAttribute("class","fa fa-trash");
+                 i.setAttribute("ng-click","deleteAction(item)");
+                 return worflowcontent;
+               }//end if(metaData.states.length<=0)
+            }
+            ,
+            /**container.innerHTML = scope.currentAction.kaban.script;    
              * Construction du panel tableau de bord
              * @param {type} data
              * @returns {undefined}
