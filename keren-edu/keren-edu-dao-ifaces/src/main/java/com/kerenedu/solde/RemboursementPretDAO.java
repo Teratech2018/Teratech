@@ -18,5 +18,5 @@ public interface RemboursementPretDAO
      * 
      */
     public final static String SERVICE_NAME = "RemboursementPretDAO";
-
+	public long updateforce(String value);
 }

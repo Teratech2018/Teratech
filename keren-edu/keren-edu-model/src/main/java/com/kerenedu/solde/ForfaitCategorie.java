@@ -151,6 +151,6 @@ public class ForfaitCategorie extends BaseElement implements Serializable, Compa
 	//@Override
 	public int compareTo(ForfaitCategorie arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int)arg0.getId();
 	}
 }

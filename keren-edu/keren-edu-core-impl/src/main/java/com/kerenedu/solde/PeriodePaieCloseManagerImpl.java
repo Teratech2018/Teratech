@@ -17,6 +17,9 @@ public class PeriodePaieCloseManagerImpl
 
     @EJB(name = "PeriodePaieCloseDAO")
     protected PeriodePaieCloseDAOLocal dao;
+    
+    @EJB(name = "PeriodePaieDAO")
+    protected PeriodePaieDAOLocal periodedao;
 
     public PeriodePaieCloseManagerImpl() {
     }
@@ -31,4 +34,5 @@ public class PeriodePaieCloseManagerImpl
         return "id";
     }
 
+    
 }

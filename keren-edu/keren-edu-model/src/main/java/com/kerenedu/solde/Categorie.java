@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -26,17 +27,18 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 
 
 	@Predicate(label="Code catégorie" , type=String.class,optional=false,search=true, sequence=1)
+	@Column(name="code", unique=true)
 	private String code ;
 	
 	@Predicate(label="Type" , type=Short.class,optional=false,search=true,target="combobox",
 			values="CADRE;AGENT DE MAITRISE;EMPLOYE;EMPLOYE DE SERVICE;TEMPORAIRE", sequence=2)
 	private String type = "0" ;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "e_CAT_ECH")
-	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = Echellon.class,search = false)
-//	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\"}]")
-	private List<Echellon> echelons = new ArrayList<Echellon>();
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "e_CAT_ECH")
+////	@Predicate(group = true,groupName = "tab1",groupLabel = "MATIERE",target = "many-to-many-list",type = Echellon.class,search = false)
+////	@Filter(value="[{\"fieldName\":\"filiere\",\"value\":\"object.filiere\",\"searchfield\":\"code\"}]")
+//	private List<Echellon> echelons = new ArrayList<Echellon>();
 	
 	
 //	@ManyToMany
@@ -54,7 +56,7 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 		super();
 		this.code = code;
 		this.type = type;
-		this.echelons = echelons;
+	//	this.echelons = echelons;
 	}
 	
 
@@ -62,7 +64,7 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 		super(entity.id, entity.designation, entity.moduleName,0L);
 		this.code =entity.code;
 		this.type = entity.type;
-		this.echelons = new ArrayList<Echellon>();
+	//	this.echelons = new ArrayList<Echellon>();
 	}
 
 
@@ -126,21 +128,21 @@ public class Categorie extends BaseElement implements Serializable, Comparable<C
 
 
 
-
-
-	public List<Echellon> getEchelons() {
-		return echelons;
-	}
-
-
-
-
-
-
-
-	public void setEchelons(List<Echellon> echelons) {
-		this.echelons = echelons;
-	}
+//
+//
+//	public List<Echellon> getEchelons() {
+//		return echelons;
+//	}
+//
+//
+//
+//
+//
+//
+//
+//	public void setEchelons(List<Echellon> echelons) {
+//		this.echelons = echelons;
+//	}
 
 	@Override
 	public String getEditTitle() {

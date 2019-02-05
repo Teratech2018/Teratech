@@ -92,12 +92,14 @@ public class BulletinRSImpl
 			MetaData meta =  MetaDataUtil.getMetaData(new Bulletin(), new HashMap<String, MetaData>(),new ArrayList<String>());
 			  MetaColumn workbtn = new MetaColumn("button", "work1", "Decision Conseil", false, "object", null);
 	            workbtn.setValue("{'model':'kereneducation','entity':'bulletin','method':'decision','template':{'this':'object'}}");
-	            workbtn.setStates(new String[]{"etabli"});
+	          //  workbtn.setStates(new String[]{"etabli"});
 	            workbtn.setPattern("btn btn-danger");
+	            workbtn.setRoles(new String[]{"Administrateur"});
 	           // meta.getHeader().add(workbtn);
 	            workbtn = new MetaColumn("button", "work2", "Imprimer le Bulletin ", false, "report", null);
 	            workbtn.setValue("{'model':'kereneducation','entity':'bulletin','method':'printbulletin','template':{'this':'object'}}");
 	            workbtn.setStates(new String[]{"etabli"});
+	            workbtn.setRoles(new String[]{"Administrateur"});
 	        //    workbtn.setPattern("btn btn-primary");
 	            meta.getHeader().add(workbtn);
 //	            workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);

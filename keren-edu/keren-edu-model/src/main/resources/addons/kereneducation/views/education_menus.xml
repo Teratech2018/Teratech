@@ -62,7 +62,12 @@
 	<menuitem id="keren_pedagogique_report_04" label="Bulletin Séquentiel" parent_ref="keren_pedagogique_report" entity_ref="EdtBulletinModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_pedagogique_04"/>	
 	<menuitem id="keren_pedagogique_report_041" label="Bulletin Trimestriel" parent_ref="keren_pedagogique_report" entity_ref="EdtBulletinTrimModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_pedagogique_05"/>	
 	<menuitem id="keren_pedagogique_report_042" label="Bulletin Annuel" parent_ref="keren_pedagogique_report" entity_ref="EdtBulletinAnnModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_pedagogique_06"/>	
-	<menuitem id="keren_pedagogique_report_05" label="Statistiques" parent_ref="keren_pedagogique_report" entity_ref="StatistiqueNotes" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true"/>	
+	<menuitem id="keren_pedagogique_report_05" label="Statistiques" parent_ref="keren_pedagogique_report" entity_ref="StatistiqueNotes" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" hide="true"/>	
+	
+	<menu id="keren_pedagogique_bi" label="Statistiques" parent="keren_education" gyphycon="icon icon-cogs"/>
+	<menuitem id="keren_pedagogique_bi_01" label=" Liste des Matieres/classe" parent_ref="keren_pedagogique_bi" entity_ref="ViewMatiereClasseModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_pedagogique_bi_01"/>	
+	<menuitem id="keren_pedagogique_bi_02" label=" Releve de Notes " parent_ref="keren_pedagogique_bi" entity_ref="ViewNoteClasseModal" model_ref="kereneducation" gyphycon="icon icon-calendar" modal="true" report="base_report_pedagogique_bi_02"/>	
+	
 
 	 <reportRecord  id="base_account_report_bull" label="Impression des Bulletins" action_ref="keren_education_report"  extern="true">
 	      <search entity="EdtBulletinModal" module="kereneducation" method="pdf">

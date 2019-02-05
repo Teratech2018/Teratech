@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,6 +19,7 @@ import javax.persistence.TemporalType;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerenedu.configuration.Etablissement;
+import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -35,8 +37,13 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	
 	@ManyToOne
 	@JoinColumn(name="DEPR_ID")
-	@Predicate(label="Prêt",type=DemandePret.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Salarié",type=DemandePret.class,target="many-to-one",optional=false,search=true, updatable=false)
 	private DemandePret demande ;
+	
+	
+	@Column(name="EMPL_ID")
+	//@Predicate(label="Salarié",type=Professeur.class,target="many-to-one",optional=false,updatable=false,search=true)
+	private long emplid ;
 
 	@ManyToOne
 	@JoinColumn(name="CATE_ID")
@@ -45,7 +52,7 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	
 	@ManyToOne
 	@JoinColumn(name="SOC_ID")
-	@Predicate(label="Structure",type=Etablissement.class,target="many-to-one",search=false)
+	//@Predicate(label="Structure",type=Etablissement.class,target="many-to-one",search=false)
 	private Etablissement societe ;
 	
 	@Predicate(label="Date Effet",type=Date.class,target="date",optional=false,search=true)
@@ -64,6 +71,9 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	@ManyToOne
 	@JoinColumn(name="ELVAP_ID")
 	private ElementVariable eltVariable ;
+	
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire;
 	
 	
 	/**
@@ -129,6 +139,8 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 			this.eltVariable = new ElementVariable(pret.eltVariable);
 		}
 		this.state = pret.state;
+		this.anneScolaire=pret.anneScolaire;
+		this.emplid=pret.emplid;
 	}
 	
 	
@@ -205,6 +217,14 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 		this.eltVariable = eltVariable;
 	}
 
+	public long getEmplid() {
+		return emplid;
+	}
+
+	public void setEmplid(long emplid) {
+		this.emplid = emplid;
+	}
+
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -249,6 +269,8 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 		states.add(state);
 		state = new State("confirme", "Validé");
 		states.add(state);
+		state = new State("paye", "Payé");
+		states.add(state);		
 		state = new State("refuse", "Refusé");
 		states.add(state);		
 		return states;
@@ -295,6 +317,14 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 	public int compareTo(RemboursementPret o) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
 	}
 
 }

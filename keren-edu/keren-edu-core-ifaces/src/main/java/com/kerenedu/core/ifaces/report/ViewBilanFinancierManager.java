@@ -6,6 +6,7 @@ import java.util.List;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.model.report.ViewBilanFinancier;
+import com.kerenedu.model.report.ViewBilanFinancierEcoleModal;
 import com.kerenedu.model.report.ViewBilanFinancierModal;
 import com.kerenedu.model.report.ViewBilanServiceModal;
 import com.kerenedu.model.report.ViewCouponsInformation;
@@ -26,6 +27,8 @@ public interface ViewBilanFinancierManager
     public List<ViewBilanFinancier> getCriteres(ViewBilanServiceModal critere);
     
 	public List<Inscription> getEleveElligible(ViewBilanServiceModal critere);
+	
+	public List<ViewBilanFinancier> getCriteres(ViewBilanFinancierEcoleModal critere) ;
 
 
 }

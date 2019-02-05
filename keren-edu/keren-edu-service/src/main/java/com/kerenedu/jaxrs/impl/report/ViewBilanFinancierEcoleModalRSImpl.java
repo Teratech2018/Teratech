@@ -18,8 +18,9 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.FileHelper;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.core.ifaces.report.ViewBilanFinancierEcoleManagerRemote;
+import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerRemote;
 import com.kerenedu.jaxrs.ifaces.report.ViewBilanFinancierEcoleModalRS;
-import com.kerenedu.model.report.ViewBilanFinancierEcole;
+import com.kerenedu.model.report.ViewBilanFinancier;
 import com.kerenedu.model.report.ViewBilanFinancierEcoleModal;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
@@ -47,6 +48,9 @@ public class ViewBilanFinancierEcoleModalRSImpl
      */
     @Manager(application = "kereneducation", name = "ViewBilanFinancierEcoleManagerImpl", interf = ViewBilanFinancierEcoleManagerRemote.class)
     protected ViewBilanFinancierEcoleManagerRemote manager;
+    
+    @Manager(application = "kereneducation", name = "ViewBilanFinancierManagerImpl", interf = ViewBilanFinancierManagerRemote.class)
+    protected ViewBilanFinancierManagerRemote managerbf;
 
     public ViewBilanFinancierEcoleModalRSImpl() {
         super();
@@ -91,8 +95,8 @@ public class ViewBilanFinancierEcoleModalRSImpl
 	public Response buildPdfReport(ViewBilanFinancierEcoleModal entity) {
 		try {
 		
-      	  List<ViewBilanFinancierEcole> records =manager.getCriteres(entity);
-      	  System.out.println("ViewBilanFinancierEcoleModalRSImpl.buildPdfReport() size record is "+records.size());
+      	  List<ViewBilanFinancier> records =managerbf.getCriteres(entity);
+      	  //System.out.println("ViewBilanFinancierEcoleModalRSImpl.buildPdfReport() size record is "+records.size());
             String URL = ReportHelper.templateURL+ReportsName.BILANFINANCIER.getName();
             Map parameters = new HashMap();
             parameters= this.getReportParameters();

@@ -19,7 +19,7 @@ public class ImportHeureProf extends BaseElement implements Serializable, Compar
 	@Predicate(label = "Fichier lié", target = "file", search = true, sequence = 5)
 	private String filename;
 	
-	@Predicate(label = "", type = Long.class, search = true, sequence = 6)
+	//@Predicate(label = "", type = Long.class, search = true, sequence = 6)
 	private String className;
 	
 
@@ -43,11 +43,11 @@ public class ImportHeureProf extends BaseElement implements Serializable, Compar
 	}
 
 	public String getEditTitle() {
-		return "Imorter les notes  ";
+		return "Imorter les Heure Mensuelles  ";
 	}
 
 	public String getListTitle() {
-		return "Importer les notes";
+		return "Imorter les Heure Mensuelles";
 	}
 
 	public String getModuleName() {

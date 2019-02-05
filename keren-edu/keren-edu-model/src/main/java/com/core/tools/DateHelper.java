@@ -529,7 +529,7 @@ public class DateHelper {
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 		d = df.format(d1);
-		System.out.println("DateHelper.DateBeforeParam() new date " + d);
+		//System.out.println("DateHelper.DateBeforeParam() new date " + d);
 		return d;
 	}
 

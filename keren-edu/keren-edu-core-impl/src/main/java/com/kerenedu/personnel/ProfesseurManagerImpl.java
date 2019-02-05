@@ -1,6 +1,8 @@
 
 package com.kerenedu.personnel;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +17,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerem.core.FileHelper;
 import com.kerenedu.allerte.ViewHelperTrtglobal;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
@@ -169,6 +172,44 @@ public class ProfesseurManagerImpl
 		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
 		// set Matricule 
 		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
+		 if(entity.getImage()!=null){
+	    	  // try {
+	    	   String imageName = entity.getImage();
+	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
+	    	   String newName = entity.getMatricule()+".png";
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
+	    	   File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
+	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
+//	           File filerename = new File(newName);
+	        
+	       }
+		super.processAfterSave(entity);
+	}
+  	
+	
+	@Override
+	public void processAfterUpdate(Professeur entity) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+				
+		 if(entity.getImage()!=null){
+	    	  // try {
+	    	   String imageName = entity.getImage();
+	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
+	    	   String newName = entity.getMatricule()+".png";
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
+	    	   File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
+	    	   filedest.renameTo(new File(file.getPath()+File.separator+newName));
+	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
+////	           File filerename = new File(newName);
+//	           try {
+//				FileHelper.copyFile(new File(file.getPath()), new File(filedest.getPath()));
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+	       }
 		super.processAfterSave(entity);
 	}
   	

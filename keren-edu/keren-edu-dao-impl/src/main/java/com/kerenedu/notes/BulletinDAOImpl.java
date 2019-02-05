@@ -33,5 +33,21 @@ public class BulletinDAOImpl
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public long updateforce(String value) {
+		 long va = 0  ;
+		  try{
+			
+				 String query ="update e_bulletin set ownermodule ='"+value+"' ";
+				  va = em.createNativeQuery(query).executeUpdate();
+	
+	        }catch(Exception ex){
+
+	        }
+		return va;
+	}
+
+
 
 }

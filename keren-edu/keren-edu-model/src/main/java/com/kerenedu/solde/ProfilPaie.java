@@ -33,10 +33,10 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 	@Predicate(label="Description",optional=false,search=true, sequence=2)
 	private String label ;
 	
-	@ManyToOne
+/*	@ManyToOne
 	@JoinColumn(name="SOCI_ID")
 	@Predicate(label="Sociète",type=Etablissement.class,target="many-to-one",search=true, sequence=3)
-	private Etablissement societe;
+	private Etablissement societe;*/
 	
 	private Boolean actif = Boolean.FALSE;
 	
@@ -55,7 +55,7 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 		super();
 		this.code = code;
 		this.label = label;
-		this.societe = societe;
+	//	this.societe = societe;
 		this.actif = actif;
 		this.state = state;
 		this.rubriques = rubriques;
@@ -66,10 +66,6 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 		super(entity.id, entity.designation, entity.moduleName,0L);
 		this.code = entity.code;
 		this.label = entity.label;
-		if(entity.societe!=null){
-			this.societe = new Etablissement(entity.societe);
-		}
-		
 		this.actif = entity.actif;
 		this.state = entity.state;
 		this.rubriques = new ArrayList<RubriquePaie>();
@@ -105,15 +101,15 @@ public class ProfilPaie extends BaseElement implements Serializable, Comparable<
 		this.label = label;
 	}
 
-
-	public Etablissement getSociete() {
-		return societe;
-	}
-
-
-	public void setSociete(Etablissement societe) {
-		this.societe = societe;
-	}
+//
+//	public Etablissement getSociete() {
+//		return societe;
+//	}
+//
+//
+//	public void setSociete(Etablissement societe) {
+//		this.societe = societe;
+//	}
 
 
 	public Boolean getActif() {

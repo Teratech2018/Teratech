@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
@@ -36,19 +38,19 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Salarié",type=Professeur.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Salarié",type=Professeur.class,target="many-to-one",optional=false,search=true,updatable=false)
 	private Professeur employe ;
 	
 	@ManyToOne
 	@JoinColumn(name="RUBR_ID")
-	@Predicate(label="Rubrique",type=RubriquePaie.class,target="many-to-one",optional=false,search=true)
+	@Predicate(label="Rubrique",type=RubriquePaie.class,target="many-to-one",search=true,updatable=false, hide=true)
 	private RubriquePaie rubrique;
 	
 	@Predicate(label="Date",type=Date.class,target="date",optional=false,search=true)
 	@Temporal(TemporalType.DATE)
 	private Date effet ;
 	
-	@Predicate(label="Montant",type=Double.class,optional=false,search=true)
+	@Predicate(label="Montant",type=Double.class,optional=false,search=true,updatable=false)
 	private Double montant = 0.0;
 	
 	@Predicate(label=" ",target="textarea",group=true,groupName="grou1",groupLabel="Commentaire")
@@ -59,7 +61,14 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	
 	@ManyToOne
 	@JoinColumn(name="ELVAP_ID")
-	private ElementVariable eltVariable ;
+	private ElementVariableClone eltVariable ;
+	
+	
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire;
+	
+	@Transient
+	private String mntLettre ;
 
 	/**
 	 * 
@@ -108,19 +117,18 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 			this.employe = new Professeur(acompte.employe);
 		}
 		if(acompte.eltVariable!=null){
-			this.eltVariable = new ElementVariable(acompte.eltVariable);
+			this.eltVariable = new ElementVariableClone(acompte.eltVariable);
 		}
 		
 		if(acompte.rubrique!=null){
 			this.rubrique = new RubriquePaie(acompte.rubrique);
 		}
-//		if(acompte.rubrique!=null){
-//			this.rubrique = new Rubrique(acompte.rubrique);
-//		}
 		this.effet = acompte.effet;
 		this.montant = acompte.montant;
 		this.description = acompte.description;
 		this.state = acompte.state;
+		this.mntLettre=acompte.mntLettre;
+		this.anneScolaire=acompte.anneScolaire;
 	}
 	
 	
@@ -159,11 +167,11 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	
 	
 
-	public ElementVariable getEltVariable() {
+	public ElementVariableClone getEltVariable() {
 		return eltVariable;
 	}
 
-	public void setEltVariable(ElementVariable eltVariable) {
+	public void setEltVariable(ElementVariableClone eltVariable) {
 		this.eltVariable = eltVariable;
 	}	
 
@@ -226,24 +234,19 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
 		List<State> states = new ArrayList<State>();
-                if(state==null){
-                    return states;
-                }//end if(state==null){
-                if(state.equalsIgnoreCase("etabli")){
-                    State state = new State("etabli", "Brouillon");
-                    states.add(state);		
-                }else if(state.equalsIgnoreCase("confirme")){
-                    State state = new State("confirme", "Validée");
-                    states.add(state);
-		    state = new State("annule", "Annulée");
-		    states.add(state);
-                }else if(state.equalsIgnoreCase("paye")){
-                    State state = new State("paye", "Payée");
-                    states.add(state);		
-                }else if(state.equalsIgnoreCase("annule")){
-                    State state = new State("annule", "Annulée");
-		    states.add(state);		
-                }//end if(state.equalsIgnoreCase("etabli")){
+		if (state == null) {
+			return states;
+		} // end if(state==null){
+
+		State state = new State("etabli", "Brouillon");
+		states.add(state);
+		state = new State("confirme", "Validée");
+		states.add(state);
+		state = new State("annule", "Annulée");
+		states.add(state);
+		state = new State("paye", "Payée");
+		states.add(state);
+       
 		return states;
 	}
 
@@ -261,10 +264,34 @@ public class Acompte extends BaseElement implements Serializable, Comparable<Aco
 		return true;
 	}
 
+	public String getMntLettre() {
+		return mntLettre;
+	}
+
+	public void setMntLettre(String mntLettre) {
+		this.mntLettre = mntLettre;
+	}
+
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
+	}
+
 	public int compareTo(Acompte o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public boolean isDesabledelete() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	
 
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)

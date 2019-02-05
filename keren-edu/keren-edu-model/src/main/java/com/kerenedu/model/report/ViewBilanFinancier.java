@@ -4,6 +4,7 @@
 package com.kerenedu.model.report;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
@@ -52,6 +54,22 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 	@Column(name = "III_TRAN_ENC")
 	@Predicate(label = "Trois. Tranche Enc.", optional = true, updatable = false, search = true, type = Long.class , colsequence=6)
 	protected Long tranche3Enc;
+	
+	@Column(name = "INSCRIPTION")
+	@Predicate(label = "INSCRIPTION", optional = true, updatable = false, search = true, type = BigDecimal.class , colsequence=2)
+	protected Long zInscription;
+	
+	@Column(name = "I_TRAN")
+	@Predicate(label = "P. Tranche", optional = true, updatable = false, search = true, type = BigDecimal.class)
+	protected Long tranche1;
+	
+	@Column(name = "II_TRAN")
+	@Predicate(label = "Deux. Tranche", optional = true, updatable = false, search = true, type = BigDecimal.class)
+	protected Long tranche2;
+	
+	@Column(name = "III_TRAN")
+	@Predicate(label = "Trois. Tranche", optional = true, updatable = false, search = true, type = BigDecimal.class)
+	protected Long tranche3;
 
 	@Column(name = "REMISE")
 	@Predicate(label = "REMISE", optional = true, updatable = false, search = true, type = Long.class, colsequence=7)
@@ -73,15 +91,32 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 	@Predicate(label = "SOLDE", optional = true, updatable = false, search = true, type = Long.class , colsequence=11)
 	protected Long zSolde;
 	
+	@Transient
+	@Column(name = "TX_RECO")
+	@Predicate(label = "Tx. REC. %", optional = true, updatable = false, search = true, type = BigDecimal.class, colsequence=15)
+	protected Long ztaux;
+	
+	@Transient
 	@ManyToOne
     @JoinColumn(name = "CYCLE_ID")
 	//@Predicate(label="Cycle Scolaire",updatable=true,type=Cycle.class , target="many-to-one",optional=false,sequence=2)
     protected Cycle cycle;
 	
-	@Column(name = "EFF")
-	protected Long effectifs;
+	@Column(name = "EFF_SOL_CYCLE")
+	protected Long effectifssolcycle;
+	
 	@Column(name = "EFF_SOL")
 	protected Long effectifssolvable;
+	
+	@Column(name = "EFF_SOL_SECTION")
+	protected Long effectifssolsection;
+	
+	@Column(name = "EFF_SOL_TOTAL")
+	protected Long effectifssoltotal;
+	
+	@Column(name = "EFF_TOTAL")
+	protected Long efftotal;
+
 	
 	@Column(name = "ANNEE_ID")
 	protected String anneeid;
@@ -108,9 +143,10 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 		this.zTotalR = zTotalR;
 		this.zSolde = zSolde;
 		this.cycle = cycle;
-		this.effectifs = effectifs;
+	//	this.effectifs = effectifs;
 		this.effectifssolvable = effectifssolvable;
 		this.anneeid = anneeid;
+		
 	}
 
 
@@ -121,6 +157,7 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 		}
 		if(ins.classe!=null){
 			this.classe = new Classe(ins.classe);
+			this.cycle = ins.getClasse().getFiliere().getCycle();
 		}
 	
 		this.zInscriptionEnc = ins.zInscriptionEnc;
@@ -132,10 +169,19 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 		this.zTotalA = ins.zTotalA;
 		this.zTotalR = ins.zTotalR;
 		this.zSolde = ins.zSolde;
-		this.cycle = ins.cycle;
-		this.effectifs = ins.effectifs;
+	
+		this.effectifssolcycle = ins.effectifssolcycle;
 		this.effectifssolvable = ins.effectifssolvable;
+		this.effectifssolsection = ins.effectifssolsection;
+		this.effectifssoltotal = ins.effectifssoltotal;
 		this.anneeid = ins.anneeid;
+		this.ztaux=ins.ztaux;
+		this.zInscription = ins.zInscription;
+		this.tranche1 = ins.tranche1;
+		this.tranche2 = ins.tranche2;
+		this.tranche3 = ins.tranche3;
+		this.efftotal = ins.efftotal;
+
 			
 	}
 	
@@ -273,13 +319,13 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 	}
 
 
-	public Long getEffectifs() {
-		return effectifs;
+	public Long getEfftotal() {
+		return efftotal;
 	}
 
 
-	public void setEffectifs(Long effectifs) {
-		this.effectifs = effectifs;
+	public void setEfftotal(Long efftotal) {
+		this.efftotal = efftotal;
 	}
 
 
@@ -293,6 +339,16 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 	}
 
 
+	public Long getEffectifssoltotal() {
+		return effectifssoltotal;
+	}
+
+
+	public void setEffectifssoltotal(Long effectifssoltotal) {
+		this.effectifssoltotal = effectifssoltotal;
+	}
+
+
 	public String getAnneeid() {
 		return anneeid;
 	}
@@ -300,6 +356,84 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 
 	public void setAnneeid(String anneeid) {
 		this.anneeid = anneeid;
+	}
+
+
+	public Long getzInscription() {
+		return zInscription;
+	}
+
+
+	public void setzInscription(Long zInscription) {
+		this.zInscription = zInscription;
+	}
+
+
+	public Long getEffectifssolcycle() {
+		return effectifssolcycle;
+	}
+
+
+	public void setEffectifssolcycle(Long effectifssolcycle) {
+		this.effectifssolcycle = effectifssolcycle;
+	}
+
+
+	public Long getEffectifssolsection() {
+		return effectifssolsection;
+	}
+
+
+	public void setEffectifssolsection(Long effectifssolsection) {
+		this.effectifssolsection = effectifssolsection;
+	}
+
+
+	public Long getTranche1() {
+		return tranche1;
+	}
+
+
+
+
+
+	public void setTranche1(Long tranche1) {
+		this.tranche1 = tranche1;
+	}
+
+
+	public Long getTranche2() {
+		return tranche2;
+	}
+
+
+	public void setTranche2(Long tranche2) {
+		this.tranche2 = tranche2;
+	}
+
+
+	public Long getTranche3() {
+		return tranche3;
+	}
+
+
+	public void setTranche3(Long tranche3) {
+		this.tranche3 = tranche3;
+	}
+
+
+	public Long getZtaux() {
+		if (this.getzTotalA()!=null&&this.getzTotalR()!=null &&this.getzTotalA()!=0&&this.getzTotalR()!=0){
+		ztaux= new Long((this.getzTotalA()/this.getzTotalR())*100);
+		}else{
+			ztaux=(long) 0;
+		}
+		return ztaux;
+	}
+
+
+	public void setZtaux(Long ztaux) {
+		this.ztaux = ztaux;
 	}
 
 
@@ -355,7 +489,9 @@ public class ViewBilanFinancier extends BaseElement implements Serializable, Com
 	public void setRistourne(Long ristourne) {
 		this.ristourne = ristourne;
 	}
-	
+
+
+
 
 
 }

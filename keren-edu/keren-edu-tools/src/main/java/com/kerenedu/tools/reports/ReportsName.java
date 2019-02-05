@@ -33,11 +33,19 @@ public enum ReportsName {
     LISTE_INSCRIT("elistieeleveincrit.jasper"),
     COUPONS_INSOLVABLE("ecouponsinsolvable.jasper"),
     FICHE_NOTE("enotematiere.jasper"),
-    FICHE_NOTE_TD("enotematieretd.jasper"),
+    FICHE_NOTE_TD("relevenoteclasse.jasper"),
+    RELEVE_NOTE_ELEVE("relevenoteeleve.jasper"),
     FICHE_MOYENNE_TD("emoyennetd.jasper"),
     FICHE_MATIERE("ematiereclasse.jasper"),
     BULLETIN("ebulletin.jasper"),
     BULLETIN_PAIE("ebulletinpaie.jasper"),
+    DOC_BANCAIRE("documentbancaire.jasper"),
+    PEICE_CAISSE("piececaisse.jasper"),
+    RETENUE_SAL("retenusalariale.jasper"),
+    MASSE_SAL("massesalarialedtl.jasper"),
+    MASSE_SAL_GLOBAL("massesalariale.jasper"),
+    FICHE_PRET("sfichepret.jasper"),
+    FICHE_ACOMPTE("sficheacompte.jasper"),
     VIREMENT("evirementsalairetd.jasper") ;
 
     /**

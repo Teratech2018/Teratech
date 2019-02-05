@@ -17,12 +17,15 @@ import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.ClasseDAOLocal;
+import com.kerenedu.configuration.Cycle;
+import com.kerenedu.configuration.CycleDAOLocal;
 import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewBilanFinancierDAOLocal;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionDAOLocal;
 import com.kerenedu.model.report.ViewBilanFinancier;
+import com.kerenedu.model.report.ViewBilanFinancierEcoleModal;
 import com.kerenedu.model.report.ViewBilanFinancierModal;
 import com.kerenedu.model.report.ViewBilanServiceModal;
 import com.kerenedu.model.report.ViewCouponsInformation;
@@ -44,6 +47,9 @@ public class ViewBilanFinancierManagerImpl
     
     @EJB(name = "ClasseDAO")
     protected ClasseDAOLocal daoClasse;
+    
+    @EJB(name = "CycleDAO")
+    protected CycleDAOLocal daocycle;
 
 
     public ViewBilanFinancierManagerImpl() {
@@ -99,6 +105,10 @@ public class ViewBilanFinancierManagerImpl
 		}
 
 		}
+		// force update inscription 
+		daoIns.updateforce("m");
+		System.out.println("ViewBilanFinancierManagerImpl.getCriteres() update force ok ======>>");
+		
 		List<ViewBilanFinancier> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		List<ViewBilanFinancier> result = new ArrayList<ViewBilanFinancier>();
 		if (datas != null) {
@@ -108,6 +118,39 @@ public class ViewBilanFinancierManagerImpl
 		} // fin if(datas!=null)
 		return result;
 	}
+	
+	@Override
+	public List<ViewBilanFinancier> getCriteres(ViewBilanFinancierEcoleModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+
+			if (critere.getTypecycle() != null&& !critere.getTypecycle().equals("3")) {
+				Cycle cycle = daocycle.findByProperty("typecycle", critere.getTypecycle()).get(0);
+				if(cycle!=null){
+					container = RestrictionsContainer.newInstance();
+					container.addEq("classe.filiere.cycle.id", cycle.getId());
+				}
+				
+			}else{
+				container = RestrictionsContainer.newInstance();
+			}
+
+		}
+		// force update inscription 
+		daoIns.updateforce("m");
+		System.out.println("ViewBilanFinancierManagerImpl.getCriteres() update force ok ======>>");
+		List<ViewBilanFinancier> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<ViewBilanFinancier> result = new ArrayList<ViewBilanFinancier>();
+		if (datas != null) {
+			for (ViewBilanFinancier aniv : datas) {;
+				result.add(new ViewBilanFinancier(aniv));
+			}
+		} // fin if(datas!=null)
+		return result;
+	}
+	
 
 	@Override
 	public List<ViewBilanFinancier> getCriteres(ViewBilanServiceModal critere) {

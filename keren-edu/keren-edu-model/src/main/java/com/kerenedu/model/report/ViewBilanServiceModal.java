@@ -39,8 +39,8 @@ public class ViewBilanServiceModal extends BaseElement implements Serializable, 
 	@Predicate(label="Type Service",type=Service.class , target="many-to-one",search=true , sequence=1, optional=false)
 	protected Service service ;
 	
-	@Column(name = "STATUT", unique=true)
-	@Predicate(label="Statut",optional=false,updatable=false,search=false, target="combobox", values="Solvables;Non Solvables" , sequence=2, observable=true)
+	@Column(name = "STATUT")
+	@Predicate(label="Statut",optional=false,updatable=false,search=false, target="combobox", values="Solvables;Non Solvables;Tous" , sequence=2, observable=true)
 	protected String statut="0";
 	
 	

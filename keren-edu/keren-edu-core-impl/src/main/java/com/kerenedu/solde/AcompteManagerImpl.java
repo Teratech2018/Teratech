@@ -49,6 +49,9 @@ public class AcompteManagerImpl
 	public Acompte delete(Long id) {
 		// TODO Auto-generated method stub
 		Acompte data = super.delete(id);
+		
+		// supprimer elt varaible
+		variabledao.delete(id);
 		return new Acompte(data);
 	}
 
@@ -115,7 +118,7 @@ public class AcompteManagerImpl
 			}
 		}//end if(element==null)		
 //		element.getAcomptes().add(entity);
-		entity.setEltVariable(element);
+		//entity.setEltVariable(element);
 		entity.setState("paye");
 		entity = dao.update(entity.getId(), entity);		
 		return new Acompte(entity);//entity;
@@ -126,8 +129,38 @@ public class AcompteManagerImpl
 		// TODO Auto-generated method stub
 		entity.setState("annule");
 		dao.update(entity.getId(), entity);
+		variabledao.delete(entity.getId());
 		return new Acompte(entity);
 	}
+
+	@Override
+	public void processAfterSave(Acompte entity) {
+			Acompte acompte = dao.findByPrimaryKey("id", entity.getId()); 
+          RestrictionsContainer container = RestrictionsContainer.newInstance();
+  		container.addEq("elvapid",acompte.getId());
+  		List<ElementVariable> datas = variabledao.filter(container.getPredicats(), null, null, 0, -1);
+  		if(datas!=null){
+  			ElementVariable elt=datas.get(0);
+  			acompte.setEltVariable(new ElementVariableClone(elt));
+  			dao.update(acompte.getId(), acompte);
+  		}
+		super.processAfterSave(entity);
+	}
+
+	@Override
+	public boolean disponible(Acompte entity, PeriodePaie periode) {
+		double montantacompte = dao.getMontantAcompte(entity.getEmploye(), periode);
+		System.out.println("AcompteManagerImpl.disponible() montant acompte is "+montantacompte);
+		boolean result =false ;
+		if((montantacompte==entity.getEmploye().getSalaire())){
+			result = false;
+		}else{
+			result=true;
+		}
+			return result;
+	}
+	
+	
 
 
 }

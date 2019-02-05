@@ -1,6 +1,8 @@
 
 package com.kerenedu.solde;
 
+import java.util.List;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 
 
@@ -18,5 +20,10 @@ public interface ElementVariableDAO
      * 
      */
     public final static String SERVICE_NAME = "ElementVariableDAO";
+    
+	public  List<ElementVariable> getelementVaraiable(long id) ;
+	
+	public  void delete(long id) ;
+
 
 }

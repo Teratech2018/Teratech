@@ -94,7 +94,7 @@ public class ViewBilanFinancierModalRSImpl
 	public Response buildPdfReport(ViewBilanFinancierModal entity) {
 		try {
       	  List<ViewBilanFinancier> records =manager.getCriteres(entity);
-      	  System.out.println("ViewBilanFinancierModalRSImpl.buildPdfReport() size record is "+records.size());
+      	 // System.out.println("ViewBilanFinancierModalRSImpl.buildPdfReport() size record is "+records.size());
             String URL = ReportHelper.templateURL+ReportsName.BILANFINANCIERCLASSE.getName();
             Map parameters = new HashMap();
             parameters= this.getReportParameters();			

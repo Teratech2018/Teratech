@@ -7,7 +7,7 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerenedu.model.report.ViewMatiereClasseModal;
 import com.kerenedu.model.report.ViewNoteClasseModal;
 import com.kerenedu.model.report.ViewNoteHelper;
-import com.kerenedu.notes.MatiereNote;
+import com.kerenedu.notes.NoteDetail;
 
 
 /**
@@ -24,5 +24,7 @@ public interface ViewNoteHelperManager
     public List<ViewNoteHelper> getCriteres(ViewMatiereClasseModal critere);
     
     public List<ViewNoteHelper> getCriteres(ViewNoteClasseModal critere);
+    
+	public List<NoteDetail> getCriterenote(ViewNoteClasseModal critere) ;
 
 }

@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.app.BuilderHttpHeaders;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -31,6 +35,9 @@ public class TraitSalaireRSImpl
      */
     @Manager(application = "kereneducation", name = "TraitSalaireManagerImpl", interf = TraitSalaireManagerRemote.class)
     protected TraitSalaireManagerRemote manager;
+    
+    @Manager(application = "kereneducation", name = "BulletinPaieManagerImpl", interf = BulletinPaieManagerRemote.class)
+    protected BulletinPaieManagerRemote managerbul;
 
     public TraitSalaireRSImpl() {
         super();
@@ -63,4 +70,15 @@ public class TraitSalaireRSImpl
   		}
   		return null;
   	}
+    
+	@Override
+	public TraitSalaire save(@Context HttpHeaders headers , TraitSalaire entity) {
+		// TODO Auto-generated method stub
+		processBeforeSave(entity);
+		 managerbul.validerSalaire(entity);
+		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.PERIODE, entity.getPeriode());
+		processAfterSave(entity);
+		return entity;
+	}
+    
 }

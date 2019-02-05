@@ -19,10 +19,10 @@ public class PwdUser2 extends BaseElement implements Serializable,Comparable<Pwd
 
     private long cle ;
     
-    @Predicate(label = "Ancien mot de passe",target = "password",optional = false)
+    @Predicate(label = "pwduser2.ancien.password",target = "password",optional = false)
     private String oldpassword ;    
     
-    @Predicate(label = "New Mot de passe",target = "password",optional = false)
+    @Predicate(label = "pwduser2.nouveau.password",target = "password",optional = false)
     private String newpassword ;
 
     

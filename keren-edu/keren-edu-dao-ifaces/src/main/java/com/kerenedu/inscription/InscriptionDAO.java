@@ -27,5 +27,11 @@ public interface InscriptionDAO
     public long deleteRadfiche(Inscription ins);
     public long deleteRadPaiement(FichePaiement fp) ;
 	public long deleteRadReglement(Inscription ins);
+	
+	public long updateforce(String value);
+	
+	
+
+	
 
 }

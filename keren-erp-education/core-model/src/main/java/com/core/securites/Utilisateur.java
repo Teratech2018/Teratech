@@ -34,42 +34,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Utilisateur extends BaseElement implements Serializable,Comparable<Utilisateur>{
 
-    @Predicate(label = "image",target = "image",sequence = 1)
+    @Predicate(label = "utilisateur.image",target = "image",sequence = 1)
     private String image ="img\\photo.png";  
     
-    @Predicate(label = "ACTIF",colsequence = 100,sequence = 2)
+    @Predicate(label = "utilisateur.actif",colsequence = 100,sequence = 2)
     private Boolean actif = Boolean.FALSE; 
     
-    @Predicate(label = "LOGIN" ,nullable = false ,optional = false,min = 4,unique = true,updatable = false,search = true,sequence = 3)
+    @Predicate(label = "utilisateur.login" ,nullable = false ,optional = false,min = 4,unique = true,updatable = false,search = true,sequence = 3)
     private String intitule ;     
     
-    @Predicate(label = "ADRESSE ELECTRONIQUE",target = "email",unique = false,optional = false,search = true,sequence = 4)
+    @Predicate(label = "utilisateur.email",target = "email",unique = false,optional = false,search = true,sequence = 4)
     private String courriel ;
     
     //@Predicate(label = "MOT DE PASSE",target = "password" ,optional = false,search = false)
-    private String password ; 
+    private String password = "ISMvKXpXpadDiUoOSoAfww==" ; 
     
     private String name = "admin";
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastconfirme = null;
     
-    @Predicate(label = "SOCIETE COURANTE" , type = Societe.class,optional = false,sequence = 5,search = true,searchfields ="code" )
+    @Predicate(label = "utilisateur.societe.courante" , type = Societe.class,optional = false,sequence = 5,search = true,searchfields ="code" )
     @ManyToOne
     @JoinColumn(name = "SC_ID")
     private Societe societeCourante ;
     
-    @Predicate(label = "SOCIETES AUTORISEES" ,type = Societe.class,sequence = 6)
+    @Predicate(label = "utilisateur.societes.autorisees" ,type = Societe.class,sequence = 6)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "T_USER_SCT",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "SCT_ID"))
     private List<Societe> societeAutorisees = new ArrayList<Societe>();
     
-    @Predicate(label = "NIVEAU ADMINISTRATION" ,target = "combobox" ,values = "Aucun;Applications;Configuration;Applications & Configuration",search = false,sequence = 7)
+    @Predicate(label = "utilisateur.niveau.administration" ,target = "combobox" ,values = "Aucun;Applications;Configuration;Applications & Configuration",search = false,sequence = 7)
     private String adminlevel = "0" ;   
     
-    @Predicate(label = "PROFIL UTILISATEUR" ,type = Groupe.class,group = true,groupName = "group1",groupLabel = "PROFIL UTILISATEUR",target = "many-to-many-list",searchfields = "code")
+    @Predicate(label = "utilisateur.droits" ,type = Groupe.class,group = true,groupName = "group1",groupLabel = "PROFIL UTILISATEUR",target = "many-to-many-list",searchfields = "code")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "T_USER_RIGTH",
             joinColumns = @JoinColumn(name = "USER_ID"),
@@ -78,11 +78,12 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
     
     @ManyToOne
     @JoinColumn(name = "LANG_ID")
-    @Predicate(label = "Langue",type = Langue.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Préférences")
+    @Predicate(label = "utilisateur.langue",type = Langue.class,target = "many-to-one",group = true,groupName = "group2",groupLabel = "Préférences")
     private Langue langue ;
     
+    private Boolean uniqueuser;
     private String state ="etabli";
-
+    
     /**
      * 
      */
@@ -225,16 +226,23 @@ public class Utilisateur extends BaseElement implements Serializable,Comparable<
     public void setLangue(Langue langue) {
         this.langue = langue;
     }    
-    
 
+    public Boolean getUniqueuser() {
+        return uniqueuser;
+    }
+
+    public void setUniqueuser(Boolean uniqueuser) {
+        this.uniqueuser = uniqueuser;
+    }
+    
     @Override
     public String getListTitle() {
-        return "UTILISATEURS"; //To change body of generated methods, choose Tools | Templates.
+        return "utilisateur.liste.title"; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String getEditTitle() {
-        return "UTILISATEUR"; //To change body of generated methods, choose Tools | Templates.
+        return "utilisateur.dialogue.title"; //To change body of generated methods, choose Tools | Templates.
     }
 
     public Date getLastconfirme() {

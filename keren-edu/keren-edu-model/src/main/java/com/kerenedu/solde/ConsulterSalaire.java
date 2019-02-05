@@ -86,13 +86,13 @@ public class ConsulterSalaire extends BaseElement implements Serializable, Compa
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Consulter les Bulletins de Paie ";
+		return "Selectionner la période  ";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Consulter les Bulletins de Paie";
+		return "Selectionner la période ";
 	}
 
 	@Override

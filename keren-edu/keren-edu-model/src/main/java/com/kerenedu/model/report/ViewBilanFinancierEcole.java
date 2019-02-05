@@ -92,11 +92,11 @@ public class ViewBilanFinancierEcole extends BaseElement implements Serializable
 	@Predicate(label = "Tx. REC. %", optional = true, updatable = false, search = true, type = BigDecimal.class, colsequence=15)
 	protected Long ztaux;
 	
-	@ManyToOne
-    @JoinColumn(name = "CYCLE_ID")
-	//@Predicate(label="Cycle Scolaire",updatable=true,type=Cycle.class , target="many-to-one",optional=false,sequence=2)
-    protected Cycle cycle;
-	
+//	@ManyToOne
+//    @JoinColumn(name = "CYCLE_ID")
+//	//@Predicate(label="Cycle Scolaire",updatable=true,type=Cycle.class , target="many-to-one",optional=false,sequence=2)
+//    protected Cycle cycle;
+//	
 	@Column(name = "EFF")
 	protected Long effectifs;
 	@Column(name = "EFF_SOL")
@@ -137,7 +137,7 @@ public class ViewBilanFinancierEcole extends BaseElement implements Serializable
 			this.classe = new Classe(ins.classe);
 		}
 		this.zInscription = ins.zInscription;
-		this.cycle=ins.cycle;
+		//this.cycle=ins.cycle;
 		this.effectifs=ins.effectifs;
 		this.effectifssolvable=ins.effectifssolvable;
 		this.zInscriptionEnc = ins.zInscriptionEnc;
@@ -176,9 +176,9 @@ public class ViewBilanFinancierEcole extends BaseElement implements Serializable
 		return tranche2;
 	}
 
-	public Cycle getCycle() {
-		return cycle;
-	}
+//	public Cycle getCycle() {
+//		return cycle;
+//	}
 
 	
 
@@ -199,9 +199,9 @@ public class ViewBilanFinancierEcole extends BaseElement implements Serializable
 		this.effectifssolvable = effectifssolvable;
 	}
 
-	public void setCycle(Cycle cycle) {
-		this.cycle = cycle;
-	}
+//	public void setCycle(Cycle cycle) {
+//		this.cycle = cycle;
+//	}
 	public void setTranche2(Long tranche2) {
 		this.tranche2 = tranche2;
 	}

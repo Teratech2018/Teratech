@@ -49,6 +49,9 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	@Predicate(label="Part Patronal",type=Double.class,editable=false,updatable=false,search=true,compute=true,values="this.valeur;*;this.rubrique.tauxsal")
 	private Double tauxpat = 0.0;
 	
+	//@Predicate(label="formule",type=Double.class,editable=false,updatable=false,search=true)
+	private String formule ;
+	
 
 	/**
 	 * 
@@ -119,6 +122,7 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 		this.valeur = ligne.valeur;
 		this.tauxsal = ligne.tauxsal;
 		this.tauxpat = ligne.tauxpat;
+		this.formule=ligne.formule;  
 	}
 	
 	
@@ -196,6 +200,14 @@ public class LigneBulletinPaie extends BaseElement implements Serializable, Comp
 	public String getDesignation() {
 		// TODO Auto-generated method stub
 		return rubrique.getDesignation();
+	}
+
+	public String getFormule() {
+		return formule;
+	}
+
+	public void setFormule(String formule) {
+		this.formule = formule;
 	}
 
 	@Override

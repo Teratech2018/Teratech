@@ -100,20 +100,24 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 
 			MetaColumn col = new MetaColumn("button", "paiementfrais", "Paiement des frais", false, "action", null);
 			col.setValue("{'name':'keren_education_paie_limit','template':{'eleve':'object'}}");
+			col.setRoles(new String[]{"Administrateur"});
 
 			MetaColumn workbtn = new MetaColumn("button", "work2", "Certificat de Scolarité", false, "report", null);
 			workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'pdf'}");
 			workbtn.setStates(new String[] { "crée" });
+		    workbtn.setRoles(new String[]{"Administrateur"});
 			meta.getHeader().add(workbtn);
 
 			workbtn = new MetaColumn("button", "work2", "Fiche d'inscription", false, "report", null);
 			workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'fiche'}");
 			workbtn.setStates(new String[] { "crée" });
+			  workbtn.setRoles(new String[]{"Administrateur"});
 			meta.getHeader().add(workbtn);
 			
 			workbtn = new MetaColumn("button", "work3", "Badge Scolaire", false, "report", null);
 			workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'badge'}");
 			workbtn.setStates(new String[] { "crée" });
+			  workbtn.setRoles(new String[]{"Administrateur"});
 			meta.getHeader().add(workbtn);
 
 			// workbtn = new MetaColumn("button", "work1", "Frais de Scolarité",
@@ -123,18 +127,21 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 					// "{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'}}");
 					"{'name':'keren_education_paie_limit','template':{'eleve':'object','zMntverser':'object.zMntPaye','zMnt':'object.zMnt','zsolde':'object.zSolde'},'header':['eleve']}");
 			workbtn.setStates(new String[] { "etabli" });
+			workbtn.setRoles(new String[]{"Administrateur"});
 			// workbtn.setPattern("btn btn-primary");
 			meta.getHeader().add(workbtn);
 
 			workbtn = new MetaColumn("button", "work1", "Frais Divers", false, "link", null);
 			workbtn.setValue("{'name':'keren_education_frais_opt','template':{'eleve':'object'},'header':['eleve']}");
 			workbtn.setStates(new String[] { "etabli" });
+			  workbtn.setRoles(new String[]{"Administrateur"});
 			// workbtn.setPattern("btn btn-primary");
 			meta.getHeader().add(workbtn);
 
 			col = new MetaColumn("button", "changer", "Changer de classe", false, "link", null);
 			col.setValue(
 					"{'name':'keren_education_ins_chgr','template':{'classe':'object.classe','eleve':'object.eleve','section':'object.classe.section','idIns':'object.id'},'header':['eleve']}");
+			col.setRoles(new String[]{"Administrateur"});
 			// meta.getHeader().add(col);
 			return meta;
 		} catch (Exception e) {

@@ -20,4 +20,6 @@ public interface AcompteManager
 
   	
   	public Acompte annule(Acompte entity);
+  	
+  	public boolean disponible(Acompte entity, PeriodePaie periode);
 }

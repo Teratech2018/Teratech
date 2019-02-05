@@ -31,6 +31,9 @@ public class RemboursementPretManagerImpl
     
     @EJB(name = "ElementVariableDAO")
     protected ElementVariableDAOLocal variabledao;
+    
+    @EJB(name = "DemandePreDAO")
+    protected DemandePretDAOLocal pretdao;
 
     public RemboursementPretManagerImpl() {
     }
@@ -44,13 +47,15 @@ public class RemboursementPretManagerImpl
     public String getEntityIdName() {
         return "id";
     }
-	@Override
-	public RemboursementPret delete(Long id) {
-		// TODO Auto-generated method stub
-		RemboursementPret data = dao.findByPrimaryKey("id", id);
-		return new RemboursementPret(data);
-	}
-
+    @Override
+  	public RemboursementPret delete(Long id) {
+  		// TODO Auto-generated method stub
+    	RemboursementPret data = super.delete(id);
+  		
+  		// supprimer elt varaible
+  		variabledao.delete(id);
+  		return new RemboursementPret(data);
+  	}
 	@Override
 	public List<RemboursementPret> filter(List<Predicat> predicats, Map<String, OrderType> orders,
 			Set<String> properties, int firstResult, int maxResult) {
@@ -114,6 +119,14 @@ public class RemboursementPretManagerImpl
 		// TODO Auto-generated method stub
 		entity.setState("refuse");
 		dao.update(entity.getId(), entity);
+		// mettre a jour le pret 
+		DemandePret ddepret = entity.getDemande();
+		double pret = ddepret.getMontantpro()-entity.getMontant();
+		ddepret.setMontantpro(pret);
+		ddepret.setMontantsol(pret);
+		ddepret.setSolde(ddepret.getMontantpro()-ddepret.getMontantRem());
+		pretdao.update(ddepret.getId(), ddepret);
+		variabledao.delete(entity.getId());
 		return entity;
 	}
 

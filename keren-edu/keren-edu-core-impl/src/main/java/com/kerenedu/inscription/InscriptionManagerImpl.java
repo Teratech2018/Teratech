@@ -190,6 +190,7 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		// }
 		entity.setMatricule(entity.getEleve().getMatricule());
 		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
+		//entity.setStatus(false);
 
 		super.processBeforeSave(entity);
 	}
@@ -277,6 +278,11 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 			Cycle cycle = cycledao.findByPrimaryKey("id", entity.getClasse().getCycle());
 			entity.setCycle(cycle.getId());
 		}
+		entity.setMatricule(entity.getEleve().getMatricule());
+		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
+//		if(entity.getzSolde()==0){
+//			entity.setStatus(true);
+//		}
 	
 		// verifier si l'étudiant a déjà été inscit
 		/*

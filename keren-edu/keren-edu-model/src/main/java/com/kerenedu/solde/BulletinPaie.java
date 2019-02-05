@@ -48,19 +48,19 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label = "Employé", type = Professeur.class, target = "many-to-one", updatable = false, optional = false, search = true, sequence = 1)
 	private Professeur employe;
 
-	@Predicate(label = "Date de payement", type = Date.class, target = "date", updatable = false, search = true, sequence = 2)
+	//@Predicate(label = "Date de payement", type = Date.class, target = "date", updatable = false, search = true, sequence = 2)
 	@Temporal(TemporalType.DATE)
 	private Date dpayement;
 
 	@ManyToOne
 	@JoinColumn(name = "PEPA_ID")
-	@Predicate(label = "Période", type = PeriodePaie.class, target = "many-to-one", updatable = false, optional = false, search = true, sequence = 3)
+	@Predicate(label = "Période", type = PeriodePaie.class, target = "many-to-one", updatable = false, optional = false, search = true, sequence = 2)
 	private PeriodePaie periode;
 
-	@Predicate(label = "Catégorie", updatable = false, optional = false, search = false, sequence = 4)
+	@Predicate(label = "Catégorie", updatable = false, optional = false, search = false, sequence = 3)
 	private String categorie;
 
-	@Predicate(label = "Echelon", updatable = false, optional = false, search = false, sequence = 7)
+	//@Predicate(label = "Echelon", updatable = false, optional = false, search = false, sequence = 7)
 	private String echellon;
 
 	@Column(name = "ANC")
@@ -81,7 +81,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	protected String adresse;
 
 	@Transient
-	@Predicate(label = "Anciennité", type = Double.class, editable = false, updatable = false, sequence = 6)
+	@Predicate(label = "Anciennité", type = Double.class, editable = false, updatable = false, sequence = 4)
 	private String ancienniteString;
 
 	// @Transient
@@ -115,7 +115,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	private Double salaireBrut = 0.0;
 	
 	@Column(name = "SNET")
-	@Predicate(label = "Salaire Net", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	@Predicate(label = "Salaire Net", type = Double.class, editable = false, updatable = false, search=true,group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double netapayer = 0.0;
 	
 	@Column(name = "CPA")
@@ -158,6 +158,33 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Column(name = "ANG")
 //	@Predicate(label = "Anciennité Gélée", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double ancienniteGelee = 0.0;
+	
+	@Column(name = "AMI")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double amical = 0.0;
+	
+	@Column(name = "LOY")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double loyer = 0.0;
+	
+	@Column(name = "retenue")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double retenue = 0.0;
+	
+	@Column(name = "indem")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double indemnite = 0.0;
+	
+	@Column(name = "allocation")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double allocation = 0.0;
+
+	
+
+	@Column(name = "prime")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double prime = 0.0;
+
 
 	
 
@@ -216,6 +243,8 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	private String state = "etabli";
 
 	private String netLettre = "";
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire;
 
 	
 
@@ -337,6 +366,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 		cumulChargeSalariale = bulletin.cumulChargeSalariale;
 		cumulChargePatronale = bulletin.cumulChargePatronale;
+		this.anneScolaire=bulletin.anneScolaire;
 	
 		this.netLettre = bulletin.netLettre;
 		this.netapayer = bulletin.netapayer;
@@ -348,6 +378,12 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		this.echellon = bulletin.getEmploye().getEchelon().getCode();
 		}
 		this.ancienniteString = this.getAnciennete(this.getAnciennite(), this.periode.getDfin());
+		this.amical=bulletin.amical;
+		this.loyer=bulletin.loyer;
+		this.retenue=bulletin.retenue;
+		this.allocation=bulletin.allocation;
+		this.indemnite=bulletin.indemnite;
+		this.prime=bulletin.prime;
 	}
 
 //	public BulletinPaie(LivrePaie livre) {
@@ -379,6 +415,30 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 	public String getAdresse() {
 		return adresse;
+	}
+
+	public Double getIndemnite() {
+		return indemnite;
+	}
+
+	public Double getPrime() {
+		return prime;
+	}
+
+	public void setPrime(Double prime) {
+		this.prime = prime;
+	}
+
+	public void setIndemnite(Double indemnite) {
+		this.indemnite = indemnite;
+	}
+
+	public Double getAllocation() {
+		return allocation;
+	}
+
+	public void setAllocation(Double allocation) {
+		this.allocation = allocation;
 	}
 
 	public void setAdresse(String adresse) {
@@ -421,6 +481,30 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		this.lignes = lignes;
 	}
 
+	public Double getAmical() {
+		return amical;
+	}
+
+	public void setAmical(Double amical) {
+		this.amical = amical;
+	}
+
+	public Double getLoyer() {
+		return loyer;
+	}
+
+	public void setLoyer(Double loyer) {
+		this.loyer = loyer;
+	}
+
+	public Double getRetenue() {
+		return retenue;
+	}
+
+	public void setRetenue(Double retenue) {
+		this.retenue = retenue;
+	}
+
 	public Double getTaxeAvantages() {
 		return taxeAvantages;
 	}
@@ -431,6 +515,14 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 	public Double getCongesAcquisPeriode() {
 		return congesAcquisPeriode;
+	}
+
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
 	}
 
 	public void setCongesAcquisPeriode(Double congesAcquisPeriode) {

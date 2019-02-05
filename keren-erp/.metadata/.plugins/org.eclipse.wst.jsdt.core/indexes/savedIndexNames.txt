@@ -1,0 +1,8 @@
+INDEX VERSION 1.3+D:\WORKSPACE\KEREN\TERATECH\src\myerp\keren\keren-erp\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3445704641.index
+3734912171.index
+3869139527.index
+1182850752.index
+1838354284.index
+2762879483.index
+92655717.index

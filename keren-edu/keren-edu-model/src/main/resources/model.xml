@@ -947,11 +947,35 @@ and open the template in the editor.
 					<role>ADMIN</role>
 				</roles>
 			</element>
+			
 				<element type="com.kerenedu.notes.StatistiqueNotes" idclass="long" idname="id" deseable="true">
 				<roles>
 					<role>ADMIN</role>
 				</roles>
 			</element>
+
+				<element type="com.kerenedu.model.report.ViewEtatPret" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+				<element type="com.kerenedu.model.report.ViewMasseSalariale" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+			<element type="com.kerenedu.solde.ParaCoutMatiere" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+			
+			<element type="com.kerenedu.configuration.ClasseSecondaire" idclass="long" idname="id" deseable="true">
+				<roles>
+					<role>ADMIN</role>
+				</roles>
+			</element>
+	           
 	             
     </elements>
     

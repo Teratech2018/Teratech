@@ -15,9 +15,8 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
-import com.kerenedu.inscription.Inscription;
-import com.kerenedu.notes.MatiereNote;
-import com.kerenedu.notes.NoteDetail;
+import com.kerenedu.solde.ParaCoutMatiere;
+import com.kerenedu.solde.ParaCoutMatiereDAOLocal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -32,6 +31,15 @@ public class EmargementPeriodeManagerImpl
     
     @EJB(name = "EnseignantSecondaireDAO")
     protected EnseignantSecondaireDAOLocal daoprof;
+    
+    @EJB(name = "ProfesseurDAO")
+    protected ProfesseurDAOLocal daovac;
+    
+    @EJB(name = "EmargementDtlPeriodeDAO")
+    protected EmargementDtlPeriodeDAOLocal daodtl;
+    
+    @EJB(name = "ParaCoutMatiereDAO")
+    protected ParaCoutMatiereDAOLocal daocout;
 
     public EmargementPeriodeManagerImpl() {
     }
@@ -92,28 +100,54 @@ public class EmargementPeriodeManagerImpl
 	@Override
 	public void importNote(EmargementPeriode entity) {
 		List<EmargementDtlPeriode> datas = new ArrayList<EmargementDtlPeriode>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		EmargementPeriode mtnote= new EmargementPeriode();
+		
 		if(entity.getEmagementdlt()!=null||!entity.getEmagementdlt().isEmpty()){
-		for(EmargementDtlPeriode notes: entity.getEmagementdlt()){
-			RestrictionsContainer container = RestrictionsContainer.newInstance();
-			if (notes.getMatricule() != null) {
-				container.addEq("prof.matricule", notes.getMatricule());//+"/"+entity.getAnneScolaire());
-			}
 			
-			List<EnseignantSecondaire> prof = daoprof.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		for(EmargementDtlPeriode notes: entity.getEmagementdlt()){
+			container = RestrictionsContainer.newInstance();
+			if (notes.getMatricule() != null) {
+				container.addEq("matricule", notes.getMatricule());//+"/"+entity.getAnneScolaire());
+			}
+			System.out.println("EmargementPeriodeManagerImpl.importNote() matricule is "+notes.getMatricule());
+			//container.addEq("status", "0");
+			List<Professeur> prof = daovac.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 			if(prof!=null&&!prof.isEmpty()){
 				notes.setProf(prof.get(0));
 				notes.setMatricule(prof.get(0).getMatricule());
 				notes.setNom(prof.get(0).getNom());
 				notes.setPeriode(entity.getPeriode());
-				datas.add(notes);
+			
 			}
+			// get cout matiere
+//			container = RestrictionsContainer.newInstance();
+//			if(notes.getMatiere()!=null){
+//				container.addEq("code", notes.getMatiere());
+//			}
+//			List<ParaCoutMatiere> cout = daocout.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+//			if(cout!=null&&!cout.isEmpty()){
+//				notes.setCout(cout.get(0));
+//			}
+			
+			datas.add(notes);
 		}
-			//System.out.println("MatiereNoteManagerImpl.importNote() nombre de note"+datas.toString()+" size"+datas.size());
+		System.out.println("EmargementPeriodeManagerImpl.importNote() datas ud size"+datas.size());
+		container = RestrictionsContainer.newInstance();
+		container.addEq("periode.id", entity.getPeriode().getId());
+		List<EmargementPeriode> emargelist= dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		if(emargelist!=null&&!emargelist.isEmpty()&&emargelist.size()!=0){
+			for(EmargementPeriode em : emargelist){
+				dao.deleteemarge(em);
+				}
+			}
+
 			 mtnote= new EmargementPeriode(entity);
 			 mtnote.setEmagementdlt(datas);
+			 mtnote.setPeriode(entity.getPeriode());
+			
 			// System.out.println("MatiereNoteManagerImpl.importNote() note taille"+mtnote.getNotelisttr().size());
-			this.update(mtnote.getId(), mtnote);
+			this.save(mtnote);
 				
 			
 		}

@@ -14,6 +14,7 @@ import com.kerenedu.configuration.AnneScolaireRSImpl;
 import com.kerenedu.configuration.AppreciationRSImpl;
 import com.kerenedu.configuration.ClasseCycleRSImpl;
 import com.kerenedu.configuration.ClasseRSImpl;
+import com.kerenedu.configuration.ClasseSecondaireRSImpl;
 import com.kerenedu.configuration.ConfigMailRSImpl;
 import com.kerenedu.configuration.CycleRSImpl;
 import com.kerenedu.configuration.EtablissementRSImpl;
@@ -78,6 +79,7 @@ import com.kerenedu.jaxrs.impl.report.ViewNoteClasseModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewNoteHelperRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewNotematiereRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewPaiementJournalierRSImpl;
+import com.kerenedu.jaxrs.impl.report.ViewPeriodeModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewRecapMoyenneModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewRetardPaiementRSImpl;
 import com.kerenedu.notes.BuilderLigneNoteRSImpl;
@@ -150,6 +152,7 @@ import com.kerenedu.solde.BanqueRSImpl;
 import com.kerenedu.solde.BulletinPaieRSImpl;
 import com.kerenedu.solde.CategoriePretRSImpl;
 import com.kerenedu.solde.CategorieRSImpl;
+import com.kerenedu.solde.ConsulterEmargeRSImpl;
 import com.kerenedu.solde.ConsulterSalaireRSImpl;
 import com.kerenedu.solde.ConvensionRSImpl;
 import com.kerenedu.solde.DemandePretRSImpl;
@@ -166,6 +169,7 @@ import com.kerenedu.solde.LigneGrilleSalaireRSImpl;
 import com.kerenedu.solde.LignePaieRSImpl;
 import com.kerenedu.solde.LignePonderationSalaireRSImpl;
 import com.kerenedu.solde.LignePonderationTypeContratRSImpl;
+import com.kerenedu.solde.ParaCoutMatiereRSImpl;
 import com.kerenedu.solde.ParametreAvanceRSImpl;
 import com.kerenedu.solde.PeriodePaieCloseRSImpl;
 import com.kerenedu.solde.PeriodePaieOpenRSImpl;
@@ -408,6 +412,10 @@ public class ApplicationConfig extends Application {
 		resources.add(BuilderNoteRSImpl.class);
 		resources.add(BuilderLigneNoteRSImpl.class);
 		resources.add(StatistiqueNotesRSImpl.class);
+		resources.add(ConsulterEmargeRSImpl.class);
+		resources.add(ViewPeriodeModalRSImpl.class);
+		resources.add(ParaCoutMatiereRSImpl.class);
+		resources.add(ClasseSecondaireRSImpl.class);
 		
 		
 		

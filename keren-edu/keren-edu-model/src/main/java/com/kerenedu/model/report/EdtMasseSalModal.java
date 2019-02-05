@@ -39,7 +39,7 @@ public class EdtMasseSalModal extends BaseElement implements Serializable, Compa
 
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false)
+	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=true)
 	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
 	private PeriodePaie periode ;
 

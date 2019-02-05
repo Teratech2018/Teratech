@@ -119,6 +119,13 @@ public class RubriquePaieRSImpl
     
     @Override
 	protected void processBeforeSave(RubriquePaie entity) {
+    	if(entity.getAcompte()==null){
+    		entity.setAcompte(false);
+    	}
+    	if(entity.getPret()==null){
+    		entity.setPret(false);
+    	}
+    	
 		for(ForfaitCategorie fc : entity.getForfaitscat())
 			fc.setId(-1);
 		for(ForfaitCycle fc : entity.getForfaitscycle())

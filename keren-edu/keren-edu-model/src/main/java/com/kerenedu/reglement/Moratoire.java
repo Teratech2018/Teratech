@@ -29,7 +29,7 @@ public class Moratoire extends BaseElement implements Serializable, Comparable<M
 
 	@ManyToOne
 	@JoinColumn(name = "ElEVE_ID")
-	@Predicate(label = "Sélectionner la Eléve", type = Inscription.class, target = "many-to-one", optional = false, sequence = 1, search=true)
+	@Predicate(label = "Sélectionner éléve", type = Inscription.class, target = "many-to-one", optional = false, sequence = 1, search=true)
 	private Inscription eleve;
 	
 	@ManyToOne
@@ -43,7 +43,7 @@ public class Moratoire extends BaseElement implements Serializable, Comparable<M
 	protected Date delai;
 
 	@Column(name = "N_DATE")
-	@Predicate(label = " Nouvelle Date Butoire", optional = false, updatable = true, search = true, type = Date.class, sequence = 4, target = "date")
+	@Predicate(label = "Nouvelle Date Butoire", optional = false, updatable = true, search = true, type = Date.class, sequence = 4, target = "date")
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date dateDeb;
 	

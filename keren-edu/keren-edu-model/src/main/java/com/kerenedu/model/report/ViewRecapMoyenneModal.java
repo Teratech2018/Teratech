@@ -2,6 +2,7 @@ package com.kerenedu.model.report;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.configuration.Cycle;
 import com.megatim.common.annotations.Predicate;
 import java.io.Serializable;
@@ -12,17 +13,17 @@ import javax.persistence.ManyToOne;
 public class ViewRecapMoyenneModal extends BaseElement implements Serializable, Comparable<ViewRecapMoyenneModal> {
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
-	@Predicate(label = "Cycle", type = Cycle.class, target = "many-to-one", optional = true, sequence = 1)
+	//@Predicate(label = "Cycle", type = Cycle.class, target = "many-to-one", optional = true, sequence = 1)
 	private Cycle cycle;
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe", type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true)
-	protected Classe classe;
+	@Predicate(label = "Classe", type = ClasseSecondaire.class, target = "many-to-one", search = true, sequence = 2, observable = true)
+	protected ClasseSecondaire classe;
 
 	public ViewRecapMoyenneModal() {
 	}
 
-	public ViewRecapMoyenneModal(Cycle cycle, Classe classe) {
+	public ViewRecapMoyenneModal(Cycle cycle, ClasseSecondaire classe) {
 		this.cycle = cycle;
 		this.classe = classe;
 	}
@@ -31,7 +32,7 @@ public class ViewRecapMoyenneModal extends BaseElement implements Serializable, 
 		super(ins.id, ins.designation, ins.moduleName, 0L);
 
 		if (ins.classe != null) {
-			this.classe = new Classe(ins.classe);
+			this.classe = new ClasseSecondaire(ins.classe);
 		}
 
 		if (ins.getCycle() != null) {
@@ -39,7 +40,7 @@ public class ViewRecapMoyenneModal extends BaseElement implements Serializable, 
 		}
 	}
 
-	public Classe getClasse() {
+	public ClasseSecondaire getClasse() {
 		return classe;
 	}
 
@@ -51,7 +52,7 @@ public class ViewRecapMoyenneModal extends BaseElement implements Serializable, 
 		this.cycle = cycle;
 	}
 
-	public void setClasse(Classe classe) {
+	public void setClasse(ClasseSecondaire classe) {
 		this.classe = classe;
 	}
 

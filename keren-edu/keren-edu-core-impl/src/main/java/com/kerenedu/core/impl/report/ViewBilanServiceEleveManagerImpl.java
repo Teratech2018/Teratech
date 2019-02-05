@@ -68,10 +68,12 @@ public class ViewBilanServiceEleveManagerImpl extends AbstractGenericManager<Vie
 				Boolean value = false;
 				if (critere.getStatut().equals("0")) {
 					value = true;
-				} else {
+					container.addEq("fiche.payer", value);
+				} else if (critere.getStatut().equals("1")){
 					value = false;
+					container.addEq("fiche.payer", value);
 				}
-				container.addEq("fiche.payer", value);
+				
 
 			}
 
