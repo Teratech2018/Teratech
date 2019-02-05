@@ -78,6 +78,9 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
      @Predicate(label = "Action liée(uniquement si modal = true)")
      protected String link = null;
      
+     @Predicate(label = "value(uniquement si modal = true)")
+     private String value ;
+     
      @Predicate(label = "Rapport liée")
      private String report = null;
      
@@ -145,6 +148,7 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
         this.link = menu.link;
         this.report = menu.report;
         this.hide = menu.hide;
+        this.value = menu.value;
         if(menu.treeView!=null){
             this.treeView = new TreeRecord(menu.treeView);
         }
@@ -273,6 +277,14 @@ public class MenuAction extends BaseElement implements Serializable,Comparable<M
 
     public void setWebsite(WebSiteModule website) {
         this.website = website;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
     
     

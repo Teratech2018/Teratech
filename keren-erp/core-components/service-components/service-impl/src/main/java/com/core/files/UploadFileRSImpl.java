@@ -579,6 +579,7 @@ public class UploadFileRSImpl
     public Boolean cleanFiles(HttpHeaders headers) {
         //To change body of generated methods, choose Tools | Templates.
          Gson gson = new Gson();
+         List<Long> _instances = new ArrayList<Long>();
          String modulename = null ;
          if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
              modulename = gson.fromJson(headers.getRequestHeader("modulename").get(0), String.class);
@@ -590,6 +591,13 @@ public class UploadFileRSImpl
           Long _instance = null;
          if(headers.getRequestHeader("entityid")!=null && !headers.getRequestHeader("entityid").isEmpty()){
              _instance = gson.fromJson(headers.getRequestHeader("entityid").get(0), Long.class);
+             _instances.add(_instance);
+         }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
+         if(headers.getRequestHeader("entityids")!=null && !headers.getRequestHeader("entityids").isEmpty()){
+             List<Long> ids = gson.fromJson(headers.getRequestHeader("entityids").get(0), new TypeToken<List<Long>>(){}.getType());
+             if(ids!=null && !ids.isEmpty()){
+                 _instances.addAll(ids);
+             }
          }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
          String serial = null;
          if(headers.getRequestHeader("entityserial")!=null && !headers.getRequestHeader("entityserial").isEmpty()){
@@ -597,10 +605,10 @@ public class UploadFileRSImpl
          }//end if(headers.getRequestHeader("modulename")!=null && !headers.getRequestHeader("modulename").isEmpty()){
          //Chargement de tous les ficiers de cette instances
          RestrictionsContainer container = RestrictionsContainer.newInstance();
-         container.addEq("ownerentity", entityname);
+         container.addEq("entity", entityname);
          container.addEq("_instance", _instance);
          if(modulename!=null){
-            container.addEq("ownermodele", modulename);
+            container.addEq("modele", modulename);
          }//end if(modele!=null){
          List<ResourceRegistry> resources = registry.filter(container.getPredicats(), null, null, 0, -1);
          for(ResourceRegistry resource : resources){

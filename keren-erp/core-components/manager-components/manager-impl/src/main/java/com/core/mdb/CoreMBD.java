@@ -8,6 +8,8 @@ package com.core.mdb;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.core.application.ResourceRegistry;
 import com.core.application.ResourceRegistryDAOLocal;
+import com.core.application.ServiceRegistry;
+import com.core.application.ServiceRegistryDAOLocal;
 import com.core.calendar.Event;
 import com.core.calendar.EventDAOLocal;
 import com.core.calendar.Rappel;
@@ -25,6 +27,7 @@ import com.core.referentiels.PieceJointe;
 import com.core.securites.Utilisateur;
 import com.core.securites.UtilisateurDAOLocal;
 import com.kerem.commons.KerenCoreMDBHelper;
+import com.kerem.commons.ServicesHelper;
 import com.kerem.core.FileHelper;
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +79,9 @@ public class CoreMBD implements  MessageListener{
     
     @EJB(name = "CanalDAO")
     protected CanalDAOLocal canaldao;
+    
+    @EJB(name = "ServiceRegistryDAO")
+    protected ServiceRegistryDAOLocal servicedao;
     
     
     @Override
@@ -185,6 +191,17 @@ public class CoreMBD implements  MessageListener{
 //                            FileHelper.moveFile(tmpFile, new File(_builder.toString()));
                         }//end if(tmpFile.exists()){
                      }//end if(!dbresource.isEmpty()){
+                }else if(objMessage.getObject() instanceof ServicesHelper.ServiceRegistry){
+                     ServicesHelper.ServiceRegistry service = (ServicesHelper.ServiceRegistry) objMessage.getObject();
+                     ServiceRegistry registre = new ServiceRegistry(service.getCode(), service.getName(), service.getModele(), service.getEntity());
+                      RestrictionsContainer container = RestrictionsContainer.newInstance();
+                     container.addEq("code", registre.getCode());
+                     List<ServiceRegistry> services = servicedao.filter(container.getPredicats(), null, null, 0, -1);
+                     if(services.isEmpty()){//Subcribe the service
+                         servicedao.save(registre);
+                     }else{
+                         servicedao.delete(services.get(0).getCode());
+                     }//end if(services.isEmpty()){
                 }//end if(objMessage.getObject() instanceof Email){
             }//end if (rcvMessage instanceof TextMessage) {
         } catch (JMSException e) {

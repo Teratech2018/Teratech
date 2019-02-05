@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="img/koris.ico">
+    <link rel="icon" href="img/icon.ico">
     <link rel="stylesheet" type="text/css" href="css\principal.css">
     <link rel="stylesheet" type="text/css" href="css\kaban.css">
     <link href="css\bootstrap-treeview.min.css" rel="stylesheet" />
@@ -123,13 +123,31 @@
         border-radius:.25rem
     }
     </style>
+    <script type="text/javascript">		
+            function allowDrop(ev) {
+//              console.log("vous êtes dans allowDrop(ev) "+ev.target.id);
+              ev.preventDefault();              
+            }
 
+            function drag(ev) {
+//              console.log("vous êtes dans drag(ev) "+ev.target.id);
+              ev.dataTransfer.setData("text", ev.target.id);              
+            }
+
+            function drop(ev) {                
+               ev.preventDefault();
+               var data = ev.dataTransfer.getData("text");
+//               console.log("vous êtes dans drop(ev)==== "+ev.target.id+" ==== data : "+data);
+               angular.element(document.getElementById('main_controller')).scope().transitionAllow(ev.target.id);
+               ev.target.appendChild(document.getElementById(data));              
+            } 
+    </script>
   </head>
 
   <body ng-controller="kerenCtrl" class="principal-background websitecontainer">
       <div ng-switch on="activemodule">
           <div ng-switch-when="kerencore" >
-              <div ng-controller="mainCtrl"  ng-show = "active('kerencore')">
+              <div ng-controller="mainCtrl"  ng-show = "active('kerencore')" id="main_controller">
                 <ng-include src="'views/principalFragment.html'" ></ng-include>
              </div>
           </div>
