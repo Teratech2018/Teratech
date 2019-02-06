@@ -1,7 +1,0 @@
-
-===================== TODO LIST INNOV PAIE =====================================
-1- Restructurer les modules 
-2- rediger les FCU
-3- monter l'offre commerciale
-
-	

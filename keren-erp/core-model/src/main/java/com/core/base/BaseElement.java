@@ -58,6 +58,7 @@ public class BaseElement implements Serializable{
     protected boolean desabledelete = false ;
     
     protected boolean desableupdate = false ;
+    protected boolean desabledatablock = true ;
     
     //Unique number for entity identifier
     protected String serial ;
@@ -82,6 +83,8 @@ public class BaseElement implements Serializable{
      
 
     public BaseElement() {
+    	  this.desabledatablock=false;
+    	  this.ownermodule="";
     }
 
    /**
@@ -96,6 +99,8 @@ public class BaseElement implements Serializable{
         this.designation = designation;
         this.moduleName = moduleName;
         this.compareid = comparedid ;
+        this.desabledatablock=false;
+        this.ownermodule="";
     }
 
     public long getCompareid() {
