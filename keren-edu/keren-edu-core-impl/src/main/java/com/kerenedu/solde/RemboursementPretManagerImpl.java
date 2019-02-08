@@ -2,6 +2,7 @@
 package com.kerenedu.solde;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.model.report.ViewRetenueModal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -128,6 +130,26 @@ public class RemboursementPretManagerImpl
 		pretdao.update(ddepret.getId(), ddepret);
 		variabledao.delete(entity.getId());
 		return entity;
+	}
+	
+	@Override
+	public List<RemboursementPret> getCriteres(ViewRetenueModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<RemboursementPret> datas = new ArrayList<RemboursementPret>();
+		
+			if (critere != null) {
+				container = RestrictionsContainer.newInstance();
+				if (critere.getAnnee() != null) {
+					container.addEq("anneeScolaire", critere.getAnnee().getId());
+				}
+			}
+			// force update inscription 
+			//daoRem.updateforce("m");
+			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			
+
+		return datas;
 	}
 
 }

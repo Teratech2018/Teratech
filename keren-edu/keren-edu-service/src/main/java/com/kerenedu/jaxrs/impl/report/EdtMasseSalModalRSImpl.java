@@ -134,7 +134,6 @@ public class EdtMasseSalModalRSImpl
 
 	@Override
 	public Response buildPdfReportbi(EdtMasseSalModal entity, HttpHeaders headers) {
-		// TODO Auto-generated method stub
 		return this.buildPdfReport(entity, headers);
 	}
 
@@ -159,7 +158,6 @@ public class EdtMasseSalModalRSImpl
 
 	@Override
 	public Response buildPdfReportDltbi(EdtMasseSalModal entity, HttpHeaders headers) {
-		// TODO Auto-generated method stub
 		return this.buildPdfReportDlt(entity, headers);
 	}
 

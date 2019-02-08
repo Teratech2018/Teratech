@@ -1,7 +1,10 @@
 
 package com.kerenedu.solde;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.ViewRetenueModal;
 
 
 /**
@@ -19,5 +22,5 @@ public interface RemboursementPretManager
 	
  	public RemboursementPret annule(RemboursementPret entity);
 
-
+	public List<RemboursementPret> getCriteres(ViewRetenueModal critere) ;
 }

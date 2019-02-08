@@ -72,7 +72,7 @@ public class DateHelper {
 	 */
 	public static String getMonthName(Date date) {
 		if (date != null) {
-			System.out.println("DateHelper.getMonthName() get date " + date);
+			//System.out.println("DateHelper.getMonthName() get date " + date);
 			Calendar c = Calendar.getInstance();
 			c.setTime(date);
 			switch (c.get(Calendar.MONTH)) {
@@ -212,7 +212,7 @@ public class DateHelper {
 
 		String begin1 = parts[0];
 		String begin2 = parts[1];
-		System.out.println("DateHelper.hours() begin "+begin1+"begin 11"+begin2);
+		//System.out.println("DateHelper.hours() begin "+begin1+"begin 11"+begin2);
 		Calendar d = Calendar.getInstance();
 		time = new Date();
 		d.setTime(time);
@@ -231,7 +231,7 @@ public class DateHelper {
 
 		long times = (e.getTimeInMillis() - d.getTimeInMillis())/1000;
 		double hours = (double)times / 3600 ;
-		System.out.println("DateHelper.hours() nombre heure is "+hours);
+		//System.out.println("DateHelper.hours() nombre heure is "+hours);
 		return hours;
 	}
 
@@ -490,9 +490,9 @@ public class DateHelper {
 			c.set(Calendar.DAY_OF_MONTH, day);
 			c.set(Calendar.MONTH, month);
 			c.set(Calendar.YEAR, year);
-			System.out.println("DateHelper.getdateAnniversaire() " + day);
-			System.out.println("DateHelper.getdateAnniversaire() " + month + 1);
-			System.out.println("DateHelper.getdateAnniversaire() " + year);
+//			System.out.println("DateHelper.getdateAnniversaire() " + day);
+//			System.out.println("DateHelper.getdateAnniversaire() " + month + 1);
+//			System.out.println("DateHelper.getdateAnniversaire() " + year);
 			// utiliser le calendrier par défaut
 
 			c.add(Calendar.DATE, -param);
@@ -504,7 +504,7 @@ public class DateHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("DateHelper.DateBeforeParam() new date " + d);
+	//	System.out.println("DateHelper.DateBeforeParam() new date " + d);
 		return d;
 	}
 
@@ -521,9 +521,9 @@ public class DateHelper {
 		c.set(Calendar.DAY_OF_MONTH, day);
 		c.set(Calendar.MONTH, month);
 		c.set(Calendar.YEAR, year);
-		System.out.println("DateHelper.getdateAnniversaire() " + day);
-		System.out.println("DateHelper.getdateAnniversaire() " + month + 1);
-		System.out.println("DateHelper.getdateAnniversaire() " + year);
+//		System.out.println("DateHelper.getdateAnniversaire() " + day);
+//		System.out.println("DateHelper.getdateAnniversaire() " + month + 1);
+//		System.out.println("DateHelper.getdateAnniversaire() " + year);
 		// utiliser le calendrier par défaut
 		d1 = c.getTime();
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");

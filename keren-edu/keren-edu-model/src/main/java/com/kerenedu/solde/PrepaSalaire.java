@@ -115,13 +115,13 @@ public class PrepaSalaire extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Préparation  de la Paie";
+		return "Préparation  de la solde";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Préparation  de la Paie";
+		return "Préparation  de la solde";
 	}
 
 	@Override

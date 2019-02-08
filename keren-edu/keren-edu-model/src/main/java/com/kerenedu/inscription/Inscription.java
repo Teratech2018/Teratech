@@ -439,7 +439,8 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getSearchkeys() {
 		// TODO Auto-generated method stub
-		return matricule+","+nom+","+classe.getLibelle();
+		this.searchkeys=matricule+", "+nom+","+classe.getLibelle()+" , " +zSolde+" , " +anneScolaire;
+		return matricule+", "+nom+","+classe.getLibelle()+" , " +zSolde+" , " +anneScolaire;
 	}
 	
 

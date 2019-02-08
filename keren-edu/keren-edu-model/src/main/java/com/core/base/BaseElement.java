@@ -62,6 +62,7 @@ public class BaseElement implements Serializable{
     
     protected String searchkeys ;
     
+    
     protected boolean desabledatablock = true ;
     
     protected String ownermodule;

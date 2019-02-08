@@ -77,11 +77,13 @@ public class PrepaSalaireRSImpl
 	protected void processBeforeSave(PrepaSalaire entity) {
 		// TODO Auto-generated method stub
 		if(entity.getPeriode()==null){
-			throw new KerenExecption("La Période de Paie est obligatoire");
+			throw new KerenExecption("OPERATION IMPOSSIBLE ::: La P&eacute;riode de Paie est obligatoire");
 		}else if(entity.getPorte()==null||entity.getPorte().trim().isEmpty()){
-			throw new KerenExecption("La Portée de la Préparation est obligatoire");
-		}else if(!entity.getPeriode().getState().equals("ouvert")){
-			throw new KerenExecption("La Période n'est pas ouverte");
+			throw new KerenExecption("OPERATION IMPOSSIBLE ::: La Port&eacute;e de la Pr&eacute;paration est obligatoire");
+		}else if(entity.getPeriode().getState().equals("etabli")){
+			throw new KerenExecption("OPERATION IMPOSSIBLE ::: La P&eacute;riode n'est pas ouverte");
+		}else if(entity.getPeriode().getState().equals("ferme")){
+			throw new KerenExecption("OPERATION IMPOSSIBLE ::: La P&eacute;riode est d&eacute;jà Ferm&eacute; !!");
 		}
 		super.processBeforeSave(entity);
 	}

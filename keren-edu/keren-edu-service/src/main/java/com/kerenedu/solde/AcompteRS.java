@@ -44,5 +44,10 @@ public interface AcompteRS
 	@Produces({ "application/pdf" })
 	@Path("pdf")
 	public Response buildPdfReport(Acompte entity);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Path("pdf")
+	public Response buildPdfReportbi(Acompte entity);
 
 }

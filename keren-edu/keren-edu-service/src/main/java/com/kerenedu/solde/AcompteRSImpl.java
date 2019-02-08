@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -19,10 +20,13 @@ import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
 import com.kerenedu.tools.reports.ReportHelper;
@@ -87,20 +91,24 @@ public class AcompteRSImpl
             workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'confirme'}");
             workbtn.setStates(new String[]{"etabli"});
             workbtn.setPattern("btn btn-success");
+            workbtn.setRoles(new String[]{"Administrateur"});
             meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work2", "Payer", false, "workflow", null);
             workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'paye'}");
             workbtn.setStates(new String[]{"confirme"});
+            workbtn.setRoles(new String[]{"Administrateur"});
             workbtn.setPattern("btn btn-primary");
             //meta.getHeader().add(workbtn);
             workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
             workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'annule'}");
             workbtn.setStates(new String[]{"confirme"});
+            workbtn.setRoles(new String[]{"Administrateur"});
             workbtn.setPattern("btn btn-danger");
             meta.getHeader().add(workbtn);	        
             workbtn = new MetaColumn("button", "work2", "Fiche Acompte", false, "report", null);
 			workbtn.setValue("{'model':'kereneducation','entity':'acompte','method':'pdf'}");
 			workbtn.setStates(new String[] { "paye","confirme" });
+			workbtn.setRoles(new String[]{"Administrateur"});
 			meta.getHeader().add(workbtn);
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
@@ -314,4 +322,26 @@ public class AcompteRSImpl
 		return param;
 	}
 
+	@Override
+	public Response buildPdfReportbi(Acompte entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
+	}
+
+	@Override
+	public List<Acompte> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		System.out.println("AcompteRSImpl.filter() je suis ici ==");
+		Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		PeriodePaie periode = (PeriodePaie) CacheMemory.getValue(id, TypeCacheMemory.PERIODE);
+		
+		if (periode != null) {
+			container.addGe("effet",periode.getDdebut());
+			container.addLe("effet",periode.getDfin());
+		} // end if(classe!=null)
+		container.addNotEq("state", "annule");	
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
 }

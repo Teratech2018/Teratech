@@ -4,7 +4,9 @@
 package com.kerenedu.personnel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
+import com.core.base.State;
 import com.kerenedu.configuration.Etablissement;
 import com.kerenedu.solde.Banque;
 import com.kerenedu.solde.Categorie;
@@ -101,7 +104,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	protected String email;
 	
 	@Column(name = "NE")
-	@Predicate(label = "Nombre d'enfants", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Information Personelles", groupName = "tab1")
+	@Predicate(label = "Nombre enfant", type = Long.class, search = false, sequence = 11, pattern = "[0-9]", group = true, groupLabel = "Information Personelles", groupName = "tab1")
 	private Long nefts = new Long(0);
 
 	@ManyToOne
@@ -207,6 +210,8 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	// @Predicate(label="Total Avance",updatable=false,search=true,
 	// type=Long.class ,sequence=8,editable=false)
 	protected Long zavance;
+	
+	private String state = "etabli";
 
 	// ajout tab inscription
 	// ajout tab absence
@@ -316,6 +321,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		}
 		this.modePaiement=entity.modePaiement;
 		this.allocationfamilliale=entity.allocationfamilliale;
+		this.state=entity.state;
 
 	}
 	
@@ -479,6 +485,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	public Fonction getRole() {
 		return role;
 	}
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 
 	public void setRole(Fonction role) {
 		this.role = role;
@@ -732,7 +748,8 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Override
 	public String getSearchkeys() {
 		// TODO Auto-generated method stub
-		return matricule+","+nom;
+		this.searchkeys =  matricule+" , "+nom+" ,"+this.status;
+		return matricule+" , "+nom+" ,"+this.status;
 	}
 	
 
@@ -741,5 +758,15 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		return (int)o.getId();
 	}
 
+	@Override
+	public List<State> getStates() {
+		// TODO Auto-generated method stub
+		List<State> states = new ArrayList<State>();
+		State state = new State("etabli", "Creé");
+		states.add(state);
+		state = new State("desactiver", "Desactivé");
+		states.add(state);
+		return states;
+	}
 
 }

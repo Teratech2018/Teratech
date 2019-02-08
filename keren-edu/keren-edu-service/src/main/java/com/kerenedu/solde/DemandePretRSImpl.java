@@ -84,24 +84,28 @@ public class DemandePretRSImpl
         // TODO Auto-generated method stub
         try {
                 MetaData meta = MetaDataUtil.getMetaData(new DemandePret(), new HashMap<String, MetaData>(),new ArrayList<String>());
-                MetaColumn workbtn = new MetaColumn("button", "work1", "Générer les reglements", false, "workflow", null);
-                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'echeancier'}");
+                MetaColumn workbtn = new MetaColumn("button", "work1", "G&eacute;n&eacute;rer les reglements", false, "workflow", null);
+                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'echeancier','critical':true,'alert':'&ecirc;tes vous sur de vouloir continuer ?'}");
                 workbtn.setStates(new String[]{"confirme"});
+                workbtn.setRoles(new String[]{"Administrateur"});
                 workbtn.setPattern("btn btn-info");
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work2", "Confirmer", false, "workflow", null);
-                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'confirme'}");
+                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'confirme','critical':true,'alert':'&ecirc;tes vous sur de vouloir continuer ?'}");
                 workbtn.setStates(new String[]{"etabli"});
+                workbtn.setRoles(new String[]{"Administrateur"});
                 workbtn.setPattern("btn btn-success");
                 meta.getHeader().add(workbtn);
                 workbtn = new MetaColumn("button", "work3", "Annuler", false, "workflow", null);
-                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'annule'}");
+                workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'annule','critical':true,'alert':'&ecirc;tes vous sur de vouloir continuer ?'}");
                 workbtn.setStates(new String[]{"confirme"});
+                workbtn.setRoles(new String[]{"Administrateur"});
                 workbtn.setPattern("btn btn-danger");
                 meta.getHeader().add(workbtn);	     
-                 workbtn = new MetaColumn("button", "work2", "Fiche de Prêt", false, "report", null);
+                 workbtn = new MetaColumn("button", "work2", "Fiche de Pr&ecirc;t", false, "report", null);
     			workbtn.setValue("{'model':'kereneducation','entity':'demandepret','method':'pdf'}");
-    			workbtn.setStates(new String[] { "confirme" });
+    			workbtn.setStates(new String[] { "confirme", "encours","paye","termine" });
+    			workbtn.setRoles(new String[]{"Administrateur"});
     			meta.getHeader().add(workbtn);
     			
                 MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
@@ -133,34 +137,49 @@ public class DemandePretRSImpl
 
         // TODO Auto-generated method stub
         if(entity.getTypepret()==null){
-                throw new KerenExecption("Le Type de Prêt est obligatoire");
+                throw new KerenExecption("Le Type de Pr&ecirc;t est obligatoire");
         }else if(entity.getEmploye()==null){
-                throw new KerenExecption("Le Salarié  est obligatoire");
+                throw new KerenExecption("Le Salari&eacute;  est obligatoire");
         }else if(entity.getDrembour()==null){
-                throw new KerenExecption("La date de début remboursement  est obligatoire");
+                throw new KerenExecption("La date de d&eacute;but remboursement  est obligatoire");
         }else if(entity.getMontantsol()==null){
-                throw new KerenExecption("Le montant sollicité  est obligatoire");
+                throw new KerenExecption("Le montant sollicit&eacute;  est obligatoire");
         }
 //        }else if(entity.getMontantpro()==null){
-//                throw new KerenExecption("Le montant proposé  est obligatoire");
+//                throw new KerenExecption("Le montant propos&eacute;  est obligatoire");
 //        }
         else if(entity.getDuree()==null){
-                throw new KerenExecption("La durée du remboursement est obligatoire");
+                throw new KerenExecption("La dur&eacute;e du remboursement est obligatoire");
         }else if(entity.getQuotite()==null){
-                throw new KerenExecption("La Quotité cessible est obligatoire");
+                throw new KerenExecption("La Quotit&eacute; cessible est obligatoire");
         }else if(entity.getState().equalsIgnoreCase("confirme")){
-                throw new KerenExecption("Demande de Prêt déjà confirmée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; confirm&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("encours")){
-                throw new KerenExecption("Demande de Prêt déjà confirmée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; confirm&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("termine")){
-                throw new KerenExecption("Demande de Prêt déjà terminée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; termin&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("annule")){
-                throw new KerenExecption("Demande de Prêt déjà annulée");
-//        }else if(entity.getDpret().after(entity.getDrembour())){
-//                throw new KerenExecption("La date de pret ne peut etre superieure à la date de remboursement");
-//        }
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; annul&eacute;e");
+        }else if(entity.getDpret().after(entity.getDrembour())){
+                throw new KerenExecption("La date de pret ne peut etre superieure &agrave; la date de remboursement");
         }
-
+        // verifier si l'employ&eacute; n'a pas dej&agrave; un autre pret encours
+        RestrictionsContainer container = RestrictionsContainer.newInstance();
+        container.addEq("employe.id", entity.getEmploye().getId());
+        container.addNotEq("state", "termine");
+        container.addNotEq("state", "annule");
+        List<DemandePret> listpret = manager.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+        if(listpret!=null&&!listpret.isEmpty()&&listpret.size()!=0){
+        	 throw new KerenExecption("	OPPERATION IMPOSSIBLE : Cet employe &agrave; dej&agrave; un Pr&ecirc;t encours !!!");
+        }
+        
+        
+        container = RestrictionsContainer.newInstance();
+		container.addEq("connected", true);
+		List<AnneScolaire> annee = managerAnnee.filter(container.getPredicats(), null, null, 0, -1);
+		if (annee == null || annee.size() == 0) {
+			throw new KerenExecption("TRAITEMENt IMPOSSIBLE ::: Aucune Ann&eacute;e Scolaire disponible !!!");
+		}
         //On set l'etat initial
         entity.setState("confirme");
 
@@ -172,14 +191,7 @@ public class DemandePretRSImpl
         	entity.setSolde(entity.getMontantpro());
         	entity.setMontantRem(entity.getMontantpro()-entity.getSolde());
         }
-        
-        
-        RestrictionsContainer container = RestrictionsContainer.newInstance();
-		container.addEq("connected", true);
-		List<AnneScolaire> annee = managerAnnee.filter(container.getPredicats(), null, null, 0, -1);
-		if (annee == null || annee.size() == 0) {
-			throw new KerenExecption("Traitement impossible<br/> Aucune Année Scolaire disponible !!!");
-		}
+
 		entity.setAnneScolaire(annee.get(0).getCode());
         super.processBeforeSave(entity);
     }
@@ -189,33 +201,33 @@ public class DemandePretRSImpl
 
         // TODO Auto-generated method stub
         if(entity.getTypepret()==null){
-                throw new KerenExecption("Le Type de Prêt est obligatoire");
+                throw new KerenExecption("Le Type de Pr&ecirc;t est obligatoire");
         }else if(entity.getEmploye()==null){
-                throw new KerenExecption("Le Salarié  est obligatoire");
+                throw new KerenExecption("Le Salari&eacute;  est obligatoire");
         }else if(entity.getDpret()==null){
-                throw new KerenExecption("La date de Prêt  est obligatoire");
+                throw new KerenExecption("La date de Pr&ecirc;t  est obligatoire");
         }else if(entity.getDrembour()==null){
-                throw new KerenExecption("La date de début remboursement  est obligatoire");
+                throw new KerenExecption("La date de d&eacute;but remboursement  est obligatoire");
         }else if(entity.getMontantsol()==null){
-                throw new KerenExecption("Le montant sollicité  est obligatoire");
+                throw new KerenExecption("Le montant sollicit&eacute;  est obligatoire");
         }else if(entity.getMontantpro()==null){
-                throw new KerenExecption("Le montant proposé  est obligatoire");
+                throw new KerenExecption("Le montant propos&eacute;  est obligatoire");
         }else if(entity.getDuree()==null){
-                throw new KerenExecption("La durée du remboursement est obligatoire");
+                throw new KerenExecption("La dur&eacute;e du remboursement est obligatoire");
         }else if(entity.getQuotite()==null){
-                throw new KerenExecption("La Quotité cessible est obligatoire");
+                throw new KerenExecption("La Quotit&eacute; cessible est obligatoire");
         }else if(entity.getState().equalsIgnoreCase("confirme")){
-                throw new KerenExecption("Demande de Prêt déjà confirmée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; confirm&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("encours")){
-                throw new KerenExecption("Demande de Prêt déjà confirmée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; confirm&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("termine")){
-                throw new KerenExecption("Demande de Prêt déjà terminée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; termin&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("annule")){
-                throw new KerenExecption("Demande de Prêt déjà annulée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; annul&eacute;e");
         }else if(entity.getDpret().after(entity.getDrembour())){
-                throw new KerenExecption("La date de pret ne peut etre superieure à la date de remboursement");
+                throw new KerenExecption("La date de pret ne peut etre superieure &agrave; la date de remboursement");
         }else if(entity.getMontantsol() < entity.getMontantpro()){
-                throw new KerenExecption("Le montant proposé, ne peut etre supérieur au montant sollicité");
+                throw new KerenExecption("Le montant propos&eacute;, ne peut etre sup&eacute;rieur au montant sollicit&eacute;");
         }
 
         super.processBeforeUpdate(entity);
@@ -226,31 +238,31 @@ public class DemandePretRSImpl
        
         // TODO Auto-generated method stub
         if(entity.getTypepret()==null){
-                throw new KerenExecption("Le Type de Prêt est obligatoire");
+                throw new KerenExecption("Le Type de Pr&ecirc;t est obligatoire");
         }else if(entity.getEmploye()==null){
-                throw new KerenExecption("Le Salarié  est obligatoire");
+                throw new KerenExecption("Le Salari&eacute;  est obligatoire");
         }else if(entity.getDpret()==null){
-                throw new KerenExecption("La date de Prêt  est obligatoire");
+                throw new KerenExecption("La date de Pr&ecirc;t  est obligatoire");
         }else if(entity.getDrembour()==null){
-                throw new KerenExecption("La date de début remboursement  est obligatoire");
+                throw new KerenExecption("La date de d&eacute;but remboursement  est obligatoire");
         }else if(entity.getMontantsol()==null){
-                throw new KerenExecption("Le montant sollicité  est obligatoire");
+                throw new KerenExecption("Le montant sollicit&eacute;  est obligatoire");
         }else if(entity.getMontantpro()==null){
-                throw new KerenExecption("Le montant proposé  est obligatoire");
+                throw new KerenExecption("Le montant propos&eacute;  est obligatoire");
         }else if(entity.getDuree()==null){
-                throw new KerenExecption("La durée du remboursement est obligatoire");
+                throw new KerenExecption("La dur&eacute;e du remboursement est obligatoire");
         }else if(entity.getQuotite()==null){
-                throw new KerenExecption("La Quotité cessible est obligatoire");
+                throw new KerenExecption("La Quotit&eacute; cessible est obligatoire");
         }else if(entity.getState().equalsIgnoreCase("encours")){
-                throw new KerenExecption("Demande de Prêt déjà en cours de remboursement");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; en cours de remboursement");
         }else if(entity.getState().equalsIgnoreCase("termine")){
-                throw new KerenExecption("Demande de Prêt déjà terminée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; termin&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("annule")){
-                throw new KerenExecption("Demande de Prêt déjà annulée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; annul&eacute;e");
         }else if(entity.getRemboursements() !=null &&!entity.getRemboursements().isEmpty()){
-                throw new KerenExecption("Des remboursements sont déjà générés pour cette demande");
+                throw new KerenExecption("Des ech&eacute;ances sont d&eacute;j&agrave; g&eacute;n&eacute;r&eacute;s pour cette demande");
         }else if(entity.getMontantsol() < entity.getMontantpro()){
-                throw new KerenExecption("Le montant proposé, ne peut etre supérieur au montant sollicité");
+                throw new KerenExecption("Le montant propos&eacute;, ne peut etre sup&eacute;rieur au montant sollicit&eacute;");
         }
 
         return manager.generereglements(entity);
@@ -261,35 +273,35 @@ public class DemandePretRSImpl
 
         // TODO Auto-generated method stub
         if(entity.getTypepret()==null){
-                throw new KerenExecption("Le Type de Prêt est obligatoire");
+                throw new KerenExecption("Le Type de Pr&ecirc;t est obligatoire");
         }else if(entity.getEmploye()==null){
-                throw new KerenExecption("Le Salarié  est obligatoire");
+                throw new KerenExecption("Le Salari&eacute;  est obligatoire");
         }else if(entity.getDpret()==null){
-                throw new KerenExecption("La date de Prêt  est obligatoire");
+                throw new KerenExecption("La date de Pr&ecirc;t  est obligatoire");
         }else if(entity.getDrembour()==null){
-                throw new KerenExecption("La date de début remboursement  est obligatoire");
+                throw new KerenExecption("La date de d&eacute;but remboursement  est obligatoire");
         }else if(entity.getMontantsol()==null){
-                throw new KerenExecption("Le montant sollicité  est obligatoire");
+                throw new KerenExecption("Le montant sollicit&eacute;  est obligatoire");
         }else if(entity.getMontantpro()==null){
-                throw new KerenExecption("Le montant proposé  est obligatoire");
+                throw new KerenExecption("Le montant propos&eacute;  est obligatoire");
         }else if(entity.getDuree()==null){
-                throw new KerenExecption("La durée du remboursement est obligatoire");
+                throw new KerenExecption("La dur&eacute;e du remboursement est obligatoire");
         }else if(entity.getQuotite()==null){
-                throw new KerenExecption("La Quotité cessible est obligatoire");
+                throw new KerenExecption("La Quotit&eacute; cessible est obligatoire");
         }else if(entity.getState().equalsIgnoreCase("confirme")){
-                throw new KerenExecption("La demande de Prêt est déjà confirmée");
+                throw new KerenExecption("La demande de Pr&ecirc;t est d&eacute;j&agrave; confirm&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("encours")){
-                throw new KerenExecption("Demande de Prêt déjà en cours de remboursement");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; en cours de remboursement");
         }else if(entity.getState().equalsIgnoreCase("termine")){
-                throw new KerenExecption("Demande de Prêt déjà terminée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; termin&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("annule")){
-                throw new KerenExecption("Demande de Prêt déjà annulée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; annul&eacute;e");
         }else if(entity.getRemboursements()==null||entity.getRemboursements().isEmpty()){
-                throw new KerenExecption("Veuillez générer les remboursements");
+                throw new KerenExecption("Veuillez g&eacute;n&eacute;rer les remboursements");
         }else if(entity.getDpret().after(entity.getDrembour())){
-                throw new KerenExecption("La date de pret ne peut etre superieure à la date de remboursement");
+                throw new KerenExecption("La date de pr&ecirc;t ne peut &ecirc;tre sup&egrave;rieure &agrave; la date de remboursement");
         }else if(entity.getMontantsol() < entity.getMontantpro()){
-                throw new KerenExecption("Le montant proposé, ne peut etre supérieur au montant sollicité");
+                throw new KerenExecption("Le montant propos&eacute;, ne peut etre sup&egrave;rieur au montant sollicit&eacute;");
         }
 
         return manager.confirme(entity);
@@ -300,31 +312,31 @@ public class DemandePretRSImpl
 
         // TODO Auto-generated method stub
         if(entity.getTypepret()==null){
-                throw new KerenExecption("Le Type de Prêt est obligatoire");
+                throw new KerenExecption("Le Type de Pr&ecirc;t est obligatoire");
         }else if(entity.getEmploye()==null){
-                throw new KerenExecption("Le Salarié  est obligatoire");
+                throw new KerenExecption("Le Salari&eacute;  est obligatoire");
         }else if(entity.getDpret()==null){
-                throw new KerenExecption("La date de Prêt  est obligatoire");
+                throw new KerenExecption("La date de Pr&ecirc;t  est obligatoire");
         }else if(entity.getDrembour()==null){
-                throw new KerenExecption("La date de début remboursement  est obligatoire");
+                throw new KerenExecption("La date de d&eacute;but remboursement  est obligatoire");
         }else if(entity.getMontantsol()==null){
-                throw new KerenExecption("Le montant sollicité  est obligatoire");
+                throw new KerenExecption("Le montant sollicit&eacute;  est obligatoire");
         }else if(entity.getMontantpro()==null){
-                throw new KerenExecption("Le montant proposé  est obligatoire");
+                throw new KerenExecption("Le montant propos&eacute;  est obligatoire");
         }else if(entity.getDuree()==null){
-                throw new KerenExecption("La durée du remboursement est obligatoire");
+                throw new KerenExecption("La dur&eacute;e du remboursement est obligatoire");
         }else if(entity.getQuotite()==null){
-                throw new KerenExecption("La Quotité cessible est obligatoire");
+                throw new KerenExecption("La Quotit&eacute; cessible est obligatoire");
         }else if(entity.getState().equalsIgnoreCase("encours")){
-                throw new KerenExecption("Demande de Prêt déjà en cours de remboursement");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; en cours de remboursement");
         }else if(entity.getState().equalsIgnoreCase("termine")){
-                throw new KerenExecption("Demande de Prêt déjà terminée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; termin&eacute;e");
         }else if(entity.getState().equalsIgnoreCase("annule")){
-                throw new KerenExecption("Demande de Prêt déjà annulée");
+                throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; annul&eacute;e");
         }else if(entity.getDpret().after(entity.getDrembour())){
-                throw new KerenExecption("La date de pret ne peut etre superieure à la date de remboursement");
+                throw new KerenExecption("La date de pret ne peut etre superieure &agrave; la date de remboursement");
         }else if(entity.getMontantsol() < entity.getMontantpro()){
-                throw new KerenExecption("Le montant proposé, ne peut etre supérieur au montant sollicité");
+                throw new KerenExecption("Le montant propos&eacute;, ne peut etre sup&egrave;rieur au montant sollicit&eacute;");
         }
 
         return manager.annule(entity);
@@ -342,7 +354,7 @@ public class DemandePretRSImpl
             super.delete(headers,id);
 
         }catch(Exception ex){
-            throw new KerenExecption("Suppresion impossible<br/>car cet objet est deja en cours d'utilisation par d'autres objets");
+            throw new KerenExecption("Suppresion impossible<br/>car cet objet est d&eacute;j&agrave; en cours d'utilisation par d'autres objets");
         }
 
         return entity;
@@ -378,12 +390,12 @@ public class DemandePretRSImpl
 			Double netarond = bd.doubleValue();
 			String mntEnlettre = rbnf.format(netarond);
 			entity.setMntLettre(mntEnlettre);
-			System.out.println("DemandePretRSImpl.buildPdfReport() remboursement "+entity.getRemboursements().size());
+		//	System.out.println("DemandePretRSImpl.buildPdfReport() remboursement "+entity.getRemboursements().size());
 			String URL = ReportHelper.templatepaieURL + ReportsName.FICHE_PRET.getName();
 			List<DemandePret> records = new ArrayList<DemandePret>();
 			records.add(entity);
 			if (records.isEmpty() || records.size() == 0) {
-				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionné un eleve !!!");
+				throw new KerenExecption("TRAITEMENt IMPOSIBLE ::: Bien vouloir Selectionn&eacute; un el&egrave;ve !!!");
 			}
 			Map parameters = this.getReportParameters();
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
@@ -395,5 +407,11 @@ public class DemandePretRSImpl
 		}
 
 		return Response.noContent().build();
+	}
+
+	@Override
+	public Response buildPdfReportbi(DemandePret entity) {
+		// TODO Auto-generated method stub
+		return this.buildPdfReport(entity);
 	}
 }

@@ -3,12 +3,16 @@ package com.kerenedu.solde;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.CacheMemory;
@@ -74,7 +78,14 @@ public class TraitSalaireRSImpl
 	@Override
 	public TraitSalaire save(@Context HttpHeaders headers , TraitSalaire entity) {
 		// TODO Auto-generated method stub
-		processBeforeSave(entity);
+		  processBeforeSave(entity);
+		  // controle si préparation 
+		  RestrictionsContainer container = RestrictionsContainer.newInstance();
+		  container.addEq("periode.id", entity.getPeriode().getId());
+		  List<BulletinPaie> datas = managerbul.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+		  if(datas==null||datas.isEmpty()||datas.size()==0){
+			  throw new KerenExecption("OPERATION IMPOSSIBLE ::Bien vouloir effectu&eacute; la pr&eacute;paration de la paie de cette p&eacute;riode !!");
+		  }
 		 managerbul.validerSalaire(entity);
 		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.PERIODE, entity.getPeriode());
 		processAfterSave(entity);

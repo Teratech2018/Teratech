@@ -1,7 +1,10 @@
 
 package com.kerenedu.solde;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.ViewRetenueModal;
 
 
 /**
@@ -22,4 +25,6 @@ public interface AcompteManager
   	public Acompte annule(Acompte entity);
   	
   	public boolean disponible(Acompte entity, PeriodePaie periode);
+  	
+	public List<Acompte> getCriteres(ViewRetenueModal critere) ;
 }

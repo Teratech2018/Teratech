@@ -242,7 +242,10 @@ public class DemandePretManagerImpl
         List<RemboursementPret> remlist = new ArrayList<RemboursementPret>();
         for(RemboursementPret rem: pret.getRemboursements()){
         	rem.setState("annule");
-        	variabledao.delete(rem.getId());
+        	ElementVariable elem = rem.getEltVariable();
+        	elem.setState("inactif");
+        	variabledao.update(elem.getId(), elem);
+        	//variabledao.delete(rem.getId());
         }
         entity.setRemboursements(remlist);
         dao.update(entity.getId(), entity);

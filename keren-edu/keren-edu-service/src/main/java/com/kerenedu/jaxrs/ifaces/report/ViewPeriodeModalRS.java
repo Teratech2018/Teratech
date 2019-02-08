@@ -42,7 +42,7 @@ public interface ViewPeriodeModalRS extends GenericService<ViewPeriodeModal, Lon
 	@PUT
 	@Produces({ "application/pdf" })
 	@Consumes({MediaType.APPLICATION_JSON})
-	@Path("ret")
+	@Path("pret")
 	public Response retenuesSalaires(ViewPeriodeModal entity, @Context HttpHeaders headers);
 	
 	@PUT

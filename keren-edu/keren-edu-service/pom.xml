@@ -11,9 +11,9 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-         <serveur.jboss.repertoire.deploiement.war>D:\DEV_TOOLS\serveur\wildfly-8.0.0.Final\standalone\deployments\kereneducation.war</serveur.jboss.repertoire.deploiement.war>
-        <!--  <serveur.jboss.repertoire.deploiement.war>D:\DEV_TOOLS\serveur\education\jboss\standalone\deployments\kereneducation.war</serveur.jboss.repertoire.deploiement.war> --> 
-        <repertoire.target.generation.war>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-service\target\kereneducation.war</repertoire.target.generation.war>
+       	 <!-- <serveur.jboss.repertoire.deploiement.war>D:\DEV_TOOLS\serveur\wildfly-8.0.0.Final\standalone\deployments\kereneducation.war</serveur.jboss.repertoire.deploiement.war> --> 
+        <serveur.jboss.repertoire.deploiement.war>D:\DEV_TOOLS\serveur\education\jboss\standalone\deployments\kereneducation.war</serveur.jboss.repertoire.deploiement.war>
+          <repertoire.target.generation.war>D:\WORKSPACE\KEREN\TERATECH\src\sourceperso\src\innov_school\keren-edu\keren-edu-service\target\kereneducation.war</repertoire.target.generation.war>
         
     </properties>
   <dependencies>

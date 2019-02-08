@@ -57,6 +57,9 @@ public class ElementVariableClone extends BaseElement implements Serializable, C
 	private long elvapid ;
 	
 
+	private String state = "actif";
+	
+
 	
 	@OneToMany(mappedBy="eltVariable",fetch=FetchType.LAZY)
 //	@Predicate(label="Remb Avance",type=RemboursementAvance.class,target="many-to-one",search=true)
@@ -175,7 +178,7 @@ public class ElementVariableClone extends BaseElement implements Serializable, C
 		this.ddeb=elem.getDdeb();
 		this.dfin=elem.getDfin();
 		this.elvapid=elem.getElvapid();
-		
+		this.state=elem.getState();
 	}	
 	
 
@@ -306,6 +309,14 @@ public class ElementVariableClone extends BaseElement implements Serializable, C
 		this.cumulSTA = cumulSTA;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public Double getCumulSCO() {
 		return cumulSCO;
 	}
@@ -419,19 +430,17 @@ public class ElementVariableClone extends BaseElement implements Serializable, C
 		// TODO Auto-generated method stub
 		return true;
 	}
-
 	@Override
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
 		List<State> states = new ArrayList<State>();
-		State state = new State("etabli", "Brouillon");
+		State state = new State("actif", "Actif");
 		states.add(state);
-		state = new State("active", "Actif");
-		states.add(state);
-		state = new State("inactive", "Inactif");
+		state = new State("inactif", "Inactif");
 		states.add(state);
 		return states;
 	}
+
 
 	@Override
 	public boolean isActivatefollower() {

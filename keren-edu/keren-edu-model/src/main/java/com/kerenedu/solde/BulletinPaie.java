@@ -42,10 +42,16 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 
 	// @Predicate(label="Intutilé",updatable=false,optional=false,search=true)
 	private String code;
+	@Column(name = "MAT")
+	@Predicate(label = "Matricule", optional = true, updatable = true, search = true, sequence = 1,editable=false)
+	protected String matricule;
 
+	@Column(name = "NOM_P")
+	@Predicate(label = "NOM", optional = false, updatable = true, search = true, sequence = 2)
+	protected String nomp;
 	@ManyToOne
 	@JoinColumn(name = "EMP_ID")
-	@Predicate(label = "Employé", type = Professeur.class, target = "many-to-one", updatable = false, optional = false, search = true, sequence = 1)
+	//@Predicate(label = "Employé", type = Professeur.class, target = "many-to-one", updatable = false, optional = false, search = true, sequence = 1)
 	private Professeur employe;
 
 	//@Predicate(label = "Date de payement", type = Date.class, target = "date", updatable = false, search = true, sequence = 2)
@@ -178,6 +184,20 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	@Column(name = "allocation")
 //	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
 	private Double allocation = 0.0;
+	
+	
+	@Column(name = "pret")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double pret = 0.0;
+	
+	@Column(name = "acom")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double acom = 0.0;
+	
+	@Column(name = "sbase")
+//	@Predicate(label = "Salaire Cotisable", type = Double.class, editable = false, updatable = false, group = true, groupName = "group3", groupLabel = "RECAPITULATIF")
+	private Double sbase = 0.0;
+
 
 	
 
@@ -243,6 +263,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 	private String state = "etabli";
 
 	private String netLettre = "";
+	
 	@Column(name = "ANNEE_ID")
 	protected String anneScolaire;
 
@@ -333,6 +354,8 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		this.nom=structure.getNom();
 		this.adresse=structure.getAdresse();
 		this.contacts=structure.getContacts();
+		this.nomp=employe.getNom();
+		this.matricule=employe.getMatricule();
 	}
 
 	public BulletinPaie(BulletinPaie bulletin) {
@@ -384,6 +407,11 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		this.allocation=bulletin.allocation;
 		this.indemnite=bulletin.indemnite;
 		this.prime=bulletin.prime;
+		this.nomp = bulletin.nomp;
+		this.matricule=bulletin.matricule;
+		this.pret=bulletin.pret;
+		this.acom=bulletin.acom;
+		this.sbase=bulletin.sbase;
 	}
 
 //	public BulletinPaie(LivrePaie livre) {
@@ -405,12 +433,36 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		this.nom = nom;
 	}
 
+	public Double getPret() {
+		return pret;
+	}
+
+	public void setPret(Double pret) {
+		this.pret = pret;
+	}
+
+	public Double getAcom() {
+		return acom;
+	}
+
+	public void setAcom(Double acom) {
+		this.acom = acom;
+	}
+
 	public String getContacts() {
 		return contacts;
 	}
 
 	public void setContacts(String contacts) {
 		this.contacts = contacts;
+	}
+
+	public Double getSbase() {
+		return sbase;
+	}
+
+	public void setSbase(Double sbase) {
+		this.sbase = sbase;
 	}
 
 	public String getAdresse() {
@@ -525,6 +577,22 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		this.anneScolaire = anneScolaire;
 	}
 
+	public String getMatricule() {
+		return matricule;
+	}
+
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
+	}
+
+	public String getNomp() {
+		return nomp;
+	}
+
+	public void setNomp(String nomp) {
+		this.nomp = nomp;
+	}
+
 	public void setCongesAcquisPeriode(Double congesAcquisPeriode) {
 		this.congesAcquisPeriode = congesAcquisPeriode;
 	}
@@ -611,14 +679,22 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		return employe.getDesignation();
 	}
 
-	@Override
-	public boolean isCreateonfield() {
-		// TODO Auto-generated method stub
-		return super.isCreateonfield();
-	}
+	
 
 	@Override
 	public boolean isDesabledelete() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public boolean isDesableupdate() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public boolean isDesablecreate() {
 		// TODO Auto-generated method stub
 		return true;
 	}
@@ -641,16 +717,15 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		List<State> states = new ArrayList<State>();
 		State state = new State("etabli", "Brouillon");
 		states.add(state);
-		state = new State("valide", "Validé");
-		states.add(state);
+		state = new State("paye", "Payé");
+		 states.add(state);
 		// state = new State("constate", "A constater");
 		// states.add(state);
-		state = new State("transfere", "Transfere en Comptabilité");
-		states.add(state);
+		//state = new State("transfere", "Transfere en Comptabilité");
+		//states.add(state);
 		// state = new State("ordonne", "Paiement ordonné");
 		// states.add(state);
-		// state = new State("paye", "Payé");
-		// states.add(state);
+		
 		return states;
 	}
 
@@ -659,6 +734,9 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	
+	
 
 	public Parametres getParametre() {
 		return parametre;
@@ -897,5 +975,10 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		return employe.compareTo(o.employe);
 	}
 
-
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		this.searchkeys = matricule+ "  " +nomp+" , " +anneScolaire;
+		return matricule+ "  " +nomp+" , " +anneScolaire;
+	}
 }

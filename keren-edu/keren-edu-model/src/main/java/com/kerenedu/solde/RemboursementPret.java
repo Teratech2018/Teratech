@@ -271,7 +271,7 @@ public class RemboursementPret extends BaseElement implements Serializable, Comp
 		states.add(state);
 		state = new State("paye", "Payé");
 		states.add(state);		
-		state = new State("refuse", "Refusé");
+		state = new State("anulle", "Anullé");
 		states.add(state);		
 		return states;
 	}

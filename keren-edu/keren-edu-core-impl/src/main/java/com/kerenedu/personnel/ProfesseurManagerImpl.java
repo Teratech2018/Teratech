@@ -109,6 +109,7 @@ public class ProfesseurManagerImpl
 //		this.zretenu=eleve.zretenu;
 //		this.salaire=eleve.salaire;
    		entity.setSalmax((long) 0);
+   		entity.setState("etabli");
 		super.processBeforeSave(entity);
 	}
 
@@ -195,13 +196,13 @@ public class ProfesseurManagerImpl
 		 if(entity.getImage()!=null){
 	    	  // try {
 	    	   String imageName = entity.getImage();
-	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
+	    	 //  System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
 	    	   String newName = entity.getMatricule()+".png";
 	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
 	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
-	    	   File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
-	    	   filedest.renameTo(new File(file.getPath()+File.separator+newName));
-	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
+	    	   //File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
+	    	 //  filedest.renameTo(new File(file.getPath()+File.separator+newName));
+	    	   //System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
 ////	           File filerename = new File(newName);
 //	           try {
 //				FileHelper.copyFile(new File(file.getPath()), new File(filedest.getPath()));
@@ -211,6 +212,22 @@ public class ProfesseurManagerImpl
 //			}
 	       }
 		super.processAfterSave(entity);
+	}
+
+	@Override
+	public Professeur activer(Professeur entity) {
+		 // TODO Auto-generated method stub
+        entity.setState("etabli");
+        dao.update(entity.getId(), entity);
+        return entity;
+	}
+
+	@Override
+	public Professeur desactiver(Professeur entity) {
+		 // TODO Auto-generated method stub
+        entity.setState("desactiver");
+        dao.update(entity.getId(), entity);
+        return entity;
 	}
   	
 	

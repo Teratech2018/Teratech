@@ -77,51 +77,10 @@ public class PeriodePaieCloseRSImpl
 	@Override
 	public PeriodePaieClose save(@Context HttpHeaders headers ,PeriodePaieClose entity) {
 		// TODO Auto-generated method stub
-		entity.getPeriode().setState("ferme");
-		PeriodePaie periode = entity.getPeriode();
-		
+		entity.getPeriode().setState("ferme");		
 		Gson gson = new Gson();
 		long id = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 		CacheMemory.insert(id, TypeCacheMemory.PERIODE, entity.getPeriode());
-		
-		// valide payement acompte echeance de la periode
-		RestrictionsContainer container = RestrictionsContainer.newInstance();
-
-		if (periode != null) {
-			container.addGe("date",periode.getDdebut());
-			container.addLe("date",periode.getDfin());
-		} // end if(classe!=null)
-		container.addNotEq("state", "annule");	
-		List<RemboursementPret> remlist = managerrembour.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		if(remlist!=null&&!remlist.isEmpty()){
-			for(RemboursementPret rem : remlist){
-				rem.setState("paye");
-				managerrembour.update(rem.getId(), rem);
-				// update pret
-				DemandePret ddepret = rem.getDemande();
-				ddepret.setState("encours");
-				double liquide = ddepret.getMontantRem()+rem.getMontant();
-				ddepret.setMontantRem(liquide);
-				managerpret.update(ddepret.getId(), ddepret);
-			}
-		}
-		System.out.println("PeriodePaieCloseRSImpl.save() update remboursement ok ==========");
-		container = RestrictionsContainer.newInstance();
-		if (periode != null) {
-			container.addGe("effet",periode.getDdebut());
-			container.addLe("effet",periode.getDfin());
-		} // end if(classe!=null)
-		container.addNotEq("state", "annule");
-		List<Acompte> acomptelist= manageracompte.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		if(acomptelist!=null&&!acomptelist.isEmpty()){
-			for(Acompte acompte : acomptelist){
-				acompte.setState("paye");
-				manageracompte.update(acompte.getId(), acompte);
-			}
-		}
-		System.out.println("PeriodePaieCloseRSImpl.save() update acompte ok ==========");
-
-		// ferme période
 		managerperiode.update(entity.getPeriode().getId(), entity.getPeriode());
 		
 		return entity;

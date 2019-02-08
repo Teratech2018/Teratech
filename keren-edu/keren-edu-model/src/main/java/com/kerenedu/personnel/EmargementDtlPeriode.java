@@ -46,7 +46,6 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 	protected String nom;
 	
 	
-	
 	@ManyToOne
 	@JoinColumn(name = "P_ID")
 	//@Predicate(label="Professeur",updatable=false,type=ProfesseurChoice.class , target="many-to-one",search=true , sequence=1	,colsequence=1,hide=true)
@@ -75,6 +74,14 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 	@JoinColumn(name="PERIODE_ID")
 	@Predicate(label="Periode",type=PeriodePaie.class,target="many-to-one",optional=true, sequence=3, observable=true, search=true,colsequence=3)
 	private PeriodePaie periode ;
+	
+	@Temporal(javax.persistence.TemporalType.DATE)
+	//@Predicate(label="Date de debut",type=Date.class,target="date",search=true, sequence=3)
+	private Date dsaisie;
+	
+	@Column(name = "ANNEE_ID")
+	protected String anneScolaire;
+
 
 	public EmargementDtlPeriode() {
 		super();
@@ -116,6 +123,7 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 		this.retard = entity.retard;
 		this.statut = entity.statut;
 		this.matiere=entity.matiere;
+		this.anneScolaire=entity.anneScolaire;
 		
 	}
 
@@ -319,10 +327,55 @@ public class EmargementDtlPeriode extends BaseElement implements Serializable, C
 
 
 
+	public String getAnneScolaire() {
+		return anneScolaire;
+	}
+
+
+
+
+
+
+
+	public void setAnneScolaire(String anneScolaire) {
+		this.anneScolaire = anneScolaire;
+	}
+
+
+
+
+
+
+
 	public void setRetard(Double retard) {
 		this.retard = retard;
 	}
 
+	public Date getDsaisie() {
+		return dsaisie;
+	}
 
+
+
+
+
+
+
+	public void setDsaisie(Date dsaisie) {
+		this.dsaisie = dsaisie;
+	}
+
+
+
+
+
+
+
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		this.searchkeys = matricule+ "  " +nom+" , " +anneScolaire;
+		return matricule+ "  " +nom+" , " +anneScolaire;
+	}
 
 }

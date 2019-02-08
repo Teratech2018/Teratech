@@ -110,7 +110,7 @@ public class EmargementPeriodeManagerImpl
 			if (notes.getMatricule() != null) {
 				container.addEq("matricule", notes.getMatricule());//+"/"+entity.getAnneScolaire());
 			}
-			System.out.println("EmargementPeriodeManagerImpl.importNote() matricule is "+notes.getMatricule());
+			//System.out.println("EmargementPeriodeManagerImpl.importNote() matricule is "+notes.getMatricule());
 			//container.addEq("status", "0");
 			List<Professeur> prof = daovac.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 			if(prof!=null&&!prof.isEmpty()){
@@ -118,7 +118,8 @@ public class EmargementPeriodeManagerImpl
 				notes.setMatricule(prof.get(0).getMatricule());
 				notes.setNom(prof.get(0).getNom());
 				notes.setPeriode(entity.getPeriode());
-			
+				notes.setAnneScolaire(entity.getPeriode().getExercice().getCode());
+				notes.setDsaisie(entity.getPeriode().getDfin());
 			}
 			// get cout matiere
 //			container = RestrictionsContainer.newInstance();
@@ -132,7 +133,7 @@ public class EmargementPeriodeManagerImpl
 			
 			datas.add(notes);
 		}
-		System.out.println("EmargementPeriodeManagerImpl.importNote() datas ud size"+datas.size());
+		//System.out.println("EmargementPeriodeManagerImpl.importNote() datas ud size"+datas.size());
 		container = RestrictionsContainer.newInstance();
 		container.addEq("periode.id", entity.getPeriode().getId());
 		List<EmargementPeriode> emargelist= dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);

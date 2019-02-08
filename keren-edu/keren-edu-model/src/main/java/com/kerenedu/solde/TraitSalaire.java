@@ -86,13 +86,13 @@ public class TraitSalaire extends BaseElement implements Serializable, Comparabl
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
-		return "Traitement des salaires";
+		return "Validation des salaires";
 	}
 
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Traitement des salaires";
+		return "Validation des salaires";
 	}
 
 	@Override

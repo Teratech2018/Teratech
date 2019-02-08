@@ -43,7 +43,7 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 			 sequence=4)
 	private String nature ="0";	
 	
-	@Predicate(label="Impression sur le bulletin",target="combobox",values="Jamais;Toujours;si non nul", sequence=5)
+	@Predicate(label="Sur le bulletin si ?",target="combobox",values="Jamais;Toujours;si non nul", sequence=5)
 	private String porte="0";
 	
 	@Predicate(label="Acompte?",type=Boolean.class, sequence=6)
@@ -52,7 +52,7 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="Prêt?",type=Boolean.class, sequence=7)
 	private Boolean pret = Boolean.FALSE;
 	
-	@Predicate(label="Mode d'evaluation",target="combobox",values="Forfait par Catégorie;Forfaitaire par Cycle;Forfaitaire Par Personnels;Fixe;Formule;Elements Variables", 
+	@Predicate(label="Mode Evaluation",target="combobox",values="Forfait par Catégorie;Forfaitaire par Cycle;Forfaitaire Par Personnels;Fixe;Formule;Elements Variables", 
 			optional=false ,group=true,groupName="group1",groupLabel="Elements de calcul", observable=true)
 	private String mode;	
 	
@@ -68,10 +68,10 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="Taux patronal(%)",type=Double.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=9,optional=true)
 	private Double tauxpat=0.0;
 	
-	@Predicate(label="Participe au salaire brut?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
+	@Predicate(label="Pat au Sal. brut?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=8)
 	private Boolean brutsal = Boolean.FALSE;
 	
-	@Predicate(label="Participe à la base cotisable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=10,search=true)
+	@Predicate(label="Cotisable?",type=Boolean.class,group=true,groupName="group1",groupLabel="Elements de calcul", sequence=10,search=true)
 	private Boolean cotisablesal = Boolean.FALSE;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)

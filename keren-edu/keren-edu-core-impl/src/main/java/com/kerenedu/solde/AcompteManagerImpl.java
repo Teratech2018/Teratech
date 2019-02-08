@@ -2,6 +2,7 @@
 package com.kerenedu.solde;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.model.report.ViewRetenueModal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -129,7 +131,11 @@ public class AcompteManagerImpl
 		// TODO Auto-generated method stub
 		entity.setState("annule");
 		dao.update(entity.getId(), entity);
-		variabledao.delete(entity.getId());
+		///variabledao.delete(entity.getId());
+		ElementVariableClone elem = entity.getEltVariable();
+		ElementVariable eltvar = variabledao.findByPrimaryKey("id",  elem.getId());
+		eltvar.setState("inactif");
+    	variabledao.update(eltvar.getId(), eltvar);
 		return new Acompte(entity);
 	}
 
@@ -158,6 +164,25 @@ public class AcompteManagerImpl
 			result=true;
 		}
 			return result;
+	}
+	
+	@Override
+	public List<Acompte> getCriteres(ViewRetenueModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<Acompte> datas = new ArrayList<Acompte>();
+		List<Acompte> records = new ArrayList<Acompte>();
+		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+			if (critere.getAnnee() != null) {
+				container.addEq("anneeScolaire", critere.getAnnee().getId());
+			}
+		}
+			//daoRem.updateforce("m");
+			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+			
+
+		return datas;
 	}
 	
 	

@@ -56,6 +56,8 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@Column(name="ELVAP_ID")
 	private long elvapid ;
 	
+	private String state = "actif";
+	
 
 	
 	@OneToMany(mappedBy="eltVariable",fetch=FetchType.LAZY)
@@ -161,6 +163,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		this.ddeb=elem.ddeb;
 		this.dfin=elem.dfin;
 		this.elvapid=elem.elvapid;
+		this.state=elem.state;
 		
 	}	
 	
@@ -328,6 +331,14 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		this.cumlChargeSal = cumlChargeSal;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public Double getCumulChargePat() {
 		return cumulChargePat;
 	}
@@ -412,11 +423,9 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	public List<State> getStates() {
 		// TODO Auto-generated method stub
 		List<State> states = new ArrayList<State>();
-		State state = new State("etabli", "Brouillon");
+		State state = new State("actif", "Actif");
 		states.add(state);
-		state = new State("active", "Actif");
-		states.add(state);
-		state = new State("inactive", "Inactif");
+		state = new State("inactif", "Inactif");
 		states.add(state);
 		return states;
 	}
@@ -449,5 +458,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 		// TODO Auto-generated method stub
 		return salarie0.compareTo(arg0.salarie0);
 	}
+	
+	
 
 }

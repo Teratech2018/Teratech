@@ -45,10 +45,10 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name="EMPL_ID")
-	@Predicate(label="Salarié",type=Professeur.class,target="many-to-one",optional=false,updatable=false,search=true)
+	@Predicate(label="Salarié",type=Professeur.class,target="many-to-one",optional=false,updatable=false,search=true, colsequence=1)
 	private Professeur employe ;
 	
-	@Predicate(label="Date demande de prêt",type=Date.class,target="date",search=true)
+	@Predicate(label="Date demande de prêt",type=Date.class,target="date",search=false)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date dpret ;
 	
@@ -56,21 +56,23 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date drembour;
 	
-	@Predicate(label="Montant Prèt",type=Double.class,search=true , optional=false)
+	@Predicate(label="Montant Prèt",type=Double.class,search=true , optional=false , colsequence=3)
 	private Double montantsol=0.0;
 	
-	@Predicate(label="MontantLiquidé",type=Double.class,search=true , optional=true)
+	
+	@Predicate(label="Nbre echéance",type=Short.class,search=true , colsequence=2)
+	@Observer(observable="typepret",source="field:duree")
+	private Short duree = 0 ;
+	
+	@Predicate(label="Liquidé",type=Double.class,search=true , optional=true , editable=false, colsequence=4)
 	private Double montantRem=0.0;
 	
-	@Predicate(label="Solde",type=Double.class,search=true , optional=true)
+	@Predicate(label="Reste",type=Double.class,search=true , optional=true, editable=false, colsequence=5)
 	private Double solde=0.0;
 	
 	//@Predicate(label="Montant proposé par la hiérarchie",type=Double.class,search=true)
 	private Double montantpro=0.0;
-	
-	@Predicate(label="Durée du remboursement",type=Short.class,search=true)
-	@Observer(observable="typepret",source="field:duree")
-	private Short duree = 0 ;
+
 	
 	//@Predicate(label="Quotité cessible",type=Double.class,search=false)
 	private Double quotite=0.0;
@@ -82,7 +84,7 @@ public class DemandePret extends BaseElement implements Serializable, Comparable
 	@Predicate(label="Rem",type=RemboursementPret.class,target="one-to-many",editable=false,updatable=false,group=true,groupName="group1",groupLabel="Remboursments")
         private List<RemboursementPret> remboursements = new ArrayList<RemboursementPret>();
     
-	@Predicate(label="Status",hide=true ,search=true)
+	@Predicate(label="Status",hide=true ,search=true, colsequence=6)
 	private String state="etabli";
 	
 	@Column(name = "ANNEE_ID")

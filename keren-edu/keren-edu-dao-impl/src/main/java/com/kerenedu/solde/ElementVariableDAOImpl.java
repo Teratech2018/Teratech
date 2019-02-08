@@ -56,7 +56,7 @@ public class ElementVariableDAOImpl
 	public  void delete(long id) {
 		  try{
 			  List<ElementVariable> list = new ArrayList<ElementVariable>();
-			  String query = "DELETE  FROM e_eltvar  WHERE e.elvap_id ="+id;
+			  String query = "DELETE  FROM e_eltvar   WHERE elvap_id ="+id;
 			  em.createNativeQuery(query).executeUpdate();
 	        }catch(Exception ex){
 	        }

@@ -3,6 +3,7 @@ package com.kerenedu.solde;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.ws.rs.Path;
@@ -10,6 +11,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
@@ -144,8 +146,12 @@ public class RubriquePaieRSImpl
   		List<ForfaitPersonnel> listforfait = new ArrayList<ForfaitPersonnel>();
   		
   		if(value!=null&&value.equals("2")){
+  			RestrictionsContainer container = RestrictionsContainer.newInstance();
+  			// container.addNotNull("profil", null);
+  	         container.addNotNull("categorie", null);
+  	         container.addNotEq("state", "desactiver");	
   		List<Professeur> listcat = new ArrayList<Professeur>();
-  		listcat= persomanager.findAll();
+  		listcat= persomanager.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);;
   		//int index =0;
   		for(Professeur cat :listcat){
   		//	cat.setId(-index);

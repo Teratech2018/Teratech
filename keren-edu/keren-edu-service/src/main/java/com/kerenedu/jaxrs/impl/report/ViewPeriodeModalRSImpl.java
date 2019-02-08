@@ -20,14 +20,17 @@ import com.kerem.core.MetaDataUtil;
 import com.kerenedu.core.ifaces.report.ViewBulletinPaieHelperManagerRemote;
 import com.kerenedu.core.ifaces.report.ViewEtatPretManagerRemote;
 import com.kerenedu.jaxrs.ifaces.report.ViewPeriodeModalRS;
-import com.kerenedu.model.report.EdtPeriodeModal;
 import com.kerenedu.model.report.ViewBulletinPaieHelper;
 import com.kerenedu.model.report.ViewEtatPret;
 import com.kerenedu.model.report.ViewPeriodeModal;
 import com.kerenedu.solde.BulletinPaie;
 import com.kerenedu.solde.BulletinPaieManagerRemote;
+import com.kerenedu.solde.RemboursementPret;
+import com.kerenedu.solde.RemboursementPretManagerRemote;
+import com.kerenedu.tools.reports.KerenSchoolTools;
 import com.kerenedu.tools.reports.ReportHelper;
 import com.kerenedu.tools.reports.ReportsName;
+import com.kerenedu.tools.reports.ReportsParameter;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -56,6 +59,9 @@ public class ViewPeriodeModalRSImpl extends AbstractGenericService<ViewPeriodeMo
 	
 	 @Manager(application = "kereneducation", name = "ViewEtatPretManagerImpl", interf = ViewEtatPretManagerRemote.class)
 	    protected ViewEtatPretManagerRemote managerpret;
+	 
+	 @Manager(application = "kereneducation", name = "RemboursementPretManagerImpl", interf = RemboursementPretManagerRemote.class)
+	    protected RemboursementPretManagerRemote managerrem;
 
 	public ViewPeriodeModalRSImpl() {
 		super();
@@ -107,6 +113,7 @@ public class ViewPeriodeModalRSImpl extends AbstractGenericService<ViewPeriodeMo
 			records = manager.getCriteres(entity);
 			String URL = ReportHelper.templatepaieURL + ReportsName.BULLETIN_PAIE.getName();
 			Map parameters = this.getReportParameters();
+			
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,8 +132,15 @@ public class ViewPeriodeModalRSImpl extends AbstractGenericService<ViewPeriodeMo
 			List<BulletinPaie> records = new ArrayList<BulletinPaie>();
 			entity.setTypereport("1");
 			records = manager.getCriteres(entity);
+			Double totalnet = 0.0;
+			if(records!=null&&!records.isEmpty()){
+				for(BulletinPaie bull : records){
+					totalnet+=bull.getNetapayer();
+				}
+			}
 			String URL = ReportHelper.templatepaieURL + ReportsName.DOC_BANCAIRE.getName();
 			Map parameters = this.getReportParameters();
+			parameters.put(ReportsParameter.TOTAL_NET, KerenSchoolTools.getFormatLetter(totalnet));
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,7 +160,14 @@ public class ViewPeriodeModalRSImpl extends AbstractGenericService<ViewPeriodeMo
 			entity.setTypereport("0");
 			records = manager.getCriteres(entity);
 			String URL = ReportHelper.templatepaieURL + ReportsName.PEICE_CAISSE.getName();
+			Double totalnet = 0.0;
+			if(records!=null&&!records.isEmpty()){
+				for(BulletinPaie bull : records){
+					totalnet+=bull.getNetapayer();
+				}
+			}
 			Map parameters = this.getReportParameters();
+			parameters.put(ReportsParameter.TOTAL_NET, KerenSchoolTools.getFormatLetter(totalnet));
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);
@@ -162,10 +183,12 @@ public class ViewPeriodeModalRSImpl extends AbstractGenericService<ViewPeriodeMo
 	public Response retenuesSalaires(ViewPeriodeModal entity, HttpHeaders headers) {
 		try {
 
-			List<ViewEtatPret> records = new ArrayList<ViewEtatPret>();
-			entity.setType("1");
-			records = managerpret.getCriteres(entity);
-			String URL = ReportHelper.templatepaieURL + ReportsName.RETENUE_SAL.getName();
+//			List<ViewEtatPret> records = new ArrayList<ViewEtatPret>();
+//			entity.setType("1");
+//			records = managerpret.getCriteres(entity);
+			List<RemboursementPret> records = new ArrayList<RemboursementPret>();
+			//records = managerrem.getCriteres(entity);
+			String URL = ReportHelper.templatepaieURL + ReportsName.RETENUE_SAL_TD.getName();
 			Map parameters = this.getReportParameters();
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
 		} catch (FileNotFoundException ex) {
@@ -185,8 +208,15 @@ public class ViewPeriodeModalRSImpl extends AbstractGenericService<ViewPeriodeMo
 			List<BulletinPaie> records = new ArrayList<BulletinPaie>();
 			entity.setTypereport("1");
 			records = manager.getCriteres(entity);
+			Double totalnet = 0.0;
+			if(records!=null&&!records.isEmpty()){
+				for(BulletinPaie bull : records){
+					totalnet+=bull.getNetapayer();
+				}
+			}
 			String URL = ReportHelper.templatepaieURL + ReportsName.DOC_BANCAIRE.getName();
 			Map parameters = this.getReportParameters();
+			parameters.put(ReportsParameter.TOTAL_NET, KerenSchoolTools.getFormatLetter(totalnet));
 			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
 		} catch (FileNotFoundException ex) {
 			Logger.getLogger(BulletinPaie.class.getName()).log(Level.SEVERE, null, ex);

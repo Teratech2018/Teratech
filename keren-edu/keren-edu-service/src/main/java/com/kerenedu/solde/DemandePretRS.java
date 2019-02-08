@@ -46,5 +46,10 @@ public interface DemandePretRS
 	@Produces({ "application/pdf" })
 	@Path("pdf")
 	public Response buildPdfReport(DemandePret entity);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Path("bi/pdf")
+	public Response buildPdfReportbi(DemandePret entity);
 
 }

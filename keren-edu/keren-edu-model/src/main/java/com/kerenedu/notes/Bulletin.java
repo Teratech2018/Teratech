@@ -689,9 +689,29 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	}
 
 	@Override
-	public boolean isActivatefollower() {
+	public boolean isDesabledelete() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	@Override
+	public boolean isDesableupdate() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public boolean isDesablecreate() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	public String getSearchkeys() {
+		// TODO Auto-generated method stub
+		this.searchkeys=matricule+", "+nom+","+classe.getLibelle()+" , " +anneeScolaire;
+		return matricule+", "+nom+", "+classe.getLibelle()+" , " +anneeScolaire;
+	}
+	
 
 }

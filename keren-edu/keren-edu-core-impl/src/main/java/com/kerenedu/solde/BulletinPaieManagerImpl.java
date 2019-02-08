@@ -20,6 +20,7 @@ import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.model.report.EdtMasseSalModal;
 import com.kerenedu.model.report.EdtPeriodeModal;
 import com.kerenedu.model.report.ViewPeriodeModal;
+import com.kerenedu.model.report.ViewRetenueModal;
 import com.kerenedu.personnel.ProfesseurChoice;
 import com.megatim.common.annotations.OrderType;
 
@@ -32,6 +33,15 @@ public class BulletinPaieManagerImpl
 
     @EJB(name = "BulletinPaieDAO")
     protected BulletinPaieDAOLocal dao;
+    
+    @EJB(name = "AcompteDAO")
+    protected AcompteDAOLocal daoacompte;
+    
+    @EJB(name = "RemboursementPretDAO")
+    protected RemboursementPretDAOLocal daoarem;
+    
+    @EJB(name = "DemandePretDAO")
+    protected DemandePretDAOLocal daoapret;
 
     public BulletinPaieManagerImpl() {
     }
@@ -171,6 +181,7 @@ public class BulletinPaieManagerImpl
 				if (critere.getPeriode() != null) {
 					container.addEq("periode.id", critere.getPeriode().getId());
 				}
+				  container.addNotEq("employe.state", "descativer");
 			}
 			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 			
@@ -179,6 +190,7 @@ public class BulletinPaieManagerImpl
 				container = RestrictionsContainer.newInstance();
 				container.addEq("periode.id", critere.getPeriode().getId());
 				container.addEq("employe.id", pc.getId());
+				container.addNotEq("employe.state", "descativer");
 				records = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 				datas.addAll(records);
 			}
@@ -203,14 +215,54 @@ public class BulletinPaieManagerImpl
 		List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
 		container = RestrictionsContainer.newInstance();
 		container.addEq("periode.id", entity.getPeriode().getId());
+		container.addNotEq("employe.state", "desactiver");
 		datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		
 		if(datas!=null&&!datas.isEmpty()&&datas.size()!=0){
 			for(BulletinPaie bp : datas){
-				BulletinPaie pbnew = dao.findByPrimaryKey("id", bp.getId());
-				pbnew.setState("valide");
-				pbnew.setDpayement(new Date());;
-				dao.update(pbnew.getId(), pbnew);
+				BulletinPaie bulletin = dao.findByPrimaryKey("id", bp.getId());
+				bulletin.setState("paye");
+				bulletin.setDpayement(new Date());;
+				dao.update(bulletin.getId(), bulletin);
+				// mis a jour des acompte 
+				PeriodePaie periode = entity.getPeriode();
+				container = RestrictionsContainer.newInstance();
+				container.addGe("effet",periode.getDdebut());
+				container.addLe("effet",periode.getDfin());
+				container.addNotEq("state", "annule");
+				container.addEq("employe.id",bulletin.getEmploye().getId() );
+				List<Acompte> acomptelist= daoacompte.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+				if(acomptelist!=null&&!acomptelist.isEmpty()){
+					for(Acompte acompte : acomptelist){
+						acompte.setState("paye");
+						daoacompte.update(acompte.getId(), acompte);
+					}
+				}
+				
+				// mis à jour des remboursements
+				container = RestrictionsContainer.newInstance();
+				container.addGe("date",periode.getDdebut());
+				container.addLe("date",periode.getDfin());
+				container.addEq("demande.employe.id",bulletin.getEmploye().getId() );
+				container.addNotEq("state", "anulle");	
+				List<RemboursementPret> remlist = daoarem.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+				if(remlist!=null&&!remlist.isEmpty()){
+					for(RemboursementPret rem : remlist){
+						DemandePret ddepret = rem.getDemande();
+						rem.setState("paye");
+						if(ddepret.getMontantRem()==null){ddepret.setMontantRem((double) 0);}
+						double liquide = ddepret.getMontantRem()+rem.getMontant();
+						ddepret.setMontantRem(liquide);
+						ddepret.setSolde(ddepret.getMontantsol()-liquide);
+						if(liquide==ddepret.getMontantsol()){
+							ddepret.setState("termine");
+						}else{
+							ddepret.setState("encours");
+						}
+						daoarem.update(rem.getId(), rem);
+						daoapret.update(ddepret.getId(), ddepret);
+					}
+				}
 			}
 		}
 		
@@ -229,6 +281,7 @@ public class BulletinPaieManagerImpl
 				  if(critere.getTypereport()!=null){
 					  container.addEq("employe.modePaiement", critere.getTypereport());
 				  }
+				  container.addNotEq("employe.state", "desactiver");
 				  datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 					
 				for (BulletinPaie b : datas) {
@@ -254,6 +307,7 @@ public class BulletinPaieManagerImpl
 				  if (critere.getPeriode() != null) {
 					container.addEq("periode.id", critere.getPeriode().getId());
 					}
+				  container.addNotEq("employe.state", "desactiver");
 				  datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 					
 //				for (BulletinPaie b : datas) {
@@ -266,6 +320,32 @@ public class BulletinPaieManagerImpl
 //						records.add(data);
 //					}
 
+				return datas;
+	}
+	
+	@Override
+	public List<BulletinPaie> getCriteres(ViewRetenueModal critere, String value) {
+		// To change body of generated methods, choose Tools | Templates.
+				RestrictionsContainer container = RestrictionsContainer.newInstance();
+				List<BulletinPaie> datas = new ArrayList<BulletinPaie>();
+				List<BulletinPaie> records = new ArrayList<BulletinPaie>();
+				container = RestrictionsContainer.newInstance();
+				if (critere != null) {
+					container = RestrictionsContainer.newInstance();
+					if (critere.getAnnee() != null) {
+						container.addEq("anneeScolaire", critere.getAnnee().getId());
+					}
+				}
+				if(value.equals("logement")){
+					container.addNotEq("loyer", 0);
+				}
+				if(value.equals("amicale")){
+					container.addNotEq("amical", 0);
+				}
+				if(value.equals("cnps")){
+					container.addNotEq("allocation", 0);
+				}
+				 datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 				return datas;
 	}
 }

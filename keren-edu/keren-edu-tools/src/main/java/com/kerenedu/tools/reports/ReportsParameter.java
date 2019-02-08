@@ -35,6 +35,7 @@ public class ReportsParameter {
     public static final String REPORT_IMAGE_REPOSITORY_TITRE_EN ="REPORT_IMAGE_REPOSITORY_TITRE_EN";
     public static final String REPORT_IMAGE="REPORT_IMAGE";
     public static final String REPORT_IMAGE_CO="REPORT_IMAGE_CO";
+    public static final String TOTAL_NET="TOTAL_NET";
     
     
 

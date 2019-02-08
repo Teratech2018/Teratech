@@ -1,7 +1,10 @@
 
 package com.kerenedu.personnel;
 
+import java.util.List;
+
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.kerenedu.model.report.ViewAnneeModal;
 
 
 /**
@@ -14,5 +17,7 @@ public interface EmargementDtlPeriodeManager
 {
 
     public final static String SERVICE_NAME = "EmargementDtlPeriodeManager";
+    
+    public List<EmargementDtlPeriode> getCriteres(ViewAnneeModal critere);
 
 }

@@ -32,7 +32,7 @@ public class ViewPeriodeModal extends BaseElement implements Serializable, Compa
 	private static final long serialVersionUID = -4609375799032659501L;
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false)
+	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false, sequence=1)
 	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
 	private PeriodePaie periode ;
 	
@@ -44,10 +44,10 @@ public class ViewPeriodeModal extends BaseElement implements Serializable, Compa
 	private List<ProfesseurChoice> concernes = new ArrayList<ProfesseurChoice>();
 	
 	@Column(name = "TypeReport")
-	@Predicate(label = "TypeReport",updatable = true, search = false, target = "combobox", values = "docb;doccaisse;p", hide=true)
+	//@Predicate(label = "TypeReport",updatable = true, search = false, target = "combobox", values = "docb;doccaisse;p", hide=true)
 	protected String typereport = "0";
 	
-	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true, sequence=3,optional=true, hide=true)
+//	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true,optional=true, hide=true)
 	private String type ="0";
 	
 	/**

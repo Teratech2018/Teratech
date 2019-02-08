@@ -454,5 +454,12 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 		// TODO Auto-generated method stub
 		return (int) o.getId();
 	}
+	
+
+	@Override
+	public String getSearchkeys() {
+		this.searchkeys=matricule+", "+nom+","+classe+", " +typePaiment;
+		return matricule+", "+nom+","+classe+", " +typePaiment;
+	}
 
 }

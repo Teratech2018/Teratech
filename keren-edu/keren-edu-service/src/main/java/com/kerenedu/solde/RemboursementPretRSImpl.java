@@ -68,15 +68,17 @@ public class RemboursementPretRSImpl
 		try {
 			MetaData meta = MetaDataUtil.getMetaData(new RemboursementPret(), new HashMap<String, MetaData>(),new ArrayList<String>());
 		    MetaColumn workbtn = new MetaColumn("button", "work1", "Valider", false, "workflow", null);
-            workbtn.setValue("{'model':'kereneducation','entity':'remboursementpret','method':'confirme'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'remboursementpret','method':'confirme','critical':true,'alert':'&ecirc;tes vous sur de vouloir continuer ?'}");
             workbtn.setStates(new String[]{"etabli"});
+            workbtn.setRoles(new String[]{"Administrateur"});
             workbtn.setPattern("btn btn-success");
             meta.getHeader().add(workbtn);   
             workbtn = new MetaColumn("button", "work1", "Refuser", false, "workflow", null);
-            workbtn.setValue("{'model':'kereneducation','entity':'remboursementpret','method':'refuse'}");
+            workbtn.setValue("{'model':'kereneducation','entity':'remboursementpret','method':'refuse','critical':true,'alert':'&ecirc;tes vous sur de vouloir continuer ?'}");
             workbtn.setStates(new String[]{"confirme"});
+            workbtn.setRoles(new String[]{"Administrateur"});
             workbtn.setPattern("btn btn-danger");
-            meta.getHeader().add(workbtn);   
+           // meta.getHeader().add(workbtn);   
             MetaColumn stautsbar = new MetaColumn("workflow", "state", "State", false, "statusbar", null);
             meta.getHeader().add(stautsbar);
 		    return meta;
@@ -95,7 +97,7 @@ public class RemboursementPretRSImpl
 		// TODO Auto-generated method stub
 		RemboursementPret entity = manager.find("id", (Long)id);
 		if(entity.getDemande()==null){
-			throw new KerenExecption("La demande de Prêt est obligatoire");
+			throw new KerenExecption("La demande de Pr&ecirc;t est obligatoire");
 		}else if(entity.getDate()==null){
 			throw new KerenExecption("La date de remboursement est obligatoire");
 		}else if(entity.getMontant()==null){
@@ -103,7 +105,7 @@ public class RemboursementPretRSImpl
 		}else if(entity.getActif().equals(Boolean.FALSE)){
 			throw new KerenExecption("Le remboursement n'est pas actif");
 		}else if(entity.getState().equalsIgnoreCase("confirme")){
-			throw new KerenExecption("Le remboursement est déjà confirmé");
+			throw new KerenExecption("Le remboursement est d&eacute;j&agrave; confirm&eacute;");
 		}
 		super.processBeforeDelete(entity);
 	}
@@ -112,7 +114,7 @@ public class RemboursementPretRSImpl
 	protected void processBeforeSave(RemboursementPret entity) {
 		// TODO Auto-generated method stub
 		if(entity.getDemande()==null){
-			throw new KerenExecption("La demande de Prêt est obligatoire");
+			throw new KerenExecption("La demande de Pr&ecirc;t est obligatoire");
 		}else if(entity.getDate()==null){
 			throw new KerenExecption("La date de remboursement est obligatoire");
 		}else if(entity.getMontant()==null){
@@ -128,7 +130,7 @@ public class RemboursementPretRSImpl
 	protected void processBeforeUpdate(RemboursementPret entity) {
 		// TODO Auto-generated method stub
 		if(entity.getDemande()==null){
-			throw new KerenExecption("La demande de Prêt est obligatoire");
+			throw new KerenExecption("La demande de Pr&ecirc;t est obligatoire");
 		}else if(entity.getDate()==null){
 			throw new KerenExecption("La date de remboursement est obligatoire");
 		}else if(entity.getMontant()==null){
@@ -137,7 +139,7 @@ public class RemboursementPretRSImpl
 			throw new KerenExecption("Le remboursement n'est pas actif");
 		}
 //		else if(entity.getState().equalsIgnoreCase("confirme")){
-//			throw new KerenExecption("Le remboursement est déjà confirmé");
+//			throw new KerenExecption("Le remboursement est d&eacute;j&agrave; confirm&eacute;");
 //		}
 		super.processBeforeUpdate(entity);
 	}
@@ -154,7 +156,7 @@ public class RemboursementPretRSImpl
 	public RemboursementPret confirme(HttpHeaders headers, RemboursementPret entity) {
 		// TODO Auto-generated method stub
 		if(entity.getDemande()==null){
-			throw new KerenExecption("La demande de Prêt est obligatoire");
+			throw new KerenExecption("La demande de Pr&ecirc;t est obligatoire");
 		}else if(entity.getDate()==null){
 			throw new KerenExecption("La date de remboursement est obligatoire");
 		}else if(entity.getMontant()==null){
@@ -162,7 +164,7 @@ public class RemboursementPretRSImpl
 		}else if(entity.getActif().equals(Boolean.FALSE)){
 			throw new KerenExecption("Le remboursement n'est pas actif");
 		}else if(!entity.getState().equalsIgnoreCase("etabli")){
-			throw new KerenExecption("Ce remboursement a déjà fait l'objet d'une validation <br/>ou d'un refut");
+			throw new KerenExecption("Ce remboursement a d&eacute;j&agrave; fait l'objet d'une validation <br/>ou d'un refut");
 		}
 		PeriodePaie periode = periodeChecker(entity);
 		return manager.confirme(entity, periode);
@@ -172,7 +174,7 @@ public class RemboursementPretRSImpl
 	public RemboursementPret annule(HttpHeaders headers, RemboursementPret entity) {
 		// TODO Auto-generated method stub
 		if(entity.getDemande()==null){
-			throw new KerenExecption("La demande de Prêt est obligatoire");
+			throw new KerenExecption("La demande de Pr&ecirc;t est obligatoire");
 		}else if(entity.getDate()==null){
 			throw new KerenExecption("La date de remboursement est obligatoire");
 		}else if(entity.getMontant()==null){
@@ -180,7 +182,7 @@ public class RemboursementPretRSImpl
 		}else if(entity.getActif().equals(Boolean.FALSE)){
 			throw new KerenExecption("Le remboursement n'est pas actif");
 		}else if(!entity.getState().equalsIgnoreCase("etabli")){
-			throw new KerenExecption("Ce remboursement a déjà fait l'objet d'une validation <br/>ou d'un refut");
+			throw new KerenExecption("Ce remboursement a d&eacute;j&agrave; fait l'objet d'une validation <br/>ou d'un refut");
 		}
 		return manager.annule(entity);
 	}
@@ -194,11 +196,11 @@ public class RemboursementPretRSImpl
 	private PeriodePaie periodeChecker(RemboursementPret entity){
 		  PeriodePaie periode = periodemanager.getPeriodeFromDate(entity.getDate());
 		  if(periode==null){
-			  throw new KerenExecption("Impossible de trouver une période contenant cette date");
+			  throw new KerenExecption("Impossible de trouver une p&eacute;riode contenant cette date");
 		  }else if(periode.getState().equalsIgnoreCase("etabli")){
 			  throw new KerenExecption("La periode "+periode.getDesignation()+" n'est pas ouverte <br/> Veuillez ouvrir la periode");
 		  }else if(periode.getState().equalsIgnoreCase("ferme")){
-			  throw new KerenExecption("La période "+periode.getDesignation()+" est déjà fermée");
+			  throw new KerenExecption("La p&eacute;riode "+periode.getDesignation()+" est d&eacute;j&agrave; ferm&eacute;e");
 		  }
 		  return periode;
 	}

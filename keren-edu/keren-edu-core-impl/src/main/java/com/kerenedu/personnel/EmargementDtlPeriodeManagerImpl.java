@@ -2,6 +2,7 @@
 package com.kerenedu.personnel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +13,10 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.model.report.ViewAnneeModal;
+import com.kerenedu.solde.BulletinPaie;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -89,6 +93,22 @@ public class EmargementDtlPeriodeManagerImpl
    		EmargementDtlPeriode elev = super.delete(id);
    		return new EmargementDtlPeriode(elev);
    	}
+
+	@Override
+	public List<EmargementDtlPeriode> getCriteres(ViewAnneeModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		List<EmargementDtlPeriode> datas = new ArrayList<EmargementDtlPeriode>();
+		container = RestrictionsContainer.newInstance();
+		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+			if (critere.getAnnee() != null) {
+				container.addEq("anneScolaire", critere.getAnnee().getCode());
+			}
+		}
+		 datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		return datas;
+	}
 
 
 
