@@ -90,7 +90,7 @@ public class InscriptionDAOImpl
 	public long updateforce(String value) {
 		 long va = 0  ;
 		  try{
-			
+			  value="scolarite";
 				 String query ="update e_inscription set ownermodule ='"+value+"' ";
 				  va = em.createNativeQuery(query).executeUpdate();
 	

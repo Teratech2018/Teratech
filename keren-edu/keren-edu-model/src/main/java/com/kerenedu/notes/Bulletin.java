@@ -187,6 +187,25 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	@Column(name = "MOYANN")
 	private Double moyan = new Double(0);
 	
+	@Column(name = "MOYS1")
+	private Double moys1 = new Double(0);
+
+	@Column(name = "MOYS2")
+	private Double moys2 = new Double(0);
+
+	@Column(name = "MOYS3")
+	private Double moys3 = new Double(0);
+	
+	@Column(name = "MOYS4")
+	private Double moys4 = new Double(0);
+
+	@Column(name = "MOYS5")
+	private Double moys5 = new Double(0);
+
+	@Column(name = "MOYS6")
+	private Double moys6 = new Double(0);
+	
+	
 	@Column(name = "ANNEE_ID")
 	private String anneeScolaire ;
 	
@@ -452,6 +471,54 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 
 	public void setTpoint(Double tpoint) {
 		this.tpoint = tpoint;
+	}
+
+	public Double getMoys1() {
+		return moys1;
+	}
+
+	public void setMoys1(Double moys1) {
+		this.moys1 = moys1;
+	}
+
+	public Double getMoys2() {
+		return moys2;
+	}
+
+	public void setMoys2(Double moys2) {
+		this.moys2 = moys2;
+	}
+
+	public Double getMoys3() {
+		return moys3;
+	}
+
+	public void setMoys3(Double moys3) {
+		this.moys3 = moys3;
+	}
+
+	public Double getMoys4() {
+		return moys4;
+	}
+
+	public void setMoys4(Double moys4) {
+		this.moys4 = moys4;
+	}
+
+	public Double getMoys5() {
+		return moys5;
+	}
+
+	public void setMoys5(Double moys5) {
+		this.moys5 = moys5;
+	}
+
+	public Double getMoys6() {
+		return moys6;
+	}
+
+	public void setMoys6(Double moys6) {
+		this.moys6 = moys6;
 	}
 
 	public Long getNbreAbsNonJus() {

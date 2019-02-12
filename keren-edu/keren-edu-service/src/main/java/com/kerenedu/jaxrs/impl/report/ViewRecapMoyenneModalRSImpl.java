@@ -33,86 +33,98 @@ import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
 
 import net.sf.jasperreports.engine.JRException;
 
-
 @Path("/viewrecapmoyennemodal")
-public class ViewRecapMoyenneModalRSImpl
-  extends AbstractGenericService<ViewRecapMoyenneModal, Long>
-  implements ViewRecapMoyenneModalRS
-{
-  @Manager(application="kereneducation", name="ViewBilanFinancierManagerImpl", interf=ViewBilanFinancierManagerRemote.class)
-  protected ViewBilanFinancierManagerRemote manager;
-  @Manager(application="kereneducation", name="CoefMatiereDetailManagerImpl", interf=CoefMatiereDetailManagerRemote.class)
-  protected CoefMatiereDetailManagerRemote managercoef;
-  @Manager(application="kereneducation", name="MatiereNoteManagerImpl", interf=MatiereNoteManagerRemote.class)
-  protected MatiereNoteManagerRemote managernote;
-  @Manager(application="kereneducation", name="ViewNoteHelperManagerImpl", interf=ViewNoteHelperManagerRemote.class)
-  protected ViewNoteHelperManagerRemote managernotehelper;
-  @Manager(application="kereneducation", name="BulletinHelperGenerateManagerImpl", interf=BulletinHelperGenerateManagerRemote.class)
-  protected BulletinHelperGenerateManagerRemote managernotebulletin;
-  
-  public ViewRecapMoyenneModalRSImpl() {}
-  
-  public MetaData getMetaData(HttpHeaders headers)
-  {
-    try
-    {
-      return MetaDataUtil.getMetaData(new ViewRecapMoyenneModal(), new HashMap(), new ArrayList());
-    }
-    catch (Exception e) {
-      throw new WebApplicationException(Response.serverError().entity(new String("MetaData parse error")).build());
-    }
-  }
-  
+public class ViewRecapMoyenneModalRSImpl extends AbstractGenericService<ViewRecapMoyenneModal, Long>
+		implements ViewRecapMoyenneModalRS {
+	
+	
+	@Manager(application = "kereneducation", name = "ViewBilanFinancierManagerImpl", interf = ViewBilanFinancierManagerRemote.class)
+	protected ViewBilanFinancierManagerRemote manager;
+	@Manager(application = "kereneducation", name = "CoefMatiereDetailManagerImpl", interf = CoefMatiereDetailManagerRemote.class)
+	protected CoefMatiereDetailManagerRemote managercoef;
+	@Manager(application = "kereneducation", name = "MatiereNoteManagerImpl", interf = MatiereNoteManagerRemote.class)
+	protected MatiereNoteManagerRemote managernote;
+	@Manager(application = "kereneducation", name = "ViewNoteHelperManagerImpl", interf = ViewNoteHelperManagerRemote.class)
+	protected ViewNoteHelperManagerRemote managernotehelper;
+	@Manager(application = "kereneducation", name = "BulletinHelperGenerateManagerImpl", interf = BulletinHelperGenerateManagerRemote.class)
+	protected BulletinHelperGenerateManagerRemote managernotebulletin;
 
+	public ViewRecapMoyenneModalRSImpl() {
+	}
 
+	public MetaData getMetaData(HttpHeaders headers) {
+		try {
+			return MetaDataUtil.getMetaData(new ViewRecapMoyenneModal(), new HashMap(), new ArrayList());
+		} catch (Exception e) {
+			throw new WebApplicationException(
+					Response.serverError().entity(new String("MetaData parse error")).build());
+		}
+	}
 
+	public GenericManager<ViewRecapMoyenneModal, Long> getManager() {
+		return null;
+	}
 
-  public GenericManager<ViewRecapMoyenneModal, Long> getManager()
-  {
-    return null;
-  }
-  
-  public String getModuleName() {
-    return "kereneducation";
-  }
-  
+	public String getModuleName() {
+		return "kereneducation";
+	}
 
+	public Map getReportParameters() {
+		return ReportHelperTrt.getReportParameters();
+	}
 
+	public Response ficheMoyenneReport(ViewRecapMoyenneModal entity) {
+		try {
+			String URL = ReportHelper.templateURL + ReportsName.FICHE_MOYENNE_TD.getName();
+			List<BulletinHelperGenerate> records = new ArrayList();
+			records = managernotebulletin.getCriteres(entity);
+			if ((records.isEmpty()) || (records.size() == 0)) {
+				throw new KerenExecption("Traitement impossible<br/>Aucunes donnees !");
+			}
+			Map parameters = getReportParameters();
 
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(ViewRecapMoyenneModalRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(ViewRecapMoyenneModalRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
+		return Response.noContent().build();
+	}
 
-  public Map getReportParameters()
-  {
-    return ReportHelperTrt.getReportParameters();
-  }
-  
+	@Override
+	public Response ficheMoyenneReportbi(ViewRecapMoyenneModal entity) {
+		// TODO Auto-generated method stub
+		return this.ficheMoyenneReport(entity);
+	}
 
-  public Response ficheMoyenneReport(ViewRecapMoyenneModal entity)
-  {
-    try
-    {
-      String URL = ReportHelper.templateURL + ReportsName.FICHE_MOYENNE_TD.getName();
-      List<BulletinHelperGenerate> records = new ArrayList();
-      records = managernotebulletin.getCriteres(entity);
-      if ((records.isEmpty()) || (records.size() == 0)) {
-        throw new KerenExecption("Traitement impossible<br/>Aucunes donnees !");
-      }
-      Map parameters = getReportParameters();
-      
-      return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
-    } catch (FileNotFoundException ex) {
-      Logger.getLogger(ViewRecapMoyenneModalRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-      Response.serverError().build();
-    } catch (JRException ex) {
-      Logger.getLogger(ViewRecapMoyenneModalRSImpl.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    
-    return Response.noContent().build();
-  }
+	@Override
+	public Response matrriceMoyenne(ViewRecapMoyenneModal entity) {
+		try {
+			String URL = ReportHelper.templateURL + ReportsName.FICHE_MOYENNE_TD.getName();
+			List<BulletinHelperGenerate> records = new ArrayList();
+			records = managernotebulletin.getCriteres(entity);
+			if ((records.isEmpty()) || (records.size() == 0)) {
+				throw new KerenExecption("Traitement impossible<br/>Aucunes donnees !");
+			}
+			Map parameters = getReportParameters();
 
-@Override
-public Response ficheMoyenneReportbi(ViewRecapMoyenneModal paramViewRecapMoyenneModal) {
-	// TODO Auto-generated method stub
-	return this.ficheMoyenneReport(paramViewRecapMoyenneModal);
-}
+			return buildReportFomTemplate(FileHelper.getTemporalDirectory().toString(), URL, parameters, records);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(ViewRecapMoyenneModalRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+			Response.serverError().build();
+		} catch (JRException ex) {
+			Logger.getLogger(ViewRecapMoyenneModalRSImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return Response.noContent().build();
+	}
+
+	@Override
+	public Response matrriceMoyennebi(ViewRecapMoyenneModal entity) {
+		// TODO Auto-generated method stub
+		return this.matrriceMoyenne(entity);
+	}
 }

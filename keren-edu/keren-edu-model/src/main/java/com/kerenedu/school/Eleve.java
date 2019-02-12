@@ -77,35 +77,35 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	
 	
 	@Column(name = "TEL_PERE")
-	@Predicate(label="WhatsApp/Tel Père",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	@Predicate(label="WhatsApp Père",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String telPere;
 	
 	@Column(name = "EMAIL_PERE")
-	@Predicate(label="Nom/Prénom  Père",optional=true,updatable=true,search=false  , group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	@Predicate(label="Nom  Père",optional=true,updatable=true,search=false  , group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String emailPere;
 	
 	@Column(name = "TEL_MERE")
-	@Predicate(label="WhatsApp/Tel Mère",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	@Predicate(label="WhatsApp Mère",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String telMere;
 	
 	
 	@Column(name = "EMAIL_MERE")
-	@Predicate(label="Nom/Prénom Mère",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
+	@Predicate(label="Nom Mère",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
 	protected String emailMere;
 	
 	@Column(name = "TEL_TUTEUR")
-	@Predicate(label="WhatsApp/Tel Tuteur",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
+	@Predicate(label="WhatsApp Tuteur",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
 	protected String telTuteur;
 	
 	
 	@Column(name = "EMAIL_TUTEUR")
-	@Predicate(label="Nom/Prénom  Tuteur",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
+	@Predicate(label="Nom Tuteur",optional=true,updatable=true,search=false, group=true, groupLabel="Parents/Tuteur", groupName="tab1" )
 	protected String emailTuteur;
 	
 
 	@ManyToOne
     @JoinColumn(name = "RESP_ID")
-	@Predicate(label="Responsable de L'élève",updatable=true,type=Responsable.class , 
+	@Predicate(label="Responsable Elève",updatable=true,type=Responsable.class , 
 	target="many-to-one",group = true,groupName = "tab1",groupLabel = "Parents/Tuteur",optional=true)
     protected Responsable resp;
 	
@@ -146,7 +146,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	protected String quartier;
 	
 	@Column(name = "BLOC")
-	@Predicate(label="Bolc/Rue",optional=true,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
+	@Predicate(label="BlOC",optional=true,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
 	protected String bloc;
 		
 	private boolean inscrit=false;
@@ -273,6 +273,18 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+	
+	
+
+	@Override
+	public String getOwnermodule() {
+		// TODO Auto-generated method stub
+		return "scolarite";
+	}
+
+
+
+
 
 	@Override
 	public String getDesignation() {
@@ -656,23 +668,24 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 
 
 
-
-
-	@Override
-	public List<State> getStates() {
-		  //To change body of generated methods, choose Tools | Templates.
-        List<State> etats = new ArrayList<State>();
-        State etat = new State("etabli", "Inscrit(e)");
-        etats.add(etat);
-        etat = new State("confirme", "Scolarité ok");
-        etats.add(etat);
-        return etats; 
-	
-	}
+//
+//
+//	@Override
+//	public List<State> getStates() {
+//		  //To change body of generated methods, choose Tools | Templates.
+//        List<State> etats = new ArrayList<State>();
+//        State etat = new State("etabli", "Inscrit(e)");
+//        etats.add(etat);
+//        etat = new State("confirme", "Scolarité ok");
+//        etats.add(etat);
+//        return etats; 
+//	
+//	}
 	
 	@Override
 	public String getSearchkeys() {
 		// TODO Auto-generated method stub
+		this.searchkeys=matricule+" , "+nom;
 		return matricule+","+nom;
 	}
 

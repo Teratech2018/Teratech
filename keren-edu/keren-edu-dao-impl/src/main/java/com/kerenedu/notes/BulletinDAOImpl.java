@@ -38,7 +38,7 @@ public class BulletinDAOImpl
 	public long updateforce(String value) {
 		 long va = 0  ;
 		  try{
-			
+			  	value="solde";
 				 String query ="update e_bulletin set ownermodule ='"+value+"' ";
 				  va = em.createNativeQuery(query).executeUpdate();
 	

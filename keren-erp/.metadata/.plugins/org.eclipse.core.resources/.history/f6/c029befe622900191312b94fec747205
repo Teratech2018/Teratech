@@ -27,6 +27,16 @@ public class BaseElement implements Serializable{
     //@Predicate(label = "id" , nullable = false,optional = false,type = Long.class)
     protected long id =-1;
     
+    /**
+     * Owner of the entity module where the link file and images are store
+     * override this if the current module is not the owner of the entity
+     */
+    @Transient
+    protected String ownermodule ;
+    
+    @Transient
+    protected String ownerentity ;
+    
     protected long compareid  ;
     
     protected String designation ;
@@ -48,6 +58,7 @@ public class BaseElement implements Serializable{
     protected boolean desabledelete = false ;
     
     protected boolean desableupdate = false ;
+    protected boolean desabledatablock = true ;
     
     //Unique number for entity identifier
     protected String serial ;
@@ -62,11 +73,6 @@ public class BaseElement implements Serializable{
     
     protected String searchkeys ;
     
-    
-    protected boolean desabledatablock = true ;
-    
-    protected String ownermodule;
-    
     /**
      * String that contain the state
      * "[{'draft','Draft'},{'confirmed','Confirmed'}]"
@@ -77,8 +83,6 @@ public class BaseElement implements Serializable{
      
 
     public BaseElement() {
-    	  this.desabledatablock=false;
-    	  this.ownermodule="";
     }
 
    /**
@@ -93,8 +97,6 @@ public class BaseElement implements Serializable{
         this.designation = designation;
         this.moduleName = moduleName;
         this.compareid = comparedid ;
-        this.desabledatablock=false;
-        this.ownermodule="";
     }
 
     public long getCompareid() {
@@ -189,16 +191,7 @@ public class BaseElement implements Serializable{
         return serial;
     }
 
-    public boolean isDesabledatablock() {
-		return desabledatablock;
-	}
-
-	public void setDesabledatablock(boolean desabledatablock) {
-		this.desabledatablock = desabledatablock;
-	}
-
-
-	public void setSerial(String serial) {
+    public void setSerial(String serial) {
         this.serial = serial;
     }   
 
@@ -230,14 +223,30 @@ public class BaseElement implements Serializable{
         this.activatefollower = activatefollower;
     }
 
-
-	public boolean isDesableupdate() {
+    public boolean isDesableupdate() {
         return desableupdate;
     }
 
     public void setDesableupdate(boolean desableupdate) {
         this.desableupdate = desableupdate;
     }   
+
+    public String getOwnermodule() {
+        return ownermodule;
+    }
+
+    public void setOwnermodule(String ownermodule) {
+        this.ownermodule = ownermodule;
+    } 
+
+    public String getOwnerentity() {
+        return ownerentity;
+    }
+
+    public void setOwnerentity(String ownerentity) {
+        this.ownerentity = ownerentity;
+    }
+    
     
    
     /**
@@ -245,13 +254,5 @@ public class BaseElement implements Serializable{
      * @return 
      */
     public String[] searchFields(){return null;}
-
-	public String getOwnermodule() {
-		return ownermodule;
-	}
-
-	public void setOwnermodule(String ownermodule) {
-		this.ownermodule = ownermodule;
-	}
     
 }

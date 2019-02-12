@@ -176,14 +176,9 @@ public class ProfesseurManagerImpl
 		 if(entity.getImage()!=null){
 	    	  // try {
 	    	   String imageName = entity.getImage();
-	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
 	    	   String newName = entity.getMatricule()+".png";
-	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+"solde"+File.separator+imageName);
 	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
-	    	   File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
-	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
-//	           File filerename = new File(newName);
-	        
 	       }
 		super.processAfterSave(entity);
 	}
@@ -193,23 +188,12 @@ public class ProfesseurManagerImpl
 	public void processAfterUpdate(Professeur entity) {
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 				
-		 if(entity.getImage()!=null){
+		if(entity.getImage()!=null){
 	    	  // try {
 	    	   String imageName = entity.getImage();
-	    	 //  System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
 	    	   String newName = entity.getMatricule()+".png";
-	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+"solde"+File.separator+imageName);
 	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
-	    	   //File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
-	    	 //  filedest.renameTo(new File(file.getPath()+File.separator+newName));
-	    	   //System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
-////	           File filerename = new File(newName);
-//	           try {
-//				FileHelper.copyFile(new File(file.getPath()), new File(filedest.getPath()));
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 	       }
 		super.processAfterSave(entity);
 	}

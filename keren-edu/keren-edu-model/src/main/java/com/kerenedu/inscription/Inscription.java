@@ -310,6 +310,12 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	}
 
 
+	@Override
+	public String getOwnermodule() {
+		// TODO Auto-generated method stub
+		return "scolarite";
+	}
+
 
 	@Override
 	public String getDesignation() {
@@ -421,14 +427,14 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		this.zTotal = zTotal;
 	}
 
-	@Override
-	public List<State> getStates() {
-		// TODO Auto-generated method stub
-		List<State> states = new ArrayList<State>();
-		State state = new State("crée", "Crée");
-		states.add(state);
-		return states;
-	}
+//	@Override
+//	public List<State> getStates() {
+//		// TODO Auto-generated method stub
+//		List<State> states = new ArrayList<State>();
+//		State state = new State("crée", "Crée");
+//		states.add(state);
+//		return states;
+//	}
 
 	@Override
 	public boolean isCreateonfield() {

@@ -139,7 +139,7 @@ public class ViewBilanFinancierManagerImpl
 
 		}
 		// force update inscription 
-		daoIns.updateforce("m");
+		daoIns.updateforce("scolarite");
 		System.out.println("ViewBilanFinancierManagerImpl.getCriteres() update force ok ======>>");
 		List<ViewBilanFinancier> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		List<ViewBilanFinancier> result = new ArrayList<ViewBilanFinancier>();

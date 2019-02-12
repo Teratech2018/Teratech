@@ -365,6 +365,13 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+	
+
+	@Override
+	public String getOwnermodule() {
+		// TODO Auto-generated method stub
+		return "scolarite";
+	}
 
 	@Override
 	public String getDesignation() {

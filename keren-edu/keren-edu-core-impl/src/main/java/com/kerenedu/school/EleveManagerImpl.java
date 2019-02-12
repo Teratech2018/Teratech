@@ -166,23 +166,13 @@ public class EleveManagerImpl
 		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
 		// set Matricule 
 		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
+	//	 FileHelper.setCurrentModule("scolarite");
 		 if(entity.getImage()!=null){
 	    	  // try {
 	    	   String imageName = entity.getImage();
-	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
 	    	   String newName = entity.getMatricule().substring(0, entity.getMatricule().length()-5)+".png";
-	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
 	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
-	    	//   File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
-	    	  // filedest.renameTo(new File(filedest.getPath()+File.separator+newName));
-	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
-////	           File filerename = new File(newName);
-//	           try {
-//				FileHelper.copyFile(new File(file.getPath()), new File(filedest.getPath()));
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 	       }
 		dao.update(entity.getId(), entity);
 		super.processAfterSave(entity);
@@ -196,29 +186,17 @@ public class EleveManagerImpl
 		List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
 		// set Matricule 
 		entity.setMatricule(ViewHelperTrtglobal.getMatricule(entity, annee.get(0)));
-		  if(entity.getImage()!=null){
+		// FileHelper.setCurrentModule("scolarite");
+		if(entity.getImage()!=null){
 	    	  // try {
 	    	   String imageName = entity.getImage();
-	    	   System.out.println("EleveRSImpl.processAfterSave() matricule is "+ entity.getMatricule());
 	    	   String newName = entity.getMatricule().substring(0, entity.getMatricule().length()-5)+".png";
-	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+imageName);
+	    	   File file = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
+	    	  // System.out.println("EleveManagerImpl.processAfterUpdate() file "+file);
+	    	   
+	    	  // System.out.println("EleveManagerImpl.processAfterUpdate() file.getPath() "+file.getPath());
 	    	   file.renameTo(new File(file.getPath()+File.separator+newName));
-	    	   //File filedest = new File( FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+imageName);
-	    	 //  filedest.renameTo(new File(filedest.getPath()+File.separator+newName));
-	    	   System.out.println("EleveManagerImpl.processAfterSave() file "+file.getPath());
-////	           File filerename = new File(newName);
-//	           try {
-//				FileHelper.copyFile(new File(file.getPath()), new File(filedest.getPath()));
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//	           file.renameTo(filerename);
-			  // FileHelper.moveFile(file, destfile);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+	    	  
 	       }
 		dao.update(entity.getId(), entity);
 		super.processAfterUpdate(entity);

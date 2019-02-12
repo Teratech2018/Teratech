@@ -117,7 +117,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		    workbtn.setRoles(new String[]{"Administrateur"});
 			meta.getHeader().add(workbtn);
 
-			workbtn = new MetaColumn("button", "work2", "Fiche d'inscription", false, "report", null);
+			workbtn = new MetaColumn("button", "work2", "Fiche Inscription", false, "report", null);
 			workbtn.setValue("{'model':'kereneducation','entity':'inscription','method':'fiche'}");
 			workbtn.setStates(new String[] { "crée" });
 			  workbtn.setRoles(new String[]{"Administrateur"});
