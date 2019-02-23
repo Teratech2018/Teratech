@@ -77,7 +77,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 	
 
 	public PeriodePaie(PeriodePaie entity) {
-		super(entity.id, entity.designation, entity.moduleName,0L);
+		super(entity.id, entity.designation, entity.moduleName,entity.compareid);
 		this.code = entity.code;
 		this.actif = entity.actif;
 		if(entity.societe!=null){
@@ -102,7 +102,7 @@ public class PeriodePaie extends BaseElement implements Serializable, Comparable
 
 	public int compareTo(PeriodePaie o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 
 

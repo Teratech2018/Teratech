@@ -29,6 +29,7 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	@ManyToOne
 	@JoinColumn(name="CLASSE_ID")
 	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1, observable=true)
+	@Filter(value="[{\"fieldName\":\"typecycle\",\"value\":\"2\"}]")
 	private Classe classe ;
 	
 	@ManyToOne

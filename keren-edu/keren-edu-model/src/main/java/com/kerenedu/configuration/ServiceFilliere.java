@@ -38,7 +38,7 @@ public class ServiceFilliere extends BaseElement implements Serializable, Compar
 	}
 
 	public ServiceFilliere(ServiceFilliere service) {
-		super(service.id, service.designation, service.moduleName, 0L);
+		super(service.id, service.designation, service.moduleName, service.compareid);
 		if (service.zMnt == null) {
 			this.zMnt = new Long(0);
 		} else {
@@ -66,7 +66,7 @@ public class ServiceFilliere extends BaseElement implements Serializable, Compar
 
 	public int compareTo(ServiceFilliere o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 
 	@Override

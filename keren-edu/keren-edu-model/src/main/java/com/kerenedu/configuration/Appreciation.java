@@ -73,7 +73,7 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 	}
 	
 	public Appreciation(Appreciation app) {
-		super(app.id, app.designation, app.moduleName,0L);
+		super(app.id, app.designation, app.moduleName,app.compareid);
 		this.libelle = app.libelle;
 		this.deb = app.deb;
 		this.fin = app.fin;
@@ -215,7 +215,7 @@ public class Appreciation extends BaseElement implements Serializable, Comparabl
 
 	public int compareTo(Appreciation o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 
 }

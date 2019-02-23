@@ -34,7 +34,7 @@ public class ViewRetenueModal extends BaseElement implements Serializable, Compa
 	private static final long serialVersionUID = -4609375799032659501L;
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
-	@Predicate(label="Période ",type=AnneScolaire.class,target="many-to-one",optional=true, sequence=1)
+	@Predicate(label="Année Scolaire ",type=AnneScolaire.class,target="many-to-one",optional=true, sequence=1)
 	private AnneScolaire annee ;
 	
 	@ManyToOne

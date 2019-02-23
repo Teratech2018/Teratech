@@ -12,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.kerenedu.inscription.Inscription;
-import com.kerenedu.personnel.Professeur;
 import com.kerenedu.personnel.Professeurclone;
 import com.megatim.common.annotations.Predicate;
 
@@ -54,7 +52,7 @@ public class Cycle extends BaseElement implements Serializable, Comparable<Cycle
 
 
 	public Cycle(Cycle filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName,0L);
+		super(filiere.id, filiere.designation, filiere.moduleName,filiere.compareid);
 		this.libelle = filiere.libelle;
 		this.typecycle=filiere.typecycle;
 		this.libelleEn=filiere.libelleEn;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SygmaFiles" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="11" bottomMargin="11" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
-	<property name="ireport.zoom" value="0.9090909090909105"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.0000000000000016"/>
+	<property name="ireport.x" value="25"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
 	<style name="table">
@@ -121,6 +121,8 @@
 	<field name="rang4" class="java.lang.Long"/>
 	<field name="rang5" class="java.lang.Long"/>
 	<field name="rang6" class="java.lang.Long"/>
+	<field name="moyann" class="java.lang.Double"/>
+	<field name="rangann" class="java.lang.Double"/>
 	<sortField name="classe.section.id"/>
 	<sortField name="classe.filiere.cycle.id"/>
 	<sortField name="classe.libelle"/>
@@ -169,14 +171,14 @@
 					<textFieldExpression><![CDATA["RECAPITULATIF DES MOYENNES "]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="643" y="39" width="151" height="12" uuid="6a5093f0-6082-4b4f-b417-f5c71cbfab69"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="670" y="68" width="144" height="27" uuid="6a5093f0-6082-4b4f-b417-f5c71cbfab69"/>
 					<box>
 						<leftPen lineWidth="0.0"/>
 						<bottomPen lineWidth="0.0"/>
 						<rightPen lineWidth="0.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="10" isBold="true" pdfFontName="Times-Bold"/>
+						<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Times-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" Année Scolaire :" +($F{inscription.anneScolaire}+"-"+ (new Long($F{inscription.anneScolaire})+1))]]></textFieldExpression>
 				</textField>
@@ -497,7 +499,7 @@
 		<groupHeader>
 			<band height="18">
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement x="33" y="0" width="192" height="18" uuid="f3fd8e5c-2618-4277-a52a-5860e7cfceeb"/>
+					<reportElement x="0" y="0" width="225" height="18" uuid="f3fd8e5c-2618-4277-a52a-5860e7cfceeb"/>
 					<box leftPadding="4">
 						<topPen lineWidth="0.5" lineColor="#666666"/>
 						<leftPen lineWidth="0.5" lineColor="#666666"/>
@@ -598,7 +600,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{moyann}==0&&$F{rangann}==0  ? null : $F{moyann} )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="225" y="0" width="45" height="18" uuid="35856a01-9772-4e7d-8b75-12b5b63c2ff0"/>
@@ -637,7 +639,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{moy4}==0&&$F{rang4}==null  ? null : $F{moy4} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{moy4}==0&&$F{rang4}==0  ? null : $F{moy4} )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="735" y="0" width="43" height="18" uuid="b8c03fb4-4031-4248-9348-04a2a5e99a01"/>
@@ -650,7 +652,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $F{moyann}==0 ? null : $F{rangann} )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="647" y="0" width="45" height="18" uuid="b5bc5698-54dd-433c-9153-990f075e3a8e"/>
@@ -663,7 +665,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{moy6}==0&&$F{rang6}==null  ? null : $F{moy6} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{moy6}==0&&$F{rang6}==0  ? null : $F{moy6} )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="565" y="0" width="45" height="18" uuid="33651d0c-1667-46ec-bf66-3c5d380c83cc"/>
@@ -676,7 +678,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{moy5}==0&&$F{rang5}==null  ? null : $F{moy5} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{moy5}==0&&$F{rang5}==0  ? null : $F{moy5} )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="395" y="0" width="45" height="18" uuid="e7ceb427-6ebb-4918-b69c-f4a0215395e5"/>
@@ -690,19 +692,6 @@
 						<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $F{moy3}==0 &&$F{rang3}==null ? null : $F{moy3} )]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="0" width="33" height="18" uuid="3ffd3a0c-653c-482e-aca6-47e0721664ef"/>
-					<box>
-						<topPen lineWidth="0.5" lineColor="#999999"/>
-						<leftPen lineWidth="0.5" lineColor="#999999"/>
-						<bottomPen lineWidth="0.5" lineColor="#999999"/>
-						<rightPen lineWidth="0.5" lineColor="#999999"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Times-Bold"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{COUNTELEVE}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

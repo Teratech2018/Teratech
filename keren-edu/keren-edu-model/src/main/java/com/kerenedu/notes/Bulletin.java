@@ -69,6 +69,10 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	@Predicate(label = "SEQUENCE CONCERNES", updatable = false, type = Examen.class, target = "many-to-one", sequence = 4, search=true)
 	protected Examen model;
 	
+	@Column(name = "TYPE_EXAMEN")
+	//@Predicate(label="EXAMEN",updatable=true,type=Examen.class , target="many-to-one",search=true , sequence=2	,editable=false,colsequence=4, optional=false)
+	protected String typeexamen;
+	
 //	@ManyToOne
 //	@JoinColumn(name = "EXAMEN_S_ID")
 //	@Predicate(label = "Type Bulletin", updatable = true, type = ExamenS.class, target = "many-to-one", sequence = 3)
@@ -202,6 +206,14 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 	@Column(name = "MOYS5")
 	private Double moys5 = new Double(0);
 
+	public String getTypeexamen() {
+		return typeexamen;
+	}
+
+	public void setTypeexamen(String typeexamen) {
+		this.typeexamen = typeexamen;
+	}
+
 	@Column(name = "MOYS6")
 	private Double moys6 = new Double(0);
 	
@@ -301,6 +313,7 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.moyt3 = bulletin.moyt3;
 		this.moyan = bulletin.moyan;
 		this.nbreElve= bulletin.nbreElve;
+		this.typeexamen=bulletin.typeexamen;
 	}
 
 	public String getMatricule() {
@@ -327,7 +340,9 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.model = new Examen(model);
 		this.lignes = new ArrayList<LigneBulletinClasse>();
 		this.classe = new Classe(helper.getClasse());
+		if(helper.getTotalCoef()!=null){
 		this.tcoef = (long) helper.getTotalCoef();
+		}
 		this.tpoint = helper.getTotalPoint();
 		this.rang = helper.getRang();
 		this.moypremier = helper.getMoyPremier();
@@ -348,19 +363,21 @@ public class Bulletin extends BaseElement implements Serializable, Comparable<Bu
 		this.retards = new Long(0);
 		this.inscription = helper.getEleve();
 		this.moyenne =helper.getMoyEtudiant();
-		this.rang = helper.getRang();
+		//this.rang = helper.getRang();
 		if(model.getTypesequence().equals("0")||model.getTypesequence().equals("1")){
 			this.moyt1 =this.moyt1+ this.moyenne/2;
 		}
 		if(model.getTypesequence().equals("2")||model.getTypesequence().equals("3")){
-			this.moyt2 =this.moyt1+ this.moyenne/2;
+			this.moyt2 =this.moyt2+ this.moyenne/2;
 		}
 		if(model.getTypesequence().equals("4")||model.getTypesequence().equals("5")){
-			this.moyt3 =this.moyt1+ this.moyenne/2;
+			this.moyt3 =this.moyt3+ this.moyenne/2;
 		}
 		this.moyan =this.moyt1+ this.moyt2+this.moyt3;
 		this.anneeScolaire=helper.getEleve().getAnneScolaire();
-		this.nbreElve=helper.getNbreEleve();
+		this.nbreElve=helper.getClasse().getEffectif();
+		
+		this.typeexamen=model.getTypesequence();
 
 	}
 	

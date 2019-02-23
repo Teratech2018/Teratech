@@ -118,8 +118,8 @@ public class MatiereNoteRSImpl
 	public Response ficheNoteReport(MatiereNote entity) {
 		try {
 			String URL = ReportHelper.templateURL + ReportsName.FICHE_NOTE.getName();
-			List<MatiereNote> records = new ArrayList<MatiereNote>();
-			records.add(entity);
+			List<NoteDetail> records = new ArrayList<NoteDetail>();
+			records=entity.getNotelisttr();
 			if (records.isEmpty() || records.size() == 0) {
 				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionner un eleve !");
 			}
@@ -140,8 +140,9 @@ public class MatiereNoteRSImpl
 	public Response fichesNoteReport(MatiereNote entity) {
 		try {
 			String URL = ReportHelper.templateURL + ReportsName.FICHE_NOTE.getName();
-			List<MatiereNote> records = new ArrayList<MatiereNote>();
-			records.add(entity);
+			List<NoteDetail> records = new ArrayList<NoteDetail>();
+			records=entity.getNotelisttr();
+			//records.add(entity);
 			if (records.isEmpty() || records.size() == 0) {
 				throw new KerenExecption("Traitement impossible<br/>Bien vouloir Selectionner un eleve !");
 			}

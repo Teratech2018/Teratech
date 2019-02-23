@@ -74,7 +74,7 @@ public class Service extends BaseElement implements Serializable, Comparable<Ser
 
 
 	public Service(Service service) {
-		super(service.id, service.designation, service.moduleName,0L);
+		super(service.id, service.designation, service.moduleName,service.compareid);
 		this.zMnt=service.zMnt;
 		this.delai=service.delai;
 		filiere= new ArrayList<ServiceFilliere>();

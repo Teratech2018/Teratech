@@ -25,7 +25,9 @@ import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.notes.CoefMatiereDetail;
 import com.kerenedu.notes.CoefMatiereDetailDAOLocal;
+import com.kerenedu.reglement.FichePaiement;
 import com.kerenedu.solde.EltSalaireLigne;
+import com.kerenedu.solde.PeriodePaie;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -78,7 +80,9 @@ public class ProfesseurManagerImpl
    		// TODO Auto-generated method stub
    		Professeur elev = super.find(propertyName, entityID);
    		Professeur inscrip = new Professeur(elev);
-		
+   		for (PeriodePaie serv : elev.getPeriodepaie()) {
+			inscrip.getPeriodepaie().add(new PeriodePaie(serv));
+		}
    		return inscrip;
    	}
 

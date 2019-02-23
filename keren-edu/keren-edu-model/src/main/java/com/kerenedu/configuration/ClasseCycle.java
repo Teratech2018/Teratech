@@ -101,7 +101,7 @@ public class ClasseCycle extends BaseElement implements Serializable, Comparable
 	}
 	
 	public ClasseCycle(Classe filiere) {
-		super(filiere.getId(), filiere.getDesignation(), filiere.getModuleName(),0L);
+		super(filiere.getId(), filiere.getDesignation(), filiere.getModuleName(),filiere.getCompareid());
 		this.libelle = filiere.libelle;
 		if(this.niveau!=null){
 			this.niveau= new Niveau( filiere.niveau);

@@ -60,7 +60,7 @@ public class ViewMasseSalarialeManagerImpl
 					container.addEq("periode.id", critere.getPeriode().getId());
 				}
 			}
-			daobul.updateforce("n");
+			daobul.updateforce("scolarite");
 			datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		
 

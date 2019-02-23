@@ -21,8 +21,10 @@ import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerRemote;
 import com.kerenedu.core.ifaces.report.ViewNoteHelperManagerRemote;
 import com.kerenedu.jaxrs.ifaces.report.ViewRecapMoyenneModalRS;
 import com.kerenedu.model.report.ViewRecapMoyenneModal;
+import com.kerenedu.notes.Bulletin;
 import com.kerenedu.notes.BulletinHelperGenerate;
 import com.kerenedu.notes.BulletinHelperGenerateManagerRemote;
+import com.kerenedu.notes.BulletinManagerRemote;
 import com.kerenedu.notes.CoefMatiereDetailManagerRemote;
 import com.kerenedu.notes.MatiereNoteManagerRemote;
 import com.kerenedu.tools.reports.ReportHelper;
@@ -48,6 +50,9 @@ public class ViewRecapMoyenneModalRSImpl extends AbstractGenericService<ViewReca
 	protected ViewNoteHelperManagerRemote managernotehelper;
 	@Manager(application = "kereneducation", name = "BulletinHelperGenerateManagerImpl", interf = BulletinHelperGenerateManagerRemote.class)
 	protected BulletinHelperGenerateManagerRemote managernotebulletin;
+	
+	@Manager(application = "kereneducation", name = "BulletinManagerImpl", interf = BulletinManagerRemote.class)
+	protected BulletinManagerRemote managerbulletin;
 
 	public ViewRecapMoyenneModalRSImpl() {
 	}
@@ -104,8 +109,11 @@ public class ViewRecapMoyenneModalRSImpl extends AbstractGenericService<ViewReca
 	public Response matrriceMoyenne(ViewRecapMoyenneModal entity) {
 		try {
 			String URL = ReportHelper.templateURL + ReportsName.FICHE_MOYENNE_TD.getName();
-			List<BulletinHelperGenerate> records = new ArrayList();
-			records = managernotebulletin.getCriteres(entity);
+			System.out.println("ViewRecapMoyenneModalRSImpl.matrriceMoyenne() matrice des moyenne "+URL);
+			
+			List<Bulletin> records = new ArrayList<Bulletin>();
+			//List<BulletinHelperGenerate> records = new ArrayList();
+			records = managerbulletin.getCriteres(entity);
 			if ((records.isEmpty()) || (records.size() == 0)) {
 				throw new KerenExecption("Traitement impossible<br/>Aucunes donnees !");
 			}

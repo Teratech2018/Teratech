@@ -359,7 +359,7 @@ public class DateHelper {
 
 		c.add(Calendar.MONTH, horizon);
 
-		c.set(Calendar.DAY_OF_MONTH, 1);
+		c.set(Calendar.DAY_OF_MONTH,5);
 
 		result = c.getTime();
 

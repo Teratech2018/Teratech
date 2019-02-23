@@ -65,7 +65,7 @@ public class CoefMatiere extends BaseElement implements Serializable, Comparable
 
 
 	public CoefMatiere(CoefMatiere annee) {
-		super(annee.id, annee.designation, annee.moduleName,0L);
+		super(annee.id, annee.designation, annee.moduleName,annee.compareid);
 		if(annee.getClasse()!=null){
 			this.classe = new Classe(annee.classe);
 			this.section= new SectionE(annee.classe.getSection());

@@ -4,8 +4,6 @@
 package com.kerenedu.notes;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +13,7 @@ import javax.persistence.Table;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.GroupeCours;
-import com.kerenedu.configuration.Matiere;
 import com.kerenedu.configuration.MatiereDlt;
-import com.kerenedu.inscription.Inscription;
 import com.kerenedu.model.report.ViewNoteHelper;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
@@ -149,7 +145,7 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 	}
 
 	public LigneBulletinClasse(LigneBulletinClasse filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName, 0L);
+		super(filiere.id, filiere.designation, filiere.moduleName, filiere.compareid);
 		this.obs = filiere.obs;
 		this.note = filiere.note;
 		this.matiere = new MatiereDlt(filiere.matiere);
@@ -196,52 +192,85 @@ public class LigneBulletinClasse extends BaseElement implements Serializable, Co
 		this.moyenne=helper.getMoyEtudiant();
 		this.rang=helper.getRangMat();
 		this.coeff= helper.getMatiere();
+		
+		this.note1=helper.getNote1();
+		this.note2=helper.getNote2();
+		this.note3=helper.getNote3();
+		
 //		System.out.println("LigneBulletinClasse.LigneBulletinClasse() note1"+helper.getNote1()+" note2"+helper.getNote2()+"note 3"+helper.getNote3());
 	//	double note1=0 ;double note2=0;double notmoy=0;double note3=0;
-		if(helper.getClasse().getFiliere().getCycle().getTypecycle().equals("1")){
-			
-			this.note1=helper.getNote1()*helper.getExamen().getE1()/helper.getMatiere().getCoef();
-			this.note2=helper.getNote2()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
-			this.note3=helper.getNote3()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
-			
-			this.snote1=helper.getNote1()*helper.getExamen().getE1()/helper.getMatiere().getCoef();
-			this.snote2=helper.getNote2()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
-			this.snote3=helper.getNote3()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
-			
-			this.note=(this.note1+this.note2+this.note3)/3;
-			
-		}else if(helper.getClasse().getFiliere().getCycle().getTypecycle().equals("2")){
-		if(helper.getNote1()==0&&helper.getNote2()!=0&&helper.getNote3()!=0){
-			this.note1=(double) 0;
-			this.note2=helper.getNote2()*helper.getExamen().getE3();
-			 note3=helper.getNote3()*helper.getExamen().getE3();
-		}else if(helper.getNote2()==0&&helper.getNote1()!=0&&helper.getNote3()!=0){
-			this.note2=(double) 0;
-			this.note1=helper.getNote1()*helper.getExamen().getE3();
-			this.note3=helper.getNote3()*helper.getExamen().getE3();
-		}else if(helper.getNote1()==0&&helper.getNote2()==0&&helper.getNote3()!=0){
-			this.note2=(double) 0;
-			this.note1=(double) 0;
-			this.note3=helper.getNote3();
-		}else if(helper.getNote1()!=0&&helper.getNote2()==0&&helper.getNote3()==0){
-			this.note2=(double) 0;
-			this.note3=(double) 0;
-			this.note1=helper.getNote1();
-		}else if(helper.getNote1()==0&&helper.getNote2()!=0&&helper.getNote3()==0){
-			this.note1=(double) 0;
-			this.note3=(double) 0;
-			this.note2=helper.getNote2();
-		}
-		else if(helper.getNote1()!=0&&helper.getNote2()!=0&&helper.getNote3()!=0){
-			this.note1=helper.getNote3()*helper.getExamen().getE3();
-			this.note2=helper.getNote2()*helper.getExamen().getE2();
-			this.note3=helper.getNote1()*helper.getExamen().getE1();
-		}else if(helper.getNote1()!=0&&helper.getNote2()!=0&&helper.getNote3()==0){
-			this.note1=(double) 0;
-			this.note2=helper.getNote2()*helper.getExamen().getE3();
-			this.note3=helper.getNote1()*helper.getExamen().getE3();
-		}
-		}
+//		if(helper.getClasse().getFiliere().getCycle().getTypecycle().equals("1")){
+//			
+//			this.note1=helper.getNote1()*helper.getExamen().getE1()/helper.getMatiere().getCoef();
+//			this.note2=helper.getNote2()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+//			this.note3=helper.getNote3()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+//			
+//			this.snote1=helper.getNote1()*helper.getExamen().getE1()/helper.getMatiere().getCoef();
+//			this.snote2=helper.getNote2()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+//			this.snote3=helper.getNote3()*helper.getExamen().getE2()/helper.getMatiere().getCoef();
+//			
+//			this.note=(this.note1+this.note2+this.note3)/3;
+//			
+//		}else if(helper.getClasse().getFiliere().getCycle().getTypecycle().equals("2")){
+//		if(helper.getNote1()==0&&helper.getNote2()!=0&&helper.getNote3()!=0){
+//			this.note1=helper.getNote1();
+//			this.note2=helper.getNote2();
+//			this.note3=helper.getNote3();
+//			
+//			 note1=(double) 0;
+//			 note2=helper.getNote2()*helper.getExamen().getE3();
+//			 note3=helper.getNote3()*helper.getExamen().getE3();
+//		}else if(helper.getNote2()==0&&helper.getNote1()!=0&&helper.getNote3()!=0){
+//			this.note1=helper.getNote1();
+//			this.note2=helper.getNote2();
+//			this.note3=helper.getNote3();
+//			
+//			note2=(double) 0;
+//			note1=helper.getNote1()*helper.getExamen().getE3();
+//			note3=helper.getNote3()*helper.getExamen().getE3();
+//		}else if(helper.getNote1()==0&&helper.getNote2()==0&&helper.getNote3()!=0){
+//			this.note1=helper.getNote1();
+//			this.note2=helper.getNote2();
+//			this.note3=helper.getNote3();
+//			
+//			note2=(double) 0;
+//			note1=(double) 0;
+//			note3=helper.getNote3();
+//		}else if(helper.getNote1()!=0&&helper.getNote2()==0&&helper.getNote3()==0){
+//			this.note1=helper.getNote1();
+//			this.note2=helper.getNote2();
+//			this.note3=helper.getNote3();
+//			
+//			note2=(double) 0;
+//			note3=(double) 0;
+//			note1=helper.getNote1();
+//		}else if(helper.getNote1()==0&&helper.getNote2()!=0&&helper.getNote3()==0){
+//			this.note1=helper.getNote1();
+//			this.note2=helper.getNote2();
+//			this.note3=helper.getNote3();
+//			
+//			note1=(double) 0;
+//			note3=(double) 0;
+//			note2=helper.getNote2();
+//		}
+//		else if(helper.getNote1()!=0&&helper.getNote2()!=0&&helper.getNote3()!=0){
+//			this.note1=helper.getNote1();
+//			this.note2=helper.getNote2();
+//			this.note3=helper.getNote3();
+//			
+//			note1=helper.getNote3()*helper.getExamen().getE3();
+//			note2=helper.getNote2()*helper.getExamen().getE2();
+//			note3=helper.getNote1()*helper.getExamen().getE1();
+//		}else if(helper.getNote1()!=0&&helper.getNote2()!=0&&helper.getNote3()==0){
+//			this.note1=helper.getNote1();
+//			this.note2=helper.getNote2();
+//			this.note3=helper.getNote3();
+//			
+//			note1=(double) 0;
+//			note2=helper.getNote2()*helper.getExamen().getE3();
+//			note3=helper.getNote1()*helper.getExamen().getE3();
+//		}
+//		}
 		if(helper.getExamen().getTypesequence().equals("0")||helper.getExamen().getTypesequence().equals("1")){
 			this.notet1 =this.notet1+ this.note/2;
 		}

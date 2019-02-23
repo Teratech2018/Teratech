@@ -56,6 +56,7 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 	@ManyToOne
 	@JoinColumn(name = "ElEVE_ID")
 	@Predicate(label = "Elève", type = Inscription.class, target = "many-to-one", optional = false, search = false, sequence = 5, observable = true, colsequence = 2, searchfields = "eleve.nom",updatable=false)
+	@Filter(value="[{\"fieldName\":\"zSolde\",\"operator\":\"!=\",\"value\":\"0\"}]")
 	private Inscription eleve;
 
 	@Column(name = "NAT_PAI")

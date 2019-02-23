@@ -56,6 +56,7 @@ public class ElementVariable extends BaseElement implements Serializable, Compar
 	@Column(name="ELVAP_ID")
 	private long elvapid ;
 	
+	@Column(name="STATE_EL")
 	private String state = "actif";
 	
 

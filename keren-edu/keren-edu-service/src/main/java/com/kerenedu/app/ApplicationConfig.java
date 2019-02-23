@@ -56,6 +56,7 @@ import com.kerenedu.jaxrs.impl.report.EdtBulletinTrimModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.EdtMasseSalModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.EdtPeriodeModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.EleveInscritSearchRSImpl;
+import com.kerenedu.jaxrs.impl.report.FichePresenceModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewAnneeModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewAnniversaireModalRSImpl;
 import com.kerenedu.jaxrs.impl.report.ViewAnniversaireRSImpl;
@@ -420,6 +421,7 @@ public class ApplicationConfig extends Application {
 		resources.add(ClasseSecondaireRSImpl.class);
 		resources.add(ViewRetenueModalRSImpl.class);
 		resources.add(ViewAnneeModalRSImpl.class);
+		resources.add(FichePresenceModalRSImpl.class);
 		
 		
 		

@@ -185,6 +185,9 @@
 	<field name="classe.section.typesection" class="java.lang.String"/>
 	<field name="appreciation.appreciationMoyen" class="java.lang.String"/>
 	<field name="lignes.coeff.matiere.state" class="java.lang.Boolean"/>
+	<field name="examen.e1" class="java.lang.Double"/>
+	<field name="examen.e2" class="java.lang.Double"/>
+	<field name="examen.e3" class="java.lang.Double"/>
 	<sortField name="classe.id"/>
 	<sortField name="eleve.nom"/>
 	<sortField name="lignes.coeff.groupe.id"/>
@@ -208,7 +211,7 @@
 		<variableExpression><![CDATA[($F{examen.typesequence}.equals("0")? $V{titetr}  : ($F{examen.typesequence}.equals("1")? $V{titetr} : ( $F{examen.typesequence}.equals("2") ? $V{titetr}  : ( $F{examen.typesequence}.equals("3")? $V{titetr}  : ( $F{examen.typesequence}.equals("4") ?$V{titetr}  : $V{titetr}  ) ) ) ) )]]></variableExpression>
 	</variable>
 	<variable name="moyennecalcul" class="java.lang.Double">
-		<variableExpression><![CDATA[($F{bulletin.tcoef}!=0&&$F{bulletin.tpoint}!=0? $F{bulletin.tpoint}.doubleValue()/$F{bulletin.tcoef}.doubleValue() : new Double(0.01) )]]></variableExpression>
+		<variableExpression><![CDATA[($F{bulletin.tcoef}!=0&&$F{bulletin.tpoint}!=0? $F{bulletin.tpoint}.doubleValue()/$F{bulletin.tcoef}.doubleValue() : new Double(0) )]]></variableExpression>
 	</variable>
 	<variable name="rang" class="java.lang.String">
 		<variableExpression><![CDATA[(($F{eleve.sexe}.equals("0")&&$F{bulletin.rang}==1) ? "er" : ( ($F{eleve.sexe}.equals("1")&&$F{bulletin.rang}==1) ? "ère" : "ème" ) )]]></variableExpression>
@@ -845,7 +848,9 @@
 						<rightPen lineWidth="0.75" lineColor="#333333"/>
 					</box>
 					<textField evaluationTime="Auto" isBlankWhenNull="true">
-						<reportElement style="table" mode="Transparent" x="0" y="13" width="72" height="12" backcolor="#D3D3D3" uuid="f45841c2-d759-47f3-a8aa-8a89fb683ae6"/>
+						<reportElement style="table" mode="Transparent" x="0" y="13" width="72" height="12" backcolor="#D3D3D3" uuid="f45841c2-d759-47f3-a8aa-8a89fb683ae6">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box leftPadding="3">
 							<topPen lineWidth="0.0"/>
 							<leftPen lineWidth="0.0"/>
@@ -858,14 +863,18 @@
 						<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ? "Total des Points": "Total Marks" )]]></textFieldExpression>
 					</textField>
 					<staticText>
-						<reportElement stretchType="RelativeToTallestObject" x="71" y="25" width="11" height="12" uuid="683d2e22-b272-41df-b027-0e71a50a4810"/>
+						<reportElement stretchType="RelativeToTallestObject" x="71" y="25" width="11" height="12" uuid="683d2e22-b272-41df-b027-0e71a50a4810">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 							<font fontName="Times New Roman" size="8" pdfFontName="Times-Roman"/>
 						</textElement>
 						<text><![CDATA[:]]></text>
 					</staticText>
 					<textField evaluationTime="Auto" isBlankWhenNull="true">
-						<reportElement style="table" mode="Transparent" x="1" y="25" width="71" height="12" backcolor="#D3D3D3" uuid="c0d720d2-55d4-48ff-b418-c4b2b19377e8"/>
+						<reportElement style="table" mode="Transparent" x="1" y="25" width="71" height="12" backcolor="#D3D3D3" uuid="c0d720d2-55d4-48ff-b418-c4b2b19377e8">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box leftPadding="3">
 							<topPen lineWidth="0.0"/>
 							<leftPen lineWidth="0.0"/>
@@ -878,7 +887,9 @@
 						<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ? "Total Coef": "Total Coef." )]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="true">
-						<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="82" y="25" width="55" height="12" uuid="ba91ee3b-84c2-4f2a-bd15-ea0a33948322"/>
+						<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="82" y="25" width="55" height="12" uuid="ba91ee3b-84c2-4f2a-bd15-ea0a33948322">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box>
 							<rightPen lineWidth="0.75"/>
 						</box>
@@ -888,7 +899,9 @@
 						<textFieldExpression><![CDATA[$F{bulletin.tcoef}]]></textFieldExpression>
 					</textField>
 					<textField>
-						<reportElement style="table" mode="Opaque" x="1" y="49" width="73" height="23" backcolor="#E3E1E1" uuid="eca8129d-2ec8-4d11-82c1-cc9407776d3d"/>
+						<reportElement style="table" mode="Opaque" x="1" y="49" width="73" height="23" backcolor="#E3E1E1" uuid="eca8129d-2ec8-4d11-82c1-cc9407776d3d">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box leftPadding="3">
 							<topPen lineWidth="0.0"/>
 							<leftPen lineWidth="0.0"/>
@@ -901,7 +914,9 @@
 						<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ? "Moyenne " : "Average" )]]></textFieldExpression>
 					</textField>
 					<textField pattern="###0.00" isBlankWhenNull="true">
-						<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="82" y="49" width="55" height="23" backcolor="#E3E1E1" uuid="8b648199-f4bd-40c4-90c3-3e2bc84b1981"/>
+						<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="82" y="49" width="55" height="23" backcolor="#E3E1E1" uuid="8b648199-f4bd-40c4-90c3-3e2bc84b1981">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box leftPadding="5">
 							<rightPen lineWidth="0.75"/>
 						</box>
@@ -911,14 +926,18 @@
 						<textFieldExpression><![CDATA[$V{moyennecalcul}]]></textFieldExpression>
 					</textField>
 					<staticText>
-						<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="71" y="49" width="11" height="23" backcolor="#E3E1E1" uuid="5def1eb2-757e-4894-b978-082f09d3370c"/>
+						<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="71" y="49" width="11" height="23" backcolor="#E3E1E1" uuid="5def1eb2-757e-4894-b978-082f09d3370c">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 							<font fontName="Times New Roman" size="8" pdfFontName="Times-Roman"/>
 						</textElement>
 						<text><![CDATA[:]]></text>
 					</staticText>
 					<staticText>
-						<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="71" y="71" width="11" height="13" backcolor="#E3E1E1" uuid="09544426-68fd-4eac-9546-1d892d598ee5"/>
+						<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="71" y="71" width="11" height="13" backcolor="#E3E1E1" uuid="09544426-68fd-4eac-9546-1d892d598ee5">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box>
 							<bottomPen lineWidth="0.5"/>
 						</box>
@@ -928,7 +947,9 @@
 						<text><![CDATA[:]]></text>
 					</staticText>
 					<textField>
-						<reportElement style="table" mode="Opaque" x="1" y="71" width="73" height="13" backcolor="#E3E1E1" uuid="ecdcba9f-33c1-4e3a-b765-103d316bd61f"/>
+						<reportElement style="table" mode="Opaque" x="1" y="71" width="73" height="13" backcolor="#E3E1E1" uuid="ecdcba9f-33c1-4e3a-b765-103d316bd61f">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box leftPadding="3">
 							<topPen lineWidth="0.0"/>
 							<leftPen lineWidth="0.0"/>
@@ -941,7 +962,9 @@
 						<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ? "Rang " : "Rank" )]]></textFieldExpression>
 					</textField>
 					<textField pattern="###0" isBlankWhenNull="true">
-						<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="82" y="71" width="55" height="13" backcolor="#E3E1E1" uuid="66fd2ba9-7fea-4b25-b46e-1ad52fe7c59b"/>
+						<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="82" y="71" width="55" height="13" backcolor="#E3E1E1" uuid="66fd2ba9-7fea-4b25-b46e-1ad52fe7c59b">
+							<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+						</reportElement>
 						<box leftPadding="5">
 							<bottomPen lineWidth="0.5"/>
 							<rightPen lineWidth="0.75"/>
@@ -959,7 +982,7 @@
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font fontName="Times New Roman" size="8"/>
 						</textElement>
-						<textFieldExpression><![CDATA[""]]></textFieldExpression>
+						<textFieldExpression><![CDATA[( $V{moyennecalcul}!=0 ? "": $V{nonclasse} )]]></textFieldExpression>
 					</textField>
 					<textField>
 						<reportElement style="table" mode="Opaque" x="137" y="0" width="135" height="13" backcolor="#E3E1E1" uuid="bb5cf99a-7dc7-4305-82d7-e2f43d50b60d"/>
@@ -1015,7 +1038,7 @@
 						</box>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="1" width="36" height="12" uuid="b4927456-d2f5-4900-ac81-f7cece4e8e00">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy1}!=0&&($F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1028,7 +1051,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="1" y="1" width="31" height="12" backcolor="#D3D3D3" uuid="993f51c2-6ea6-48c6-a217-91423e08f47e">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy1}!=0&&($F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1043,7 +1066,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="31" y="1" width="5" height="12" uuid="a9b21e5e-ddb1-48d5-bb47-e3c57efbbb38">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy1}!=0&&($F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1056,7 +1079,7 @@
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="14" width="36" height="12" uuid="7afb4b93-febf-4679-b89c-eb9d7f5e1db0">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy2}!=0&&($F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1069,7 +1092,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="31" y="14" width="5" height="12" uuid="e1aa4e0c-f782-4e4d-9a62-77c5c1ead4df">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy2}!=0&&($F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1082,7 +1105,7 @@
 						</staticText>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="1" y="14" width="31" height="12" backcolor="#D3D3D3" uuid="31ca3a19-7173-4db1-afe3-9d6d39cbf035">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy2}!=0&&($F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1097,7 +1120,7 @@
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="27" width="36" height="12" uuid="aefe002b-8b17-4842-9dea-19ac5971e6af">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy3}!=0&&($F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1110,7 +1133,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="1" y="27" width="31" height="12" backcolor="#D3D3D3" uuid="8621e140-1f57-4b26-ab41-7bde958c879b">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy3}!=0&&($F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1125,7 +1148,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="31" y="27" width="5" height="12" uuid="e1f46000-fd0d-49e9-b2c2-078eb451353a">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy3}!=0&&($F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1138,7 +1161,7 @@
 						</staticText>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="1" y="39" width="31" height="12" backcolor="#D3D3D3" uuid="0de2b0d3-d7b6-4ce0-95fc-80b0314ac0cc">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy4}!=0&&($F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1153,7 +1176,7 @@
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="39" width="36" height="12" uuid="badc015e-de29-4202-bfb2-ad30dc7db587">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy4}!=0&&($F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1166,7 +1189,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="31" y="39" width="5" height="12" uuid="3292b549-286e-4ea0-86b4-1a67cf5070fe">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy4}!=0&&($F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1179,7 +1202,7 @@
 						</staticText>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="1" y="51" width="31" height="12" backcolor="#D3D3D3" uuid="0ae4c16b-6f20-4a65-83c3-6ea1b1762ce7">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy5}!=0&&$F{examen.typesequence}.equals("5")]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1194,7 +1217,7 @@
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="51" width="36" height="12" uuid="ec45c118-c709-41d3-9511-4d2596efd30d">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy5}!=0&&$F{examen.typesequence}.equals("5")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1207,7 +1230,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="31" y="51" width="5" height="12" uuid="4295be9f-fd0b-4a63-98a1-9843395e568a">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy5}!=0&&$F{examen.typesequence}.equals("5")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1220,7 +1243,7 @@
 						</staticText>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="70" y="1" width="17" height="12" backcolor="#D3D3D3" uuid="e5b393d6-4c3f-4de6-9bb5-5c5264249436">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy1}!=0&&($F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1235,7 +1258,7 @@
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="90" y="1" width="36" height="12" uuid="5187aca6-b88a-4954-893c-83012f28ee26">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy1}!=0&&($F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1248,7 +1271,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="86" y="1" width="5" height="12" uuid="6f3d136f-a9bf-4be2-81bc-6bcb0ba40f63">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy1}!=0&&($F{examen.typesequence}.equals("1")||$F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1261,7 +1284,7 @@
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="90" y="14" width="36" height="12" uuid="fec4cac0-7f19-46a6-a9be-3ac6b74c5187">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy2}!=0&&($F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1274,7 +1297,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="70" y="14" width="17" height="12" backcolor="#D3D3D3" uuid="375d7add-64a2-4fef-a05c-47e0728f58ad">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy2}!=0&&($F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1289,7 +1312,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="86" y="14" width="5" height="12" uuid="571dae6e-c0e1-4ae7-9331-c96fea41d52d">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy2}!=0&&($F{examen.typesequence}.equals("2")||$F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1302,7 +1325,7 @@
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="90" y="27" width="36" height="12" uuid="e76d8d79-30a0-49ba-81b2-fa62b02cf7f3">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy3}!=0&&($F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1315,7 +1338,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="70" y="27" width="17" height="12" backcolor="#D3D3D3" uuid="bb9ffbec-0ff0-408a-a4c1-358ff692f67d">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy3}!=0&&($F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1330,7 +1353,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="86" y="27" width="5" height="12" uuid="819f17ec-7d7d-434c-ac16-0c3ca7dcbb8b">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy3}!=0&&($F{examen.typesequence}.equals("3")||$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1343,7 +1366,7 @@
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="90" y="39" width="36" height="12" uuid="56769548-618e-4335-8fde-9735ebb2f35e">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy4}!=0&&($F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1356,7 +1379,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="70" y="39" width="17" height="12" backcolor="#D3D3D3" uuid="e065a56e-f78d-441a-849b-717dfa1a6d28">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy4}!=0&&($F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1371,7 +1394,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="86" y="39" width="5" height="12" uuid="242c7d65-e08e-46a7-8122-89be1272d621">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy4}!=0&&($F{examen.typesequence}.equals("4")||$F{examen.typesequence}.equals("5"))]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1384,7 +1407,7 @@
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="90" y="51" width="36" height="12" uuid="788c0b97-2fe0-461a-9345-cc329cafb2c0">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy5}!=0&&$F{examen.typesequence}.equals("5")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1397,7 +1420,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="70" y="51" width="17" height="12" backcolor="#D3D3D3" uuid="29d044ba-0b60-4357-9d70-d240f95fba51">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy5}!=0&&$F{examen.typesequence}.equals("5")]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1412,7 +1435,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="86" y="51" width="5" height="12" uuid="265bc9cf-c152-4ca3-8c32-7e4aa9824e4b">
-								<printWhenExpression><![CDATA[$F{examen.typesequence}.equals("5")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$F{moy5}!=0&&$F{examen.typesequence}.equals("5")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1439,7 +1462,9 @@
 					<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ?"Résultat Séq. de l'élève": "Student Seq Result" )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="82" y="13" width="55" height="12" uuid="30dc447a-51ce-4f52-b9ef-043c9dc924ec"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="82" y="13" width="55" height="12" uuid="30dc447a-51ce-4f52-b9ef-043c9dc924ec">
+						<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<rightPen lineWidth="0.75"/>
 					</box>
@@ -1449,7 +1474,9 @@
 					<textFieldExpression><![CDATA[$F{bulletin.tpoint}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement stretchType="RelativeToTallestObject" x="71" y="13" width="11" height="12" uuid="100a9e34-210d-4a42-bedf-44750533727a"/>
+					<reportElement stretchType="RelativeToTallestObject" x="71" y="13" width="11" height="12" uuid="100a9e34-210d-4a42-bedf-44750533727a">
+						<printWhenExpression><![CDATA[$V{moyennecalcul}!=0]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" pdfFontName="Times-Roman"/>
 					</textElement>
@@ -2092,7 +2119,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" isBold="false" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ? $F{appreciation.appreciationMoy}: $F{appreciation.appreciationMoyen} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ? ( $V{moyennecalcul}!=0 ? $F{appreciation.appreciationMoy} : $V{nonclasse} ):( $V{moyennecalcul}!=0 ? $F{appreciation.appreciationMoyen} : $V{nonclasse} )  )]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="1" y="200" width="163" height="12" backcolor="#D3D3D3" uuid="870fe6ce-1814-45bf-958b-7ad20b9f04f8"/>
@@ -2343,7 +2370,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="9" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $F{lignes.note1}==0 ? "/" : $F{lignes.note1} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $F{lignes.note1}==0 ? "/" : $F{lignes.note1})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="105" y="0" width="72" height="17" uuid="a5dbed85-0e87-4e83-a1bf-1147402b6dfe">

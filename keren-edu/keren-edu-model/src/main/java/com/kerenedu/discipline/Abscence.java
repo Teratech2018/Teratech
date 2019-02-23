@@ -114,7 +114,7 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 
 
 	public Abscence(Abscence ins) {
-		super(ins.id, ins.designation, ins.moduleName,0L);
+		super(ins.id, ins.designation, ins.moduleName,ins.compareid);
 		this.datAbs = ins.datAbs;
 		this.observation = ins.observation;
 		if(ins.getClasse()!=null){

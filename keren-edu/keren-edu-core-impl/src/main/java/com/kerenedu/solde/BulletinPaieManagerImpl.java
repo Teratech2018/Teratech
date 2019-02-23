@@ -220,12 +220,12 @@ public class BulletinPaieManagerImpl
 		
 		if(datas!=null&&!datas.isEmpty()&&datas.size()!=0){
 			for(BulletinPaie bp : datas){
+				PeriodePaie periode = entity.getPeriode();
 				BulletinPaie bulletin = dao.findByPrimaryKey("id", bp.getId());
 				bulletin.setState("paye");
-				bulletin.setDpayement(new Date());;
+				bulletin.setDpayement(periode.getDfin());
 				dao.update(bulletin.getId(), bulletin);
 				// mis a jour des acompte 
-				PeriodePaie periode = entity.getPeriode();
 				container = RestrictionsContainer.newInstance();
 				container.addGe("effet",periode.getDdebut());
 				container.addLe("effet",periode.getDfin());
@@ -333,7 +333,7 @@ public class BulletinPaieManagerImpl
 				if (critere != null) {
 					container = RestrictionsContainer.newInstance();
 					if (critere.getAnnee() != null) {
-						container.addEq("anneeScolaire", critere.getAnnee().getId());
+						container.addEq("anneScolaire", critere.getAnnee().getCode());
 					}
 				}
 				if(value.equals("logement")){

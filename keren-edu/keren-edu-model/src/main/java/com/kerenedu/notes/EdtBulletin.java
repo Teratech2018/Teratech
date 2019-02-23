@@ -35,6 +35,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=1, observable=true, optional=false)
+	@Filter(value="[{\"fieldName\":\"typecycle\",\"value\":\"2\"}]")
 	protected Classe classe ;
 
 	@ManyToOne

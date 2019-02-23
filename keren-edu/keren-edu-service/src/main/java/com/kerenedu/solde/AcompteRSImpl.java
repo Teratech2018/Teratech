@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.core.tools.DateHelper;
 import com.google.gson.Gson;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.kerem.core.FileHelper;
@@ -156,6 +157,8 @@ public class AcompteRSImpl
                 throw new KerenExecption("La date de prise d'effet est obligatoire");
         }else if(entity.getMontant()==null){
                 throw new KerenExecption("Le montant de l'acompte est obligatoire");
+        }else if(entity.getEffet().before(new Date())){
+            throw new KerenExecption("La date de l'acompte ne peut etre inferieure &agrave; la date du jour");
         }
        
         entity.setAnneScolaire(periode.getExercice().getCode());
@@ -338,8 +341,8 @@ public class AcompteRSImpl
 		PeriodePaie periode = (PeriodePaie) CacheMemory.getValue(id, TypeCacheMemory.PERIODE);
 		
 		if (periode != null) {
-			container.addGe("effet",periode.getDdebut());
-			container.addLe("effet",periode.getDfin());
+			container.addGe("effet",DateHelper.formatDate(periode.getDdebut()));
+			container.addLe("effet",DateHelper.formatDate(periode.getDfin()));
 		} // end if(classe!=null)
 		container.addNotEq("state", "annule");	
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);

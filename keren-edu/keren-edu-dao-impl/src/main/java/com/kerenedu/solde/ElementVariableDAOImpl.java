@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 import com.bekosoftware.genericdaolayer.dao.impl.AbstractGenericDAO;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.inscription.Inscription;
+import com.kerenedu.personnel.Professeur;
 import com.kerenedu.school.Eleve;
 
 @Stateless(mappedName = "ElementVariableDAO")
@@ -59,6 +60,23 @@ public class ElementVariableDAOImpl
 			  String query = "DELETE  FROM e_eltvar   WHERE elvap_id ="+id;
 			  em.createNativeQuery(query).executeUpdate();
 	        }catch(Exception ex){
+	        }
+	}
+
+	@Override
+	public List<ElementVariable> getListElt(int mois,int year,Professeur salarie) {
+		 try{
+			 int moisint=mois+1;
+			 String state="inactif";
+			  List<ElementVariable> list = new ArrayList<ElementVariable>();
+			  String query = "SELECT * FROM e_eltvar  WHERE MONTH(dfin) ="+moisint+" and  YEAR(dfin)="+year+" "
+			  		+ "and EMPL_ID="+salarie.getId()+" ";
+			//  System.out.println("ElementVariableDAOImpl.getListElt() query "+query);
+			 TypedQuery<ElementVariable> queryexe =  (TypedQuery<ElementVariable>) em.createNativeQuery(query, ElementVariable.class);
+			  list=  (List<ElementVariable>) queryexe.getResultList();
+	            return list;
+	        }catch(Exception ex){
+	            return null;
 	        }
 	}
 	

@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
 import com.kerenedu.solde.PeriodePaie;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
 
 public class ImportHeureProf extends BaseElement implements Serializable, Comparable<ImportHeureProf> {
@@ -14,6 +15,7 @@ public class ImportHeureProf extends BaseElement implements Serializable, Compar
 	@ManyToOne
 	@JoinColumn(name = "PERIODE_ID")
 	@Predicate(label = "Periode", type = PeriodePaie.class, target = "many-to-one", search = true, sequence = 1, optional = false, observable = true)
+	@Filter(value = "[{\"fieldName\":\"state\",\"value\":\"ouvert\"}]")
 	protected PeriodePaie periode;
 
 	@Predicate(label = "Fichier lié", target = "file", search = true, sequence = 5)

@@ -111,6 +111,16 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	@Column(name = "EXTREMIN")
 	private Double extrememin = new Double(0) ;
 	
+	@Column(name = "TOTALPOINT")
+	private Double totalpoint = new Double(0) ;
+	
+	
+	@Column(name = "TOTALCOEF")
+	private Double totalcoef = new Double(0) ;
+	
+	@Column(name = "MOYETUD")
+	private Double moyetud = new Double(0) ;
+	
 	@Column(name = "MOYSEQ")
 	private Double moyseq = new Double(0) ;
 	
@@ -132,8 +142,8 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	}
 
 
-	public NoteDetail(NoteDetail notedetail) {
-		super(notedetail.id, notedetail.designation, notedetail.moduleName,0L);
+	public NoteDetail(NoteDetail notedetail){
+		super(notedetail.id, notedetail.designation, notedetail.moduleName,notedetail.compareid);
 		if(notedetail.eleve!=null){
 			this.eleve = new Inscription(notedetail.eleve);
 		}
@@ -159,6 +169,9 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 		this.moymatcls= notedetail.moymatcls;
 		this.extrememax= notedetail.extrememax;
 		this.extrememin= notedetail.extrememin;
+		this.totalpoint=notedetail.totalpoint;
+		this.totalcoef=notedetail.totalcoef;
+		this.moyetud=notedetail.moyetud;
 		
 		if(notedetail.classe!=null){
 			this.classe = new Classe(notedetail.classe);
@@ -327,8 +340,38 @@ public class NoteDetail extends BaseElement implements Serializable, Comparable<
 	}
 
 
+	public Double getTotalcoef() {
+		return totalcoef;
+	}
+
+
+	public void setTotalcoef(Double totalcoef) {
+		this.totalcoef = totalcoef;
+	}
+
+
+	public Double getMoyetud() {
+		return moyetud;
+	}
+
+
+	public void setMoyetud(Double moyetud) {
+		this.moyetud = moyetud;
+	}
+
+
 	public void setMoyseq(Double moyseq) {
 		this.moyseq = moyseq;
+	}
+
+
+	public Double getTotalpoint() {
+		return totalpoint;
+	}
+
+
+	public void setTotalpoint(Double totalpoint) {
+		this.totalpoint = totalpoint;
 	}
 
 

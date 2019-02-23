@@ -4,6 +4,7 @@ package com.kerenedu.solde;
 import java.util.List;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
+import com.kerenedu.personnel.Professeur;
 
 
 /**
@@ -24,6 +25,8 @@ public interface ElementVariableDAO
 	public  List<ElementVariable> getelementVaraiable(long id) ;
 	
 	public  void delete(long id) ;
+	
+	public List<ElementVariable> getListElt(int mois,int year, Professeur salarie);
 
 
 }

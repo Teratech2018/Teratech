@@ -20,6 +20,7 @@ import com.kerenedu.configuration.AppreciationDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.Filiere;
+import com.kerenedu.model.report.ViewRecapMoyenneModal;
 import com.megatim.common.annotations.OrderType;
 
 @TransactionAttribute
@@ -117,6 +118,27 @@ public class BulletinManagerImpl extends AbstractGenericManager<Bulletin, Long>
 				container.addEq("model.id", critere.getModel().getId());
 			}
 
+			if (critere.getClasse() != null) {
+				container.addEq("classe.id", critere.getClasse().getId());
+			}
+
+		}
+		List<Bulletin> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		List<Bulletin> result = new ArrayList<Bulletin>();
+		if (datas != null) {
+			for (Bulletin bull : datas) {
+				Bulletin newBull = find("id", bull.getId());
+				result.add(newBull);
+			}
+		} // fin if(datas!=null)
+		return result;
+	}
+	
+	@Override
+	public List<Bulletin> getCriteres(ViewRecapMoyenneModal critere) {
+		// To change body of generated methods, choose Tools | Templates.
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		if (critere != null) {
 			if (critere.getClasse() != null) {
 				container.addEq("classe.id", critere.getClasse().getId());
 			}

@@ -43,11 +43,19 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
     protected Cycle cycle;
 	
 	@Column(name = "CAPACITE" )	
-	@Predicate(label="CAPACITE",optional=true,updatable=true,search=true , sequence=4, type=Long.class)
+	@Predicate(label="CAPACITE",optional=true,updatable=true,search=true , sequence=5, type=Long.class,editable=false, hide=true)
 	protected Long capacite;
 	
+	@Column(name = "EFF_FILLE")	
+	@Predicate(label="Nbre fille",updatable=true,search=true , sequence=6, type=Long.class, editable=false, hide=true)
+	protected Long efffille= new Long(0);
+	
+	@Column(name = "EFF_GAR")	
+	@Predicate(label="Nbre Gar.",updatable=true,search=true , sequence=7, type=Long.class, editable=false, hide=true)
+	protected Long effGarcon= new Long(0);
+	
 	@Column(name = "DUREE" )	
-	@Predicate(label="DUREE",optional=true,updatable=true,search=true , sequence=5, type=Long.class, editable=false)
+	@Predicate(label="DUREE",optional=true,updatable=true,search=false , sequence=8, type=Long.class, editable=false)
 	protected Long duree;
 	
 	
@@ -60,10 +68,12 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 
 
 	public Filiere(Filiere filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName,0L);
+		super(filiere.id, filiere.designation, filiere.moduleName,filiere.compareid);
 		this.libelle = filiere.libelle;
 		this.code=filiere.code;
 		this.capacite=filiere.capacite;
+		this.efffille=filiere.efffille;
+		this.effGarcon=filiere.effGarcon;
 		this.duree=filiere.duree;
 		this.cycle=filiere.cycle;
 		if(filiere.getSection()!=null){
@@ -159,6 +169,26 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+
+	public Long getEfffille() {
+		return efffille;
+	}
+
+
+	public void setEfffille(Long efffille) {
+		this.efffille = efffille;
+	}
+
+
+	public Long getEffGarcon() {
+		return effGarcon;
+	}
+
+
+	public void setEffGarcon(Long effGarcon) {
+		this.effGarcon = effGarcon;
+	}
+
 
 	@Override
 	public String getDesignation() {

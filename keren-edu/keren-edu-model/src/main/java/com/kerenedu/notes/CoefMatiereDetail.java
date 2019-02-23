@@ -69,7 +69,7 @@ public class CoefMatiereDetail extends BaseElement implements Serializable, Comp
 	}
 
 	public CoefMatiereDetail(CoefMatiereDetail cmatdetail) {
-		super(cmatdetail.id, cmatdetail.designation, cmatdetail.moduleName,0L);
+		super(cmatdetail.id, cmatdetail.designation, cmatdetail.moduleName,cmatdetail.compareid);
 		if(cmatdetail.matiere!=null){
 		  this.matiere = new MatiereDlt(cmatdetail.matiere);
 		}

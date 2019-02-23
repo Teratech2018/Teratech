@@ -115,6 +115,12 @@ public class NoteDetailManagerImpl
 		return results;
 	}
 
+	@Override
+	public long updateforce(ImportNoteClasse entity) {
+		// TODO Auto-generated method stub
+		return dao.updateforce(entity);
+	}
+
 
 
 

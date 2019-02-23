@@ -1,6 +1,8 @@
 
 package com.kerenedu.notes;
 
+import java.util.List;
+
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 
 
@@ -22,5 +24,7 @@ public interface BulletinDAO
     public long deleteRadBulletin(Bulletin entity);
     
     public long updateforce(String value) ;
+  	public long updateforce2(EdtBulletin prepa) ;
+ 	public long deleteforce2(List<Bulletin> datas);
 
 }

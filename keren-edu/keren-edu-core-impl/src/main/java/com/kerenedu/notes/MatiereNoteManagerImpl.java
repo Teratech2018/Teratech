@@ -42,6 +42,10 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 	
 	@EJB(name = "InscriptionDAO")
 	protected InscriptionDAOLocal elevedao;
+	
+	@EJB(name = "NoteDetailDAO")
+	protected NoteDetailDAOLocal daonote;
+
 
 	public MatiereNoteManagerImpl() {
 	}
@@ -292,15 +296,21 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 			if (notes.getMatricule() != null) {
 				container.addEq("eleve.matricule", notes.getMatricule());//+"/"+entity.getAnneScolaire());
 			}
+			container.addEq("classe.id",entity.getClasse().getId());//+"/"+entity.getAnneScolaire());
 			
 			List<Inscription> eleve = elevedao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
+		//	System.out.println("MatiereNoteManagerImpl.importNote() je suis ici size is "+eleve.size());
 			if(eleve!=null&&!eleve.isEmpty()){
 				notes.setEleve(eleve.get(0));
 				notes.setMatricule(eleve.get(0).getMatricule());
 				notes.setNom(eleve.get(0).getEleve().getNom()+" "+eleve.get(0).getEleve().getPrenon());
 				notes.setAnneScolaire(entity.getAnneScolaire());
+				notes.setClasse(entity.getClasse());
+				notes.setTypeexamen(entity.getExamen().getTypesequence());
+				//notes.setMatiere(entity.getMatiere());
 				datas.add(notes);
 			}
+			
 		}
 			//System.out.println("MatiereNoteManagerImpl.importNote() nombre de note"+datas.toString()+" size"+datas.size());
 			 mtnote= new MatiereNote(entity);
@@ -310,6 +320,7 @@ public class MatiereNoteManagerImpl extends AbstractGenericManager<MatiereNote, 
 				
 			
 		}
+		
 	}
 		
 	

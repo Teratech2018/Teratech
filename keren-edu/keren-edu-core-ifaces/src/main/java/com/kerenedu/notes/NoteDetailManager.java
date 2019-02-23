@@ -20,5 +20,7 @@ public interface NoteDetailManager
     public void importNote(List<NoteDetail> notelist ,MatiereNote matiere);
     
     public List<NoteDetail> findeleve(long idclasse);
+    
+    public long updateforce(ImportNoteClasse entity) ;
 
 }

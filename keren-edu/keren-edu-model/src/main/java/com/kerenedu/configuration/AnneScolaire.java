@@ -72,7 +72,7 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 
 
 	public AnneScolaire(AnneScolaire annee) {
-		super(annee.id, annee.designation, annee.moduleName,0L);
+		super(annee.id, annee.designation, annee.moduleName,annee.compareid);
 		this.code = annee.code;
 		this.ddeb = annee.ddeb;
 		this.dfin = annee.dfin;
@@ -172,7 +172,7 @@ public class AnneScolaire extends BaseElement implements Serializable, Comparabl
 
 	public int compareTo(AnneScolaire o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 
 }

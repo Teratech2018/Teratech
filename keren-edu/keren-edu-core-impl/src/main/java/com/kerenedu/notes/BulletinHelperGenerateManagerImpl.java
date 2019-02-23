@@ -124,10 +124,10 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 					throw new KerenExecption("Sectionner les eleves concernes");
 				}
 				records = new ArrayList<BulletinHelperGenerate>();
-				System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() je suis ici nbre eleve select ====>"
-						+ ""+critere.getConcernes().size());
+				//System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() je suis ici nbre eleve select ====>"
+					//	+ ""+critere.getConcernes().size());
 				for(InscriptionChoice ins : critere.getConcernes()){
-					System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() parcours eleve "+ins.getNom());
+					//System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() parcours eleve "+ins.getNom());
 					container = RestrictionsContainer.newInstance();
 					for (Examen examen : critere.getExamen()) {
 						container = RestrictionsContainer.newInstance();
@@ -144,11 +144,11 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 				}
 
 			} else {
-				System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() tout les eléve de la classe !!!!");
+				//System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() tout les eléve de la classe !!!!");
 				records = new ArrayList<BulletinHelperGenerate>();
-				System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() examen ====>> "+critere.getExamen().size());
+			//	System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() examen ====>> "+critere.getExamen().size());
 				for (Examen examen : critere.getExamen()) {
-					System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() examen ====>> "+examen.getId());
+			//		System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() examen ====>> "+examen.getId());
 					container = RestrictionsContainer.newInstance();
 					container.addEq("examen.id", examen.getId());
 
@@ -213,18 +213,18 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 				container.addEq("classe.id", critere.getClasse().getId());
 			}
 			
-			if (critere.getCycle() != null) {
-				container.addEq("classe.cycle", critere.getCycle().getId());
-			}
+//			if (critere.getCycle() != null) {
+//				container.addEq("classe.cycle", critere.getCycle().getId());
+//			}
 
 		}
 		List<BulletinHelperGenerate> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
-		List<BulletinHelperGenerate> result = new ArrayList<BulletinHelperGenerate>();
-		for (BulletinHelperGenerate ins : datas) {
-			BulletinHelperGenerate inscription = new BulletinHelperGenerate(ins);
-			result.add(inscription);
-		}
-		return result;
+		//SList<BulletinHelperGenerate> result = new ArrayList<BulletinHelperGenerate>();
+//		for (BulletinHelperGenerate ins : datas) {
+//			BulletinHelperGenerate inscription = new BulletinHelperGenerate(ins);
+//			result.add(inscription);
+//		}
+		return datas;
 	}
 
 }

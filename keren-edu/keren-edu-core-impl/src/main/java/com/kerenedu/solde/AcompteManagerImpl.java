@@ -175,7 +175,7 @@ public class AcompteManagerImpl
 		if (critere != null) {
 			container = RestrictionsContainer.newInstance();
 			if (critere.getAnnee() != null) {
-				container.addEq("anneeScolaire", critere.getAnnee().getId());
+				container.addEq("anneScolaire", critere.getAnnee().getCode());
 			}
 		}
 			//daoRem.updateforce("m");

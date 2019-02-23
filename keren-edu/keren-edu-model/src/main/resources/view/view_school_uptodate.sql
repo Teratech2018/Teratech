@@ -127,6 +127,26 @@ ecarttypemoy(e.classe_id,e.examen_id,n.annee_id),nbreelevecls(e.classe_id,n.anne
  FROM e_note_mat e, e_notedlt n
  where e.id=n.el_note_id  and n.note !=0;
  
+ 
+
+DROP VIEW IF EXISTS e_zview_note_helper;
+CREATE VIEW e_zview_note_helper(ID,MAT_NOTE_ID,CLASSE_ID,EXAMEN_ID,MATIERE_ID,NOTE_ID,ELEVE_ID,NOTE,NOTE1,NOTE2,NOTE3,
+NOTET1,NOTET2,NOTET3,NOTEAN,
+APPRECIATION,MOY_CLA_MATIERE,EXTR_MAX,EXTR_MIN,TOTAL_POINT,TOTAL_COEF,MOY_ETUDIANT,MOY_PREMIER,MOY_DERNIER,RANG,
+RANG_MAT,MOY_GEN_CLS,NBRE_MOY,TX_REU,ECART_TYPE,NBRE_ELEVE,
+DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
+DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
+AS
+SELECT concat(e.id,n.id,e.examen_id), e.id, e.classe_id,e.examen_id,e.matiere_id,n.id,n.etudiant_id,n.note,n.note_1,n.note_2,n.note_3,
+Truncate(n.notet1,2),truncate(n.notet2,2),truncate(n.notet3,2),truncate(n.noteann,2),n.appreciation,truncate(n.moymatcls,2),extremax,n.extremin,
+n.totalpoint,n.totalcoef,n.moyetud,0,0,0,
+rankmat(n.etudiant_id  ,e.matiere_id,e.examen_id,n.annee_id),0,0,0,0,nbreelevecls(e.classe_id,n.annee_id),
+"defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"","",""
+ FROM e_note_mat e, e_notedlt n
+ where e.id=n.el_note_id ;
+
+ 
+ 
 DROP VIEW IF EXISTS  e_zview_helper;
 CREATE VIEW e_zview_helper(ID,EXAMEN_ID,ETUDIANT_ID,CLASSE_ID,MOY, ANNEE_ID,TYPE_EXAMEN,MOY1)
 AS
@@ -170,13 +190,16 @@ DROP VIEW IF EXISTS e_zview_bulletin ;
 CREATE VIEW e_zview_bulletin(ID,LGN_ID, BULL_ID,INS_ID,ELEVE_ID,CLASSE_ID,EXAMEN_ID,MOY,RANG,
 NOTE1,NOTE2,NOTE3,NOTE4,NOTE5,NOTE6,
 MOY1,MOY2,MOY3,MOY4,MOY5,MOY6,RANG1,RANG2,RANG3,RANG4,RANG5,RANG6,
-APPS,ABS_ID, RANGT1,RANGT2, RANGT3,
+APPS,ABS_ID, RANGT1,RANGT2, RANGT3,RANGAN,
 NBMOYT1,ECARTT1,MINMOYT1,MYGENT1,MAXMOYT1,
 NBMOYT2,ECARTT2,MINMOYT2,MYGENT2,MAXMOYT2,
-NBMOYT3,ECARTT3,MINMOYT3,MYGENT3,MAXMOYT3,ANNEE_ID,
-RANKMATT1,RANKMATT2,RANKMATT3,
-MOYMATT1,MOYMATT2,MOYMATT3,
-APPMOY1,APPT1,APPT2,APPT3,
+NBMOYT3,ECARTT3,MINMOYT3,MYGENT3,MAXMOYT3,
+NBMOYAN,ECARTAN,MINMOYAN,MYGENAN,MAXMOYAN,
+ANNEE_ID,
+RANKMATT1,RANKMATT2,RANKMATT3,RANKMATAN,
+MOYMATT1,MOYMATT2,MOYMATT3,MOYMATAN,
+APPMOY1,APPMOY2,APPMOY3,APPMOYAN,
+APPT1,APPT2,APPT3,APPTAN,
 ABST0,ABST1,ABST2,ABST3,ABST4,ABST5,
 TCOEFS1,TCOEFS2,TCOEFS3,TCOEFS4,TCOEFS5,TCOEFS6,
 DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,
@@ -196,7 +219,7 @@ rankseqnbul(e.INSCRIPTION_ID ,'4',e.cls_id,e.annee_id),rankseqnbul(e.INSCRIPTION
 appreciationbull(e.moyenne),abscence(e.examen_id,e.INSCRIPTION_ID,e.annee_id),
 
 rankmoyennebull(e.INSCRIPTION_ID ,e.annee_id,e.cls_id,'T1'),rankmoyennebull(e.INSCRIPTION_ID ,e.annee_id,e.cls_id,'T2'),
-rankmoyennebull(e.INSCRIPTION_ID ,e.annee_id,e.cls_id,'T3'),
+rankmoyennebull(e.INSCRIPTION_ID ,e.annee_id,e.cls_id,'T3'),rankmoyennebull(e.INSCRIPTION_ID ,e.annee_id,e.cls_id,'A'),
 
 nbremoyclsbull(e.annee_id,e.cls_id,'T1'),ecarttypemoybull(e.annee_id,e.cls_id,'T1'),moyderclsbull(e.annee_id,e.cls_id,'T1'),
 moygenclsbull(e.annee_id,e.cls_id,'T1'),moypremierclsbull(e.annee_id,e.cls_id,'T1'),
@@ -205,15 +228,20 @@ nbremoyclsbull(e.annee_id,e.cls_id,'T2'),ecarttypemoybull(e.annee_id,e.cls_id,'T
 moygenclsbull(e.annee_id,e.cls_id,'T2'),moypremierclsbull(e.annee_id,e.cls_id,'T2'),
 
 nbremoyclsbull(e.annee_id,e.cls_id,'T3'),ecarttypemoybull(e.annee_id,e.cls_id,'T3'),moyderclsbull(e.annee_id,e.cls_id,'T3'),
-moygenclsbull(e.annee_id,e.cls_id,'T3'),moypremierclsbull(e.annee_id,e.cls_id,'T3'),e.annee_id,
+moygenclsbull(e.annee_id,e.cls_id,'T3'),moypremierclsbull(e.annee_id,e.cls_id,'T3'),
+
+nbremoyclsbull(e.annee_id,e.cls_id,'A'),ecarttypemoybull(e.annee_id,e.cls_id,'A'),moyderclsbull(e.annee_id,e.cls_id,'A'),
+moygenclsbull(e.annee_id,e.cls_id,'A'),moypremierclsbull(e.annee_id,e.cls_id,'A'),e.annee_id,
 
 rankmatbull(e.inscription_id,e.annee_id,e.cls_id,'T1',l.mat_id),rankmatbull(e.inscription_id,e.annee_id,e.cls_id,'T2',l.mat_id),
-rankmatbull(e.inscription_id,e.annee_id,e.cls_id,'T3',l.mat_id),
+rankmatbull(e.inscription_id,e.annee_id,e.cls_id,'T3',l.mat_id),rankmatbull(e.inscription_id,e.annee_id,e.cls_id,'A',l.mat_id),
 
-moygenmatbull(e.annee_id,e.cls_id,'T1',l.mat_id ),
-moygenmatbull(e.annee_id,e.cls_id,'T2',l.mat_id ),moygenmatbull(e.annee_id,e.cls_id,'T3',l.mat_id ),
+moygenmatbull(e.annee_id,e.cls_id,'T1',l.mat_id ),moygenmatbull(e.annee_id,e.cls_id,'T2',l.mat_id ),
+moygenmatbull(e.annee_id,e.cls_id,'T3',l.mat_id ),moygenmatbull(e.annee_id,e.cls_id,'A',l.mat_id ),
 
-appreciationmatbull(e.moyt1),appreciationmatbull(l.notet1),appreciationmatbull(l.notet2),appreciationmatbull(l.notet3),
+appreciationmatbull(e.moyt1),appreciationmatbull(e.moyt2),appreciationmatbull(e.moyt3),appreciationmatbull(e.moyann),
+appreciationmatbull(l.notet1),appreciationmatbull(l.notet2),appreciationmatbull(l.notet3),appreciationmatbull(l.notetan),
+
 abscencebull('0',e.inscription_id ,e.annee_id),abscencebull('1',e.inscription_id ,e.annee_id),
 abscencebull('2',e.inscription_id ,e.annee_id),abscencebull('3',e.inscription_id ,e.annee_id),
 abscencebull('4',e.inscription_id ,e.annee_id),abscencebull('5',e.inscription_id ,e.annee_id),
@@ -803,12 +831,13 @@ begin
 	then SELECT FIND_IN_SET(moy3,(select GROUP_CONCAT(DISTINCT moy3 ORDER BY moy3 DESC) FROM e_zview_helper_trimestre e where    annee_id=exercice and e.classe_id=classe )) into valeur from e_zview_helper_trimestre e
 		where e.examen_id=1 and e.etudiant_id=eleve and annee_id=exercice and e.classe_id=classe ;
 	return valeur ;
+	
  end if ;	
 end $$
 
 DELIMITER ;
 
-
+DROP FUNCTION IF EXISTS `notematbul`;
 DELIMITER $$
 CREATE FUNCTION `notematbul`(eleve BIGINT(20),matiere BIGINT(20),examen BIGINT(20), exercice varchar(255)) RETURNS decimal(38,2)
 begin
@@ -817,13 +846,13 @@ begin
     SELECT l.note into valeur from e_bul e ,  e_bul_lgn l, e_examen x where e.id=l.lgn_bul_id and e.examen_id=x.id
         and x.libelle=examen and e.INSCRIPTION_ID=eleve  and l.mat_id=matiere  and e.annee_id=exercice;
 
-		return valeur ;
+		return ifnull(valeur,0) ;
 
 end $$
 
 DELIMITER ;
 
-
+DROP FUNCTION IF EXISTS `moyeleseqbul`;
 DELIMITER $$
 CREATE FUNCTION `moyeleseqbul`(eleve BIGINT(20),examen BIGINT(20),exercice varchar(255)) RETURNS decimal(38,2)
 begin
@@ -831,13 +860,13 @@ begin
     DECLARE valeur decimal(38,2);
     SELECT e.moyenne into valeur from e_bul e , e_examen x where e.examen_id=x.id
         and x.libelle=examen and e.INSCRIPTION_ID=eleve   and e.annee_id=exercice ;
-		return valeur ;
+		return ifnull(valeur,0) ;
 
 end $$
 
 DELIMITER ;
 
-
+DROP FUNCTION IF EXISTS `moyeleseqbul2`;
 DELIMITER $$
 CREATE FUNCTION `moyeleseqbul2`(eleve BIGINT(20),examen BIGINT(20),examen2 BIGINT(20),exercice varchar(255)) RETURNS decimal(38,2)
 begin
@@ -845,13 +874,13 @@ begin
     DECLARE valeur decimal(38,2);
     SELECT sum(e.moyenne) into valeur from e_bul e , e_examen x where e.examen_id=x.id
         and (x.libelle=examen or x.libelle=examen2) and e.INSCRIPTION_ID=eleve   and e.annee_id=exercice ;
-		return valeur ;
+		return ifnull(valeur,0)  ;
 
 end $$
 
 DELIMITER ;
 
-
+DROP FUNCTION IF EXISTS `rankseqnbul`;
 DELIMITER $$
 CREATE FUNCTION `rankseqnbul`(eleve BIGINT(20),examen BIGINT(20), classe BIGINT(20), exercice varchar(255)) RETURNS decimal(38,2)
 begin
@@ -859,7 +888,7 @@ begin
     DECLARE valeur decimal(38,2);
     SELECT e.rang into valeur from e_bul e , e_examen x where e.examen_id=x.id
         and x.libelle=examen and e.INSCRIPTION_ID=eleve  and e.cls_id=classe and e.annee_id=exercice;
-		return valeur ;
+		return ifnull(valeur,0)  ;
 
 end $$
 
@@ -932,166 +961,188 @@ end $$
 
 DELIMITER ;
 
-DROP FUNCTION `rankmoyennebull`;
+DROP FUNCTION IF EXISTS `rankmoyennebull`;
 DELIMITER $$
 CREATE FUNCTION `rankmoyennebull`(eleve BIGINT(20), exercice varchar(255),classe BIGINT(20),trimestre varchar(255) ) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
-	 then SELECT FIND_IN_SET(moyt1,(select GROUP_CONCAT(DISTINCT moyt1 ORDER BY moyt1 DESC) FROM e_bul e where annee_id=exercice and e.cls_id=classe  and e.examen_id=1 )) into valeur from e_bul e
-		where e.INSCRIPTION_ID=eleve and annee_id=exercice and e.cls_id=classe and e.examen_id=1 ;
-	return valeur ;
+	 then SELECT FIND_IN_SET(moyt1,(select GROUP_CONCAT(DISTINCT moyt1 ORDER BY moyt1 DESC) FROM e_bul e where annee_id=exercice and e.cls_id=classe  and e.type_examen=1 )) into valeur from e_bul e
+		where e.INSCRIPTION_ID=eleve and annee_id=exercice and e.cls_id=classe and e.type_examen=1 ;
+		return ifnull(valeur,0)  ;
 
 	elseif trimestre='T2'
- then	SELECT FIND_IN_SET(moyt2,(select GROUP_CONCAT(DISTINCT moyt2 ORDER BY moyt2 DESC) FROM e_bul e where annee_id=exercice and e.cls_id=classe  and e.examen_id=1 )) into valeur from e_bul e
-		where e.INSCRIPTION_ID=eleve and annee_id=exercice and e.cls_id=classe and e.examen_id=1  ;
-	return valeur ;
+ then	SELECT FIND_IN_SET(moyt2,(select GROUP_CONCAT(DISTINCT moyt2 ORDER BY moyt2 DESC) FROM e_bul e where annee_id=exercice and e.cls_id=classe  and e.type_examen=3 )) into valeur from e_bul e
+		where e.INSCRIPTION_ID=eleve and annee_id=exercice and e.cls_id=classe and e.type_examen=3  ;
+		return ifnull(valeur,0)  ;
 
 	elseif trimestre='T3'
-	then SELECT FIND_IN_SET(moyt3,(select GROUP_CONCAT(DISTINCT moyt3 ORDER BY moyt3 DESC) FROM e_bul e where annee_id=exercice and e.cls_id=classe  and e.examen_id=1)) into valeur from e_bul e
-		where e.INSCRIPTION_ID=eleve and annee_id=exercice and e.cls_id=classe and e.examen_id=1 ;
-	return valeur ;
+	then SELECT FIND_IN_SET(moyt3,(select GROUP_CONCAT(DISTINCT moyt3 ORDER BY moyt3 DESC) FROM e_bul e where annee_id=exercice and e.cls_id=classe  and e.type_examen=5)) into valeur from e_bul e
+		where e.INSCRIPTION_ID=eleve and annee_id=exercice and e.cls_id=classe and e.type_examen=5 ;
+		return ifnull(valeur,0)  ;
+		elseif trimestre='A'
+	then SELECT FIND_IN_SET(moyann,(select GROUP_CONCAT(DISTINCT moyann ORDER BY moyann DESC) FROM e_bul e where annee_id=exercice and e.cls_id=classe  and e.type_examen=5)) into valeur from e_bul e
+		where e.INSCRIPTION_ID=eleve and annee_id=exercice and e.cls_id=classe and e.type_examen=5 ;
+		return ifnull(valeur,0)  ;
  end if ;	
 end $$
 
 DELIMITER ;
 
-DROP FUNCTION `moygenclsbull`;
+DROP FUNCTION IF EXISTS `moygenclsbull`;
 DELIMITER $$
 CREATE FUNCTION `moygenclsbull`( exercice varchar(255),classe BIGINT(20),trimestre varchar(255) ) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
-	 then SELECT avg(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1   ;
-	return TRUNCATE(valeur,2) ;
+	 then SELECT avg(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=1   ;
+	return ifnull(TRUNCATE(valeur,2),0) ;
 
 	elseif trimestre='T2'
- then SELECT avg(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1  ;
-		return TRUNCATE(valeur,2) ;
+ then SELECT avg(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=3  ;
+		return ifnull(TRUNCATE(valeur,2),0) ;
 
 	elseif trimestre='T3'
-	then SELECT avg(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1   ;
-		return TRUNCATE(valeur,2) ;
+	then SELECT avg(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=5   ;
+		return ifnull(TRUNCATE(valeur,2),0) ;
+	elseif trimestre='A'
+	then SELECT avg(e.moyann) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=5   ;
+		return ifnull(TRUNCATE(valeur,2),0) ;
  end if ;
 end $$
 
 DELIMITER ;
 
-DROP FUNCTION `moyderclsbull`;
+DROP FUNCTION IF EXISTS `moyderclsbull`;
 DELIMITER $$
 CREATE FUNCTION `moyderclsbull`( exercice varchar(255),classe BIGINT(20),trimestre varchar(255) ) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
-	 then SELECT min(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1  ;
-	return TRUNCATE(valeur,2) ;
+	 then SELECT min(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=1  ;
+	return ifnull(TRUNCATE(valeur,2),0) ;
 
 	elseif trimestre='T2'
- then SELECT min(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice  and e.examen_id=1 ;
-		return TRUNCATE(valeur,2) ;
+ then SELECT min(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice  and e.type_examen=3 ;
+		return ifnull(TRUNCATE(valeur,2),0) ; 
 
 	elseif trimestre='T3'
-	then SELECT min(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1  ;
-		return TRUNCATE(valeur,2) ;
+	then SELECT min(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=5  ;
+		return ifnull(TRUNCATE(valeur,2),0) ; 
+	elseif trimestre='A'
+	then SELECT min(e.moyann) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=5  ;
+		return ifnull(TRUNCATE(valeur,2),0) ; 
  end if ;
 end $$
 
 DELIMITER ;
 
-DROP FUNCTION `moypremierclsbull`;
+DROP FUNCTION IF EXISTS `moypremierclsbull`;
 DELIMITER $$
 CREATE FUNCTION `moypremierclsbull`( exercice varchar(255),classe BIGINT(20),trimestre varchar(255) ) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
-	 then SELECT max(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1  ;
-	return TRUNCATE(valeur,2) ;
+	 then SELECT max(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=1  ;
+	return ifnull(TRUNCATE(valeur,2),0) ;
 
 	elseif trimestre='T2'
- then SELECT max(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1  ;
-		return TRUNCATE(valeur,2) ;
+ then SELECT max(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=3  ;
+		return ifnull(TRUNCATE(valeur,2),0) ;
 
 	elseif trimestre='T3'
-	then SELECT max(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1  ;
-		return TRUNCATE(valeur,2) ;
+	then SELECT max(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=5  ;
+		return ifnull(TRUNCATE(valeur,2),0) ; 
+	elseif trimestre='A'
+	then SELECT max(e.moyann) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=5  ;
+		return ifnull(TRUNCATE(valeur,2),0) ; 
  end if ;
 end $$
 
 DELIMITER ;
 
-DROP FUNCTION `ecarttypemoybull`;
+DROP FUNCTION IF EXISTS `ecarttypemoybull`;
 DELIMITER $$
 CREATE FUNCTION `ecarttypemoybull`( exercice varchar(255),classe BIGINT(20),trimestre varchar(255) ) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
-	 then SELECT std(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.examen_id=1  ;
-	return TRUNCATE(valeur,2) ;
+	 then SELECT std(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.type_examen=1  ;
+	return ifnull(TRUNCATE(valeur,2),0)  ;
 
 	elseif trimestre='T2'
- then SELECT std(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice  and e.examen_id=1 ;
-		return TRUNCATE(valeur,2) ;
+ then SELECT std(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice  and e.type_examen=3 ;
+		return ifnull(TRUNCATE(valeur,2),0)  ;
 
 	elseif trimestre='T3'
-	then SELECT std(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice  and e.examen_id=1 ;
-		return TRUNCATE(valeur,2) ;
+	then SELECT std(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice  and e.type_examen=5 ;
+		return ifnull(TRUNCATE(valeur,2),0) ;
+	elseif trimestre='A'
+	then SELECT std(e.moyann) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice  and e.type_examen=5 ;
+		return ifnull(TRUNCATE(valeur,2),0) ;
  end if ;
 end $$
 
 DELIMITER ;
 
-DROP FUNCTION `nbremoyclsbull`;
+DROP FUNCTION IF EXISTS `nbremoyclsbull`;
 DELIMITER $$
 CREATE FUNCTION `nbremoyclsbull`( exercice varchar(255),classe BIGINT(20),trimestre varchar(255) ) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
-	 then SELECT count(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.moyt1>=10 and e.examen_id=1 ;
-	return valeur ;
+	 then SELECT count(e.moyt1) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.moyt1>=10 and e.type_examen=1 ;
+	return ifnull(valeur,0)  ;
 
 	elseif trimestre='T2'
- then SELECT count(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.moyt2>=10 and e.examen_id=1 ;
-		return valeur ;
+ then SELECT count(e.moyt2) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.moyt2>=10 and e.type_examen=3 ;
+		return ifnull(valeur,0)   ;
 
 	elseif trimestre='T3'
-	then SELECT count(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.moyt3>=10 and e.examen_id=1 ;
-		return valeur ;
+	then SELECT count(e.moyt3) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.moyt3>=10 and e.type_examen=5 ;
+		return ifnull(valeur,0)   ;
+	elseif trimestre='A'
+	then SELECT count(e.moyann) into valeur from  e_bul e where e.cls_id=classe and e.annee_id=exercice and e.moyann>=10 and e.examen_id=5;
+		return ifnull(valeur,0)   ;
  end if ;
 end $$
 
 DELIMITER ;
 
 
-DROP FUNCTION moygenmatbull ;
+DROP FUNCTION IF EXISTS `moygenmatbull`;
 DELIMITER $$
 CREATE FUNCTION `moygenmatbull`( exercice varchar(255),classe BIGINT(20),trimestre varchar(255),  matiere BIGINT(20) ) RETURNS decimal(38,2)
 begin
 
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
-	 then SELECT avg(l.notet1) into valeur from  e_bul e , e_bul_lgn l where e.id=l.lgn_bul_id and e.cls_id=classe and e.annee_id=exercice and e.examen_id=1 and l.mat_id=matiere   ;
-	return TRUNCATE(valeur,2) ;
+	 then SELECT avg(l.notet1) into valeur from  e_bul e , e_bul_lgn l where e.id=l.lgn_bul_id and e.cls_id=classe and e.annee_id=exercice and e.type_examen=1 and l.mat_id=matiere   ;
+	return ifnull(TRUNCATE(valeur,2),0)  ;
 
 	elseif trimestre='T2'
-then SELECT avg(l.notet2) into valeur from  e_bul e , e_bul_lgn l where e.id=l.lgn_bul_id and e.cls_id=classe and e.annee_id=exercice and e.examen_id=1 and l.mat_id=matiere ;
-		return TRUNCATE(valeur,2) ;
+then SELECT avg(l.notet2) into valeur from  e_bul e , e_bul_lgn l where e.id=l.lgn_bul_id and e.cls_id=classe and e.annee_id=exercice and e.type_examen=3 and l.mat_id=matiere ;
+		return ifnull(TRUNCATE(valeur,2),0) ;
 
 	elseif trimestre='T3'
-then SELECT avg(l.notet3) into valeur from  e_bul e , e_bul_lgn l where e.id=l.lgn_bul_id and e.cls_id=classe and e.annee_id=exercice and e.examen_id=1 and l.mat_id=matiere;
-		return TRUNCATE(valeur,2) ;
+then SELECT avg(l.notet3) into valeur from  e_bul e , e_bul_lgn l where e.id=l.lgn_bul_id and e.cls_id=classe and e.annee_id=exercice and e.examen_id=5 and l.mat_id=matiere;
+		return ifnull(TRUNCATE(valeur,2),0)  ;
+	elseif trimestre='A'
+then SELECT avg(l.notetan) into valeur from  e_bul e , e_bul_lgn l where e.id=l.lgn_bul_id and e.cls_id=classe and e.annee_id=exercice and e.examen_id=5 and l.mat_id=matiere;
+		return ifnull(TRUNCATE(valeur,2),0)  ;
  end if ;
 end $$
 
 DELIMITER ;
 
 
-DROP FUNCTION rankmatbull ;
+DROP FUNCTION IF EXISTS `rankmatbull`;
 DELIMITER $$
 CREATE FUNCTION `rankmatbull`( eleve BIGINT(20),exercice varchar(255),classe BIGINT(20),trimestre varchar(255),  matiere BIGINT(20) ) RETURNS decimal(38,2)
 begin
@@ -1099,24 +1150,29 @@ begin
     DECLARE valeur decimal(38,2);
 	if trimestre='T1'
 	 then SELECT FIND_IN_SET(notet1,(select GROUP_CONCAT( DISTINCT notet1 ORDER BY notet1 DESC)  FROM e_bul e, e_bul_lgn l
-			where l.lgn_bul_id=e.id  and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.examen_id=1) )into valeur   FROM e_bul e, e_bul_lgn l
-			where l.lgn_bul_id=e.id   and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.examen_id=1 and e.inscription_id=eleve ;
+			where l.lgn_bul_id=e.id  and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=1) )into valeur   FROM e_bul e, e_bul_lgn l
+			where l.lgn_bul_id=e.id   and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=1 and e.inscription_id=eleve ;
 
-	return valeur ;
+	return ifnull(valeur,0) ;
 
 	elseif trimestre='T2'
 then SELECT FIND_IN_SET(notet2,(select GROUP_CONCAT( DISTINCT notet2 ORDER BY notet2 DESC)  FROM e_bul e, e_bul_lgn l
-			where l.lgn_bul_id=e.id  and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.examen_id=1) )into valeur   FROM e_bul e, e_bul_lgn l
-			where l.lgn_bul_id=e.id   and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.examen_id=1 and e.inscription_id=eleve ;
+			where l.lgn_bul_id=e.id  and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=3) )into valeur   FROM e_bul e, e_bul_lgn l
+			where l.lgn_bul_id=e.id   and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=3 and e.inscription_id=eleve ;
 
-	return valeur ;
+	return ifnull(valeur,0) ;
 
 	elseif trimestre='T3'
 then SELECT FIND_IN_SET(notet3,(select GROUP_CONCAT( DISTINCT notet3 ORDER BY notet3 DESC)  FROM e_bul e, e_bul_lgn l
-			where l.lgn_bul_id=e.id  and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.examen_id=1) )into valeur   FROM e_bul e, e_bul_lgn l
-			where l.lgn_bul_id=e.id   and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.examen_id=1 and e.inscription_id=eleve ;
+			where l.lgn_bul_id=e.id  and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=5) )into valeur   FROM e_bul e, e_bul_lgn l
+			where l.lgn_bul_id=e.id   and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=5 and e.inscription_id=eleve ;
+		return ifnull(valeur,0) ;
+elseif trimestre='A'
+then SELECT FIND_IN_SET(notetan,(select GROUP_CONCAT( DISTINCT notetan ORDER BY notetan DESC)  FROM e_bul e, e_bul_lgn l
+			where l.lgn_bul_id=e.id  and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=5) )into valeur   FROM e_bul e, e_bul_lgn l
+			where l.lgn_bul_id=e.id   and l.mat_id=matiere  and e.annee_id=exercice and e.cls_id=classe and e.type_examen=5 and e.inscription_id=eleve ;
 
-	return valeur ;
+	return ifnull(valeur,0) ;
  end if ;
 end $$
 
@@ -1156,6 +1212,18 @@ DELIMITER ;
 --- --- --- --- --- --- --- --- TRIGGER --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 ------- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+-- no use
+delimiter |
+DROP TRIGGER IF EXISTS  ligne_note |
+
+CREATE TRIGGER ligne_note
+BEFORE INSERT ON e_bul_lgn
+FOR EACH ROW
+  BEGIN
+	  SET NEW.RANG=(SELECT FIND_IN_SET(note,(select GROUP_CONCAT( DISTINCT note ORDER BY note DESC)  FROM  e_bul_lgn l e_notedlt e, e_note_mat m , e_examen x
+			where l.examen_id=l. and m.matiere_id=matiere  and e.annee_id=exercice) ) into valeur from e_notedlt e, e_note_mat m , e_examen x
+			where e.el_note_id=m.id and m.examen_id=x.id and m.examen_id=seq and m.matiere_id=matiere and e.etudiant_id=eleve and e.annee_id=exercice;);
+    END|
 
 delimiter |
 DROP TRIGGER IF EXISTS  moyenne_trim |
@@ -1164,6 +1232,7 @@ CREATE TRIGGER moyenne_trim
 BEFORE INSERT ON e_bul
 FOR EACH ROW
   BEGIN
+  
       SET NEW.moyt1=((select moyenne from e_bul e, e_examen x where e.examen_id=x.id   and x.libelle='0' and ins_id=new.ins_id)+
                      (select moyenne from e_bul e , e_examen x where e.examen_id=x.id   and x.libelle='1' and ins_id=new.ins_id))/2;
 
@@ -1172,8 +1241,44 @@ FOR EACH ROW
 
       SET NEW.moyt3=((select moyenne from e_bul e, e_examen x where e.examen_id=x.id   and x.libelle='4' and ins_id=new.ins_id)+
                      (select moyenne from e_bul e , e_examen x where e.examen_id=x.id   and x.libelle='5' and ins_id=new.ins_id))/2;
-      SET NEW.moyann= (NEW.moyt1+NEW.moyt2+NEW.moyt3)/3;
+      SET NEW.moyann= truncate((NEW.moyt1+NEW.moyt2+NEW.moyt3)/3,2);
+	  SET NEW.nb_moy=(select count(*) from e_bul where cls_id=new.cls_id and moyenne>=10);
+	  SET NEW.MOY_PREMIER=(select max(moyenne) from e_bul where cls_id=new.cls_id and moyenne>=10 and examen_id=new.examen_id and annee_id=new.annee_id);
+	  SET NEW.MOY_DER=(select min(moyenne) from e_bul where cls_id=new.cls_id and examen_id=new.examen_id and annee_id=new.annee_id);
+	  SET NEW.RANG=ifnull((SELECT FIND_IN_SET(moyenne,(select GROUP_CONCAT(DISTINCT moyenne ORDER BY moyenne DESC) FROM e_bul e where e.examen_id=new.examen_id  and annee_id=new.annee_id
+				and e.cls_id=new.cls_id )) from e_bul e where e.examen_id=new.examen_id and e.INSCRIPTION_ID=new.INSCRIPTION_ID and annee_id=new.annee_id and e.cls_id=new.cls_id and moyenne !=0 ),0);
+	  SET NEW.ECRAT_TYPE=truncate((SELECT std(e.moyenne) from  e_bul e where e.cls_id=new.cls_id and e.annee_id=new.annee_id and e.examen_id=new.examen_id),2);
+	  SET NEW.MOY_CLA=truncate((SELECT avg(e.moyenne) from  e_bul e where e.cls_id=new.cls_id and e.annee_id=new.annee_id and e.examen_id=new.examen_id),2);
     END|
+	
+	
+
+delimiter |
+DROP TRIGGER IF EXISTS  moyenne_trim_after |
+
+CREATE TRIGGER moyenne_trim_after
+BEFORE UPDATE ON e_bul
+FOR EACH ROW
+  BEGIN
+	 SET NEW.moyt1=(ifnull((select moyenne from e_bul e, e_examen x where e.examen_id=x.id   and x.libelle='0' and ins_id=new.ins_id),0)+
+                     ifnull((select moyenne from e_bul e , e_examen x where e.examen_id=x.id   and x.libelle='1' and ins_id=new.ins_id),0))/2;
+
+      SET NEW.moyt2=(ifnull((select moyenne from e_bul e, e_examen x where e.examen_id=x.id   and x.libelle='2' and ins_id=new.ins_id),0)+
+                     ifnull((select moyenne from e_bul e , e_examen x where e.examen_id=x.id   and x.libelle='3' and ins_id=new.ins_id),0))/2;
+
+      SET NEW.moyt3=(ifnull((select moyenne from e_bul e, e_examen x where e.examen_id=x.id   and x.libelle='4' and ins_id=new.ins_id),0)+
+                     ifnull((select moyenne from e_bul e , e_examen x where e.examen_id=x.id   and x.libelle='5' and ins_id=new.ins_id),0))/2;
+      SET NEW.moyann=truncate((NEW.moyt1+NEW.moyt2+NEW.moyt3)/3,2);
+	  SET NEW.MOY_PREMIER=(select max(moyenne) from e_bul where cls_id=new.cls_id and moyenne>=10 and examen_id=new.examen_id and annee_id=new.annee_id);
+	  SET NEW.MOY_DER=(select min(moyenne) from e_bul where cls_id=new.cls_id and examen_id=new.examen_id and annee_id=new.annee_id and moyenne!=0);
+	   SET NEW.nb_moy=(select count(*) from e_bul where cls_id=new.cls_id and moyenne>=10 and examen_id=new.examen_id and moyenne!=0);
+	  SET NEW.TX_REU= truncate(((NEW.nb_moy*100)/(select count(*) from e_bul where cls_id = new.cls_id and examen_id=new.examen_id and moyenne!=0)),2);
+	  SET NEW.ECRAT_TYPE=truncate((SELECT std(e.moyenne) from  e_bul e where e.cls_id=new.cls_id and e.annee_id=new.annee_id and e.examen_id=new.examen_id and moyenne!=0),2);
+	  SET NEW.MOY_CLA=truncate((SELECT avg(e.moyenne)  from  e_bul e where e.cls_id=new.cls_id and e.annee_id=new.annee_id and e.examen_id=new.examen_id and moyenne!=0),2);
+	  SET NEW.RANG = ifnull((SELECT FIND_IN_SET(moyenne,(select GROUP_CONCAT(DISTINCT moyenne ORDER BY moyenne DESC) FROM e_bul e where e.examen_id=new.examen_id  and annee_id=new.annee_id
+				and e.cls_id=new.cls_id )) from e_bul e where e.examen_id=new.examen_id and e.INSCRIPTION_ID=new.INSCRIPTION_ID and annee_id=new.annee_id and e.cls_id=new.cls_id and moyenne !=0 ),0);
+	
+	   END|
 	--trigger note
 delimiter |
 DROP TRIGGER IF EXISTS  note |
@@ -1182,19 +1287,28 @@ CREATE TRIGGER note
 BEFORE UPDATE ON e_notedlt
 FOR EACH ROW
   BEGIN
-      SET NEW.notet1=(( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='0' and annee_id=new.annee_id)+
-                       ( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='1' and annee_id=new.annee_id))/2;
+	
+      SET NEW.notet1=IFNULL((( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='0' and annee_id=new.annee_id)+
+                       ( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='1' and annee_id=new.annee_id))/2,0);
 
-      SET NEW.notet2=(( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='2' and annee_id=new.annee_id)+
-                       ( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='3' and annee_id=new.annee_id))/2;
+      SET NEW.notet2=( (IFNULL( (select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='2' and annee_id=new.annee_id),0)+
+                       IFNULL((select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='3' and annee_id=new.annee_id),0))/2);
 
-      SET NEW.notet3=(( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='4' and annee_id=new.annee_id)+
-                       ( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='5' and annee_id=new.annee_id))/2;
-      SET NEW.noteann= (NEW.notet1+NEW.notet2+NEW.notet3)/3;
-      SET NEW.moymatcls= (SELECT avg(note) from  e_notedlt  where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
+      SET NEW.notet3=( ifnull(( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='4' and annee_id=new.annee_id),0)+
+                       ifnull(( select note from e_notedlt where etudiant_id= new.etudiant_id and matiere_id=new.matiere_id and type_examen='5' and annee_id=new.annee_id),0))/2;
+      SET NEW.noteann= truncate((NEW.notet1+NEW.notet2+NEW.notet3)/3,2);
+      SET NEW.moymatcls=truncate( (SELECT avg(note) from  e_notedlt  where el_note_id=new.el_note_id and annee_id=NEW.annee_id),2);
+	  SET NEW.extremax=(SELECT max(note) from  e_notedlt n where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
+      SET NEW.extremin=(SELECT min(note) from  e_notedlt n where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
+
+      SET NEW.totalpoint=ifnull((SELECT sum(note*c.coef) from  e_notedlt n , e_coefmatdtl c where n.matiere_id=c.id  and annee_id=NEW.annee_id
+						and etudiant_id= new.etudiant_id and  type_examen=new.type_examen  and note!=0),0);
+      SET NEW.totalcoef=ifnull((SELECT sum(c.coef) from  e_notedlt n , e_coefmatdtl c where n.matiere_id=c.id  and annee_id=NEW.annee_id
+						and etudiant_id= new.etudiant_id and  type_examen=new.type_examen  and note!=0),0);
+      SET NEW.moyetud=ifnull(truncate(new.totalpoint/new.totalcoef,3),0);
 
     END|
-	
+
 delimiter |
 DROP TRIGGER IF EXISTS  note_insert |
 
@@ -1214,6 +1328,7 @@ FOR EACH ROW
       SET NEW.moymatcls= (SELECT avg(note) from  e_notedlt  where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
       SET NEW.extremax=(SELECT max(note) from  e_notedlt n where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
       SET NEW.extremin=(SELECT min(note) from  e_notedlt n where el_note_id=new.el_note_id and annee_id=NEW.annee_id);
+	  
     END|
 delimiter |
 DROP TRIGGER IF EXISTS finance |
@@ -1288,7 +1403,7 @@ CREATE TRIGGER pret
 BEFORE UPDATE ON e_remprt
 FOR EACH ROW
   BEGIN
-
+/
     IF (select count(*) from e_zview_pret where empl_id=new.empl_id )=1
     THEN
       UPDATE e_zview_pret set annee_id=new.annee_id,
@@ -1305,20 +1420,20 @@ FOR EACH ROW
           sept=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9),0),
           octobre=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10),0),
           nov=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),0),
-		  decembre=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),0),
+		      decembre=IFNULL((select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),0),
          
-		  statejanvier=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1),
-          statefev=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2),
-          statemars=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3),
-          stateavril=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4),
-          statemai=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5),
-          statejuin=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6),
-          statejuill=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7),
-          stateaout=(select state from e_remprt r where r.empl_id=new.id and EXTRACT(MONTH FROM date)=8),
-          statesept=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9),
-          stateoct=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10),
-          statenov=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),
-          statedecembre=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),
+		      statejanvier=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1 and id=new.id),
+          statefev=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2 and id=new.id),
+          statemars=(select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3 and id=new.id),
+          stateavril=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4 and id=new.id),
+          statemai=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5 and id=new.id),
+          statejuin=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6 and id=new.id),
+          statejuill=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7 and id=new.id),
+          stateaout=(select state from e_remprt r where r.empl_id=new.id and EXTRACT(MONTH FROM date)=8 and id=new.id),
+          statesept=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9 and id=new.id),
+          stateoct=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10 and id=new.id),
+          statenov=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11 and id=new.id),
+          statedecembre=(select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12 and id=new.id),
           moisrem=1
       where empl_id=new.empl_id ;
     ELSE
@@ -1343,25 +1458,25 @@ FOR EACH ROW
           (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),
           (select sum(montant) from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),
 
-		      (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1),
-          (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2),
-          (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7),
-          (select state from e_remprt r where r.empl_id=new.id and EXTRACT(MONTH FROM date)=8),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11),
-          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12),
-		  
+		      (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=1 and id=new.id),
+          (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=2 and id=new.id),
+          (select state from e_remprt r where empl_id=new.empl_id and EXTRACT(MONTH FROM date)=3 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=4 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=5 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=6 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=7 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.id and EXTRACT(MONTH FROM date)=8 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=9 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=10 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=11 and id=new.id),
+          (select state from e_remprt r where r.empl_id=new.empl_id and EXTRACT(MONTH FROM date)=12 and id=new.id),
           moisrem=1,
          "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
     END IF ;
 
     END|
-	delimiter |
+	
+delimiter |
 DROP TRIGGER IF EXISTS massesalariale |
 
 CREATE TRIGGER massesalariale
@@ -1426,10 +1541,10 @@ CREATE TRIGGER eltvariable
 AFTER INSERT ON e_remprt
 FOR EACH ROW
   BEGIN
-      INSERT INTO e_eltvar(empl_id,PEPA_id,ddeb,dfin,elvap_id,
+      INSERT INTO e_eltvar(empl_id,PEPA_id,ddeb,dfin,elvap_id,STATE_EL,
          DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,
          ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
-        values(new.empl_id,(select id from e_ppaie where ddebut<=new.date and dfin>=new.date),new.date, new.date,new.id,
+        values(new.empl_id,(select id from e_ppaie where ddebut<=new.date and dfin>=new.date),new.date, new.date,new.id,"actif",
          "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
 
  END|
@@ -1441,10 +1556,10 @@ CREATE TRIGGER eltvaracompte
 AFTER INSERT ON e_acompte
 FOR EACH ROW
   BEGIN
-      INSERT INTO e_eltvar(empl_id,PEPA_id,ddeb,dfin,elvap_id,
+      INSERT INTO e_eltvar(empl_id,PEPA_id,ddeb,dfin,elvap_id,STATE_EL,
          DESIGNATION,EDITTITLE,LISTTITLE,MODULENAME,CREATEONFIELD,COMPAREID,SELECTED,DESABLECREATE,ACTIVATEFOLLOWER,
          ACTIVEFILELIEN,DESABLEDELETE,FOOTERSCRIPT,SERIAL,DESABLEUPDATE,searchkeys,desabledatablock,ownermodule)
-        values(new.empl_id,(select id from e_ppaie where ddebut<=new.effet and dfin>=new.effet),new.effet, new.effet,new.id,
+        values(new.empl_id,(select id from e_ppaie where ddebut<=new.effet and dfin>=new.effet),new.effet, new.effet,new.id,"actif",
          "defualt","defualt","defualt","defualt",0,0,0,0,0,0,0,"defualt","defualt",0,"defualt",0,"defualt") ;
 
  END|
@@ -1593,8 +1708,31 @@ update e_notedlt e  set matiere_id= (select matiere_id from e_note_mat where id 
 update e_notedlt e  set type_examen= (select x.libelle from e_note_mat e, e_examen x where e.examen_id=x.id and e.id = e.el_note_id);
 update e_notedlt e  set classe_id= (select classe_id from e_note_mat where id = e.el_note_id);
 
+ select note,matiere_id,classe_id, etudiant_id from e_notedlt where type_examen='2' and annee_id=2018 and classe_id=30
+ order by etudiant_id asc;
+
+ UPDATE e_remprt SET `date`=CONCAT(YEAR(`date`),'-',MONTH(`date`),'-05') where DAY(date)='01';
+ UPDATE e_acompte SET `effet`=CONCAT(YEAR(`effet`),'-',MONTH(`effet`),'-05') where DAY(effet)='01';
+ UPDATE e_eltvar SET `ddeb`=CONCAT(YEAR(`ddeb`),'-',MONTH(`ddeb`),'-05')where DAY(ddeb)='01';
+ UPDATE e_eltvar SET `dfin`=CONCAT(YEAR(`dfin`),'-',MONTH(`dfin`),'-05')where DAY(dfin)='01';
 
 
 -- update table for new noyau champ searchkeys
 update  e_inscription set searchkeys= concat(matricule," , ",nom);
 update  e_eleve set searchkeys= concat(matricule," , ",nom);
+update e_bul e set type_examen =(select LIBELLE from e_examen x where x.id=e.examen_id);
+
+update e_classe e
+set eff_fille=(select count(*) from e_inscription i , e_eleve l where i.ELEVE_ID=l.id and
+ i.classe_id=e.id and l.sexe=1);
+
+update e_classe e
+set eff_gar=(select count(*) from e_inscription i , e_eleve l where i.ELEVE_ID=l.id and
+ i.classe_id=e.id and l.sexe=0);
+ update e_filiere f set capacite=(select sum(effectif) from e_classe c where c.filiere_id=f.id);
+update e_filiere f set eff_fille=(select sum(eff_fille) from e_classe c where c.filiere_id=f.id);
+update e_filiere f set eff_gar=(select sum(eff_gar) from e_classe c where c.filiere_id=f.id);
+
+update e_section f set capacite=(select sum(effectif) from e_classe c where c.section_id=f.id);
+update e_section f set eff_fille=(select sum(eff_fille) from e_classe c where c.section_id=f.id);
+update e_section f set eff_gar=(select sum(eff_gar) from e_classe c where c.section_id=f.id);

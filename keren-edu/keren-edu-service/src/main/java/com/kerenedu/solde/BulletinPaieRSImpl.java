@@ -149,7 +149,7 @@ public class BulletinPaieRSImpl
 
  	@Override
  	public Response printbulletin(HttpHeaders headers, BulletinPaie bulletin) {
- 		System.out.println("BulletinPaieRSImpl.printbulletin() print bulletin");
+ 		//System.out.println("BulletinPaieRSImpl.printbulletin() print bulletin");
  		bulletin.setPeriode((PeriodePaie) CacheMemory.getValue(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.PERIODE));
 // 		System.out.println("BulletinPaieRSImpl.printbulletin() periode"+bulletin.getPeriode());
  		// TODO Auto-generated method stub

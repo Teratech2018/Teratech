@@ -131,7 +131,7 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 
 
 	public LigneAbscence(LigneAbscence ins) {
-		super(ins.id, ins.designation, ins.moduleName, 0L);
+		super(ins.id, ins.designation, ins.moduleName, ins.compareid);
 		if (ins.eleve != null) {
 			this.eleve = new Inscription(ins.getEleve());
 		

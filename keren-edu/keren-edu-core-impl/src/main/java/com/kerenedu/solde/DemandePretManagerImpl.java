@@ -3,6 +3,7 @@ package com.kerenedu.solde;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -139,9 +140,13 @@ public class DemandePretManagerImpl
             rem.setActif(true);
             rem.setPret(entity.getTypepret());
             rem.setEmplid(entity.getEmploye().getId());
-            rem.setAnneScolaire(entity.getAnneScolaire());
+         
           //  rem.setSociete(entity.getEmploye().getStructure());
             rem.setDate(DateHelper.nextMonth(entity.getDrembour(), i));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(rem.getDate());
+            int year = cal.get(Calendar.YEAR);
+            rem.setAnneScolaire((year-1)+"");
 
             if(i==entity.getDuree()){
                     rem.setMontant(entity.getMontantpro()-total);

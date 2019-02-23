@@ -156,7 +156,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="10" isBold="true" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $F{typeexamen}.equals("0") ? "Examen :1ere Séquence" : ( $F{typeexamen}.equals("1") ? "Examen :2eme Séquence" : ( $F{typeexamen}.equals("2")? "Examen :3eme Séquence" : ( $F{typeexamen}.equals("3") ? "Examen :4eme Séquence" : "Examen :3eme Séquence" ) ) ) )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $F{typeexamen}.equals("0") ? "Examen :1ere Séquence" : ( $F{typeexamen}.equals("1") ? "Examen :2eme Séquence" : ( $F{typeexamen}.equals("2")? "Examen :3eme Séquence" : ( $F{typeexamen}.equals("3") ? "Examen :4eme Séquence" : "Examen :5eme Séquence" ) ) ) )]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="table" mode="Opaque" x="53" y="181" width="219" height="23" backcolor="#E3E1E1" uuid="f8e08a6a-d5f5-49bc-a110-847975bb9bf7"/>
@@ -211,7 +211,7 @@
 					<textFieldExpression><![CDATA["APPRECIATION"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="table" mode="Opaque" x="-2" y="181" width="55" height="23" backcolor="#E3E1E1" uuid="760a9f93-2986-4fad-963c-9aae02df78f2"/>
+					<reportElement style="table" mode="Opaque" x="0" y="181" width="53" height="23" backcolor="#E3E1E1" uuid="760a9f93-2986-4fad-963c-9aae02df78f2"/>
 					<box>
 						<topPen lineWidth="0.75" lineColor="#999999"/>
 						<leftPen lineWidth="0.75" lineColor="#999999"/>
@@ -445,7 +445,7 @@
 					<textFieldExpression><![CDATA["Moy/20"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="151" width="120" height="18" uuid="766f71ce-adff-4ba5-8677-5be8f4f93142"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="151" width="208" height="18" uuid="766f71ce-adff-4ba5-8677-5be8f4f93142"/>
 					<box leftPadding="4">
 						<leftPen lineWidth="0.0" lineColor="#999999"/>
 						<bottomPen lineWidth="0.0" lineColor="#999999"/>
@@ -457,7 +457,7 @@
 					<textFieldExpression><![CDATA["Matière : "+$F{matiere.matiere.libelle}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="142" y="151" width="120" height="18" uuid="f17566cd-2ba5-4f5b-a1c7-e76c07507f0b"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="18" y="133" width="120" height="18" uuid="f17566cd-2ba5-4f5b-a1c7-e76c07507f0b"/>
 					<box leftPadding="4">
 						<leftPen lineWidth="0.0" lineColor="#999999"/>
 						<bottomPen lineWidth="0.0" lineColor="#999999"/>
@@ -489,7 +489,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{obs}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="391" y="0" width="40" height="20" uuid="2269f427-103c-4e86-a4e1-0f2642f13fbf"/>
 				<box>
 					<topPen lineWidth="0.5" lineColor="#666666"/>
@@ -515,7 +515,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nom}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="351" y="0" width="40" height="20" uuid="97f2a2b2-9ef2-48a8-80e1-bedac310d814"/>
 				<box>
 					<topPen lineWidth="0.5" lineColor="#666666"/>
@@ -528,7 +528,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{note3}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="311" y="0" width="40" height="20" uuid="4c4a1455-40f0-4052-b6d2-31770d859715"/>
 				<box>
 					<topPen lineWidth="0.5" lineColor="#666666"/>
@@ -542,7 +542,7 @@
 				<textFieldExpression><![CDATA[$F{note2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="-2" y="0" width="55" height="20" uuid="02259e57-edfc-4846-ae04-aee95a652d86"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="53" height="20" uuid="02259e57-edfc-4846-ae04-aee95a652d86"/>
 				<box leftPadding="3">
 					<topPen lineWidth="0.5" lineColor="#666666"/>
 					<leftPen lineWidth="0.5" lineColor="#666666"/>
@@ -554,7 +554,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{matricule}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0" isBlankWhenNull="true">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="271" y="0" width="40" height="20" uuid="28e8c68b-dc4f-4125-9501-9a6344d1f5bd"/>
 				<box>
 					<topPen lineWidth="0.5" lineColor="#666666"/>

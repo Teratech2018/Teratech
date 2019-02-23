@@ -18,5 +18,8 @@ public interface NoteDetailDAO
      * 
      */
     public final static String SERVICE_NAME = "NoteDetailDAO";
+	public long updateforce(ImportNoteClasse entity) ;
+	
+	public long updateforce2(EdtBulletin prepa) ;
 
 }

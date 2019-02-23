@@ -11,7 +11,10 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,8 +26,10 @@ import com.kerenedu.solde.Banque;
 import com.kerenedu.solde.Categorie;
 import com.kerenedu.solde.Echellon;
 import com.kerenedu.solde.Fonction;
+import com.kerenedu.solde.PeriodePaie;
 import com.kerenedu.solde.ProfilPaie;
 import com.kerenedu.solde.ProfilPaielight;
+import com.kerenedu.solde.RubriquePaie;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -65,6 +70,9 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Temporal(javax.persistence.TemporalType.DATE)
 	@Predicate(label = "Date Embauche.", optional = true, updatable = true, search = true, type = Date.class, target = "date", sequence = 6)
 	protected Date dateembauche;
+	
+	@Predicate(label = "Toutes les Périodes ?", optional = false, updatable = true, target = "combobox", values = "OUI;NON",search = false, sequence=7)
+	protected String allperiode = "0"; 
 	
 	
 	@ManyToOne
@@ -164,6 +172,14 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 
 	@Predicate(label = "Allocation Familliale", type = Boolean.class, search = false, group = true, groupLabel = "Comptabilité ", groupName = "tab3")
 	private Boolean allocationfamilliale = Boolean.valueOf(false); 
+	
+	
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="e_periode_empl" , joinColumns=@JoinColumn(name="EMPL_ID"),inverseJoinColumns=@JoinColumn(name="PERIODE_ID"))
+	@Predicate(label="Periode Paie",type=PeriodePaie.class,target="many-to-many-list",group=true,groupName="tab4",groupLabel="Periode Paie",
+	hidden="currentObject.allperiode==0")
+	private List<PeriodePaie> periodepaie = new ArrayList<PeriodePaie>();
 	
 //	@ManyToOne
 //	@JoinColumn(name = "PROF_ID")
@@ -303,6 +319,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		}
 		
 		this.numBanque = entity.numBanque;
+		this.allperiode=entity.allperiode;
 		
 //		if(entity.profil!=null){
 //			this.profil = new ProfilPaielight(entity.profil);
@@ -322,6 +339,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		this.modePaiement=entity.modePaiement;
 		this.allocationfamilliale=entity.allocationfamilliale;
 		this.state=entity.state;
+		this.periodepaie= new ArrayList<PeriodePaie>();
 
 	}
 	
@@ -475,6 +493,19 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 //	public void setProfil(ProfilPaielight profil) {
 //		this.profil = profil;
 //	}
+
+
+	
+
+
+	public List<PeriodePaie> getPeriodepaie() {
+		return periodepaie;
+	}
+
+
+	public void setPeriodepaie(List<PeriodePaie> periodepaie) {
+		this.periodepaie = periodepaie;
+	}
 
 
 	public Date getDateNais() {
@@ -664,6 +695,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 
 	public String getEtatcivile() {
 		return etatcivile;
+	}
+
+
+	public String getAllperiode() {
+		return allperiode;
+	}
+
+
+	public void setAllperiode(String allperiode) {
+		this.allperiode = allperiode;
 	}
 
 

@@ -89,7 +89,7 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 
 
 	public MatiereNote(MatiereNote filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName,0L);
+		super(filiere.id, filiere.designation, filiere.moduleName,filiere.compareid);
 		
 		if(filiere.matiere!=null){
 			this.matiere = new CoefMatiereDetail(filiere.matiere);
@@ -312,7 +312,7 @@ public class MatiereNote extends BaseElement implements Serializable, Comparable
 
 	public int compareTo(MatiereNote o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 	
 

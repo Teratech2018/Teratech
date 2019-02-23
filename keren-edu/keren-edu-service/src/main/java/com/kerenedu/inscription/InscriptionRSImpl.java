@@ -223,6 +223,7 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		if (entity.getService() == null && entity.getService().size() == 0) {
 			throw new KerenExecption("Enregistrement impossible, car l'eleve n'a aucun service renseigne");
 		}
+		
 
 		if (entity.getEleve() == null) {
 			throw new KerenExecption("Enregistrement impossible, car l'eleve n'est pas renseigne");

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +105,7 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 
 	@Override
 	public BulletinPaie eval(BulletinPaie bulletin) {
-		System.out.println("MoteurPaieManagerImpl.eval() début évaluation rubrique "); // Traitement													// type
+		//System.out.println("MoteurPaieManagerImpl.eval() début évaluation rubrique "); // Traitement													// type
 		Professeur salarie = employdao.findByPrimaryKey("id", bulletin.getEmploye().getId());
 		Etablissement societe = this.getsociete();
 		RubriquePaie rubrique = null;
@@ -112,7 +113,7 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 
 			rubrique = rubriquedao.findByPrimaryKey("id", ligne.getRubrique().getId());
 			Double valeur = eval(rubrique, salarie, bulletin.getPeriode(), societe);
-			System.out.println("MoteurPaieManagerImpl.eval() eval rubrique " + rubrique.getCode() + "mode"+ rubrique.getMode() + "valeur" + valeur);
+		//	System.out.println("MoteurPaieManagerImpl.eval() eval rubrique " + rubrique.getCode() + "mode"+ rubrique.getMode() + "valeur" + valeur);
 			ligne.setValeur((valeur == null ? 0.0 : valeur));
 			if (ligne.getRubrique().getTauxsal() != null) {
 				ligne.setTauxsal(ligne.getValeur() * ligne.getRubrique().getTauxsal() / 100);
@@ -197,7 +198,22 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 		System.out.println("/**========================= DEBUT TRAITEMENT BULLETIN====================================/");
 		// creation du bulletin
 		for (Professeur salarie : salaries) {
+			Professeur sal = employdao.findByPrimaryKey("id", salarie.getId());
+			RestrictionsContainer container = RestrictionsContainer.newInstance();
+			container = RestrictionsContainer.newInstance();
+			container.addEq("employe.id", salarie.getId());
+			container.addEq("periode", entity.getPeriode());
+			List<BulletinPaie> bulletins = dao.filter(container.getPredicats(), null, null, 0, -1);
+			if (bulletins != null && !bulletins.isEmpty()) {
+				// Suppressions des anciens bulletins de paie
+				for (BulletinPaie bul : bulletins) {
+					dao.delete(bul.getId());
+				} // end for(BulletinPaie bul:bulletins){
+			} // end if(bulletins!=null&&!bulletins.isEmpty()){
 			System.out.println("/**=======================DEBUT TRAITEMENT BULLETIN EMPLOYE=========/"+salarie.getNom());
+			//is illegible
+			if(iselligible(sal, entity.getPeriode())==true){
+			//	System.out.println("/**=======================TRAITEMENT BULLETIN EMPLOYE=========/"+salarie.getNom()+" is elligible "+iselligible(sal, entity.getPeriode()));
 			// Salaire de base brut
 			Double valeur = 0.0;Double tp = 0.0; Double ts = 0.0;Double salbasebrut = 0.0;
 			// Salaire cotisable 	// Charge patronal 	// Charge Sallarial
@@ -210,29 +226,20 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 			Double amicale = 0.0;	Double loyer = 0.0;	Double prime = 0.0;
 			// loyer employe// retenue employe-pret avance..)
 			Double indem = 0.0;Double retenue = 0.0;Double pret = 0.0;Double aco = 0.0;
-			Double sbase = 0.0;
+			Double sbase = 0.0 ;double sommerem =0.0;double sommeacompte=0.0;
 			
 			// Cache des lignes du bulletion de paie
 			HashMap<String, LigneBulletinPaie> datacache = new HashMap<String, LigneBulletinPaie>();
-			RestrictionsContainer container = RestrictionsContainer.newInstance();
+			container = RestrictionsContainer.newInstance();
 			ProfilPaie profil = profildao.filter(container.getPredicats(), null, null, 0, -1).get(0);
 			if (profil == null) {
 				throw new KerenExecption("Le salarié " + salarie.getDesignation() + " n'a pas de Profil de Paie lié");
 			} // end if(salarie.getProfilpaie()==null)
-
-			 container = RestrictionsContainer.newInstance();
-			container.addEq("employe.id", salarie.getId());
-			container.addEq("periode", entity.getPeriode());
-			List<BulletinPaie> bulletins = dao.filter(container.getPredicats(), null, null, 0, -1);
-			BulletinPaie bulletin = null;
-			if (bulletins != null && !bulletins.isEmpty()) {
-				// Suppressions des anciens bulletins de paie
-				for (BulletinPaie bul : bulletins) {
-					dao.delete(bul.getId());
-				} // end for(BulletinPaie bul:bulletins){
-			} // end if(bulletins!=null&&!bulletins.isEmpty()){
+			
+			
 			// Professeur prof= employdao.findByPrimaryKey("id",
 			// salarie.getId());
+			BulletinPaie bulletin = null;
 			Etablissement societe = this.getsociete();
 			bulletin = new BulletinPaie(salarie.getNom(), salarie, null, entity.getPeriode(), societe);
 			//ProfilPaie profil = profildao.findByPrimaryKey("id", salarie.getProfil().getId());
@@ -309,27 +316,32 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 			/**************************************************************************************************/
 			System.out.println("/**========================= DEBUT TRAITEMENt ELEMENT VARIABLES====================================/"+salarie.getNom());
 			// Traitement des Elements variables(Prêt , avances,...)
-			container = RestrictionsContainer.newInstance();
-			container.addEq("salarie0.id", salarie.getId());
-			container.addNotEq("state","inactif");
-			container.addEq("periode", entity.getPeriode());
-			List<ElementVariable> eltsvariables = eltvariabledao.filter(container.getPredicats(), null, null, 0, -1);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(entity.getPeriode().getDfin());
+			int mois = cal.get(Calendar.MONTH);
+			int year = cal.get(Calendar.YEAR);
+			//List<ElementVariable> eltsvariables = eltvariabledao.filter(container.getPredicats(), null, null, 0, -1);
+			List<ElementVariable> eltsvariables = eltvariabledao.getListElt(mois, year,salarie);
 			
 			if (eltsvariables != null && !eltsvariables.isEmpty()) {
+				//System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() size "+eltsvariables.size());
 			//	System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() nombre  element variable =="+eltsvariables.size());
 				for(ElementVariable eltvar :eltsvariables){
+					if(!eltvar.getState().equals("inactif")){
 				//ElementVariable eltvar = eltsvariables.get(0);
 				// Remboursement avance
 				//	System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() je parcours par elt");
 				// Acompte
 				for (Acompte acompte : eltvar.getAcomptes()) {
 				//	System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() debut acompte "+acompte.getEmploye().getNom());
+					sommeacompte+= acompte.getMontant();
+					System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode()total acompte  ==="+sommeacompte+"employe "+acompte.getEmploye().getNom());
 					RubriquePaie rubrique = acompte.getRubrique();
 					LigneBulletinPaie ligne = null;
 					if (datacache.containsKey(rubrique.getCode())) {
-						valeur = acompte.getMontant();
+						valeur = sommeacompte;
 						ligne = datacache.get(rubrique.getCode());
-						ligne.setValeur(acompte.getMontant() + ligne.getValeur());
+						ligne.setValeur(valeur);
 						if (rubrique.getTauxsal() != null && rubrique.getTauxsal() != 0) {
 							ts = valeur * rubrique.getTauxsal() / 100;
 						} // end if(ligne.getRubrique().getTauxsal()!=null)
@@ -341,13 +353,14 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 						ligne.setTauxsal((ts == null ? 0.0 : ts));
 						chargepat += ligne.getTauxpat();
 						if (rubrique.getType().equals("1")) {// Retenue
-							chargeSal += ligne.getTauxsal();
-							retenue+=ligne.getTauxsal();
-							aco+=ligne.getTauxsal();
+							chargeSal += acompte.getMontant();
+							retenue+=acompte.getMontant();
+							aco+=acompte.getMontant();
 						}
+					//	System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() ts 11 "+ts);
 					} else {
 						ligne = new LigneBulletinPaie(rubrique, 0.0, rubrique.getTauxsal(), rubrique.getTauxpat());
-						valeur = acompte.getMontant();
+						valeur = sommeacompte;
 						if (rubrique.getTauxsal() != null && rubrique.getTauxsal() != 0) {
 							ts = valeur * rubrique.getTauxsal() / 100;
 						} // end if(ligne.getRubrique().getTauxsal()!=null)
@@ -359,10 +372,11 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 						ligne.setTauxsal((ts == null ? 0.0 : ts));
 						chargepat += ligne.getTauxpat();
 						if (rubrique.getType().equals("1")) {// Retenue
-							chargeSal += ligne.getTauxsal();
-							retenue+=ligne.getTauxsal();
-							aco+=ligne.getTauxsal();
+							chargeSal += acompte.getMontant();
+							retenue+=acompte.getMontant();
+							aco+=acompte.getMontant();
 						}
+					//	System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() ts 22 "+ts);
 						datacache.put(rubrique.getCode(), ligne);
 					} // end if(datacache.containsKey(rubrique.getCode())){
 		
@@ -377,15 +391,17 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 				
 				
 				// Remboursement Prèt ==========================
+			
 				for (RemboursementPret rem : eltvar.getPrets()) {
-					//System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() je suis ici pret ==="+rem.getMontant());
-				//	System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() debut RemboursementPret "+rem.getDemande().getEmploye().getNom());
+					 sommerem +=rem.getMontant();
+					System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode()total Pret  ==="+sommerem+"employe "+rem.getDemande().getEmploye().getNom());
+					//System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() debut RemboursementPret "+rem.getDemande().getEmploye().getNom());
 					RubriquePaie rubrique = rem.getPret().getRubrique();
 					LigneBulletinPaie ligne = null;
 					if (datacache.containsKey(rubrique.getCode())) {
-						valeur = rem.getMontant();
+						valeur = sommerem;
 						ligne = datacache.get(rubrique.getCode());
-						ligne.setValeur(rem.getMontant() + ligne.getValeur());
+						ligne.setValeur(valeur);
 						if (rubrique.getTauxsal() != null && rubrique.getTauxsal() != 0) {
 							ts = valeur * rubrique.getTauxsal() / 100;
 						} // end if(ligne.getRubrique().getTauxsal()!=null)
@@ -398,15 +414,15 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 						ligne.setTauxsal((ts== null ? 0.0 : ts));
 						chargepat += ligne.getTauxpat();
 						if (rubrique.getType().equals("1")) {// Retenue
-							chargeSal += ligne.getTauxsal();
-							retenue+=ligne.getTauxsal();
-							pret+=ligne.getTauxsal();
+							chargeSal += rem.getMontant();
+							retenue+=rem.getMontant();
+							pret+=rem.getMontant();
 						}
 					} else {
 						ligne = new LigneBulletinPaie(rubrique, 0.0, rubrique.getTauxsal(), rubrique.getTauxpat());
 						// ligne = new
 						// LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
-						valeur = rem.getMontant();
+						valeur = sommerem;
 						//System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() montant pret "+valeur);
 						if (rubrique.getTauxsal() != null && rubrique.getTauxsal() != 0) {
 							ts = valeur * rubrique.getTauxsal() / 100;
@@ -420,9 +436,9 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 						ligne.setTauxsal((ts== null ? 0.0 : ts));
 						chargepat += ligne.getTauxpat();
 						if (rubrique.getType().equals("1")) {// Retenue
-							chargeSal += ligne.getTauxsal();
-							retenue+=ligne.getTauxsal();
-							pret+=ligne.getTauxsal();
+							chargeSal += rem.getMontant();
+							retenue+=rem.getMontant();
+							pret+=rem.getMontant();
 						}
 						datacache.put(rubrique.getCode(), ligne);
 
@@ -437,7 +453,8 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 				} // end for(RemboursementAvance rem:eltvar.getAvances())
 					// Rappel Salaires container =
 					// RestrictionsContainer.newInstance();
-			}// end for(ElementVariable eltvar :eltsvariables){
+			}// end if(!eltvar.getState().equals("inactif")){
+			}//  end for(ElementVariable eltvar :eltsvariables){
 			} // end if(eltsvariables!=null&&!eltsvariables.isEmpty()){
 			// others elts varaible
 			
@@ -445,85 +462,85 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 			/**========================= DEBUT TRAITEMENT AUTERES  ELEMENT VARIABLES====================================/
 			/**************************************************************************************************/
 			System.out.println("/**========================= DEBUT TRAITEMENT AUTERES  ELEMENT VARIABLES====================================/"+ DateHelper.formatDate(entity.getPeriode().getDfin()));
-			container.addEq("salarie0", salarie);
-			container.addGe("dfin", DateHelper.formatDate(entity.getPeriode().getDfin()));
-			container.addNotEq("state","inactif");
-			List<ElementVariable> eltsvariablesRappel = eltvariabledao.filter(container.getPredicats(), null, null,0, -1);
-
-			if (eltsvariables != null && !eltsvariables.isEmpty() && eltsvariablesRappel.size() > 0) {
-				ElementVariable eltvarrappel = eltsvariablesRappel.get(0);
-				for (RappelSalaire rap : eltvarrappel.getRappels()) {
-					for (LigneRappel lign : rap.getLignes()) {
-						RubriquePaie rubrique = lign.getRubrique();
-						LigneBulletinPaie ligne = null;
-						if (datacache.containsKey(rubrique.getCode())) {
-							ligne = datacache.get(rubrique.getCode());
-							ligne.setValeur(lign.getMontant() + ligne.getValeur());
-						} else {
-							ligne = new LigneBulletinPaie(rubrique, 0.0, rubrique.getTauxsal(),
-									rubrique.getTauxpat());
-							// ligne = new
-							// LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
-							valeur = lign.getSolde();
-							if (ligne.getRubrique().getTauxsal() != null && ligne.getRubrique().getTauxsal() != 0) {
-								ts = valeur * ligne.getRubrique().getTauxsal() / 100;
-							} // end
-								// if(ligne.getRubrique().getTauxsal()!=null)
-							if (ligne.getRubrique().getTauxpat() != null && ligne.getRubrique().getTauxpat() != 0) {
-								tp = valeur * ligne.getRubrique().getTauxpat() / 100;
-							} // end
-								// if(ligne.getRubrique().getTauxpat()!=null){
-							ligne.setValeur((valeur == null ? 0.0 : valeur));
-							ligne.setTauxpat((tp == null ? 0.0 : tp));
-							ligne.setTauxsal((ts == null ? 0.0 : ts));
-							datacache.put(rubrique.getCode(), ligne);
-
-						} // end
-							// if(datacache.containsKey(rubrique.getCode())){
-						chargepat += ligne.getTauxpat();
-						if (rubrique.getType().equals("1")) {// Retenue
-							chargeSal += ligne.getTauxsal();
-							retenue+=ligne.getTauxsal();
-						}
-						//salaire de base
-						if (rubrique.getNature().equals("0")) {// loyer
-							sbase += ligne.getValeur();
-						}
-						//Salaire;Prime;Indemnité;Allocations Familiales;Amicale;Loyer;Autres Retenues
-						if (rubrique.getType().equals("0")&&rubrique.getBrutsal()==true) {// salaire brut
-							salbasebrut += ligne.getValeur();
-						}
-						if (rubrique.getCotisablesal()==true) {// salaire cotisable
-							salco += ligne.getValeur();
-						}
-						if (rubrique.getNature().equals("5")) {// loyer
-							loyer += ligne.getValeur();
-						}
-						if (rubrique.getNature().equals("4")) {// amicale
-							amicale += ligne.getValeur();
-						}
-//						if (rubrique.getNature().equals("6")) {// autreretenue
-//							retenue += ligne.getValeur();
+//			container.addEq("salarie0", salarie);
+//			container.addGe("dfin", DateHelper.formatDate(entity.getPeriode().getDfin()));
+//			container.addNotEq("state","inactif");
+//			List<ElementVariable> eltsvariablesRappel = eltvariabledao.filter(container.getPredicats(), null, null,0, -1);
+//
+//			if (eltsvariables != null && !eltsvariables.isEmpty() && eltsvariablesRappel.size() > 0) {
+//				ElementVariable eltvarrappel = eltsvariablesRappel.get(0);
+//				for (RappelSalaire rap : eltvarrappel.getRappels()) {
+//					for (LigneRappel lign : rap.getLignes()) {
+//						RubriquePaie rubrique = lign.getRubrique();
+//						LigneBulletinPaie ligne = null;
+//						if (datacache.containsKey(rubrique.getCode())) {
+//							ligne = datacache.get(rubrique.getCode());
+//							ligne.setValeur(lign.getMontant() + ligne.getValeur());
+//						} else {
+//							ligne = new LigneBulletinPaie(rubrique, 0.0, rubrique.getTauxsal(),
+//									rubrique.getTauxpat());
+//							// ligne = new
+//							// LigneBulletinPaie(rubrique,0.0,rubrique.getTauxsal(),rubrique.getTauxpat());
+//							valeur = lign.getSolde();
+//							if (ligne.getRubrique().getTauxsal() != null && ligne.getRubrique().getTauxsal() != 0) {
+//								ts = valeur * ligne.getRubrique().getTauxsal() / 100;
+//							} // end
+//								// if(ligne.getRubrique().getTauxsal()!=null)
+//							if (ligne.getRubrique().getTauxpat() != null && ligne.getRubrique().getTauxpat() != 0) {
+//								tp = valeur * ligne.getRubrique().getTauxpat() / 100;
+//							} // end
+//								// if(ligne.getRubrique().getTauxpat()!=null){
+//							ligne.setValeur((valeur == null ? 0.0 : valeur));
+//							ligne.setTauxpat((tp == null ? 0.0 : tp));
+//							ligne.setTauxsal((ts == null ? 0.0 : ts));
+//							datacache.put(rubrique.getCode(), ligne);
+//
+//						} // end
+//							// if(datacache.containsKey(rubrique.getCode())){
+//						chargepat += ligne.getTauxpat();
+//						if (rubrique.getType().equals("1")) {// Retenue
+//							chargeSal += ligne.getTauxsal();
+//							retenue+=ligne.getTauxsal();
 //						}
-						if (rubrique.getNature().equals("1")) {// prime
-							prime += ligne.getValeur();
-						}
-						if (rubrique.getNature().equals("2")) {// indemnité
-							indem += ligne.getValeur();
-						}
-						if (rubrique.getNature().equals("3")) {// allocation
-							allo += (ligne.getValeur()*ligne.getTauxsal())/100;
-						}
-						if (!bulletin.getLignes().contains(ligne)) {
-							bulletin.getLignes().add(ligne);
-						} else {
-							int index = bulletin.getLignes().indexOf(ligne);
-							bulletin.getLignes().set(index, ligne);
-						} // end if(!bulletin.getLignes().contains(ligne))
-					} // end for(Rubrique rubrique:rap.getLignes()){
-				}
-			}
-			
+//						//salaire de base
+//						if (rubrique.getNature().equals("0")) {// loyer
+//							sbase += ligne.getValeur();
+//						}
+//						//Salaire;Prime;Indemnité;Allocations Familiales;Amicale;Loyer;Autres Retenues
+//						if (rubrique.getType().equals("0")&&rubrique.getBrutsal()==true) {// salaire brut
+//							salbasebrut += ligne.getValeur();
+//						}
+//						if (rubrique.getCotisablesal()==true) {// salaire cotisable
+//							salco += ligne.getValeur();
+//						}
+//						if (rubrique.getNature().equals("5")) {// loyer
+//							loyer += ligne.getValeur();
+//						}
+//						if (rubrique.getNature().equals("4")) {// amicale
+//							amicale += ligne.getValeur();
+//						}
+////						if (rubrique.getNature().equals("6")) {// autreretenue
+////							retenue += ligne.getValeur();
+////						}
+//						if (rubrique.getNature().equals("1")) {// prime
+//							prime += ligne.getValeur();
+//						}
+//						if (rubrique.getNature().equals("2")) {// indemnité
+//							indem += ligne.getValeur();
+//						}
+//						if (rubrique.getNature().equals("3")) {// allocation
+//							allo += (ligne.getValeur()*ligne.getTauxsal())/100;
+//						}
+//						if (!bulletin.getLignes().contains(ligne)) {
+//							bulletin.getLignes().add(ligne);
+//						} else {
+//							int index = bulletin.getLignes().indexOf(ligne);
+//							bulletin.getLignes().set(index, ligne);
+//						} // end if(!bulletin.getLignes().contains(ligne))
+//					} // end for(Rubrique rubrique:rap.getLignes()){
+//				}
+//			}
+//			
 			/**************************************************************************************************/
 			/**========================= DEBUT EVALUATION RUBRIQUE FORMULES====================================/
 			/**************************************************************************************************/
@@ -534,10 +551,10 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 			//evaluation des formules
 			//System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() evaluation des formule"+salco);
 			for(LigneBulletinPaie lgn : bulletin.getLignes()){
-				if(lgn.getRubrique().getMode().equals("4")){
+				if(lgn.getRubrique().getMode()!=null&&lgn.getRubrique().getMode().equals("4")){
 					Double value =0.0;
 					bulletin.setSalaireCotisable(salco);
-					System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() evaluation des formule"+salco);
+					//System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() evaluation des formule"+salco);
 					if(bulletin.getEmploye().getAllocationfamilliale()!=null&&bulletin.getEmploye().getAllocationfamilliale()==true){
 						value = salco;//evalFormule(lgn.getRubrique(),bulletin,salco);
 					}
@@ -584,6 +601,7 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 			bulletin.setCongesprisPeriode((double) 0);
 			bulletin.setSalaireBrut(salbasebrut);
 			bulletin.setChargePatronale(chargepat);
+		//	System.out.println("MoteurPaieManagerImpl.creationBulletinPaiePeriode() chrge sal "+chargeSal);
 			bulletin.setChargeSalariale(chargeSal);
 			bulletin.setNetapayer(bulletin.getSalaireBrut() - bulletin.getChargeSalariale());
 			bulletin.setAmical(amicale);
@@ -596,6 +614,7 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 			bulletin.setAcom(aco);
 			salarie.setSalaire(salbasebrut);
 			bulletin.setSbase(sbase);
+			
 			// cumul
 			Cumul cumul = getCumulbulletin(bulletin);
 			bulletin.setCumulChargePatronale(cumul.getCumulChargePatronale());
@@ -628,6 +647,7 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 				// update salarié
 			employdao.update(salarie.getId(), salarie);
 			System.out.println("/**=======================FIN TRAITEMENT BULLETIN EMPLOYE=========/"+salarie.getNom());
+		 }// end if iselligible
 		} // end for(ProfesseurChoice salarie : salaries){
 
 		return salaries;
@@ -823,6 +843,23 @@ public class MoteurPaieManagerImpl extends AbstractGenericManager<BulletinPaie, 
 				// if(bul.getPeriode().getDdebut().after(bulletion.getPeriode().getDdebut())){
 		} // end for(BulletinPaie bul:bulletins){
 		return cumul;
+	}
+	
+	private boolean iselligible(Professeur salarie, PeriodePaie periode){
+		boolean value = false;
+		if(salarie.getAllperiode()!=null&&salarie.getAllperiode().equals("0")){
+			value=true;
+		}else{
+			List<PeriodePaie>periodesalarie= salarie.getPeriodepaie();
+			for(PeriodePaie p : periodesalarie){
+				if(p.getId()==periode.getId()){
+					value=true;
+					break;
+				}
+			}
+		}
+		System.out.println("MoteurPaieManagerImpl.iselligible() is elligible is "+value);
+		return value ;
 	}
 
 	private Date getDate(String date) {

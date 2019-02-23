@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.core.base.BaseElement;
-import com.kerenedu.inscription.Inscription;
 import com.kerenedu.personnel.Professeur;
 import com.megatim.common.annotations.Predicate;
 
@@ -48,13 +47,21 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	@Predicate(label="Effectif",updatable=true,search=true , sequence=3, type=Long.class, editable=false, colsequence=3)
 	protected Long effectif= new Long(0);
 	
+	@Column(name = "EFF_FILLE")	
+	@Predicate(label="Nbre fille",updatable=true,search=true , sequence=3, type=Long.class, editable=false, colsequence=4)
+	protected Long efffille= new Long(0);
+	
+	@Column(name = "EFF_GAR")	
+	@Predicate(label="Nbre Gar.",updatable=true,search=true , sequence=3, type=Long.class, editable=false, colsequence=5)
+	protected Long effGarcon= new Long(0);
+	
 	@Column(name = "CAPACITE" )	
 	//@Predicate(label="Capacité",optional=true,updatable=true,search=true , sequence=4, type=Long.class, colsequence=4)
 	protected Long capacite;
 	
 	@ManyToOne
     @JoinColumn(name = "PROF_ID")
-	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=5, colsequence=4)
+	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=6, colsequence=6)
     protected Professeur professeur;
 	
 	@ManyToOne
@@ -63,11 +70,11 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	private SectionE section ;
 	
     @Column(name = "CYCLE_ID")
-    @Predicate(label = "cycle", search = true, hide = true, type=Long.class)
+    @Predicate(label = "cycle", search =false, hide = true, type=Long.class)
     protected long cycle;
     
     @Column(name = "TYPE_CYCLE_ID")
-    @Predicate(label ="typecycle", search = true, hide = true)
+    @Predicate(label ="typecycle", search = false, hide = true, type=String.class)
     protected String typecycle;
 	
 //	
@@ -85,7 +92,7 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 
 
 	public Classe(Classe filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName,0L);
+		super(filiere.id, filiere.designation, filiere.moduleName,filiere.compareid);
 		this.libelle = filiere.libelle;
 		if(this.niveau!=null){
 			this.niveau= new Niveau( filiere.niveau);
@@ -100,6 +107,8 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 			this.section=new SectionE(filiere.getSection());
 		}
 		this.effectif=filiere.effectif;
+		this.efffille=filiere.efffille;
+		this.effGarcon=filiere.effGarcon;
 		if(filiere.professeur!=null){
 		   this.professeur= new Professeur(filiere.professeur);
 		}
@@ -253,6 +262,26 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 
 	public void setCycle(long cycle) {
 		this.cycle = cycle;
+	}
+
+
+	public Long getEfffille() {
+		return efffille;
+	}
+
+
+	public void setEfffille(Long efffille) {
+		this.efffille = efffille;
+	}
+
+
+	public Long getEffGarcon() {
+		return effGarcon;
+	}
+
+
+	public void setEffGarcon(Long effGarcon) {
+		this.effGarcon = effGarcon;
 	}
 
 

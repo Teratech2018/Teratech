@@ -109,8 +109,9 @@ public class CacheMemory implements Serializable{
 	 * @return
 	 */
 	public static synchronized Object getValue(long id , TypeCacheMemory type){
-		if(!cacheUser.containsKey(id)) return null;
+		if(cacheUser==null&&!cacheUser.containsKey(id)) return new Object();
 		if(cacheUser!=null){
+			System.out.println("CacheMemory.getValue() is not null");
 			return cacheUser.get(id).get(type) ;
 		}else{
 			return null;

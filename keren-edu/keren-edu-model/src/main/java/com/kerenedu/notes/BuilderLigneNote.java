@@ -57,7 +57,7 @@ public class BuilderLigneNote extends BaseElement implements Serializable, Compa
 	}
 
 	public BuilderLigneNote(BuilderLigneNote filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName, 0L);
+		super(filiere.id, filiere.designation, filiere.moduleName,filiere.compareid);
 		this.notet1 = filiere.notet1;
 		this.notet2 = filiere.notet2;
 		this.notet3 = filiere.notet3;
@@ -127,7 +127,7 @@ public class BuilderLigneNote extends BaseElement implements Serializable, Compa
 
 	public int compareTo(BuilderLigneNote o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 
 	

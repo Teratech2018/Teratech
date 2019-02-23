@@ -48,7 +48,7 @@ public class MatiereDlt extends BaseElement implements Serializable, Comparable<
 
 
 	public MatiereDlt(MatiereDlt mat) {
-		super(mat.id, mat.designation, mat.moduleName,0L);
+		super(mat.id, mat.designation, mat.moduleName,mat.compareid);
 		this.code=mat.code;
 		this.libelle=mat.libelle;
 		this.coeficient=mat.coeficient;

@@ -84,7 +84,7 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 	}
 
 	public Examen(Examen filiere) {
-		super(filiere.id, filiere.designation, filiere.moduleName, 0L);
+		super(filiere.id, filiere.designation, filiere.moduleName, filiere.compareid);
 		this.typesequence = filiere.typesequence;
 		this.e1 = filiere.e1;
 		this.e2 = filiere.e2;
@@ -192,7 +192,7 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 
 	public int compareTo(Examen o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) o.getId();
 	}
 	
 

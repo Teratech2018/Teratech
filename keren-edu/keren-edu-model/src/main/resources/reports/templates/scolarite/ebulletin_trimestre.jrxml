@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BulletinClasse" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="10" bottomMargin="10" whenResourceMissingType="Key" uuid="380da382-e1da-4fda-aed5-b93c44b50fe8">
 	<property name="ireport.zoom" value="1.1269722013523664"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="198"/>
 	<property name="ireport.background.image.properties" value="true,true,0.25,-8,-8,0,0,1040,784"/>
 	<style name="table">
 		<box>
@@ -234,6 +234,58 @@
 	<field name="tcoefs1" class="java.lang.Long"/>
 	<field name="tcoefs2" class="java.lang.Long"/>
 	<field name="lignes.coeff.matiere.state" class="java.lang.Boolean"/>
+	<field name="tcoefs3" class="java.lang.Long"/>
+	<field name="tcoefs4" class="java.lang.Long"/>
+	<field name="tcoefs5" class="java.lang.Long"/>
+	<field name="tcoefs6" class="java.lang.Long"/>
+	<field name="appt2.libelle" class="java.lang.String"/>
+	<field name="appt2.libelleen" class="java.lang.String"/>
+	<field name="appt3.libelle" class="java.lang.String"/>
+	<field name="appt3.libelleen" class="java.lang.String"/>
+	<field name="apptan.libelle" class="java.lang.String"/>
+	<field name="apptan.libelleen" class="java.lang.String"/>
+	<field name="bulletin.moyt2" class="java.lang.Double"/>
+	<field name="bulletin.moyt3" class="java.lang.Double"/>
+	<field name="apptmoy2.appreciationMoy" class="java.lang.String"/>
+	<field name="apptmoy2.appreciationMoyen" class="java.lang.String"/>
+	<field name="apptmoy3.appreciationMoy" class="java.lang.String"/>
+	<field name="apptmoy3.appreciationMoyen" class="java.lang.String"/>
+	<field name="abscencet2.ligne.absjust" class="java.lang.Double"/>
+	<field name="abscencet2.ligne.absnonjust" class="java.lang.Double"/>
+	<field name="abscencet2.ligne.consigne" class="java.lang.Double"/>
+	<field name="abscencet2.ligne.exclusion" class="java.lang.Double"/>
+	<field name="abscencet2.ligne.avertconduite" class="java.lang.Boolean"/>
+	<field name="abscencet2.ligne.consiel" class="java.lang.Boolean"/>
+	<field name="abscencet2.ligne.balmeconduite" class="java.lang.Boolean"/>
+	<field name="abscencet2.ligne.retard" class="java.lang.Double"/>
+	<field name="abscencet2.ligne" class="java.lang.Object"/>
+	<field name="abscencet3.ligne.absjust" class="java.lang.Double"/>
+	<field name="abscencet3.ligne.absnonjust" class="java.lang.Double"/>
+	<field name="abscencet3.ligne.consigne" class="java.lang.Double"/>
+	<field name="abscencet3.ligne.exclusion" class="java.lang.Double"/>
+	<field name="abscencet3.ligne.avertconduite" class="java.lang.Boolean"/>
+	<field name="abscencet3.ligne.consiel" class="java.lang.Boolean"/>
+	<field name="abscencet3.ligne.balmeconduite" class="java.lang.Boolean"/>
+	<field name="abscencet3.ligne.retard" class="java.lang.Double"/>
+	<field name="abscencet3.ligne" class="java.lang.Object"/>
+	<field name="abscencet4.ligne.absjust" class="java.lang.Double"/>
+	<field name="abscencet4.ligne.absnonjust" class="java.lang.Double"/>
+	<field name="abscencet4.ligne.consigne" class="java.lang.Double"/>
+	<field name="abscencet4.ligne.exclusion" class="java.lang.Double"/>
+	<field name="abscencet4.ligne.avertconduite" class="java.lang.Boolean"/>
+	<field name="abscencet4.ligne.consiel" class="java.lang.Boolean"/>
+	<field name="abscencet4.ligne.balmeconduite" class="java.lang.Boolean"/>
+	<field name="abscencet4.ligne.retard" class="java.lang.Double"/>
+	<field name="abscencet4.ligne" class="java.lang.Object"/>
+	<field name="abscencet5.ligne.absjust" class="java.lang.Double"/>
+	<field name="abscencet5.ligne.absnonjust" class="java.lang.Double"/>
+	<field name="abscencet5.ligne.consigne" class="java.lang.Double"/>
+	<field name="abscencet5.ligne.exclusion" class="java.lang.Double"/>
+	<field name="abscencet5.ligne.avertconduite" class="java.lang.Boolean"/>
+	<field name="abscencet5.ligne.consiel" class="java.lang.Boolean"/>
+	<field name="abscencet5.ligne.balmeconduite" class="java.lang.Boolean"/>
+	<field name="abscencet5.ligne.retard" class="java.lang.Double"/>
+	<field name="abscencet5.ligne" class="java.lang.Object"/>
 	<sortField name="classe.id"/>
 	<sortField name="eleve.nom"/>
 	<sortField name="lignes.coeff.groupe.id"/>
@@ -258,7 +310,7 @@
 		<variableExpression><![CDATA[($F{examen.typesequence}.equals("0")? $V{titetr}  : ($F{examen.typesequence}.equals("1")? $V{titetr} : ( $F{examen.typesequence}.equals("2") ? $V{titetr}  : ( $F{examen.typesequence}.equals("3")? $V{titetr}  : ( $F{examen.typesequence}.equals("4") ?$V{titetr}  : $V{titetr}  ) ) ) ) )]]></variableExpression>
 	</variable>
 	<variable name="moyennecalcul" class="java.lang.Double" resetType="Group" resetGroup="etudiant">
-		<variableExpression><![CDATA[($P{TRIMESTRE}.equals("0")? $F{bulletin.moyt1} : ($P{TRIMESTRE}.equals("1")? ($F{moy3}+$F{moy4})/2 :($F{moy5}+$F{moy6})/2   ) )]]></variableExpression>
+		<variableExpression><![CDATA[($P{TRIMESTRE}.equals("0")? $F{bulletin.moyt1} : ($P{TRIMESTRE}.equals("1")? $F{bulletin.moyt2}  :$F{bulletin.moyt3}   ) )]]></variableExpression>
 	</variable>
 	<variable name="rang" class="java.lang.String">
 		<variableExpression><![CDATA[(($F{eleve.sexe}.equals("0")&&$F{bulletin.rang}==1) ? "er" : ( ($F{eleve.sexe}.equals("1")&&$F{bulletin.rang}==1) ? "ère" : "ème" ) )]]></variableExpression>
@@ -348,7 +400,13 @@
 		<variableExpression><![CDATA[($P{TRIMESTRE}.equals("0")? (($F{nbmoyt1}/$F{classe.effectif})*100): ($P{TRIMESTRE}.equals("1")?(($F{nbmoyt2}/$F{classe.effectif})*100) :(($F{nbmoyt3}/$F{classe.effectif})*100)) )]]></variableExpression>
 	</variable>
 	<variable name="app" class="java.lang.String" resetType="Group" resetGroup="matiere">
-		<variableExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ?$F{appt1.libelle}: $F{appt1.libelleen} )]]></variableExpression>
+		<variableExpression><![CDATA[($P{TRIMESTRE}.equals("0")?( !$F{classe.filiere.section.typesection}.equals("0") ?$F{appt1.libelle}: $F{appt1.libelleen} ) : ($P{TRIMESTRE}.equals("1")? ( !$F{classe.filiere.section.typesection}.equals("0") ?$F{appt2.libelle}: $F{appt2.libelleen} ) :( !$F{classe.filiere.section.typesection}.equals("0") ?$F{appt3.libelle}: $F{appt3.libelleen} )  ) )
+
+
+
+
+
+]]></variableExpression>
 	</variable>
 	<variable name="ttmod" class="java.lang.Double" resetType="Group" resetGroup="module" calculation="Sum">
 		<variableExpression><![CDATA[(($V{notecol1}+$V{notecol2})/2)*$F{lignes.coeff.coef}]]></variableExpression>
@@ -563,7 +621,7 @@
 					<textFieldExpression><![CDATA[$F{classe.libelle}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###0.00" isBlankWhenNull="true">
-					<reportElement x="60" y="160" width="77" height="12" uuid="05acad37-641c-4999-b132-a4ff5d2d1921"/>
+					<reportElement mode="Transparent" x="60" y="160" width="77" height="12" forecolor="#000000" backcolor="#E3893E" uuid="05acad37-641c-4999-b132-a4ff5d2d1921"/>
 					<box>
 						<topPen lineWidth="0.0" lineColor="#666666"/>
 						<leftPen lineWidth="0.0" lineColor="#666666"/>
@@ -571,7 +629,7 @@
 						<rightPen lineWidth="0.0" lineColor="#666666"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="9" pdfFontName="Times-Roman"/>
+						<font fontName="Times New Roman" size="9" pdfFontName="Times-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{eleve.matricule}]]></textFieldExpression>
 				</textField>
@@ -753,7 +811,7 @@
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement stretchType="RelativeToTallestObject" x="49" y="161" width="11" height="12" uuid="63b61c30-4ff9-4db2-861d-358bcab893e2"/>
+					<reportElement stretchType="RelativeToTallestObject" x="49" y="160" width="11" height="12" uuid="63b61c30-4ff9-4db2-861d-358bcab893e2"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" pdfFontName="Times-Roman"/>
 					</textElement>
@@ -1144,7 +1202,7 @@
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="27" width="36" height="12" uuid="aefe002b-8b17-4842-9dea-19ac5971e6af">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1157,7 +1215,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="1" y="27" width="31" height="12" backcolor="#D3D3D3" uuid="8621e140-1f57-4b26-ab41-7bde958c879b">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1172,7 +1230,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="31" y="27" width="5" height="12" uuid="e1f46000-fd0d-49e9-b2c2-078eb451353a">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1185,7 +1243,7 @@
 						</staticText>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="1" y="39" width="31" height="12" backcolor="#D3D3D3" uuid="0de2b0d3-d7b6-4ce0-95fc-80b0314ac0cc">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1200,7 +1258,7 @@
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="39" width="36" height="12" uuid="badc015e-de29-4202-bfb2-ad30dc7db587">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1213,7 +1271,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="31" y="39" width="5" height="12" uuid="3292b549-286e-4ea0-86b4-1a67cf5070fe">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1308,7 +1366,7 @@
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="90" y="27" width="36" height="12" uuid="e76d8d79-30a0-49ba-81b2-fa62b02cf7f3">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1336,7 +1394,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="86" y="27" width="5" height="12" uuid="819f17ec-7d7d-434c-ac16-0c3ca7dcbb8b">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1349,7 +1407,7 @@
 						</staticText>
 						<textField isBlankWhenNull="true">
 							<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="90" y="39" width="36" height="12" uuid="56769548-618e-4335-8fde-9735ebb2f35e">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1362,7 +1420,7 @@
 						</textField>
 						<textField evaluationTime="Auto" isBlankWhenNull="true">
 							<reportElement style="table" mode="Transparent" x="70" y="39" width="17" height="12" backcolor="#D3D3D3" uuid="e065a56e-f78d-441a-849b-717dfa1a6d28">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box leftPadding="3">
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1377,7 +1435,7 @@
 						</textField>
 						<staticText>
 							<reportElement stretchType="RelativeToTallestObject" x="86" y="39" width="5" height="12" uuid="242c7d65-e08e-46a7-8122-89be1272d621">
-								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
+								<printWhenExpression><![CDATA[$P{TRIMESTRE}.equals("1")||$P{TRIMESTRE}.equals("2")]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -1452,7 +1510,7 @@
 						<textElement verticalAlignment="Middle" markup="none">
 							<font fontName="Times New Roman" size="8" isBold="false" pdfFontName="Times-Bold"/>
 						</textElement>
-						<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? "SEQ 1" : ($P{TRIMESTRE}.equals("2")? "SEQ 3" : "SEQ5"  ) )]]></textFieldExpression>
+						<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? "SEQ 1" : ($P{TRIMESTRE}.equals("1")? "SEQ 3" : "SEQ5"  ) )]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="true">
 						<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="26" width="28" height="15" uuid="66abb9c7-c344-4c80-a577-5f37cc461217"/>
@@ -1485,7 +1543,7 @@
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$F{tcoefs1}]]></textFieldExpression>
+						<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")?$F{tcoefs1} : ($P{TRIMESTRE}.equals("1")? $F{tcoefs3} :$F{tcoefs5}  ) )]]></textFieldExpression>
 					</textField>
 					<textField evaluationTime="Auto" isBlankWhenNull="true">
 						<reportElement style="table" mode="Transparent" x="1" y="40" width="31" height="15" backcolor="#D3D3D3" uuid="d998e75e-f570-419c-a5f0-85e5114d882b"/>
@@ -1498,7 +1556,7 @@
 						<textElement verticalAlignment="Middle" markup="none">
 							<font fontName="Times New Roman" size="8" isBold="false" pdfFontName="Times-Bold"/>
 						</textElement>
-						<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? "SEQ 2" : ($P{TRIMESTRE}.equals("2")? "SEQ 4" : "SEQ6"  ) )]]></textFieldExpression>
+						<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? "SEQ 2" : ($P{TRIMESTRE}.equals("1")? "SEQ 4" : "SEQ6"  ) )]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="true">
 						<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="62" y="40" width="21" height="15" uuid="3a434860-3fc5-4d80-bfa5-1c1d27f9bfd9"/>
@@ -1509,7 +1567,7 @@
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font fontName="Times New Roman" size="8" isBold="true" pdfFontName="Times-Bold"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$F{tcoefs2}]]></textFieldExpression>
+						<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")?$F{tcoefs2} : ($P{TRIMESTRE}.equals("1")? $F{tcoefs4} :$F{tcoefs6}  ) )]]></textFieldExpression>
 					</textField>
 					<textField isBlankWhenNull="true">
 						<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="83" y="40" width="26" height="15" uuid="17802c93-4d9b-4cb9-94bf-0e7a2b316b14"/>
@@ -1696,7 +1754,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{taux}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{bulletin.txreusitte}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement stretchType="RelativeToTallestObject" x="208" y="60" width="11" height="12" uuid="18e9ae65-71ec-4261-b765-9b1db5659686"/>
@@ -1794,7 +1852,11 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{abscencet0.ligne}!=null&&$F{abscencet1.ligne}!=null ? $F{abscencet0.ligne.absnonjust}+ $F{abscencet1.ligne.absnonjust} : "0" )+"  H"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? ($F{abscencet0.ligne}!=null&&$F{abscencet1.ligne}!=null ? $F{abscencet0.ligne.absnonjust}+ $F{abscencet1.ligne.absnonjust} : "0" )+"  H" : ($P{TRIMESTRE}.equals("1")? ($F{abscencet2.ligne}!=null&&$F{abscencet3.ligne}!=null ? $F{abscencet2.ligne.absnonjust}+ $F{abscencet3.ligne.absnonjust} : "0" )+"  H":($F{abscencet4.ligne}!=null&&$F{abscencet5.ligne}!=null ? $F{abscencet4.ligne.absnonjust}+ $F{abscencet5.ligne.absnonjust} : "0" )+"  H"  ) )
+
+
+
+]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="383" y="24" width="48" height="12" uuid="6cdaa03c-fb0d-423c-861f-f63c579387b3"/>
@@ -1806,7 +1868,10 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{abscence.ligne}!=null ? $F{abscencet0.ligne.absjust}+$F{abscencet1.ligne.absjust} : "0" )+"  H"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? ($F{abscencet0.ligne}!=null&&$F{abscencet1.ligne}!=null ? $F{abscencet0.ligne.absjust}+$F{abscencet1.ligne.absjust} : "0" )+"  H" : ($P{TRIMESTRE}.equals("1")? ($F{abscencet2.ligne}!=null&&$F{abscencet3.ligne}!=null ? $F{abscencet2.ligne.absjust}+$F{abscencet3.ligne.absjust} : "0" )+"  H":($F{abscencet4.ligne}!=null&&$F{abscencet5.ligne}!=null ? $F{abscencet4.ligne.absjust}+$F{abscencet5.ligne.absjust} : "0" )+"  H"  ) )
+
+
+]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement stretchType="RelativeToTallestObject" x="373" y="24" width="11" height="12" uuid="4bc7333e-71fd-413b-be0b-6d9daf067d0b"/>
@@ -1853,7 +1918,9 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{abscence.ligne}!=null ?$F{abscencet0.ligne.retard}+$F{abscencet1.ligne.retard} : "0" )+" H"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")?($F{abscencet0.ligne}!=null&&$F{abscencet1.ligne}!=null ?$F{abscencet0.ligne.retard}+$F{abscencet1.ligne.retard} : "0" )+" H" : ($P{TRIMESTRE}.equals("1")? ($F{abscencet2.ligne}!=null&&$F{abscencet3.ligne}!=null ?$F{abscencet2.ligne.retard}+$F{abscencet3.ligne.retard} : "0" )+" H":($F{abscencet4.ligne}!=null&&$F{abscencet5.ligne}!=null ?$F{abscencet4.ligne.retard}+$F{abscencet5.ligne.retard} : "0" )+" H"  ) )
+
+]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="272" y="36" width="101" height="12" backcolor="#D3D3D3" uuid="78eeca39-7585-4cd2-b2ab-42309e3c523f"/>
@@ -1902,7 +1969,10 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[((($F{abscencet0.ligne.balmeconduite}==true||$F{abscencet1.ligne.balmeconduite}==true)) ? $V{ouiyes} : $V{noNon} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")?((($F{abscencet0.ligne.balmeconduite}==true||$F{abscencet1.ligne.balmeconduite}==true)) ? $V{ouiyes} : $V{noNon} ) : ($P{TRIMESTRE}.equals("1")?((($F{abscencet2.ligne.balmeconduite}==true||$F{abscencet3.ligne.balmeconduite}==true)) ? $V{ouiyes} : $V{noNon} ):((($F{abscencet4.ligne.balmeconduite}==true||$F{abscencet5.ligne.balmeconduite}==true)) ? $V{ouiyes} : $V{noNon} )  ) )
+
+
+]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="272" y="60" width="101" height="12" backcolor="#D3D3D3" uuid="adbaac91-942e-4c54-80ef-051971c25f73"/>
@@ -1938,7 +2008,10 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[((($F{abscencet0.ligne.avertconduite}==true||$F{abscencet1.ligne.avertconduite}==true ))? $V{ouiyes} :$V{noNon} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? ((($F{abscencet0.ligne.avertconduite}==true||$F{abscencet1.ligne.avertconduite}==true ))? $V{ouiyes} :$V{noNon} ) : ($P{TRIMESTRE}.equals("1")?((($F{abscencet2.ligne.avertconduite}==true||$F{abscencet3.ligne.avertconduite}==true ))? $V{ouiyes} :$V{noNon} ) :((($F{abscencet4.ligne.avertconduite}==true||$F{abscencet5.ligne.avertconduite}==true ))? $V{ouiyes} :$V{noNon} )) )
+
+
+]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="272" y="72" width="101" height="12" backcolor="#D3D3D3" uuid="0497d99f-6e15-4abe-a033-c7dadc672bfd"/>
@@ -1974,7 +2047,10 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{abscence.ligne}!=null ? $F{abscencet0.ligne.exclusion}+$F{abscencet1.ligne.exclusion} : "0" )+$V{day}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? ($F{abscence.ligne}!=null ? $F{abscencet0.ligne.exclusion}+$F{abscencet1.ligne.exclusion} : "0" )+$V{day} : ($P{TRIMESTRE}.equals("1")?($F{abscence.ligne}!=null ? $F{abscencet2.ligne.exclusion}+$F{abscencet3.ligne.exclusion} : "0" )+$V{day}  :($F{abscence.ligne}!=null ? $F{abscencet4.ligne.exclusion}+$F{abscencet5.ligne.exclusion} : "0" )+$V{day}) )
+
+
+]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="272" y="84" width="101" height="12" backcolor="#D3D3D3" uuid="ad1107f8-3665-4e48-a4bf-a707c1643b43"/>
@@ -2010,7 +2086,10 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[((($F{abscencet0.ligne.consiel}==true||$F{abscencet1.ligne.consiel}==true )) ? $V{ouiyes} : $V{noNon} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")?((($F{abscencet0.ligne.consiel}==true||$F{abscencet1.ligne.consiel}==true )) ? $V{ouiyes} : $V{noNon} ) : ($P{TRIMESTRE}.equals("1")?((($F{abscencet2.ligne.consiel}==true||$F{abscencet3.ligne.consiel}==true )) ? $V{ouiyes} : $V{noNon} )  :((($F{abscencet4.ligne.consiel}==true||$F{abscencet5.ligne.consiel}==true )) ? $V{ouiyes} : $V{noNon} )) )
+
+
+]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="272" y="96" width="101" height="12" backcolor="#D3D3D3" uuid="3be73a92-46db-460e-b75b-9a5e42abeac5"/>
@@ -2046,7 +2125,9 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{abscence.ligne}!=null ? $F{abscencet0.ligne.consigne}+$F{abscencet1.ligne.consigne} : "0" )+" H"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")?($F{abscencet0.ligne}!=null&&$F{abscencet1.ligne}!=null ? $F{abscencet0.ligne.consigne}+$F{abscencet1.ligne.consigne} : "0" )+" H" : ($P{TRIMESTRE}.equals("1")?($F{abscencet2.ligne}!=null&&$F{abscencet3.ligne}!=null ? $F{abscencet2.ligne.consigne}+$F{abscencet3.ligne.consigne} : "0" )+" H"  :($F{abscencet4.ligne}!=null&&$F{abscencet5.ligne}!=null ? $F{abscencet4.ligne.consigne}+$F{abscencet5.ligne.consigne} : "0" )+" H") )
+
+]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="137" y="85" width="135" height="23" uuid="9d47170a-72c1-4f7e-a01f-1bf08e5bdd42"/>
@@ -2206,7 +2287,9 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 						<font fontName="Times New Roman" size="8" isBold="false" pdfFontName="Times-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( !$F{classe.filiere.section.typesection}.equals("0") ?$F{apptmoy1.appreciationMoy}: $F{apptmoy1.appreciationMoyen} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{TRIMESTRE}.equals("0")? ( !$F{classe.filiere.section.typesection}.equals("0") ?$F{apptmoy1.appreciationMoy}: $F{apptmoy1.appreciationMoyen} ) : ($P{TRIMESTRE}.equals("1")? ( !$F{classe.filiere.section.typesection}.equals("0") ?$F{apptmoy2.appreciationMoy}: $F{apptmoy2.appreciationMoyen} ):( !$F{classe.filiere.section.typesection}.equals("0") ?$F{apptmoy3.appreciationMoy}: $F{apptmoy3.appreciationMoyen} )  ) )
+
+]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto" isBlankWhenNull="true">
 					<reportElement style="table" mode="Transparent" x="5" y="216" width="180" height="7" backcolor="#E3E1E1" uuid="22ac0a74-fd9b-44de-bf1c-2544bc9a189a"/>
@@ -2425,7 +2508,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Times New Roman" size="9" pdfFontName="Times-Roman"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{notecol1}==0 ? "/" :$V{notecol1} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $V{notecol1}==0 ||$V{notecol1}==null? "/" :$V{notecol1} )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="113" y="0" width="85" height="17" uuid="a5dbed85-0e87-4e83-a1bf-1147402b6dfe"/>

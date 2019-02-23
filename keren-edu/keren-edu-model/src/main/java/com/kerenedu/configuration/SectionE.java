@@ -29,8 +29,21 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 	
 	
 	@Column(name = "LIBELLE")	
-	@Predicate(label="Libellé",optional=false,updatable=false,search=true)
+	@Predicate(label="Libellé",optional=false,updatable=false,search=true , sequence=2)
 	protected String libelle;
+	
+	@Column(name = "CAPACITE" )	
+	@Predicate(label="CAPACITE",optional=true,updatable=true,search=true , sequence=3, type=Long.class,editable=false, hide=true)
+	protected Long capacite;
+	
+	@Column(name = "EFF_FILLE")	
+	@Predicate(label="Nbre fille",updatable=true,search=true , sequence=4, type=Long.class, editable=false, hide=true)
+	protected Long efffille= new Long(0);
+	
+	@Column(name = "EFF_GAR")	
+	@Predicate(label="Nbre Gar.",updatable=true,search=true , sequence=5, type=Long.class, editable=false, hide=true)
+	protected Long effGarcon= new Long(0);
+	
 	
 	@ManyToOne
     @JoinColumn(name = "RESP_ID")
@@ -52,6 +65,9 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 		if(filiere.responsable!=null){
 		this.responsable= new Professeurclone(filiere.responsable);
 		}
+		this.capacite=filiere.capacite;
+		this.efffille=filiere.efffille;
+		this.effGarcon=filiere.effGarcon;
 
 		
 		//this.elevelist= new ArrayList<Eleve>();
@@ -123,6 +139,36 @@ public class SectionE extends BaseElement implements Serializable, Comparable<Se
 	
 	public int compareTo(SectionE o) {
 		return 0;
+	}
+
+
+	public Long getCapacite() {
+		return capacite;
+	}
+
+
+	public void setCapacite(Long capacite) {
+		this.capacite = capacite;
+	}
+
+
+	public Long getEfffille() {
+		return efffille;
+	}
+
+
+	public void setEfffille(Long efffille) {
+		this.efffille = efffille;
+	}
+
+
+	public Long getEffGarcon() {
+		return effGarcon;
+	}
+
+
+	public void setEffGarcon(Long effGarcon) {
+		this.effGarcon = effGarcon;
 	}
 
 

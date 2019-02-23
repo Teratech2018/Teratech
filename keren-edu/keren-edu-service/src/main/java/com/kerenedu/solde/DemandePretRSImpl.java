@@ -162,16 +162,18 @@ public class DemandePretRSImpl
                 throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; annul&eacute;e");
         }else if(entity.getDpret().after(entity.getDrembour())){
                 throw new KerenExecption("La date de pret ne peut etre superieure &agrave; la date de remboursement");
+        }else if(entity.getDrembour().before(new Date())){
+        	  throw new KerenExecption("La date du pret ne peut etre inferieure &agrave; la date du jour");
         }
         // verifier si l'employ&eacute; n'a pas dej&agrave; un autre pret encours
         RestrictionsContainer container = RestrictionsContainer.newInstance();
-        container.addEq("employe.id", entity.getEmploye().getId());
-        container.addNotEq("state", "termine");
-        container.addNotEq("state", "annule");
-        List<DemandePret> listpret = manager.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-        if(listpret!=null&&!listpret.isEmpty()&&listpret.size()!=0){
-        	 throw new KerenExecption("	OPPERATION IMPOSSIBLE : Cet employe &agrave; dej&agrave; un Pr&ecirc;t encours !!!");
-        }
+//        container.addEq("employe.id", entity.getEmploye().getId());
+//        container.addNotEq("state", "termine");
+//        container.addNotEq("state", "annule");
+//        List<DemandePret> listpret = manager.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
+//        if(listpret!=null&&!listpret.isEmpty()&&listpret.size()!=0){
+//        	 throw new KerenExecption("	OPPERATION IMPOSSIBLE : Cet employe &agrave; dej&agrave; un Pr&ecirc;t encours !!!");
+//        }
         
         
         container = RestrictionsContainer.newInstance();

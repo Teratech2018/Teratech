@@ -283,6 +283,7 @@ public class BulletinRSImpl
          //To change body of generated methods, choose Tools | Templates.
         Gson gson = new Gson();
         Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
+        System.out.println("BulletinRSImpl.count() user id is"+userid);
         Classe classe = (Classe) CacheMemory.getValue(userid, TypeCacheMemory.CLASSE);
 		Filiere filiere = (Filiere) CacheMemory.getValue(userid, TypeCacheMemory.FILLIERE);
 		Examen examen = (Examen) CacheMemory.getValue(userid, TypeCacheMemory.EXAMEN);

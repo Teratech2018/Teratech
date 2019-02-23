@@ -156,7 +156,7 @@
 	</variable>
 	<group name="section" isStartNewPage="true"/>
 	<group name="cycle"/>
-	<group name="employgroup">
+	<group name="employgroup" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{employe.id}]]></groupExpression>
 		<groupHeader>
 			<band height="20">
@@ -346,9 +346,9 @@
 		</groupHeader>
 	</group>
 	<title>
-		<band height="147">
+		<band height="150">
 			<textField>
-				<reportElement style="table" mode="Transparent" x="111" y="88" width="615" height="37" backcolor="#E3E1E1" uuid="de2889d8-4372-4bb0-98bc-6b82efee49f7"/>
+				<reportElement style="table" mode="Transparent" x="115" y="80" width="615" height="37" backcolor="#E3E1E1" uuid="de2889d8-4372-4bb0-98bc-6b82efee49f7"/>
 				<box>
 					<topPen lineWidth="1.0" lineColor="#999999"/>
 					<leftPen lineWidth="1.0" lineColor="#999999"/>
@@ -396,7 +396,7 @@
 				<textFieldExpression><![CDATA["Groupe Scolaire Bilingue les Sauterelles: GSBS"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="310" y="130" width="48" height="10" uuid="052da75a-7fab-464c-b7ae-6aed7376691e"/>
+				<reportElement x="0" y="128" width="48" height="10" uuid="052da75a-7fab-464c-b7ae-6aed7376691e"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -409,7 +409,7 @@
 				<textFieldExpression><![CDATA["Imprimé le :"]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
-				<reportElement x="358" y="130" width="83" height="10" uuid="e097014d-29e6-4705-a7b2-f8a2d773dbac"/>
+				<reportElement x="48" y="128" width="83" height="10" uuid="e097014d-29e6-4705-a7b2-f8a2d773dbac"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>

@@ -95,7 +95,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	@Column(name = "MOY6")
 	private Double moy6 = new Double(0);
-
+	
 	@Column(name = "RANG1")
 	private Long rang1 = new Long(0);
 
@@ -113,6 +113,8 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	@Column(name = "RANG6")
 	private Long rang6 = new Long(0);
+	
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "APPS")
@@ -277,6 +279,48 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 	private Long tcoefs6 = new Long(0);
 
 	
+	
+	@Column(name = "RANGAN")
+	private Long rangann = new Long(0);
+	
+	@Column(name = "NBMOYAN")
+	private Double nbmoyan = new Double(0);
+	
+	@Column(name = "ECARTAN")
+	private Double ecartan = new Double(0);
+	
+	@Column(name = "MINMOYAN")
+	private Double minmoyan = new Double(0);
+	
+	@Column(name = "MYGENAN")
+	private Double moygenan = new Double(0);
+	
+	@Column(name = "MAXMOYAN")
+	private Double maxmoyan = new Double(0);
+	
+	@Column(name = "RANKMATAN")
+	private Long rankmatan = new Long(0);
+	
+	@Column(name = "MOYMATAN")
+	private Double moymatan = new Double(0);
+	
+	@ManyToOne
+	@JoinColumn(name = "APPMOY2")
+	protected Appreciation apptmoy2;
+	
+	@ManyToOne
+	@JoinColumn(name = "APPMOY3")
+	protected Appreciation apptmoy3;
+	
+	@ManyToOne
+	@JoinColumn(name = "APPMOYAN")
+	protected Appreciation apptmoyan;
+	
+	@ManyToOne
+	@JoinColumn(name = "APPTAN")
+	protected Appreciation apptan;
+	
+	
 	@Transient
 	private Cycle cycle;
 	
@@ -320,22 +364,23 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-
 	public BulletinHelperGenerate(LigneBulletinClasse lignes, Bulletin bulletin, Inscription inscription, Eleve eleve,
 			Classe classe, Examen examen, Double moy, Long rang, Double note1, Double note2, Double note3, Double note4,
 			Double note5, Double note6, Double moy1, Double moy2, Double moy3, Double moy4, Double moy5, Double moy6,
-			Long rang1, Long rang2, Long rang3, Long rang4, Long rang5, Long rang6, String appreciation,
-			String santcion, String appen, ViewAbscence abscence, Long rangt1, Long rangt2, Long rangt3, Double nbmoyt1,
-			Double ecartt1, Double minmoyt1, Double moygent1, Double maxmoyt1, Double nbmoyt2, Double ecartt2,
-			Double minmoyt2, Double moygent2, Double maxmoyt2, Double nbmoyt3, Double ecartt3, Double minmoyt3,
-			Double moygent3, Double maxmoyt3, String anneeid, Double moyclasMat, Double extrememaxmat,
-			Double extremmeminmat, Long rankmatt1, Long rankmatt2, Long rankmatt3, Double moymatt1, Double moymatt2,
-			Double moymatt3, ViewAbscence abscencet0, ViewAbscence abscencet1, Appreciation appt1, Appreciation appt2,
-			Appreciation appt3, Cycle cycle, MatiereDlt matiere, Long rangmat, Long rangmoy, Double moyGenCls,
-			Double moyPremier, Double moyDernnier, Long nbreMoy, Long nbreElve, Double tauxReussite, Double totalPoint,
-			Long totalCoef, Double eType, byte[] photo) {
+			Long rang1, Long rang2, Long rang3, Long rang4, Long rang5, Long rang6, Appreciation appreciation,
+			ViewAbscence abscence, Long rangt1, Long rangt2, Long rangt3, Double nbmoyt1, Double ecartt1,
+			Double minmoyt1, Double moygent1, Double maxmoyt1, Double nbmoyt2, Double ecartt2, Double minmoyt2,
+			Double moygent2, Double maxmoyt2, Double nbmoyt3, Double ecartt3, Double minmoyt3, Double moygent3,
+			Double maxmoyt3, String anneeid, Double moyclasMat, Double extrememaxmat, Double extremmeminmat,
+			Long rankmatt1, Long rankmatt2, Long rankmatt3, Double moymatt1, Double moymatt2, Double moymatt3,
+			ViewAbscence abscencet0, ViewAbscence abscencet1, ViewAbscence abscencet2, ViewAbscence abscencet3,
+			ViewAbscence abscencet4, ViewAbscence abscencet5, Appreciation appt1, Appreciation appt2,
+			Appreciation appt3, Appreciation apptmoy1, Long tcoefs1, Long tcoefs2, Long tcoefs3, Long tcoefs4,
+			Long tcoefs5, Long tcoefs6, Long rangann, Double nbmoyan, Double ecartan, Double minmoyan, Double moygenan,
+			Double maxmoyan, Long rankmatan, Double moymatan, Appreciation apptmoy2, Appreciation apptmoy3,
+			Appreciation apptmoyan, Appreciation apptan, Cycle cycle, MatiereDlt matiere, Long rangmat, Long rangmoy,
+			Double moyGenCls, Double moyPremier, Double moyDernnier, Long nbreMoy, Long nbreElve, Double tauxReussite,
+			Double totalPoint, Long totalCoef, Double eType, byte[] photo) {
 		super();
 		this.lignes = lignes;
 		this.bulletin = bulletin;
@@ -363,9 +408,7 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.rang4 = rang4;
 		this.rang5 = rang5;
 		this.rang6 = rang6;
-	//	this.appreciation = appreciation;
-//		this.santcion = santcion;
-//		this.appen = appen;
+		this.appreciation = appreciation;
 		this.abscence = abscence;
 		this.rangt1 = rangt1;
 		this.rangt2 = rangt2;
@@ -397,9 +440,32 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.moymatt3 = moymatt3;
 		this.abscencet0 = abscencet0;
 		this.abscencet1 = abscencet1;
+		this.abscencet2 = abscencet2;
+		this.abscencet3 = abscencet3;
+		this.abscencet4 = abscencet4;
+		this.abscencet5 = abscencet5;
 		this.appt1 = appt1;
 		this.appt2 = appt2;
 		this.appt3 = appt3;
+		this.apptmoy1 = apptmoy1;
+		this.tcoefs1 = tcoefs1;
+		this.tcoefs2 = tcoefs2;
+		this.tcoefs3 = tcoefs3;
+		this.tcoefs4 = tcoefs4;
+		this.tcoefs5 = tcoefs5;
+		this.tcoefs6 = tcoefs6;
+		this.rangann = rangann;
+		this.nbmoyan = nbmoyan;
+		this.ecartan = ecartan;
+		this.minmoyan = minmoyan;
+		this.moygenan = moygenan;
+		this.maxmoyan = maxmoyan;
+		this.rankmatan = rankmatan;
+		this.moymatan = moymatan;
+		this.apptmoy2 = apptmoy2;
+		this.apptmoy3 = apptmoy3;
+		this.apptmoyan = apptmoyan;
+		this.apptan = apptan;
 		this.cycle = cycle;
 		this.matiere = matiere;
 		this.rangmat = rangmat;
@@ -463,10 +529,6 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.rang4 = bull.rang4;
 		this.rang5 = bull.rang5;
 		this.rang6 = bull.rang6;
-
-//		this.santcion = bull.santcion;
-//		this.appen = bull.appen;
-		
 		this.rankmatt1 = bull.rankmatt1;
 		this.rankmatt2 = bull.rankmatt2;
 		this.rankmatt3 = bull.rankmatt3;
@@ -490,6 +552,19 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		this.tcoefs4=bull.tcoefs4;
 		this.tcoefs5=bull.tcoefs5;
 		this.tcoefs6=bull.tcoefs6;
+		//this.moyann = bull.moyann;
+		this.rangann = bull.rangann;
+		this.nbmoyan = bull.nbmoyan;
+		this.ecartan = bull.ecartan;
+		this.minmoyan = bull.minmoyan;
+		this.moygenan = bull.moygenan;
+		this.maxmoyan = bull.maxmoyan;
+		this.rankmatan = bull.rankmatan;
+		this.moymatan = bull.moymatan;
+		this.apptmoy2 =  new Appreciation(bull.apptmoy2);
+		this.apptmoy3 =  new Appreciation(bull.apptmoy3);
+		this.apptmoyan =  new Appreciation(bull.apptmoyan);
+		this.apptan =  new Appreciation(bull.apptan);
 		//this.appreciationMatiereen = bull.appreciationMatiereen;
 	}
 
@@ -643,6 +718,62 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 		return rang4;
 	}
 
+	public Appreciation getApptmoy2() {
+		return apptmoy2;
+	}
+
+
+
+
+	public void setApptmoy2(Appreciation apptmoy2) {
+		this.apptmoy2 = apptmoy2;
+	}
+
+
+
+
+	public Appreciation getApptmoy3() {
+		return apptmoy3;
+	}
+
+
+
+
+	public void setApptmoy3(Appreciation apptmoy3) {
+		this.apptmoy3 = apptmoy3;
+	}
+
+
+
+
+	public Appreciation getApptmoyan() {
+		return apptmoyan;
+	}
+
+
+
+
+	public void setApptmoyan(Appreciation apptmoyan) {
+		this.apptmoyan = apptmoyan;
+	}
+
+
+
+
+	public Appreciation getApptan() {
+		return apptan;
+	}
+
+
+
+
+	public void setApptan(Appreciation apptan) {
+		this.apptan = apptan;
+	}
+
+
+
+
 	public void setRang4(Long rang4) {
 		this.rang4 = rang4;
 	}
@@ -667,6 +798,120 @@ public class BulletinHelperGenerate extends BaseElement implements Serializable,
 
 	public Long getTcoefs2() {
 		return tcoefs2;
+	}
+
+
+
+
+
+
+	public Long getRangann() {
+		return rangann;
+	}
+
+
+
+
+	public void setRangann(Long rangann) {
+		this.rangann = rangann;
+	}
+
+
+
+
+	public Double getNbmoyan() {
+		return nbmoyan;
+	}
+
+
+
+
+	public void setNbmoyan(Double nbmoyan) {
+		this.nbmoyan = nbmoyan;
+	}
+
+
+
+
+	public Double getEcartan() {
+		return ecartan;
+	}
+
+
+
+
+	public void setEcartan(Double ecartan) {
+		this.ecartan = ecartan;
+	}
+
+
+
+
+	public Double getMinmoyan() {
+		return minmoyan;
+	}
+
+
+
+
+	public void setMinmoyan(Double minmoyan) {
+		this.minmoyan = minmoyan;
+	}
+
+
+
+
+	public Double getMoygenan() {
+		return moygenan;
+	}
+
+
+
+
+	public void setMoygenan(Double moygenan) {
+		this.moygenan = moygenan;
+	}
+
+
+
+
+	public Double getMaxmoyan() {
+		return maxmoyan;
+	}
+
+
+
+
+	public void setMaxmoyan(Double maxmoyan) {
+		this.maxmoyan = maxmoyan;
+	}
+
+
+
+
+	public Long getRankmatan() {
+		return rankmatan;
+	}
+
+
+
+
+	public void setRankmatan(Long rankmatan) {
+		this.rankmatan = rankmatan;
+	}
+
+
+
+
+	public Double getMoymatan() {
+		return moymatan;
+	}
+
+
+
+
+	public void setMoymatan(Double moymatan) {
+		this.moymatan = moymatan;
 	}
 
 

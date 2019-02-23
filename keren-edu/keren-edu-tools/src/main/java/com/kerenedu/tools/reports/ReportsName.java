@@ -48,10 +48,12 @@ public enum ReportsName {
     AMICALE_TD("sitamicaletd.jasper"),
     LOYER_TD("sitloyertd.jasper"),
     CNPS_TD("sitcnpstd.jasper"),
+    FICHE_PRESENCE("efichepresence.jasper"),
     MASSE_SAL("massesalarialedtl.jasper"),
     MASSE_SAL_GLOBAL("massesalariale.jasper"),
     FICHE_PRET("sfichepret.jasper"),
     FICHE_ACOMPTE("sficheacompte.jasper"),
+    MATRICE_MOY("ematricemoyenne.jasper"),
     VIREMENT("evirementsalairetd.jasper") ;
 
     /**

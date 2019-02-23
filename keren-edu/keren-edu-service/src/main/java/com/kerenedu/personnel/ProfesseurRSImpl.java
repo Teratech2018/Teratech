@@ -20,6 +20,7 @@ import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.solde.BulletinPaie;
+import com.kerenedu.solde.DemandePret;
 import com.kerenedu.solde.PeriodePaie;
 import com.kerenedu.solde.RemboursementPret;
 import com.megatim.common.annotations.Filter;
@@ -215,6 +216,26 @@ public class ProfesseurRSImpl
          container.addNotEq("state", "desactiver");	
 
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
+    }
+    
+    @Override
+    protected void processBeforeSave(Professeur entity) {
+
+        // TODO Auto-generated method stub
+        if(entity.getAllperiode()!=null&&entity.getAllperiode().equals("1")&&(entity.getPeriodepaie()==null||entity.getPeriodepaie().isEmpty())){
+                throw new KerenExecption("OPERATIOn ERROR: Renseigner les periode de paiement de cet employe !!!!");
+        }
+
+    }
+    
+    @Override
+    protected void processBeforeUpdate(Professeur entity) {
+
+        // TODO Auto-generated method stub
+        if(entity.getAllperiode()!=null&&entity.getAllperiode().equals("1")&&(entity.getPeriodepaie()==null||entity.getPeriodepaie().isEmpty())){
+                throw new KerenExecption("OPERATIOn ERROR: Renseigner les periode de paiement de cet employe !!!!");
+        }
+
     }
 	
 }

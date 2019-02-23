@@ -55,6 +55,9 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
     
     @EJB(name = "LigneBulletinClasseDAO")
     protected LigneBulletinClasseDAOLocal daoligne;
+    
+    @EJB(name = "NoteDetailDAO")
+	protected NoteDetailDAOLocal daonote;
 	
 	
 
@@ -90,7 +93,10 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 
 	@Override
 	public EdtBulletin preparerNotes(EdtBulletin prepa) {
+		daonote.updateforce2(prepa);
+		System.out.println("MoteurBulletinManagerImpl.preparerNotes() updating note is ok");
 		this.generateBulletin(prepa);
+		dao.updateforce2(prepa);
 		System.err.println("MoteurBulletinManagerImpl.preparerNotes() ============= FIN PARACOURS==============="+prepa.getClasse().getLibelle());
 		return prepa;
 	}
@@ -151,10 +157,12 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 		}
 	
 		// 0- supprimer les bulletin trouvé et regenerer
-		for (Bulletin b : datas) {
-			dao.delete(b.getId());
-		} // end for(Bulletin b : datas) to delete
-
+		System.out.println("MoteurBulletinManagerImpl.generateBulletin() bulletin to delete "+datas.size());
+//		for (Bulletin b : datas) {
+//			dao.delete(b.getId());
+//		} // end for(Bulletin b : datas) to delete
+		dao.deleteforce2(datas);
+		System.out.println("MoteurBulletinManagerImpl.generateBulletin() delete ok ");
 		if (eleves == null || eleves.isEmpty()) {
 			throw new KerenExecption("Aucun Eleve inscrit dans la classe choisis !!!");
 		}
@@ -172,7 +180,7 @@ public class MoteurBulletinManagerImpl extends AbstractGenericManager<Bulletin, 
 				container.addEq("examen.id", examen.getId());
 				List<ViewNoteHelper> noteeleves = daoviewnotehelper.filter(container.getPredicats(), null,
 						new HashSet<String>(), 0, -1);
-			//	System.out.println("EdtBulletinRSImpl.generateBulletin() nobre note"+noteeleves.size());
+				//System.out.println("EdtBulletinRSImpl.generateBulletin() nobre note"+noteeleves.size());
 				List<LigneBulletinClasse> lignelist = new ArrayList<LigneBulletinClasse>();
 				Bulletin bulletin = new Bulletin();
 				for (ViewNoteHelper h : noteeleves) {

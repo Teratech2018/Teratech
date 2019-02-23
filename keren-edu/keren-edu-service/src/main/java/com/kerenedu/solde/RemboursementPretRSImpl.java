@@ -11,6 +11,7 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.core.tools.DateHelper;
 import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
@@ -215,8 +216,8 @@ public class RemboursementPretRSImpl
 		PeriodePaie periode = (PeriodePaie) CacheMemory.getValue(id, TypeCacheMemory.PERIODE);
 		
 		if (periode != null) {
-			container.addGe("date",periode.getDdebut());
-			container.addLe("date",periode.getDfin());
+			container.addGe("date",DateHelper.formatDate(periode.getDdebut()));
+			container.addLe("date",DateHelper.formatDate(periode.getDfin()));
 		} // end if(classe!=null)
 		container.addNotEq("state", "annule");	
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);

@@ -52,10 +52,10 @@ public class ClasseSecondaire extends BaseElement implements Serializable, Compa
 	//@Predicate(label="Capacité",optional=true,updatable=true,search=true , sequence=4, type=Long.class, colsequence=4)
 	protected Long capacite;
 	
-	@ManyToOne
-    @JoinColumn(name = "PROF_ID")
-	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=5, colsequence=4)
-    protected Professeur professeur;
+//	@ManyToOne
+    //@JoinColumn(name = "PROF_ID")
+//	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=5, colsequence=4)
+   // protected Professeur professeur;
 	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
@@ -100,9 +100,9 @@ public class ClasseSecondaire extends BaseElement implements Serializable, Compa
 			this.section=new SectionE(filiere.getSection());
 		}
 		this.effectif=filiere.effectif;
-		if(filiere.professeur!=null){
-		   this.professeur= new Professeur(filiere.professeur);
-		}
+//		if(filiere.professeur!=null){
+//		   this.professeur= new Professeur(filiere.professeur);
+//		}
 		this.capacite=filiere.capacite;
 		this.typecycle=filiere.typecycle;
 	}
@@ -123,9 +123,9 @@ public class ClasseSecondaire extends BaseElement implements Serializable, Compa
 			this.section=filiere.getSection();
 		}
 		this.effectif=filiere.effectif;
-		if(filiere.professeur!=null){
-		   this.professeur= new Professeur(filiere.professeur);
-		}
+//		if(filiere.professeur!=null){
+//		   this.professeur= new Professeur(filiere.professeur);
+//		}
 		this.capacite=filiere.capacite;
 	}
 
@@ -140,14 +140,14 @@ public class ClasseSecondaire extends BaseElement implements Serializable, Compa
 	}
 
 
-	public Professeur getProfesseur() {
-		return professeur;
-	}
-
-
-	public void setProfesseur(Professeur professeur) {
-		this.professeur = professeur;
-	}
+//	public Professeur getProfesseur() {
+//		return professeur;
+//	}
+//
+//
+//	public void setProfesseur(Professeur professeur) {
+//		this.professeur = professeur;
+//	}
 
 
 	public void setLibelle(String libelle) {

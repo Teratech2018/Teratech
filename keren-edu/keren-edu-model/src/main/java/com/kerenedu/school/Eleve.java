@@ -63,7 +63,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	protected String prenon;
 	
 	@Column(name = "SEXE")
-	@Predicate(label="Genre",optional=true,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=11)
+	@Predicate(label="Genre",optional=false,updatable=true,search=false, target="combobox", values="Masculin;Feminin" , sequence=11 )
 	protected String sexe="0";
 
 	@Column(name = "SITFAMILIALE")

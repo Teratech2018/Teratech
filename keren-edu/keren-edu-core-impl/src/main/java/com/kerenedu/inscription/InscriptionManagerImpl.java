@@ -26,8 +26,12 @@ import com.kerenedu.configuration.Cycle;
 import com.kerenedu.configuration.CycleDAOLocal;
 import com.kerenedu.configuration.EventEdu;
 import com.kerenedu.configuration.EventEduDAOLocal;
+import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.FiliereDAOLocal;
 import com.kerenedu.configuration.RappelE;
 import com.kerenedu.configuration.RappelEDAOLocal;
+import com.kerenedu.configuration.SectionE;
+import com.kerenedu.configuration.SectionEDAOLocal;
 import com.kerenedu.configuration.Service;
 import com.kerenedu.configuration.ServiceDAOLocal;
 import com.kerenedu.configuration.ServiceFilliere;
@@ -57,6 +61,13 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 
 	@EJB(name = "ClasseDAO")
 	protected ClasseDAOLocal classedao;
+	
+	@EJB(name = "filiereDAO")
+	protected FiliereDAOLocal filieredao;
+
+	@EJB(name = "SectionEDAO")
+	protected SectionEDAOLocal sectiondao;
+
 
 	@EJB(name = "EventEduDAO")
 	protected EventEduDAOLocal eventdao;
@@ -198,11 +209,46 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 	@Override
 	public void processAfterSave(Inscription entity) {
 		// mettre a jour le nbre d'elève de la classe concerné
+		Long effectifactuel ;
+		Long effectif ;
 		Classe cls = entity.getClasse();
-		Long effectifactuel = cls.getEffectif();
-		Long effectif = effectifactuel + new Long(1);
+		Filiere filiere = cls.getFiliere();
+		SectionE sect= filiere.getSection();
+		 effectifactuel = cls.getEffectif();
+		 effectif = effectifactuel + new Long(1);
 		cls.setEffectif(effectif);
+		if(entity.getEleve().getSexe()!=null&&entity.getEleve().getSexe().equals("1")){
+			cls.setEfffille(cls.getEfffille()+ new Long(1));
+		}
+		if(entity.getEleve().getSexe()!=null&&entity.getEleve().getSexe().equals("0")){
+			cls.setEffGarcon(cls.getEffGarcon()+ new Long(1));
+		}
 		classedao.update(cls.getId(), cls);
+		
+		//filiere
+		 effectifactuel = filiere.getCapacite();
+		 effectif = effectifactuel + new Long(1);
+		 filiere.setCapacite(effectif);
+		 if(entity.getEleve().getSexe()!=null&&entity.getEleve().getSexe().equals("1")){
+			 filiere.setEfffille(filiere.getEfffille()+ new Long(1));
+			}
+			if(entity.getEleve().getSexe()!=null&&entity.getEleve().getSexe().equals("0")){
+				filiere.setEffGarcon(filiere.getEffGarcon()+ new Long(1));
+			}
+		filieredao.update(filiere.getId(), filiere);
+		
+		//section
+		 effectifactuel = sect.getCapacite();
+		 effectif = effectifactuel + new Long(1);
+		 sect.setCapacite(effectif);
+		 if(entity.getEleve().getSexe()!=null&&entity.getEleve().getSexe().equals("1")){
+			 sect.setEfffille(sect.getEfffille()+ new Long(1));
+			}
+			if(entity.getEleve().getSexe()!=null&&entity.getEleve().getSexe().equals("0")){
+				sect.setEffGarcon(sect.getEffGarcon()+ new Long(1));
+			}
+		sectiondao.update(sect.getId(), sect);
+		
 		entity.setState("crée");
 		Eleve eleve = elevedao.findByPrimaryKey("id", entity.getEleve().getId());
 		eleve.setInscrit(true);
@@ -213,6 +259,7 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		}
 		entity.setMatricule(entity.getEleve().getMatricule());
 		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
+	
 		dao.update(entity.getId(), entity);
 		super.processAfterSave(entity);
 	}

@@ -964,7 +964,7 @@ public class BulletinPaie extends BaseElement implements Serializable, Comparabl
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		int max = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-		System.out.println("DateHelper.getAnciennete() nombre jous du mois " + max);
+		//System.out.println("DateHelper.getAnciennete() nombre jous du mois " + max);
 		int jour = (int) (((reste * 12) - mois) * max);
 		value = anneeint + " ans ," + mois + " mois ," + jour + " jours";
 		return value;

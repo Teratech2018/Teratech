@@ -42,6 +42,7 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	@ManyToOne
     @JoinColumn(name = "CLASSE_ID")
 	@Predicate(label="Selectionner La Classe",updatable=true,type=Classe.class , target="many-to-one", sequence=1, observable=true, optional=false)
+	@Filter(value="[{\"fieldName\":\"typecycle\",\"value\":\"2\"}]")
     protected Classe classe;
 	
 	@ManyToOne

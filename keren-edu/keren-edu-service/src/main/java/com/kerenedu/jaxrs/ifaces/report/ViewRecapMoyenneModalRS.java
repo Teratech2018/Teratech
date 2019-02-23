@@ -23,13 +23,13 @@ public abstract interface ViewRecapMoyenneModalRS
   
   @PUT
   @Produces({"application/pdf"})
-  @Path("mmoy")
+  @Path("moy")
   public abstract Response matrriceMoyenne(ViewRecapMoyenneModal entity);
   
   
   @PUT
   @Produces({"application/pdf"})
-  @Path("bi/mmoy")
+  @Path("bi/moy")
   public abstract Response matrriceMoyennebi(ViewRecapMoyenneModal entity);
   
   
