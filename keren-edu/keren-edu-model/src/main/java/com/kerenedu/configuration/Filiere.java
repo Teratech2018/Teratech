@@ -58,7 +58,11 @@ public class Filiere extends BaseElement implements Serializable, Comparable<Fil
 	@Predicate(label="DUREE",optional=true,updatable=true,search=false , sequence=8, type=Long.class, editable=false)
 	protected Long duree;
 	
-	
+//	  @ManyToOne
+//	    @JoinColumn(name = "FIL_ID_SUP")
+//		@Predicate(label="Filière Sup.",updatable=true,type=Classe.class , target="many-to-one",search=false, sequence=7)
+//	    protected Filiere clssup;
+		
 
 
 	public Filiere() {

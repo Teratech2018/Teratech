@@ -43,6 +43,11 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 	@Predicate(label = "Nom", search = true, optional = false)
 	protected String nom;
 
+	
+	@Column(name = "NOM_R")
+	@Predicate(label = "Représentatnt", search = true, optional = false)
+	protected String nomr;
+
 	@Column(name = "CONTACT")
 	@Predicate(label = "Contacts", search = true, optional = false)
 	protected String contacts;
@@ -50,6 +55,10 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 	@Column(name = "ADR")
 	@Predicate(label = "Code Postal", search = true, optional = false)
 	protected String adresse;
+	
+	@Column(name = "QUARTIER")
+	@Predicate(label = "quartier", search = true, optional = false)
+	protected String quartier;
 
 	@Column(name = "EMAIL")
 	@Predicate(label = "Email", search = true)
@@ -95,6 +104,8 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 		this.allertedelaiPaiement = etbl.allertedelaiPaiement;
 		this.quota=etbl.quota;
 		this.cyles = new ArrayList<Cycle>();
+		this.nomr=etbl.nomr;
+		this.quartier=etbl.quartier;
 	}
 
 	@Override
@@ -227,6 +238,22 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 
 	public void setQuota(long quota) {
 		this.quota = quota;
+	}
+
+	public String getNomr() {
+		return nomr;
+	}
+
+	public void setNomr(String nomr) {
+		this.nomr = nomr;
+	}
+
+	public String getQuartier() {
+		return quartier;
+	}
+
+	public void setQuartier(String quartier) {
+		this.quartier = quartier;
 	}
 
 	public List<Cycle> getCyles() {

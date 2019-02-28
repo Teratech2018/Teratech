@@ -35,7 +35,8 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=2)
-	@Filter(value="[{\"fieldName\":\"cycle\",\"value\":\"object.classe\",\"searchfield\":\"typecycle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
+	@Filter(value="[{\"fieldName\":\"state\",\"operator\":\"!=\",\"value\":\"ferme\"}]")
+	//@Filter(value="[{\"fieldName\":\"cycle\",\"value\":\"object.classe\",\"searchfield\":\"typecycle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
 	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	private Examen periode ;
 	

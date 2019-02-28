@@ -98,6 +98,9 @@ public class AbscenceManagerImpl
 		 List<LigneAbscence> ligne = new ArrayList<LigneAbscence>();
 		for(LigneAbscence lgn : entity.getAbscences()){
 	    //	lgn.setHeuretotal(DateHelper.hours(lgn.getHdebut(), lgn.getHfin(),new Date()));
+			//lgn.setDecisionannuel("0");
+			lgn.setAdmis(entity.getAdmis());
+			lgn.setTabhonneur(entity.getTabhonneur());
 	    	ligne.add(lgn);
 	    }
 	    entity.setAbscences(ligne);

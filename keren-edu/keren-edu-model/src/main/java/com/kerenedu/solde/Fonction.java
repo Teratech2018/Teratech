@@ -34,6 +34,9 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 	@Predicate(label="Intitulé",optional=false,search=true)
 	private String intitule ;
 	
+	@Predicate(label="Intitulé (Anglais)",optional=false,search=true)
+	private String intituleanglais ;
+	
 	@Predicate(label="Type",search=true,target="combobox",values="Directrice;Enseignat(e);Surveillant Genéral, Principal")
 	private String type = "0" ;
 	
@@ -66,6 +69,7 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 		this.type = fonc.type;
 		this.actif = fonc.actif;
 		this.description = fonc.description;
+		this.intituleanglais=fonc.intituleanglais;
 	}
 
 	public String getCode() {
@@ -140,7 +144,15 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 		return code.compareTo(o.code);
 	}
 
-    @Override
+    public String getIntituleanglais() {
+		return intituleanglais;
+	}
+
+	public void setIntituleanglais(String intituleanglais) {
+		this.intituleanglais = intituleanglais;
+	}
+
+	@Override
     public String toString() {
         return "Fonction{" + "code=" + code + ", intitule=" + intitule + '}';
     }

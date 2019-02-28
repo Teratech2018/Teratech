@@ -24,7 +24,7 @@ public class ImportNoteClasse extends BaseElement implements Serializable, Compa
 	@ManyToOne
 	@JoinColumn(name = "EXAMEN_ID")
 	@Predicate(label = "EXAMEN", type = Examen.class, target = "many-to-one", search = true, sequence = 2, optional = false)
-	@Filter(value = "[{\"fieldName\":\"cycle\",\"value\":\"object.classe\",\"searchfield\":\"typecycle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Classe\"}]")
+	@Filter(value="[{\"fieldName\":\"state\",\"operator\":\"!=\",\"value\":\"ferme\"}]")
 	protected Examen examen;
 	
 

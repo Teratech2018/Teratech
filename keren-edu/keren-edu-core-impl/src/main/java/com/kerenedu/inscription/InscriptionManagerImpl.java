@@ -202,7 +202,16 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		entity.setMatricule(entity.getEleve().getMatricule());
 		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
 		//entity.setStatus(false);
-
+		Eleve eleve = elevedao.findByPrimaryKey("id", entity.getEleve().getId());
+		if(eleve.getDatefirst()==null){
+			eleve.setDatefirst(entity.getDatIns());;
+		}
+		if (eleve.getDatefirst() != null) {
+			eleve.setAnciennte(Double.parseDouble(
+					"" + DateHelper.numberOfyear(eleve.getDatefirst() , entity.getDatIns())));
+		} // end if(contrat!=null){
+		elevedao.update(eleve.getId(), eleve);
+		
 		super.processBeforeSave(entity);
 	}
 
@@ -251,6 +260,9 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		
 		entity.setState("crée");
 		Eleve eleve = elevedao.findByPrimaryKey("id", entity.getEleve().getId());
+		if(eleve.getDatefirst()==null){
+			eleve.setDatefirst(entity.getDatIns());;
+		}
 		eleve.setInscrit(true);
 		elevedao.update(eleve.getId(), eleve);
 		// generate allerte happybirthDay
@@ -327,6 +339,15 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		}
 		entity.setMatricule(entity.getEleve().getMatricule());
 		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
+		Eleve eleve = elevedao.findByPrimaryKey("id", entity.getEleve().getId());
+		if(eleve.getDatefirst()==null){
+			eleve.setDatefirst(entity.getDatIns());;
+		}
+		if (eleve.getDatefirst() != null) {
+			eleve.setAnciennte(Double.parseDouble(
+					"" + DateHelper.numberOfyear(eleve.getDatefirst() , entity.getDatIns())));
+		} // end if(contrat!=null){
+		elevedao.update(eleve.getId(), eleve);
 //		if(entity.getzSolde()==0){
 //			entity.setStatus(true);
 //		}

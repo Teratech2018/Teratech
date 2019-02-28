@@ -27,6 +27,7 @@ public enum ReportsName {
     EMARGEMENT("eficheemarge.jasper"),  
     PLANNING_COURS("eemploitemps.jasper"),  
     BULLTRIM("ebulletin_trimestre.jasper"),  
+    BULLANN("ebulletin_annuel.jasper"),  
     FICHE_INSCRIPTION("eficheInscriptiontemplateimp.jasper"),  
     BILAN_SERVICE("elistingseleveservice.jasper"),
     BADGE("ebadge.jasper"),
@@ -54,6 +55,7 @@ public enum ReportsName {
     FICHE_PRET("sfichepret.jasper"),
     FICHE_ACOMPTE("sficheacompte.jasper"),
     MATRICE_MOY("ematricemoyenne.jasper"),
+    ATESTATION_TRAVAIL("eattestationtravail.jasper"),
     VIREMENT("evirementsalairetd.jasper") ;
 
     /**

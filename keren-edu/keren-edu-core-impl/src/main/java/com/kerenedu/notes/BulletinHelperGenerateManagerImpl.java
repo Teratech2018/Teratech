@@ -176,12 +176,14 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 				if(critere.getConcernes()==null||critere.getConcernes().isEmpty()){
 					throw new KerenExecption("Sectionner les eleves concernes");
 				}
+				container.addEq("anneeid", critere.getAnnee().getCode());
 				for(Inscription ins : critere.getConcernes()){
 					container.addEq("inscription.id", ins.getId());
 					
 						if (critere.getClasse() != null) {
 							container.addEq("classe.id", critere.getClasse().getId());
 						}
+						container.addEq("examen.typesequence","5");
 						List<BulletinHelperGenerate> datas = dao.filter(container.getPredicats(), null,
 								new HashSet<String>(), -1, 0);
 						records.addAll(datas);
@@ -190,10 +192,11 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 			} else {
 				System.out.println("BulletinHelperGenerateManagerImpl.getCriteres() tout les eléve de la classe !!!!");
 				records = new ArrayList<BulletinHelperGenerate>();
-
+				container.addEq("anneeid", critere.getAnnee().getCode());
 					if (critere.getClasse() != null) {
 						container.addEq("classe.id", critere.getClasse().getId());
 					}
+					container.addEq("examen.typesequence","5");
 					List<BulletinHelperGenerate> datas = dao.filter(container.getPredicats(), null,
 							new HashSet<String>(), -1, 0);
 					records.addAll(datas);

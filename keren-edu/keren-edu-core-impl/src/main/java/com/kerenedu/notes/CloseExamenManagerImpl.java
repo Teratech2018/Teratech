@@ -39,7 +39,7 @@ public class CloseExamenManagerImpl
    	@Override
    	public CloseExamen save(CloseExamen entity) {
    		// TODO Auto-generated method stub
-   		entity.getExamen().setState("fermé");
+   		entity.getExamen().setState("ferme");
    		daoexamen.update(entity.getExamen().getId(), entity.getExamen());
    		return entity;
    	}
@@ -47,7 +47,7 @@ public class CloseExamenManagerImpl
    	@Override
    	public CloseExamen update(Long id, CloseExamen entity) {
    		// TODO Auto-generated method stub
-   		entity.getExamen().setState("fermé");
+   		entity.getExamen().setState("ferme");
    		daoexamen.update(entity.getExamen().getId(), entity.getExamen());
    		return super.update(id, entity);
    	}

@@ -27,6 +27,7 @@ import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.notes.Examen;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -47,13 +48,23 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1, search=true)
-	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
+	@Filter(value="[{\"fieldName\":\"state\",\"operator\":\"!=\",\"value\":\"ferme\"}]")
 	private Examen periode ;
 	
 	@Column(name = "DATE_ABS")
 	//@Predicate(label="DATE ABSCENCE",optional=false,updatable=true,search=true, type=Date.class,sequence=1, target="date" )
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datAbs;
+	
+	@Column(name = "TBH")
+	@Predicate(label = "Critère Eligible Tab.d'honneur >= à ? ", optional = false, updatable = true, search = false, 
+	type = Double.class, sequence =3)//hidden = "currentObject.periode.typesequence==4||currentObject.periode.typesequence==5"
+	protected Double tabhonneur;
+	
+	@Column(name = "ADMIS")
+	@Predicate(label = "Critère Eligible Admissible >= à ? ", optional = false, updatable = true, search = false, 
+	type = Double.class, sequence =4)
+	protected Double admis;
 	
 	@Transient
 	@ManyToOne
@@ -129,6 +140,8 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 			this.periode= new Examen(ins.getPeriode());
 		}
 		this.state=ins.state;
+		this.tabhonneur=ins.tabhonneur;
+		this.admis=ins.admis;
 	
 	}
 
@@ -225,6 +238,34 @@ public class Abscence extends BaseElement implements Serializable, Comparable<Ab
 	public void setAnneScolaire(String anneScolaire) {
 		this.anneScolaire = anneScolaire;
 	}
+
+	public Double getTabhonneur() {
+		return tabhonneur;
+	}
+
+
+
+
+	public void setTabhonneur(Double tabhonneur) {
+		this.tabhonneur = tabhonneur;
+	}
+
+
+
+
+	public Double getAdmis() {
+		return admis;
+	}
+
+
+
+
+	public void setAdmis(Double admis) {
+		this.admis = admis;
+	}
+
+
+
 
 	@Override
 	public List<State> getStates() {

@@ -36,20 +36,24 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 	@Predicate(label="Description",optional=false,updatable=false,search=true, sequence=2)
 	protected String desc;
 	
-	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true, sequence=3,optional=false)
+	@Column(name = "DES_A")
+	@Predicate(label="Description Anglais",optional=false,updatable=false,search=false, sequence=3)
+	protected String desca;
+	
+	@Predicate(label="Type de rubrique",target="combobox",values="Gain;Retenue",search=true, sequence=4,optional=false)
 	private String type ="0";
 	
 	@Predicate(label="Nature de rubrique",target="combobox",values="Salaire;Prime;Indemnité;Allocations Familiales;Amicale;Loyer;Autres Retenues",search=true,observable=true,
-			 sequence=4)
+			 sequence=5)
 	private String nature ="0";	
 	
-	@Predicate(label="Sur le bulletin si ?",target="combobox",values="Jamais;Toujours;si non nul", sequence=5)
+	@Predicate(label="Sur le bulletin si ?",target="combobox",values="Jamais;Toujours;si non nul", sequence=6)
 	private String porte="0";
 	
-	@Predicate(label="Acompte?",type=Boolean.class, sequence=6)
+	@Predicate(label="Acompte?",type=Boolean.class, sequence=7)
 	private Boolean acompte = Boolean.FALSE;
 	
-	@Predicate(label="Prêt?",type=Boolean.class, sequence=7)
+	@Predicate(label="Prêt?",type=Boolean.class, sequence=8)
 	private Boolean pret = Boolean.FALSE;
 	
 	@Predicate(label="Mode Evaluation",target="combobox",values="Forfait par Catégorie;Forfaitaire par Cycle;Forfaitaire Par Personnels;Fixe;Formule;Elements Variables", 
@@ -127,6 +131,7 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 		this.formule=entity.getFormule();
 		this.acompte=entity.acompte;
 		this.pret=entity.pret;
+		this.desca=entity.desca;
 	}
 
 	public RubriquePaie() {
@@ -291,6 +296,14 @@ public class RubriquePaie extends BaseElement implements Serializable, Comparabl
 
 	public Boolean getBrutsal() {
 		return brutsal;
+	}
+
+	public String getDesca() {
+		return desca;
+	}
+
+	public void setDesca(String desca) {
+		this.desca = desca;
 	}
 
 	public void setBrutsal(Boolean brutsal) {

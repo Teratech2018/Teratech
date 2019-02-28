@@ -96,7 +96,7 @@ public class AbscenceRSImpl extends AbstractGenericService<Abscence, Long> imple
 		List<Abscence> abs = manager.filter(container.getPredicats(), null, null, 0 , -1);
 		
 		if(abs!=null&&abs.size()!=0){
-			throw new KerenExecption("Les Abscence de cette classe ont déjà été Pris en compte pour la séquence choisi !!!");
+			throw new KerenExecption("Les Abscence de cette classe ont déjà été Pris en compte pour la séquence choisie !!!");
 		}
 		entity.setState("etabli");
 		super.processBeforeSave(entity);

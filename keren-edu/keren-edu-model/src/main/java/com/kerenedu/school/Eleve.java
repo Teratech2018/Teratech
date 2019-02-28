@@ -75,6 +75,16 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	@Predicate(label="Nationalité",updatable=true,type=Nationalite.class , target="many-to-one",search=false, sequence=12)
     protected Nationalite nationalite;
 	
+// date première inscription
+	@Column(name = "D_INS_ONE")
+	@Temporal(javax.persistence.TemporalType.DATE)
+	@Predicate(label = "Première inscription.", optional = true, updatable = true,type = Date.class, target = "date", sequence = 13)
+	protected Date datefirst;
+	
+	@Column(name = "ANCIENETE")
+	@Predicate(label = "Ancienneté (An).", optional = true, updatable = true, search = true, type = Double.class, sequence = 14, editable=false, colsequence=6)
+	private Double anciennte = 0.0; ;
+	
 	
 	@Column(name = "TEL_PERE")
 	@Predicate(label="WhatsApp Père",optional=true,updatable=true,search=false ,target="tel", group=true, groupLabel="Parents/Tuteur", groupName="tab1")
@@ -148,6 +158,8 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 	@Column(name = "BLOC")
 	@Predicate(label="BlOC",optional=true,updatable=true,search=false,group = true,groupName = "tab4",groupLabel = "Localisation" )
 	protected String bloc;
+	
+	
 		
 	private boolean inscrit=false;
 	
@@ -244,6 +256,8 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		}
 		
 		this.inscrit=eleve.inscrit;
+		this.datefirst=eleve.datefirst;
+		this.anciennte=eleve.anciennte;
 		
 		/*for(DossierMedical dos:eleve.dossierMedical){
 			dossierMedical.add(new DossierMedical(dos));
@@ -503,6 +517,16 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 //		this.dateNais = dateNais;
 //	}
 
+	public Date getDatefirst() {
+		return datefirst;
+	}
+
+
+	public void setDatefirst(Date datefirst) {
+		this.datefirst = datefirst;
+	}
+
+
 	public String getSitFamiliale() {
 		return sitFamiliale;
 	}
@@ -687,6 +711,22 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		// TODO Auto-generated method stub
 		this.searchkeys=matricule+" , "+nom;
 		return matricule+","+nom;
+	}
+
+
+
+
+
+	public Double getAnciennte() {
+		return anciennte;
+	}
+
+
+
+
+
+	public void setAnciennte(Double anciennte) {
+		this.anciennte = anciennte;
 	}
 
 }

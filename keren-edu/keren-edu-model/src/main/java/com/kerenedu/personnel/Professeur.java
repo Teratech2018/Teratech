@@ -66,12 +66,20 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	@Predicate(label = "SEXE", optional = false, updatable = true, search = false, target = "combobox", values = "Masculin;Feminin", sequence = 5)
 	protected String sexe = "0";
 	
+	@Column(name = "CNI")
+	@Predicate(label = "CNI", optional = false, updatable = true, sequence =6)
+	protected String cni;
+	
+	@Column(name = "LANGUE")
+	@Predicate(label = "Langue?", optional = false, updatable = true, target = "combobox", values = "Anglais;Français",search = false, sequence=7)
+	protected String langue;
+	
 	@Column(name = "D_EMB")
 	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "Date Embauche.", optional = true, updatable = true, search = true, type = Date.class, target = "date", sequence = 6)
+	@Predicate(label = "Date Embauche.", optional = true, updatable = true, search = true, type = Date.class, target = "date", sequence = 8)
 	protected Date dateembauche;
 	
-	@Predicate(label = "Toutes les Périodes ?", optional = false, updatable = true, target = "combobox", values = "OUI;NON",search = false, sequence=7)
+	@Predicate(label = "Toutes les Périodes ?", optional = false, updatable = true, target = "combobox", values = "OUI;NON",search = false, sequence=9)
 	protected String allperiode = "0"; 
 	
 	
@@ -227,6 +235,15 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	// type=Long.class ,sequence=8,editable=false)
 	protected Long zavance;
 	
+	public String getLangue() {
+		return langue;
+	}
+
+
+	public void setLangue(String langue) {
+		this.langue = langue;
+	}
+
 	private String state = "etabli";
 
 	// ajout tab inscription
@@ -320,6 +337,8 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		
 		this.numBanque = entity.numBanque;
 		this.allperiode=entity.allperiode;
+		this.cni=entity.cni;
+		this.langue=entity.langue;
 		
 //		if(entity.profil!=null){
 //			this.profil = new ProfilPaielight(entity.profil);
@@ -399,6 +418,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 
 	public Etablissement getStructure() {
 		return structure;
+	}
+
+
+	public String getCni() {
+		return cni;
+	}
+
+
+	public void setCni(String cni) {
+		this.cni = cni;
 	}
 
 

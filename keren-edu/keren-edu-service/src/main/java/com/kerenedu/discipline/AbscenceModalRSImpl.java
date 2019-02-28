@@ -9,12 +9,14 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.app.BuilderHttpHeaders;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.TypeCacheMemory;
+import com.kerenedu.inscription.InscriptionManagerRemote;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -38,6 +40,9 @@ public class AbscenceModalRSImpl extends AbstractGenericService<AbscenceModal, L
 
 	@Manager(application = "kereneducation", name = "LigneAbscenceManagerImpl", interf = LigneAbscenceManagerRemote.class)
 	protected LigneAbscenceManagerRemote managerlgn;
+	
+	@Manager(application = "kereneducation", name = "InscriptionManagerImpl", interf = InscriptionManagerRemote.class)
+	protected InscriptionManagerRemote managerins;
 
 	public AbscenceModalRSImpl() {
 		super();
@@ -84,6 +89,9 @@ public class AbscenceModalRSImpl extends AbstractGenericService<AbscenceModal, L
 	public AbscenceModal save(HttpHeaders headers, AbscenceModal entity) {
 
 		CacheMemory.insert(BuilderHttpHeaders.getidUsers(headers), TypeCacheMemory.EXAMEN,entity.getPeriode());
+		
+		//RestrictionsContainer container = RestrictionsContainer.newInstance();
+		
 		return entity;
 	}
 

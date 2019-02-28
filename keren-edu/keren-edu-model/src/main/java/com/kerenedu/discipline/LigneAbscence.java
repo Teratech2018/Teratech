@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import com.core.base.BaseElement;
 import com.core.base.State;
 import com.kerenedu.inscription.Inscription;
+import com.kerenedu.notes.Examen;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -83,6 +84,19 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 	
 	@Predicate(label = "Conseil Descipline", type = Boolean.class, search = true, sequence = 10)
 	private Boolean consiel = Boolean.FALSE;
+	
+	@Predicate(label = "Conseil de Classe", optional = false, updatable = true, search = true, target = "combobox", values = "RAS;Admis;Exclu;Redouble", sequence = 11)
+	private String decisionannuel ="0";
+	
+	private long typeexamen ;
+	
+	@Column(name = "TBH")
+	protected Double tabhonneur;
+	
+	private Boolean tabh = Boolean.FALSE;
+	
+	@Column(name = "ADMIS")
+	protected Double admis;
 	
 //	@Predicate(label = "Retard", type = Boolean.class, search = true, sequence = 10)
 //	private Boolean retard = Boolean.FALSE;
@@ -151,6 +165,11 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 		this.consiel = ins.consiel;
 		this.matricule = ins.matricule;
 		this.nom=ins.nom;
+		this.decisionannuel=ins.decisionannuel;
+		this.admis=ins.admis;
+		this.tabhonneur=ins.tabhonneur;
+		this.typeexamen=ins.typeexamen;
+		this.tabh=ins.tabh;
 	
 
 	}
@@ -163,6 +182,7 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 		this.absnonjust =(double) 0;
 		this.consigne =(double) 0;
 		this.exclusion =(double) 0;
+		this.decisionannuel="0";
 		//this.hdebut = "00:00";
 		//this.hfin = "00:00";
 		
@@ -273,6 +293,20 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 		return consigne;
 	}
 
+	public Boolean getTabh() {
+		return tabh;
+	}
+
+
+
+
+	public void setTabh(Boolean tabh) {
+		this.tabh = tabh;
+	}
+
+
+
+
 	public void setConsigne(Double consigne) {
 		this.consigne = consigne;
 	}
@@ -321,6 +355,20 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 		this.consiel = consiel;
 	}
 
+	public String getDecisionannuel() {
+		return decisionannuel;
+	}
+
+
+
+
+	public void setDecisionannuel(String decisionannuel) {
+		this.decisionannuel = decisionannuel;
+	}
+
+
+
+
 	@Override
 	public boolean isDesabledelete() {
 		// TODO Auto-generated method stub
@@ -332,6 +380,34 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 
 	public Double getRetard() {
 		return retard;
+	}
+
+
+
+
+	public Double getTabhonneur() {
+		return tabhonneur;
+	}
+
+
+
+
+	public void setTabhonneur(Double tabhonneur) {
+		this.tabhonneur = tabhonneur;
+	}
+
+
+
+
+	public Double getAdmis() {
+		return admis;
+	}
+
+
+
+
+	public void setAdmis(Double admis) {
+		this.admis = admis;
 	}
 
 
@@ -355,6 +431,20 @@ public class LigneAbscence extends BaseElement implements Serializable, Comparab
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+
+	public long getTypeexamen() {
+		return typeexamen;
+	}
+
+
+
+
+	public void setTypeexamen(long typeexamen) {
+		this.typeexamen = typeexamen;
+	}
+
+
+
 
 	@Override
 	public String getDesignation() {

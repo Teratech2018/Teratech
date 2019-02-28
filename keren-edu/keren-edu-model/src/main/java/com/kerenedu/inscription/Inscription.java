@@ -320,7 +320,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return eleve.getNom() + " " + eleve.getPrenon();
+		return eleve.getNom() + " " + eleve.getPrenon()+"     ("+eleve.getAnciennte() +" ) Ancienneté(s)";
 	}
 
 	public void setAnneScolaire(String anneScolaire) {

@@ -8,7 +8,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import com.kerenedu.inscription.Inscription;
 import com.megatimgroup.generic.jax.rs.layer.ifaces.GenericService;
 
 
@@ -33,6 +35,16 @@ public interface ProfesseurRS
     @Produces({MediaType.APPLICATION_JSON})
     @Path("activer")
     public Professeur activer(@Context HttpHeaders headers,Professeur entity);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Path("attestation")
+	public Response attestationReport(Professeur entity);
+	
+	@PUT
+	@Produces({ "application/pdf" })
+	@Path("bi/attestation")
+	public Response attestationReportbi(Professeur entity);
 
 
 }

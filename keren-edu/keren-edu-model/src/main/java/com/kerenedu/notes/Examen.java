@@ -160,10 +160,10 @@ public class Examen extends BaseElement implements Serializable, Comparable<Exam
 			return "3éme Séquence";
 		} else if (typesequence.equals("3")) {
 			return "4éme Séquence";
-		} else if (typesequence.equals("3")) {
+		} else if (typesequence.equals("4")) {
 			return "5éme Séquence";
-		}else if (typesequence.equals("6")) {
-			return "1er Trimestre";
+		}else if (typesequence.equals("5")) {
+			return "6éme Séquence";
 		}else if (typesequence.equals("7")) {
 			return "2éme Trimestre";
 		}else if (typesequence.equals("8")) {

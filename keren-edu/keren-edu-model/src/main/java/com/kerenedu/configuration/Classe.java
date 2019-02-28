@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.personnel.Professeur;
@@ -76,7 +77,8 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
     @Column(name = "TYPE_CYCLE_ID")
     @Predicate(label ="typecycle", search = false, hide = true, type=String.class)
     protected String typecycle;
-	
+    
+  
 //	
 //	@ManyToMany(fetch = FetchType.LAZY )
 //    @JoinColumn(name ="ELEVE_CLASSE_ID", unique=true)
@@ -114,6 +116,7 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 		}
 		this.capacite=filiere.capacite;
 		this.typecycle=filiere.typecycle;
+		
 	}
 	
 	public Classe(ClasseCycle filiere) {
@@ -310,6 +313,9 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+
 	@Override
 	public String getSearchkeys() {
 		// TODO Auto-generated method stub

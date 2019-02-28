@@ -5,6 +5,7 @@
  */
 package com.core.tools;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -404,6 +405,35 @@ public class DateHelper {
 		} // end while(convertToString(debut,
 			// "yyyy-MM-dd").compareTo(convertToString(end, "yyyy-MM-dd"))<=0)
 		return number;
+	}
+	/**
+	 * 
+	 * @param begin
+	 * @param end
+	 * @return
+	 */
+	public static double numberOfyear(Date begin, Date end) {
+		int number = 0;
+		double year = 0;double result = 0;
+		double nbremois =12.0;
+		Date debut = begin;
+		while (convertToString(debut, "yyyy-MM-dd").compareTo(convertToString(end, "yyyy-MM-dd")) <= 0) {
+			number = number + 1;
+			debut = nextMonth(debut);
+		} // end while(convertToString(debut,
+			// "yyyy-MM-dd").compareTo(convertToString(end, "yyyy-MM-dd"))<=0)
+		System.out.println("DateHelper.numberOfyear() number mois  is"+number);
+		result = (double)number/nbremois;
+		System.out.println("DateHelper.numberOfyear() result is"+result);
+		if(result<=0){
+			year=1;
+		}else{
+			year=result;
+		}
+		BigDecimal bd = new BigDecimal(year);
+		bd = bd.setScale(0, BigDecimal.ROUND_UP);
+		Double netarond = bd.doubleValue();
+		return netarond;
 	}
 
 	/**

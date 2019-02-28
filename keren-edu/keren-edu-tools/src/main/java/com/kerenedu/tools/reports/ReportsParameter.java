@@ -36,6 +36,9 @@ public class ReportsParameter {
     public static final String REPORT_IMAGE="REPORT_IMAGE";
     public static final String REPORT_IMAGE_CO="REPORT_IMAGE_CO";
     public static final String TOTAL_NET="TOTAL_NET";
+    public static final String REPORT_ECOLE="REPORT_ECOLE";
+    public static final String REPORT_ECOLE_CONTACT="REPORT_ECOLE_CONTACT";
+    public static final String REPORT_GERANT="REPORT_GERANT";
     
     
 

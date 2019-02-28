@@ -26,6 +26,7 @@ import com.core.tools.DateHelper;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
 import com.kerenedu.notes.Examen;
+import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
 
@@ -46,7 +47,7 @@ public class AbscenceModal extends BaseElement implements Serializable, Comparab
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Séquence",type=Examen.class,target="many-to-one",optional=false, sequence=1)
-	//@Filter(value="[{\"fieldName\":\"state\",\"value\":\"etabli\"}]")
+	@Filter(value="[{\"fieldName\":\"state\",\"operator\":\"!=\",\"value\":\"ferme\"}]")
 	private Examen periode ;
 	
 	
