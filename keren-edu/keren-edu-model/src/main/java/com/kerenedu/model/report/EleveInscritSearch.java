@@ -25,12 +25,12 @@ public class EleveInscritSearch extends BaseElement implements Serializable,Comp
 
 	@ManyToOne
 	@JoinColumn(name = "CYCLE_ID")
-	@Predicate(label = "Cycle :",type = Cycle.class,target = "many-to-one" , optional=true , sequence=1)
+	@Predicate(label = "Cycle :",type = Cycle.class,target = "many-to-one" , optional=false , sequence=1)
 	protected Cycle cycle ;
 	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, sequence=2)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=2)
 	private SectionE section ;
 	
 	@ManyToOne

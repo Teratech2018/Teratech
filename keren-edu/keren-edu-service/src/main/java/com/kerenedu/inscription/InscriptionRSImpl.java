@@ -179,15 +179,15 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		container.addEq("eleve.id", entity.getId());
 		container.addNotEq("state", "annulé");
-		List<Paiement> listPaiements = managerPaiement.filter(container.getPredicats(), null, null, 0, -1);
+		//List<Paiement> listPaiements = managerPaiement.filter(container.getPredicats(), null, null, 0, -1);
 	//	System.out.println("InscriptionRSImpl.processBeforeUpdate() size list" + listPaiements.size());
 	//	System.out.println("InscriptionRSImpl.processBeforeUpdate()valuer "+samefiliere(oldinscription, entity));
 		if(samefiliere(oldinscription, entity)==true){
 			entity.setService(oldinscription.getService());
 		}
-		if (listPaiements != null && listPaiements.size() != 0&&samefiliere(oldinscription, entity)==false) {
-			throw new KerenExecption("Modification impossible, Bien vouloir Annuler les paiements de l'eleve !!!!");
-		}
+//		if (samefiliere(oldinscription, entity)==true) {
+//			throw new KerenExecption("Modification impossible, meme Filière !!!!");
+//		}
 
 		super.processBeforeUpdate(entity); // To change body of generated
 											// methods, choose Tools |
@@ -196,6 +196,8 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
 	
 	public boolean samefiliere(Inscription old, Inscription nouveau){
 		boolean value = false;
+	//	System.out.println("InscriptionRSImpl.samefiliere() old "+old.getClasse().getFiliere().getId());
+		//System.out.println("InscriptionRSImpl.samefiliere() new "+nouveau.getClasse().getFiliere().getId());
 		if(old.getClasse().getFiliere().getId()==nouveau.getClasse().getFiliere().getId()){
 			value=true;
 		}else{
@@ -479,6 +481,10 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
             container.addLike("searchkeys", "%"+searchText);
         }//end if(searchText!=null&&!searchText.trim().isEmpty()){        
       
+        AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+        if(annee!=null){
+        	 container.addEq("anneScolaire", annee.getCode());
+        }
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -521,7 +527,13 @@ public class InscriptionRSImpl extends AbstractGenericService<Inscription, Long>
             container.addLike("searchkeys", liveSearch);
         }else if(searchText!=null&&!searchText.trim().isEmpty()){
             container.addLike("searchkeys", "%"+searchText);
-        }//end if(searchText!=null&&!searchText.trim().isEmpty()){        
+        }//end if(searchText!=null&&!searchText.trim().isEmpty()){ 
+         
+         AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+         if(annee!=null){
+         	 container.addEq("anneScolaire", annee.getCode());
+         }
+         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }
 

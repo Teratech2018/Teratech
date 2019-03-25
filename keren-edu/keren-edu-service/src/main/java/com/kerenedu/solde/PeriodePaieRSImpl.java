@@ -13,8 +13,14 @@ import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.Filiere;
+import com.kerenedu.configuration.TypeCacheMemory;
+import com.kerenedu.notes.CoefMatiere;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaColumn;
@@ -71,7 +77,7 @@ public class PeriodePaieRSImpl
    			
    		  MetaData meta = MetaDataUtil.getMetaData(new PeriodePaie(), new HashMap<String, MetaData>(),new ArrayList<String>());
           MetaColumn workbtn = new MetaColumn("button", "work1", "Reouvrir une période", false, "workflow", null);
-          workbtn.setValue("{'model':'kereneducation','entity':'periodepaie','method':'reouvir'}");
+          workbtn.setValue("{'model':'kereneducation','entity':'periodepaie','method':'reouvrir'}");
           workbtn.setStates(new String[]{"ferme"});
           workbtn.setPattern("btn btn-success");
           meta.getHeader().add(workbtn);
@@ -105,48 +111,25 @@ public class PeriodePaieRSImpl
 	public PeriodePaie reouvrir(HttpHeaders headers, PeriodePaie entity) {
 		// valide payement acompte echeance de la periode
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
-
-		if (entity != null) {
-			container.addGe("date",entity.getDdebut());
-			container.addLe("date",entity.getDfin());
-		} // end if(classe!=null)
-		container.addNotEq("state", "annule");	
-		List<RemboursementPret> remlist = managerrembour.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		if(remlist!=null&&!remlist.isEmpty()){
-			for(RemboursementPret rem : remlist){
-				rem.setState("confirme");
-				managerrembour.update(rem.getId(), rem);
-				// update pret
-				DemandePret ddepret = rem.getDemande();
-				ddepret.setState("encours");
-				double liquide = ddepret.getMontantRem()-rem.getMontant();
-				ddepret.setMontantRem(liquide);
-				managerpret.update(ddepret.getId(), ddepret);
-			}
-		}
-		System.out.println("PeriodePaieCloseRSImpl.save() update remboursement ok ==========");
-		container = RestrictionsContainer.newInstance();
-		if (entity != null) {
-			container.addGe("effet",entity.getDdebut());
-			container.addLe("effet",entity.getDfin());
-		} // end if(classe!=null)
-		container.addNotEq("state", "annule");
-		List<Acompte> acomptelist= manageracompte.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
-		if(acomptelist!=null&&!acomptelist.isEmpty()){
-			for(Acompte acompte : acomptelist){
-				acompte.setState("confirme");
-				manageracompte.update(acompte.getId(), acompte);
-			}
-		}
-		System.out.println("PeriodePaieCloseRSImpl.save() update acompte ok ==========");
-
-		// ferme période
 		entity.setState("ouvert");
 		manager.update(entity.getId(), entity);
 		return null;
 	}
     
-    
+	@Override
+	public List<PeriodePaie> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(id, TypeCacheMemory.ANNEESCOLAIRE);
+		if(annee!=null){
+			container.addEq("exercice.id", annee.getId());	
+		}//end
+		
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
+	
 
 
 }

@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.SectionE;
 import com.megatim.common.annotations.Filter;
@@ -33,9 +34,9 @@ public class DltBulletin extends BaseElement implements Serializable, Comparable
 		
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=1, observable=true)
+	@Predicate(label="Classe",type=ClasseSecondaire.class , target="many-to-one",search=true , sequence=1, observable=true)
 	//@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
-	protected Classe classe ;
+	protected ClasseSecondaire classe ;
 
 
 	@ManyToOne
@@ -71,7 +72,7 @@ public class DltBulletin extends BaseElement implements Serializable, Comparable
 	public DltBulletin(DltBulletin bull) {
 		super(bull.id, bull.designation, bull.moduleName,0L);
 		this.filiere = new Filiere(bull.filiere);
-		this.classe = new Classe(bull.classe);
+		this.classe = new ClasseSecondaire(bull.classe);
 		this.section= new SectionE(bull.getSection());
 		this.seq=bull.seq;
 		
@@ -125,7 +126,7 @@ public class DltBulletin extends BaseElement implements Serializable, Comparable
 
 
 
-	public Classe getClasse() {
+	public ClasseSecondaire getClasse() {
 		return classe;
 	}
 
@@ -141,7 +142,7 @@ public class DltBulletin extends BaseElement implements Serializable, Comparable
 	}
 
 
-	public void setClasse(Classe classe) {
+	public void setClasse(ClasseSecondaire classe) {
 		this.classe = classe;
 	}
 

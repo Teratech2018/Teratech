@@ -24,6 +24,7 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.configuration.Filiere;
 import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.core.ifaces.report.ViewBulletinManagerRemote;
@@ -284,7 +285,7 @@ public class BulletinRSImpl
         Gson gson = new Gson();
         Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
         System.out.println("BulletinRSImpl.count() user id is"+userid);
-        Classe classe = (Classe) CacheMemory.getValue(userid, TypeCacheMemory.CLASSE);
+        ClasseSecondaire classe = (ClasseSecondaire) CacheMemory.getValue(userid, TypeCacheMemory.CLASSE);
 		Filiere filiere = (Filiere) CacheMemory.getValue(userid, TypeCacheMemory.FILLIERE);
 		Examen examen = (Examen) CacheMemory.getValue(userid, TypeCacheMemory.EXAMEN);
  //       UtilisateurConnect user = usermanager.getUserByAcompte(userid);
@@ -346,7 +347,7 @@ public class BulletinRSImpl
         //To change body of generated methods, choose Tools | Templates.
          Gson gson = new Gson();
         Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
-        Classe classe = (Classe) CacheMemory.getValue(userid, TypeCacheMemory.CLASSE);
+        ClasseSecondaire classe = (ClasseSecondaire) CacheMemory.getValue(userid, TypeCacheMemory.CLASSE);
 		Filiere filiere = (Filiere) CacheMemory.getValue(userid, TypeCacheMemory.FILLIERE);
 		Examen examen = (Examen) CacheMemory.getValue(userid, TypeCacheMemory.EXAMEN);
    //     UtilisateurConnect user = usermanager.getUserByAcompte(userid);

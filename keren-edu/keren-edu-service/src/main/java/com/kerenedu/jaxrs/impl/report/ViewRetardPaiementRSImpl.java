@@ -94,7 +94,6 @@ public Response buildPdfReport(ViewRetardPaiement entity) {
   	  if(records.size()==0){
   		throw new KerenExecption("Aucune Données Trouvés !!!");
   	  }
-  	  System.out.println("ViewRetardPaiementRSImpl.buildPdfReport() size record is "+records.size());
         String URL = ReportHelper.templateURL+ReportsName.RETARD_PAIELMENT.getName();
         Map parameters = new HashMap();
         parameters= this.getReportParameters();

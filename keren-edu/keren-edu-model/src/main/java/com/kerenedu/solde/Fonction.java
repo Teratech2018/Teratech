@@ -135,7 +135,7 @@ public class Fonction extends BaseElement implements Serializable, Comparable<Fo
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return code+"-"+intitule;
+		return code+"-"+intitule+"/"+intituleanglais;
 	}
 
 	//@Override

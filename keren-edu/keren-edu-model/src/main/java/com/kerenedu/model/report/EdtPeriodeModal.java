@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Bulletin;
@@ -36,6 +37,12 @@ public class EdtPeriodeModal extends BaseElement implements Serializable, Compar
 	 * 
 	 */
 	private static final long serialVersionUID = -4609375799032659501L;
+	
+	@ManyToOne
+	@JoinColumn(name="ANNEE_ID")
+	@Predicate(label="Année Scolaire",type=AnneScolaire.class,target="many-to-one",optional=true)
+	private AnneScolaire annee ;
+	
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
 	@Predicate(label="Période concernée",type=PeriodePaie.class,target="many-to-one",optional=false)
@@ -89,6 +96,10 @@ public class EdtPeriodeModal extends BaseElement implements Serializable, Compar
 		super(prepa.id, prepa.designation, prepa.moduleName,prepa.compareid);
 		if(prepa.periode!=null){
 			this.periode = new PeriodePaie(prepa.periode);
+		}
+		
+		if(prepa.annee!=null){
+			this.annee = new AnneScolaire(prepa.annee);
 		}
 		this.porte = prepa.porte;
 		this.concernes = new ArrayList<ProfesseurChoice>();
@@ -153,6 +164,14 @@ public class EdtPeriodeModal extends BaseElement implements Serializable, Compar
 	public int compareTo(EdtPeriodeModal o) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public AnneScolaire getAnnee() {
+		return annee;
+	}
+
+	public void setAnnee(AnneScolaire annee) {
+		this.annee = annee;
 	}
 
 }

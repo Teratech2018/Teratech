@@ -18,6 +18,7 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.tools.DateHelper;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
@@ -40,8 +41,8 @@ import com.kerenedu.configuration.UserEducationDAOLocal;
 import com.kerenedu.model.search.EleveSearch;
 import com.kerenedu.reglement.FichePaiement;
 import com.kerenedu.reglement.FichePaiementDAOLocal;
-import com.kerenedu.reglement.Moratoire;
 import com.kerenedu.reglement.MoratoireDAOLocal;
+import com.kerenedu.reglement.Paiement;
 import com.kerenedu.reglement.PaiementDAOLocal;
 import com.kerenedu.reglement.ReglementDAOLocal;
 import com.kerenedu.school.Eleve;
@@ -98,6 +99,9 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 	
 	@EJB(name = "CycleDAO")
 	protected CycleDAOLocal cycledao;
+	
+	@EJB(name = "AnneScolaireDAO")
+	protected AnneScolaireDAOLocal daoanne;
 
 	public InscriptionManagerImpl() {
 	}
@@ -203,12 +207,12 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
 		//entity.setStatus(false);
 		Eleve eleve = elevedao.findByPrimaryKey("id", entity.getEleve().getId());
-		if(eleve.getDatefirst()==null){
-			eleve.setDatefirst(entity.getDatIns());;
+		if(entity.getDatefirst()==null){
+			entity.setDatefirst(entity.getDatIns());;
 		}
-		if (eleve.getDatefirst() != null) {
+		if (entity.getDatefirst() != null) {
 			eleve.setAnciennte(Double.parseDouble(
-					"" + DateHelper.numberOfyear(eleve.getDatefirst() , entity.getDatIns())));
+					"" + DateHelper.numberOfyear(entity.getDatefirst() , entity.getDatIns())));
 		} // end if(contrat!=null){
 		elevedao.update(eleve.getId(), eleve);
 		
@@ -260,8 +264,8 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		
 		entity.setState("crée");
 		Eleve eleve = elevedao.findByPrimaryKey("id", entity.getEleve().getId());
-		if(eleve.getDatefirst()==null){
-			eleve.setDatefirst(entity.getDatIns());;
+		if(entity.getDatefirst()==null){
+			entity.setDatefirst(entity.getDatIns());;
 		}
 		eleve.setInscrit(true);
 		elevedao.update(eleve.getId(), eleve);
@@ -302,23 +306,14 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 
 	@Override
 	public void processBeforeUpdate(Inscription entity) {
-		Inscription old = dao.findByPrimaryKey("id", entity.getId());
 		
-		if(samefiliere(old, entity)==false){
-			long apayer = (long) 0;
-			long aremise = (long) 0;
-			long aristourne = (long) 0;
-			long atotal = (long) 0;
-			// delete moratoire
-			RestrictionsContainer container = RestrictionsContainer.newInstance();
-			container.addEq("eleve.id", entity.getId());
-			List<Moratoire>moratoires = new ArrayList<Moratoire>();
-			moratoires = moratoiredao.filter(container.getPredicats(), null, null, 0, -1);
-			if(moratoires!=null){
-				for(Moratoire m : moratoires){
-					moratoiredao.delete(m.getId());
-				}
-			}
+		Inscription old = dao.findByPrimaryKey("id", entity.getId());
+		//System.out.println("InscriptionManagerImpl.processBeforeUpdate() odl classe"+old.getClasse().getLibelle());
+		//System.out.println("InscriptionManagerImpl.processBeforeUpdate() new classe"+entity.getClasse().getLibelle());
+		if(!old.getClasse().getLibelle().trim().equals(entity.getClasse().getLibelle().trim())){
+			long apayer = (long) 0;	long aremise = (long) 0;long aristourne = (long) 0;
+			long atotal = (long) 0;long asolde = (long) 0;
+			this.changerClasse(entity);
 			for (FichePaiement fiche : entity.getService()) {
 				apayer = apayer + fiche.getZtotal();
 				aremise = aremise + fiche.getZremise();
@@ -326,26 +321,43 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 				fiche.setMatricule(entity.getEleve().getMatricule());
 				fiche.setAnneScolaire(entity.getAnneScolaire());
 			}
-			atotal = apayer - aremise - aristourne;
+			atotal = apayer ;
 			// Initialiser les montants a zero
 			entity.setzMnt(atotal);
 			entity.setzTotal(atotal);
-			entity.setzMntPaye((long) 0);
-			entity.setzSolde(atotal);
-			entity.setzRemise((long) 0);
-			entity.setzRistourne((long) 0);
+			entity.setzMntPaye(old.getzMntPaye());
+			asolde = apayer - old.getzRemise() - old.getzRistourne()-old.getzMntPaye();
+			entity.setzSolde(asolde);
+			entity.setzRemise(old.getzRemise());
+			entity.setzRistourne(old.getzRistourne());
 			Cycle cycle = cycledao.findByPrimaryKey("id", entity.getClasse().getCycle());
 			entity.setCycle(cycle.getId());
+			ChangerWorker worker = buildWorker(entity);
+			if(entity.getzSolde()==0){
+				worker.setMontant(entity.getzMnt());
+			}else{
+				long payer =entity.getzMntPaye()+entity.getzRemise()+entity.getzRistourne();
+				worker.setMontant(payer);
+			}
+			
+			worker.compute();
+			dao.update(entity.getId() , entity);
+			
+			Paiement p = new Paiement(entity);
+			paiementdao.save(p);
 		}
+		
+		
+		
 		entity.setMatricule(entity.getEleve().getMatricule());
 		entity.setNom(entity.getEleve().getNom()+""+entity.getEleve().getPrenon());
 		Eleve eleve = elevedao.findByPrimaryKey("id", entity.getEleve().getId());
-		if(eleve.getDatefirst()==null){
-			eleve.setDatefirst(entity.getDatIns());;
+		if(entity.getDatefirst()==null){
+			entity.setDatefirst(entity.getDatIns());;
 		}
-		if (eleve.getDatefirst() != null) {
+		if (entity.getDatefirst() != null) {
 			eleve.setAnciennte(Double.parseDouble(
-					"" + DateHelper.numberOfyear(eleve.getDatefirst() , entity.getDatIns())));
+					"" + DateHelper.numberOfyear(entity.getDatefirst() , entity.getDatIns())));
 		} // end if(contrat!=null){
 		elevedao.update(eleve.getId(), eleve);
 //		if(entity.getzSolde()==0){
@@ -407,10 +419,16 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 	public List<Inscription> getCriteres(Inscription critere) {
 
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		String annescolaire="";
 		if (critere != null) {
-			if (critere.getAnneScolaire() != null) {
-				container.addEq("anneScolaire", critere.getAnneScolaire());
-			}
+			
+			
+				container = RestrictionsContainer.newInstance();
+				container.addEq("connected", true);
+				List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+				annescolaire = annee.get(0).getCode();
+
+				container = RestrictionsContainer.newInstance();			
 			if (critere.getClasse() != null) {
 				container.addEq("classe.id", critere.getClasse().getId());
 			}
@@ -422,7 +440,7 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 			if (critere.getSection() != null) {
 				container.addEq("classe.section.id", critere.getSection().getId());
 			}
-
+			container.addEq("anneScolaire", annescolaire);
 		}
 		List<Inscription> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		List<Inscription> result = new ArrayList<Inscription>();
@@ -431,6 +449,46 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 			result.add(inscription);
 		}
 		return result;
+	}
+	
+	
+	public void changerClasse(Inscription entity) {
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		Inscription incription = dao.findByPrimaryKey("id", entity.getId());
+		Inscription old = incription;
+		List<FichePaiement> fiches= incription.getService();
+		dao.deleteRadfiche(incription);
+		System.out.println("InscriptionManagerImpl.changerClasse() delete fiche and paiement sucess !!!");
+		// relement
+		dao.deleteRadReglement(incription);
+		System.out.println("InscriptionManagerImpl.changerClasse() delete sucess !!!");
+		//dao.delete(incription.getId());
+		System.out.println("InscriptionManagerImpl.changerClasse() delete inscription  sucess !!!");
+		//incription.setService(new ArrayList<FichePaiement>());
+		// new service
+//		Inscription newincrt = new Inscription(incription.getEleve(),entity.getClasse(),incription);
+//		List<FichePaiement> newFiche = this.findfiche(entity.getClasse().getId());
+//		newincrt.setService(newFiche);
+//		//dao.delete(incription.getId());
+//		System.out.println("InscriptionManagerImpl.changerClasse() je suis ici !!!"+incription.getId());
+//		newincrt = dao.update(newincrt.getId(), newincrt);
+//		//Inscription i = dao.findByPrimaryKey("id", newincrt.getId());
+//		System.out.println("InscriptionManagerImpl.changerClasse() fichier service is "+ incription.getService().size());
+//		// mis a jour montant fiche 
+//		ChangerWorker worker = buildWorker(newincrt);
+//		if(newincrt.getzSolde()==0){
+//			worker.setMontant(newincrt.getzMnt());
+//		}else{
+//			
+//			worker.setMontant(newincrt.getzMntPaye());
+//		}
+//		
+//		worker.compute();
+//		dao.update(newincrt.getId() , newincrt);
+//		System.out.println("InscriptionManagerImpl.changerClasse() save paiement..........");
+		// creer les paiements
+
+
 	}
 
 	@Override
@@ -444,29 +502,34 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		// relement
 		dao.deleteRadReglement(incription);
 		System.out.println("InscriptionManagerImpl.changerClasse() delete sucess !!!");
-		dao.delete(incription.getId());
-	
+		//dao.delete(incription.getId());
 		System.out.println("InscriptionManagerImpl.changerClasse() delete inscription  sucess !!!");
-		
+		//incription.setService(new ArrayList<FichePaiement>());
 		// new service
 		Inscription newincrt = new Inscription(incription.getEleve(),entity.getNewclasse(),incription);
 		List<FichePaiement> newFiche = this.findfiche(entity.getClasse().getId());
 		newincrt.setService(newFiche);
-		dao.delete(incription.getId());
-		System.out.println("InscriptionManagerImpl.changerClasse() je suis ici !!!");
-		newincrt = dao.save(newincrt);
-		Inscription i = dao.findByPrimaryKey("id", newincrt.getId());
-		System.out.println("InscriptionManagerImpl.changerClasse() fichier service is "+ i.getService().size());
+		//dao.delete(incription.getId());
+		System.out.println("InscriptionManagerImpl.changerClasse() je suis ici !!!"+incription.getId());
+		//newincrt = dao.update(incription.getId(), incription);
+		//Inscription i = dao.findByPrimaryKey("id", newincrt.getId());
+		System.out.println("InscriptionManagerImpl.changerClasse() fichier service is "+ incription.getService().size());
 		// mis a jour montant fiche 
-		ChangerWorker worker = buildWorker( i);
-		if(old.getzSolde()==0){
+		ChangerWorker worker = buildWorker(newincrt);
+		if(newincrt.getzSolde()==0){
 			worker.setMontant(newincrt.getzMnt());
 		}else{
-			worker.setMontant(old.getzMntPaye());
+			worker.setMontant(newincrt.getzMntPaye());
 		}
 		
 		worker.compute();
 		dao.update(newincrt.getId() , newincrt);
+		System.out.println("InscriptionManagerImpl.changerClasse() save paiement..........");
+		// creer les paiements
+		Paiement p = new Paiement(newincrt);
+		paiementdao.save(p);
+		
+		System.out.println("InscriptionManagerImpl.changerClasse()  paiement save..........");
 		return newincrt;
 	}
 	
@@ -489,9 +552,8 @@ public class InscriptionManagerImpl extends AbstractGenericManager<Inscription, 
 		while (key >= 0) {
 			if (key == plage) {
 				work0 = new ChangerWorker(map.get(keys.get(key)), insc, null);
-				System.out.println("PaiementManagerImpl.buildWorker() key valuer 0" + keys.get(key));
-				System.out.println(
-						"PaiementManagerImpl.buildWorker() map valuer 0" + map.get(keys.get(key)) + "map " + map);
+				///System.out.println("PaiementManagerImpl.buildWorker() key valuer 0" + keys.get(key));
+				//System.out.println("PaiementManagerImpl.buildWorker() map valuer 0" + map.get(keys.get(key)) + "map " + map);
 			} else {
 				ChangerWorker work = new ChangerWorker(map.get(keys.get(key)), insc, work0);
 				work0 = work;

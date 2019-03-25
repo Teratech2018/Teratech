@@ -15,6 +15,8 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.ClasseDAOLocal;
 import com.kerenedu.configuration.Cycle;
@@ -44,6 +46,9 @@ public class ViewBilanFinancierManagerImpl
     
     @EJB(name = "InscriptionDAO")
     protected InscriptionDAOLocal daoIns;
+    
+	@EJB(name = "AnneScolaireDAO")
+	protected AnneScolaireDAOLocal daoanne;
     
     @EJB(name = "ClasseDAO")
     protected ClasseDAOLocal daoClasse;
@@ -91,7 +96,17 @@ public class ViewBilanFinancierManagerImpl
 	public List<ViewBilanFinancier> getCriteres(ViewBilanFinancierModal critere) {
 		// To change body of generated methods, choose Tools | Templates.
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		String annescolaire ="";
 		if (critere != null) {
+			if (critere.getAnnee() != null) {
+				annescolaire = critere.getAnnee().getCode();
+			} else {
+				container = RestrictionsContainer.newInstance();
+				container.addEq("connected", true);
+				List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+				annescolaire = annee.get(0).getCode();
+			}
+			System.out.println("ViewBilanServiceEleveManagerImpl.getCriteresRetard() annee"+annescolaire);
 			container = RestrictionsContainer.newInstance();
 
 			if (critere.getClasse() != null) {
@@ -103,7 +118,7 @@ public class ViewBilanFinancierManagerImpl
 			
 			
 		}
-
+			container.addEq("anneeid",annescolaire);
 		}
 		// force update inscription 
 		daoIns.updateforce("m");
@@ -123,9 +138,18 @@ public class ViewBilanFinancierManagerImpl
 	public List<ViewBilanFinancier> getCriteres(ViewBilanFinancierEcoleModal critere) {
 		// To change body of generated methods, choose Tools | Templates.
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		String annescolaire = "";
 		if (critere != null) {
 			container = RestrictionsContainer.newInstance();
-
+			if (critere.getAnnee() != null) {
+				annescolaire = critere.getAnnee().getCode();
+			} else {
+				container = RestrictionsContainer.newInstance();
+				container.addEq("connected", true);
+				List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+				annescolaire = annee.get(0).getCode();
+			}
+			container = RestrictionsContainer.newInstance();
 			if (critere.getTypecycle() != null&& !critere.getTypecycle().equals("3")) {
 				Cycle cycle = daocycle.findByProperty("typecycle", critere.getTypecycle()).get(0);
 				if(cycle!=null){
@@ -137,6 +161,7 @@ public class ViewBilanFinancierManagerImpl
 				container = RestrictionsContainer.newInstance();
 			}
 
+			container.addEq("anneeid", annescolaire);
 		}
 		// force update inscription 
 		daoIns.updateforce("scolarite");
@@ -156,7 +181,17 @@ public class ViewBilanFinancierManagerImpl
 	public List<ViewBilanFinancier> getCriteres(ViewBilanServiceModal critere) {
 		// To change body of generated methods, choose Tools | Templates.
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		String annescolaire = "";
 		if (critere != null) {
+			container = RestrictionsContainer.newInstance();
+			if (critere.getAnnee() != null) {
+				annescolaire = critere.getAnnee().getCode();
+			} else {
+				container = RestrictionsContainer.newInstance();
+				container.addEq("connected", true);
+				List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+				annescolaire = annee.get(0).getCode();
+			}
 			container = RestrictionsContainer.newInstance();
 
 			if (critere.getClasse() != null) {
@@ -165,7 +200,7 @@ public class ViewBilanFinancierManagerImpl
 				
 				
 			}
-
+			container.addEq("anneeid", annescolaire);
 		}
 		List<ViewBilanFinancier> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		List<ViewBilanFinancier> result = new ArrayList<ViewBilanFinancier>();
@@ -182,10 +217,21 @@ public class ViewBilanFinancierManagerImpl
 		List<Inscription> result = new ArrayList<Inscription>();
 		List<Inscription> datas = new ArrayList<Inscription>();
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		String annescolaire = "";
 		if (critere.getClasse() != null) {
+			container = RestrictionsContainer.newInstance();
+			if (critere.getAnnee() != null) {
+				annescolaire = critere.getAnnee().getCode();
+			} else {
+				container = RestrictionsContainer.newInstance();
+				container.addEq("connected", true);
+				List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+				annescolaire = annee.get(0).getCode();
+			}
 			container = RestrictionsContainer.newInstance();
 			container.addEq("classe.id", critere.getClasse().getId());	
 		}
+		container.addEq("anneScolaire", annescolaire);
 		result = daoIns.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 		
 		if(result !=null&& result.size()!=0){

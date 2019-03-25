@@ -14,5 +14,7 @@ public interface PeriodePaieCloseManager
 {
 
     public final static String SERVICE_NAME = "PeriodePaieCloseManager";
+    
+    public void closeperiode(PeriodePaieClose entity);
 
 }

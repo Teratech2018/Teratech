@@ -27,13 +27,14 @@ public class Test {
 			String newdate=sdf.format(new Date());
 			Date date1;
 			try {
-				date1 = new SimpleDateFormat("dd/MM/yyyy").parse("01/06/2016");
-				Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse("01/02/2019");
+				date1 = new SimpleDateFormat("dd/MM/yyyy").parse("28/02/2019");
+				Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse("01/03/2019");
 				double year =DateHelper.numberOfyear(date1, date2);
 				BigDecimal bd = new BigDecimal(year);
 				bd = bd.setScale(0, BigDecimal.ROUND_UP);
 				Double netarond = bd.doubleValue();
-				System.out.println("Test.main() year is "+netarond);
+				int val = date1.compareTo(date2);
+				System.out.println("Test.main() year is "+val);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -74,12 +74,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
     @JoinColumn(name = "NATIONALITE_ID")
 	@Predicate(label="Nationalité",updatable=true,type=Nationalite.class , target="many-to-one",search=false, sequence=12)
     protected Nationalite nationalite;
-	
-// date première inscription
-	@Column(name = "D_INS_ONE")
-	@Temporal(javax.persistence.TemporalType.DATE)
-	@Predicate(label = "Première inscription.", optional = true, updatable = true,type = Date.class, target = "date", sequence = 13)
-	protected Date datefirst;
+
 	
 	@Column(name = "ANCIENETE")
 	@Predicate(label = "Ancienneté (An).", optional = true, updatable = true, search = true, type = Double.class, sequence = 14, editable=false, colsequence=6)
@@ -256,7 +251,7 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 		}
 		
 		this.inscrit=eleve.inscrit;
-		this.datefirst=eleve.datefirst;
+		//this.datefirst=eleve.datefirst;
 		this.anciennte=eleve.anciennte;
 		
 		/*for(DossierMedical dos:eleve.dossierMedical){
@@ -516,15 +511,15 @@ public class Eleve extends BaseElement implements Serializable, Comparable<Eleve
 //	public void setDateNais(Date dateNais) {
 //		this.dateNais = dateNais;
 //	}
-
-	public Date getDatefirst() {
-		return datefirst;
-	}
-
-
-	public void setDatefirst(Date datefirst) {
-		this.datefirst = datefirst;
-	}
+//
+//	public Date getDatefirst() {
+//		return datefirst;
+//	}
+//
+//
+//	public void setDatefirst(Date datefirst) {
+//		this.datefirst = datefirst;
+//	}
 
 
 	public String getSitFamiliale() {

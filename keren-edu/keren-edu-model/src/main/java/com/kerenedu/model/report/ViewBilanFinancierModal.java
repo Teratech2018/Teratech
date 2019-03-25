@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
 import com.megatim.common.annotations.Filter;
@@ -26,6 +27,11 @@ import com.megatim.common.annotations.Predicate;
 @Entity(name = "e_zview_bf")
 public class ViewBilanFinancierModal extends BaseElement implements Serializable, Comparable<ViewBilanFinancierModal> {
 
+	
+	@ManyToOne
+	@JoinColumn(name = "ANNEE")
+	@Predicate(label = "Annee Scolaire", type = AnneScolaire.class, target = "many-to-one", optional = true, sequence = 1)
+	private AnneScolaire annee;
 	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
@@ -67,7 +73,9 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 			this.section=ins.section;
 		}
 	
-			
+		if(ins.annee!=null){
+			this.annee= new AnneScolaire(ins.annee);
+		}	
 	}
 
 	public Classe getClasse() {
@@ -119,6 +127,18 @@ public class ViewBilanFinancierModal extends BaseElement implements Serializable
 		// TODO Auto-generated method stub
 		return "kereneducation";
 	}
+
+	public AnneScolaire getAnnee() {
+		return annee;
+	}
+
+
+
+	public void setAnnee(AnneScolaire annee) {
+		this.annee = annee;
+	}
+
+
 
 	@Override
 	public String getDesignation() {

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Examen;
 import com.megatim.common.annotations.Filter;
@@ -27,9 +28,9 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
   private Examen examen;
   @ManyToOne
   @JoinColumn(name="CLASSE_ID")
-  @Predicate(label="Classe", type=Classe.class, target="many-to-one", search=true, sequence=2, observable=true, optional=false)
+  @Predicate(label="Classe", type=ClasseSecondaire.class, target="many-to-one", search=true, sequence=2, observable=true, optional=false)
   @Filter(value = "[{\"fieldName\":\"cycle\",\"value\":\"3\"}]")
-  protected Classe classe;
+  protected ClasseSecondaire classe;
   
   
   @ManyToMany
@@ -39,7 +40,7 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
   
   public ViewNoteClasseModal() {}
   
-  public ViewNoteClasseModal(Examen examen, Classe classe)
+  public ViewNoteClasseModal(Examen examen, ClasseSecondaire classe)
   {
     this.examen = examen;
     this.classe = classe;
@@ -51,7 +52,7 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
     super(ins.id, ins.designation, ins.moduleName, 0L);
     
     if (ins.getClasse() != null) {
-    	this.classe = new Classe(ins.getClasse());
+    	this.classe = new ClasseSecondaire(ins.getClasse());
     }
     
     if (ins.getExamen() != null) {
@@ -65,12 +66,12 @@ public class ViewNoteClasseModal extends BaseElement  implements Serializable, C
 
 
 
-  public Classe getClasse()
+  public ClasseSecondaire getClasse()
   {
     return classe;
   }
   
-  public void setClasse(Classe classe)
+  public void setClasse(ClasseSecondaire classe)
   {
     this.classe = classe;
   }

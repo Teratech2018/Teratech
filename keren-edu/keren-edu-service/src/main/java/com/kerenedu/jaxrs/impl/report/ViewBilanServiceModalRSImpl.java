@@ -104,7 +104,9 @@ public class ViewBilanServiceModalRSImpl
 				throw new KerenExecption("Impression impossible, Selectionner un Service !!!");
 			}
       	  List<ViewBilanServiceEleve> records =managereleve.getCriteres(entity);
-      	  System.out.println("ViewBilanFinancierModalRSImpl.buildPdfReport() size record is "+records.size());
+      	if(records==null||records.size()==0){
+			throw new KerenExecption("Impression impossible, Selectionner un Service !!!");
+		}
             String URL = ReportHelper.templateURL+ReportsName.BILAN_SERVICE.getName();
             Map parameters = new HashMap();
             parameters= this.getReportParameters();

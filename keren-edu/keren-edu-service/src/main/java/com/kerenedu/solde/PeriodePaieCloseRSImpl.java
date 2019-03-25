@@ -81,7 +81,10 @@ public class PeriodePaieCloseRSImpl
 		Gson gson = new Gson();
 		long id = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 		CacheMemory.insert(id, TypeCacheMemory.PERIODE, entity.getPeriode());
-		managerperiode.update(entity.getPeriode().getId(), entity.getPeriode());
+		
+		// report des remboursement des emplyé non payer et qui avait un échéance encours non payé et reporté
+		
+		manager.closeperiode(entity);
 		
 		return entity;
 	}

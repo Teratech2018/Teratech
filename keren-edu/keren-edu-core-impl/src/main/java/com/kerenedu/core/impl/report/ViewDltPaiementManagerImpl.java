@@ -16,6 +16,8 @@ import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.core.tools.DateHelper;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.core.ifaces.report.ViewDltPaiementManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewDltPaiementManagerRemote;
@@ -33,6 +35,9 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 
 	@EJB(name = "ViewDltPaiementDAO")
 	protected ViewDltPaiementDAOLocal dao;
+	
+	 @EJB(name = "AnneScolaireDAO")
+	    protected AnneScolaireDAOLocal daoanne;
 
 	@EJB(name = "PaiementDAO")
 	protected PaiementDAOLocal daopaiement;
@@ -98,18 +103,18 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		if (critere != null) {
 			container = RestrictionsContainer.newInstance();
-			container.getPredicats().addAll(CacheMemory.defaultPredicats());
-//			if (critere.getClasse() != null) {
-//				container.addEq("classe.id", critere.getClasse().getId());
-//			}
+			String annescolaire ="";
+			container.addEq("connected", true);
+			List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+			annescolaire =annee.get(0).getCode();
+			
+			
+			container = RestrictionsContainer.newInstance();
 			if (critere.getDatepaideb() != null) {
 				container.addEq("datePaiement", DateHelper.formatDate(critere.getDatepaideb()));
 			}
 			container.addEq("state", "etabli");
-//			if (critere.getDatepaifin() != null) {
-//				System.out.println("ViewDltPaiementManagerImpl.getCriteres() fin "+critere.getDatepaifin());
-//				container.addLe("datepai", critere.getDatepaifin());
-//			}
+			container.addEq("anneScolaire",annescolaire);
 
 		}
 		List<ViewDltPaiement> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
@@ -127,8 +132,12 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 		// To change body of generated methods, choose Tools | Templates.
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		if (critere != null) {
+			String annescolaire ="";
+			container.addEq("connected", true);
+			List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+			annescolaire =annee.get(0).getCode();
+			
 			container = RestrictionsContainer.newInstance();
-			container.getPredicats().addAll(CacheMemory.defaultPredicats());
 			if (critere.getClasse() != null) {
 				container.addEq("eleve.classe.id", critere.getClasse().getId());
 			}
@@ -136,6 +145,7 @@ public class ViewDltPaiementManagerImpl extends AbstractGenericManager<ViewDltPa
 				container.addEq("typePaiment", critere.getTypePaiment());
 			}
 			container.addEq("state", "etabli");
+			container.addEq("anneScolaire",annescolaire);
 
 		}
 		List<ViewDltPaiement> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);

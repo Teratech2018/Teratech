@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.configuration.Filiere;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.megatim.common.annotations.Filter;
@@ -34,9 +35,9 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=1, observable=true, optional=false)
+	@Predicate(label="Classe",type=ClasseSecondaire.class , target="many-to-one",search=true , sequence=1, observable=true, optional=false)
 	@Filter(value="[{\"fieldName\":\"typecycle\",\"value\":\"2\"}]")
-	protected Classe classe ;
+	protected ClasseSecondaire classe ;
 
 	@ManyToOne
     @JoinColumn(name = "SEQ_ID")
@@ -80,7 +81,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 	public EdtBulletin(EdtBulletin bull) {
 		super(bull.id, bull.designation, bull.moduleName,0L);
 		this.filiere = new Filiere(bull.filiere);
-		this.classe = new Classe(bull.classe);
+		this.classe = new ClasseSecondaire(bull.classe);
 	//	this.section= new SectionE(bull.getSection());
 		this.seq=bull.seq;
 		
@@ -134,7 +135,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 
 
 
-	public Classe getClasse() {
+	public ClasseSecondaire getClasse() {
 		return classe;
 	}
 
@@ -150,7 +151,7 @@ public class EdtBulletin extends BaseElement implements Serializable, Comparable
 //	}
 
 
-	public void setClasse(Classe classe) {
+	public void setClasse(ClasseSecondaire classe) {
 		this.classe = classe;
 	}
 

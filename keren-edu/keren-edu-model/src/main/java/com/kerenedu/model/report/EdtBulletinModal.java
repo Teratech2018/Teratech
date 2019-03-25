@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Bulletin;
 import com.kerenedu.notes.Examen;
@@ -41,9 +42,9 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	
 	@ManyToOne
     @JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Selectionner La Classe",updatable=true,type=Classe.class , target="many-to-one", sequence=1, observable=true, optional=false)
+	@Predicate(label="Selectionner La Classe",updatable=true,type=ClasseSecondaire.class , target="many-to-one", sequence=1, observable=true, optional=false)
 	@Filter(value="[{\"fieldName\":\"typecycle\",\"value\":\"2\"}]")
-    protected Classe classe;
+    protected ClasseSecondaire classe;
 	
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
@@ -83,7 +84,7 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 
 	public EdtBulletinModal(EdtBulletinModal bull) {
 		super(bull.id, bull.designation, bull.moduleName,0L);
-		this.classe = new Classe(bull.classe);
+		this.classe = new ClasseSecondaire(bull.classe);
 //		this.typebulletin=bull.typebulletin;
 		this.porte=bull.porte;
 		this.concernes= new ArrayList<InscriptionChoice>();
@@ -92,7 +93,7 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 	}
 	
 	public EdtBulletinModal(Bulletin bull) {
-		this.classe = new Classe(bull.getClasse());
+		this.classe = new ClasseSecondaire(bull.getClasse());
 //		this.typebulletin=bull.getModel().getTypesequence();
 		this.porte="1" ;
 		this.examen.add(bull.getModel());
@@ -139,13 +140,13 @@ public class EdtBulletinModal extends BaseElement implements Serializable, Compa
 
 
 
-	public Classe getClasse() {
+	public ClasseSecondaire getClasse() {
 		return classe;
 	}
 
 
 
-	public void setClasse(Classe classe) {
+	public void setClasse(ClasseSecondaire classe) {
 		this.classe = classe;
 	}
 

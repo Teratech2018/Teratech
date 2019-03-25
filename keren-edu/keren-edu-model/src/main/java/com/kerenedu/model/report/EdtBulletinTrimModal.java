@@ -2,14 +2,17 @@ package com.kerenedu.model.report;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.inscription.InscriptionChoice;
 import com.kerenedu.notes.Bulletin;
 import com.kerenedu.notes.Examen;
 import com.megatim.common.annotations.Observer;
 import com.megatim.common.annotations.Predicate;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -45,8 +48,8 @@ public class EdtBulletinTrimModal
 
   @ManyToOne
   @JoinColumn(name="CLASSE_ID")
-  @Predicate(label="Selectionner La Classe", updatable=true, type=Classe.class, target="many-to-one", sequence=2, observable=true, optional=false)
-  protected Classe classe;
+  @Predicate(label="Selectionner La Classe", updatable=true, type=ClasseSecondaire.class, target="many-to-one", sequence=2, observable=true, optional=false)
+  protected ClasseSecondaire classe;
   
 
   @Predicate(label="Elève Concerne ?", target="combobox", values="Tous les élèves;Seulement les élèves selectionnés", optional=false, sequence=3)
@@ -77,7 +80,7 @@ public class EdtBulletinTrimModal
   public EdtBulletinTrimModal(EdtBulletinTrimModal bull)
   {
     super(bull.id, bull.designation, bull.moduleName, 0L);
-    this.classe = new Classe(bull.classe);
+    this.classe = new ClasseSecondaire(bull.classe);
     this.typebulletin = bull.typebulletin;
     this.porte =  bull.porte;
     this.concernes = new ArrayList<InscriptionChoice>();
@@ -86,7 +89,7 @@ public class EdtBulletinTrimModal
 
   public EdtBulletinTrimModal(Bulletin bull)
   {
-	  this.classe = new Classe(bull.getClasse());
+	  this.classe = new ClasseSecondaire(bull.getClasse());
 	  this.typebulletin = bull.getModel().getTypesequence();
 	  this.porte = "1";
 	  this.examen.add(bull.getModel());
@@ -133,13 +136,13 @@ public class EdtBulletinTrimModal
   }
   
 
-  public Classe getClasse()
+  public ClasseSecondaire getClasse()
   {
     return classe;
   }
   
 
-  public void setClasse(Classe classe)
+  public void setClasse(ClasseSecondaire classe)
   {
     this.classe = classe;
   }

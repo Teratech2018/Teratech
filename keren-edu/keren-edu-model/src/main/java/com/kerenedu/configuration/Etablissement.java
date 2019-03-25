@@ -13,11 +13,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.core.base.BaseElement;
+import com.kerenedu.personnel.Professeurclone;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -88,6 +90,12 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 	@Column(name = "N_MORATOIRE")
 	@Predicate(label = "Quota de Moratoire", type = Long.class)
 	private long quota;
+	
+
+	@ManyToOne
+    @JoinColumn(name = "ANNEE_ID")
+	@Predicate(label="Année Scolaire courante",updatable=true,type=AnneScolaire.class , target="many-to-one",optional=true, search=true)
+    protected AnneScolaire anneescolaire;
 
 	public Etablissement() {
 	}
@@ -106,6 +114,9 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 		this.cyles = new ArrayList<Cycle>();
 		this.nomr=etbl.nomr;
 		this.quartier=etbl.quartier;
+		if(etbl.anneescolaire!=null){
+		this.anneescolaire= new AnneScolaire(etbl.anneescolaire);
+		}
 	}
 
 	@Override
@@ -254,6 +265,14 @@ public class Etablissement extends BaseElement implements Serializable, Comparab
 
 	public void setQuartier(String quartier) {
 		this.quartier = quartier;
+	}
+
+	public AnneScolaire getAnneescolaire() {
+		return anneescolaire;
+	}
+
+	public void setAnneescolaire(AnneScolaire anneescolaire) {
+		this.anneescolaire = anneescolaire;
 	}
 
 	public List<Cycle> getCyles() {

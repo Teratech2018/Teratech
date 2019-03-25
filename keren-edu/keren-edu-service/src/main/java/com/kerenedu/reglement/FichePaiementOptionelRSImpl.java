@@ -17,10 +17,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Service;
 import com.kerenedu.configuration.ServiceFilliere;
 import com.kerenedu.configuration.ServiceManagerRemote;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionManagerRemote;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -170,6 +172,11 @@ public class FichePaiementOptionelRSImpl
 //	 			container.addEq("eleve.id", inscription.getId());
 //	 		}
 	        container.addEq("service.exige", false);
+	        AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+	         if(annee!=null){
+	         	 container.addEq("anneScolaire", annee.getCode());
+	         }
+	         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
 	        RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //	        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
 	        return number;
@@ -206,6 +213,11 @@ public class FichePaiementOptionelRSImpl
 //	 			container.addEq("eleve.id", inscription.getId());
 //	 		}
 	        container.addEq("service.exige", false);
+	        AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+	         if(annee!=null){
+	         	 container.addEq("anneScolaire", annee.getCode());
+	         }
+	         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
 	        //List result = new ArrayList();
 	        return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
 	    }

@@ -143,12 +143,16 @@ public class AcompteRSImpl
 		if(rubrique!=null&&!rubrique.isEmpty()){
 			entity.setRubrique(rubrique.get(0));
 		}
-		
+		if(entity.getMontant()<=0){
+			  throw new KerenExecption("OPERATION IMPOSSIBLE: Montant erronée ");
+		}
 		// controle montant acompte 
 		if(manager.disponible(entity,periode)==false){
 			 throw new KerenExecption("OPERATION IMPOSSIBLE : ce salarié à dépassé sont quota d'acompte du mois ");
 		}
-		
+		if(periode.getState().equals("ferme")){
+			  throw new KerenExecption("Periode concernées plus disponible ");
+		}
     	entity.setState("confirme");
         // TODO Auto-generated method stub
         if(entity.getEmploye()==null){
@@ -157,9 +161,12 @@ public class AcompteRSImpl
                 throw new KerenExecption("La date de prise d'effet est obligatoire");
         }else if(entity.getMontant()==null){
                 throw new KerenExecption("Le montant de l'acompte est obligatoire");
-        }else if(entity.getEffet().before(new Date())){
-            throw new KerenExecption("La date de l'acompte ne peut etre inferieure &agrave; la date du jour");
-        }
+        }if(entity.getState()!=null&&entity.getState().equalsIgnoreCase("paye")){
+			throw new KerenExecption("OPERATION IMPOSIBLE: Remboursement déjà pris en compte !!!");
+		}
+//        else if(entity.getEffet().compareTo(new Date())<0){
+//            throw new KerenExecption("La date de l'acompte ne peut etre inferieure &agrave; la date du jour");
+//        }
        
         entity.setAnneScolaire(periode.getExercice().getCode());
 
@@ -180,7 +187,9 @@ public class AcompteRSImpl
                 throw new KerenExecption("Le montant de l'acompte est obligatoire");
         }else if(entity.getEffet().before(new Date())){
             throw new KerenExecption("Impossible de modifier");
-    }
+        }if(entity.getState()!=null&&entity.getState().equalsIgnoreCase("paye")){
+			throw new KerenExecption("OPERATION IMPOSIBLE: Remboursement déjà pris en compte !!!");
+		}
 //        else if(!entity.getState().equalsIgnoreCase("paye")){
 //            throw new KerenExecption("Cette Acompte est déjà confirmée , Payée ou Annulée");
 //        }
@@ -347,4 +356,6 @@ public class AcompteRSImpl
 		container.addNotEq("state", "annule");	
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
 	}
+	
+	
 }

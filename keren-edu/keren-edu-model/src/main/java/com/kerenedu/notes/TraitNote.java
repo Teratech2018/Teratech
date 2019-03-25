@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.configuration.Filiere;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
@@ -28,9 +29,9 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	
 	@ManyToOne
 	@JoinColumn(name="CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class,target="many-to-one",optional=false , sequence=1, observable=true)
+	@Predicate(label="Classe",type=ClasseSecondaire.class,target="many-to-one",optional=false , sequence=1, observable=true)
 	@Filter(value="[{\"fieldName\":\"typecycle\",\"value\":\"2\"}]")
-	private Classe classe ;
+	private ClasseSecondaire classe ;
 	
 	@ManyToOne
 	@JoinColumn(name="PERI_ID")
@@ -78,7 +79,7 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	 * @param concernes
 	 */
 	public TraitNote(long id, String designation, String moduleName, Examen periode
-			,Filiere filiere, Classe classe,CoefMatiereDetail prof) {
+			,Filiere filiere, ClasseSecondaire classe,CoefMatiereDetail prof) {
 		super(id, designation, moduleName,0L);
 		this.periode = periode;
 		this.classe = classe;
@@ -96,7 +97,7 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 		}
 	
 		if(prepa.classe!=null){
-			this.classe = new Classe(prepa.classe);
+			this.classe = new ClasseSecondaire(prepa.classe);
 		}
 		
 		
@@ -121,11 +122,11 @@ public class TraitNote extends BaseElement implements Serializable, Comparable<T
 	}
 	
 
-	public Classe getClasse() {
+	public ClasseSecondaire getClasse() {
 		return classe;
 	}
 
-	public void setClasse(Classe classe) {
+	public void setClasse(ClasseSecondaire classe) {
 		this.classe = classe;
 	}
 

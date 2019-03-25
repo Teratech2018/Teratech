@@ -2,11 +2,14 @@ package com.kerenedu.model.report;
 
 import com.core.base.BaseElement;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.configuration.SectionE;
 import com.megatim.common.annotations.Filter;
 import com.megatim.common.annotations.Predicate;
+
 import java.io.Serializable;
 import java.util.Objects;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -21,14 +24,14 @@ public class ViewMatiereClasseModal extends BaseElement implements Serializable,
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe", type = Classe.class, target = "many-to-one", search = true, sequence = 2)
+	@Predicate(label = "Classe", type = ClasseSecondaire.class, target = "many-to-one", search = true, sequence = 2)
 	@Filter("[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
-	protected Classe classe;
+	protected ClasseSecondaire classe;
 
 	public ViewMatiereClasseModal() {
 	}
 
-	public ViewMatiereClasseModal(SectionE section, Classe classe) {
+	public ViewMatiereClasseModal(SectionE section, ClasseSecondaire classe) {
 		this.section = section;
 		this.classe = classe;
 	}
@@ -37,7 +40,7 @@ public class ViewMatiereClasseModal extends BaseElement implements Serializable,
 		super(ins.id, ins.designation, ins.moduleName, 0L);
 
 		if (ins.classe != null) {
-			this.classe = new Classe(ins.classe);
+			this.classe = new ClasseSecondaire(ins.classe);
 		}
 
 		if (ins.getSection() != null) {
@@ -45,11 +48,11 @@ public class ViewMatiereClasseModal extends BaseElement implements Serializable,
 		}
 	}
 
-	public Classe getClasse() {
+	public ClasseSecondaire getClasse() {
 		return classe;
 	}
 
-	public void setClasse(Classe classe) {
+	public void setClasse(ClasseSecondaire classe) {
 		this.classe = classe;
 	}
 

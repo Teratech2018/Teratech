@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
 import com.kerenedu.configuration.Service;
@@ -34,21 +35,26 @@ public class ViewRetardPaiement extends BaseElement implements Serializable, Com
 
 	
 	@ManyToOne
+	@JoinColumn(name = "ANNEE")
+	@Predicate(label = "Annee Scolaire", type = AnneScolaire.class, target = "many-to-one", optional = true, sequence = 1)
+	private AnneScolaire annee;
+	
+	@ManyToOne
 	@JoinColumn(name = "SERVICE_ID")
-	@Predicate(label="Type Service",type=Service.class , target="many-to-one",search=true , sequence=1, optional=false)
+	@Predicate(label="Type Service",type=Service.class , target="many-to-one",search=true , sequence=2, optional=false)
 	protected Service service ;
 		
 	@Transient
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=1)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, sequence=3)
 	private SectionE section ;
 		
 	
 	@Transient
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=2, observable=true)
+	@Predicate(label="Classe",type=Classe.class , target="many-to-one",search=true , sequence=4, observable=true)
 	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe ;
 	
@@ -110,7 +116,9 @@ public class ViewRetardPaiement extends BaseElement implements Serializable, Com
 			this.service= ins.service;
 		}
 		
-	
+		if(ins.annee!=null){
+			this.annee= new AnneScolaire(ins.annee);
+		}
 		
 	}
 	
@@ -272,6 +280,16 @@ public class ViewRetardPaiement extends BaseElement implements Serializable, Com
 
 	public void setAnneScolaire(String anneScolaire) {
 		this.anneScolaire = anneScolaire;
+	}
+
+
+	public AnneScolaire getAnnee() {
+		return annee;
+	}
+
+
+	public void setAnnee(AnneScolaire annee) {
+		this.annee = annee;
 	}
 
 

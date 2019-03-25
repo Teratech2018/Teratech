@@ -16,7 +16,9 @@ import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.core.ifaces.report.ViewDltPaiementManagerRemote;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.jaxrs.ifaces.report.ViewDltPaiementRS;
@@ -101,10 +103,10 @@ public class ViewDltPaiementRSImpl
 
         container.addEq("state", "etabli");
 
-		String anneScolaire = CacheMemory.getCurrentannee();
-		if (anneScolaire != null) {
-			container.addEq("anneScolaire", anneScolaire);
-		}
+        AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+        if(annee!=null){
+        	 container.addEq("anneScolaire", annee.getCode());
+        }
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }
@@ -134,10 +136,10 @@ public class ViewDltPaiementRSImpl
         }//end if(contraints!=null&&!contraints.isEmpty())
          
         container.addEq("state", "etabli");
-		String anneScolaire = CacheMemory.getCurrentannee();
-		if (anneScolaire != null) {
-			container.addEq("anneScolaire", anneScolaire);
-		}
+        AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+        if(annee!=null){
+        	 container.addEq("anneScolaire", annee.getCode());
+        }
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;

@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.google.gson.Gson;
 import com.kerem.core.FileHelper;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.inscription.Inscription;
@@ -96,7 +97,9 @@ public class ViewBadgeModalRSImpl
 		try {
       	  List<Inscription> records =manager.getCriteres(new Inscription(entity));
       	 List<Inscription> datas = new ArrayList<Inscription>();
-      	  System.out.println("ViewAnniversaireModalRSImpl.buildPdfReport() size record is "+records.size());
+      	if(datas==null||datas.size()==0){
+      		throw new KerenExecption("AUCUNES DONNEES TROUVEES !!");
+      	}
             String URL = ReportHelper.templateURL+ReportsName.BADGE.getName();
         	Map parameters = this.getReportParameters();
             for(Inscription i : records){

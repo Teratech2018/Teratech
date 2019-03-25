@@ -32,8 +32,14 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	
 	@ManyToOne
     @JoinColumn(name = "FILIERE_ID")
-	@Predicate(label="Filière",updatable=true,type=Filiere.class , target="many-to-one",search=true, sequence=2, colsequence=2)
+	@Predicate(label="Filière",updatable=false,type=Filiere.class , target="many-to-one",search=true, sequence=2, colsequence=2)
     protected Filiere filiere;
+	
+
+	@ManyToOne
+    @JoinColumn(name = "PROF_ID")
+	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=3, colsequence=6)
+    protected Professeur professeur;
 	
 	@ManyToOne
     @JoinColumn(name = "NIVEAU_ID")
@@ -45,29 +51,25 @@ public class Classe extends BaseElement implements Serializable, Comparable<Clas
 	protected String typeformation="0";
 	
 	@Column(name = "EFFECTIF")	
-	@Predicate(label="Effectif",updatable=true,search=true , sequence=3, type=Long.class, editable=false, colsequence=3)
+	@Predicate(label="Effectif",updatable=true,search=true , sequence=4, type=Long.class, editable=false, colsequence=3)
 	protected Long effectif= new Long(0);
 	
 	@Column(name = "EFF_FILLE")	
-	@Predicate(label="Nbre fille",updatable=true,search=true , sequence=3, type=Long.class, editable=false, colsequence=4)
+	@Predicate(label="Nbre fille",updatable=true,search=true , sequence=5, type=Long.class, editable=false, colsequence=4)
 	protected Long efffille= new Long(0);
 	
 	@Column(name = "EFF_GAR")	
-	@Predicate(label="Nbre Gar.",updatable=true,search=true , sequence=3, type=Long.class, editable=false, colsequence=5)
+	@Predicate(label="Nbre Gar.",updatable=true,search=true , sequence=6, type=Long.class, editable=false, colsequence=5)
 	protected Long effGarcon= new Long(0);
 	
 	@Column(name = "CAPACITE" )	
 	//@Predicate(label="Capacité",optional=true,updatable=true,search=true , sequence=4, type=Long.class, colsequence=4)
 	protected Long capacite;
 	
-	@ManyToOne
-    @JoinColumn(name = "PROF_ID")
-	@Predicate(label="Enseignant. Titulaire",updatable=true,type=Professeur.class , target="many-to-one",search=true, sequence=6, colsequence=6)
-    protected Professeur professeur;
 	
 	@ManyToOne
 	@JoinColumn(name="SECTION_ID")
-	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=false, hide=true)
+	@Predicate(label="Section",type=SectionE.class,target="many-to-one",optional=true, hide=true)
 	private SectionE section ;
 	
     @Column(name = "CYCLE_ID")

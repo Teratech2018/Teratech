@@ -2,6 +2,8 @@
 package com.kerenedu.reglement;
 
 import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +24,9 @@ import com.google.gson.reflect.TypeToken;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.configuration.UserEducationManagerRemote;
 import com.kerenedu.configuration.UtilisateurConnect;
 import com.kerenedu.configuration.UtilisateurConnectManagerRemote;
@@ -175,6 +179,11 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 			container.addEq("eleve.id", inscription.getId());
 		}
 		container.addEq("state", "etabli");
+	   AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+         if(annee!=null){
+         	 container.addEq("anneScolaire", annee.getCode());
+         }
+         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -243,10 +252,11 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		// container.addEq("eleve.eleve.nom",
 		// CacheMemory.getCurrentNameStudent());
 		// }
-		String anneScolaire = CacheMemory.getCurrentannee();
-		if (anneScolaire != null) {
-			container.addEq("anneScolaire", anneScolaire);
-		}
+		   AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+	         if(annee!=null){
+	         	 container.addEq("anneScolaire", annee.getCode());
+	         }
+	         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
 		// List result = new ArrayList();
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), firstResult, maxResult);
 	}
@@ -521,7 +531,7 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 
 	@Override
 	public Paiement save(HttpHeaders headers, Paiement entity) {
-		System.out.println("PaiementRSImpl.save() je suis ici ");
+		
 		Gson gson = new Gson();
 		Long userid = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
@@ -529,8 +539,17 @@ public class PaiementRSImpl extends AbstractGenericService<Paiement, Long> imple
 		 container.addEq("compte.id",userid);
 		 UtilisateurConnect user = managerUserc.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1).get(0);
 
-		 if(entity.getDatePaiement().before(new Date())&&user.getAntidate()!=null&&user.getAntidate()==false){
-			 throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Date error   !!!!"); 
+		 SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
+		 Date datejour=null;
+		try {
+			datejour = sd.parse(sd.format(new Date()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("PaiementRSImpl.save() date du jour "+datejour);
+		 if(entity.getDatePaiement().compareTo(datejour )<0&&user.getAntidate()!=null&&user.getAntidate()==false){
+			 throw new KerenExecption("OPERATION IMPOSSIBLE <br/> Operation Antidate ::::::Date error   !!!!"); 
 		 }
 		return super.save(headers, entity);
 	}

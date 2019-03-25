@@ -72,13 +72,13 @@ public class InscriptionDAOImpl
 	public long deleteRadfiche(Inscription ins) {
 		 long value = 0  ;
 		  try{
-			 for(FichePaiement f : ins.getService()){
-				 String query ="Delete  from e_p_paie where f_id="+f.getId()+"";
-				  value = em.createNativeQuery(query).executeUpdate();
-			 }
-			 System.out.println("InscriptionDAOImpl.deleteRadfiche() delete paiement ok ");
-			  String query ="Delete  from e_p_fiche where fiche_paie_id="+ins.getId()+"";
-			  value = em.createNativeQuery(query).executeUpdate();
+			  String querym ="Delete  from e_moratoire where eleve_id="+ins.getId()+"";
+				value = em.createNativeQuery(querym).executeUpdate();
+				String query ="Delete  from e_p_paie where eleve_id="+ins.getId()+"";
+				value = em.createNativeQuery(query).executeUpdate();
+				System.out.println("InscriptionDAOImpl.deleteRadfiche() delete paiement ok ");
+				String query1 ="Delete  from e_p_fiche where fiche_paie_id="+ins.getId()+"";
+			   value = em.createNativeQuery(query1).executeUpdate();
 	
 	        }catch(Exception ex){
 

@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
 import com.kerem.core.FileHelper;
+import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.core.ifaces.report.ViewBilanFinancierManagerRemote;
 import com.kerenedu.jaxrs.ifaces.report.ViewBilanFinancierModalRS;
@@ -94,7 +95,9 @@ public class ViewBilanFinancierModalRSImpl
 	public Response buildPdfReport(ViewBilanFinancierModal entity) {
 		try {
       	  List<ViewBilanFinancier> records =manager.getCriteres(entity);
-      	 // System.out.println("ViewBilanFinancierModalRSImpl.buildPdfReport() size record is "+records.size());
+      	if(records.size()==0){
+      		throw new KerenExecption("Aucune Données Trouvés !!!");
+      	  }
             String URL = ReportHelper.templateURL+ReportsName.BILANFINANCIERCLASSE.getName();
             Map parameters = new HashMap();
             parameters= this.getReportParameters();			

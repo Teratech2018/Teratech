@@ -219,6 +219,27 @@ public class Paiement extends BaseElement implements Serializable, Comparable<Pa
 		this.zMntverser = p.getzMntverser();
 
 	}
+	
+	
+	public Paiement(Inscription ins) {
+		super(-1, null, null, 0L);
+		this.datePaiement = new Date();
+		this.zMnt = ins.getzSolde();
+		this.typePaiment = "0";
+		//this.service = ins;
+		this.zsolde = (long) 0;
+		this.state = "etabli";
+		this.eleve = new Inscription(ins);
+		this.nom=ins.getEleve().getNom();
+		this.classe=ins.getClasse().getLibelle();
+		this.matricule=ins.getEleve().getMatricule();
+		this.modePaiement = "0";
+		this.anneScolaire = ins.getAnneScolaire();
+		this.zremise = ins.getzRemise();
+		this.zristourne=ins.getzRistourne();
+		this.zMntverser = ins.getzMntPaye();
+
+	}
 
 	public void setTypePaiment(String typePaiment) {
 		this.typePaiment = typePaiment;

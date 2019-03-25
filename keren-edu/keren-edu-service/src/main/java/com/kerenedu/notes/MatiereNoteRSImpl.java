@@ -22,6 +22,7 @@ import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Classe;
+import com.kerenedu.configuration.ClasseSecondaire;
 import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
@@ -200,7 +201,7 @@ public class MatiereNoteRSImpl
 		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
 		//PeriodeScolaire periode = (PeriodeScolaire) CacheMemory.getValue(id, TypeCacheMemory.EXAMEN);
-		Classe classe = (Classe) CacheMemory.getValue(id, TypeCacheMemory.CLASSE);
+		ClasseSecondaire classe = (ClasseSecondaire) CacheMemory.getValue(id, TypeCacheMemory.CLASSE);
 		Examen examen = (Examen) CacheMemory.getValue(id, TypeCacheMemory.EXAMEN);
 		//Professeur prof = CacheMemory.getProf();
 		 container = RestrictionsContainer.newInstance();

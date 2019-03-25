@@ -17,9 +17,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.CacheMemory;
 import com.kerenedu.configuration.Etablissement;
 import com.kerenedu.configuration.EtablissementManagerRemote;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.inscription.InscriptionManagerRemote;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
@@ -137,7 +139,11 @@ public class MoratoireRSImpl
 			inscription = managerIns.find("id", studenid);
 			container.addEq("eleve.id", inscription.getId());
 		}
-
+		   AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+	         if(annee!=null){
+	         	 container.addEq("service.anneScolaire", annee.getCode());
+	         }
+	         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
 		// if (inscription != null) {
 		// container.addEq("eleve.eleve.matricule", inscription.getEleve().());
 		// }
@@ -185,7 +191,11 @@ public class MoratoireRSImpl
 			inscription = managerIns.find("id", studenid);
 			container.addEq("eleve.id", inscription.getId());
 		}
-
+		   AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(userid, TypeCacheMemory.ANNEESCOLAIRE);
+	         if(annee!=null){
+	         	 container.addEq("service.anneScolaire", annee.getCode());
+	         }
+	         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
 		// if (inscription != null) {
 		// container.addEq("eleve.eleve.matricule", inscription.getEleve().());
 		// }

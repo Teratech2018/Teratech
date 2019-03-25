@@ -6,8 +6,11 @@ package com.kerenedu.model.report;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.megatim.common.annotations.Predicate;
 
@@ -18,8 +21,14 @@ import com.megatim.common.annotations.Predicate;
 public class ViewBilanFinancierEcoleModal extends BaseElement implements Serializable, Comparable<ViewBilanFinancierEcoleModal> {
 
 
+	
+	@ManyToOne
+	@JoinColumn(name = "ANNEE")
+	@Predicate(label = "Annee Scolaire", type = AnneScolaire.class, target = "many-to-one", optional = true, sequence = 1)
+	private AnneScolaire annee;
+	
 	@Column(name = "CYCLE")
-	@Predicate(label="Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primaire;Secondaire;Tous" , sequence=11)
+	@Predicate(label="Cycle",optional=false,updatable=true,search=true, target="combobox", values="Maternelle;Primaire;Secondaire;Tous" , sequence=2)
 	protected String typecycle="0";
 	
 	public ViewBilanFinancierEcoleModal() {
@@ -36,6 +45,9 @@ public class ViewBilanFinancierEcoleModal extends BaseElement implements Seriali
 	public ViewBilanFinancierEcoleModal(ViewBilanFinancierEcoleModal ins) {
 		super(ins.id, ins.designation, ins.moduleName, 0L);
 		this.typecycle=ins.typecycle;
+		if(ins.annee!=null){
+			this.annee= new AnneScolaire(ins.annee);
+		}
 	}
 
 	public int compareTo(ViewBilanFinancierEcoleModal o) {
@@ -49,6 +61,14 @@ public class ViewBilanFinancierEcoleModal extends BaseElement implements Seriali
 
 	public void setTypecycle(String typecycle) {
 		this.typecycle = typecycle;
+	}
+
+	public AnneScolaire getAnnee() {
+		return annee;
+	}
+
+	public void setAnnee(AnneScolaire annee) {
+		this.annee = annee;
 	}
 
 	@Override

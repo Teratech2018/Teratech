@@ -1,6 +1,7 @@
 
 package com.kerenedu.solde;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -220,6 +221,7 @@ public class BulletinPaieManagerImpl
 		
 		if(datas!=null&&!datas.isEmpty()&&datas.size()!=0){
 			for(BulletinPaie bp : datas){
+				double liquide =0;
 				PeriodePaie periode = entity.getPeriode();
 				BulletinPaie bulletin = dao.findByPrimaryKey("id", bp.getId());
 				bulletin.setState("paye");
@@ -230,6 +232,7 @@ public class BulletinPaieManagerImpl
 				container.addGe("effet",periode.getDdebut());
 				container.addLe("effet",periode.getDfin());
 				container.addNotEq("state", "annule");
+				container.addNotEq("state", "paye");	
 				container.addEq("employe.id",bulletin.getEmploye().getId() );
 				List<Acompte> acomptelist= daoacompte.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 				if(acomptelist!=null&&!acomptelist.isEmpty()){
@@ -245,13 +248,14 @@ public class BulletinPaieManagerImpl
 				container.addLe("date",periode.getDfin());
 				container.addEq("demande.employe.id",bulletin.getEmploye().getId() );
 				container.addNotEq("state", "anulle");	
+				container.addNotEq("state", "paye");	
 				List<RemboursementPret> remlist = daoarem.filter(container.getPredicats(), null, new HashSet<String>(), 0, -1);
 				if(remlist!=null&&!remlist.isEmpty()){
 					for(RemboursementPret rem : remlist){
 						DemandePret ddepret = rem.getDemande();
 						rem.setState("paye");
 						if(ddepret.getMontantRem()==null){ddepret.setMontantRem((double) 0);}
-						double liquide = ddepret.getMontantRem()+rem.getMontant();
+						 liquide =ddepret.getMontantRem()+rem.getMontant();
 						ddepret.setMontantRem(liquide);
 						ddepret.setSolde(ddepret.getMontantsol()-liquide);
 						if(liquide==ddepret.getMontantsol()){
@@ -265,6 +269,8 @@ public class BulletinPaieManagerImpl
 				}
 			}
 		}
+	
+		
 		
 	}
 

@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 
 import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
 import com.megatim.common.annotations.OrderType;
 
@@ -24,6 +25,9 @@ public class EtablissementManagerImpl
 
     @EJB(name = "EtablissementDAO")
     protected EtablissementDAOLocal dao;
+    
+    @EJB(name = "AnneScolaireDAO")
+    protected AnneScolaireDAOLocal daoan;
 
     public EtablissementManagerImpl() {
     }
@@ -46,6 +50,7 @@ public class EtablissementManagerImpl
 		for(Etablissement elev:datas){
 			result.add(new Etablissement(elev));
 		}
+		
 		return result;
 	}
 

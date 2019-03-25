@@ -4,6 +4,7 @@ package com.kerenedu.solde;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import com.bekosoftware.genericdaolayer.dao.impl.AbstractGenericDAO;
 
 @Stateless(mappedName = "PeriodePaieCloseDAO")
@@ -14,6 +15,8 @@ public class PeriodePaieCloseDAOImpl
 
     @PersistenceContext(unitName = "keren")
     protected EntityManager em;
+    
+    
 
     public PeriodePaieCloseDAOImpl() {
     }
@@ -27,5 +30,7 @@ public class PeriodePaieCloseDAOImpl
     public Class<PeriodePaieClose> getManagedEntityClass() {
         return (PeriodePaieClose.class);
     }
+
+
 
 }

@@ -22,58 +22,59 @@ import com.kerenedu.solde.PeriodePaie;
  * @author BEKO
  *
  */
-public class CacheMemory implements Serializable{
+public class CacheMemory implements Serializable {
 
 	/**
 	 * 
 	 */
-	
-	private static Map<Long, Map<TypeCacheMemory, Object>> cacheUser ;
-	
+
+	private static Map<Long, Map<TypeCacheMemory, Object>> cacheUser;
+
 	private static final long serialVersionUID = -5380964887951103704L;
-	private static PeriodeScolaire  periode = null ;
+	private static PeriodeScolaire periode = null;
 	private static Filiere filiere = null;
 	private static Classe classe = null;
-	//private static ExamenP examenp = null;
+	// private static ExamenP examenp = null;
 	private static Examen examen = null;
-	private static ModelBulletin modelBulletin = null ;
+	private static ModelBulletin modelBulletin = null;
 	private static List<Inscription> listdestinataire = null;
-	
-	private static Inscription incription =null;
-	
-	private static Reglement reglement =null;
-	
+
+	private static Inscription incription = null;
+
+	private static Reglement reglement = null;
+
 	private static String currentannee = null;
-	
-	private static long curentcycle ;
-	private static long currentuser =1;
+
+	private static long curentcycle;
+	private static long currentuser = 1;
 	private static Etablissement currentSchool;
-	
+
 	private static Professeur prof = null;
-	
+
 	private static String currentNameStudent = new String();
 	private static String currentMatricule = null;
-	
-	private static PeriodePaie periodepaie = null ;
-	
-	private static CacheMemory _instance ;
+
+	private static PeriodePaie periodepaie = null;
+
+	private static CacheMemory _instance;
 
 	/**
 	 * 
 	 */
-	private  CacheMemory() {
+	private CacheMemory() {
 		// TODO Auto-generated constructor stub
-		cacheUser  = new HashMap<>();
+		cacheUser = new HashMap<>();
 	}
-	public static void init(){
+
+	public static void init() {
 		filiere = null;
 		classe = null;
 		examen = null;
-		incription =null;
-		reglement =null;
+		incription = null;
+		reglement = null;
 		currentannee = null;
-		curentcycle =0;
-		currentuser =1;
+		curentcycle = 0;
+		currentuser = 1;
 		prof = null;
 		currentNameStudent = null;
 		currentMatricule = null;
@@ -85,39 +86,44 @@ public class CacheMemory implements Serializable{
 	 * @param type
 	 * @param value
 	 */
-	public static synchronized void insert(long id , TypeCacheMemory type , Object value){
+	public static synchronized void insert(long id, TypeCacheMemory type, Object value) {
 		getinstance();
-		if(!cacheUser.containsKey(id)){
-			Map<TypeCacheMemory,Object> map = new HashMap<TypeCacheMemory,Object>();
+		if (!cacheUser.containsKey(id)) {
+			Map<TypeCacheMemory, Object> map = new HashMap<TypeCacheMemory, Object>();
 			map.put(type, value);
 			cacheUser.put(id, map);
-		}else{
+		} else {
 			cacheUser.get(id).put(type, value);
-		}//end if(!cacheUser.containsKey(id)){
+		} // end if(!cacheUser.containsKey(id)){
 	}
-	
-	private static synchronized CacheMemory getinstance(){
-		if(_instance!=null) return _instance;
-		//New instance if not exists
+
+	private static synchronized CacheMemory getinstance() {
+		if (_instance != null)
+			return _instance;
+		// New instance if not exists
 		_instance = new CacheMemory();
 		return _instance;
 	}
+
 	/**
 	 * 
 	 * @param id
 	 * @param type
 	 * @return
 	 */
-	public static synchronized Object getValue(long id , TypeCacheMemory type){
-		if(cacheUser==null&&!cacheUser.containsKey(id)) return new Object();
-		if(cacheUser!=null){
-			System.out.println("CacheMemory.getValue() is not null");
-			return cacheUser.get(id).get(type) ;
-		}else{
+	public static synchronized Object getValue(long id, TypeCacheMemory type) {
+		if (cacheUser == null && !cacheUser.containsKey(id))
+			return new Object();
+		if (cacheUser != null) {
+			// System.out.println("InscriptionRSImpl.filter() anné scolaire is
+			// ");
+			return cacheUser.get(id).get(type);
+		} else {
 			return null;
 		}
-		
+
 	}
+
 	public static synchronized PeriodeScolaire getPeriode() {
 		return periode;
 	}
@@ -130,7 +136,7 @@ public class CacheMemory implements Serializable{
 		return filiere;
 	}
 
-	public static synchronized void   setFiliere(Filiere filiere) {
+	public static synchronized void setFiliere(Filiere filiere) {
 		CacheMemory.filiere = filiere;
 	}
 
@@ -146,7 +152,7 @@ public class CacheMemory implements Serializable{
 		return prof;
 	}
 
-	public static synchronized void   setProf(Professeur prof) {
+	public static synchronized void setProf(Professeur prof) {
 		CacheMemory.prof = prof;
 	}
 
@@ -154,11 +160,10 @@ public class CacheMemory implements Serializable{
 		return modelBulletin;
 	}
 
-	public static synchronized  void setModelBulletin(ModelBulletin modelBulletin) {
+	public static synchronized void setModelBulletin(ModelBulletin modelBulletin) {
 		CacheMemory.modelBulletin = modelBulletin;
 	}
 
-	
 	public static synchronized Examen getExamen() {
 		return examen;
 	}
@@ -214,7 +219,7 @@ public class CacheMemory implements Serializable{
 	public static void setReglement(Reglement reglement) {
 		CacheMemory.reglement = reglement;
 	}
-	
+
 	public static String getCurrentNameStudent() {
 		return currentNameStudent;
 	}
@@ -231,37 +236,37 @@ public class CacheMemory implements Serializable{
 		CacheMemory.currentNameStudent = currentNameStudent;
 	}
 
-
-
-
 	public static PeriodePaie getPeriodepaie() {
 		return periodepaie;
 	}
+
 	public static void setPeriodepaie(PeriodePaie periodepaie) {
 		CacheMemory.periodepaie = periodepaie;
 	}
-	public static List<Predicat> defaultPredicats(){
-		List<Predicat> predicats = new ArrayList<Predicat>();
-	RestrictionsContainer container = RestrictionsContainer.newInstance();
 
-	if (CacheMemory.getCurrentannee() != null) {
-		System.out.println("CacheMemory.defaultPredicats() current date "+CacheMemory.getCurrentannee());
-		container.addGe("anneScolaire",  CacheMemory.getCurrentannee());
+	public static List<Predicat> defaultPredicats() {
+		List<Predicat> predicats = new ArrayList<Predicat>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+
+		if (CacheMemory.getCurrentannee() != null) {
+			System.out.println("CacheMemory.defaultPredicats() current date " + CacheMemory.getCurrentannee());
+			container.addGe("anneScolaire", CacheMemory.getCurrentannee());
+		}
+		predicats.addAll(container.getPredicats());
+		return predicats;
 	}
-	predicats.addAll(container.getPredicats());
-	return predicats ;
-	}
-	
+
 	public static Etablissement getCurrentSchool() {
 		return currentSchool;
 	}
-//
-//	public static ExamenP getExamenp() {
-//		return examenp;
-//	}
-//	public static void setExamenp(ExamenP examenp) {
-//		CacheMemory.examenp = examenp;
-//	}
+
+	//
+	// public static ExamenP getExamenp() {
+	// return examenp;
+	// }
+	// public static void setExamenp(ExamenP examenp) {
+	// CacheMemory.examenp = examenp;
+	// }
 	public static void setCurrentSchool(Etablissement currentSchool) {
 		CacheMemory.currentSchool = currentSchool;
 	}
@@ -269,37 +274,36 @@ public class CacheMemory implements Serializable{
 	public static Map<Long, Map<TypeCacheMemory, Object>> getCacheUser() {
 		return cacheUser;
 	}
+
 	public static void setCacheUser(Map<Long, Map<TypeCacheMemory, Object>> cacheUser) {
 		CacheMemory.cacheUser = cacheUser;
 	}
-	public static List<Predicat> defaultPredicatsCycleAnnee(){
-		List<Predicat> predicats = new ArrayList<Predicat>();
-	RestrictionsContainer container = RestrictionsContainer.newInstance();
-	System.out.println("CacheMemory.defaultPredicatsCycleAnnee() current exercice is "+CacheMemory.getCurrentannee());
-	if (CacheMemory.getCurrentannee() != null) {
-		container.addEq("anneScolaire",  CacheMemory.getCurrentannee());
-	}
-//	if (CacheMemory.getCurentcycle() != 0) {
-//		container.addEq("cycle",  CacheMemory.getCurentcycle());
-//	}
-	
-	predicats.addAll(container.getPredicats());
-	return predicats ;
-	}
-	
-	public static List<Predicat> defaultPredicatsCycle(){
-	List<Predicat> predicats = new ArrayList<Predicat>();
-	RestrictionsContainer container = RestrictionsContainer.newInstance();
 
-	if (CacheMemory.getCurentcycle() != 0) {
-		container.addEq("cycle",  CacheMemory.getCurentcycle());
+	public static List<Predicat> defaultPredicatsCycleAnnee() {
+		List<Predicat> predicats = new ArrayList<Predicat>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+		System.out.println(
+				"CacheMemory.defaultPredicatsCycleAnnee() current exercice is " + CacheMemory.getCurrentannee());
+		if (CacheMemory.getCurrentannee() != null) {
+			container.addEq("anneScolaire", CacheMemory.getCurrentannee());
+		}
+		// if (CacheMemory.getCurentcycle() != 0) {
+		// container.addEq("cycle", CacheMemory.getCurentcycle());
+		// }
+
+		predicats.addAll(container.getPredicats());
+		return predicats;
 	}
-	predicats.addAll(container.getPredicats());
-	return predicats ;
+
+	public static List<Predicat> defaultPredicatsCycle() {
+		List<Predicat> predicats = new ArrayList<Predicat>();
+		RestrictionsContainer container = RestrictionsContainer.newInstance();
+
+		if (CacheMemory.getCurentcycle() != 0) {
+			container.addEq("cycle", CacheMemory.getCurentcycle());
+		}
+		predicats.addAll(container.getPredicats());
+		return predicats;
 	}
-	
-	
-	
-	
 
 }

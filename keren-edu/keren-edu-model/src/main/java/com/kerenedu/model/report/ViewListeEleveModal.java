@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
 import com.core.base.BaseElement;
+import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.Classe;
 import com.kerenedu.configuration.SectionE;
 import com.kerenedu.dashboard.Raccourci;
@@ -44,14 +45,20 @@ public class ViewListeEleveModal extends BaseElement implements Serializable, Co
 
 	private long nbreEtud;
 	private long totalIns;
+	
+	@ManyToOne
+	@JoinColumn(name = "ANNEE")
+	@Predicate(label = "Annee Scolaire", type = AnneScolaire.class, target = "many-to-one", optional = true, sequence = 1)
+	private AnneScolaire annee;
+	
 	@ManyToOne
 	@JoinColumn(name = "SECTION_ID")
-	@Predicate(label = "Section", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true)
+	@Predicate(label = "Section", type = SectionE.class, target = "many-to-one", optional = false, sequence = 2, observable = true)
 	private SectionE section;
 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
-	@Predicate(label = "Classe", updatable = false, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 1)
+	@Predicate(label = "Classe", updatable = false, type = Classe.class, target = "many-to-one", search = true, sequence = 3, observable = true, searchfields = "libelle", colsequence = 1)
 	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
 	protected Classe classe;
 
@@ -81,6 +88,10 @@ public class ViewListeEleveModal extends BaseElement implements Serializable, Co
 			this.classe = new Classe(ins.classe);
 			// this.cycle=ins.getClasse().getCycle();
 			this.section = ins.getClasse().getSection();
+		}
+		
+		if(ins.annee!=null){
+			this.annee= new AnneScolaire(ins.annee);
 		}
 
 	}
@@ -157,6 +168,14 @@ public class ViewListeEleveModal extends BaseElement implements Serializable, Co
 
 	public void setSection(SectionE section) {
 		this.section = section;
+	}
+
+	public AnneScolaire getAnnee() {
+		return annee;
+	}
+
+	public void setAnnee(AnneScolaire annee) {
+		this.annee = annee;
 	}
 
 }

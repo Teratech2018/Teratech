@@ -92,13 +92,12 @@ public class ReportHelperTrt {
 	        String report = ReportHelper.reportFileCheminPaie;
 	        
 	        try {
+	        	 params.put(ReportsParameter.REPORT_IMAGE_CO, ReportHelper.getBytescol());
+				 params.put(ReportsParameter.REPORT_IMAGE, ReportHelper.getBytescol());
 				 params.put(ReportsParameter.REPORT_IMAGE_REPOSITORY, ReportHelper.getBytes());
-				 params.put(ReportsParameter.REPORT_IMAGE_REPOSITORY_BG, ReportHelper.getBytesbgs());
-				 params.put(ReportsParameter.REPORT_IMAGE_REPOSITORY_CO, ReportHelper.getBytes());
+				 params.put(ReportsParameter.REPORT_IMAGE_REPOSITORY_CO, ReportHelper.getBytescol());
 				 params.put(ReportsParameter.REPORT_IMAGE_REPOSITORY_CO_BG, ReportHelper.getBytesbgc());
 				 params.put(ReportsParameter.BG_IMAGE_REPOSITORY,ReportHelper.getBytes("default.png"));
-				 params.put(ReportsParameter.REPORT_TITRE_BULL, ReportHelper.getBytestitre(ReportHelper.titre1));
-				 params.put(ReportsParameter.REPORT_TITRE_BULL_2, ReportHelper.getBytestitre(ReportHelper.titre2));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

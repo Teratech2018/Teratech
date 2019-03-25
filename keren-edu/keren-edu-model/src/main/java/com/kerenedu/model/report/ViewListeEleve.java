@@ -158,6 +158,9 @@ public class ViewListeEleve extends BaseElement implements Serializable, Compara
 		if(ins.getSection()!=null){
 			this.section= new SectionE(ins.getSection());
 		}
+		if(ins.getAnnee()!=null){
+			this.anneScolaire= ins.getAnnee().getCode();
+		}
 		
 	}
 

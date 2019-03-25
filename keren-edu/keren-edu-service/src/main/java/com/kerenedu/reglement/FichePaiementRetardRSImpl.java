@@ -18,6 +18,9 @@ import com.core.tools.DateHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.inscription.Inscription;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
@@ -89,7 +92,7 @@ public class FichePaiementRetardRSImpl
         //To change body of generated methods, choose Tools | Templates.
          //To change body of generated methods, choose Tools | Templates.
         Gson gson = new Gson();
-       
+        long id = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
         //Type predType = ;
         List contraints = new ArrayList();
         if(headers.getRequestHeader("predicats")!=null){
@@ -108,6 +111,11 @@ public class FichePaiementRetardRSImpl
        
          container.addLe("delai", DateHelper.formatDate(new Date()));
          container.addLe("payer",false);
+         AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(id, TypeCacheMemory.ANNEESCOLAIRE);
+         if(annee!=null){
+         	 container.addEq("fiche.anneScolaire", annee.getCode());
+         }
+         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
         RSNumber number = new RSNumber(getManager().count(container.getPredicats()));
 //        System.out.println(AbstractGenericService.class.toString()+".count === "+" == "+number.getValue());
         return number;
@@ -119,7 +127,7 @@ public class FichePaiementRetardRSImpl
     public List<FichePaiementRetard> filter(HttpHeaders headers, int firstResult, int maxResult) {
         //To change body of generated methods, choose Tools | Templates.
          Gson gson = new Gson();
-      
+         long id = gson.fromJson(headers.getRequestHeader("userid").get(0), Long.class);
         //Type predType = ;
         List contraints = new ArrayList();
         if(headers.getRequestHeader("predicats")!=null){
@@ -138,6 +146,11 @@ public class FichePaiementRetardRSImpl
         
         container.addLe("delai", DateHelper.formatDate(new Date()));
         container.addLe("payer",false);
+        AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(id, TypeCacheMemory.ANNEESCOLAIRE);
+        if(annee!=null){
+        	 container.addEq("fiche.anneScolaire", annee.getCode());
+        }
+        System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
         //List result = new ArrayList();
         return getManager().filter(container.getPredicats(), null , new HashSet<String>(), firstResult, maxResult);
     }

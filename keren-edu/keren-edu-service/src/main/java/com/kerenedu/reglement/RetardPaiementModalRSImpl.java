@@ -3,6 +3,8 @@ package com.kerenedu.reglement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -10,8 +12,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.kerem.core.MetaDataUtil;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.megatimgroup.generic.jax.rs.layer.annot.Manager;
 import com.megatimgroup.generic.jax.rs.layer.impl.AbstractGenericService;
 import com.megatimgroup.generic.jax.rs.layer.impl.MetaData;
@@ -73,5 +80,20 @@ public class RetardPaiementModalRSImpl
         return entity; 
     }
 
+	@Override
+	public List<RetardPaiementModal> filter(HttpHeaders arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
+		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		   AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(id, TypeCacheMemory.ANNEESCOLAIRE);
+	         if(annee!=null){
+	         	 container.addEq("service.anneScolaire", annee.getCode());
+	         }
+	         System.out.println("InscriptionRSImpl.filter() année scolaire is "+annee.getCode());
+		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
+	}
+	
+	
 
 }

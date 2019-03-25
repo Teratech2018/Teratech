@@ -122,6 +122,8 @@ public class RemboursementPretRSImpl
 			throw new KerenExecption("La montant du remboursement est obligatoire");
 		}else if(entity.getActif().equals(Boolean.FALSE)){
 			throw new KerenExecption("Le remboursement n'est pas actif");
+		}if(entity.getState()!=null&&entity.getState().equalsIgnoreCase("paye")){
+			throw new KerenExecption("OPERATION IMPOSIBLE: Remboursement déjà pris en compte !!!");
 		}
 		entity.setState("confirme");
 		super.processBeforeSave(entity);
@@ -138,6 +140,8 @@ public class RemboursementPretRSImpl
 			throw new KerenExecption("La montant du remboursement est obligatoire");
 		}else if(entity.getActif().equals(Boolean.FALSE)){
 			throw new KerenExecption("Le remboursement n'est pas actif");
+		}if(entity.getState()!=null&&entity.getState().equalsIgnoreCase("paye")){
+			throw new KerenExecption("OPERATION IMPOSIBLE: Remboursement déjà pris en compte !!!");
 		}
 //		else if(entity.getState().equalsIgnoreCase("confirme")){
 //			throw new KerenExecption("Le remboursement est d&eacute;j&agrave; confirm&eacute;");

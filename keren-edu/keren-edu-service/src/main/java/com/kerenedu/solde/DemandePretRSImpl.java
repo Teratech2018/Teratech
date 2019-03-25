@@ -21,12 +21,15 @@ import javax.ws.rs.core.Response;
 
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.ifaces.GenericManager;
+import com.google.gson.Gson;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.kerem.core.FileHelper;
 import com.kerem.core.KerenExecption;
 import com.kerem.core.MetaDataUtil;
 import com.kerenedu.configuration.AnneScolaire;
 import com.kerenedu.configuration.AnneScolaireManagerRemote;
+import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.inscription.Inscription;
 import com.kerenedu.jaxrs.impl.report.ReportHelperTrt;
 import com.kerenedu.jaxrs.impl.report.ViewBulletinRSImpl;
@@ -60,6 +63,9 @@ public class DemandePretRSImpl
     protected DemandePretManagerRemote manager;
 	@Manager(application = "kereneducation", name = "AnneScolaireManagerImpl", interf = AnneScolaireManagerRemote.class)
 	protected AnneScolaireManagerRemote managerAnnee;
+	
+	  @Manager(application = "kereneducation", name = "PeriodePaieManagerImpl", interf = PeriodePaieManagerRemote.class)
+	    protected PeriodePaieManagerRemote periodemanager;
 
     public DemandePretRSImpl() {
         super();
@@ -136,6 +142,9 @@ public class DemandePretRSImpl
     protected void processBeforeSave(DemandePret entity) {
 
         // TODO Auto-generated method stub
+    	if(entity.getMontantsol()<=0){
+			  throw new KerenExecption("OPERATION IMPOSSIBLE: Montant erron&eacute;e!!! ");
+		}
         if(entity.getTypepret()==null){
                 throw new KerenExecption("Le Type de Pr&ecirc;t est obligatoire");
         }else if(entity.getEmploye()==null){
@@ -162,9 +171,10 @@ public class DemandePretRSImpl
                 throw new KerenExecption("Demande de Pr&ecirc;t d&eacute;j&agrave; annul&eacute;e");
         }else if(entity.getDpret().after(entity.getDrembour())){
                 throw new KerenExecption("La date de pret ne peut etre superieure &agrave; la date de remboursement");
-        }else if(entity.getDrembour().before(new Date())){
-        	  throw new KerenExecption("La date du pret ne peut etre inferieure &agrave; la date du jour");
         }
+//        }else if(entity.getDrembour().before(new Date())){
+//        	  throw new KerenExecption("La date du pret ne peut etre inferieure &agrave; la date du jour");
+//        }
         // verifier si l'employ&eacute; n'a pas dej&agrave; un autre pret encours
         RestrictionsContainer container = RestrictionsContainer.newInstance();
 //        container.addEq("employe.id", entity.getEmploye().getId());
@@ -365,7 +375,13 @@ public class DemandePretRSImpl
     @Override
 	public List<DemandePret> filter(HttpHeaders arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
+    	Gson gson = new Gson();
+		long id = gson.fromJson(arg0.getRequestHeader("userid").get(0), Long.class);
 		RestrictionsContainer container = filterPredicatesBuilder(arg0,arg1,arg2);
+		AnneScolaire annee = (AnneScolaire) CacheMemory.getValue(id, TypeCacheMemory.ANNEESCOLAIRE);
+		if(annee!=null){
+			container.addEq("anneScolaire", annee.getCode());	
+		}//end
 		container.addNotEq("state", "annule");	
 		return getManager().filter(container.getPredicats(), null, new HashSet<String>(), arg1, arg2);
 	}
@@ -416,4 +432,24 @@ public class DemandePretRSImpl
 		// TODO Auto-generated method stub
 		return this.buildPdfReport(entity);
 	}
+	
+	 /**
+     * Permete de verifier que ;
+     * il exites une periode ouvert contenant la date
+     *  du remboursement en cours
+     * @param entity
+     */
+    private PeriodePaie periodeChecker(DemandePret entity){
+
+          PeriodePaie periode = periodemanager.getPeriodeFromDate(entity.getDrembour());
+
+          if(periode==null){
+                  throw new KerenExecption("Impossible de trouver une période contenant cette date");
+          }else if(periode.getState().equalsIgnoreCase("etabli")){
+                  throw new KerenExecption("La periode "+periode.getDesignation()+" n'est pas ouverte <br/> Veuillez ouvrir la periode");
+          }else if(periode.getState().equalsIgnoreCase("ferme")){
+                  throw new KerenExecption("La période "+periode.getDesignation()+" est déjà fermée");
+          }
+          return periode;
+    }
 }

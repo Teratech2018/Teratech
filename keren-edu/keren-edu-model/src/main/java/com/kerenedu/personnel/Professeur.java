@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 
 import com.core.base.BaseElement;
 import com.core.base.State;
+import com.kerenedu.configuration.Cycle;
 import com.kerenedu.configuration.Etablissement;
 import com.kerenedu.solde.Banque;
 import com.kerenedu.solde.Categorie;
@@ -28,8 +29,6 @@ import com.kerenedu.solde.Echellon;
 import com.kerenedu.solde.Fonction;
 import com.kerenedu.solde.PeriodePaie;
 import com.kerenedu.solde.ProfilPaie;
-import com.kerenedu.solde.ProfilPaielight;
-import com.kerenedu.solde.RubriquePaie;
 import com.megatim.common.annotations.Predicate;
 
 /**
@@ -71,7 +70,7 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	protected String cni;
 	
 	@Column(name = "LANGUE")
-	@Predicate(label = "Langue?", optional = false, updatable = true, target = "combobox", values = "Anglais;Français",search = false, sequence=7)
+	@Predicate(label = "Langue ?", optional = false, updatable = true, target = "combobox", values = "Anglais;Français",search = false, sequence=7)
 	protected String langue;
 	
 	@Column(name = "D_EMB")
@@ -85,9 +84,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 	
 	@ManyToOne
 	@JoinColumn(name = "FON_ID")
-	@Predicate(label = "Fonction", updatable = true, type = Fonction.class, target = "many-to-one", search = true, hide=true, optional = true, sequence = 7
+	@Predicate(label = "Fonction ", updatable = true, type = Fonction.class, target = "many-to-one", search = true, optional = true, sequence = 7
 			,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
 	protected Fonction role;
+	
+
+	@ManyToOne
+	@JoinColumn(name ="CYCLE_ID")
+	@Predicate(label = "Enseigne ? ", updatable = true, type = Cycle.class, target = "many-to-one",  optional = true, sequence = 8 
+	,group = true, groupLabel = "Informations Personelles", groupName = "tab1")
+	protected Cycle cycle;
 	
 
 	@ManyToOne
@@ -310,6 +316,11 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		if (entity.role != null) {
 			this.role = new Fonction(entity.role);
 		}
+		
+		if (entity.cycle != null) {
+			this.cycle = new Cycle(entity.cycle);
+		}
+		
 		this.contact = entity.contact;
 		if (entity.diplome != null) {
 			this.diplome = new Diplome(entity.diplome);
@@ -384,6 +395,16 @@ public class Professeur extends BaseElement implements Serializable, Comparable<
 		}
 
 	}
+
+	public Cycle getCycle() {
+		return cycle;
+	}
+
+
+	public void setCycle(Cycle cycle) {
+		this.cycle = cycle;
+	}
+
 
 	@Override
 	public String getEditTitle() {

@@ -42,52 +42,56 @@ import com.megatim.common.annotations.Predicate;
 @Table(name = "e_inscription")
 public class Inscription extends BaseElement implements Serializable, Comparable<Inscription> {
 
-
 	@Column(name = "MATRICULE")
 	@Predicate(label = "MATRICULE", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 1, searchfields = "eleve.matricule")
 	protected String matricule;
-	
-	
+
 	@Column(name = "NOM")
 	@Predicate(label = "NOM", optional = true, updatable = false, search = true, type = String.class, hide = true, colsequence = 2, searchfields = "eleve.nom")
 	protected String nom;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "SECTION_ID")
-	@Predicate(label = "SECTION", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true, updatable=true)
+	@Predicate(label = "SECTION", type = SectionE.class, target = "many-to-one", optional = false, sequence = 1, observable = true, updatable = true)
 	private SectionE section;
 
 	@ManyToOne
 	@JoinColumn(name = "CLASSE_ID")
 	@Predicate(label = "CLASSE", updatable = true, type = Classe.class, target = "many-to-one", search = true, sequence = 2, observable = true, searchfields = "libelle", colsequence = 4)
-	@Filter(value="[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
-	//@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"section.id\"}]")
+	@Filter(value = "[{\"fieldName\":\"section\",\"value\":\"object.section\",\"searchfield\":\"libelle\",\"optional\":false,\"message\":\"Veuillez sélectionner une Section\"}]")
+	// @Filter(value = "[{\"fieldName\":\"section\",\"value\":\"section.id\"}]")
 	protected Classe classe;
 
 	@ManyToOne
 	@JoinColumn(name = "ELEVE_ID")
-	@Predicate(label = "ELEVE", updatable = true, type = Eleve.class, target = "many-to-one", search = false, sequence = 3, searchfields = "matricule", colsequence = 3,optional = false)
+	@Predicate(label = "ELEVE", updatable = true, type = Eleve.class, target = "many-to-one", search = false, sequence = 3, searchfields = "matricule", colsequence = 3, optional = false)
 	protected Eleve eleve;
 
 	@Column(name = "STATUT")
 	@Predicate(label = "STATUT ELEVE", optional = false, updatable = true, search = false, target = "combobox", values = "Redoublant(e);Non Redoublant(e)", sequence = 3)
 	protected String satut = "0";
 
+	// date première inscription
+	@Column(name = "D_INS_ONE")
+	@Temporal(javax.persistence.TemporalType.DATE)
+	@Predicate(label = "DATE PREMIERE INSCRIPTION", optional = true, updatable = true, type = Date.class, target = "date", sequence = 5)
+	protected Date datefirst;
+
 	@Column(name = "DATE_INS")
-	@Predicate(label = "DATE INSCRIPTION", optional = false, updatable = true, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 5)
+	@Predicate(label = "DATE INSCRIPTION", optional = false, updatable = true, search = true, type = Date.class, sequence = 4, target = "date", colsequence = 6)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	protected Date datIns;
 
 	@Column(name = "MNT")
-	@Predicate(label = "SCOLARITE", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 5, editable = false, colsequence = 6)
+	@Predicate(label = "SCOLARITE", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 6, editable = false, colsequence = 7)
 	protected Long zMnt;
 
 	@Column(name = "MNT_PAYE")
-	@Predicate(label = "PAYER", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 7, editable = false, colsequence = 7)
+	@Predicate(label = "PAYER", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 7, editable = false, colsequence = 8)
 	protected Long zMntPaye;
 
 	@Column(name = "SOLDE")
-	@Predicate(label = "SOLDE ", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 8, colsequence = 8,editable = false)
+	@Predicate(label = "SOLDE ", optional = true, updatable = false, search = true, type = BigDecimal.class, sequence = 8, colsequence = 9, editable = false)
 	protected Long zSolde;
 
 	@Column(name = "REMISE")
@@ -95,25 +99,27 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	protected Long zRemise;
 
 	@Column(name = "RISTOURNE")
-	@Predicate(label = "RISTOURNE", optional = true, updatable = false, search = false, type = BigDecimal.class, sequence = 10,editable = false)
+	@Predicate(label = "RISTOURNE", optional = true, updatable = false, search = false, type = BigDecimal.class, sequence = 10, editable = false)
 	protected Long zRistourne;
 
 	@Column(name = "TOTAL")
-	@Predicate(label = "TOTAL Frais", optional = true, updatable = false, search = false, type = BigDecimal.class, hide = true, sequence = 9)
+	@Predicate(label = "TOTAL Frais", optional = true, updatable = false, search = false, type = BigDecimal.class, hide = true, sequence = 11)
 	protected Long zTotal;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "FICHE_PAIE_ID")
-	@Predicate(label = " ", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2,
-	group = true, groupLabel = "Profil Financier élève", groupName = "tab1")
+	@Predicate(label = " ", updatable = true, type = FichePaiement.class, target = "one-to-many", search = true, sequence = 2, group = true, groupLabel = "Profil Financier élève", groupName = "tab1")
 	@Observer(observable = "classe", source = "method:findserviceclasse")
 	protected List<FichePaiement> service;
-//
-//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//	@JoinColumn(name = "FICHE_PAIE_ID_OPT")
-//	@Predicate(label = "Service Optionnel", updatable = true, type = FichePaiementOptionel.class, target = "one-to-many", search = true, sequence = 2, group = true, groupLabel = "Service élève"
-//	, groupName = "tab1")
-//	protected List<FichePaiementOptionel> serviceOpt;
+	//
+	// @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+	// orphanRemoval = true)
+	// @JoinColumn(name = "FICHE_PAIE_ID_OPT")
+	// @Predicate(label = "Service Optionnel", updatable = true, type =
+	// FichePaiementOptionel.class, target = "one-to-many", search = true,
+	// sequence = 2, group = true, groupLabel = "Service élève"
+	// , groupName = "tab1")
+	// protected List<FichePaiementOptionel> serviceOpt;
 
 	// @ManyToOne
 	// @JoinColumn(name ="SERVICE_ID")
@@ -128,16 +134,14 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 
 	@Column(name = "CYCLE_ID")
 	protected long cycle;
-	
 
 	private String state = "crée";
-	
+
 	@Transient
-	private byte[] photo ;
-	
-	
+	private byte[] photo;
+
 	@Transient
-	private InputStream photostream ;
+	private InputStream photostream;
 
 	//
 	// public Service getServiceList() {
@@ -158,8 +162,8 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		this.zMnt = ins.zMnt;
 		if (ins.eleve != null) {
 			this.eleve = new Eleve(ins.eleve);
-			this.matricule=ins.eleve.getMatricule();
-			this.nom=ins.eleve.getNom()+" "+ins.eleve.getPrenon();
+			this.matricule = ins.eleve.getMatricule();
+			this.nom = ins.eleve.getNom() + " " + ins.eleve.getPrenon();
 		}
 
 		this.zMnt = ins.zMnt;
@@ -178,6 +182,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		this.service = new ArrayList<FichePaiement>();
 		this.satut = ins.satut;
 		this.state = ins.state;
+		this.datefirst=ins.datefirst;
 
 		/*
 		 * for(Service service:ins.serviceList){ serviceList.add(new
@@ -185,13 +190,13 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		 */
 
 	}
-	
+
 	public Inscription(ViewBadgeModal ins) {
 		if (ins.getClasse() != null) {
 			this.classe = new Classe(ins.getClasse());
-			
+
 		}
-		if(ins.getCycle()!=null){
+		if (ins.getCycle() != null) {
 			this.cycle = ins.getCycle().getId();
 		}
 		if (ins.getSection() != null) {
@@ -200,16 +205,24 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	}
 
 	public Inscription(Eleve eleve, Classe classe, Inscription entity) {
-		super(-1, null, null, 0L);
+		//super(-1, null, null, 0L);
+		super(entity.id, entity.designation, entity.moduleName, entity.compareid);
 		this.eleve = new Eleve(eleve);
 		this.classe = new Classe(classe);
 		this.section = classe.getSection();
 		this.datIns = entity.getDatIns();
 		this.anneScolaire = entity.anneScolaire;
 		this.service = new ArrayList<FichePaiement>();
-//		this.serviceOpt = new ArrayList<FichePaiementOptionel>();
+		// this.serviceOpt = new ArrayList<FichePaiementOptionel>();
 		this.satut = entity.satut;
 		this.state = entity.state;
+		this.zMnt = entity.zMnt;
+		this.zMntPaye = entity.zMntPaye;
+		this.zSolde = entity.zSolde;
+		this.zRemise = entity.zRemise;
+		this.zRistourne = entity.zRistourne;
+		this.zTotal = entity.zTotal;
+		this.service = new ArrayList<FichePaiement>();
 
 		/*
 		 * for(Service service:ins.serviceList){ serviceList.add(new
@@ -271,6 +284,14 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		return zMntPaye;
 	}
 
+	public Date getDatefirst() {
+		return datefirst;
+	}
+
+	public void setDatefirst(Date datefirst) {
+		this.datefirst = datefirst;
+	}
+
 	public void setzMntPaye(Long zMntPaye) {
 		this.zMntPaye = zMntPaye;
 	}
@@ -290,7 +311,6 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		return hash;
 	}
 
-
 	@Override
 	public String getEditTitle() {
 		// TODO Auto-generated method stub
@@ -300,7 +320,7 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getListTitle() {
 		// TODO Auto-generated method stub
-		return "Liste des Elèves Inscrits";
+		return "Liste des Elèves Inscrits  //" + " Année Scolaire ";
 	}
 
 	@Override
@@ -309,18 +329,16 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		return "kereneducation";
 	}
 
-
 	@Override
 	public String getOwnermodule() {
 		// TODO Auto-generated method stub
 		return "scolarite";
 	}
 
-
 	@Override
 	public String getDesignation() {
 		// TODO Auto-generated method stub
-		return eleve.getNom() + " " + eleve.getPrenon()+"     ("+eleve.getAnciennte() +" ) Ancienneté(s)";
+		return eleve.getNom() + " " + eleve.getPrenon() + "     (" + eleve.getAnciennte() + " ) Ancienneté(s)";
 	}
 
 	public void setAnneScolaire(String anneScolaire) {
@@ -355,13 +373,13 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		return zRemise;
 	}
 
-//	public List<FichePaiementOptionel> getServiceOpt() {
-//		return serviceOpt;
-//	}
-//
-//	public void setServiceOpt(List<FichePaiementOptionel> serviceOpt) {
-//		this.serviceOpt = serviceOpt;
-//	}
+	// public List<FichePaiementOptionel> getServiceOpt() {
+	// return serviceOpt;
+	// }
+	//
+	// public void setServiceOpt(List<FichePaiementOptionel> serviceOpt) {
+	// this.serviceOpt = serviceOpt;
+	// }
 
 	public void setzRemise(Long zRemise) {
 		this.zRemise = zRemise;
@@ -427,14 +445,14 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 		this.zTotal = zTotal;
 	}
 
-//	@Override
-//	public List<State> getStates() {
-//		// TODO Auto-generated method stub
-//		List<State> states = new ArrayList<State>();
-//		State state = new State("crée", "Crée");
-//		states.add(state);
-//		return states;
-//	}
+	// @Override
+	// public List<State> getStates() {
+	// // TODO Auto-generated method stub
+	// List<State> states = new ArrayList<State>();
+	// State state = new State("crée", "Crée");
+	// states.add(state);
+	// return states;
+	// }
 
 	@Override
 	public boolean isCreateonfield() {
@@ -445,14 +463,13 @@ public class Inscription extends BaseElement implements Serializable, Comparable
 	@Override
 	public String getSearchkeys() {
 		// TODO Auto-generated method stub
-		this.searchkeys=matricule+", "+nom+","+classe.getLibelle()+" , " +zSolde+" , " +anneScolaire;
-		return matricule+", "+nom+","+classe.getLibelle()+" , " +zSolde+" , " +anneScolaire;
+		this.searchkeys = matricule + ", " + nom + "," + classe.getLibelle() + " , " + zSolde + " , " + anneScolaire;
+		return matricule + ", " + nom + "," + classe.getLibelle() + " , " + zSolde + " , " + anneScolaire;
 	}
-	
 
 	public int compareTo(Inscription o) {
 		// TODO Auto-generated method stub
-		return (int)o.getId();
+		return (int) o.getId();
 	}
 
 }

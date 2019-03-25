@@ -149,7 +149,7 @@ public class ReportHelper {
              os.write(buffer, 0, len);
           }
           os.flush();
-          System.out.println("ReportHelper.getBytesC() image "+os.toByteArray());
+          //System.out.println("ReportHelper.getBytesC() image "+os.toByteArray());
           return os.toByteArray();
        }
     }
@@ -243,7 +243,7 @@ public class ReportHelper {
     
     public static byte[] getPhotoBytesEleve(String photoname) throws IOException
     {
-    	System.out.println("ReportHelper.getPhotoBytesEleve() construire la photo ");
+    	//System.out.println("ReportHelper.getPhotoBytesEleve() construire la photo ");
     	InputStream stream ;
     	//FileHelper.setCurrentModule("scolarite");
     	File tmpDir = new File(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
@@ -270,7 +270,7 @@ public class ReportHelper {
     
     public static InputStream getPhotoBytesstream(String photoname) throws IOException
     {
-    	System.out.println("ReportHelper.getPhotoBytesEleve() construire la photo ");
+    	//System.out.println("ReportHelper.getPhotoBytesEleve() construire la photo ");
     	InputStream stream ;
     	File tmpDir = new File(FileHelper.getStaticDirectory()+File.separator+"scolarite"+File.separator+photoname);
     	File tmpDirold = new File(FileHelper.getStaticDirectory()+File.separator+photoname);

@@ -15,7 +15,10 @@ import com.bekosoftware.genericdaolayer.dao.ifaces.GenericDAO;
 import com.bekosoftware.genericdaolayer.dao.tools.Predicat;
 import com.bekosoftware.genericdaolayer.dao.tools.RestrictionsContainer;
 import com.bekosoftware.genericmanagerlayer.core.impl.AbstractGenericManager;
+import com.kerenedu.configuration.AnneScolaire;
+import com.kerenedu.configuration.AnneScolaireDAOLocal;
 import com.kerenedu.configuration.CacheMemory;
+import com.kerenedu.configuration.TypeCacheMemory;
 import com.kerenedu.core.ifaces.report.ViewListeEleveManagerLocal;
 import com.kerenedu.core.ifaces.report.ViewListeEleveManagerRemote;
 import com.kerenedu.dao.ifaces.report.ViewListeEleveDAOLocal;
@@ -37,6 +40,10 @@ public class ViewListeEleveManagerImpl
     
     @EJB(name = "InscriptionDAO")
     protected InscriptionDAOLocal daoIns;
+    
+    @EJB(name = "AnneScolaireDAO")
+    protected AnneScolaireDAOLocal daoanne;
+
 
 
     public ViewListeEleveManagerImpl() {
@@ -101,19 +108,24 @@ public class ViewListeEleveManagerImpl
 	public List<ViewListeEleve> getCriteres(ViewListeEleve critere) {
 		// To change body of generated methods, choose Tools | Templates.
 				RestrictionsContainer container = RestrictionsContainer.newInstance();
+				String annescolaire ="";
 				if (critere != null) {
-					container = RestrictionsContainer.newInstance();
-//					if (critere.getDatInsfin() != null) {
-//						container.addGe("eleve.dateNais", critere.getDatInsfin());
-//					}
-//					
+					if(critere.getAnneScolaire()!=null&&!critere.getAnneScolaire().isEmpty()){
+						annescolaire =critere.getAnneScolaire();
+					}else{
+						container.addEq("connected", true);
+						List<AnneScolaire> annee = daoanne.filter(container.getPredicats(), null, null, 0, -1);
+						annescolaire =annee.get(0).getCode();
+					}
 					
-
+					
+					container = RestrictionsContainer.newInstance();
 					if (critere.getClasse() != null) {
 						container.addEq("classe.id", critere.getClasse().getId());
-						
 					}
-
+					
+						container.addEq("anneScolaire",annescolaire);
+					
 				}
 				List<ViewListeEleve> datas = dao.filter(container.getPredicats(), null, new HashSet<String>(), -1, 0);
 				List<ViewListeEleve> result = new ArrayList<ViewListeEleve>();

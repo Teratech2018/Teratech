@@ -91,8 +91,8 @@ public class ViewListeEleveModalRSImpl
 	public Response buildPdfReport(ViewListeEleveModal entity) {
 		try {
       	  List<ViewListeEleve> records =managerli.getCriteres(new ViewListeEleve(entity));
-      	 if(records.size()==0){
-       		throw new KerenExecption("Aucune Données Trouvés !!!");
+      	 if(records==null||records.size()==0){
+      		throw new KerenExecption("AUCUNE DONNEES TROUVEES !!!!!");
        	  }
             String URL = ReportHelper.templateURL+ReportsName.LISTE_ELEVE.getName();
             Map parameters = new HashMap();

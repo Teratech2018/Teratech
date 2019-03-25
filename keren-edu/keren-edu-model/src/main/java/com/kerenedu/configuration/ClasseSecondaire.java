@@ -128,6 +128,29 @@ public class ClasseSecondaire extends BaseElement implements Serializable, Compa
 //		}
 		this.capacite=filiere.capacite;
 	}
+	
+	public ClasseSecondaire(Classe filiere) {
+		super(filiere.getId(), filiere.getDesignation(), filiere.getModuleName(),0L);
+		this.libelle = filiere.libelle;
+		if(this.niveau!=null){
+			this.niveau= new Niveau( filiere.niveau);
+		}
+	
+		this.typeformation=filiere.typeformation;
+		if(filiere.filiere!=null){
+			this.filiere= new Filiere(filiere.filiere);
+			this.cycle=filiere.getFiliere().getCycle().getId();
+		}
+		if(filiere.getSection()!=null){
+			this.section=filiere.getSection();
+		}
+		this.effectif=filiere.effectif;
+//		if(filiere.professeur!=null){
+//		   this.professeur= new Professeur(filiere.professeur);
+//		}
+		this.capacite=filiere.capacite;
+	}
+
 
 
 	public String getLibelle() {
