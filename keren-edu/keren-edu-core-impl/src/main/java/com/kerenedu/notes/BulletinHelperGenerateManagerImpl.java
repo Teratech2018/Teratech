@@ -30,6 +30,9 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 	
 	@EJB(name = "ExamenDAO")
 	protected ExamenDAOLocal daoExamen;
+	
+	@EJB(name = "BulletinDAO")
+	protected BulletinDAOLocal daoBull;
 
 	public BulletinHelperGenerateManagerImpl() {
 	}
@@ -48,7 +51,8 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 	public List<BulletinHelperGenerate> getCriteres(EdtBulletinModal critere) {
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		List<BulletinHelperGenerate> records = new ArrayList<BulletinHelperGenerate>();
-				
+		// force update 
+		daoBull.updateforce("scolarite");		
 		if (critere != null) {
 			if (critere.getPorte().equals("1")) {
 				if(critere.getConcernes()==null||critere.getConcernes().isEmpty()){
@@ -96,7 +100,8 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 	public List<BulletinHelperGenerate> getCriteres(Bulletin critere) {
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		List<BulletinHelperGenerate> records = new ArrayList<BulletinHelperGenerate>();
-				
+		// force update 
+		daoBull.updateforce("scolarite");		
 		if (critere != null) {
 
 			container.addEq("examen.id", critere.getModel().getId());
@@ -117,7 +122,9 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 	public List<BulletinHelperGenerate> getCriteres(EdtBulletinTrimModal critere) {
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		List<BulletinHelperGenerate> records = new ArrayList<BulletinHelperGenerate>();
-				
+		
+		// force update 
+		daoBull.updateforce("scolarite");
 		if (critere != null) {
 			if (critere.getPorte().equals("1")) {
 				if(critere.getConcernes()==null||critere.getConcernes().isEmpty()){
@@ -170,7 +177,8 @@ public class BulletinHelperGenerateManagerImpl extends AbstractGenericManager<Bu
 	public List<BulletinHelperGenerate> getCriteres(EdtBulletinAnnModal critere) {
 		RestrictionsContainer container = RestrictionsContainer.newInstance();
 		List<BulletinHelperGenerate> records = new ArrayList<BulletinHelperGenerate>();
-				
+		// force update 
+			daoBull.updateforce("scolarite");	
 		if (critere != null) {
 			if (critere.getPorte().equals("1")) {
 				if(critere.getConcernes()==null||critere.getConcernes().isEmpty()){

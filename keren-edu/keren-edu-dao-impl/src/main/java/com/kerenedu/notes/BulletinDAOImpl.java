@@ -41,7 +41,7 @@ public class BulletinDAOImpl
 		 long va = 0  ;
 		  try{
 			  	value="solde";
-				 String query ="update e_bulletin set ownermodule ='"+value+"' ";
+				 String query ="update e_bul set ownermodule ='"+value+"' ";
 				  va = em.createNativeQuery(query).executeUpdate();
 	
 	        }catch(Exception ex){
